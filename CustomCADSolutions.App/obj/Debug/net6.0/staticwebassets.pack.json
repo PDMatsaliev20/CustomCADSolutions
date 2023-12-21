@@ -9,8 +9,24 @@
       "PackagePath": "staticwebassets\\Airpod.stl"
     },
     {
+      "Id": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\Idek.png",
+      "PackagePath": "staticwebassets\\Idek.png"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\JujuInDeGaga.png",
+      "PackagePath": "staticwebassets\\JujuInDeGaga.png"
+    },
+    {
       "Id": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\Logo.jpg",
       "PackagePath": "staticwebassets\\Logo.jpg"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\LogoButCooler.jpg",
+      "PackagePath": "staticwebassets\\LogoButCooler.jpg"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\LogoButEvenCooler.png",
+      "PackagePath": "staticwebassets\\LogoButEvenCooler.png"
     },
     {
       "Id": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\css\\site.css",

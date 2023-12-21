@@ -9,51 +9,61 @@
             margin: 0;
         }
 
-        canvas {
-            display: block;
+        .navbar-header {
+            float: left;
+            padding: 15px;
+            text-align: center;
+            width: 100%;
         }
+
+        .navbar-brand {
+            float: none;
+        }
+
     </style>
 
-    <title>@ViewData["Title"] - CustomCADSolutions.App</title>
+    <title>@ViewData["Title"] - CustomCADSolutions</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/CustomCADSolutions.App.styles.css" asp-append-version="true" />
 </head>
-<body>
+<body style="background-color:#D3D3D3">
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
-
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3" style="padding:0px; margin:0px">
+            <div class="container-fluid" style="background-color:#3f5f6c">
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <a class="navbar-brand" style="padding-right:31%" asp-area="" asp-controller="Home" asp-action="Index"><b style="font-size:140%">CustomCADSolutions</b></a>
+                <img src="~/JujuInDeGaga.png" height="7.5%" width="7.5%">
 
-                <img src="~/Logo.jpg" width="75px" height="75px" />
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between" style="padding-right:10px">
+                    <ul class="navbar-nav flex-grow-1" style="font-size:150%; list-style: none; padding: 0; display: flex;">
+                        <li class="nav-item" >
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Gallery" asp-action="Show">Gallery</a>
+                        </li>
+                        <li  class="nav-item">
+                            <a  class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        </li>
+                    </ul>
+                </div>
+                
             </div>
         </nav>
     </header>
 
-    <div class="container">
+    <div class="container" >
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
     <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2023 - CustomCADSolutions.App - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        <div class="container" style="color:black">
+            &copy; 2023 - CustomCADSolutions.App - <a style="color:black" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
