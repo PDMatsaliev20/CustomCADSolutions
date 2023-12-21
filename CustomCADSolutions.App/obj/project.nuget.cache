@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "dgSpecHash": "R0h75NNskhlpPQJcsIBJsh7u1PU8jRZ+0cpEtlgmwLMTHJ6wWc/8i8kafvi8s8h9JVMpB61QNPC1eiZld3OUdA==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\csgog\\source\\repos\\CustomCADSolutions.App\\CustomCADSolutions.App\\CustomCADSolutions.App.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\csgog\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.25\\microsoft.windowsdesktop.app.ref.6.0.25.nupkg.sha512",
+    "C:\\Users\\csgog\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.25\\microsoft.netcore.app.ref.6.0.25.nupkg.sha512",
+    "C:\\Users\\csgog\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.25\\microsoft.aspnetcore.app.ref.6.0.25.nupkg.sha512",
+    "C:\\Users\\csgog\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\6.0.25\\microsoft.netcore.app.host.win-x64.6.0.25.nupkg.sha512"
+  ],
+  "logs": []
+}
