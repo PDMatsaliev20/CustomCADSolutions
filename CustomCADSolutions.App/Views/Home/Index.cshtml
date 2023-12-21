@@ -10,54 +10,7 @@
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 
-    <!-- Three.js Library -->
-    <script src="https://cdn.jsdelivr.net/npm/three@0.125.2/build/three.min.js"></script>
-    
-    <!-- STL Loader -->
-    <script src="https://cdn.jsdelivr.net/npm/three@0.125.2/examples/js/loaders/STLLoader.js"></script>
 
-    <!-- Your Custom JavaScript Code -->
-    <script>
-        // Scene, Camera, and Renderer Setup
-        var scene = new THREE.Scene();
-        var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        var renderer = new THREE.WebGLRenderer({ antialias: true });
-        renderer.setClearColor(0xeeeeee); // Set background color
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        document.body.appendChild(renderer.domElement);
-
-        // Lighting
-        var ambientLight = new THREE.AmbientLight(0x404040); // Soft white light
-        scene.add(ambientLight);
-        var directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
-        directionalLight.position.set(1, 1, 1).normalize();
-        scene.add(directionalLight);
-        // Adjust the camera
-        camera.position.z = 5;
-
-        // STL Loader
-        var loader = new THREE.STLLoader();
-        loader.load("C:\\Users\\35988\\source\\repos\\Professionals\\Databases\\Entity Framework Core\\CustomCADSolutions.App\\CustomCADSolutions.App\\wwwroot\\Airpod.stl", function (geometry) {
-            var material = new THREE.MeshLambertMaterial({ color: 0xff5533 });
-            var mesh = new THREE.Mesh(geometry, material);
-            scene.add(mesh);
-
-            // Center and Scale the object
-            geometry.center();
-            var boundingBox = new THREE.Box3().setFromObject(mesh);
-            var size = boundingBox.getSize(new THREE.Vector3());
-            var maxAxis = Math.max(size.x, size.y, size.z);
-            mesh.scale.multiplyScalar(1.0 / maxAxis); // Scale the object to normalized size
-            camera.lookAt(mesh.position);
-        });
-
-        // Animation Loop
-        function animate() {
-            requestAnimationFrame(animate);
-            renderer.render(scene, camera);
-        }
-
-        animate();
-    </script>
+    <div class="sketchfab-embed-wrapper"> <iframe title="mazna" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/0cceb568d4a2488fa613fef05ee2b64c/embed"> </iframe> <p style="font-size: 13px; font-weight: normal; margin: 5px; color: #4A4A4A;"> <a href="https://sketchfab.com/3d-models/mazna-0cceb568d4a2488fa613fef05ee2b64c?utm_medium=embed&utm_campaign=share-popup&utm_content=0cceb568d4a2488fa613fef05ee2b64c" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;"> mazna </a> by <a href="https://sketchfab.com/BorisKolev?utm_medium=embed&utm_campaign=share-popup&utm_content=0cceb568d4a2488fa613fef05ee2b64c" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;"> BorisKolev </a> on <a href="https://sketchfab.com?utm_medium=embed&utm_campaign=share-popup&utm_content=0cceb568d4a2488fa613fef05ee2b64c" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;">Sketchfab</a></p></div>
 
 </div>
