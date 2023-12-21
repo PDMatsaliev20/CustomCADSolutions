@@ -8,23 +8,23 @@
     "net6.0": []
   },
   "packageFolders": {
-    "C:\\Users\\35988\\.nuget\\packages\\": {},
+    "C:\\Users\\boris\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\CustomCADSolutions.App.csproj",
+      "projectUniqueName": "C:\\Users\\boris\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\CustomCADSolutions.App.csproj",
       "projectName": "CustomCADSolutions.App",
-      "projectPath": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\CustomCADSolutions.App.csproj",
-      "packagesPath": "C:\\Users\\35988\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\obj\\",
+      "projectPath": "C:\\Users\\boris\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\CustomCADSolutions.App.csproj",
+      "packagesPath": "C:\\Users\\boris\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\boris\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\35988\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\boris\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -70,7 +70,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.401\\RuntimeIdentifierGraph.json"
       }
     }
   }
