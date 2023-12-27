@@ -1,9 +1,24 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+<html>
+<head>
+    <style>
+        h1 {
+            font-size: 120%
+        }
+        p {
+            font-size: 120%
+        }
+    </style>
+</head>
 
-<div class="text-center">
-    <h1 class="display-4"><b>Welcome</b></h1>
-    <p>Check out our <a asp-area="" asp-controller="Gallery" asp-action="Show">Gallery</a>!</p>
-    <p><a asp-area="" asp-controller="Order" asp-action="Description">Create</a> Your Custom Design!</p>
-</div>
+<body>
+    <div class="text-center">
+        <h1 class="display-4"><b>Welcome!</b></h1><br/>
+        <p>Describe your 3D model <a asp-area="" asp-controller="Order" asp-action="Description">HERE</a></p>
+        <p>or check out our <a asp-area="" asp-controller="Gallery" asp-action="Show">Gallery</a>!</p>
+    </div>
+
+</body>
+</html>
