@@ -1,0 +1,52 @@
+﻿@{
+}
+<html>
+<head>
+    <style>
+        .links {
+            font-weight: bold;
+            color: #1CAAD9;
+        }
+
+        .slots {
+            font-size: 13px;
+            font-weight: normal;
+            margin: 5px;
+            color: #4A4A4A;
+        }
+    </style>
+</head>
+
+<body>
+<h1 style="text-align: center">3D Models Gallery</h1>
+
+<div>
+    @for (int i = 0; i < 25; i++)
+    {
+        <ul style="display:flex; justify-content: space-around; list-style-type:none">
+            @for (int j = 0; j < 3; j++)
+            {
+                <li style="margin:5px">
+                    <div class="sketchfab-embed-wrapper">
+                        <iframe title="Ford LTD Wagon" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/9140bf761568430fa1b1d8c935e26eed/embed"> </iframe>
+                        <p class="slots">
+                            <a class="links" href="https://sketchfab.com/3d-models/ford-ltd-wagon-9140bf761568430fa1b1d8c935e26eed?utm_medium=embed&utm_campaign=share-popup&utm_content=9140bf761568430fa1b1d8c935e26eed" target="_blank" rel="nofollow">
+                                Ford LTD Wagon
+                            </a>
+                            by
+                            <a class="links" href="https://sketchfab.com/pall.andras?utm_medium=embed&utm_campaign=share-popup&utm_content=9140bf761568430fa1b1d8c935e26eed" target="_blank" rel="nofollow">
+                                Andras Pall
+                            </a>
+                            on
+                            <a class="links" href="https://sketchfab.com/?utm_medium=embed&utm_campaign=share-popup&utm_content=9140bf761568430fa1b1d8c935e26eed" target="_blank" rel="nofollow">
+                                Sketchfab
+                            </a>
+                        </p>
+                    </div>
+                </li>
+            }
+        </ul>
+    }
+</div>
+</body>
+</html>
