@@ -36,7 +36,7 @@ namespace CustomCADSolutions.Infrastructure.Data.Common
             context.Set<T>().Remove(entity);
         }
 
-        public async Task<T?> GetByIdAsync<T>(int id) where T : class
+        public async Task<T?> GetByIdAsync<T>(params int[] id) where T : class
         {
             return await context.Set<T>().FindAsync(id);
         }

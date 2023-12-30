@@ -5,6 +5,8 @@ using CustomCADSolutions.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,10 +29,9 @@ namespace CustomCADSolutions.Core.Services
             {
                 Id = entity.Id,
                 Name = entity.Name,
-                Description = entity.Description,
                 CreationDate = entity.CreationDate,
-                Customer = entity.Customer,
-                Author = entity.Author,
+                Description = entity.Description,
+                Orders = entity.Orders,
             };
 
             await repository.AddAsync<CAD>(cad);
@@ -56,15 +57,14 @@ namespace CustomCADSolutions.Core.Services
 
             cad.Id = entity.Id;
             cad.Name = entity.Name;
-            cad.Description = entity.Description;
             cad.CreationDate = entity.CreationDate;
-            cad.Customer = entity.Customer;
-            cad.Author = entity.Author;
+            cad.Description = entity.Description;
+            cad.Orders = entity.Orders;
 
             await repository.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<CADModel>> GetAll()
+        public async Task<IEnumerable<CADModel>> GetAllAsync()
         {
             return await repository
                 .All<CAD>()
@@ -72,10 +72,9 @@ namespace CustomCADSolutions.Core.Services
                 {
                     Id = cad.Id,
                     Name = cad.Name,
-                    Description = cad.Description,
                     CreationDate = cad.CreationDate,
-                    Customer = cad.Customer,
-                    Author = cad.Author,
+                    Description = cad.Description,
+                    Orders = cad.Orders,
                 })
                 .ToListAsync();
         }
@@ -91,10 +90,9 @@ namespace CustomCADSolutions.Core.Services
             {
                 Id = cad.Id,
                 Name = cad.Name,
-                Description = cad.Description,
                 CreationDate = cad.CreationDate,
-                Customer = cad.Customer,
-                Author = cad.Author,
+                Description = cad.Description,
+                Orders = cad.Orders,
             };
 
             return model;

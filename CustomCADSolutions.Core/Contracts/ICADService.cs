@@ -17,6 +17,6 @@ namespace CustomCADSolutions.Core.Contracts
         
         Task<CADModel> GetByIdAsync(int id);
 
-        Task<IEnumerable<CADModel>> GetAll();
+        Task<IEnumerable<CADModel>> GetAllAsync();
     }
 }

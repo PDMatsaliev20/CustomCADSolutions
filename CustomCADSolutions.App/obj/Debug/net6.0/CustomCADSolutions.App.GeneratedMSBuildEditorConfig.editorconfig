@@ -18,8 +18,8 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\Users\35988\source\repos\CustomCADSolutions\CustomCADSolutions.App
 build_property._RazorSourceGeneratorDebug = 
 
-[C:/Users/35988/source/repos/CustomCADSolutions/CustomCADSolutions.App/Views/Home/Gallery.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxHYWxsZXJ5LmNzaHRtbA==
+[C:/Users/35988/source/repos/CustomCADSolutions/CustomCADSolutions.App/Views/CAD/Gallery.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ0FEXEdhbGxlcnkuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/35988/source/repos/CustomCADSolutions/CustomCADSolutions.App/Views/Home/Index.cshtml]
@@ -30,8 +30,8 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/35988/source/repos/CustomCADSolutions/CustomCADSolutions.App/Views/Order/Description.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JkZXJcRGVzY3JpcHRpb24uY3NodG1s
+[C:/Users/35988/source/repos/CustomCADSolutions/CustomCADSolutions.App/Views/Order/Add.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JkZXJcQWRkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/35988/source/repos/CustomCADSolutions/CustomCADSolutions.App/Views/Order/Sent.cshtml]

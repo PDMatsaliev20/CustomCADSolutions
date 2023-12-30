@@ -1,11 +1,16 @@
+using CustomCADSolutions.App.Models;
+using CustomCADSolutions.Core.Contracts;
+using CustomCADSolutions.Core.Services;
+using CustomCADSolutions.Infrastructure.Data;
+using CustomCADSolutions.Infrastructure.Data.Common;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-/*
-builder.Services.AddScoped<IService, Service>();
+builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddDbContext<CustomCADSolutionsContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<IRepository, Repository>();
- */
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();

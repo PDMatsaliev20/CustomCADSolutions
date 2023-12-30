@@ -15,23 +15,21 @@
 <body style="background-color:#D3D3D3">
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3" style="padding:0px; margin:0px">
-            <div class="container-fluid" style="background-color:#3f5f6c">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+            <div class="container-fluid " style="background-color:#3f5f6c">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <img src="~/JujuInDeGaga.png" height="7.5%" width="7.5%">
 
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between" style="padding-right:10px">
-                    <ul class="navbar-nav flex-grow-1" style="font-size:150%; list-style: none; padding: 0; display : flex;">
+                    <a asp-area="" asp-controller="Home" asp-action="Index" style="width:150px; height:75px">
+                        <img src="~/OngOng.png" width="100%" height="100%">
+                    </a>
+                    <ul class="navbar-nav flex-grow-1" style="font-size:150%; list-style: none; padding: 0; display : flex; margin-left:10px">
                         <li class="nav-item" >
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="CAD" asp-action="Gallery">Explore</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Gallery">Gallery</a>
-                        </li>
-                        <li  class="nav-item">
-                            <a  class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        <li class="nav-item" >
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="Add">Order</a>
                         </li>
                     </ul>
                 </div>

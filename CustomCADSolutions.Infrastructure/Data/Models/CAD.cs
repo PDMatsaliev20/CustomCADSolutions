@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -17,13 +18,10 @@ namespace CustomCADSolutions.Infrastructure.Data.Models
         public string Name { get; set; } = null!;
 
         [Required]
-        public string Author { get; set; } = null!;
-
-        public string? Customer { get; set; }
-
-        [Required]
         public DateTime CreationDate { get; set; }
 
         public string? Description { get; set; }
+
+        public ICollection<Order> Orders { get; set; } = new List<Order>();
     }
 }
