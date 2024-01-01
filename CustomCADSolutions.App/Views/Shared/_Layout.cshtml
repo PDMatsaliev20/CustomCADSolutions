@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/CustomCADSolutions.App.styles.css" asp-append-version="true" />
 </head>
-<body style="background-color:#D3D3D3">
+<body style="background-color:#DDDDDD">
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3" style="padding:0px; margin:0px">
             <div class="container-fluid " style="background-color:#3f5f6c">
@@ -26,14 +26,13 @@
                     </a>
                     <ul class="navbar-nav flex-grow-1" style="font-size:150%; list-style: none; padding: 0; display : flex; margin-left:10px">
                         <li class="nav-item" >
-                            <a class="nav-link text-dark" asp-area="" asp-controller="CAD" asp-action="Gallery">Explore</a>
+                            <a class="nav-link text-dark fw-bold" asp-area="" asp-controller="CAD" asp-action="Index">Explore</a>
                         </li>
                         <li class="nav-item" >
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="Add">Order</a>
+                            <a class="nav-link text-dark fw-bold" asp-area="" asp-controller="CAD" asp-action="Add">Order 3D Model</a>
                         </li>
                     </ul>
                 </div>
-                
             </div>
         </nav>
     </header>
@@ -44,11 +43,12 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container" style="color:black">
-            &copy; 2023 - CustomCADSolutions - <a style="color:black" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <footer class="border-top footer text-muted position-static">
+        <div style="color: black; font-size:80%" class="container">
+            &copy; 2023 - CustomCADSolutions - <a style="color: black" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy Policy</a>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

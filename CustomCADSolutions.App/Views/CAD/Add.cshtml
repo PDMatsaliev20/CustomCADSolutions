@@ -1,0 +1,26 @@
+﻿@model CustomCADSolutions.Core.Models.CADModel
+@{
+}
+
+<h1 style="text-align:left">Describe your design here: </h1>
+<br />
+<div class="row">
+    <div >
+        <form asp-action="Add" method="post">
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label"></label>
+                <input style="width:500px" asp-for="Name" class="form-control" aria-required="true" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Description" class="form-label"></label>
+                <textarea style="width:500px; height:250px;" asp-for="Description" class="form-control" aria-required="true"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <input class="btn btn-primary" type="submit" value="Order" />
+            </div>
+        </form>
+    </div>
+    <p>Or straight up e-mail it to us <a href="mailto:ivanangelov414@gmail.com">here</a></p>
+</div>

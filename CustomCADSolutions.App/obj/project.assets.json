@@ -2,6 +2,22 @@
   "version": 3,
   "targets": {
     "net6.0": {
+      "Aspose.CAD/23.11.0": {
+        "type": "package",
+        "dependencies": {
+          "System.Text.Encoding.CodePages": "6.0.0"
+        },
+        "compile": {
+          "lib/net6.0/Aspose.CAD.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/Aspose.CAD.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "BouncyCastle.Cryptography/2.2.1": {
         "type": "package",
         "compile": {
@@ -895,6 +911,30 @@
     }
   },
   "libraries": {
+    "Aspose.CAD/23.11.0": {
+      "sha512": "lQOlzgPaWM6+c5t4NwqJbqvf/M4S0NN9mmS4cxm7ILXqsnVzmvpIG6hWhKNetDwd7BtV2CLxRK8J6VTKtwbu4A==",
+      "type": "package",
+      "path": "aspose.cad/23.11.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Aspose.CAD.md",
+        "Help/Aspose.CAD.chm",
+        "License/License.txt",
+        "ThirdPartyLicenses.Aspose.CAD.Net.pdf",
+        "aspose.cad.23.11.0.nupkg.sha512",
+        "aspose.cad.nuspec",
+        "aspose_cad-for-net-128x128.png",
+        "lib/net48/Aspose.CAD.dll",
+        "lib/net48/Aspose.CAD.xml",
+        "lib/net6.0/Aspose.CAD.dll",
+        "lib/net6.0/Aspose.CAD.xml",
+        "lib/netcoreapp3.1/Aspose.CAD.dll",
+        "lib/netcoreapp3.1/Aspose.CAD.xml",
+        "lib/netstandard2.0/Aspose.CAD.dll",
+        "lib/netstandard2.0/Aspose.CAD.xml"
+      ]
+    },
     "BouncyCastle.Cryptography/2.2.1": {
       "sha512": "A6Zr52zVqJKt18ZBsTnX0qhG0kwIQftVAjLmszmkiR/trSp8H+xj1gUOzk7XHwaKgyREMSV1v9XaKrBUeIOdvQ==",
       "type": "package",
@@ -2256,6 +2296,7 @@
   },
   "projectFileDependencyGroups": {
     "net6.0": [
+      "Aspose.CAD >= 23.11.0",
       "CustomCADSolutions.Core >= 1.0.0",
       "Microsoft.EntityFrameworkCore.Design >= 6.0.25"
     ]
@@ -2309,6 +2350,10 @@
       "net6.0": {
         "targetAlias": "net6.0",
         "dependencies": {
+          "Aspose.CAD": {
+            "target": "Package",
+            "version": "[23.11.0, )"
+          },
           "Microsoft.EntityFrameworkCore.Design": {
             "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
             "suppressParent": "All",

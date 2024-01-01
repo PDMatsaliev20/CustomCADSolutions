@@ -1,0 +1,56 @@
+﻿@model CustomCADSolutions.Core.Models.CADModel
+@{
+    int columns = 1;
+    int rows = 3;
+}
+
+<html>
+<head>
+    <style>
+        .links {
+            font-weight: bold;
+            color: #1CAAD9;
+        }
+
+        .slots {
+            font-size: 13px;
+            font-weight: normal;
+            text-align: center;
+            margin: 5px;
+            color: #4A4A4A;
+        }
+    </style>
+</head>
+
+<body>
+    <p style="font-size:200%; text-align:center"><b>Your order was successfully sent to the designer and is currently waiting to be reviewed. Thank you!</b></p>
+    <br />
+    <p style="font-size:125%">Made a mistkae or changed your mind? <a asp-action="Edit" asp-controller="CAD"><i>Change your order.</i></a></p>
+    <p style="font-size:125%">Order again <a asp-action="Add" asp-controller="CAD"><i>HERE!</i></a></p>
+    <br />
+    <p style="font-size:150%">Other designs you might like: </p>
+
+    <div>
+        @for (int i = 0; i < columns; i++)
+        {
+            <ul style="display:flex; justify-content: space-around; list-style-type:none">
+                @for (int j = 0; j < rows; j++)
+                {
+
+                    <li style="margin:5px">
+                        <div class="sketchfab-embed-wrapper">
+                            <iframe title="Some Shit @i@j" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/9140bf761568430fa1b1d8c935e26eed/embed"> </iframe>
+                            <p class="slots">
+                                <a class="links" href="https://sketchfab.com/3d-models/ford-ltd-wagon-9140bf761568430fa1b1d8c935e26eed?utm_medium=embed&utm_campaign=share-popup&utm_content=9140bf761568430fa1b1d8c935e26eed" target="_blank" rel="nofollow">
+                                    Shit@(1 + j + rows * i)
+                                </a>
+                                not by Boris Kolev
+                            </p>
+                        </div>
+                    </li>
+                }
+            </ul>
+        }
+    </div>
+</body>
+</html>

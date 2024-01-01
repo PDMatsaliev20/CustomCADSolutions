@@ -8,11 +8,23 @@
     ".NETCoreApp,Version=v6.0": {
       "CustomCADSolutions.App/1.0.0": {
         "dependencies": {
+          "Aspose.CAD": "23.11.0",
           "CustomCADSolutions.Core": "1.0.0",
           "Microsoft.EntityFrameworkCore.Design": "6.0.25"
         },
         "runtime": {
           "CustomCADSolutions.App.dll": {}
+        }
+      },
+      "Aspose.CAD/23.11.0": {
+        "dependencies": {
+          "System.Text.Encoding.CodePages": "7.0.0"
+        },
+        "runtime": {
+          "lib/net6.0/Aspose.CAD.dll": {
+            "assemblyVersion": "23.11.0.0",
+            "fileVersion": "23.11.0.0"
+          }
         }
       },
       "BouncyCastle.Cryptography/2.2.1": {
@@ -539,6 +551,13 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "Aspose.CAD/23.11.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-lQOlzgPaWM6+c5t4NwqJbqvf/M4S0NN9mmS4cxm7ILXqsnVzmvpIG6hWhKNetDwd7BtV2CLxRK8J6VTKtwbu4A==",
+      "path": "aspose.cad/23.11.0",
+      "hashPath": "aspose.cad.23.11.0.nupkg.sha512"
     },
     "BouncyCastle.Cryptography/2.2.1": {
       "type": "package",

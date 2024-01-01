@@ -16,9 +16,26 @@
 <body>
     <div class="text-center">
         <h1 class="display-4"><b>Welcome!</b></h1><br/>
-        <p>Order your custom 3D model <a asp-area="" asp-controller="Order" asp-action="Add">HERE</a></p>
-        <p>or check out our <a asp-area="" asp-controller="CAD" asp-action="Gallery">Gallery</a>!</p>
+        <p>Order your custom 3D model <a asp-area="" asp-controller="CAD" asp-action="Add">HERE</a></p>
+        <p>or check out our <a asp-area="" asp-controller="CAD" asp-action="Index">Gallery</a>!</p>
     </div>
 
+    <div style="display:flex; justify-content:center; height:250px">
+        <iframe id="landing-model"
+                title="A 3D model of a shoe"
+                class="hero__iframe"
+                src="https://sketchfab.com/models/0cceb568d4a2488fa613fef05ee2b64c/embed?autospin=1&autostart=1&preload=1;
+                    autospin=-0.1&amp;autostart=1&amp;camera=0&amp;double_click=0&amp;internal=1&amp;max_texture_size=1024&amp;orbit_constraint_pan=1&amp;orbit_constraint_zoom_in=40&amp;orbit_constraint_zoom_out=60&amp;preload=1&amp;scrollwheel=0&amp;sound_enable=0&amp;transparent=1&amp;ui_animations=0&amp;ui_annotations=0&amp;ui_ar=1&amp;ui_ar_help=0&amp;ui_color=white&amp;ui_fadeout=0&amp;ui_fullscreen=1&amp;ui_help=0&amp;ui_infos=0&amp;ui_inspector=0&amp;ui_settings=0&amp;ui_stop=0&amp;ui_theatre=0&amp;ui_theme=dark&amp;ui_vr=0&amp;ui_watermark=0"
+                frameborder="0"
+                allow="autoplay; fullscreen; xr-spatial-tracking"
+                allowfullscreen=""
+                mozallowfullscreen="true"
+                webkitallowfullscreen="true"
+                xr-spatial-tracking="true"
+                execution-while-out-of-viewport="true"
+                execution-while-not-rendered="true"
+                web-share="true">
+        </iframe>
+    </div>
 </body>
 </html>

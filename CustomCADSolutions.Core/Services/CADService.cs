@@ -27,11 +27,9 @@ namespace CustomCADSolutions.Core.Services
         {
             CAD cad = new()
             {
-                Id = entity.Id,
                 Name = entity.Name,
-                CreationDate = entity.CreationDate,
                 Description = entity.Description,
-                Orders = entity.Orders,
+                CreationDate = DateTime.Now,
             };
 
             await repository.AddAsync<CAD>(cad);

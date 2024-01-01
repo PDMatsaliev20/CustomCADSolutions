@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "/ccuZciDosOBN6bPlH/xg6h+o44hWhGCr5Mbgr+Ox/nnXb2xnj16QXuApoksGjAmUSjMbQaGWZdFstlo7hGHNg==",
+  "dgSpecHash": "ZhRY1xM2GUKpuMNvNc0jjpYpfHVNNoi7OBlQS2XhXf3WYHpkNUjN9AHueEMgpgCViATKQFkMxFwNp7HToiGE8g==",
   "success": true,
   "projectFilePath": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\CustomCADSolutions.App.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\35988\\.nuget\\packages\\aspose.cad\\23.11.0\\aspose.cad.23.11.0.nupkg.sha512",
     "C:\\Users\\35988\\.nuget\\packages\\bouncycastle.cryptography\\2.2.1\\bouncycastle.cryptography.2.2.1.nupkg.sha512",
     "C:\\Users\\35988\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\35988\\.nuget\\packages\\mailkit\\4.3.0\\mailkit.4.3.0.nupkg.sha512",

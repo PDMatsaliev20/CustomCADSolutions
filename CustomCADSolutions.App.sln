@@ -8,12 +8,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomCADSolutions.App", "C
 		{80B4560A-B2CC-438B-90C6-62FE1CDEC197} = {80B4560A-B2CC-438B-90C6-62FE1CDEC197}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomCADSolutions.Core", "CustomCADSolutions.Core\CustomCADSolutions.Core.csproj", "{80B4560A-B2CC-438B-90C6-62FE1CDEC197}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomCADSolutions.Core", "CustomCADSolutions.Core\CustomCADSolutions.Core.csproj", "{80B4560A-B2CC-438B-90C6-62FE1CDEC197}"
 	ProjectSection(ProjectDependencies) = postProject
 		{FD68ACFD-29B1-4F52-A7C9-5203DF60FE7C} = {FD68ACFD-29B1-4F52-A7C9-5203DF60FE7C}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomCADSolutions.Infrastructure", "CustomCADSolutions.Infrastructure\CustomCADSolutions.Infrastructure.csproj", "{FD68ACFD-29B1-4F52-A7C9-5203DF60FE7C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomCADSolutions.Infrastructure", "CustomCADSolutions.Infrastructure\CustomCADSolutions.Infrastructure.csproj", "{FD68ACFD-29B1-4F52-A7C9-5203DF60FE7C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

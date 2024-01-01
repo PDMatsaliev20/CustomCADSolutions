@@ -1,7 +1,9 @@
-﻿@{
-    int columns = 1;
-    int rows = 3;
+﻿@model IEnumerable<CustomCADSolutions.Core.Models.CADModel>
+@{
+    int columns = 25;
+    int rows = 4;
 }
+
 <html>
 <head>
     <style>
@@ -21,10 +23,8 @@
 </head>
 
 <body>
-    <h1 style="text-align:center">Your description was successfully sent to the designer and is currently waiting to be reviewed. Thank you!</h1>
-    <br />
-    <br />
-    <h2>Other designs you might like: </h2>
+    <h1 style="text-align: center">3D Models Gallery</h1>
+
     <div>
         @for (int i = 0; i < columns; i++)
         {
@@ -39,7 +39,7 @@
                                 <a class="links" href="https://sketchfab.com/3d-models/ford-ltd-wagon-9140bf761568430fa1b1d8c935e26eed?utm_medium=embed&utm_campaign=share-popup&utm_content=9140bf761568430fa1b1d8c935e26eed" target="_blank" rel="nofollow">
                                     Shit@(1 + j + rows * i)
                                 </a>
-                                by Boris Kolev
+                                not by Boris Kolev
                             </p>
                         </div>
                     </li>
