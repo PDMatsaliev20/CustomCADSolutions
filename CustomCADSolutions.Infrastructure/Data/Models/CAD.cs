@@ -20,8 +20,7 @@ namespace CustomCADSolutions.Infrastructure.Data.Models
         [Required]
         public DateTime CreationDate { get; set; }
 
-        public string? Description { get; set; }
-
-        public ICollection<Order> Orders { get; set; } = new List<Order>();
+        [Required]
+        public string Description { get; set; } = null!;
     }
 }

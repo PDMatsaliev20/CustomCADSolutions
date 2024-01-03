@@ -57,7 +57,6 @@ namespace CustomCADSolutions.Core.Services
             cad.Name = entity.Name;
             cad.CreationDate = entity.CreationDate;
             cad.Description = entity.Description;
-            cad.Orders = entity.Orders;
 
             await repository.SaveChangesAsync();
         }
@@ -72,7 +71,6 @@ namespace CustomCADSolutions.Core.Services
                     Name = cad.Name,
                     CreationDate = cad.CreationDate,
                     Description = cad.Description,
-                    Orders = cad.Orders,
                 })
                 .ToListAsync();
         }
@@ -90,7 +88,6 @@ namespace CustomCADSolutions.Core.Services
                 Name = cad.Name,
                 CreationDate = cad.CreationDate,
                 Description = cad.Description,
-                Orders = cad.Orders,
             };
 
             return model;

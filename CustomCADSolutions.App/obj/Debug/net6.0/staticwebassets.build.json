@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "/itiJHnq7oMYu7mP2MVrIO4x87hK7DAEx31eJeUFAa4=",
+  "Hash": "4jmJHWdmOwgR5nDhun0b+yv942Pf9x5Aq7miIzRf1bs=",
   "Source": "CustomCADSolutions.App",
   "BasePath": "_content/CustomCADSolutions.App",
   "Mode": "Default",
@@ -112,44 +112,6 @@
       "OriginalItemSpec": "wwwroot\\favicon.ico"
     },
     {
-      "Identity": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\FrFrFr.png",
-      "SourceId": "CustomCADSolutions.App",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\",
-      "BasePath": "_content/CustomCADSolutions.App",
-      "RelativePath": "FrFrFr.png",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\FrFrFr.png"
-    },
-    {
-      "Identity": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\HurHurHurHurHur.glb",
-      "SourceId": "CustomCADSolutions.App",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\",
-      "BasePath": "_content/CustomCADSolutions.App",
-      "RelativePath": "HurHurHurHurHur.glb",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\HurHurHurHurHur.glb"
-    },
-    {
       "Identity": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\Idek.png",
       "SourceId": "CustomCADSolutions.App",
       "SourceType": "Discovered",
@@ -186,25 +148,6 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\js\\site.js"
-    },
-    {
-      "Identity": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\JujuInDeGaga.png",
-      "SourceId": "CustomCADSolutions.App",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\",
-      "BasePath": "_content/CustomCADSolutions.App",
-      "RelativePath": "JujuInDeGaga.png",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\JujuInDeGaga.png"
     },
     {
       "Identity": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css",
@@ -1290,12 +1233,12 @@
       "OriginalItemSpec": "wwwroot\\lib\\jquery-validation-unobtrusive\\LICENSE.txt"
     },
     {
-      "Identity": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\Logo.jpg",
+      "Identity": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\ModelPic.jpg",
       "SourceId": "CustomCADSolutions.App",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\",
       "BasePath": "_content/CustomCADSolutions.App",
-      "RelativePath": "Logo.jpg",
+      "RelativePath": "ModelPic.jpg",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -1306,7 +1249,7 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\Logo.jpg"
+      "OriginalItemSpec": "wwwroot\\ModelPic.jpg"
     },
     {
       "Identity": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\OngOng.png",

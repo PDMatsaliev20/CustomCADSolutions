@@ -16,12 +16,11 @@ namespace CustomCADSolutions.Infrastructure.Data
         }
 
         public DbSet<CAD> CADs { get; set; } = null!;
-        public DbSet<Order> Orders { get; set; } = null!;
         public DbSet<User> Users { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Order>().HasKey(o => new { o.BuyerId, o.CADId });
+            base.OnModelCreating(modelBuilder);
         }
     }
 }
