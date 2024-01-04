@@ -1,0 +1,25 @@
+﻿@model ImageInputModel
+@{
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image Generation Form</title>
+</head>
+<body>
+    <div>
+        <h1>Describe an Image</h1>
+        <form id="imageForm">
+            <div>
+                <label for="description" asp-for="Description" class="form-label"></label>
+                <input type="text" id="description" name="Description" asp-for="Description" class="form-control" aria-required="true" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div style="margin-top:20px">
+                <input type="submit" value="Generate Image" href="">
+            </div>
+        </form>
+    </div>
+</body>
+</html>

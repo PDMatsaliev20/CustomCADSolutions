@@ -9,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddScoped<ICADService, CADService>();
+builder.Services.AddScoped<IDeepAIService, DeepAIService>();
 builder.Services.AddDbContext<CustomCADSolutionsContext>(options 
     => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<IRepository, Repository>();
