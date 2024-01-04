@@ -1,7 +1,7 @@
-﻿@model IEnumerable<CustomCADSolutions.Core.Models.CADModel>
-@{
-    int columns = 25;
-    int rows = 4;
+﻿@{
+    ViewData["Title"] = "HomePage";
+    int columns = 4;
+    int rows = 2;
 }
 
 <html>
@@ -23,21 +23,21 @@
 </head>
 
 <body>
+
     <h1 style="text-align: center">3D Models Gallery</h1>
 
     <div>
-        @for (int i = 0; i < columns; i++)
+        @for (int i = 0; i < rows; i++)
         {
             <ul style="display:flex; justify-content: space-around; list-style-type:none">
-                @for (int j = 0; j < rows; j++)
+                @for (int j = 0; j < columns; j++)
                 {
-
                     <li style="margin:5px">
-                        <div class="sketchfab-embed-wrapper">
+                        <div>
                             <iframe title="Some Shit @i@j" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/9140bf761568430fa1b1d8c935e26eed/embed"> </iframe>
                             <p class="slots">
                                 <a class="links" href="https://sketchfab.com/3d-models/ford-ltd-wagon-9140bf761568430fa1b1d8c935e26eed?utm_medium=embed&utm_campaign=share-popup&utm_content=9140bf761568430fa1b1d8c935e26eed" target="_blank" rel="nofollow">
-                                    Shit@(1 + j + rows * i)
+                                    Shit@(1 + j + columns * i)
                                 </a>
                                 not by Boris Kolev
                             </p>

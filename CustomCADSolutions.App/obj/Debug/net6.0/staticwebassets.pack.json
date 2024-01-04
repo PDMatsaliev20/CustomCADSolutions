@@ -5,8 +5,12 @@
       "PackagePath": "staticwebassets\\CustomCADSolutions.App.bundle.scp.css"
     },
     {
-      "Id": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\Airpod.stl",
-      "PackagePath": "staticwebassets\\Airpod.stl"
+      "Id": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\GLBformat.glb",
+      "PackagePath": "staticwebassets\\GLBformat.glb"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\GLTFformat.gltf",
+      "PackagePath": "staticwebassets\\GLTFformat.gltf"
     },
     {
       "Id": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\Idek.png",
@@ -19,6 +23,10 @@
     {
       "Id": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\OngOng.png",
       "PackagePath": "staticwebassets\\OngOng.png"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\STLformat.stl",
+      "PackagePath": "staticwebassets\\STLformat.stl"
     },
     {
       "Id": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\css\\site.css",

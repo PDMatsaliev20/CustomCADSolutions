@@ -15,9 +15,14 @@ namespace CustomCADSolutions.App.Controllers
             this.logger = logger;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await cadService.GetAllAsync());
+            return View();
+        }
+
+        public IActionResult Categories()
+        {
+            return View();
         }
 
         [HttpGet]

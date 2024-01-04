@@ -18,7 +18,7 @@ namespace CustomCADSolutions.App.Controllers
         public IActionResult GenerateImage()
         {
             ImageInputModel model = new();
-            return View("GenerateImage", model);
+            return View(model);
         }
 
         [HttpPost]
@@ -38,10 +38,10 @@ namespace CustomCADSolutions.App.Controllers
                 return View("ImageGenerated", string.Empty);
             }
 
-            var result = JsonConvert.DeserializeObject<ImageResult>(json)!;
+            ImageViewModel result = JsonConvert.DeserializeObject<ImageViewModel>(json)!;
             string imageUrl = result.ImageUrl;
             
-            return View("ImageGenerated", imageUrl);
+            return View("ImageGenerated");
         }
     }
 }

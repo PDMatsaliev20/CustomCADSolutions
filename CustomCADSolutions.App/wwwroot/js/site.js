@@ -1,4 +1,5 @@
-﻿document.getElementById('imageForm').addEventListener('submit', function (e) {
+﻿/*
+document.getElementById('imageForm').addEventListener('submit', function (e) {
     e.preventDefault();
 
     var description = document.getElementById('description').value;
@@ -26,3 +27,4 @@
             console.error('Error:', error);
         });
 });
+*/
