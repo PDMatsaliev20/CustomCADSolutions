@@ -8,27 +8,30 @@ namespace CustomCADSolutions.App.Controllers
     public class DeepAIController : Controller
     {
         private readonly IDeepAIService service;
+        private readonly ILogger logger;
 
-        public DeepAIController(IDeepAIService service)
+        public DeepAIController(IDeepAIService service, ILogger<DeepAIController> logger)
         {
             this.service = service;
+            this.logger = logger;
         }
 
         [HttpGet]
         public IActionResult GenerateImage()
         {
-            ImageInputModel model = new();
-            return View(model);
+            string description = string.Empty;
+            return View(model : description);
         }
 
         [HttpPost]
-        public async Task<ActionResult> GenerateImage([FromBody] ImageInputModel model)
+        public async Task<ActionResult> ImageGenerated([FromBody] string description)
         {
-            string image = await service.GenerateImage(model.Description);
-            TempData["ImageURL"] = image;
-            return RedirectToAction("ImageGenerated");  
+            string imageUrl = await service.GenerateImage(description);
+            TempData["ImageURL"] = imageUrl;
+            return View();  
         }
 
+        [HttpGet]
         public IActionResult ImageGenerated()
         {
             string json = (TempData["ImageURL"] as string)!;

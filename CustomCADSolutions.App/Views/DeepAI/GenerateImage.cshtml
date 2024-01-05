@@ -1,4 +1,4 @@
-﻿@model ImageInputModel
+﻿@model string
 @{
 }
 
@@ -12,14 +12,15 @@
         <h1>Describe an Image</h1>
         <form id="imageForm">
             <div>
-                <label for="description" asp-for="Description" class="form-label"></label>
-                <input type="text" id="description" asp-for="Description" class="form-control" aria-required="true" />
-                <span asp-validation-for="Description" class="text-danger"></span>
+                <label for="description">Description</label>
+                <input type="text" id="description" name="description" />
             </div>
             <div style="margin-top:20px">
-                <input type="submit" value="Generate Image">
+                <input type="button" value="Generate Image" onclick="submitForm()">
             </div>
         </form>
     </div>
+
+    <script href="~/js/site.js"></script>
 </body>
 </html>

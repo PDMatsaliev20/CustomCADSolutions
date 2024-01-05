@@ -5,6 +5,66 @@
       "PackagePath": "staticwebassets\\CustomCADSolutions.App.bundle.scp.css"
     },
     {
+      "Id": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\Categories\\Animals.png",
+      "PackagePath": "staticwebassets\\Categories\\Animals.png"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\Categories\\Apparel & Fashion.png",
+      "PackagePath": "staticwebassets\\Categories\\Apparel & Fashion.png"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\Categories\\Architecture.png",
+      "PackagePath": "staticwebassets\\Categories\\Architecture.png"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\Categories\\Characters.png",
+      "PackagePath": "staticwebassets\\Categories\\Characters.png"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\Categories\\Electronics & Gadgets.png",
+      "PackagePath": "staticwebassets\\Categories\\Electronics & Gadgets.png"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\Categories\\Fantasy & Sci-Fi.png",
+      "PackagePath": "staticwebassets\\Categories\\Fantasy & Sci-Fi.png"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\Categories\\Food & Culinary.png",
+      "PackagePath": "staticwebassets\\Categories\\Food & Culinary.png"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\Categories\\Machinery & Industrial.png",
+      "PackagePath": "staticwebassets\\Categories\\Machinery & Industrial.png"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\Categories\\Medical & Anatomy.png",
+      "PackagePath": "staticwebassets\\Categories\\Medical & Anatomy.png"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\Categories\\Nature.png",
+      "PackagePath": "staticwebassets\\Categories\\Nature.png"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\Categories\\Props & Assets.png",
+      "PackagePath": "staticwebassets\\Categories\\Props & Assets.png"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\Categories\\Sports & Recreation.png",
+      "PackagePath": "staticwebassets\\Categories\\Sports & Recreation.png"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\Categories\\Textures & Materials.png",
+      "PackagePath": "staticwebassets\\Categories\\Textures & Materials.png"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\Categories\\Toys & Games.png",
+      "PackagePath": "staticwebassets\\Categories\\Toys & Games.png"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\Categories\\Vehicles.png",
+      "PackagePath": "staticwebassets\\Categories\\Vehicles.png"
+    },
+    {
       "Id": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\GLBformat.glb",
       "PackagePath": "staticwebassets\\GLBformat.glb"
     },
@@ -29,8 +89,16 @@
       "PackagePath": "staticwebassets\\STLformat.stl"
     },
     {
-      "Id": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\css\\site.css",
-      "PackagePath": "staticwebassets\\css\\site.css"
+      "Id": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\css\\categories.css",
+      "PackagePath": "staticwebassets\\css\\categories.css"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\css\\home.css",
+      "PackagePath": "staticwebassets\\css\\home.css"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\css\\style.css",
+      "PackagePath": "staticwebassets\\css\\style.css"
     },
     {
       "Id": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\favicon.ico",

@@ -1,130 +1,32 @@
-﻿@{
+﻿@model List<(string, string)>
+@{
 }
 
 <html>
 <head>
-    <style>
-        div.container {
-            display: flex
-        }
-
-        div.gallery {
-            margin: 1px;
-            float: left;
-            width: 180px;
-            position: relative;
-            text-align: center;
-            color: white;
-        }
-
-        div.gallery img {
-            width: 100%;
-            height: auto;
-        }
-
-        div.desc {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-    </style>
+    <link rel="stylesheet" href="~/css/style.css" type="text/css" media="all" />
 </head>
 <body>
 
     <div class="container">
-        <div>
-            <div class="gallery">
-                <a target="_blank" href="">
-                    <img src="" alt="" width="600" height="400">
-                </a>
-                <div class="desc">Add a description of the image here</div>
-            </div>
+        @for(int i = 0; i < 4; i++)
+        {
+            <div style="justify-content: center">
+                
+                @for(int j = 0; j < 4; j++)
+                {
+                    <div class="gallery">
+                        <a target="_blank" asp-area="" asp-controller="CAD" asp-action="Categories">
+                            <img src="~/@Model[j + i * 4].Item2" alt="" width="600px" height="400px">   
+                        </a>
+                        <p class="desc"><b>@Model[j + i * 4].Item1</b></p>
+                    </div>
+                }
 
-            <div class="gallery">
-                <a target="_blank" href="">
-                    <img src="" alt="" width="600" height="400">
-                </a>
-                <div class="desc">Add a description of the image here</div>
             </div>
-
-            <div class="gallery">
-                <a target="_blank" href="">
-                    <img src="" alt="" width="600" height="400">
-                </a>
-                <div class="desc">Add a description of the image here</div>
-            </div>
-
-            <div class="gallery">
-                <a target="_blank" href="">
-                    <img src="" alt="" width="600" height="400">
-                </a>
-                <div class="desc">Add a description of the image here</div>
-            </div>
-        </div>
-
-        <div>
-            <div class="gallery">
-                <a target="_blank" href="">
-                    <img src="" alt="" width="600" height="400">
-                </a>
-                <div class="desc">Add a description of the image here</div>
-            </div>
-
-            <div class="gallery">
-                <a target="_blank" href="">
-                    <img src="" alt="" width="600" height="400">
-                </a>
-                <div class="desc">Add a description of the image here</div>
-            </div>
-
-            <div class="gallery">
-                <a target="_blank" href="">
-                    <img src="" alt="" width="600" height="400">
-                </a>
-                <div class="desc">Add a description of the image here</div>
-            </div>
-
-            <div class="gallery">
-                <a target="_blank" href="">
-                    <img src="" alt="" width="600" height="400">
-                </a>
-                <div class="desc">Add a description of the image here</div>
-            </div>
-        </div>
-
-        <div>
-            <div class="gallery">
-                <a target="_blank" href="">
-                    <img src="" alt="" width="600" height="400">
-                </a>
-                <div class="desc">Add a description of the image here</div>
-            </div>
-
-            <div class="gallery">
-                <a target="_blank" href="">
-                    <img src="" alt="" width="600" height="400">
-                </a>
-                <div class="desc">Add a description of the image here</div>
-            </div>
-
-            <div class="gallery">
-                <a target="_blank" href="">
-                    <img src="" alt="" width="600" height="400">
-                </a>
-                <div class="desc">Add a description of the image here</div>
-            </div>
-
-            <div class="gallery">
-                <a target="_blank" href="">
-                    <img src="" alt="" width="600" height="400">
-                </a>
-                <div class="desc">Add a description of the image here</div>
-            </div>
-        </div>
-
+        }
     </div>
-    
+
 </body>
 </html>
 <!--

@@ -1,30 +1,21 @@
-﻿/*
-document.getElementById('imageForm').addEventListener('submit', function (e) {
-    e.preventDefault();
-
+﻿function submitForm() {
     var description = document.getElementById('description').value;
 
-    fetch('https://localhost:7182/DeepAI/GenerateImage', {
+    var data = {
+        Description: description
+    };
+
+    fetch('/DeepAI/GenerateImage', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
+            'RequestVerificationToken': '@Html.AntiForgeryToken()'
         },
-        body: JSON.stringify({ description: description })
+        body: JSON.stringify(data)
     })
         .then(response => response.json())
         .then(data => {
-            // Handle the response from your backend
-            // For example, if your backend returns the URL of the generated image: 
-            if (data.imageUrl) {
-                document.getElementById('result').innerHTML =
-                    <img src=' + data.imageUrl + ' alt="Generated Image" />;
-            }
-            else {
-                console.log("No image URL returned");
-            }
+            console.log('Image URL:', data.imageUrl);
         })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-});
-*/
+        .catch(error => console.error('Error:', error));
+}

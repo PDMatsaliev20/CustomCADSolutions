@@ -8,6 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\css\home.css" />
+    <None Include="wwwroot\css\style.css" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Aspose.CAD" Version="23.11.0" />
     <PackageReference Include="Flutter" Version="0.0.0.73" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.25">
