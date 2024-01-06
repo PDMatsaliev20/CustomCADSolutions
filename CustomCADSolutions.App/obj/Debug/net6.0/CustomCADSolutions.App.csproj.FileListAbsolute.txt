@@ -169,6 +169,9 @@ C:\Users\35988\source\repos\CustomCADSolutions\CustomCADSolutions.App\bin\Debug\
 C:\Users\35988\source\repos\CustomCADSolutions\CustomCADSolutions.App\bin\Debug\net6.0\System.Text.Encoding.CodePages.dll
 C:\Users\35988\source\repos\CustomCADSolutions\CustomCADSolutions.App\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Security.Cryptography.Pkcs.dll
 C:\Users\35988\source\repos\CustomCADSolutions\CustomCADSolutions.App\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Text.Encoding.CodePages.dll
-C:\Users\35988\source\repos\CustomCADSolutions\CustomCADSolutions.App\bin\Debug\net6.0\Aspose.CAD.dll
-C:\Users\35988\source\repos\CustomCADSolutions\CustomCADSolutions.App\bin\Debug\net6.0\Flutter.dll
 C:\Users\35988\source\repos\CustomCADSolutions\CustomCADSolutions.App\bin\Debug\net6.0\Newtonsoft.Json.dll
+C:\Users\35988\source\repos\CustomCADSolutions\CustomCADSolutions.App\bin\Debug\net6.0\Microsoft.AspNetCore.Cryptography.Internal.dll
+C:\Users\35988\source\repos\CustomCADSolutions\CustomCADSolutions.App\bin\Debug\net6.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+C:\Users\35988\source\repos\CustomCADSolutions\CustomCADSolutions.App\bin\Debug\net6.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+C:\Users\35988\source\repos\CustomCADSolutions\CustomCADSolutions.App\bin\Debug\net6.0\Microsoft.Extensions.Identity.Core.dll
+C:\Users\35988\source\repos\CustomCADSolutions\CustomCADSolutions.App\bin\Debug\net6.0\Microsoft.Extensions.Identity.Stores.dll

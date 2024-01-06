@@ -1,66 +1,74 @@
-﻿h1 {
-	font-size: 120%
+﻿.container {
+	display: flex
+}
+
+.text {
+	display: grid;
+}
+
+.floater {
+	width: 500px;
+	height: 500px;
+}
+
+h1 {
+	font-size: 250%;
+	margin-top: 75px;
+	margin-right: 31px;
 }
 
 p {
-	font-size: 120%
+	font-size: 150%
 }
 
-/* The page occupies 100% of the screen */
-html {
-	height: 100%;
-	width: 100%;
-}
-
-/* The content occupies the entire space available */
-body {
-	height: 100%;
-	margin: 0;
-	background-color: #455A64;
-	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-}
-
-/* Transform the page into a 2-column grid */
-#holder {
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	height: 100%;
-}
-
-/* The left grid contains the text and occupies 50% of the available space */
-#text {
-	align-self: center;
-	justify-self: center;
-	text-align: center;
-	margin: 0px 45px;
-}
-
-.three-dimensional-model {
-	display: flex !important;
-	justify-content: right !important;
-	width: 500px !important;
-	height: 500px !important;
-}
-/* The right grid contains the model and occupies 50% of the available space */
-model-viewer {
-	width: 100%;
-	height: 100%;
-	outline: none;
-}
-
-.fade-in-text {
+.fade-in {
 	opacity: 0;
-	animation: fadeIn 4s;
+	animation: fadeIn 2s;
 	animation-iteration-count: 1;
 	animation-fill-mode: forwards;
 }
 
-#nav-buttons {
-	animation-delay: 0s;
+#logo {
+	animation-delay: 0.25s;
 }
 
-.body-texts {
-	animation-delay: 1.25s;
+#hbtn1 {
+	animation-delay: 0.67s;
+}
+
+#hbtn2 {
+	animation-delay: 1s;
+}
+
+#title {
+	animation-delay: 1.5s;
+}
+
+#paragraph{
+	animation-delay: 2s;
+}
+
+#model {
+	animation-delay: 2.5s;
+}
+
+#fbtn1 {
+	animation-delay: 2.67s;
+}
+
+#fbtn2 {
+	animation-delay: 2.85s;
+}
+
+#fbtn3 {
+	animation-delay: 3s;
+}
+
+.button {
+	width: 50%;
+	display: flex;
+	justify-content: center;
+	text-align: center;
 }
 
 @keyframes fadeInAnimation {

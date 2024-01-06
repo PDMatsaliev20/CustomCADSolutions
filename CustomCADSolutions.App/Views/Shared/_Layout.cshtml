@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <link rel="stylesheet" href="css/home/layout.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="~/others/images/favicon.ico" />
 
     <title>CustomCADSolutions</title>
     
@@ -20,15 +21,15 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <div id="nav-buttons" class="fade-in-text navbar-collapse collapse d-sm-inline-flex justify-content-between" style="padding-right:10px">
-                    <a asp-area="" asp-controller="Home" asp-action="Index" style="width:150px; height:75px">
-                        <img src="~/OngOng.png" width="100%" height="100%">
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between" style="padding-right:10px">
+                    <a id="logo" class="fade-in" asp-area="" asp-controller="Home" asp-action="Index" style="width:150px; height:75px">
+                        <img src="~/others/images/logo.png" width="100%" height="100%">
                     </a>
-                    <ul class="navbar-nav flex-grow-1" style="font-size:150%; list-style: none; padding: 0; display : flex; margin-left:10px">
-                        <li class="nav-item" >
+                    <ul class="fade-in navbar-nav flex-grow-1" style="font-size:150%; list-style: none; padding: 0; display : flex; margin-left:10px">
+                        <li id="hbtn1" class="nav-item fade-in">
                             <a class="nav-link text-dark fw-bold" asp-area="" asp-controller="CAD" asp-action="Categories">Explore</a>
                         </li>
-                        <li class="nav-item" >
+                        <li id="hbtn2" class="nav-item fade-in">
                             <a class="nav-link text-dark fw-bold" asp-area="" asp-controller="CAD" asp-action="Add">Order 3D Model</a>
                         </li>
                     </ul>
