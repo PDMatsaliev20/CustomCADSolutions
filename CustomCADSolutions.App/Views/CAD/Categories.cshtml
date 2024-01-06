@@ -1,51 +1,235 @@
 ﻿@{
-    ViewData["Title"] = "HomePage";
+    @model List<(string, string)>
+    int rows = 4;
     int columns = 4;
-    int rows = 2;
 }
 
 <html>
 <head>
     <style>
-        .links {
-            font-weight: bold;
-            color: #1CAAD9;
+        div.container {
+            display: flex;
         }
 
-        .slots {
-            font-size: 13px;
-            font-weight: normal;
-            text-align: center;
+            div.container div.column {
+                justify-content: center;
+            }
+
+                div.container div.column div.cell {
+                    align-content: center;
+                    align-items: center;
+                    margin: 1px;
+                    float: left;
+                    width: 180px;
+                    position: relative;
+                    text-align: center;
+                }
+
+                    div.container div.column div.cell a img {
+                        width: 100%;
+                        height: auto;
+                        opacity: 100%;
+                        border: 2px solid #DDDDDD;
+                        border-radius: 20px;
+                    }
+
+                        div.container div.column div.cell a img:hover {
+                            width: 100%;
+                            height: auto;
+                            opacity: 50%;
+                        }
+
+                    div.container div.column div.cell p.desc {
+                        font-family: 'Open Sans';
+                    }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        @for (int i = 0; i < columns; i++)
+        {
+            <div class="column">
+                @for (int j = 0; j < rows; j++)
+                {
+                    <div class="cell">
+                        <a target="_blank" asp-area="" asp-controller="CAD" asp-action="Category">
+                            <img src="~/@Model[j + i * rows].Item2" alt="" width="600px" height="400px">
+                        </a>
+                        <p class="desc"><b>@Model[j + i * rows].Item1</b></p>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+
+</body>
+</html>
+<!--
+
+
+<html>
+<head>
+    <style>
+        .container {
+            display: flex;
+        }
+
+        .categories-grid__card {
+            display: flex;
+            justify-content: center;
             margin: 5px;
-            color: #4A4A4A;
+        }
+
+        .c-grid__item {
+        }
+
+        .item {
+        }
+
+        .category-card {
+            position: relative;
+            text-align: center;
+            color: white;
+        }
+
+        .image-container {
+        }
+
+        image-container__image{
+        }
+
+        img {
+            height: 100%;
+            width: 100%;
+        }
+
+        h2 {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        #view1 {
+        }
+
+        #view2 {
+        }
+
+        #view3 {
+        }
+
+        #view4 {
+        }
+
+        #view5 {
+        }
+
+        #view6 {
         }
     </style>
+
 </head>
 
 <body>
 
-    <h1 style="text-align: center">3D Models Gallery</h1>
+    <div class="container">
+        <div data-component="" id="view1" class="categories-grid__card">
+            <div class="c-grid__item item">
+                <div class="category-card">
+                    <div class="image-container">
+                        <div style="padding-top: 56.25%;"></div>
+                        <img data-selenium="image" class="image-container__image" alt="Animals &amp; Pets" src="https://static.sketchfab.com/categories/ed9e048550b2478eb1ab2faaba192832/800x450.png">
+                    </div>
+                    <div class="label">
+                        <i class="icon skfb-icon skfb-icon-category-animals-pets"></i>
+                        <h2>Animals &amp; Pets</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    <div>
-        @for (int i = 0; i < rows; i++)
-        {
-            <ul style="display:flex; justify-content: space-around; list-style-type:none">
-                @for (int j = 0; j < columns; j++)
-                {
-                    <li style="margin:5px">
-                        <div>
-                            <iframe title="Some Shit @i@j" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/9140bf761568430fa1b1d8c935e26eed/embed"> </iframe>
-                            <p class="slots">
-                                <a class="links" href="https://sketchfab.com/3d-models/ford-ltd-wagon-9140bf761568430fa1b1d8c935e26eed?utm_medium=embed&utm_campaign=share-popup&utm_content=9140bf761568430fa1b1d8c935e26eed" target="_blank" rel="nofollow">
-                                    Shit@(1 + j + columns * i)
-                                </a>
-                                not by Boris Kolev
-                            </p>
-                        </div>
-                    </li>
-                }
-            </ul>
-        }
+        <div data-component="" id="view2" class="categories-grid__card">
+            <div class="c-grid__item item">
+                <div class="category-card">
+                    <div class="image-container">
+                        <div style="padding-top: 56.25%;"></div>
+                        <img data-selenium="image" class="image-container__image" alt="Architecture" src="https://static.sketchfab.com/categories/f825c721edb541dbbc8cd210123616c7/800x450.png">
+                    </div>
+                    <div class="label">
+                        <i class="icon skfb-icon skfb-icon-category-architecture"></i>
+                        <h2>Architecture</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div data-component="" id="view3" class="categories-grid__card">
+            <div class="c-grid__item item">
+                <div class="category-card">
+                    <div class="image-container">
+                        <div style="padding-top: 56.25%;"></div>
+                        <img data-selenium="image" class="image-container__image" alt="Architecture" src="https://static.sketchfab.com/categories/f825c721edb541dbbc8cd210123616c7/800x450.png">
+                    </div>
+                    <div class="label">
+                        <i class="icon skfb-icon skfb-icon-category-architecture"></i>
+                        <h2>Architecture</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
+
+    <div class="container">
+        <div data-component="" id="view4" class="categories-grid__card">
+            <div class="c-grid__item item">
+                <div class="category-card">
+                    <div class="image-container">
+                        <div style="padding-top: 56.25%;"></div>
+                        <img data-selenium="image" class="image-container__image" alt="Architecture" src="https://static.sketchfab.com/categories/f825c721edb541dbbc8cd210123616c7/800x450.png">
+                    </div>
+                    <div class="label">
+                        <i class="icon skfb-icon skfb-icon-category-architecture"></i>
+                        <h2>Architecture</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div data-component="" id="view5" class="categories-grid__card">
+            <div class="c-grid__item item">
+                <div class="category-card">
+                    <div class="image-container">
+                        <div style="padding-top: 56.25%;"></div>
+                        <img data-selenium="image" class="image-container__image" alt="Architecture" src="https://static.sketchfab.com/categories/f825c721edb541dbbc8cd210123616c7/800x450.png">
+                    </div>
+                    <div class="label">
+                        <i class="icon skfb-icon skfb-icon-category-architecture"></i>
+                        <h2>Architecture</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div data-component="" id="view6" class="categories-grid__card">
+            <div class="c-grid__item item">
+                <div class="category-card">
+                    <div class="image-container">
+                        <div style="padding-top: 56.25%;"></div>
+                        <img data-selenium="image" class="image-container__image" alt="Architecture" src="https://static.sketchfab.com/categories/f825c721edb541dbbc8cd210123616c7/800x450.png">
+                    </div>
+                    <div class="label">
+                        <i class="icon skfb-icon skfb-icon-category-architecture"></i>
+                        <h2>Architecture</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>
+-->

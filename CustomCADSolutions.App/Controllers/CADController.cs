@@ -15,7 +15,7 @@ namespace CustomCADSolutions.App.Controllers
             this.logger = logger;
         }
 
-        public IActionResult Index()
+        public IActionResult Categories()
         {
             List<(string, string)> categories = new()
             {
@@ -36,10 +36,10 @@ namespace CustomCADSolutions.App.Controllers
                 { ("Medical & Anatomy", "Categories/Medical & Anatomy.png") },
                 { ("Textures & Materials", "Categories/Textures & Materials.png") }
             };
-            return View(categories);
+            return View("Categories", categories);
         }
 
-        public IActionResult Categories()
+        public IActionResult Category()
         {
             return View();
         }

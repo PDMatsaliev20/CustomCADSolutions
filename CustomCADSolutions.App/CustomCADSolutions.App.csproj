@@ -8,8 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\css\home.css" />
-    <None Include="wwwroot\css\style.css" />
+    <None Include="wwwroot\css\home\index.css" />
+    <None Include="wwwroot\css\cad\categories.css" />
   </ItemGroup>
 
   <ItemGroup>
@@ -23,5 +23,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CustomCADSolutions.Core\CustomCADSolutions.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\css\ai\" />
   </ItemGroup>
 </Project>

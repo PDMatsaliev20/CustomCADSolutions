@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "aXxPQd3JdgVDsY5lHcRwfnu/6xeSpOs57h9xmoQXz5I=",
+  "Hash": "5OAwtJo6MmRSlABmDjlQJWctk+KoqJjzMdgDemLcGGc=",
   "Source": "CustomCADSolutions.App",
   "BasePath": "_content/CustomCADSolutions.App",
   "Mode": "Default",
@@ -53,6 +53,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\CustomCADSolutions.App.bundle.scp.css"
+    },
+    {
+      "Identity": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\Categories\\Abstract & Artistic.png",
+      "SourceId": "CustomCADSolutions.App",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\",
+      "BasePath": "_content/CustomCADSolutions.App",
+      "RelativePath": "Categories/Abstract & Artistic.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Categories\\Abstract & Artistic.png"
     },
     {
       "Identity": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\Categories\\Animals.png",
@@ -340,12 +359,12 @@
       "OriginalItemSpec": "wwwroot\\Categories\\Vehicles.png"
     },
     {
-      "Identity": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\css\\categories.css",
+      "Identity": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\css\\cad\\categories.css",
       "SourceId": "CustomCADSolutions.App",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\",
       "BasePath": "_content/CustomCADSolutions.App",
-      "RelativePath": "css/categories.css",
+      "RelativePath": "css/cad/categories.css",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -356,15 +375,15 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\css\\categories.css"
+      "OriginalItemSpec": "wwwroot\\css\\cad\\categories.css"
     },
     {
-      "Identity": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\css\\home.css",
+      "Identity": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\css\\cad\\category.css",
       "SourceId": "CustomCADSolutions.App",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\",
       "BasePath": "_content/CustomCADSolutions.App",
-      "RelativePath": "css/home.css",
+      "RelativePath": "css/cad/category.css",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -375,15 +394,15 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\css\\home.css"
+      "OriginalItemSpec": "wwwroot\\css\\cad\\category.css"
     },
     {
-      "Identity": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\css\\style.css",
+      "Identity": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\css\\home\\index.css",
       "SourceId": "CustomCADSolutions.App",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\",
       "BasePath": "_content/CustomCADSolutions.App",
-      "RelativePath": "css/style.css",
+      "RelativePath": "css/home/index.css",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -394,7 +413,7 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\css\\style.css"
+      "OriginalItemSpec": "wwwroot\\css\\home\\index.css"
     },
     {
       "Identity": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\favicon.ico",

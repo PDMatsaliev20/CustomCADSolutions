@@ -5,6 +5,10 @@
       "PackagePath": "staticwebassets\\CustomCADSolutions.App.bundle.scp.css"
     },
     {
+      "Id": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\Categories\\Abstract & Artistic.png",
+      "PackagePath": "staticwebassets\\Categories\\Abstract & Artistic.png"
+    },
+    {
       "Id": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\Categories\\Animals.png",
       "PackagePath": "staticwebassets\\Categories\\Animals.png"
     },
@@ -89,16 +93,16 @@
       "PackagePath": "staticwebassets\\STLformat.stl"
     },
     {
-      "Id": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\css\\categories.css",
-      "PackagePath": "staticwebassets\\css\\categories.css"
+      "Id": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\css\\cad\\categories.css",
+      "PackagePath": "staticwebassets\\css\\cad\\categories.css"
     },
     {
-      "Id": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\css\\home.css",
-      "PackagePath": "staticwebassets\\css\\home.css"
+      "Id": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\css\\cad\\category.css",
+      "PackagePath": "staticwebassets\\css\\cad\\category.css"
     },
     {
-      "Id": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\css\\style.css",
-      "PackagePath": "staticwebassets\\css\\style.css"
+      "Id": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\css\\home\\index.css",
+      "PackagePath": "staticwebassets\\css\\home\\index.css"
     },
     {
       "Id": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\favicon.ico",

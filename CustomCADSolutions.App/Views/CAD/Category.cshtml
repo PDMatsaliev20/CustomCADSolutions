@@ -1,0 +1,54 @@
+﻿@{
+    ViewData["Title"] = "Category";
+    int columns = 4;
+    int rows = 2;
+}
+
+<html>
+<head>  
+    <link rel="stylesheet" href="~/css/cad/category.css" />
+    <style>
+        h1.heading {
+            text-align: center
+        }
+
+        ul.rows {
+            display: flex;
+            justify-content: space-around;
+            list-style-type: none;
+        }
+
+        li.cell {
+            margin: 5px;
+        }
+
+        p.description {
+            text-align: center;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <h1 class="heading">@ViewData["Title"]</h1>
+
+    <div>
+        @for (int i = 0; i < rows; i++)
+        {
+            <ul class="rows">
+                @for (int j = 0; j < columns; j++)
+                {
+                    int shit = 1 + j + columns * i;
+                    <li class="cell">
+                        <div>
+                            <iframe title="" src="https://sketchfab.com/models/9140bf761568430fa1b1d8c935e26eed/embed" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share> </iframe>
+                            <p class="description"> Shit@(shit) not by Boris Kolev</p>
+                        </div>
+                    </li>
+                }
+            </ul>
+        }
+    </div>
+</body>
+</html>
