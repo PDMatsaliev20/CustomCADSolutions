@@ -1,4 +1,58 @@
-﻿.container {
+﻿nav {
+	padding: 0px;
+	margin: 0px;
+}
+
+.header {
+	background-color: #BBB9D9
+}
+
+#logo {
+	width: 75px;
+	height: 75px;
+	animation-delay: 0.5s;
+}
+
+.fade-in {
+	opacity: 0;
+	animation: fadeIn 2s;
+	animation-iteration-count: 1;
+	animation-fill-mode: forwards;
+}
+
+#logo {
+}
+
+#hbtn1 {
+	animation-delay: 1s;
+}
+
+#hbtn2 {
+	animation-delay: 1.5s;
+}
+
+@keyframes fadeInAnimation {
+	from {
+		opacity: 0;
+	}
+
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes fadeIn {
+	0% {
+		opacity: 0;
+	}
+
+	100% {
+		opacity: 1;
+	}
+}
+
+
+.container {
 	display: flex
 }
 
@@ -21,47 +75,8 @@ p {
 	font-size: 150%
 }
 
-.fade-in {
-	opacity: 0;
-	animation: fadeIn 2s;
-	animation-iteration-count: 1;
-	animation-fill-mode: forwards;
-}
-
-#logo {
-	animation-delay: 0.25s;
-}
-
-#hbtn1 {
-	animation-delay: 0.67s;
-}
-
-#hbtn2 {
-	animation-delay: 1s;
-}
-
-#title {
-	animation-delay: 1.5s;
-}
-
-#paragraph{
-	animation-delay: 2s;
-}
-
-#model {
+.body {
 	animation-delay: 2.5s;
-}
-
-#fbtn1 {
-	animation-delay: 2.67s;
-}
-
-#fbtn2 {
-	animation-delay: 2.85s;
-}
-
-#fbtn3 {
-	animation-delay: 3s;
 }
 
 .button {
@@ -69,24 +84,4 @@ p {
 	display: flex;
 	justify-content: center;
 	text-align: center;
-}
-
-@keyframes fadeInAnimation {
-	from {
-		opacity: 0;
-	}
-
-	to {
-		opacity: 1;
-	}
-}
-
-@keyframes fadeIn {
-	0% {
-		opacity: 0;
-	}
-
-	100% {
-		opacity: 1;
-	}
 }

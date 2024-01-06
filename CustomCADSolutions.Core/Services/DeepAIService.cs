@@ -21,7 +21,7 @@ namespace CustomCADSolutions.Core.Services
             {
                 var error = await response.Content.ReadAsStringAsync();
                 Console.WriteLine($"API Request failed: {response.StatusCode} {error}");
-                return null;
+                throw new HttpRequestException();
             }
 
             string responseBody = await response.Content.ReadAsStringAsync();

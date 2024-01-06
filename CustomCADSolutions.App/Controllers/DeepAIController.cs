@@ -44,7 +44,7 @@ namespace CustomCADSolutions.App.Controllers
             ImageViewModel result = JsonConvert.DeserializeObject<ImageViewModel>(json)!;
             string imageUrl = result.ImageUrl;
             
-            return View("ImageGenerated");
+            return View("ImageGenerated", imageUrl);
         }
     }
 }

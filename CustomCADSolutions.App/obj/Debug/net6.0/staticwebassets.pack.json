@@ -333,6 +333,18 @@
       "PackagePath": "staticwebassets\\others\\images\\logo.png"
     },
     {
+      "Id": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\logo2.jpg",
+      "PackagePath": "staticwebassets\\others\\images\\logo2.jpg"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\logo2.png",
+      "PackagePath": "staticwebassets\\others\\images\\logo2.png"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\logo3.png",
+      "PackagePath": "staticwebassets\\others\\images\\logo3.png"
+    },
+    {
       "Id": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\oldfavicon.ico",
       "PackagePath": "staticwebassets\\others\\images\\oldfavicon.ico"
     },
