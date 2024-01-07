@@ -1,20 +1,24 @@
-﻿.container {
-	display: flex
+﻿body {
 }
 
-.floater {
+	body section.container {
+		display: flex;
+		margin: 5vw;
+	}
+
+.container .floater {
 	width: 50vw;
 	height: 80vh;
 	float: right;
 }
 
 h1 {
-	font-size: 2rem;
-	margin: 1.5em 0em 1em 0em;
+	font-size: 2.5vw;
+	margin: 1.5em 0em 1em;
 }
 
 p {
-	font-size: 1.7em;
+	font-size: 2.15vw;
 }
 
 

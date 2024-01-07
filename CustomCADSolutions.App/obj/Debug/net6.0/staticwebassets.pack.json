@@ -329,6 +329,10 @@
       "PackagePath": "staticwebassets\\others\\categories\\Vehicles.png"
     },
     {
+      "Id": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\background.jpg",
+      "PackagePath": "staticwebassets\\others\\images\\background.jpg"
+    },
+    {
       "Id": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\favicon.ico",
       "PackagePath": "staticwebassets\\others\\images\\favicon.ico"
     },

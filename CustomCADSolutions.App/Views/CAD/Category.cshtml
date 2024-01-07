@@ -1,24 +1,20 @@
 ﻿@{
-    ViewData["Title"] = "Category";
+    @model KeyValuePair<string, HashSet<(string, string)>>
+    ViewData["Title"] = Model.Key;
     int columns = 4;
     int rows = 2;
 }
 
+
 <html>
-<head>  
+<head>
     <link rel="stylesheet" href="~/css/cad/category.css" />
     <style>
-        h1.heading {
+        h1 {
             text-align: center
         }
 
-        ul.rows {
-            display: flex;
-            justify-content: space-around;
-            list-style-type: none;
-        }
-
-        li.cell {
+        cell {
             margin: 5px;
         }
 
@@ -34,21 +30,37 @@
     <h1 class="heading">@ViewData["Title"]</h1>
 
     <div>
+        @if (Model.Value != null)
+        {
+            @foreach ((string, string) modelInfo in Model.Value)
+            {
+                <div class="cell">
+                    <iframe title="" src="https://sketchfab.com/models/@modelInfo.Item2/embed" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share> </iframe>
+                    <p class="description">@modelInfo.Item1</p>
+                </div>
+            }
+        }
+        else
+        {
+            <p>No images found for this category.</p>
+        }
+        <!--
         @for (int i = 0; i < rows; i++)
         {
-            <ul class="rows">
+                <ul class="rows">
                 @for (int j = 0; j < columns; j++)
                 {
                     int shit = 1 + j + columns * i;
-                    <li class="cell">
-                        <div>
-                            <iframe title="" src="https://sketchfab.com/models/9140bf761568430fa1b1d8c935e26eed/embed" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share> </iframe>
-                            <p class="description"> Shit@(shit) not by Boris Kolev</p>
-                        </div>
-                    </li>
+                            <li class="cell">
+                                <div>
+                                    <iframe title="" src="https://sketchfab.com/models/9140bf761568430fa1b1d8c935e26eed/embed" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share> </iframe>
+                                    <p class="description"> Shit@(shit) not by Boris Kolev</p>
+                                </div>
+                            </li>
                 }
-            </ul>
+                </ul>
         }
+        -->
     </div>
 </body>
 </html>

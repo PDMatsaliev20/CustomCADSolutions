@@ -41,10 +41,6 @@ ul#register {
 		margin: 0px 0.5vw;
 	}
 
-main {
-	justify-content: center;
-}
-
-footer {
+body footer {
 	font-size: 100%;
 }

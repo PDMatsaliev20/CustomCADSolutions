@@ -1,7 +1,6 @@
 ﻿@{
-    @model List<string>
-    int rows = 3;
-    int columns = 5;
+    @model ICollection<string>
+
 }
 
 <html>
@@ -11,186 +10,16 @@
 <body>
 
     <div class="container">
-        @for (int i = 0; i < rows; i++)
+        @foreach (string category in Model)
         {
-            @for (int j = 0; j < columns; j++)
-            {
-                <div class="cell">
-                    <a target="_blank" asp-area="" asp-controller="CAD" asp-action="Category@(j + i * columns)">
-                        <img src="~/others/categories/@(Model[j + i * columns]).png" alt="" width="600px" height="400px">
-                    </a>
-                    <p class="desc"><b>@Model[j + i * columns]</b></p>
-                </div>
-            }
+            <div class="cell">
+                <a asp-area="" asp-controller="CAD" asp-action="Category" asp-route-category="@category">
+                    <img src="~/others/categories/@(category).png" alt="@category" width="600px" height="400px">
+                    <p class="desc"><b>@category</b></p>
+                </a>
+            </div>
         }
     </div>
 
 </body>
 </html>
-<!--
-
-
-<html>
-<head>
-    <style>
-        .container {
-            display: flex;
-        }
-
-        .categories-grid__card {
-            display: flex;
-            justify-content: center;
-            margin: 5px;
-        }
-
-        .c-grid__item {
-        }
-
-        .item {
-        }
-
-        .category-card {
-            position: relative;
-            text-align: center;
-            color: white;
-        }
-
-        .image-container {
-        }
-
-        image-container__image{
-        }
-
-        img {
-            height: 100%;
-            width: 100%;
-        }
-
-        h2 {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        #view1 {
-        }
-
-        #view2 {
-        }
-
-        #view3 {
-        }
-
-        #view4 {
-        }
-
-        #view5 {
-        }
-
-        #view6 {
-        }
-    </style>
-
-</head>
-
-<body>
-
-    <div class="container">
-        <div data-component="" id="view1" class="categories-grid__card">
-            <div class="c-grid__item item">
-                <div class="category-card">
-                    <div class="image-container">
-                        <div style="padding-top: 56.25%;"></div>
-                        <img data-selenium="image" class="image-container__image" alt="Animals &amp; Pets" src="https://static.sketchfab.com/categories/ed9e048550b2478eb1ab2faaba192832/800x450.png">
-                    </div>
-                    <div class="label">
-                        <i class="icon skfb-icon skfb-icon-category-animals-pets"></i>
-                        <h2>Animals &amp; Pets</h2>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div data-component="" id="view2" class="categories-grid__card">
-            <div class="c-grid__item item">
-                <div class="category-card">
-                    <div class="image-container">
-                        <div style="padding-top: 56.25%;"></div>
-                        <img data-selenium="image" class="image-container__image" alt="Architecture" src="https://static.sketchfab.com/categories/f825c721edb541dbbc8cd210123616c7/800x450.png">
-                    </div>
-                    <div class="label">
-                        <i class="icon skfb-icon skfb-icon-category-architecture"></i>
-                        <h2>Architecture</h2>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div data-component="" id="view3" class="categories-grid__card">
-            <div class="c-grid__item item">
-                <div class="category-card">
-                    <div class="image-container">
-                        <div style="padding-top: 56.25%;"></div>
-                        <img data-selenium="image" class="image-container__image" alt="Architecture" src="https://static.sketchfab.com/categories/f825c721edb541dbbc8cd210123616c7/800x450.png">
-                    </div>
-                    <div class="label">
-                        <i class="icon skfb-icon skfb-icon-category-architecture"></i>
-                        <h2>Architecture</h2>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-    <div class="container">
-        <div data-component="" id="view4" class="categories-grid__card">
-            <div class="c-grid__item item">
-                <div class="category-card">
-                    <div class="image-container">
-                        <div style="padding-top: 56.25%;"></div>
-                        <img data-selenium="image" class="image-container__image" alt="Architecture" src="https://static.sketchfab.com/categories/f825c721edb541dbbc8cd210123616c7/800x450.png">
-                    </div>
-                    <div class="label">
-                        <i class="icon skfb-icon skfb-icon-category-architecture"></i>
-                        <h2>Architecture</h2>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div data-component="" id="view5" class="categories-grid__card">
-            <div class="c-grid__item item">
-                <div class="category-card">
-                    <div class="image-container">
-                        <div style="padding-top: 56.25%;"></div>
-                        <img data-selenium="image" class="image-container__image" alt="Architecture" src="https://static.sketchfab.com/categories/f825c721edb541dbbc8cd210123616c7/800x450.png">
-                    </div>
-                    <div class="label">
-                        <i class="icon skfb-icon skfb-icon-category-architecture"></i>
-                        <h2>Architecture</h2>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div data-component="" id="view6" class="categories-grid__card">
-            <div class="c-grid__item item">
-                <div class="category-card">
-                    <div class="image-container">
-                        <div style="padding-top: 56.25%;"></div>
-                        <img data-selenium="image" class="image-container__image" alt="Architecture" src="https://static.sketchfab.com/categories/f825c721edb541dbbc8cd210123616c7/800x450.png">
-                    </div>
-                    <div class="label">
-                        <i class="icon skfb-icon skfb-icon-category-architecture"></i>
-                        <h2>Architecture</h2>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-</body>
-</html>
--->
