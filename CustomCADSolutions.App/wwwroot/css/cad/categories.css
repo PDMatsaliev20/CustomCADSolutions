@@ -1,1 +1,28 @@
-﻿
+﻿div.container {
+	display: grid;
+	grid-template-columns: auto auto auto auto auto;
+	gap: 2%;
+	margin-top: 1%;
+}
+
+div.cell {
+	width: 200px;
+	text-align: center;
+}
+
+.cell a img {
+	max-width: 100%;
+	height: auto;
+	border-radius: 11%;
+}
+
+	a img:hover {
+		width: 100%;
+		height: auto;
+		opacity: 50%;
+	}
+
+p.desc {
+	font-family: 'Open Sans';
+	font-size: 100%;
+}

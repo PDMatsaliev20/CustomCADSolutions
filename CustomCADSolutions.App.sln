@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomCADSolutions.Core", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomCADSolutions.Infrastructure", "CustomCADSolutions.Infrastructure\CustomCADSolutions.Infrastructure.csproj", "{FD68ACFD-29B1-4F52-A7C9-5203DF60FE7C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication1", "WebApplication1\WebApplication1.csproj", "{7D9BF3A6-4A3A-42C1-A49F-2BC87663B9BD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{FD68ACFD-29B1-4F52-A7C9-5203DF60FE7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FD68ACFD-29B1-4F52-A7C9-5203DF60FE7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FD68ACFD-29B1-4F52-A7C9-5203DF60FE7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D9BF3A6-4A3A-42C1-A49F-2BC87663B9BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D9BF3A6-4A3A-42C1-A49F-2BC87663B9BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D9BF3A6-4A3A-42C1-A49F-2BC87663B9BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D9BF3A6-4A3A-42C1-A49F-2BC87663B9BD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

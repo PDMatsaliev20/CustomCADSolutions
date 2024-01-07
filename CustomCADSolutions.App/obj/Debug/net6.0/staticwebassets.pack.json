@@ -17,6 +17,10 @@
       "PackagePath": "staticwebassets\\css\\home\\index.css"
     },
     {
+      "Id": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\css\\home\\layout.css",
+      "PackagePath": "staticwebassets\\css\\home\\layout.css"
+    },
+    {
       "Id": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\js\\site.js",
       "PackagePath": "staticwebassets\\js\\site.js"
     },
@@ -333,20 +337,12 @@
       "PackagePath": "staticwebassets\\others\\images\\logo.png"
     },
     {
-      "Id": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\logo2.jpg",
-      "PackagePath": "staticwebassets\\others\\images\\logo2.jpg"
-    },
-    {
-      "Id": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\logo2.png",
-      "PackagePath": "staticwebassets\\others\\images\\logo2.png"
-    },
-    {
-      "Id": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\logo3.png",
-      "PackagePath": "staticwebassets\\others\\images\\logo3.png"
-    },
-    {
       "Id": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\oldfavicon.ico",
       "PackagePath": "staticwebassets\\others\\images\\oldfavicon.ico"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\oldlogo.png",
+      "PackagePath": "staticwebassets\\others\\images\\oldlogo.png"
     },
     {
       "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.CustomCADSolutions.App.Microsoft.AspNetCore.StaticWebAssets.props",

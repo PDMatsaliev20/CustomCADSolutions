@@ -1,81 +1,27 @@
 ﻿@{
-    @model List<(string, string)>
-    int rows = 4;
-    int columns = 4;
+    @model List<string>
+    int rows = 3;
+    int columns = 5;
 }
 
 <html>
 <head>
-    <style>
-        div.container {
-            display: flex;
-        }
-
-            div.container div.column {
-                justify-content: center;
-            }
-
-                div.container div.column div.cell {
-                    align-content: center;
-                    align-items: center;
-                    margin: 1px;
-                    float: left;
-                    width: 180px;
-                    position: relative;
-                    text-align: center;
-                }
-
-                    div.container div.column div.cell a img {
-                        width: 100%;
-                        height: auto;
-                        opacity: 100%;
-                        border: 2px solid #DDDDDD;
-                        border-radius: 20px;
-                    }
-
-                        div.container div.column div.cell a img:hover {
-                            width: 100%;
-                            height: auto;
-                            opacity: 50%;
-                        }
-
-                    div.container div.column div.cell p.desc {
-                        font-family: 'Open Sans';
-                    }
-
-    </style>
+    <link rel="stylesheet" href="~/css/cad/categories.css" />
 </head>
 <body>
 
-    <table>
-        <thead>
-            <tr>shosho</tr>
-            <tr>shosho</tr>
-            <tr>shosho</tr>
-        </thead>
-        <tbody>
-            <tr>shosho</tr>
-            <tr>shosho</tr>
-            <tr>shosho</tr>
-            <tr>shosho</tr>
-            <tr>shosho</tr>
-            <tr>shosho</tr>
-        </tbody>
-    </table>
     <div class="container">
-        @for (int i = 0; i < columns; i++)
+        @for (int i = 0; i < rows; i++)
         {
-            <div class="column">
-                @for (int j = 0; j < rows; j++)
-                {
-                    <div class="cell">
-                        <a target="_blank" asp-area="" asp-controller="CAD" asp-action="Category">
-                            <img src="~/@Model[j + i * rows].Item2" alt="" width="600px" height="400px">
-                        </a>
-                        <p class="desc"><b>@Model[j + i * rows].Item1</b></p>
-                    </div>
-                }
-            </div>
+            @for (int j = 0; j < columns; j++)
+            {
+                <div class="cell">
+                    <a target="_blank" asp-area="" asp-controller="CAD" asp-action="Category@(j + i * columns)">
+                        <img src="~/others/categories/@(Model[j + i * columns]).png" alt="" width="600px" height="400px">
+                    </a>
+                    <p class="desc"><b>@Model[j + i * columns]</b></p>
+                </div>
+            }
         }
     </div>
 

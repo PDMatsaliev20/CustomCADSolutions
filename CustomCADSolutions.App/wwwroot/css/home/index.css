@@ -1,17 +1,37 @@
-﻿nav {
-	padding: 0px;
-	margin: 0px;
+﻿.container {
+	display: flex
 }
 
-.header {
-	background-color: #BBB9D9
+.floater {
+	width: 50vw;
+	height: 80vh;
+	float: right;
 }
 
-#logo {
-	width: 75px;
-	height: 75px;
-	animation-delay: 0.5s;
+h1 {
+	font-size: 2rem;
+	margin: 1.5em 0em 1em 0em;
 }
+
+p {
+	font-size: 1.7em;
+}
+
+
+.button {
+	width: 50%;
+	display: flex;
+	justify-content: center;
+	text-align: center;
+}
+
+	.button a {
+		font-size: 1.5vw;
+		color: black;
+		background-color: transparent;
+		text-decoration: none;
+	}
+
 
 .fade-in {
 	opacity: 0;
@@ -21,14 +41,32 @@
 }
 
 #logo {
+	animation-delay: 0.25s;
 }
 
 #hbtn1 {
-	animation-delay: 1s;
+	animation-delay: 0.50s;
 }
 
 #hbtn2 {
+	animation-delay: 0.75s;
+}
+
+#hbtn3 {
+	animation-delay: 1.00s;
+}
+
+#hbtn4 {
+	animation-delay: 1.25s;
+}
+
+#hbtn5 {
 	animation-delay: 1.5s;
+}
+
+
+.body {
+	animation-delay: 2s;
 }
 
 @keyframes fadeInAnimation {
@@ -49,39 +87,4 @@
 	100% {
 		opacity: 1;
 	}
-}
-
-
-.container {
-	display: flex
-}
-
-.text {
-	display: grid;
-}
-
-.floater {
-	width: 500px;
-	height: 500px;
-}
-
-h1 {
-	font-size: 250%;
-	margin-top: 75px;
-	margin-right: 31px;
-}
-
-p {
-	font-size: 150%
-}
-
-.body {
-	animation-delay: 2.5s;
-}
-
-.button {
-	width: 50%;
-	display: flex;
-	justify-content: center;
-	text-align: center;
 }

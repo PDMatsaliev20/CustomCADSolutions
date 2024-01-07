@@ -1,0 +1,50 @@
+﻿
+body {
+	background-color: #DDDDDD !important;
+}
+
+header nav {
+	background-color: #BBB9D9 !important;
+}
+
+a#logo {
+	width: 6%;
+	height: 6%;
+	margin-right: 2vw;
+}
+
+	a#logo img.logo {
+		max-width: 100%;
+		height: auto;
+	}
+
+		a#logo img.logo:hover {
+			opacity: 60%;
+		}
+
+ul#buttons {
+	justify-content: left;
+}
+
+	ul#buttons li {
+		font-size: 2vw;
+		margin: 0px 0.5vw;
+	}
+
+
+ul#register {
+	justify-content: right;
+}
+
+	ul#register li {
+		font-size: 2vw;
+		margin: 0px 0.5vw;
+	}
+
+main {
+	justify-content: center;
+}
+
+footer {
+	font-size: 100%;
+}
