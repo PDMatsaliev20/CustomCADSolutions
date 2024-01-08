@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace CustomCADSolutions.App.Controllers
+namespace CustomCADSolutions.App.Modelss
 {
     public class ImageViewModel
     {

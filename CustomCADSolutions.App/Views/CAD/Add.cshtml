@@ -1,4 +1,4 @@
-﻿@model CustomCADSolutions.Core.Models.CADModel
+﻿@model CADInputModel
 @{
 }
 
@@ -20,9 +20,9 @@
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
-                    <label asp-for="Description" class="form-label"></label>
-                    <textarea style="width:500px; height:250px;" asp-for="Description" class="form-control" aria-required="true"></textarea>
-                    <span asp-validation-for="Description" class="text-danger"></span>
+                    <label asp-for="Category" class="form-label"></label>
+                    <input style="width:500px;" asp-for="Category" class="form-control" aria-required="true" />
+                    <span asp-validation-for="Category" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
                     <input class="btn btn-primary" type="submit" value="Order" />

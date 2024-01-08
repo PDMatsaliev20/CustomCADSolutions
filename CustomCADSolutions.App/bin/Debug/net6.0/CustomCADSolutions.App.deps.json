@@ -593,7 +593,8 @@
       "CustomCADSolutions.Infrastructure/1.0.0": {
         "dependencies": {
           "Microsoft.EntityFrameworkCore": "6.0.25",
-          "Microsoft.EntityFrameworkCore.SqlServer": "6.0.25"
+          "Microsoft.EntityFrameworkCore.SqlServer": "6.0.25",
+          "Newtonsoft.Json": "13.0.3"
         },
         "runtime": {
           "CustomCADSolutions.Infrastructure.dll": {}

@@ -1,66 +1,52 @@
 ﻿@{
-    @model KeyValuePair<string, HashSet<(string, string)>>
-    ViewData["Title"] = Model.Key;
-    int columns = 4;
-    int rows = 2;
+    @model CategoryViewModel
+    ViewData["Title"] = Model.Name;
 }
 
 
 <html>
 <head>
-    <link rel="stylesheet" href="~/css/cad/category.css" />
     <style>
-        h1 {
-            text-align: center
+        #title {
+            text-align: center;
+            font-family: 'Open Sans';
         }
 
-        cell {
-            margin: 5px;
+        #container {
+            display: grid;
+            grid-template-columns: auto auto auto auto;
+            margin-left: 3%;
         }
 
-        p.description {
+        #cell {
             text-align: center;
         }
+
+            #cell #model {
+                max-width: 100%;
+                height: auto;
+                border-radius: 11%;
+            }
+
+            #cell #description {
+                font-family: 'Open Sans';
+                font-size: 100%;
+                text-align: center;
+            }
 
     </style>
 </head>
 
 <body>
-
-    <h1 class="heading">@ViewData["Title"]</h1>
-
-    <div>
-        @if (Model.Value != null)
+    <h1 id="title">@ViewData["Title"]</h1>
+    <div id="container">
+        @foreach (CADViewModel modelInfo in Model.CADs)
         {
-            @foreach ((string, string) modelInfo in Model.Value)
-            {
-                <div class="cell">
-                    <iframe title="" src="https://sketchfab.com/models/@modelInfo.Item2/embed" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share> </iframe>
-                    <p class="description">@modelInfo.Item1</p>
-                </div>
-            }
+            <div class="cell">
+                <iframe id="model" src="https://sketchfab.com/models/@modelInfo.Url/embed" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share> </iframe>
+                <p id="description">@modelInfo.Name</p>
+            </div>
         }
-        else
-        {
-            <p>No images found for this category.</p>
-        }
-        <!--
-        @for (int i = 0; i < rows; i++)
-        {
-                <ul class="rows">
-                @for (int j = 0; j < columns; j++)
-                {
-                    int shit = 1 + j + columns * i;
-                            <li class="cell">
-                                <div>
-                                    <iframe title="" src="https://sketchfab.com/models/9140bf761568430fa1b1d8c935e26eed/embed" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share> </iframe>
-                                    <p class="description"> Shit@(shit) not by Boris Kolev</p>
-                                </div>
-                            </li>
-                }
-                </ul>
-        }
-        -->
     </div>
 </body>
 </html>

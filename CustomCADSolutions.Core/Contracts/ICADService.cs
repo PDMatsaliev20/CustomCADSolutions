@@ -1,4 +1,5 @@
 ﻿using CustomCADSolutions.Core.Models;
+using CustomCADSolutions.Infrastructure.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,5 +19,7 @@ namespace CustomCADSolutions.Core.Contracts
         Task<CADModel> GetByIdAsync(int id);
 
         Task<IEnumerable<CADModel>> GetAllAsync();
+
+        public IEnumerable<Category> GetCategories();
     }
 }

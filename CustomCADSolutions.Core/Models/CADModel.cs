@@ -20,6 +20,10 @@ namespace CustomCADSolutions.Core.Models
         [Required]
         public DateTime CreationDate { get; set; }
 
-        public string? Description { get; set; }
+        [Required]
+        public Category Category { get; set; } = null!;
+
+        [Required]
+        public string Url { get; set; } = null!;
     }
 }

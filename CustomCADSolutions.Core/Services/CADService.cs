@@ -1,16 +1,10 @@
 ﻿using CustomCADSolutions.Core.Contracts;
 using CustomCADSolutions.Core.Models;
+using CustomCADSolutions.Infrastructure.Data;
 using CustomCADSolutions.Infrastructure.Data.Common;
 using CustomCADSolutions.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
+using Org.BouncyCastle.Asn1.Crmf;
 
 namespace CustomCADSolutions.Core.Services
 {
@@ -28,8 +22,9 @@ namespace CustomCADSolutions.Core.Services
             CAD cad = new()
             {
                 Name = entity.Name,
-                Description = entity.Description,
                 CreationDate = DateTime.Now,
+                Category = entity.Category,
+                Url = entity.Url,
             };
 
             await repository.AddAsync<CAD>(cad);
@@ -56,7 +51,8 @@ namespace CustomCADSolutions.Core.Services
             cad.Id = entity.Id;
             cad.Name = entity.Name;
             cad.CreationDate = entity.CreationDate;
-            cad.Description = entity.Description;
+            cad.Category = entity.Category;
+            cad.Url = entity.Url;
 
             await repository.SaveChangesAsync();
         }
@@ -66,11 +62,12 @@ namespace CustomCADSolutions.Core.Services
             return await repository
                 .All<CAD>()
                 .Select(cad => new CADModel
-                {
+{
                     Id = cad.Id,
                     Name = cad.Name,
                     CreationDate = cad.CreationDate,
-                    Description = cad.Description,
+                    Category = cad.Category,
+                    Url = cad.Url,
                 })
                 .ToListAsync();
         }
@@ -87,10 +84,16 @@ namespace CustomCADSolutions.Core.Services
                 Id = cad.Id,
                 Name = cad.Name,
                 CreationDate = cad.CreationDate,
-                Description = cad.Description,
+                Category = cad.Category,
+                Url = cad.Url,
             };
 
             return model;
+        }
+
+        public IEnumerable<Category> GetCategories()
+        {
+            return repository.All<Category>().Include(c => c.CADs);
         }
     }
 }

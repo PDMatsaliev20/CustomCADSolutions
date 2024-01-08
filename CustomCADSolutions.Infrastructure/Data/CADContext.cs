@@ -8,15 +8,25 @@ using System.Threading.Tasks;
 
 namespace CustomCADSolutions.Infrastructure.Data
 {
-    public class CustomCADSolutionsContext : DbContext
+    public class CADContext : DbContext
     {
-        public CustomCADSolutionsContext(DbContextOptions<CustomCADSolutionsContext> options)
+        public CADContext()
+        {
+        }
+
+        public CADContext(DbContextOptions<CADContext> options)
             : base(options)
         {
         }
 
         public DbSet<CAD> CADs { get; set; } = null!;
+        public DbSet<Category> Categories { get; set; } = null!;
         public DbSet<User> Users { get; set; } = null!;
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer("Server=NINJATABG\\SQLEXPRESS;Database=CustomCADSolutions;Integrated Security=True;Trusted_Connection=True;TrustServerCertificate=True");
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -24,3 +34,4 @@ namespace CustomCADSolutions.Infrastructure.Data
         }
     }
 }
+
