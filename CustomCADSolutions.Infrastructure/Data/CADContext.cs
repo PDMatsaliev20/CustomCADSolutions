@@ -12,6 +12,7 @@ namespace CustomCADSolutions.Infrastructure.Data
     {
         public CADContext()
         {
+            
         }
 
         public CADContext(DbContextOptions<CADContext> options)
@@ -19,8 +20,8 @@ namespace CustomCADSolutions.Infrastructure.Data
         {
         }
 
-        public DbSet<CAD> CADs { get; set; } = null!;
-        public DbSet<Category> Categories { get; set; } = null!;
+        public DbSet<Cad> CADs { get; set; } = null!;
+        public DbSet<Order> Orders { get; set; } = null!;
         public DbSet<User> Users { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

@@ -22,7 +22,7 @@ namespace CustomCADSolutions.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("CustomCADSolutions.Infrastructure.Data.Models.CAD", b =>
+            modelBuilder.Entity("CustomCADSolutions.Infrastructure.Data.Models.Cad", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -30,10 +30,10 @@ namespace CustomCADSolutions.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("CategoryId")
+                    b.Property<int>("Category")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("CreationDate")
+                    b.Property<DateTime?>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
@@ -44,19 +44,12 @@ namespace CustomCADSolutions.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("CADs");
+                    b.ToTable("CADs", (string)null);
                 });
 
-            modelBuilder.Entity("CustomCADSolutions.Infrastructure.Data.Models.Category", b =>
+            modelBuilder.Entity("CustomCADSolutions.Infrastructure.Data.Models.Order", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -64,51 +57,72 @@ namespace CustomCADSolutions.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Name")
+                    b.Property<int>("BuyerId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CadId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("OrderDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BuyerId");
+
+                    b.HasIndex("CadId");
+
+                    b.ToTable("Orders", (string)null);
+                });
+
+            modelBuilder.Entity("CustomCADSolutions.Infrastructure.Data.Models.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Users", (string)null);
                 });
 
-            modelBuilder.Entity("CustomCADSolutions.Infrastructure.Data.Models.User", b =>
+            modelBuilder.Entity("CustomCADSolutions.Infrastructure.Data.Models.Order", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("CustomCADSolutions.Infrastructure.Data.Models.CAD", b =>
-                {
-                    b.HasOne("CustomCADSolutions.Infrastructure.Data.Models.Category", "Category")
-                        .WithMany("CADs")
-                        .HasForeignKey("CategoryId")
+                    b.HasOne("CustomCADSolutions.Infrastructure.Data.Models.User", "Buyer")
+                        .WithMany("Orders")
+                        .HasForeignKey("BuyerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CustomCADSolutions.Infrastructure.Data.Models.User", null)
-                        .WithMany("CADs")
-                        .HasForeignKey("UserId");
+                    b.HasOne("CustomCADSolutions.Infrastructure.Data.Models.Cad", "Cad")
+                        .WithMany("Orders")
+                        .HasForeignKey("CadId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Category");
+                    b.Navigation("Buyer");
+
+                    b.Navigation("Cad");
                 });
 
-            modelBuilder.Entity("CustomCADSolutions.Infrastructure.Data.Models.Category", b =>
+            modelBuilder.Entity("CustomCADSolutions.Infrastructure.Data.Models.Cad", b =>
                 {
-                    b.Navigation("CADs");
+                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("CustomCADSolutions.Infrastructure.Data.Models.User", b =>
                 {
-                    b.Navigation("CADs");
+                    b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618
         }

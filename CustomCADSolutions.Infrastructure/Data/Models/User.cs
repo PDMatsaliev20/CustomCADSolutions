@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CustomCADSolutions.Infrastructure.Data.Models
 {
@@ -6,7 +7,11 @@ namespace CustomCADSolutions.Infrastructure.Data.Models
     {
         [Key]
         public int Id { get; set; }
-        
-        public ICollection<CAD> CADs { get; set; } = new List<CAD>();
+
+        [Required]
+        public string Username { get; set; } = null!;
+
+        [InverseProperty(nameof(Order.Buyer))]
+        public ICollection<Order> Orders { get; set; } = new List<Order>();
     }
 }

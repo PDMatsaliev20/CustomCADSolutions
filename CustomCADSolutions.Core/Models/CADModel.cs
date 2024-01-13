@@ -1,15 +1,10 @@
-﻿using CustomCADSolutions.Infrastructure.Data.Models;
-using System;
-using System.Collections.Generic;
+﻿using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CustomCADSolutions.Core.Models
 {
-    public class CADModel
+    public class CadModel
     {
         [Key]
         public int Id { get; set; }
@@ -17,13 +12,15 @@ namespace CustomCADSolutions.Core.Models
         [Required]
         public string Name { get; set; } = null!;
 
-        [Required]
-        public DateTime CreationDate { get; set; }
+        public DateTime? CreationDate { get; set; }
 
-        [Required]
-        public Category Category { get; set; } = null!;
-
-        [Required]
+        [Required]  
         public string Url { get; set; } = null!;
+
+        [Required]
+        public Category Category { get; set; }
+
+        [Required]
+        public ICollection<OrderModel> Orders { get; set; } = new List<OrderModel>();
     }
 }

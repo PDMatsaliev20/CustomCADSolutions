@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 
 namespace CustomCADSolutions.Infrastructure.Data.Models
 {
-    public class CAD
+    public class Cad
     {
         [Key]
         public int Id { get; set; }
@@ -11,16 +12,14 @@ namespace CustomCADSolutions.Infrastructure.Data.Models
         [Required]
         public string Name { get; set; } = null!;
 
-        [Required]
-        public DateTime CreationDate { get; set; }
+        public DateTime? CreationDate { get; set; }
 
-        [Required]
+        [Required]  
         public string Url { get; set; } = null!;
         
         [Required]
-        public int CategoryId { get; set; }
+        public Category Category { get; set; }
 
-        [ForeignKey(nameof(CategoryId))]
-        public Category Category { get; set; } = null!;
+        public ICollection<Order> Orders { get; set; } = new List<Order>();
     }
 }

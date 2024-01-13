@@ -17,34 +17,41 @@ namespace CustomCADSolutions.Core.Services
             this.repository = repository;
         }
 
-        public async Task CreateAsync(CADModel entity)
+        public async Task CreateAsync(CadModel entity)
         {
-            CAD cad = new()
+            Cad cad = new()
             {
                 Name = entity.Name,
                 CreationDate = DateTime.Now,
                 Category = entity.Category,
                 Url = entity.Url,
+                Orders = entity.Orders
+                    .Select(o => new Order 
+                    {
+                        Description = o.Description,
+                        OrderDate = o.OrderDate 
+                    })
+                    .ToArray()
             };
 
-            await repository.AddAsync<CAD>(cad);
+            await repository.AddAsync<Cad>(cad);
             await repository.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(int id)
         {
-            CAD? cad = await repository.GetByIdAsync<CAD>(id);
+            Cad? cad = await repository.GetByIdAsync<Cad>(id);
 
             if (cad != null)
             {
-                repository.Delete<CAD>(cad);
+                repository.Delete<Cad>(cad);
             }
         }
 
-        public async Task EditAsync(CADModel entity)
+        public async Task EditAsync(CadModel entity)
         {
-            CAD? cad = await repository
-                .All<CAD>()
+            Cad? cad = await repository
+                .All<Cad>()
                 .FirstOrDefaultAsync(cad => cad.Id == entity.Id)
                 ?? throw new ArgumentException("Model doesn't exist!");
 
@@ -57,11 +64,11 @@ namespace CustomCADSolutions.Core.Services
             await repository.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<CADModel>> GetAllAsync()
+        public async Task<IEnumerable<CadModel>> GetAllAsync()
         {
             return await repository
-                .All<CAD>()
-                .Select(cad => new CADModel
+                .All<Cad>()
+                .Select(cad => new CadModel
 {
                     Id = cad.Id,
                     Name = cad.Name,
@@ -72,14 +79,14 @@ namespace CustomCADSolutions.Core.Services
                 .ToListAsync();
         }
 
-        public async Task<CADModel> GetByIdAsync(int id)
+        public async Task<CadModel> GetByIdAsync(int id)
         {
-            CAD cad = await repository
-                .All<CAD>()
+            Cad cad = await repository
+                .All<Cad>()
                 .FirstOrDefaultAsync(cad => cad.Id == id)
                 ?? throw new ArgumentException("Model doesn't exist");
 
-            CADModel model = new()
+            CadModel model = new()
             {
                 Id = cad.Id,
                 Name = cad.Name,
@@ -89,11 +96,6 @@ namespace CustomCADSolutions.Core.Services
             };
 
             return model;
-        }
-
-        public IEnumerable<Category> GetCategories()
-        {
-            return repository.All<Category>().Include(c => c.CADs);
         }
     }
 }

@@ -8,7 +8,9 @@
       },
       "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:7182;http://localhost:5198",
-      "hotReloadEnabled": false
+      "hotReloadEnabled": true,
+      "nativeDebugging": true,
+      "sqlDebugging": true
     },
     "IIS Express": {
       "commandName": "IISExpress",

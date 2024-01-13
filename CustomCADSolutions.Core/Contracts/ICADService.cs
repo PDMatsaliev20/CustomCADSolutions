@@ -10,16 +10,14 @@ namespace CustomCADSolutions.Core.Contracts
 {
     public interface ICADService
     {
-        Task CreateAsync(CADModel entity);
+        Task CreateAsync(CadModel entity);
         
-        Task EditAsync(CADModel entity);
+        Task EditAsync(CadModel entity);
         
         Task DeleteAsync(int id);
         
-        Task<CADModel> GetByIdAsync(int id);
+        Task<CadModel> GetByIdAsync(int id);
 
-        Task<IEnumerable<CADModel>> GetAllAsync();
-
-        public IEnumerable<Category> GetCategories();
+        Task<IEnumerable<CadModel>> GetAllAsync();
     }
 }

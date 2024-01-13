@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "0Sm2ZT/ETdmcAb2oJq3gkKgQSHENH/6UVRkTlWqqse/aPRm/2gvSsFyvI8XHsxte8jdfOeZ/sIhKZvkRPK0ZyA==",
+  "dgSpecHash": "aJ4+j7lDcWjmMZY/5ULsNJv7ld60RkbbHpUykxEnb7ouXcNtaKBQK/EwFu3HZTcsp1WgShDA6ADcxW1ymLEvRQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\CustomCADSolutions.App.csproj",
+  "projectFilePath": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\CustomCADSolutions.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\35988\\.nuget\\packages\\bouncycastle.cryptography\\2.2.1\\bouncycastle.cryptography.2.2.1.nupkg.sha512",
     "C:\\Users\\35988\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",

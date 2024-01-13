@@ -1,6 +1,5 @@
 ﻿@{
-    @model IEnumerable<string>
-
+    @model string[] 
 }
 
 <html>
@@ -13,7 +12,7 @@
         @foreach (string category in Model)
         {
             <div class="cell">
-                <a asp-area="" asp-controller="CAD" asp-action="Category" asp-route-category="@category">
+                <a asp-area="" asp-controller="CAD" asp-action="Index" asp-route-category="@category">
                     <img src="~/others/categories/@(category).png" alt="@category" width="600px" height="400px">
                     <p class="desc"><b>@category</b></p>
                 </a>

@@ -1,8 +1,12 @@
 {
   "Files": [
     {
-      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\CustomCADSolutions.App.bundle.scp.css",
-      "PackagePath": "staticwebassets\\CustomCADSolutions.App.bundle.scp.css"
+      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\CustomCADSolutions.bundle.scp.css",
+      "PackagePath": "staticwebassets\\CustomCADSolutions.bundle.scp.css"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\css\\cad\\add.css",
+      "PackagePath": "staticwebassets\\css\\cad\\add.css"
     },
     {
       "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\css\\cad\\categories.css",
@@ -265,68 +269,68 @@
       "PackagePath": "staticwebassets\\others\\3d models\\STLformat.stl"
     },
     {
-      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\categories\\Abstract & Artistic.png",
-      "PackagePath": "staticwebassets\\others\\categories\\Abstract & Artistic.png"
+      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\categories\\Abstract.png",
+      "PackagePath": "staticwebassets\\others\\categories\\Abstract.png"
     },
     {
       "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\categories\\Animals.png",
       "PackagePath": "staticwebassets\\others\\categories\\Animals.png"
     },
     {
-      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\categories\\Apparel & Fashion.png",
-      "PackagePath": "staticwebassets\\others\\categories\\Apparel & Fashion.png"
-    },
-    {
       "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\categories\\Architecture.png",
       "PackagePath": "staticwebassets\\others\\categories\\Architecture.png"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\categories\\Assets.png",
+      "PackagePath": "staticwebassets\\others\\categories\\Assets.png"
     },
     {
       "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\categories\\Characters.png",
       "PackagePath": "staticwebassets\\others\\categories\\Characters.png"
     },
     {
-      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\categories\\Electronics & Gadgets.png",
-      "PackagePath": "staticwebassets\\others\\categories\\Electronics & Gadgets.png"
+      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\categories\\Electronics.png",
+      "PackagePath": "staticwebassets\\others\\categories\\Electronics.png"
     },
     {
       "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\categories\\Fantasy.png",
       "PackagePath": "staticwebassets\\others\\categories\\Fantasy.png"
     },
     {
-      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\categories\\Food & Drinks.png",
-      "PackagePath": "staticwebassets\\others\\categories\\Food & Drinks.png"
+      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\categories\\Fashion.png",
+      "PackagePath": "staticwebassets\\others\\categories\\Fashion.png"
     },
     {
-      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\categories\\Machinery & Industrial.png",
-      "PackagePath": "staticwebassets\\others\\categories\\Machinery & Industrial.png"
+      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\categories\\Food.png",
+      "PackagePath": "staticwebassets\\others\\categories\\Food.png"
     },
     {
-      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\categories\\Medical & Anatomy.png",
-      "PackagePath": "staticwebassets\\others\\categories\\Medical & Anatomy.png"
+      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\categories\\Medical.png",
+      "PackagePath": "staticwebassets\\others\\categories\\Medical.png"
     },
     {
       "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\categories\\Nature.png",
       "PackagePath": "staticwebassets\\others\\categories\\Nature.png"
     },
     {
-      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\categories\\Props & Assets.png",
-      "PackagePath": "staticwebassets\\others\\categories\\Props & Assets.png"
-    },
-    {
       "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\categories\\Sports.png",
       "PackagePath": "staticwebassets\\others\\categories\\Sports.png"
     },
     {
-      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\categories\\Textures & Materials.png",
-      "PackagePath": "staticwebassets\\others\\categories\\Textures & Materials.png"
+      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\categories\\Textures.png",
+      "PackagePath": "staticwebassets\\others\\categories\\Textures.png"
     },
     {
-      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\categories\\Toys & Games.png",
-      "PackagePath": "staticwebassets\\others\\categories\\Toys & Games.png"
+      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\categories\\Toys.png",
+      "PackagePath": "staticwebassets\\others\\categories\\Toys.png"
     },
     {
       "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\categories\\Vehicles.png",
       "PackagePath": "staticwebassets\\others\\categories\\Vehicles.png"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\ai.jpg",
+      "PackagePath": "staticwebassets\\others\\images\\ai.jpg"
     },
     {
       "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\background.jpg",
@@ -335,6 +339,10 @@
     {
       "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\favicon.ico",
       "PackagePath": "staticwebassets\\others\\images\\favicon.ico"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\gallery.jpg",
+      "PackagePath": "staticwebassets\\others\\images\\gallery.jpg"
     },
     {
       "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\logo.png",
@@ -349,20 +357,24 @@
       "PackagePath": "staticwebassets\\others\\images\\oldlogo.png"
     },
     {
-      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.CustomCADSolutions.App.Microsoft.AspNetCore.StaticWebAssets.props",
+      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\order.jpg",
+      "PackagePath": "staticwebassets\\others\\images\\order.jpg"
+    },
+    {
+      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.CustomCADSolutions.Microsoft.AspNetCore.StaticWebAssets.props",
       "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
     },
     {
-      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.build.CustomCADSolutions.App.props",
-      "PackagePath": "build\\CustomCADSolutions.App.props"
+      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.build.CustomCADSolutions.props",
+      "PackagePath": "build\\CustomCADSolutions.props"
     },
     {
-      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.buildMultiTargeting.CustomCADSolutions.App.props",
-      "PackagePath": "buildMultiTargeting\\CustomCADSolutions.App.props"
+      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.buildMultiTargeting.CustomCADSolutions.props",
+      "PackagePath": "buildMultiTargeting\\CustomCADSolutions.props"
     },
     {
-      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.buildTransitive.CustomCADSolutions.App.props",
-      "PackagePath": "buildTransitive\\CustomCADSolutions.App.props"
+      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.buildTransitive.CustomCADSolutions.props",
+      "PackagePath": "buildTransitive\\CustomCADSolutions.props"
     }
   ],
   "ElementsToRemove": []

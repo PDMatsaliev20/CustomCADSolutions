@@ -4,6 +4,7 @@ using CustomCADSolutions.Infrastructure.Data.DataProcessor.ImportDtos;
 using CustomCADSolutions.Infrastructure.Data;
 using Newtonsoft.Json;
 using CustomCADSolutions.Infrastructure.Data.Models;
+using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 
 namespace CustomCADSolutions.App.DataProcessor
 {
@@ -11,7 +12,7 @@ namespace CustomCADSolutions.App.DataProcessor
     {
         public static string ImportPharmacies(CADContext context, string xmlString)
         {
-             StringBuilder sb = new();
+            StringBuilder sb = new();
             /*
 
             var pharmacyDTOs = XmlHelper.Deserialize<ImportPharmacyDTO[]>(xmlString, "Pharmacies");
@@ -103,33 +104,25 @@ namespace CustomCADSolutions.App.DataProcessor
 
         public static void ImportCategories(CADContext context, string jsonString)
         {
-            ImportCategoryDTO[] categoryDTOs = JsonConvert.DeserializeObject<ImportCategoryDTO[]>(jsonString)!;
-            List<Category> categories = new();
+            ImportCadDTO[] cadDTOs = JsonConvert.DeserializeObject<ImportCadDTO[]>(jsonString)!;
+            List<Cad> cads = new();
 
-            foreach (ImportCategoryDTO categoryDTO in categoryDTOs)
+            foreach (ImportCadDTO cadDTO in cadDTOs)
             {
-                if (!IsValid(categoryDTO)) continue;
+                if (!IsValid(cadDTO)) continue;
 
-                Category category = new() { Name = categoryDTO.CategoryName };
-
-                foreach (ImportCADModel cadDTO in categoryDTO.CADModels)
+                Cad cad = new()
                 {
-                    if (!IsValid(cadDTO)) continue;
+                    Name = cadDTO.Name,
+                    Url = cadDTO.URL,
+                    CreationDate = DateTime.Now,
+                    Category = cadDTO.Category,
+                };
 
-                    CAD cad = new()
-                    {
-                        Name = cadDTO.Name,
-                        Url = cadDTO.URL,
-                        CreationDate = DateTime.Now,
-                    };
-
-                    category.CADs.Add(cad);
-                }
-
-                categories.Add(category);
+                cads.Add(cad);
             }
 
-            context.Categories.AddRange(categories);
+            context.CADs.AddRange(cads);
             context.SaveChanges();
         }
 

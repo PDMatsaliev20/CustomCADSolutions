@@ -1,0 +1,77 @@
+﻿@{
+    @using CustomCADSolutions.Infrastructure.Data.Models.Enums
+    @model OrderInputModel
+}
+
+<html>
+<head>
+    <style>
+
+        section#container {
+        }
+
+        h1#title {
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            flex-flow: column wrap;
+            align-items: center;
+            column-count: 1;
+            row-gap: 20px;
+        }
+
+        div.field {
+            justify-content: center;
+        }
+
+        #button {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        p#email {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    
+    <section id="container"> 
+        <h1 id="title">Describe your design here: </h1>
+        <section>
+            <form asp-action="Index" method="post" autocomplete="off">
+                <div class="mb-3 field">
+                    <label asp-for="CadName" class="form-label">Name</label>
+                    <input style="width:500px" asp-for="CadName" class="form-control" aria-required="true"  />
+                    <span asp-validation-for="CadName" class="text-danger"></span>
+                </div>
+                <div class="mb-3 field">
+                    <label asp-for="CadCategory" class="form-label">Category</label>
+                    <select style="width:500px" asp-for="CadCategory" class="form-control" aria-required="true">
+                        @foreach (object item in (Array)ViewData["Categories"]!)
+                        {
+                            Category category = (Category)item;
+                            <option value="@category">@category</option>
+                        }
+                    </select>
+                    <span asp-validation-for="CadCategory" class="text-danger"></span>
+                </div>
+                <div class="mb-3 field">
+                    <label asp-for="Description" class="form-label-add-edit">Description</label>
+                    <textarea style="width: 500px" asp-for="Description" class="form-control" aria-required="true" rows="5"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div id="button" class="mb-3">
+                    <input class="btn btn-primary" type="submit" value="Order" />
+                </div>
+            </form>
+            <p id="email">Or straight up e-mail it to us <a href="mailto:boriskolev2006@gmail.com">here</a></p>
+        </section>
+    </section>
+
+</body>
+</html>
