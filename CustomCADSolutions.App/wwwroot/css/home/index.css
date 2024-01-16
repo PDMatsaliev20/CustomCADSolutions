@@ -4,118 +4,181 @@
 	}
 
 	#main {
-		display: grid;
+		order: 1;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		row-gap: 20px;
 		width: 50%;
-		height: 15vw;
+		height: 70vh;
 		text-align: center;
+	}
+
+	#title {
+		font-size: 2.1em;
+	}
+
+	#subtitle {
+		font-size: 1.2em;
 	}
 
 	#buttons {
 		display: flex;
+		column-gap: 10px;
 	}
+
+	/*
+	.button img {
+		border-radius: 30px;
+		width: 100%;
+		height: auto;
+	}
+	*/
 
 	.button {
 		width: 100%;
 		height: auto;
-		justify-content: center;
-		text-align: center;
-		padding: 10px;
-		display: grid;
+		border-radius: 7px;
+		padding: 4%;
+		border: 0px;
 	}
 
-		.button img {
-			border-radius: 30px;
-			width: 100%;
-			height: auto;
-		}
+	/*#F3F5F2*/
 
-		.button button {
-			border-radius: 8.5px;
-			padding: 8%;
-			border: 1px solid black;
-			background-color: #F3F5F2;
-		}
+	#button1 {
+		background-color: #ff9e3a;
+	}
 
-			.button button a {
-				font-size: 100%;
-				color: black;
-				text-decoration: none;
-			}
+	#button2 {
+		background-color: #1caad9;
+	}
+
+		.button a {
+			font-weight: 700;
+			color: #fff;
+			font-size: 100%;
+			text-decoration: none;
+		}
 
 	#model {
+		order: 2;
+		float: right;
 		width: 100%;
-		height: 50vh;
+		height: 70vh;
 	}
 
 	.floater {
 		width: 100%;
 		height: 100%;
 	}
+
+
+	#logo {
+		animation-delay: 0.25s;
+	}
+
+	#hbtn1 {
+		animation-delay: 0.50s;
+	}
+
+	#hbtn2 {
+		animation-delay: 0.75s;
+	}
+
+	#hbtn3 {
+		animation-delay: 1.00s;
+	}
+
+	#hbtn4 {
+		animation-delay: 1.25s;
+	}
+
+	.body {
+		animation-delay: 2s;
+	}
 }
 
 @media all and (max-width: 600px) {
 	.container {
-		display: inline-grid;
-		grid-template-columns: auto;
+		display: flex;
+		flex-direction: column;
 	}
 
 	#main {
-		justify-content: center;
-		display: grid;
-		width: 50%;
+		order: 1;
+		display: flex;
+		flex-direction: column;
+		row-gap: 20px;
+		width: 100%;
+		height: 70vh;
+		text-align: center;
+	}
+
+	#title {
+		font-size: 1.3em;
+	}
+
+	#subtitle {
+		font-size: 0.69em;
+	}
+
+	#buttons {
+		display: flex;
+		column-gap: 5px;
+	}
+
+	/*
+	.button img {
+		border-radius: 30px;
+		width: 100%;
 		height: auto;
 	}
+	*/
 
-	title {
-		text-align: center;
+	.button {
+		width: 100%;
+		height: auto;
+		border-radius: 7px;
+		border: 0px;
 	}
 
-	subtitle {
-		text-align: center;
+	/*#F3F5F2*/
+
+	#button1 {
+		background-color: #ff9e3a;
 	}
 
-	buttons {
-		display: flex;
+	#button2 {
+		background-color: #1caad9;
 	}
 
-		buttons .button {
-			width: 100%;
-			height: auto;
-			justify-content: center;
-			text-align: center;
-			padding: 10px;
-			display: grid;
-		}
-
-			buttons .button img {
-				border-radius: 30px;
-				width: 100%;
-				height: auto;
-			}
-
-			buttons .button button {
-				border-radius: 8.5px;
-				padding: 8%;
-				border: 1px solid black;
-				background-color: #F3F5F2;
-			}
-
-				buttons .button button a {
-					font-size: 100%;
-					color: black;
-					text-decoration: none;
-				}
+	.button a {
+		font-size: 80%;
+		font-weight: 700;
+		color: white;
+		text-decoration: none;
+	}
 
 	#model {
-		justify-content: center;
+		order: 2;
+		float: right;
 		width: 100%;
-		height: 50vh;
+		height: 40vh;
 	}
 
-		#model .floater {
-			width: 100%;
-			height: 100%;
-		}
+	.floater {
+		width: 100%;
+		height: 100%;
+	}
+
+
+	#logo {
+		animation-delay: 0.25s;
+	}
+
+	.body {
+		animation-delay: 1s;
+	}
 }
 
 .fade-in {
@@ -123,34 +186,6 @@
 	animation: fadeIn 2s;
 	animation-iteration-count: 1;
 	animation-fill-mode: forwards;
-}
-
-#logo {
-	animation-delay: 0.25s;
-}
-
-#hbtn1 {
-	animation-delay: 0.50s;
-}
-
-#hbtn2 {
-	animation-delay: 0.75s;
-}
-
-#hbtn3 {
-	animation-delay: 1.00s;
-}
-
-#hbtn4 {
-	animation-delay: 1.25s;
-}
-
-#hbtn5 {
-	animation-delay: 1.5s;
-}
-
-.body {
-	animation-delay: 2s;
 }
 
 @keyframes fadeInAnimation {

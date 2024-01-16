@@ -33,7 +33,7 @@ namespace CustomCADSolutions.App.Controllers
 
             OrderModel model = new()
             {
-                BuyerId = 1,
+                Buyer = new UserModel { Name = "John Doe" },
                 Description = input.Description,
                 OrderDate = DateTime.Now,
                 Cad = new CadModel()

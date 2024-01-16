@@ -10,34 +10,7 @@
 <body>
 
     <section class="container">
-        <section id="main">
-            <h1 id="title" class="fade-in body">Some text</h1>
-            <h3 id="subtitle" class="fade-in body">
-                Some more text
-                <!--
-                In a world sculpted by pixels and imagination,
-                each 3D model is a bridge between dream and reality,
-                transforming visions into virtual 3D masterpieces!
-                -->
-            </h3>
-            <section id="buttons">
-                <div class="fade-in button body">
-                    <img src="~/others/images/order.jpg" alt="" />
-                    <button><a target="_self" asp-area="" asp-controller="Order" asp-action="Index">Order Your Model</a></button>
-                </div>
-                <!--
-                <div class="fade-in button body">
-                    <img src="~/others/images/ai.jpg" alt="" />
-                    <a target="_self" asp-area="" asp-controller="DeepAI" asp-action="GenerateImage">Design With AI</a>
-                </div>
-                -->
-                <div class="fade-in button body">
-                    <img src="~/others//images/gallery.jpg" alt="" />
-                    <button><a target="_self" asp-area="" asp-controller="CAD" asp-action="Categories">Explore The Gallery</a></button>
-                </div>
-            </section>
-        </section>
-        <section id="model" class="fade-in body">
+        <article id="model" class="fade-in body">
             <iframe class="fade-in body floater" title="A 3D model of a shoe" 
                 src="https://sketchfab.com/models/99bfe75ebd734fa3832a63e02e2cacf7/embed?annotations_visible=0&autospin=-1&autostart=1&preload=1&camera=1&double_click=0&internal=1&max_texture_size=1024&orbit_constraint_pan=1&scrollwheel=1&sound_enable=1&transparent=1&ui_animations=0&ui_annotations=0&ui_ar=0&ui_ar_help=0&ui_color=white&ui_fadeout=0&ui_fullscreen=0&ui_help=0&ui_infos=0&ui_inspector=0&ui_settings=0&ui_stop=0&ui_theatre=0&ui_theme=light&ui_vr=0&ui_watermark=0" 
                 frameborder="0" 
@@ -47,7 +20,19 @@
                 execution-while-out-of-viewport="true" execution-while-not-rendered="true" 
                 web-share="true">
             </iframe>
-        </section>
+        </article>
+        <div id="main" class="fade-in body">
+            <h1 id="title" class="fade-in body">Where Your Imagination Comes to Life!</h1>
+            <h3 id="subtitle" class="fade-in body">
+                In a world sculpted by pixels and imagination,
+                each 3D model is a bridge between dream and reality,
+                transforming visions into virtual 3D masterpieces!
+            </h3>
+            <section id="buttons">
+                <button id="button1" class="fade-in button body"><a target="_self" asp-area="" asp-controller="Order" asp-action="Index">Order Your Model</a></button>
+                <button id="button2" class="fade-in button body"><a target="_self" asp-area="" asp-controller="CAD" asp-action="Categories">Explore The Gallery</a></button>
+            </section>
+        </div>
     </section>
 
 </body>

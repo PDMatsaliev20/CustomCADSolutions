@@ -36,7 +36,7 @@ namespace CustomCADSolutions.Core.Services
             Order order = new()
             {
                 Cad = cad,
-                BuyerId = entity.BuyerId,
+                Buyer = new User { Username = entity.Buyer.Name },
                 Description = entity.Description,
                 OrderDate = entity.OrderDate,
             };
