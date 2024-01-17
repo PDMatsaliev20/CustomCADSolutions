@@ -1,6 +1,5 @@
 ﻿using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CustomCADSolutions.Core.Models
 {
@@ -21,6 +20,6 @@ namespace CustomCADSolutions.Core.Models
         public Category Category { get; set; }
 
         [Required]
-        public ICollection<OrderModel> Orders { get; set; } = new List<OrderModel>();
+        public ICollection<OrderModel>? Orders { get; set; }
     }
 }

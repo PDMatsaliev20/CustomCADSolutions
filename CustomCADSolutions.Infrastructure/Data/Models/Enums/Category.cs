@@ -10,6 +10,7 @@ namespace CustomCADSolutions.Infrastructure.Data.Models.Enums
 {
     public enum Category
     {
+        All,
         Characters,
         Animals,
         Toys,
@@ -23,7 +24,6 @@ namespace CustomCADSolutions.Infrastructure.Data.Models.Enums
         Medical,
         Food,
         Assets,
-        Textures,
         Sports,
     }
 }

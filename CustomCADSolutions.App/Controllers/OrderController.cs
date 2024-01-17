@@ -31,9 +31,11 @@ namespace CustomCADSolutions.App.Controllers
                 return View(input);
             }
 
+            UserModel? buyer = service.GetAllUsers().FirstOrDefault(u => u.Username == u.Username);
+
             OrderModel model = new()
             {
-                Buyer = new UserModel { Name = "John Doe" },
+                Buyer = buyer ?? new UserModel { Username = "John Doe" },
                 Description = input.Description,
                 OrderDate = DateTime.Now,
                 Cad = new CadModel()
@@ -47,7 +49,6 @@ namespace CustomCADSolutions.App.Controllers
             OrderViewModel view = new()
             {
                 Description = model.Description,
-                OrderDate = model.OrderDate.ToString("dd/mm/yyyy hh:MM:ss")
             };
 
             return RedirectToAction("Sent", view);

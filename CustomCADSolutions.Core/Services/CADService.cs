@@ -1,10 +1,9 @@
 ﻿using CustomCADSolutions.Core.Contracts;
 using CustomCADSolutions.Core.Models;
-using CustomCADSolutions.Infrastructure.Data;
 using CustomCADSolutions.Infrastructure.Data.Common;
 using CustomCADSolutions.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
-using Org.BouncyCastle.Asn1.Crmf;
+using Newtonsoft.Json;
 
 namespace CustomCADSolutions.Core.Services
 {
@@ -17,30 +16,35 @@ namespace CustomCADSolutions.Core.Services
             this.repository = repository;
         }
 
-        public async Task CreateAsync(CadModel entity)
+        public async Task CreateAsync(params CadModel[] models)
         {
-            Cad cad = new()
+            List<Cad> cads = new();
+            foreach (CadModel model in models)
             {
-                Name = entity.Name,
-                CreationDate = DateTime.Now,
-                Category = entity.Category,
-                Url = entity.Url,
-                Orders = entity.Orders
-                    .Select(o => new Order 
-                    {
-                        Description = o.Description,
-                        OrderDate = o.OrderDate 
-                    })
-                    .ToArray()
-            };
-
-            await repository.AddAsync<Cad>(cad);
-            await repository.SaveChangesAsync();
+                Cad cad = new()
+                {
+                    Name = model.Name,
+                    CreationDate = DateTime.Now,
+                    Category = model.Category,
+                    Url = model.Url,
+                    Orders = model.Orders?
+                        .Select(o => new Order
+                        {
+                            Description = o.Description,
+                            OrderDate = o.OrderDate
+                        })
+                        .ToArray()
+                        ?? Array.Empty<Order>()
+                };
+                cads.Add(cad);
+            }
+            await this.repository.AddRangeAsync<Cad>(cads.ToArray());
+            await this.repository.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(int id)
         {
-            Cad? cad = await repository.GetByIdAsync<Cad>(id);
+            Cad? cad = await this.repository.GetByIdAsync<Cad>(id);
 
             if (cad != null)
             {
@@ -50,7 +54,7 @@ namespace CustomCADSolutions.Core.Services
 
         public async Task EditAsync(CadModel entity)
         {
-            Cad? cad = await repository
+            Cad? cad = await this.repository
                 .All<Cad>()
                 .FirstOrDefaultAsync(cad => cad.Id == entity.Id)
                 ?? throw new ArgumentException("Model doesn't exist!");
@@ -61,7 +65,7 @@ namespace CustomCADSolutions.Core.Services
             cad.Category = entity.Category;
             cad.Url = entity.Url;
 
-            await repository.SaveChangesAsync();
+            await this.repository.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<CadModel>> GetAllAsync()
@@ -69,7 +73,7 @@ namespace CustomCADSolutions.Core.Services
             return await repository
                 .All<Cad>()
                 .Select(cad => new CadModel
-{
+                {
                     Id = cad.Id,
                     Name = cad.Name,
                     CreationDate = cad.CreationDate,
@@ -96,6 +100,18 @@ namespace CustomCADSolutions.Core.Services
             };
 
             return model;
+        }
+
+        public async Task ImportCads(bool shouldDropDatabase)
+        {
+            if (shouldDropDatabase)
+            {
+                await repository.ResetDbAsync();
+            }
+
+            string json = await File.ReadAllTextAsync("categories.json");
+            CadModel[] cadDTOs = JsonConvert.DeserializeObject<CadModel[]>(json)!;
+            await CreateAsync(cadDTOs);
         }
     }
 }

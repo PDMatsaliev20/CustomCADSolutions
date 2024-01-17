@@ -8,11 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="Import\categories.json" />
+    <Content Remove="Models\categories.json" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Import\categories.json" />
+    <None Include="categories.json" />
     <None Include="wwwroot\css\home\index.css" />
     <None Include="wwwroot\css\cad\categories.css" />
   </ItemGroup>

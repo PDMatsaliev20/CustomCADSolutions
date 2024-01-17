@@ -1,1 +1,32 @@
-﻿
+﻿#container {
+	display: flex;
+	flex-direction: column;
+	row-gap: 1vh;
+}
+
+#title {
+	text-align: center;
+}
+
+form {
+	display: flex;
+	flex-flow: column wrap;
+	align-items: center;
+	column-count: 1;
+	row-gap: 20px;
+}
+
+div.field {
+	justify-content: center;
+}
+
+#button {
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+p#email {
+	margin-top: 20px;
+	margin-bottom: 20px;
+	text-align: center;
+}

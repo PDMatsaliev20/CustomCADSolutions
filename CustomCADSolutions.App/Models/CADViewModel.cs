@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CustomCADSolutions.App.Models
 {
-    public class CADViewModel
+    public class CadViewModel
     {
         public string? Name { get; set; }
         public string? Category { get; set; }

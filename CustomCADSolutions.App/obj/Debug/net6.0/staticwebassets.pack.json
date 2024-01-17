@@ -273,6 +273,10 @@
       "PackagePath": "staticwebassets\\others\\categories\\Abstract.png"
     },
     {
+      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\categories\\All.png",
+      "PackagePath": "staticwebassets\\others\\categories\\All.png"
+    },
+    {
       "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\categories\\Animals.png",
       "PackagePath": "staticwebassets\\others\\categories\\Animals.png"
     },
@@ -331,10 +335,6 @@
     {
       "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\ai.jpg",
       "PackagePath": "staticwebassets\\others\\images\\ai.jpg"
-    },
-    {
-      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\background.jpg",
-      "PackagePath": "staticwebassets\\others\\images\\background.jpg"
     },
     {
       "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\favicon.ico",

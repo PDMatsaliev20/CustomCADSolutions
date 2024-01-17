@@ -36,7 +36,7 @@ namespace CustomCADSolutions.Core.Services
             Order order = new()
             {
                 Cad = cad,
-                Buyer = new User { Username = entity.Buyer.Name },
+                Buyer = new User { Username = entity.Buyer.Username },
                 Description = entity.Description,
                 OrderDate = entity.OrderDate,
             };
@@ -105,7 +105,7 @@ namespace CustomCADSolutions.Core.Services
                 .Select(u => new UserModel
                 {
                     Id = u.Id,
-                    Name = u.Username,
+                    Username = u.Username,
                     Orders = repository
                         .All<Order>()
                         .Where(o => o.BuyerId == u.Id)

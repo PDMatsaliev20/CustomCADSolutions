@@ -56,7 +56,17 @@
     <p id="title"><b>Your order was successfully sent to the designer and is currently waiting to be reviewed. Thank you!</b></p>
     <section id="container1">
         <p class="text">AI visualization of your order: <img id="image" src="/others/images/background.jpg" alt="AI visualization" /> </p>
-        <p class="text">Not what you had in mind? Edit your description: <textarea id="input"></textarea></p>
+        <form asp-action="Edit">
+            <div class="text">
+                Not what you had in mind?
+                <label asp-for="Description">Edit your description:</label>
+                <textarea id="input" asp-for="Description"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+                <div id="button" class="mb-3">
+                    <input class="btn btn-primary" type="submit" value="Edit" />
+                </div>
+            </div>
+        </form>
     </section>
 
 

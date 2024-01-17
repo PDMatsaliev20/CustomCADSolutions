@@ -9,7 +9,7 @@ namespace CustomCADSolutions.Core.Models
         public int Id { get; set; }
 
         [Required]
-        public string Name { get; set; } = null!;
+        public string Username { get; set; } = null!;
 
         [Required]
         public ICollection<OrderModel> Orders { get; set; } = new List<OrderModel>();
