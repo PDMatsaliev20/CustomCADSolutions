@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "aJ4+j7lDcWjmMZY/5ULsNJv7ld60RkbbHpUykxEnb7ouXcNtaKBQK/EwFu3HZTcsp1WgShDA6ADcxW1ymLEvRQ==",
+  "dgSpecHash": "eJd5M5+hUS+EniPGi81C7RfKGE6L5pxkSy4inwe3JJ+Yg7OhrTalwgFKSXwvZv5lGoqoMHt9/Sfax8smg01JuQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\CustomCADSolutions.csproj",
   "expectedPackageFiles": [
@@ -40,7 +40,6 @@
     "C:\\Users\\35988\\.nuget\\packages\\microsoft.win32.registry\\4.7.0\\microsoft.win32.registry.4.7.0.nupkg.sha512",
     "C:\\Users\\35988\\.nuget\\packages\\microsoft.win32.systemevents\\4.7.0\\microsoft.win32.systemevents.4.7.0.nupkg.sha512",
     "C:\\Users\\35988\\.nuget\\packages\\mimekit\\4.3.0\\mimekit.4.3.0.nupkg.sha512",
-    "C:\\Users\\35988\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
     "C:\\Users\\35988\\.nuget\\packages\\system.collections.immutable\\6.0.0\\system.collections.immutable.6.0.0.nupkg.sha512",
     "C:\\Users\\35988\\.nuget\\packages\\system.configuration.configurationmanager\\4.7.0\\system.configuration.configurationmanager.4.7.0.nupkg.sha512",
     "C:\\Users\\35988\\.nuget\\packages\\system.diagnostics.diagnosticsource\\6.0.1\\system.diagnostics.diagnosticsource.6.0.1.nupkg.sha512",

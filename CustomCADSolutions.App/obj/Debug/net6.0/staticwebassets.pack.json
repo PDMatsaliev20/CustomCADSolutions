@@ -5,10 +5,6 @@
       "PackagePath": "staticwebassets\\CustomCADSolutions.bundle.scp.css"
     },
     {
-      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\css\\cad\\add.css",
-      "PackagePath": "staticwebassets\\css\\cad\\add.css"
-    },
-    {
       "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\css\\cad\\categories.css",
       "PackagePath": "staticwebassets\\css\\cad\\categories.css"
     },
@@ -23,6 +19,14 @@
     {
       "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\css\\home\\layout.css",
       "PackagePath": "staticwebassets\\css\\home\\layout.css"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\css\\order\\add.css",
+      "PackagePath": "staticwebassets\\css\\order\\add.css"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\css\\order\\ordered.css",
+      "PackagePath": "staticwebassets\\css\\order\\ordered.css"
     },
     {
       "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\js\\site.js",
@@ -319,10 +323,6 @@
     {
       "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\categories\\Sports.png",
       "PackagePath": "staticwebassets\\others\\categories\\Sports.png"
-    },
-    {
-      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\categories\\Textures.png",
-      "PackagePath": "staticwebassets\\others\\categories\\Textures.png"
     },
     {
       "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\categories\\Toys.png",

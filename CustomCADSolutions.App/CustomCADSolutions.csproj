@@ -28,8 +28,4 @@
   <ItemGroup>
     <ProjectReference Include="..\CustomCADSolutions.Core\CustomCADSolutions.Core.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\css\ai\" />
-  </ItemGroup>
 </Project>

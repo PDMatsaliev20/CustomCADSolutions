@@ -14,6 +14,6 @@ namespace CustomCADSolutions.Core.Contracts
 
         Task<IEnumerable<CadModel>> GetAllAsync();
      
-        Task ImportCads(bool shouldDropDatabase);
+        Task UpdateCads();
     }
 }

@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "CustomCADSolutions.App": {
+    "CustomCADSolutions": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

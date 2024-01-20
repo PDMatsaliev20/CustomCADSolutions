@@ -104,8 +104,19 @@
 		flex-direction: column;
 	}
 
-	#main {
+	#model {
 		order: 1;
+		width: 100%;
+		height: 40vh;
+	}
+
+	.floater {
+		width: 100%;
+		height: 100%;
+	}
+
+	#main {
+		order: 2;
 		display: flex;
 		flex-direction: column;
 		row-gap: 20px;
@@ -159,17 +170,6 @@
 		text-decoration: none;
 	}
 
-	#model {
-		order: 2;
-		float: right;
-		width: 100%;
-		height: 40vh;
-	}
-
-	.floater {
-		width: 100%;
-		height: 100%;
-	}
 
 
 	#logo {

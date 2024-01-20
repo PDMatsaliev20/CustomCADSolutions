@@ -57,11 +57,14 @@ namespace CustomCADSolutions.App.Controllers
         [HttpGet]
         public IActionResult Sent(OrderViewModel view)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(view);
-            }
             return View(view);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id, string description)
+        {
+            await service.EditAsync(default!);
+            return RedirectToAction("Sent", new OrderViewModel() { Id = id, Description = description });
         }
     }
 }

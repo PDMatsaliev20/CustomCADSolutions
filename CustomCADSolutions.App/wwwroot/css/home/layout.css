@@ -7,37 +7,37 @@ header nav {
 	background-color: #BBB9D9 !important;
 }
 
-a#logo {
+#logo {
 	width: 9vh;
 	height: 9vh;
 	margin-right: 2vw;
 }
 
-	a#logo img.logo {
+	#logo .logo {
 		max-width: 100%;
 		height: auto;
 	}
 
-		a#logo img.logo:hover {
+		#logo .logo:hover {
 			opacity: 60%;
 		}
 
 
-ul#buttons {
+#buttons {
 	justify-content: left;
 }
 
-	ul#buttons li {
+	#buttons li {
 		font-size: 2vw;
 		margin: 0px 0.5vw;
 	}
 
 
-ul#register {
+#register {
 	justify-content: right;
 }
 
-	ul#register li {
+	#register li {
 		font-size: 2vw;
 		margin: 0px 0.5vw;
 	}

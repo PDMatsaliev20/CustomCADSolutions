@@ -25,13 +25,12 @@ namespace CustomCADSolutions.App.Controllers
 
         public async Task<IActionResult> Index(string category)
         {
-            await service.ImportCads(true);
+            //await service.UpdateCads();
 
-            IEnumerable<CadModel> cads = await service.GetAllAsync();
-            if (category != "All")
-            {
-                cads = cads.Where(cad => cad.Category.ToString() == category);
-            }
+            IEnumerable<CadModel> cads = category == "All" ?
+                await service.GetAllAsync() :
+                (await service.GetAllAsync())
+                    .Where(cad => category == cad.Category.ToString());
 
             IEnumerable<CadViewModel> shit = cads
                 .Select(cad => new CadViewModel
@@ -39,12 +38,12 @@ namespace CustomCADSolutions.App.Controllers
                     Name = cad.Name,
                     Url = cad.Url,
                     Category = cad.Category.ToString(),
-                    CreatedOn = 
+                    CreatedOn =
                         (cad.CreationDate ?? throw new NullReferenceException())
                         .ToString("dd:MM:yyyy HH:mm:ss"),
                 });
 
-            return View(shit);
+            return View("Category", shit);
         }
     }
 }

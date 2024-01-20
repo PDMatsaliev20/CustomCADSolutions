@@ -3,7 +3,7 @@ using CustomCADSolutions.Core.Models;
 using CustomCADSolutions.Infrastructure.Data.Common;
 using CustomCADSolutions.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace CustomCADSolutions.Core.Services
 {
@@ -102,15 +102,11 @@ namespace CustomCADSolutions.Core.Services
             return model;
         }
 
-        public async Task ImportCads(bool shouldDropDatabase)
+        public async Task UpdateCads()
         {
-            if (shouldDropDatabase)
-            {
-                await repository.ResetDbAsync();
-            }
-
+            await repository.ResetDbAsync();
             string json = await File.ReadAllTextAsync("categories.json");
-            CadModel[] cadDTOs = JsonConvert.DeserializeObject<CadModel[]>(json)!;
+            CadModel[] cadDTOs = JsonSerializer.Deserialize<CadModel[]>(json)!;
             await CreateAsync(cadDTOs);
         }
     }

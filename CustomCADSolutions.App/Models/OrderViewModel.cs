@@ -6,6 +6,7 @@ namespace CustomCADSolutions.App.Models
 {
     public class OrderViewModel
     {
+        public int Id { get; set; }
         public string? Description { get; set; } 
     }
 }

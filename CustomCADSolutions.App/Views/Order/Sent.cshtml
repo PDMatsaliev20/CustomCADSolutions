@@ -6,72 +6,29 @@
 
 <html>
 <head>
-    <style>
-        #container1 {
-            display: flex;
-            grid-auto-columns: auto auto;
-        }
-
-        #container2 {
-            display: flex;
-            grid-auto-columns: auto auto auto;
-        }
-
-        #title {
-            font-size: 200%;
-            text-align: center
-        }
-
-        .text {
-            text-align: center;
-            font-size: 150%;
-        }
-
-        #image {
-            width: 25vw;
-            height: 25vw;
-        }
-
-        #input {
-            width: 50vw;
-            height: 25vw;
-        }
-
-        .links {
-            font-weight: bold;
-            color: #1CAAD9;
-        }
-
-        .slots {
-            font-size: 13px;
-            font-weight: normal;
-            text-align: center;
-            margin: 5px;
-            color: #4A4A4A;
-        }
-    </style>
+    <link rel="stylesheet" href="~/css/order/ordered.css" />
 </head>
 
 <body>
     <p id="title"><b>Your order was successfully sent to the designer and is currently waiting to be reviewed. Thank you!</b></p>
-    <section id="container1">
+    <section class="container">
         <p class="text">AI visualization of your order: <img id="image" src="/others/images/background.jpg" alt="AI visualization" /> </p>
-        <form asp-action="Edit">
-            <div class="text">
-                Not what you had in mind?
+        <div class="text">
+            <p>Not what you had in mind?</p>
+            <form id="form" asp-action="Edit" method="post" asp-route-id="@Model.Id">
                 <label asp-for="Description">Edit your description:</label>
                 <textarea id="input" asp-for="Description"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
                 <div id="button" class="mb-3">
                     <input class="btn btn-primary" type="submit" value="Edit" />
                 </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </section>
 
 
     <p class="text">Other designs you might like: </p>
-    <section id="container2">
+    <section class="container">
         @for (int i = 0; i < columns; i++)
         {
             @for (int j = 0; j < rows; j++)
