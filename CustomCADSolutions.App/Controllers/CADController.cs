@@ -17,22 +17,24 @@ namespace CustomCADSolutions.App.Controllers
             this.logger = logger;
         }
 
-        public IActionResult Categories()
+        public IActionResult Index()
         {
             string[] categories = typeof(Category).GetEnumNames();
             return View(categories);
         }
 
-        public async Task<IActionResult> Index(string category)
+        public async Task<IActionResult> Category(string category)
         {
-            //await service.UpdateCads();
+            await service.UpdateCads();
 
             IEnumerable<CadModel> cads = category == "All" ?
                 await service.GetAllAsync() :
                 (await service.GetAllAsync())
                     .Where(cad => category == cad.Category.ToString());
 
-            IEnumerable<CadViewModel> shit = cads
+            ViewBag.Category = category;
+
+            IEnumerable<CadViewModel> views = cads
                 .Select(cad => new CadViewModel
                 {
                     Name = cad.Name,
@@ -43,7 +45,7 @@ namespace CustomCADSolutions.App.Controllers
                         .ToString("dd:MM:yyyy HH:mm:ss"),
                 });
 
-            return View("Category", shit);
+            return View(views);
         }
     }
 }

@@ -46,16 +46,15 @@
 	/*#F3F5F2*/
 
 	#button1 {
-		background-color: #ff9e3a;
+		background-color: #BBB9D9;
 	}
 
 	#button2 {
-		background-color: #1caad9;
+		background-color: #BBB9D9;
 	}
 
 		.button a {
-			font-weight: 700;
-			color: #fff;
+			color: black;
 			font-size: 100%;
 			text-decoration: none;
 		}

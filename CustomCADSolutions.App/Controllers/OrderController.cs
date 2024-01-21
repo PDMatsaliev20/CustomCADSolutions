@@ -3,12 +3,16 @@ using CustomCADSolutions.Core.Contracts;
 using CustomCADSolutions.Core.Models;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
+using System.Net.Mail;
+using System.Security;
 
 namespace CustomCADSolutions.App.Controllers
 {
     public class OrderController : Controller
     {
         private readonly IOrderService service;
+        private const string password = "jaradfrv";
 
         public OrderController(IOrderService service)
         {
@@ -45,6 +49,24 @@ namespace CustomCADSolutions.App.Controllers
                 }
             };
             await service.CreateAsync(model);
+
+            MailAddress fromMail = new("ivanangelov414@gmail.com", "Ninjata");
+            MailAddress toMail = new("boriskolev2006@gmail.com", "Oracle");
+
+            NetworkCredential account = new(fromMail.Address, password);
+            SmtpClient smpt = new("smtp.gmail.com")
+            {
+                Port = 587,
+                Credentials = account,
+                EnableSsl = true
+            };
+
+            MailMessage message = new(fromMail, toMail) 
+            {
+                Subject = input.CadName,
+                Body = input.Description
+            };
+            smpt.Send(message);
 
             OrderViewModel view = new()
             {

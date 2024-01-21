@@ -1,0 +1,35 @@
+﻿@{
+    @model String[]
+
+}
+
+<html>
+<head>
+    <link rel="stylesheet" href="~/css/cad/categories.css" />
+</head>
+<body>
+
+    <div class="container">
+
+        <div class="cell">
+            <a asp-area="" asp-controller="CAD" asp-action="Category" asp-route-category="All">
+                <img src="~/others/categories/All.png" alt="All" width="600px" height="400px">
+                <p class="desc"><b>All</b></p>
+            </a>
+        </div>
+
+        @for (int i = 0; i < Model.Length; i++)
+        {
+            string category = Model[i];
+            <div class="cell">
+                <a asp-area="" asp-controller="CAD" asp-action="Category" asp-route-category="@category">
+                    <img src="~/others/categories/@(category).png" alt="@category" width="600px" height="400px">
+                    <p class="desc"><b>@category</b></p>
+                </a>
+            </div>
+        }
+
+    </div>
+
+</body>
+</html>
