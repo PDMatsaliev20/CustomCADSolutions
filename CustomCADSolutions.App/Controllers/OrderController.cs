@@ -32,7 +32,8 @@ namespace CustomCADSolutions.App.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(input);
+                ViewData["Categories"] = typeof(Category).GetEnumValues();
+                return View();
             }
 
             UserModel? buyer = service.GetAllUsers().FirstOrDefault(u => u.Username == u.Username);
@@ -44,29 +45,13 @@ namespace CustomCADSolutions.App.Controllers
                 OrderDate = DateTime.Now,
                 Cad = new CadModel()
                 {
-                    Category = Enum.Parse<Category>(input.CadCategory),
-                    Name = input.CadName,
+                    Category = Enum.Parse<Category>(input.Category),
+                    Name = input.Name,
                 }
             };
             await service.CreateAsync(model);
 
-            MailAddress fromMail = new("ivanangelov414@gmail.com", "Ninjata");
-            MailAddress toMail = new("boriskolev2006@gmail.com", "Oracle");
-
-            NetworkCredential account = new(fromMail.Address, password);
-            SmtpClient smpt = new("smtp.gmail.com")
-            {
-                Port = 587,
-                Credentials = account,
-                EnableSsl = true
-            };
-
-            MailMessage message = new(fromMail, toMail) 
-            {
-                Subject = input.CadName,
-                Body = input.Description
-            };
-            smpt.Send(message);
+            //SendEmail(model);
 
             OrderViewModel view = new()
             {

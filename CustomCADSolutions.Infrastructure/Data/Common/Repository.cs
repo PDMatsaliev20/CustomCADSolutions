@@ -36,9 +36,14 @@ namespace CustomCADSolutions.Infrastructure.Data.Common
             context.Set<T>().Remove(entity);
         }
 
+        public void DeleteRange<T>(T[] entities) where T : class
+        {
+            context.Set<T>().RemoveRange(entities);
+        }
+
         public async Task<T?> GetByIdAsync<T>(params int[] id) where T : class
         {
-            return await context.Set<T>().FindAsync(id);
+            return await context.Set<T>().FindAsync(id.Length == 1 ? id.FirstOrDefault() : id);
         }
 
         public async Task<int> SaveChangesAsync()

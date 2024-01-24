@@ -19,7 +19,8 @@ namespace CustomCADSolutions.Core.Models
         [Required]
         public int BuyerId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Order Description is required")]
+        [StringLength(5000, MinimumLength = 10, ErrorMessage = "Order Name length must be between 10 and 5000 characters")]
         public string Description { get; set; } = null!;
 
         [Required]

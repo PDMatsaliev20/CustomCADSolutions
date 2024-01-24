@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddScoped<ICADService, CADService>();
+builder.Services.AddScoped<ICadService, CadService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 
 builder.Services.AddDbContext<CADContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));

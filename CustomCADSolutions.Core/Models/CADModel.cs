@@ -8,7 +8,8 @@ namespace CustomCADSolutions.Core.Models
         [Key]
         public int Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Order Name is required")]
+        [StringLength(50, MinimumLength = 1, ErrorMessage = "Order Name length must be between 1 and 50 characters")]
         public string Name { get; set; } = null!;
 
         public DateTime? CreationDate { get; set; }

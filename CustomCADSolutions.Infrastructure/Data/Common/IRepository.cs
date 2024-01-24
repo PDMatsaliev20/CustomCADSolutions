@@ -22,5 +22,6 @@ namespace CustomCADSolutions.Infrastructure.Data.Common
         public Task<int> SaveChangesAsync();
         public Task ResetDbAsync();
         Task AddRangeAsync<T>(params T[] entity) where T : class;
+        void DeleteRange<T>(T[] entities) where T : class;
     }
 }

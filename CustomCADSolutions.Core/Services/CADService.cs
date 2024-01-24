@@ -7,11 +7,11 @@ using System.Text.Json;
 
 namespace CustomCADSolutions.Core.Services
 {
-    public class CADService : ICADService
+    public class CadService : ICadService
     {
         private readonly IRepository repository;
 
-        public CADService(IRepository repository)
+        public CadService(IRepository repository)
         {
             this.repository = repository;
         }
@@ -49,6 +49,22 @@ namespace CustomCADSolutions.Core.Services
             if (cad != null)
             {
                 repository.Delete<Cad>(cad);
+            }
+            
+            await repository.SaveChangesAsync();
+        }
+
+        public async Task DeleteRangeAsync(params int[] ids)
+        {
+            foreach (int id in ids)
+            {
+                Cad? cad = await this.repository.GetByIdAsync<Cad>(id);
+
+                if (cad != null)
+                {
+                    repository.Delete<Cad>(cad);
+                }
+                await repository.SaveChangesAsync();
             }
         }
 
@@ -102,12 +118,17 @@ namespace CustomCADSolutions.Core.Services
             return model;
         }
 
-        public async Task UpdateCads()
+        public async Task UpdateCads(bool shouldResetDb = false)
         {
-            await repository.ResetDbAsync();
+            if (shouldResetDb)
+            {
+                await repository.ResetDbAsync();
+            }
+            await DeleteRangeAsync(repository.AllReadonly<Cad>().Select(cad => cad.Id).ToArray());
             string json = await File.ReadAllTextAsync("categories.json");
             CadModel[] cadDTOs = JsonSerializer.Deserialize<CadModel[]>(json)!;
             await CreateAsync(cadDTOs);
+            await repository.SaveChangesAsync();
         }
     }
 }

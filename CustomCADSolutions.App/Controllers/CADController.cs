@@ -6,12 +6,12 @@ using CustomCADSolutions.App.Models;
 
 namespace CustomCADSolutions.App.Controllers
 {
-    public class CADController : Controller
+    public class CadController : Controller
     {
-        private readonly ICADService service;
+        private readonly ICadService service;
         private readonly ILogger logger;
 
-        public CADController(ICADService service, ILogger<CadModel> logger)
+        public CadController(ICadService service, ILogger<CadModel> logger)
         {
             this.service = service;
             this.logger = logger;
