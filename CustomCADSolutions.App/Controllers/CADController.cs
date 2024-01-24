@@ -47,5 +47,10 @@ namespace CustomCADSolutions.App.Controllers
 
             return View(views);
         }
+
+        public IActionResult Submit()
+        {
+            return View();
+        }
     }
 }

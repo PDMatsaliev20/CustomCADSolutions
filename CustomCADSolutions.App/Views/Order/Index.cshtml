@@ -22,9 +22,9 @@
                 <div class="mb-3 field">
                     <label asp-for="Category" class="form-label">Category</label>
                     <select style="width:500px" asp-for="Category" class="form-control" aria-required="true">
-                        @foreach (Category item in categories)
+                        <option value="@null">None</option>
+                        @foreach (Category category in categories)
                         {
-                            Category category = item;
                             <option value="@category">@category</option>
                         }
                     </select>
@@ -46,7 +46,5 @@
 </html>
 
 @section Scripts {
-    @{
-        await Html.PartialAsync("_ValidationScriptsPartial");
-    }
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

@@ -124,9 +124,18 @@ namespace CustomCADSolutions.Core.Services
             {
                 await repository.ResetDbAsync();
             }
-            await DeleteRangeAsync(repository.AllReadonly<Cad>().Select(cad => cad.Id).ToArray());
+
+            var defaultCads = repository
+                .AllReadonly<Cad>()
+                .Where(cad => !cad.Orders.Any())
+                .Select(cad => cad.Id)
+                .ToArray();
+
+            await DeleteRangeAsync(defaultCads);
+            
             string json = await File.ReadAllTextAsync("categories.json");
             CadModel[] cadDTOs = JsonSerializer.Deserialize<CadModel[]>(json)!;
+            
             await CreateAsync(cadDTOs);
             await repository.SaveChangesAsync();
         }
