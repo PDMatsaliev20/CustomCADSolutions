@@ -4,6 +4,7 @@ using CustomCADSolutions.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CustomCADSolutions.Infrastructure.Migrations
 {
     [DbContext(typeof(CADContext))]
-    partial class CustomCADSolutionsContextModelSnapshot : ModelSnapshot
+    [Migration("20240125200413_IncludingCadIntoOrderAutomatically")]
+    partial class IncludingCadIntoOrderAutomatically
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

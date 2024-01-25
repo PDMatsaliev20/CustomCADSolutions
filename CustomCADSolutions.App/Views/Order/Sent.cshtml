@@ -1,26 +1,44 @@
-﻿@model OrderViewModel
+﻿@using CustomCADSolutions.Infrastructure.Data.Models.Enums
+@model OrderInputModel
 @{
     int columns = 1;
     int rows = 3;
+    Category[]? categories = (ViewData["Categories"] as Category[])!;
 }
 
 <html>
 <head>
-    <link rel="stylesheet" href="~/css/order/ordered.css" />
+    <link rel="stylesheet" href="~/css/order/sent.css" />
 </head>
 
 <body>
     <p id="title"><b>Your order was successfully sent to the designer and is currently waiting to be reviewed. Thank you!</b></p>
     <section class="container">
-        <p class="text">AI visualization of your order: <img id="image" src="/others/images/background.jpg" alt="AI visualization" /> </p>
-        <div class="text">
-            <p>Not what you had in mind?</p>
-            <form id="form" asp-action="Edit" method="post" asp-route-id="@Model.Id">
-                <label asp-for="Description">Edit your description:</label>
-                <textarea id="input" asp-for="Description"></textarea>
-                <span asp-validation-for="Description" class="text-danger"></span>
+        <div>
+            <p class="text">Not what you had in mind?</p>
+            <form id="form" asp-action="Sent" method="post" autocomplete="off">
+                <div>
+                    <label id="name" asp-for="Name">Edit your name:</label>
+                    <input asp-for="Name" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div>
+                    <label id="desc" asp-for="Description">Edit your description:</label>
+                    <textarea asp-for="Description"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="mb-3 field">
+                    <label asp-for="Category" class="form-label">Edit your category:</label>
+                    <select asp-for="Category" class="form-control" aria-required="true">
+                        @foreach (Category category in categories)
+                        {
+                            <option value="@category">@category</option>
+                        }
+                    </select>
+                    <span asp-validation-for="Category" class="text-danger"></span>
+                </div>
                 <div id="button" class="mb-3">
-                    <input class="btn btn-primary" type="submit" value="Edit" />
+                    <input class="btn btn-primary" type="submit" value="Submit changes" />
                 </div>
             </form>
         </div>
@@ -39,3 +57,9 @@
     </section>
 </body>
 </html>
+
+@section Scripts {
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

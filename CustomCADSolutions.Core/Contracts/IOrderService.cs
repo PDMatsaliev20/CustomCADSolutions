@@ -11,7 +11,7 @@ namespace CustomCADSolutions.Core.Contracts
 {
     public interface IOrderService
     {
-        Task CreateAsync(OrderModel entity);
+        Task<int> CreateAsync(OrderModel entity);
 
         Task EditAsync(OrderModel entity);
 

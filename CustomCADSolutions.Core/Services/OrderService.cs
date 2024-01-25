@@ -18,7 +18,7 @@ namespace CustomCADSolutions.Core.Services
             this.repository = repository;
         }
 
-        public async Task CreateAsync(OrderModel entity)
+        public async Task<int> CreateAsync(OrderModel entity)
         {
             if (entity.Cad == null)
             {
@@ -40,9 +40,11 @@ namespace CustomCADSolutions.Core.Services
                 Description = entity.Description,
                 OrderDate = entity.OrderDate,
             };
-            
+
             await repository.AddAsync<Order>(order);
             await repository.SaveChangesAsync();
+
+            return order.Id;
         }
 
         public async Task DeleteAsync(int id)
@@ -62,8 +64,10 @@ namespace CustomCADSolutions.Core.Services
                                       && order.BuyerId == entity.BuyerId)
                 ?? throw new NullReferenceException();
 
-            order.OrderDate = entity.OrderDate;
+
+            order.Cad.Name = entity.Cad.Name;
             order.Description = entity.Description;
+            order.Cad.Url = entity.Cad.Url;
 
             await repository.SaveChangesAsync();
         }
@@ -85,8 +89,9 @@ namespace CustomCADSolutions.Core.Services
         public async Task<OrderModel> GetByIdAsync(int id)
         {
             Order? order = await repository
-                .GetByIdAsync<Order>(id)
-                ?? throw new NullReferenceException();
+                .All<Order>()
+                .FirstOrDefaultAsync(o => o.Id == id)
+                ?? throw new KeyNotFoundException();
 
             OrderModel model = new()
             {
@@ -94,6 +99,19 @@ namespace CustomCADSolutions.Core.Services
                 BuyerId = order.BuyerId,
                 Description = order.Description,
                 OrderDate = order.OrderDate,
+                Cad = new CadModel
+                {
+                    Id = order.CadId,
+                    Name = order.Cad.Name,
+                    Category = order.Cad.Category,
+                    Url = order.Cad.Url,
+                    CreationDate = order.Cad.CreationDate,
+                },
+                Buyer = new UserModel
+                {
+                    Id = order.BuyerId,
+                    Username = order.Buyer.Username,
+                },
             };
 
             return model;

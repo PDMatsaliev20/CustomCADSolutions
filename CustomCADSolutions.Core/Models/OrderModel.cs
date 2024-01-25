@@ -14,7 +14,8 @@ namespace CustomCADSolutions.Core.Models
         [Key]
         public int Id { get; set; }
 
-        public int? CadId { get; set; }
+        [Required]
+        public int CadId { get; set; }
 
         [Required]
         public int BuyerId { get; set; }
@@ -27,7 +28,7 @@ namespace CustomCADSolutions.Core.Models
         public DateTime OrderDate { get; set; }
 
         [ForeignKey(nameof(CadId))]
-        public CadModel? Cad { get; set; }
+        public CadModel Cad { get; set; } = null!;
 
         [ForeignKey(nameof(BuyerId))]
         public UserModel Buyer { get; set; } = null!;

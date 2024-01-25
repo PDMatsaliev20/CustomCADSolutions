@@ -21,12 +21,16 @@
 #form {
 	display: flex;
 	flex-direction: column;
+	row-gap: 20px;
 }
 
-#input {
-	margin: 10px 0px;
-	width: 50vw;
-	height: 25vw;
+#name {
+}
+
+#desc {
+}
+
+#category {
 }
 
 #button {

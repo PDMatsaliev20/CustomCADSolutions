@@ -21,12 +21,12 @@
       "PackagePath": "staticwebassets\\css\\home\\layout.css"
     },
     {
-      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\css\\order\\add.css",
-      "PackagePath": "staticwebassets\\css\\order\\add.css"
+      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\css\\order\\index.css",
+      "PackagePath": "staticwebassets\\css\\order\\index.css"
     },
     {
-      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\css\\order\\ordered.css",
-      "PackagePath": "staticwebassets\\css\\order\\ordered.css"
+      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\css\\order\\sent.css",
+      "PackagePath": "staticwebassets\\css\\order\\sent.css"
     },
     {
       "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\js\\site.js",

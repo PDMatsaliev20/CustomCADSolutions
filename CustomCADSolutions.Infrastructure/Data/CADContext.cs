@@ -31,8 +31,8 @@ namespace CustomCADSolutions.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Order>().Navigation<Cad>(o => o.Cad).AutoInclude();
+            modelBuilder.Entity<Order>().Navigation<User>(o => o.Buyer).AutoInclude();
         }
     }
 }
-

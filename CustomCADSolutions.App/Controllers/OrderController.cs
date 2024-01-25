@@ -12,7 +12,6 @@ namespace CustomCADSolutions.App.Controllers
     public class OrderController : Controller
     {
         private readonly IOrderService service;
-        private const string password = "jaradfrv";
 
         public OrderController(IOrderService service)
         {
@@ -21,7 +20,7 @@ namespace CustomCADSolutions.App.Controllers
 
         [HttpGet]
         public IActionResult Index()
-        {
+            {
             OrderInputModel input = new();
             ViewData["Categories"] = typeof(Category).GetEnumValues();
             return View(input);
@@ -45,33 +44,42 @@ namespace CustomCADSolutions.App.Controllers
                 OrderDate = DateTime.Now,
                 Cad = new CadModel()
                 {
-                    Category = Enum.Parse<Category>(input.Category),
+                    Category = input.Category,
                     Name = input.Name,
                 }
             };
-            await service.CreateAsync(model);
 
-            //SendEmail(model);
+            int id = await service.CreateAsync(model);
 
-            OrderViewModel view = new()
+            return RedirectToAction("Sent", new { id });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Sent(int id)
+        {
+            ViewData["Categories"] = typeof(Category).GetEnumValues();
+            OrderModel order = await service.GetByIdAsync(id);
+            OrderInputModel model = new()
             {
+                Name = order.Cad.Name,
+                Category = order.Cad.Category,
+                Description = order.Description,
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Sent(OrderModel model)
+        {
+            await service.EditAsync(model);
+
+            OrderInputModel view = new()
+            {
+                Name = model.Cad.Name,
                 Description = model.Description,
             };
 
             return RedirectToAction("Sent", view);
-        }
-
-        [HttpGet]
-        public IActionResult Sent(OrderViewModel view)
-        {
-            return View(view);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Edit(int id, string description)
-        {
-            await service.EditAsync(default!);
-            return RedirectToAction("Sent", new OrderViewModel() { Id = id, Description = description });
         }
     }
 }

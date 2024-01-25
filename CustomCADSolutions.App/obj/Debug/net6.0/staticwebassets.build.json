@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "C8g43ZAXB/63yCzz+7+Uh/j67w7pTETQp4wRRyeTR8g=",
+  "Hash": "6KAAURixEFqgk0WyCFOnlp9vwgorWgV6xPBZ9TV4eZ4=",
   "Source": "CustomCADSolutions",
   "BasePath": "_content/CustomCADSolutions",
   "Mode": "Default",
@@ -131,12 +131,12 @@
       "OriginalItemSpec": "wwwroot\\css\\home\\layout.css"
     },
     {
-      "Identity": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\css\\order\\add.css",
+      "Identity": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\css\\order\\index.css",
       "SourceId": "CustomCADSolutions",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\",
       "BasePath": "_content/CustomCADSolutions",
-      "RelativePath": "css/order/add.css",
+      "RelativePath": "css/order/index.css",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -147,15 +147,15 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\css\\order\\add.css"
+      "OriginalItemSpec": "wwwroot\\css\\order\\index.css"
     },
     {
-      "Identity": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\css\\order\\ordered.css",
+      "Identity": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\css\\order\\sent.css",
       "SourceId": "CustomCADSolutions",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\",
       "BasePath": "_content/CustomCADSolutions",
-      "RelativePath": "css/order/ordered.css",
+      "RelativePath": "css/order/sent.css",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -166,7 +166,7 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\css\\order\\ordered.css"
+      "OriginalItemSpec": "wwwroot\\css\\order\\sent.css"
     },
     {
       "Identity": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\js\\site.js",
