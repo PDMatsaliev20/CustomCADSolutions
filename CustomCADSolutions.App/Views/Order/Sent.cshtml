@@ -1,5 +1,5 @@
 ﻿@using CustomCADSolutions.Infrastructure.Data.Models.Enums
-@model OrderInputModel
+@model OrderViewModel
 @{
     int columns = 1;
     int rows = 3;
@@ -17,6 +17,9 @@
         <div>
             <p class="text">Not what you had in mind?</p>
             <form id="form" asp-action="Sent" method="post" autocomplete="off">
+                <div>
+                    <input asp-for="Id" hidden />
+                </div>
                 <div>
                     <label id="name" asp-for="Name">Edit your name:</label>
                     <input asp-for="Name" />

@@ -25,7 +25,7 @@ namespace CustomCADSolutions.App.Controllers
 
         public async Task<IActionResult> Category(string category)
         {
-            await service.UpdateCads();
+            await service.UpdateCads(true);
 
             IEnumerable<CadModel> cads = category == "All" ?
                 await service.GetAllAsync() :

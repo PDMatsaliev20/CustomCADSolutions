@@ -21,13 +21,13 @@ namespace CustomCADSolutions.App.Controllers
         [HttpGet]
         public IActionResult Index()
             {
-            OrderInputModel input = new();
+            OrderViewModel input = new();
             ViewData["Categories"] = typeof(Category).GetEnumValues();
             return View(input);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Index(OrderInputModel input)
+        public async Task<IActionResult> Index(OrderViewModel input)
         {
             if (!ModelState.IsValid)
             {
@@ -59,27 +59,33 @@ namespace CustomCADSolutions.App.Controllers
         {
             ViewData["Categories"] = typeof(Category).GetEnumValues();
             OrderModel order = await service.GetByIdAsync(id);
-            OrderInputModel model = new()
+            OrderViewModel model = new()
             {
+                Id = id,
                 Name = order.Cad.Name,
                 Category = order.Cad.Category,
                 Description = order.Description,
+                OrderDate = order.OrderDate,
             };
             return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Sent(OrderModel model)
+        public async Task<IActionResult> Sent(OrderViewModel model)
         {
-            await service.EditAsync(model);
+            IEnumerable<OrderModel> orders = await service.GetAllAsync();
+            OrderModel order = orders.First(o => model.Id == o.Id);
 
-            OrderInputModel view = new()
-            {
-                Name = model.Cad.Name,
-                Description = model.Description,
-            };
+            order.Cad.Name = model.Name;
+            order.Description = model.Description;
+            order.Cad.Category = model.Category;
+            await service.EditAsync(order);
 
-            return RedirectToAction("Sent", view);
+            return RedirectToAction("Sent", order.Id);
+        }
+
+        private void SendToBorko()
+        {
         }
     }
 }

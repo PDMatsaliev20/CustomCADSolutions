@@ -65,9 +65,10 @@ namespace CustomCADSolutions.Core.Services
                 ?? throw new NullReferenceException();
 
 
-            order.Cad.Name = entity.Cad.Name;
             order.Description = entity.Description;
+            order.Cad.Name = entity.Cad.Name;
             order.Cad.Url = entity.Cad.Url;
+            order.Cad.Category = entity.Cad.Category;
 
             await repository.SaveChangesAsync();
         }
@@ -78,10 +79,24 @@ namespace CustomCADSolutions.Core.Services
                 .All<Order>()
                 .Select(o => new OrderModel
                 {
+                    Id = o.Id,
                     CadId = o.CadId,
                     BuyerId = o.BuyerId,
                     Description = o.Description,
                     OrderDate = o.OrderDate,
+                    Cad = new CadModel
+                    {
+                        Id = o.CadId,
+                        Name = o.Cad.Name,
+                        Category = o.Cad.Category,
+                        Url = o.Cad.Url,
+                        CreationDate = o.Cad.CreationDate,
+                    },
+                    Buyer = new UserModel
+                    {
+                        Id = o.BuyerId,
+                        Username = o.Buyer.Username,
+                    },
                 })
                 .ToArrayAsync();
         }
@@ -95,6 +110,7 @@ namespace CustomCADSolutions.Core.Services
 
             OrderModel model = new()
             {
+                Id = order.Id,
                 CadId = order.CadId,
                 BuyerId = order.BuyerId,
                 Description = order.Description,

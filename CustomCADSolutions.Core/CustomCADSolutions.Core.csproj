@@ -14,9 +14,4 @@
     <ProjectReference Include="..\CustomCADSolutions.Infrastructure\CustomCADSolutions.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="MailKit" Version="4.3.0" />
-    <PackageReference Include="MimeKit" Version="4.3.0" />
-  </ItemGroup>
-
 </Project>
