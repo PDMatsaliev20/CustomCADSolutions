@@ -3,6 +3,7 @@ using CustomCADSolutions.Core.Services;
 using CustomCADSolutions.Infrastructure.Data;
 using CustomCADSolutions.Infrastructure.Data.Common;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +15,12 @@ builder.Services.AddDbContext<CADContext>(options => options.UseSqlServer(builde
 builder.Services.AddScoped<IRepository, Repository>();
 
 builder.Services.AddControllersWithViews();
-//builder.Services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<CustomCADSolutionsContext>();
+builder.Services.AddDefaultIdentity<IdentityUser>(options => 
+{
+    options.SignIn.RequireConfirmedAccount = true;
+    options.Password.RequireDigit = false;
+}
+).AddEntityFrameworkStores<CADContext>();
 
 var app = builder.Build();
 

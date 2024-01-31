@@ -1,6 +1,7 @@
 ﻿using CustomCADSolutions.App.Models;
 using CustomCADSolutions.Core.Contracts;
 using CustomCADSolutions.Core.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -21,11 +22,6 @@ namespace CustomCADSolutions.App.Controllers
         }
 
         public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        public IActionResult Test()
         {
             return View();
         }

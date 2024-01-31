@@ -3,6 +3,7 @@ using CustomCADSolutions.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using CustomCADSolutions.App.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CustomCADSolutions.App.Controllers
 {
@@ -25,7 +26,7 @@ namespace CustomCADSolutions.App.Controllers
 
         public async Task<IActionResult> Category(string category)
         {
-            await service.UpdateCads(true);
+            await service.UpdateCads();
 
             IEnumerable<CadModel> cads = category == "All" ?
                 await service.GetAllAsync() :
