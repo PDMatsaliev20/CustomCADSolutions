@@ -3,7 +3,7 @@ using CustomCADSolutions.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using CustomCADSolutions.App.Models;
-using Microsoft.AspNetCore.Authorization;
+using CustomCADSolutions.Models;
 
 namespace CustomCADSolutions.App.Controllers
 {
@@ -18,22 +18,15 @@ namespace CustomCADSolutions.App.Controllers
             this.logger = logger;
         }
 
-        public IActionResult Index()
-        {
-            string[] categories = typeof(Category).GetEnumNames();
-            return View(categories);
-        }
-
-        public async Task<IActionResult> Category(string category)
+        public async Task<IActionResult> Index(string category)
         {
             await service.UpdateCads();
 
-            IEnumerable<CadModel> cads = category == "All" ?
-                await service.GetAllAsync() :
-                (await service.GetAllAsync())
-                    .Where(cad => category == cad.Category.ToString());
-
-            ViewBag.Category = category;
+            IEnumerable<CadModel> cads = (await service.GetAllAsync()).Where(cad => cad.CreationDate.HasValue);
+            if (category != "All")
+            {
+                cads = cads.Where(cad => category == cad.Category.ToString());
+            }
 
             IEnumerable<CadViewModel> views = cads
                 .Select(cad => new CadViewModel
@@ -41,17 +34,39 @@ namespace CustomCADSolutions.App.Controllers
                     Name = cad.Name,
                     Url = cad.Url,
                     Category = cad.Category.ToString(),
-                    CreatedOn =
-                        (cad.CreationDate ?? throw new NullReferenceException())
-                        .ToString("dd:MM:yyyy HH:mm:ss"),
-                });
+                    CreatedDate = (cad.CreationDate ?? throw new NullReferenceException()).ToString("dd:MM:yyyy HH:mm:ss"),
+                })
+                .OrderBy(cad => cad.CreatedDate);
 
             return View(views);
         }
 
-        public IActionResult Submit()
+        [HttpGet]
+        public IActionResult Add()
         {
-            return View();
+            return View(new CadInputModel());
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Add(CadInputModel input)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Error();
+            }
+
+            CadModel cad = new()
+            {
+                Name = input.Name,
+                Category = input.Category!.Value,
+                CreationDate = DateTime.Now,
+                Url = input.Url,
+            };
+            await service.CreateAsync(cad);
+
+            return RedirectToAction(nameof(Index), routeValues: cad.Category);
+        }
+
+        private IActionResult Error() => RedirectToAction("Error", "Home");
     }
 }

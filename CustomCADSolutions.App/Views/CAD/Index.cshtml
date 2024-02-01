@@ -1,35 +1,19 @@
 ﻿@{
-    @model String[]
+    @using CustomCADSolutions.Core.Models
+    @model IEnumerable<CadViewModel>
 
 }
 
-<html>
-<head>
-    <link rel="stylesheet" href="~/css/cad/categories.css" />
-</head>
-<body>
+<h1 class="text-center mb-3">@Model.First().Category</h1>
 
-    <div class="container">
-
-        <div class="cell">
-            <a asp-area="" asp-controller="CAD" asp-action="Category" asp-route-category="All">
-                <img src="~/others/categories/All.png" alt="All" width="600px" height="400px">
-                <p class="desc"><b>All</b></p>
-            </a>
-        </div>
-
-        @for (int i = 0; i < Model.Length; i++)
+<div class="container text-center mt-5">
+    <div class="row">
+        @foreach (CadViewModel modelInfo in Model)
         {
-            string category = Model[i];
-            <div class="cell">
-                <a asp-area="" asp-controller="CAD" asp-action="Category" asp-route-category="@category">
-                    <img src="~/others/categories/@(category).png" alt="@category" width="600px" height="400px">
-                    <p class="desc"><b>@category</b></p>
-                </a>
+            <div class="col-4">
+                <iframe src="https://sketchfab.com/models/@modelInfo.Url/embed?annotations_visible=0&autospin=-0.1&autostart=0&preload=0&camera=1&double_click=0&internal=1&max_texture_size=1024&orbit_constraint_pan=1&scrollwheel=1&sound_enable=1&transparent=1&ui_animations=0&ui_annotations=0&ui_ar=0&ui_ar_help=0&ui_color=white&ui_fadeout=0&ui_fullscreen=0&ui_help=0&ui_infos=0&ui_inspector=0&ui_settings=0&ui_stop=0&ui_theatre=0&ui_theme=light&ui_vr=0&ui_watermark=0" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share> </iframe>
+                <p>@modelInfo.Name</p>
             </div>
         }
-
     </div>
-
-</body>
-</html>
+</div>

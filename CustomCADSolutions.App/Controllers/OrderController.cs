@@ -1,12 +1,8 @@
-﻿using CustomCADSolutions.App.Models;
-using CustomCADSolutions.Core.Contracts;
+﻿using CustomCADSolutions.Core.Contracts;
 using CustomCADSolutions.Core.Models;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
-using Microsoft.AspNetCore.Authorization;
+using CustomCADSolutions.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
-using System.Net.Mail;
-using System.Security;
 
 namespace CustomCADSolutions.App.Controllers
 {
@@ -20,27 +16,19 @@ namespace CustomCADSolutions.App.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
-            {
-            OrderViewModel input = new();
-            ViewData["Categories"] = typeof(Category).GetEnumValues();
-            return View(input);
-        }
+        public IActionResult Index() => View(new OrderInputModel());
 
         [HttpPost]
-        public async Task<IActionResult> Index(OrderViewModel input)
+        public async Task<IActionResult> Index(OrderInputModel input)
         {
             if (!ModelState.IsValid)
             {
-                ViewData["Categories"] = typeof(Category).GetEnumValues();
-                return View();
+                return Error();
             }
-
-            UserModel? buyer = service.GetAllUsers().FirstOrDefault(u => u.Username == u.Username);
 
             OrderModel model = new()
             {
-                Buyer = buyer ?? new UserModel { Username = "John Doe" },
+                Buyer = service.GetAllUsers().First(),
                 Description = input.Description,
                 OrderDate = DateTime.Now,
                 Cad = new CadModel()
@@ -52,15 +40,14 @@ namespace CustomCADSolutions.App.Controllers
 
             int id = await service.CreateAsync(model);
 
-            return RedirectToAction("Sent", new { id });
+            return RedirectToAction(nameof(Edit), new { id });
         }
 
         [HttpGet]
-        public async Task<IActionResult> Sent(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            ViewData["Categories"] = typeof(Category).GetEnumValues();
             OrderModel order = await service.GetByIdAsync(id);
-            OrderViewModel model = new()
+            OrderInputModel model = new()
             {
                 Id = id,
                 Name = order.Cad.Name,
@@ -68,25 +55,33 @@ namespace CustomCADSolutions.App.Controllers
                 Description = order.Description,
                 OrderDate = order.OrderDate,
             };
+
             return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Sent(OrderViewModel model)
+        public async Task<IActionResult> Edit(OrderInputModel model, int id)
         {
-            IEnumerable<OrderModel> orders = await service.GetAllAsync();
-            OrderModel order = orders.First(o => model.Id == o.Id);
+            if (!ModelState.IsValid)
+            {
+                return Error();
+            }
+
+            //Model's ID is saved seperately from the model itself
+            OrderModel order = (await service.GetAllAsync()).First(o => id == o.Id);
 
             order.Cad.Name = model.Name;
             order.Description = model.Description;
             order.Cad.Category = model.Category;
             await service.EditAsync(order);
 
-            return RedirectToAction("Sent", order.Id);
+            return RedirectToAction(nameof(CadController.Index), "Cad", routeValues: new { category = order.Cad.Category.ToString() });
         }
 
         private void SendToBorko()
         {
         }
+
+        private IActionResult Error() => RedirectToAction("Error", "Home");
     }
 }

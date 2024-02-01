@@ -10,7 +10,7 @@ namespace CustomCADSolutions.Infrastructure.Data.Models.Enums
 {
     public enum Category
     {
-        Characters = 1,
+        Characters,
         Animals,
         Toys,
         Architecture,

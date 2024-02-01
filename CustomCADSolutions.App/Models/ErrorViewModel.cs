@@ -1,4 +1,4 @@
-namespace CustomCADSolutions.App.Models
+namespace CustomCADSolutions.Models
 {
     public class ErrorViewModel
     {

@@ -1,7 +1,5 @@
-﻿using CustomCADSolutions.App.Models;
-using CustomCADSolutions.Core.Contracts;
-using CustomCADSolutions.Core.Models;
-using Microsoft.AspNetCore.Authorization;
+﻿using CustomCADSolutions.Infrastructure.Data.Models.Enums;
+using CustomCADSolutions.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -24,6 +22,12 @@ namespace CustomCADSolutions.App.Controllers
         public IActionResult Privacy()
         {
             return View();
+        }
+
+        public IActionResult Categories()
+        {
+            string[] categories = typeof(Category).GetEnumNames();
+            return View(categories);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

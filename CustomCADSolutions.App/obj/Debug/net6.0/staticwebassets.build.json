@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "OQiPDa0EV5Vj9EQR3R8SK5EC9JxnR7SU2JjZzb33Z2w=",
+  "Hash": "kbrB3pXJ9YvrH2Zc0bX0IFMfQHRkZiqCXR7jtz2KPwI=",
   "Source": "CustomCADSolutions",
   "BasePath": "_content/CustomCADSolutions",
   "Mode": "Default",
@@ -1214,25 +1214,6 @@
       "OriginalItemSpec": "wwwroot\\css\\cad\\categories.css"
     },
     {
-      "Identity": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\css\\cad\\category.css",
-      "SourceId": "CustomCADSolutions",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\",
-      "BasePath": "_content/CustomCADSolutions",
-      "RelativePath": "css/cad/category.css",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\css\\cad\\category.css"
-    },
-    {
       "Identity": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\css\\home\\index.css",
       "SourceId": "CustomCADSolutions",
       "SourceType": "Discovered",
@@ -1269,25 +1250,6 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\home\\layout.css"
-    },
-    {
-      "Identity": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\css\\order\\index.css",
-      "SourceId": "CustomCADSolutions",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\",
-      "BasePath": "_content/CustomCADSolutions",
-      "RelativePath": "css/order/index.css",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\css\\order\\index.css"
     },
     {
       "Identity": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\css\\order\\sent.css",

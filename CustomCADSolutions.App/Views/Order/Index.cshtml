@@ -1,52 +1,42 @@
-﻿@model OrderViewModel
+﻿@using CustomCADSolutions.Infrastructure.Data.Models.Enums
+@using CustomCADSolutions.Models
+@model OrderInputModel
 @{
-    @using CustomCADSolutions.Infrastructure.Data.Models.Enums
-    var categories = (ViewData["Categories"] as Category[])!;
+    var categories = (typeof(Category).GetEnumValues() as Category[])!;
+    ViewData["Title"] = "Describe your design here: ";
 }
 
-<html>
-<head>
-    <link rel="stylesheet" href="~/css/order/index.css" />
-</head>
-<body>
-
-    <section id="container">
-        <h1 id="title">Describe your design here: </h1>
-        <section>
-            <form asp-action="Index" method="post" autocomplete="off">
-                <div class="mb-3 field">
-                    <label asp-for="Name" class="form-label">Name</label>
-                    <input style="width:500px" asp-for="Name" class="form-control" aria-required="true" />
-                    <span asp-validation-for="Name" class="text-danger"></span>
-                </div>
-                <div class="mb-3 field">
-                    <label asp-for="Category" class="form-label">Category</label>
-                    <select style="width:500px" asp-for="Category" class="form-control" aria-required="true">
-                        <option value="@null" selected>None</option>
-                        @foreach (Category category in categories)
-                        {
-                            <option value="@category">@category</option>
-                        }
-                    </select>
-                    <span asp-validation-for="Category" class="text-danger"></span>
-                </div>
-                <div class="mb-3 field">
-                    <label asp-for="Description" class="form-label-add-edit">Description</label>
-                    <textarea style="width: 500px" asp-for="Description" class="form-control" aria-required="true" rows="5"></textarea>
-                    <span asp-validation-for="Description" class="text-danger"></span>
-                </div>
-                <div id="button" class="mb-3">
-                    <input class="btn btn-primary" type="submit" value="Order" />
-                </div>
-
-            </form>
-        </section>
-    </section>
-</body>
-</html>
+<h1 class="text-center">@ViewData["Title"]</h1>
+<br />
+<div class="d-flex justify-content-center">
+    <form class="d-flex flex-column align-items-center" method="post" autocomplete="off">
+        <div>
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label"></label>
+                <input asp-for="Name" class="form-control" placeholder="Name..." />
+                <span asp-validation-for="@Model.Name" class="small text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Category" class="form-label">Category</label>
+                <select asp-for="Category" class="form-control">
+                    <option value="@null" selected>None</option>
+                    @foreach (Category category in categories)
+                    {
+                        <option value="@category.(int)">@category</option>
+                    }
+                </select>
+                <span asp-validation-for="Category" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Description" class="form-label-add-edit">Description</label>
+                <textarea style="width: 500px" asp-for="Description" class="form-control" rows="5" placeholder="Description..."></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+        </div>
+        <input class="btn btn-primary mt-3" type="submit" value="Order" />
+    </form>
+</div>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    <partial name="_ValidationScriptsPartial" />
 }
