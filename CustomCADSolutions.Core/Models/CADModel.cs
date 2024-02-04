@@ -15,12 +15,11 @@ namespace CustomCADSolutions.Core.Models
         public DateTime? CreationDate { get; set; }
 
         [Required]  
-        public string Url { get; set; } = null!;
+        public string? Url { get; set; } = null!;
 
         [Required(ErrorMessage = "Category is required!")]
         public Category Category { get; set; }
 
-        [Required]
-        public ICollection<OrderModel>? Orders { get; set; }
+        public OrderModel? Order { get; set; }
     }
 }

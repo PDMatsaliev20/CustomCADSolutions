@@ -3,16 +3,17 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 
-namespace CustomCADSolutions.Models
+namespace CustomCADSolutions.App.Models
 {
     public class OrderViewModel
     {
+        public int Id { get; set; }
         public string Name { get; set; } = null!;
 
-        public Category Category { get; set; }
+        public string Category { get; set; } = null!;
 
         public string Description { get; set; } = null!;
 
-        public DateTime OrderDate { get; set; }
+        public string OrderDate { get; set; } = null!;
     }
 }

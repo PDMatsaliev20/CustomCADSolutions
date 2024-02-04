@@ -1,4 +1,10 @@
-﻿<!DOCTYPE html>
+﻿@using CustomCADSolutions.Infrastructure.Data.Models.Enums
+@{
+    string[] categories = string.Join(" ", "All", string.Join(" ", (typeof(Category).GetEnumValues() as Category[])!)).Split();
+    //int rows = 5;
+    //int cols = 3;
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <title>CustomCADSolutions</title>
@@ -8,50 +14,110 @@
 
     <link rel="shortcut icon" type="image/x-icon" href="~/others/images/favicon.ico" />
 
-    <link rel="stylesheet" href="~/css/home/layout.css" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <style>
+        body {
+            background-color: #DDDDDD !important;
+        }
+
+        header nav {
+            background-color: #BBB9D9 !important;
+        }
+
+        #logo {
+            width: 9vh;
+            height: 9vh;
+        }
+
+        header img:hover {
+            opacity: 60%;
+        }
+
+        header li {
+            font-size: 2vw;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            display: grid;
+            width: 33vw;
+        }
+
+    </style>
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <button class="navbar-toggler toggler fade-in" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler toggler fade-in" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon toggler-icon"></span>
                 </button>
-
-                <a id="logo" class="fade-in" asp-area="" asp-controller="Home" asp-action="Index">
-                    <img class="logo" src="~/others/images/logo.png">
+                <a id="logo" class="fade-in me-3" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img class="mw-100 h-auto" src="~/others/images/logo.png">
                 </a>
 
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul id="buttons" class="fade-in navbar-nav flex-grow-1">
-                        <li id="hbtn1" class="nav-item fade-in">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Categories">Explore</a>
+                    <ul class="justify-content-start fade-in navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index" role="button">Home</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Cad" asp-action="Categories" role="button">Categories</a>
+                        </li>
+                        <!--
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" asp-area="" asp-controller="Home" asp-action="Categories" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Categories
+                            </a>
+                            <div class="dropdown-menu multi-column" aria-labelledby="navbarDropdown">
+                                <div class="container-fluid d-grid">
+                        @{
+                            /*
+    @for (int i = 0; i < rows; i++)
+    {
+        <div class="row mx-0">
+                            @for (int j = 0; j < cols; j++)
+                            {
+                                if (categories.Length > j + i * cols)
+                                {
+                                    string category = categories[j + i * cols];
+                                    <div class="col-md-4 h-auto">
+                                        <a class="dropdown-item" asp-controller="Cad" asp-action="Index" asp-route-category="@category">
+                                            <p class="align-items-center text-center fw-bold">@category</p>
+                                        </a>
+                                    </div>
+                                }
+                            }
+        </div>
+    }
+    */
+                        }
+                                </div>
+                            </div>
+                        </li>
+                        -->
                     </ul>
 
-                    <ul id="register" class="fade-in navbar-nav flex-grow-1">
-                        <li id="hbtn3" class="fade-in text-dark fw-bold">
-                            <a class="fade-in nav-link text-dark fw-bold">Log-in</a>
+                    <ul class="justify-content-end fade-in navbar-nav flex-grow-1">
+                        <li id="hbtn2" class="fade-in text-dark fw-bold">
+                            <a class="fade-in nav-link text-dark fw-bold" asp-controller="Home" asp-action="LogIn">Log-in</a>
                         </li>
-                        <li id="hbtn4" class="fade-in text-dark fw-bold">
-                            <a class="fade-in nav-link text-dark fw-bold">Sign-up</a>
+                        <li id="hbtn3" class="fade-in text-dark fw-bold">
+                            <a class="fade-in nav-link text-dark fw-bold" asp-controller="Home" asp-action="SignUp">Sign-up</a>
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
-
-    <section>
-        <main role="main" >
+    <div class="container">
+        <main role="main" class="pb-3">
             @RenderBody()
-        </main> 
-    </section>
+        </main>
+    </div>
 
     <hr />
 
-    <footer class="footer">
+    <footer class="footer position-relative w-100 bottom-0 left-0">
         <p class="container text-dark">&copy; 2023 - CustomCADSolutions - <a class="text-dark" asp-area="" asp-controller="Home" asp-action="Privacy"><b>Privacy Policy</b></a></p>
     </footer>
 

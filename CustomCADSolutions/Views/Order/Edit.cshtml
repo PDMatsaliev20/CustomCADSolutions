@@ -1,0 +1,44 @@
+﻿@using CustomCADSolutions.Infrastructure.Data.Models.Enums
+@using CustomCADSolutions.Models
+@model OrderInputModel
+@{
+    Category[] categories = (typeof(Category).GetEnumValues() as Category[])!;
+    ViewData["Title"] = $"Edit {Model.Name}";
+}
+
+<h3 class="text-center mb-3">@ViewData["Title"]</h3>
+<div class="container">
+    <form id="form" method="post" autocomplete="off" asp-route-id="@Model.Id">
+        <div>
+            <div>
+                <label asp-for="Name"></label>
+                <input asp-for="Name" class="form-control" placeholder="Write the name of your wanted 3d model here..." />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Description"></label>
+                <textarea asp-for="Description" class="form-control" placeholder="Write the description of your wanted 3d model here..."></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Category"></label>
+                <select asp-for="Category" class="form-control" aria-required="true">
+                    @foreach (Category category in categories)
+                    {
+                        <option value="@category">@category</option>
+                    }
+                </select>
+                <span asp-validation-for="Category" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <input class="btn btn-primary" type="submit" value="Submit changes" />
+        </div>
+    </form>
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

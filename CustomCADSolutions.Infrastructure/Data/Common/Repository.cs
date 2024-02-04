@@ -4,9 +4,9 @@ namespace CustomCADSolutions.Infrastructure.Data.Common
 {
     public class Repository : IRepository
     {
-        private readonly CADContext context;
+        private readonly CustomCADSolutionsContext context;
 
-        public Repository(CADContext context)
+        public Repository(CustomCADSolutionsContext context)
         {
             this.context = context;
         }

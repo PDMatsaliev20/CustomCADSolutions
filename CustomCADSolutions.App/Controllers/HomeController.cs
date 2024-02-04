@@ -1,5 +1,4 @@
-﻿using CustomCADSolutions.Infrastructure.Data.Models.Enums;
-using CustomCADSolutions.Models;
+﻿using CustomCADSolutions.App.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -16,23 +15,30 @@ namespace CustomCADSolutions.App.Controllers
 
         public IActionResult Index()
         {
+            logger.LogInformation("Entered Home Page");
             return View();
         }
 
         public IActionResult Privacy()
         {
+            logger.LogInformation("Entered Privacy Policy Page");
             return View();
         }
 
-        public IActionResult Categories()
+        public IActionResult SignUp()
         {
-            string[] categories = typeof(Category).GetEnumNames();
-            return View(categories);
+            return View();
+        }
+
+        public IActionResult LogIn()
+        {
+            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
+            logger.LogInformation("Entered Error Page");
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }

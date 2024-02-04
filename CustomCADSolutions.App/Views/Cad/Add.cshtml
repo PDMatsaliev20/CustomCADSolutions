@@ -1,5 +1,4 @@
 ﻿@using CustomCADSolutions.Infrastructure.Data.Models.Enums
-@using CustomCADSolutions.Models
 @model CadInputModel
 @{
     ViewData["Title"] = "Add 3D models";
@@ -7,10 +6,10 @@
 }
 
 
-<h1 class="text-center">@ViewData["Title"]</h1>
-<br />
-<div class="d-flex justify-content-center">
-    <form class="d-flex flex-column align-items-center" method="post" autocomplete="off">
+<h2 class="text-center mb-2">@ViewData["Title"]</h2>
+<hr />
+<div class="d-flex justify-content-center mt-4">
+    <form method="post" autocomplete="off">
         <div>
             <div class="mb-3">
                 <label asp-for="Name" class="form-label"></label>

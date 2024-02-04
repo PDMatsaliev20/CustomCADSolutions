@@ -5,20 +5,8 @@
       "PackagePath": "staticwebassets\\CustomCADSolutions.bundle.scp.css"
     },
     {
-      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\css\\cad\\categories.css",
-      "PackagePath": "staticwebassets\\css\\cad\\categories.css"
-    },
-    {
-      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\css\\home\\index.css",
-      "PackagePath": "staticwebassets\\css\\home\\index.css"
-    },
-    {
-      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\css\\home\\layout.css",
-      "PackagePath": "staticwebassets\\css\\home\\layout.css"
-    },
-    {
-      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\css\\order\\sent.css",
-      "PackagePath": "staticwebassets\\css\\order\\sent.css"
+      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\css\\index.css",
+      "PackagePath": "staticwebassets\\css\\index.css"
     },
     {
       "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\js\\site.js",

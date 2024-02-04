@@ -20,23 +20,26 @@ namespace CustomCADSolutions.Core.Services
 
         public async Task<int> CreateAsync(OrderModel entity)
         {
-            if (entity.Cad == null)
+            if (entity.Cad == null || entity.Buyer == null)
             {
-                throw new ArgumentNullException();
+                throw new NullReferenceException();
             }
 
             Cad cad = new()
             {
                 Name = entity.Cad.Name,
                 Category = entity.Cad.Category,
-                Url = String.Empty,
-                CreationDate = null,
             };
+
+            User buyer = repository
+                .All<User>()
+                .First(u => u.Id == entity.Buyer.Id)
+                ?? new User { Username = entity.Buyer.Username, };
 
             Order order = new()
             {
                 Cad = cad,
-                Buyer = new User { Username = entity.Buyer.Username },
+                Buyer = buyer,
                 Description = entity.Description,
                 OrderDate = entity.OrderDate,
             };
@@ -108,7 +111,43 @@ namespace CustomCADSolutions.Core.Services
                 .FirstOrDefaultAsync(o => o.Id == id)
                 ?? throw new KeyNotFoundException();
 
-            OrderModel model = new()
+            OrderModel model = ConvertEntityToModel(order);
+
+            return model;
+        }
+        
+        public IEnumerable<UserModel> GetAllUsers()
+        {
+            return repository
+                .All<User>()
+                .Select(u => new UserModel
+                {
+                    Id = u.Id,
+                    Username = u.Username,
+                    Orders = u.Orders
+                        .Select(o => new OrderModel
+                        {
+                            Id = o.Id,
+                            CadId = o.CadId,
+                            Description = o.Description,
+                            OrderDate = o.OrderDate,
+                            Cad = repository
+                                .All<Cad>()
+                                .Select(c => new CadModel() 
+                                {
+                                    Id = c.Id,
+                                    Name = c.Name,
+                                    Category = c.Category, 
+                                })
+                                .First(c => c.Id == o.CadId)
+                        })
+                        .ToArray()
+                }).ToArray();
+        }
+
+        private OrderModel ConvertEntityToModel(Order order)
+        {
+            return new()
             {
                 Id = order.Id,
                 CadId = order.CadId,
@@ -127,30 +166,25 @@ namespace CustomCADSolutions.Core.Services
                 {
                     Id = order.BuyerId,
                     Username = order.Buyer.Username,
-                },
-            };
-
-            return model;
-        }
-        public IEnumerable<UserModel> GetAllUsers()
-        {
-            return repository
-                .All<User>()
-                .Select(u => new UserModel
-                {
-                    Id = u.Id,
-                    Username = u.Username,
-                    Orders = repository
-                        .All<Order>()
-                        .Where(o => o.BuyerId == u.Id)
-                        .Select(o => new OrderModel
+                    Orders = order.Buyer.Orders.Select(o => new OrderModel()
+                    {
+                        Id = o.Id,
+                        CadId = o.CadId,
+                        BuyerId = o.BuyerId,
+                        Description = o.Description,
+                        OrderDate = o.OrderDate,
+                        Cad = new CadModel
                         {
-                            CadId = o.CadId,
-                            Description = o.Description,
-                            OrderDate = o.OrderDate,
-                        })
-                        .ToArray()
-                }).ToArray();
+                            Id = o.CadId,
+                            Name = o.Cad.Name,
+                            Category = o.Cad.Category,
+                            Url = o.Cad.Url,
+                            CreationDate = o.Cad.CreationDate,
+                        },
+                    })
+                    .ToArray()
+                }
+            };
         }
     }
 }

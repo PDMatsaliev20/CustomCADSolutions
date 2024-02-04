@@ -1,0 +1,19 @@
+﻿using CustomCADSolutions.Infrastructure.Data.Models;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CustomCADSolutions.App.Models
+{
+    public class CadViewModel
+    {
+        public string Name { get; set; } = null!;
+        public string Category { get; set; } = null!;
+        public string CreatedDate { get; set; } = null!;
+        public string Url { get; set; } = null!;
+    }
+}

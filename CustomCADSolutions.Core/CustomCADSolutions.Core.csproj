@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Constants\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\CustomCADSolutions.Infrastructure\CustomCADSolutions.Infrastructure.csproj" />
   </ItemGroup>
 

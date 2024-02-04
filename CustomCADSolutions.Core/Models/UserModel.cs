@@ -1,4 +1,4 @@
-﻿using CustomCADSolutions.Core.Models;
+﻿using static CustomCADSolutions.Infrastructure.Constants.DataConstants;
 using System.ComponentModel.DataAnnotations;
 
 namespace CustomCADSolutions.Core.Models
@@ -8,10 +8,11 @@ namespace CustomCADSolutions.Core.Models
         [Key]
         public int Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = RequiredErrorMessage)]
+        [StringLength(User.UsernameMaxLength, MinimumLength = User.UsernameMinLength, ErrorMessage = LengthErrorMessage)]
         public string Username { get; set; } = null!;
 
-        [Required]
+        [Required(ErrorMessage = RequiredErrorMessage)]
         public ICollection<OrderModel> Orders { get; set; } = new List<OrderModel>();
     }
 }

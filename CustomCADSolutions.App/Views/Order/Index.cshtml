@@ -1,6 +1,7 @@
 ﻿@using CustomCADSolutions.Infrastructure.Data.Models.Enums
-@using CustomCADSolutions.Models
+@using System.ComponentModel.DataAnnotations
 @model OrderInputModel
+
 @{
     var categories = (typeof(Category).GetEnumValues() as Category[])!;
     ViewData["Title"] = "Describe your design here: ";
@@ -17,18 +18,18 @@
                 <span asp-validation-for="@Model.Name" class="small text-danger"></span>
             </div>
             <div class="mb-3">
-                <label asp-for="Category" class="form-label">Category</label>
+                <label asp-for="Category" class="form-label"></label>
                 <select asp-for="Category" class="form-control">
                     <option value="@null" selected>None</option>
                     @foreach (Category category in categories)
                     {
-                        <option value="@category.(int)">@category</option>
+                        <option value="@((int)category)">@category</option>
                     }
                 </select>
                 <span asp-validation-for="Category" class="text-danger"></span>
             </div>
             <div class="mb-3">
-                <label asp-for="Description" class="form-label-add-edit">Description</label>
+                <label asp-for="Description" class="form-label"></label>
                 <textarea style="width: 500px" asp-for="Description" class="form-control" rows="5" placeholder="Description..."></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>

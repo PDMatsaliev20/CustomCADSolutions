@@ -27,15 +27,17 @@ namespace CustomCADSolutions.Core.Services
                     CreationDate = DateTime.Now,
                     Category = model.Category,
                     Url = model.Url,
-                    Orders = model.Orders?
-                        .Select(o => new Order
-                        {
-                            Description = o.Description,
-                            OrderDate = o.OrderDate
-                        })
-                        .ToArray()
-                        ?? Array.Empty<Order>()
                 };
+
+                if (model.Order != null)
+                {
+                    cad.Order = new Order
+                    {
+                        Description = model.Order.Description,
+                        OrderDate = model.Order.OrderDate
+                    };
+                }
+
                 cads.Add(cad);
             }
             await this.repository.AddRangeAsync<Cad>(cads.ToArray());
@@ -50,7 +52,7 @@ namespace CustomCADSolutions.Core.Services
             {
                 repository.Delete<Cad>(cad);
             }
-            
+
             await repository.SaveChangesAsync();
         }
 
@@ -92,8 +94,8 @@ namespace CustomCADSolutions.Core.Services
                 {
                     Id = cad.Id,
                     Name = cad.Name,
-                    CreationDate = cad.CreationDate,
                     Category = cad.Category,
+                    CreationDate = cad.CreationDate,
                     Url = cad.Url,
                 })
                 .ToListAsync();
@@ -118,6 +120,7 @@ namespace CustomCADSolutions.Core.Services
             return model;
         }
 
+        //Might need it in the future
         public async Task UpdateCads(bool shouldResetDb = false)
         {
             if (shouldResetDb)
@@ -127,15 +130,15 @@ namespace CustomCADSolutions.Core.Services
 
             var defaultCads = repository
                 .AllReadonly<Cad>()
-                .Where(cad => !cad.Orders.Any())
+                .Where(cad => !cad.CreationDate.HasValue)
                 .Select(cad => cad.Id)
                 .ToArray();
 
             await DeleteRangeAsync(defaultCads);
-            
+
             string json = await File.ReadAllTextAsync("categories.json");
             CadModel[] cadDTOs = JsonSerializer.Deserialize<CadModel[]>(json)!;
-            
+
             await CreateAsync(cadDTOs);
             await repository.SaveChangesAsync();
         }

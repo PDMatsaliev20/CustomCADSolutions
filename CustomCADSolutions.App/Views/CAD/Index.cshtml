@@ -1,10 +1,9 @@
-﻿@{
-    @using CustomCADSolutions.Core.Models
-    @model IEnumerable<CadViewModel>
-
+﻿@model IEnumerable<CadViewModel>
+@{
+    string category = ViewBag.Category == "All" ? ViewBag.Category : "All 3D Models";
 }
 
-<h1 class="text-center mb-3">@Model.First().Category</h1>
+<h1 class="text-center mb-3">@category</h1>
 
 <div class="container text-center mt-5">
     <div class="row">

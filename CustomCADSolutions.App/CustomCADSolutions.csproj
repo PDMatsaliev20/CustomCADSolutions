@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>ac9b9c48-a789-4ddc-9cc0-04c2c7984a89</UserSecretsId>
+    
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,8 +14,6 @@
 
   <ItemGroup>
     <None Include="categories.json" />
-    <None Include="wwwroot\css\home\index.css" />
-    <None Include="wwwroot\css\cad\categories.css" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,6 +23,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.26" />
   </ItemGroup>
 
   <ItemGroup>
