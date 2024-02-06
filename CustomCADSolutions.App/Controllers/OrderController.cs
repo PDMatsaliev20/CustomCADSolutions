@@ -5,7 +5,6 @@ using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using NuGet.Versioning;
 
 namespace CustomCADSolutions.App.Controllers
 {
@@ -29,14 +28,35 @@ namespace CustomCADSolutions.App.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
+        {
+            logger.LogInformation("Entered All Orders Page");
+            IdentityUser user = await userManager.Users.FirstAsync();
+
+            IEnumerable<OrderViewModel> orders = (await orderService.GetAllAsync())
+                .Where(o => o.BuyerId == user.Id)
+                .Select(o => new OrderViewModel
+                {
+                    Id = o.Id,
+                    Category = o.Cad.Category.ToString(),
+                    Name = o.Cad.Name,
+                    Description = o.Description,
+                    OrderDate = o.OrderDate.ToString("dd/MM/yyyy HH:mm:ss"),
+                });
+
+            ViewBag.UserName = string.Empty;
+            return View(orders);
+        }
+
+        [HttpGet]
+        public IActionResult Add()
         {
             logger.LogInformation("Entered Order Page");
             return View(new OrderInputModel());
         }
 
         [HttpPost]
-        public async Task<IActionResult> Index(OrderInputModel input)
+        public async Task<IActionResult> Add(OrderInputModel input)
         {
             if (!ModelState.IsValid)
             {
@@ -58,7 +78,7 @@ namespace CustomCADSolutions.App.Controllers
             int id = await orderService.CreateAsync(model);
 
             logger.LogInformation("Ordered 3d model");
-            return RedirectToAction(nameof(All));
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]
@@ -97,28 +117,7 @@ namespace CustomCADSolutions.App.Controllers
             await orderService.EditAsync(order);
 
             logger.LogInformation("Edited Order");
-            return RedirectToAction(nameof(All));
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> All()
-        {
-            logger.LogInformation("Entered All Orders Page");
-            IdentityUser user = await userManager.Users.FirstAsync();
-
-            IEnumerable<OrderViewModel> orders = (await orderService.GetAllAsync())
-                .Where(o => o.BuyerId == user.Id)
-                .Select(o => new OrderViewModel
-                {
-                    Id = o.Id,
-                    Category = o.Cad.Category.ToString(),
-                    Name = o.Cad.Name,
-                    Description = o.Description,
-                    OrderDate = o.OrderDate.ToString("dd/MM/yyyy HH:mm:ss"),
-                });
-
-            ViewBag.UserName = string.Empty;
-            return View(orders);
+            return RedirectToAction(nameof(Index));
         }
     }
 }

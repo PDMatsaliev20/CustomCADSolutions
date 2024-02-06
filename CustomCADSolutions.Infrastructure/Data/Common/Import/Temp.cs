@@ -20,7 +20,7 @@ namespace CustomCADSolutions.Infrastructure.Data.Common
                     Id = i + 1,
                     Name = cadDTOs[i].Name,
                     Url = cadDTOs[i].Url,
-                    Category = (Category)(i / 15 + 1),
+                    Category = (Category)(i / 10 + 1),
                 };
             }
 
