@@ -1,9 +1,8 @@
 ﻿using CustomCADSolutions.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System.Reflection.Emit;
 
-namespace CustomCADSolutions.Infrastructure.Data.Configuration
+namespace CustomCADSolutions.Infrastructure.Data.Common
 {
     public class OrderConfiguration : IEntityTypeConfiguration<Order>
     {

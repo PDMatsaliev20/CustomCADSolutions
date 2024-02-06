@@ -5,35 +5,33 @@
     ViewData["Title"] = $"Edit {Model.Name}";
 }
 
-<h3 class="text-center mb-3">@ViewData["Title"]</h3>
-<div class="container">
-    <form id="form" method="post" autocomplete="off" >
-        <div>
-            <input asp-for="Id" type="hidden" />
-            <div>
-                <label asp-for="Name"></label>
-                <input asp-for="Name" class="form-control" placeholder="Write the name of your wanted 3d model here..." />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="mb-3">
-                <label asp-for="Description"></label>
-                <textarea asp-for="Description" class="form-control" placeholder="Write the description of your wanted 3d model here..."></textarea>
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="mb-3">
-                <label asp-for="Category"></label>
-                <select asp-for="Category" class="form-control" aria-required="true">
-                    @foreach (Category category in categories)
-                    {
-                        <option value="@((int)category)">@category</option>
-                    }
-                </select>
-                <span asp-validation-for="Category" class="text-danger"></span>
-            </div>
-        </div>
-
+<h2 class="text-center mb-3">@ViewData["Title"]</h2>
+<hr />
+<div class="container d-flex justify-content-center">
+    <form class="row" method="post" autocomplete="off">
+        <input asp-for="Id" type="hidden" />
         <div class="mb-3">
-            <input class="btn btn-primary" type="submit" value="Submit changes" />
+            <label asp-for="Name" class="form-label"></label>
+            <input asp-for="Name" class="form-control" placeholder="Write the name of your wanted 3d model here..." />
+            <span asp-validation-for="@Model.Name" class="small text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Category" class="form-label"></label>
+            <select asp-for="Category" class="form-control">
+                @foreach (Category category in categories)
+                {
+                    <option value="@((int)category)">@category</option>
+                }
+            </select>
+            <span asp-validation-for="@Model.Category" class="small text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Description" class="form-label"></label>
+            <textarea asp-for="Description" class="form-control" rows="5" placeholder="Write the description of your wanted 3d model here..."></textarea>
+            <span asp-validation-for="@Model.Description" class="text-danger"></span>
+        </div>
+        <div class="col-12">
+            <input class="btn btn-primary mt-3" type="submit" value="Edit" />
         </div>
     </form>
 </div>

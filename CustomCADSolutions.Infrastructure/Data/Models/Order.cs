@@ -1,4 +1,5 @@
 ﻿using CustomCADSolutions.Infrastructure.Constants;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -17,7 +18,7 @@ namespace CustomCADSolutions.Infrastructure.Data.Models
 
         [Required]
         [Comment("Identification of User")]
-        public int BuyerId { get; set; }
+        public string BuyerId { get; set; } = null!;
 
         [Required]
         [Comment("Description of Order")]
@@ -32,6 +33,6 @@ namespace CustomCADSolutions.Infrastructure.Data.Models
         public Cad Cad { get; set; } = null!;
 
         [ForeignKey(nameof(BuyerId))]
-        public User Buyer { get; set; } = null!;
+        public IdentityUser Buyer { get; set; } = null!;
     }
 }

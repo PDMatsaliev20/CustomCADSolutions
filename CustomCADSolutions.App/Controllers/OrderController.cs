@@ -2,7 +2,10 @@
 using CustomCADSolutions.Core.Contracts;
 using CustomCADSolutions.Core.Models;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using NuGet.Versioning;
 
 namespace CustomCADSolutions.App.Controllers
 {
@@ -10,11 +13,19 @@ namespace CustomCADSolutions.App.Controllers
     {
         private readonly IOrderService orderService;
         private readonly ILogger logger;
+        private readonly UserManager<IdentityUser> userManager;
+        private readonly SignInManager<IdentityUser> signInManager;
 
-        public OrderController(IOrderService service, ILogger<OrderController> logger)
+        public OrderController(
+            ILogger<OrderController> logger, 
+            IOrderService orderService, 
+            UserManager<IdentityUser> userManager,
+            SignInManager<IdentityUser> signInManager)
         {
-            this.orderService = service;
+            this.orderService = orderService;
             this.logger = logger;
+            this.userManager = userManager;
+            this.signInManager = signInManager;
         }
 
         [HttpGet]
@@ -37,7 +48,7 @@ namespace CustomCADSolutions.App.Controllers
             {
                 Description = input.Description,
                 OrderDate = DateTime.Now,
-                Buyer = orderService.GetAllUsers().First(),
+                Buyer = await userManager.Users.FirstAsync(),
                 Cad = new CadModel()
                 {
                     Name = input.Name,
@@ -47,7 +58,7 @@ namespace CustomCADSolutions.App.Controllers
             int id = await orderService.CreateAsync(model);
 
             logger.LogInformation("Ordered 3d model");
-            return RedirectToAction(nameof(Edit), new { id });
+            return RedirectToAction(nameof(All));
         }
 
         [HttpGet]
@@ -86,16 +97,17 @@ namespace CustomCADSolutions.App.Controllers
             await orderService.EditAsync(order);
 
             logger.LogInformation("Edited Order");
-            return RedirectToAction(nameof(All), routeValues: new { order.Buyer.Id });
+            return RedirectToAction(nameof(All));
         }
 
         [HttpGet]
-        public IActionResult All(int id)
+        public async Task<IActionResult> All()
         {
             logger.LogInformation("Entered All Orders Page");
-            UserModel user = orderService.GetAllUsers().First(u => u.Id == id);
+            IdentityUser user = await userManager.Users.FirstAsync();
 
-            IEnumerable<OrderViewModel> orders = user.Orders
+            IEnumerable<OrderViewModel> orders = (await orderService.GetAllAsync())
+                .Where(o => o.BuyerId == user.Id)
                 .Select(o => new OrderViewModel
                 {
                     Id = o.Id,
@@ -105,12 +117,8 @@ namespace CustomCADSolutions.App.Controllers
                     OrderDate = o.OrderDate.ToString("dd/MM/yyyy HH:mm:ss"),
                 });
 
-            ViewBag.UserName = user.Username;
+            ViewBag.UserName = string.Empty;
             return View(orders);
-        }
-
-        private void SendToBorko()
-        {
         }
     }
 }

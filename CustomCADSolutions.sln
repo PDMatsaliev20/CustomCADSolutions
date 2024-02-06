@@ -3,11 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34316.72
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomCADSolutions", "CustomCADSolutions.App\CustomCADSolutions.csproj", "{BEB1617C-95C8-449E-9915-67F71C53BE32}"
-	ProjectSection(ProjectDependencies) = postProject
-		{80B4560A-B2CC-438B-90C6-62FE1CDEC197} = {80B4560A-B2CC-438B-90C6-62FE1CDEC197}
-	EndProjectSection
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomCADSolutions.Core", "CustomCADSolutions.Core\CustomCADSolutions.Core.csproj", "{80B4560A-B2CC-438B-90C6-62FE1CDEC197}"
 	ProjectSection(ProjectDependencies) = postProject
 		{FD68ACFD-29B1-4F52-A7C9-5203DF60FE7C} = {FD68ACFD-29B1-4F52-A7C9-5203DF60FE7C}
@@ -15,16 +10,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomCADSolutions.Core", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomCADSolutions.Infrastructure", "CustomCADSolutions.Infrastructure\CustomCADSolutions.Infrastructure.csproj", "{FD68ACFD-29B1-4F52-A7C9-5203DF60FE7C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomCADSolutions.App", "CustomCADSolutions.App\CustomCADSolutions.App.csproj", "{83A353B2-5F7E-495C-B411-6EBC003AB58C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{BEB1617C-95C8-449E-9915-67F71C53BE32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BEB1617C-95C8-449E-9915-67F71C53BE32}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BEB1617C-95C8-449E-9915-67F71C53BE32}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BEB1617C-95C8-449E-9915-67F71C53BE32}.Release|Any CPU.Build.0 = Release|Any CPU
 		{80B4560A-B2CC-438B-90C6-62FE1CDEC197}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{80B4560A-B2CC-438B-90C6-62FE1CDEC197}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{80B4560A-B2CC-438B-90C6-62FE1CDEC197}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -33,6 +26,10 @@ Global
 		{FD68ACFD-29B1-4F52-A7C9-5203DF60FE7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FD68ACFD-29B1-4F52-A7C9-5203DF60FE7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FD68ACFD-29B1-4F52-A7C9-5203DF60FE7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83A353B2-5F7E-495C-B411-6EBC003AB58C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83A353B2-5F7E-495C-B411-6EBC003AB58C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83A353B2-5F7E-495C-B411-6EBC003AB58C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83A353B2-5F7E-495C-B411-6EBC003AB58C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<CadViewModel>
 @{
-    string category = ViewBag.Category == "All" ? ViewBag.Category : "All 3D Models";
+    string category = ViewBag.Category == "All" ? "All 3D Models" : ViewBag.Category;
 }
 
 <h1 class="text-center mb-3">@category</h1>

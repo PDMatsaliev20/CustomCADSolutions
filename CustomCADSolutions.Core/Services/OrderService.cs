@@ -2,47 +2,30 @@
 using CustomCADSolutions.Core.Models;
 using CustomCADSolutions.Infrastructure.Data.Common;
 using CustomCADSolutions.Infrastructure.Data.Models;
-using CustomCADSolutions.Infrastructure.Data.Models.Enums;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
-using System.Net.Http.Headers;
 
 namespace CustomCADSolutions.Core.Services
 {
     public class OrderService : IOrderService
     {
         private readonly IRepository repository;
+        private readonly UserManager<IdentityUser> userManager;
 
-        public OrderService(IRepository repository)
+        public OrderService(IRepository repository, UserManager<IdentityUser> userManager)
         {
             this.repository = repository;
+            this.userManager = userManager;
+
         }
 
-        public async Task<int> CreateAsync(OrderModel entity)
+        public async Task<int> CreateAsync(OrderModel model)
         {
-            if (entity.Cad == null || entity.Buyer == null)
+            if (model.Cad == null || model.Buyer == null)
             {
                 throw new NullReferenceException();
             }
-
-            Cad cad = new()
-            {
-                Name = entity.Cad.Name,
-                Category = entity.Cad.Category,
-            };
-
-            User buyer = repository
-                .All<User>()
-                .First(u => u.Id == entity.Buyer.Id)
-                ?? new User { Username = entity.Buyer.Username, };
-
-            Order order = new()
-            {
-                Cad = cad,
-                Buyer = buyer,
-                Description = entity.Description,
-                OrderDate = entity.OrderDate,
-            };
+            Order order = await ConvertModelToEntity(model);
 
             await repository.AddAsync<Order>(order);
             await repository.SaveChangesAsync();
@@ -59,56 +42,28 @@ namespace CustomCADSolutions.Core.Services
             }
         }
 
-        public async Task EditAsync(OrderModel entity)
+        public async Task EditAsync(OrderModel model)
         {
             Order order = repository
                 .All<Order>()
-                .FirstOrDefault(order => order.CadId == entity.CadId
-                                      && order.BuyerId == entity.BuyerId)
+                .FirstOrDefault(order => order.CadId == model.CadId
+                                      && order.BuyerId == model.BuyerId)
                 ?? throw new NullReferenceException();
 
 
-            order.Description = entity.Description;
-            order.Cad.Name = entity.Cad.Name;
-            order.Cad.Url = entity.Cad.Url;
-            order.Cad.Category = entity.Cad.Category;
+            order.Description = model.Description;
+            order.Cad.Name = model.Cad.Name;
+            order.Cad.Url = model.Cad.Url;
+            order.Cad.Category = model.Cad.Category;
+            order.Cad.CreationDate = model.Cad.CreationDate;
 
             await repository.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<OrderModel>> GetAllAsync()
-        {
-            return await repository
-                .All<Order>()
-                .Select(o => new OrderModel
-                {
-                    Id = o.Id,
-                    CadId = o.CadId,
-                    BuyerId = o.BuyerId,
-                    Description = o.Description,
-                    OrderDate = o.OrderDate,
-                    Cad = new CadModel
-                    {
-                        Id = o.CadId,
-                        Name = o.Cad.Name,
-                        Category = o.Cad.Category,
-                        Url = o.Cad.Url,
-                        CreationDate = o.Cad.CreationDate,
-                    },
-                    Buyer = new UserModel
-                    {
-                        Id = o.BuyerId,
-                        Username = o.Buyer.Username,
-                    },
-                })
-                .ToArrayAsync();
-        }
-
         public async Task<OrderModel> GetByIdAsync(int id)
         {
-            Order? order = await repository
-                .All<Order>()
-                .FirstOrDefaultAsync(o => o.Id == id)
+            Order order = await repository
+                .GetByIdAsync<Order>(id)
                 ?? throw new KeyNotFoundException();
 
             OrderModel model = ConvertEntityToModel(order);
@@ -116,36 +71,12 @@ namespace CustomCADSolutions.Core.Services
             return model;
         }
         
-        public IEnumerable<UserModel> GetAllUsers()
-        {
-            return repository
-                .All<User>()
-                .Select(u => new UserModel
-                {
-                    Id = u.Id,
-                    Username = u.Username,
-                    Orders = u.Orders
-                        .Select(o => new OrderModel
-                        {
-                            Id = o.Id,
-                            CadId = o.CadId,
-                            Description = o.Description,
-                            OrderDate = o.OrderDate,
-                            Cad = repository
-                                .All<Cad>()
-                                .Select(c => new CadModel() 
-                                {
-                                    Id = c.Id,
-                                    Name = c.Name,
-                                    Category = c.Category, 
-                                })
-                                .First(c => c.Id == o.CadId)
-                        })
-                        .ToArray()
-                }).ToArray();
-        }
+        public async Task<IEnumerable<OrderModel>> GetAllAsync() 
+            => await repository.All<Order>()
+                .Select(o => ConvertEntityToModel(o))
+                .ToArrayAsync();
 
-        private OrderModel ConvertEntityToModel(Order order)
+        private static OrderModel ConvertEntityToModel(Order order)
         {
             return new()
             {
@@ -154,6 +85,7 @@ namespace CustomCADSolutions.Core.Services
                 BuyerId = order.BuyerId,
                 Description = order.Description,
                 OrderDate = order.OrderDate,
+                Buyer = order.Buyer,
                 Cad = new CadModel
                 {
                     Id = order.CadId,
@@ -162,28 +94,21 @@ namespace CustomCADSolutions.Core.Services
                     Url = order.Cad.Url,
                     CreationDate = order.Cad.CreationDate,
                 },
-                Buyer = new UserModel
+            };
+        }
+
+        private async Task<Order> ConvertModelToEntity(OrderModel model)
+        {
+            return new()
+            {
+                Description = model.Description,
+                OrderDate = model.OrderDate,
+                Buyer = await userManager.FindByIdAsync(model.Buyer.Id),
+                Cad = new()
                 {
-                    Id = order.BuyerId,
-                    Username = order.Buyer.Username,
-                    Orders = order.Buyer.Orders.Select(o => new OrderModel()
-                    {
-                        Id = o.Id,
-                        CadId = o.CadId,
-                        BuyerId = o.BuyerId,
-                        Description = o.Description,
-                        OrderDate = o.OrderDate,
-                        Cad = new CadModel
-                        {
-                            Id = o.CadId,
-                            Name = o.Cad.Name,
-                            Category = o.Cad.Category,
-                            Url = o.Cad.Url,
-                            CreationDate = o.Cad.CreationDate,
-                        },
-                    })
-                    .ToArray()
-                }
+                    Name = model.Cad.Name,
+                    Category = model.Cad.Category,
+                },
             };
         }
     }

@@ -28,11 +28,5 @@
             public const int DescriptionMaxLength = 1500;
             public const int DescriptionMinLength = 5;
         }
-
-        public class User
-        {
-            public const int UsernameMaxLength = 15;
-            public const int UsernameMinLength = 1;
-        }
     }
 }

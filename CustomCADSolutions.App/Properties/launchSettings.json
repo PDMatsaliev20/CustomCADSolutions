@@ -1,16 +1,21 @@
-{
+﻿{
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:26218",
+      "sslPort": 44382
+    }
+  },
   "profiles": {
-    "CustomCADSolutions": {
+    "CustomCADSolutions.AppWithIdentity": {
       "commandName": "Project",
+      "dotnetRunMessages": true,
       "launchBrowser": true,
+      "applicationUrl": "https://localhost:7119;http://localhost:5263",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "dotnetRunMessages": true,
-      "applicationUrl": "https://localhost:7182;http://localhost:5198",
-      "hotReloadEnabled": true,
-      "nativeDebugging": true,
-      "sqlDebugging": true
+      }
     },
     "IIS Express": {
       "commandName": "IISExpress",
@@ -18,14 +23,6 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
-    }
-  },
-  "iisSettings": {
-    "windowsAuthentication": false,
-    "anonymousAuthentication": true,
-    "iisExpress": {
-      "applicationUrl": "http://localhost:40626",
-      "sslPort": 44335
     }
   }
 }

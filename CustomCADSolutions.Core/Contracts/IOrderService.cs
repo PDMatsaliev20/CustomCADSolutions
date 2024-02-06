@@ -1,6 +1,7 @@
 ﻿using CustomCADSolutions.Core.Models;
 using CustomCADSolutions.Infrastructure.Data.Models;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,5 @@ namespace CustomCADSolutions.Core.Contracts
         Task<OrderModel> GetByIdAsync(int id);
 
         Task<IEnumerable<OrderModel>> GetAllAsync();
-        
-        IEnumerable<UserModel> GetAllUsers();
     }
 }

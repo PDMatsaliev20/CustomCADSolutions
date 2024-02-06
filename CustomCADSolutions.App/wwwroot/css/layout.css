@@ -1,0 +1,16 @@
+﻿body {
+	background-color: #DDDDDD !important;
+}
+
+header nav {
+	background-color: #BBB9D9 !important;
+}
+
+header img:hover {
+	opacity: 60%;
+}
+
+.dropdown:hover .dropdown-menu {
+	display: grid;
+	width: 33vw;
+}
