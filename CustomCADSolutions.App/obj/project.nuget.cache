@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "1Nzg/MHRZgbhAzV7H3sVUiSel8e3grJjMJZklIIh6W86bjTn8ygnTGIvZa231FCfX3T1Fe1cYJx5yNetC0qYkQ==",
+  "dgSpecHash": "QI3ku1uiyvLg52Y/ct1l0LXR9g24CmvhTTaXBPjP+JQuzTXIwdhO4523fEOSH3bq0EltdeTym3EmXWVYrPmpuQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\CustomCADSolutions.App.csproj",
+  "projectFilePath": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\CustomCADSolutions.AppWithIdentity.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\35988\\.nuget\\packages\\humanizer\\2.14.1\\humanizer.2.14.1.nupkg.sha512",
     "C:\\Users\\35988\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
