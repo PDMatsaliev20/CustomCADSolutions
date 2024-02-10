@@ -3,9 +3,11 @@ using CustomCADSolutions.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using CustomCADSolutions.App.Models;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CustomCADSolutions.App.Controllers
 {
+    [Authorize]
     public class CadController : Controller
     {
         private readonly ICadService cadService;

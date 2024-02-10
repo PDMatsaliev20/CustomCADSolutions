@@ -2,12 +2,14 @@
 using CustomCADSolutions.Core.Contracts;
 using CustomCADSolutions.Core.Models;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace CustomCADSolutions.App.Controllers
 {
+    [Authorize]
     public class OrderController : Controller
     {
         private readonly IOrderService orderService;
