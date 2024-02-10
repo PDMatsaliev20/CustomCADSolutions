@@ -15,7 +15,5 @@ namespace CustomCADSolutions.Core.Contracts
         Task<CadModel> GetByIdAsync(int id);
 
         Task<IEnumerable<CadModel>> GetAllAsync();
-
-        Task UpdateCads(bool shouldResetDb = false);
     }
 }

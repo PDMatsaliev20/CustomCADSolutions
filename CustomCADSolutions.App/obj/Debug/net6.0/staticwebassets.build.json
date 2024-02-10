@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "5iI7N4gcTfMfsFVEjYO++JdfTrousCzgpGWLqNKOmn4=",
+  "Hash": "jlprpIhMNP+gtNMhd9LNOE5Ln5h/v/P5cNoutDp0pNE=",
   "Source": "CustomCADSolutions.AppWithIdentity",
   "BasePath": "_content/CustomCADSolutions.AppWithIdentity",
   "Mode": "Default",
@@ -2392,25 +2392,6 @@
       "OriginalItemSpec": "wwwroot\\others\\3d models\\STLformat.stl"
     },
     {
-      "Identity": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\categories\\Abstract.png",
-      "SourceId": "CustomCADSolutions.AppWithIdentity",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\",
-      "BasePath": "_content/CustomCADSolutions.AppWithIdentity",
-      "RelativePath": "others/categories/Abstract.png",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\others\\categories\\Abstract.png"
-    },
-    {
       "Identity": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\categories\\All.png",
       "SourceId": "CustomCADSolutions.AppWithIdentity",
       "SourceType": "Discovered",
@@ -2468,25 +2449,6 @@
       "OriginalItemSpec": "wwwroot\\others\\categories\\Architecture.png"
     },
     {
-      "Identity": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\categories\\Assets.png",
-      "SourceId": "CustomCADSolutions.AppWithIdentity",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\",
-      "BasePath": "_content/CustomCADSolutions.AppWithIdentity",
-      "RelativePath": "others/categories/Assets.png",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\others\\categories\\Assets.png"
-    },
-    {
       "Identity": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\categories\\Characters.png",
       "SourceId": "CustomCADSolutions.AppWithIdentity",
       "SourceType": "Discovered",
@@ -2525,25 +2487,6 @@
       "OriginalItemSpec": "wwwroot\\others\\categories\\Electronics.png"
     },
     {
-      "Identity": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\categories\\Fantasy.png",
-      "SourceId": "CustomCADSolutions.AppWithIdentity",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\",
-      "BasePath": "_content/CustomCADSolutions.AppWithIdentity",
-      "RelativePath": "others/categories/Fantasy.png",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\others\\categories\\Fantasy.png"
-    },
-    {
       "Identity": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\categories\\Fashion.png",
       "SourceId": "CustomCADSolutions.AppWithIdentity",
       "SourceType": "Discovered",
@@ -2563,12 +2506,12 @@
       "OriginalItemSpec": "wwwroot\\others\\categories\\Fashion.png"
     },
     {
-      "Identity": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\categories\\Food.png",
+      "Identity": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\categories\\Furniture.png",
       "SourceId": "CustomCADSolutions.AppWithIdentity",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\",
       "BasePath": "_content/CustomCADSolutions.AppWithIdentity",
-      "RelativePath": "others/categories/Food.png",
+      "RelativePath": "others/categories/Furniture.png",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -2579,7 +2522,7 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\others\\categories\\Food.png"
+      "OriginalItemSpec": "wwwroot\\others\\categories\\Furniture.png"
     },
     {
       "Identity": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\categories\\Medical.png",
@@ -2601,12 +2544,12 @@
       "OriginalItemSpec": "wwwroot\\others\\categories\\Medical.png"
     },
     {
-      "Identity": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\categories\\Nature.png",
+      "Identity": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\categories\\Others.png",
       "SourceId": "CustomCADSolutions.AppWithIdentity",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\",
       "BasePath": "_content/CustomCADSolutions.AppWithIdentity",
-      "RelativePath": "others/categories/Nature.png",
+      "RelativePath": "others/categories/Others.png",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -2617,7 +2560,7 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\others\\categories\\Nature.png"
+      "OriginalItemSpec": "wwwroot\\others\\categories\\Others.png"
     },
     {
       "Identity": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\categories\\Sports.png",

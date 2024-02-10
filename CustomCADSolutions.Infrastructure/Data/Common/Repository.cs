@@ -50,11 +50,5 @@ namespace CustomCADSolutions.Infrastructure.Data.Common
         {
             return await context.SaveChangesAsync();
         }
-
-        public async Task ResetDbAsync()
-        {
-            await context.Database.EnsureDeletedAsync();
-            await context.Database.EnsureCreatedAsync();
-        }
     }
 }

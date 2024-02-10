@@ -1,7 +1,7 @@
 ﻿@using CustomCADSolutions.Infrastructure.Data.Models.Enums
 @model OrderInputModel
 @{
-    Category[] categories = (typeof(Category).GetEnumValues() as Category[])!;
+    Category[] categories = typeof(Category).GetEnumValues().Cast<Category>().ToArray();
     ViewData["Title"] = "Describe your desired design here: ";
 }
 

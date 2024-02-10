@@ -10,19 +10,17 @@ namespace CustomCADSolutions.Infrastructure.Data.Models.Enums
 {
     public enum Category
     {
+        //All,
         Characters = 1,
         Animals,
         Toys,
         Architecture,
-        Fantasy,
-        Fashion,
-        Nature,
+        Furniture,
         Electronics,
         Vehicles,
-        Abstract,
         Medical,
-        Food,
-        Assets,
+        Fashion,
         Sports,
+        Others,
     }
 }

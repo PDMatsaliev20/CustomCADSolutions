@@ -17,9 +17,8 @@ namespace CustomCADSolutions.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new CadConfiguration());
-            modelBuilder.ApplyConfiguration(new OrderConfiguration());
-
+            modelBuilder.Entity<Order>().Navigation(o => o.Cad).AutoInclude();
+            modelBuilder.Entity<Order>().Navigation(o => o.Buyer).AutoInclude();
             base.OnModelCreating(modelBuilder);
         }
     }

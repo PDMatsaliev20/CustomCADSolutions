@@ -31,10 +31,10 @@ namespace CustomCADSolutions.App.Controllers
         public async Task<IActionResult> Index()
         {
             logger.LogInformation("Entered All Orders Page");
-            IdentityUser user = await userManager.Users.FirstAsync();
 
+            string username = User.Identity!.Name!;
             IEnumerable<OrderViewModel> orders = (await orderService.GetAllAsync())
-                .Where(o => o.BuyerId == user.Id)
+                .Where(o => o.Buyer.UserName == username)
                 .Select(o => new OrderViewModel
                 {
                     Id = o.Id,
@@ -44,7 +44,7 @@ namespace CustomCADSolutions.App.Controllers
                     OrderDate = o.OrderDate.ToString("dd/MM/yyyy HH:mm:ss"),
                 });
 
-            ViewBag.UserName = string.Empty;
+            ViewBag.UserName = username;
             return View(orders);
         }
 
@@ -68,14 +68,15 @@ namespace CustomCADSolutions.App.Controllers
             {
                 Description = input.Description,
                 OrderDate = DateTime.Now,
-                Buyer = await userManager.Users.FirstAsync(),
+                Buyer = await userManager.FindByNameAsync(User.Identity!.Name!),
                 Cad = new CadModel()
                 {
                     Name = input.Name,
                     Category = (Category)input.Category,
+                    
                 }
             };
-            int id = await orderService.CreateAsync(model);
+            await orderService.CreateAsync(model);
 
             logger.LogInformation("Ordered 3d model");
             return RedirectToAction(nameof(Index));
@@ -117,6 +118,14 @@ namespace CustomCADSolutions.App.Controllers
             await orderService.EditAsync(order);
 
             logger.LogInformation("Edited Order");
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await orderService.DeleteAsync(id);
+
             return RedirectToAction(nameof(Index));
         }
     }

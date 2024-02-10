@@ -8,12 +8,12 @@ namespace CustomCADSolutions.App.Controllers
 {
     public class CadController : Controller
     {
-        private readonly ICadService service;
+        private readonly ICadService cadService;
         private readonly ILogger logger;
 
         public CadController(ICadService service, ILogger<CadModel> logger)
         {
-            this.service = service;
+            this.cadService = service;
             this.logger = logger;
         }
 
@@ -31,7 +31,9 @@ namespace CustomCADSolutions.App.Controllers
             logger.LogInformation("Entered Explore Page");
             ViewBag.Category = category;
 
-            IEnumerable<CadViewModel> views = ConvertModelToView(await GetCads(category));
+            IEnumerable<CadViewModel> views = (await GetCads(category ?? throw new ArgumentNullException()))
+                .Select(model => ConvertModelToView(model));
+
             return View(views);
         }
 
@@ -50,25 +52,22 @@ namespace CustomCADSolutions.App.Controllers
                 logger.LogError("Invalid 3d Model");
                 return View(input);
             }
-
-            CadModel cad = new()
-            {
-                Name = input.Name,
-                Category = input.Category,
-                CreationDate = DateTime.Now,
-                Url = input.Url,
-            };
-            await service.CreateAsync(cad);
+            
+            CadModel model = ConvertInputToModel(input);
+            await cadService.CreateAsync(model);
 
             logger.LogInformation("Submitted 3d Model");
-            return RedirectToAction(nameof(Index), routeValues: cad.Category);
+            return RedirectToAction(nameof(Index), routeValues: model.Category);
         }
+
 
         private async Task<IEnumerable<CadModel>> GetCads(string category)
         {
-            var cads = (await service.GetAllAsync());
+            IEnumerable<CadModel> cads = (await cadService.GetAllAsync())
+                .Where(c => c.CreationDate.HasValue);
 
-            if (category != "All")
+            IEnumerable<string> categories = typeof(Category).GetEnumNames();
+            if (categories.Contains(category))
             {
                 cads = cads.Where(cad => category == cad.Category.ToString());
             }
@@ -76,32 +75,40 @@ namespace CustomCADSolutions.App.Controllers
             return cads;
         }
 
-        private static IEnumerable<CadModel> ConvertInputToModel(IEnumerable<CadInputModel> inputs)
+        private static CadViewModel ConvertModelToView(CadModel cad)
         {
-            var models = inputs
-                .Select(input => new CadModel
-                {
-                    Name = input.Name,
-                    Url = input.Url,
-                    Category = input.Category,
-                    CreationDate = DateTime.Now,
-                })
-                .OrderBy(cad => cad.CreationDate);
+            int fileLength = cad.CadInBytes!.Length;
+            string cadName = cad.Name;
+            string fileName = cadName.ToLower();
+            using MemoryStream stream = new(cad.CadInBytes);
+            FormFile cadFile = new(stream, 0, fileLength, cadName, fileName);
 
-            return models;
+            string cadCategory = cad.Category.ToString();
+            string? cadCreationDate = cad.CreationDate?.ToString("dd/MM/yyyy HH:mm:ss");
+
+            CadViewModel view = new()
+            {
+                Name = cadName,
+                Category = cadCategory,
+                CreationDate = cadCreationDate,
+                Cad = cadFile,
+            };
+
+            return view;
         }
 
-        private static IEnumerable<CadViewModel> ConvertModelToView(IEnumerable<CadModel> cads)
+        private static CadModel ConvertInputToModel(CadInputModel input)
         {
-            IEnumerable<CadViewModel> views = cads
-                .Select(cad => new CadViewModel
-                {
-                    Name = cad.Name,
-                    Category = cad.Category.ToString(),
-                    Url = cad.Url!,
-                });
-
-            return views;
+            using MemoryStream stream = new();
+            input.File.CopyTo(stream);
+            CadModel model = new()
+            {
+                Name = input.Name,
+                Category = input.Category,
+                CreationDate = DateTime.Now,
+                CadInBytes = stream.ToArray(),
+            };
+            return model;
         }
     }
 }

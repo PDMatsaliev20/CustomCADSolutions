@@ -24,7 +24,5 @@ namespace CustomCADSolutions.Infrastructure.Data.Common
         public IQueryable<T> AllReadonly<T>() where T : class;
         
         public Task<int> SaveChangesAsync();
-        
-        public Task ResetDbAsync();
     }
 }

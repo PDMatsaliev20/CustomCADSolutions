@@ -4,6 +4,7 @@ using CustomCADSolutions.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CustomCADSolutions.AppWithIdentity.Data.Migrations
 {
     [DbContext(typeof(CADContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240207142455_ISaidModifiedCategories")]
+    partial class ISaidModifiedCategories
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,10 +33,6 @@ namespace CustomCADSolutions.AppWithIdentity.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<byte[]>("CadInBytes")
-                        .HasColumnType("varbinary(max)")
-                        .HasComment("Byte Array representing 3D Model");
-
                     b.Property<int>("Category")
                         .HasColumnType("int")
                         .HasComment("Category of 3D Model");
@@ -49,12 +47,11 @@ namespace CustomCADSolutions.AppWithIdentity.Data.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasComment("Name of 3D Model");
 
-                    b.Property<int?>("OrderId")
-                        .HasColumnType("int");
+                    b.Property<string>("Url")
+                        .HasColumnType("nvarchar(max)")
+                        .HasComment("Url of 3D Model");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
 
                     b.ToTable("Cads");
                 });
@@ -91,7 +88,8 @@ namespace CustomCADSolutions.AppWithIdentity.Data.Migrations
 
                     b.HasIndex("BuyerId");
 
-                    b.HasIndex("CadId");
+                    b.HasIndex("CadId")
+                        .IsUnique();
 
                     b.ToTable("Orders");
                 });
@@ -298,15 +296,6 @@ namespace CustomCADSolutions.AppWithIdentity.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("CustomCADSolutions.Infrastructure.Data.Models.Cad", b =>
-                {
-                    b.HasOne("CustomCADSolutions.Infrastructure.Data.Models.Order", "Order")
-                        .WithMany()
-                        .HasForeignKey("OrderId");
-
-                    b.Navigation("Order");
-                });
-
             modelBuilder.Entity("CustomCADSolutions.Infrastructure.Data.Models.Order", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Buyer")
@@ -316,8 +305,8 @@ namespace CustomCADSolutions.AppWithIdentity.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("CustomCADSolutions.Infrastructure.Data.Models.Cad", "Cad")
-                        .WithMany()
-                        .HasForeignKey("CadId")
+                        .WithOne("Order")
+                        .HasForeignKey("CustomCADSolutions.Infrastructure.Data.Models.Order", "CadId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -375,6 +364,11 @@ namespace CustomCADSolutions.AppWithIdentity.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("CustomCADSolutions.Infrastructure.Data.Models.Cad", b =>
+                {
+                    b.Navigation("Order");
                 });
 #pragma warning restore 612, 618
         }

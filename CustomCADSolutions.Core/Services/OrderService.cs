@@ -35,11 +35,12 @@ namespace CustomCADSolutions.Core.Services
 
         public async Task DeleteAsync(int id)
         {
-            Order? order = await repository.GetByIdAsync<Order>(id);
-            if (order != null)
-            {
-                repository.Delete<Order>(order);
-            }
+            Order order = await repository
+                .GetByIdAsync<Order>(id)
+                ?? throw new KeyNotFoundException();
+            
+            repository.Delete<Order>(order);
+            await repository.SaveChangesAsync();
         }
 
         public async Task EditAsync(OrderModel model)
@@ -48,12 +49,12 @@ namespace CustomCADSolutions.Core.Services
                 .All<Order>()
                 .FirstOrDefault(order => order.CadId == model.CadId
                                       && order.BuyerId == model.BuyerId)
-                ?? throw new NullReferenceException();
+                ?? throw new KeyNotFoundException();
 
 
             order.Description = model.Description;
             order.Cad.Name = model.Cad.Name;
-            order.Cad.Url = model.Cad.Url;
+            order.Cad.CadInBytes = model.Cad.CadInBytes;
             order.Cad.Category = model.Cad.Category;
             order.Cad.CreationDate = model.Cad.CreationDate;
 
@@ -71,10 +72,12 @@ namespace CustomCADSolutions.Core.Services
             return model;
         }
         
-        public async Task<IEnumerable<OrderModel>> GetAllAsync() 
-            => await repository.All<Order>()
+        public async Task<IEnumerable<OrderModel>> GetAllAsync()
+        {
+            return await repository.All<Order>()
                 .Select(o => ConvertEntityToModel(o))
                 .ToArrayAsync();
+        }
 
         private static OrderModel ConvertEntityToModel(Order order)
         {
@@ -91,7 +94,7 @@ namespace CustomCADSolutions.Core.Services
                     Id = order.CadId,
                     Name = order.Cad.Name,
                     Category = order.Cad.Category,
-                    Url = order.Cad.Url,
+                    CadInBytes = order.Cad.CadInBytes,
                     CreationDate = order.Cad.CreationDate,
                 },
             };

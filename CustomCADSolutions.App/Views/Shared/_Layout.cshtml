@@ -1,8 +1,6 @@
 ﻿@using CustomCADSolutions.Infrastructure.Data.Models.Enums
 @{
     string[] categories = string.Join(" ", "All", string.Join(" ", (typeof(Category).GetEnumValues() as Category[])!)).Split();
-    //int rows = 5;
-    //int cols = 3;
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -15,7 +13,7 @@
     <link rel="shortcut icon" type="image/x-icon" href="~/others/images/favicon.ico" />
 
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/layout.css"/>
+    <link rel="stylesheet" href="~/css/layout.css" />
 </head>
 <body>
     <header>
@@ -24,11 +22,11 @@
                 <button class="navbar-toggler toggler fade-in" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon toggler-icon"></span>
                 </button>
-                <a style="width: 4%; height: 4%;" class="fade-in me-3" asp-area="" asp-controller="Home" asp-action="Index">
+                <a style="width: 4.5%; height: 4.5%;" class="fade-in me-3" asp-area="" asp-controller="Home" asp-action="Index">
                     <img class="mw-100 h-auto" src="~/others/images/logo.png">
                 </a>
 
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between fs-5">
                     <ul class="justify-content-start fade-in navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-controller="Home" asp-action="Index" role="button">Home</a>
@@ -42,38 +40,6 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Cad" asp-action="Add" role="button">Submit</a>
                         </li>
-                        <!--
-                        <li class="nav-item dropdown">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle" asp-area="" asp-controller="Home" asp-action="Categories" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Categories
-                            </a>
-                            <div class="dropdown-menu multi-column" aria-labelledby="navbarDropdown">
-                                <div class="container-fluid d-grid">
-                        @{
-                            /*
-    @for (int i = 0; i < rows; i++)
-    {
-        <div class="row mx-0">
-                            @for (int j = 0; j < cols; j++)
-                            {
-                                if (categories.Length > j + i * cols)
-                                {
-                                    string category = categories[j + i * cols];
-                                    <div class="col-md-4 h-auto">
-                                        <a class="dropdown-item" asp-controller="Cad" asp-action="Index" asp-route-category="@category">
-                                            <p class="align-items-center text-center fw-bold">@category</p>
-                                        </a>
-                                    </div>
-                                }
-                            }
-        </div>
-    }
-    */
-                        }
-                                </div>
-                            </div>
-                        </li>
-                        -->
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>

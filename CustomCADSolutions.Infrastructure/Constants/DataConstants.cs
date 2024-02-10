@@ -13,9 +13,7 @@
 
             public const string CategoryDisplay = "Category of 3D Model";
 
-            public const string UrlDisplay = "Url of 3D Model";
-            public const string UrlLengthErrorMessage = "{0} must have exactly 32 symbols, including letters and digits";
-            public const string UrlRegExPattern = @"^\w{32}$";
+            public const string FileDisplay = "3D Model";
         }
 
         public class Order

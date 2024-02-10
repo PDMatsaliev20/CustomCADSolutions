@@ -18,8 +18,7 @@ namespace CustomCADSolutions.App.Models
         public Category Category { get; set; }
 
         [Required(ErrorMessage = RequiredErrorMessage)]
-        [RegularExpression(Cad.UrlRegExPattern, ErrorMessage = Cad.UrlLengthErrorMessage)]
-        [Display(Name = Cad.UrlDisplay)]
-        public string Url { get; set; } = null!;
+        [Display(Name = Cad.FileDisplay)]
+        public IFormFile File { get; set; } = null!;
     }
 }
