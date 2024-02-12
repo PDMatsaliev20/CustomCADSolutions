@@ -1,4 +1,5 @@
 ﻿@{
+    int constant = 3;
 }
 
 <html>
@@ -12,10 +13,66 @@
     <hr />
     <div style="height: 350px;" class="container d-flex fade-in">
         <div style="order: 1" class="fade-in d-flex flex-column justify-content-center w-50">
-            <h4 class="fade-in mb-4 text-center">@ViewBag.Title</h4>
-            <p class="fade-in">@ViewBag.Message</p>
+            <h4 class="fade-in mb-4 text-center">Where Your Imagination Comes to Life!</h4>
+            <p class="fade-in">
+                In a world sculpted by pixels and imagination, 
+                each 3D model is a bridge between dream and reality, 
+                transforming visions into virtual 3D masterpieces!
+            </p>
         </div>
         <article style="order: 2" class="fade-in w-50 h-auto">
+            <div id="model">
+                <script type="module">
+                    import * as THREE from 'three';
+                    import { STLLoader } from 'three/addons/loaders/STLLoader.js';
+                    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+                    // Scene
+                    const scene = new THREE.Scene();
+
+                    // Camera
+                    const camera = new THREE.PerspectiveCamera(90, window.innerWidth / window.innerHeight, 0.1, 1000);
+                    camera.position.set(20, 0, 20);
+                    camera.lookAt(10, 0, 0);
+
+                    // Renderer
+                    const renderer = new THREE.WebGLRenderer();
+                    renderer.setSize(window.innerWidth / @constant, window.innerHeight / @constant);
+                    document.getElementById('model').appendChild(renderer.domElement);
+
+                    // Lights
+                    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+                    directionalLight.position.set(0, 1, 0);
+                    scene.add(directionalLight);
+
+                    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+                    scene.add(ambientLight);
+
+                    // STL Loader
+                    const loader = new STLLoader();
+                    loader.load('/others/cads/Robofrog.stl', function (stl) {
+                        const material = new THREE.MeshLambertMaterial();
+                        const mesh = new THREE.Mesh(stl, material);
+                        scene.add(mesh);
+                        stl.center();
+                    }, undefined, function (error) {
+
+                        console.error(error);
+
+                    });
+
+                    // Animation
+                    const controls = new OrbitControls(camera, renderer.domElement);
+                    controls.enableDamping = true;
+                    controls.dampingFactor = 0.25;
+                    function animate() {
+                        requestAnimationFrame(animate);
+                        renderer.render(scene, camera);
+                        controls.update();
+                    }
+                    animate();
+                </script>
+            </div>
             <iframe class="fade-in w-100 h-100" title="Robofrog"
                     src="https://sketchfab.com/models/99bfe75ebd734fa3832a63e02e2cacf7/embed?annotations_visible=0&autospin=-1&autostart=1&preload=1&camera=1&double_click=0&internal=1&max_texture_size=1024&orbit_constraint_pan=1&scrollwheel=1&sound_enable=1&transparent=1&ui_animations=0&ui_annotations=0&ui_ar=0&ui_ar_help=0&ui_color=white&ui_fadeout=0&ui_fullscreen=0&ui_help=0&ui_infos=0&ui_inspector=0&ui_settings=0&ui_stop=0&ui_theatre=0&ui_theme=light&ui_vr=0&ui_watermark=0"
                     frameborder="0"

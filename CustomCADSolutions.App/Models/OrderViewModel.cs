@@ -7,7 +7,10 @@ namespace CustomCADSolutions.App.Models
 {
     public class OrderViewModel
     {
-        public int Id { get; set; }
+        public int CadId { get; set; }
+
+        public string BuyerId { get; set; } = null!;
+        
         public string Name { get; set; } = null!;
 
         public string Category { get; set; } = null!;

@@ -5,7 +5,7 @@
         public const string RequiredErrorMessage = "{0} is required!";
         public const string LengthErrorMessage = "{0} length must be between {2} and {1} characters";
 
-        public class Cad
+        public class CadConstants
         {
             public const string NameDisplay = "Name of 3D Model";
             public const int NameMaxLength = 50;
@@ -16,7 +16,7 @@
             public const string FileDisplay = "3D Model";
         }
 
-        public class Order
+        public class OrderConstants
         {
             public const string NameDisplay = "Name of 3D Model";
 

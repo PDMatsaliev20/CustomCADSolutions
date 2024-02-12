@@ -3,20 +3,43 @@ using CustomCADSolutions.Core.Models;
 using CustomCADSolutions.Infrastructure.Data.Common;
 using CustomCADSolutions.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Json;
 
 namespace CustomCADSolutions.Core.Services
 {
     public class CadService : ICadService
     {
         private readonly IRepository repository;
+        private readonly IOrderService orderService;
 
-        public CadService(IRepository repository)
+        public CadService(IRepository repository, IOrderService orderService)
         {
             this.repository = repository;
+            this.orderService = orderService;
+
         }
 
-        public async Task CreateAsync(params CadModel[] models)
+        public async Task CreateAsync(CadModel model)
+        {
+            Cad cad = new()
+            {
+                Name = model.Name,
+                Category = model.Category,
+                CadInBytes = model.CadInBytes,
+                CreationDate = DateTime.Now,
+                CreatorId = model.CreatorId,
+                Creator = model.Creator,
+            };
+
+            if (model.Orders.Any())
+            {
+                await orderService.CreateRangeAsync(model.Orders.ToArray());
+            }
+
+            await repository.AddAsync<Cad>(cad);
+            await repository.SaveChangesAsync();
+        }
+
+        public async Task CreateRangeAsync(params CadModel[] models)
         {
             List<Cad> cads = new();
             foreach (CadModel model in models)
@@ -26,24 +49,20 @@ namespace CustomCADSolutions.Core.Services
                     Name = model.Name,
                     CreationDate = DateTime.Now,
                     Category = model.Category,
-                    CadInBytes = model.CadInBytes
+                    CadInBytes = model.CadInBytes,
+                    CreatorId = model.CreatorId,
+                    Creator = model.Creator,
                 };
 
-                if (model.Order != null)
+                if (model.Orders.Any())
                 {
-                    cad.Order = new Order
-                    {
-                        CadId = model.Order.CadId,
-                        BuyerId = model.Order.BuyerId,
-                        Description = model.Order.Description,
-                        OrderDate = model.Order.OrderDate,
-                    };
+                    await orderService.CreateRangeAsync(model.Orders.ToArray());
                 }
 
                 cads.Add(cad);
             }
-            await this.repository.AddRangeAsync<Cad>(cads.ToArray());
-            await this.repository.SaveChangesAsync();
+            await repository.AddRangeAsync<Cad>(cads.ToArray());
+            await repository.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(int id)
@@ -57,47 +76,26 @@ namespace CustomCADSolutions.Core.Services
 
         public async Task DeleteRangeAsync(params int[] ids)
         {
-            foreach (int id in ids)
-            {
-                Cad? cad = await this.repository.GetByIdAsync<Cad>(id);
+            Cad[] cads = (await Task.WhenAll(
+                    ids.Select(async id => await repository.GetByIdAsync<Cad>(id))))
+                .Where(result => result != null)
+                .ToArray()!;
 
-                if (cad != null)
-                {
-                    repository.Delete<Cad>(cad);
-                }
-                await repository.SaveChangesAsync();
-            }
+            repository.DeleteRange<Cad>(cads);
+            await repository.SaveChangesAsync();
         }
 
         public async Task EditAsync(CadModel entity)
         {
-            Cad? cad = await this.repository
-                .All<Cad>()
+            Cad? cad = await this.repository.All<Cad>()
                 .FirstOrDefaultAsync(cad => cad.Id == entity.Id)
                 ?? throw new ArgumentException("Model doesn't exist!");
 
-            cad.Id = entity.Id;
             cad.Name = entity.Name;
-            cad.CreationDate = entity.CreationDate;
             cad.Category = entity.Category;
             cad.CadInBytes = entity.CadInBytes;
 
-            await this.repository.SaveChangesAsync();
-        }
-
-        public async Task<IEnumerable<CadModel>> GetAllAsync()
-        {
-            return await repository
-                .All<Cad>()
-                .Select(cad => new CadModel
-                {
-                    Id = cad.Id,
-                    Name = cad.Name,
-                    Category = cad.Category,
-                    CreationDate = cad.CreationDate,
-                    CadInBytes = cad.CadInBytes,
-                })
-                .ToListAsync();
+            await repository.SaveChangesAsync();
         }
 
         public async Task<CadModel> GetByIdAsync(int id)
@@ -114,9 +112,38 @@ namespace CustomCADSolutions.Core.Services
                 CreationDate = cad.CreationDate,
                 Category = cad.Category,
                 CadInBytes = cad.CadInBytes,
+                CreatorId = cad.CreatorId,
+                Creator = cad.Creator,
             };
 
+            if (cad.Orders.Any())
+            {
+                model.Orders = cad.Orders
+                    .Select(o => orderService.GetByIdAsync(o.CadId, o.BuyerId).Result)
+                    .ToArray();
+            }
+
             return model;
+        }
+
+        public async Task<IEnumerable<CadModel>> GetAllAsync()
+        {
+            CadModel[] models = await repository
+                .All<Cad>()
+                .Select(cad => new CadModel()
+                {
+                    Id = cad.Id,
+                    Name = cad.Name,
+                    Category = cad.Category,
+                    CreationDate = cad.CreationDate,
+                    CadInBytes = cad.CadInBytes,
+                    CreatorId = cad.CreatorId,
+                    Creator = cad.Creator,
+                    Orders = cad.Orders.Select(o => orderService.GetByIdAsync(o.CadId, o.BuyerId).Result).ToArray(),
+                })
+                .ToArrayAsync();
+
+            return models;
         }
     }
 }

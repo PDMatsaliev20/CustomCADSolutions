@@ -13,6 +13,10 @@
       "PackagePath": "staticwebassets\\css\\layout.css"
     },
     {
+      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\icon.ico",
+      "PackagePath": "staticwebassets\\icon.ico"
+    },
+    {
       "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\js\\site.js",
       "PackagePath": "staticwebassets\\js\\site.js"
     },
@@ -245,16 +249,8 @@
       "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.map"
     },
     {
-      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\3d models\\GLBformat.glb",
-      "PackagePath": "staticwebassets\\others\\3d models\\GLBformat.glb"
-    },
-    {
-      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\3d models\\GLTFformat.gltf",
-      "PackagePath": "staticwebassets\\others\\3d models\\GLTFformat.gltf"
-    },
-    {
-      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\3d models\\STLformat.stl",
-      "PackagePath": "staticwebassets\\others\\3d models\\STLformat.stl"
+      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\logo.png",
+      "PackagePath": "staticwebassets\\logo.png"
     },
     {
       "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\categories\\All.png",
@@ -303,34 +299,6 @@
     {
       "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\categories\\Vehicles.png",
       "PackagePath": "staticwebassets\\others\\categories\\Vehicles.png"
-    },
-    {
-      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\ai.jpg",
-      "PackagePath": "staticwebassets\\others\\images\\ai.jpg"
-    },
-    {
-      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\favicon.ico",
-      "PackagePath": "staticwebassets\\others\\images\\favicon.ico"
-    },
-    {
-      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\gallery.jpg",
-      "PackagePath": "staticwebassets\\others\\images\\gallery.jpg"
-    },
-    {
-      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\logo.png",
-      "PackagePath": "staticwebassets\\others\\images\\logo.png"
-    },
-    {
-      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\oldfavicon.ico",
-      "PackagePath": "staticwebassets\\others\\images\\oldfavicon.ico"
-    },
-    {
-      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\oldlogo.png",
-      "PackagePath": "staticwebassets\\others\\images\\oldlogo.png"
-    },
-    {
-      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\order.jpg",
-      "PackagePath": "staticwebassets\\others\\images\\order.jpg"
     },
     {
       "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.CustomCADSolutions.AppWithIdentity.Microsoft.AspNetCore.StaticWebAssets.props",

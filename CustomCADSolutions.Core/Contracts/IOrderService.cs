@@ -12,13 +12,15 @@ namespace CustomCADSolutions.Core.Contracts
 {
     public interface IOrderService
     {
-        Task<int> CreateAsync(OrderModel entity);
+        Task CreateAsync(OrderModel entity);
+        
+        Task CreateRangeAsync(params OrderModel[] models);
 
         Task EditAsync(OrderModel entity);
 
-        Task DeleteAsync(int id);
+        Task DeleteAsync(int cadId, string buyerId);
 
-        Task<OrderModel> GetByIdAsync(int id);
+        Task<OrderModel> GetByIdAsync(int cadId, string buyerId);
 
         Task<IEnumerable<OrderModel>> GetAllAsync();
     }

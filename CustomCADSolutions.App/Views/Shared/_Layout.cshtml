@@ -10,7 +10,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link rel="shortcut icon" type="image/x-icon" href="~/others/images/favicon.ico" />
+    <link rel="shortcut icon" type="image/x-icon" href="~/icon.ico" />
 
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/layout.css" />
@@ -22,8 +22,8 @@
                 <button class="navbar-toggler toggler fade-in" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon toggler-icon"></span>
                 </button>
-                <a style="width: 4.5%; height: 4.5%;" class="fade-in me-3" asp-area="" asp-controller="Home" asp-action="Index">
-                    <img class="mw-100 h-auto" src="~/others/images/logo.png">
+                <a style="width: 10vh; height: 10vh;" class="fade-in me-3" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img class="mw-100 h-auto" src="~/logo.png">
                 </a>
 
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between fs-5">
@@ -33,17 +33,20 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-controller="Home" asp-action="Index" role="button">Home</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Home" asp-action="Categories" role="button">Explore</a>
+                            </li>
                         }
                         else 
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Cad" asp-action="Categories" role="button">Categories</a>
+                                <a class="nav-link text-dark" asp-controller="Home" asp-action="Categories" role="button">Categories</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="Index" role="button">Orders</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Cad" asp-action="Add" role="button">Submit</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Cad" asp-action="Index" role="button">3D Models</a>
                             </li>
                         }
                     </ul>

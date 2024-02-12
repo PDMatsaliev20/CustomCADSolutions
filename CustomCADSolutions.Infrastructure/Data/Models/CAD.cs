@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 using CustomCADSolutions.Infrastructure.Constants;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Identity;
 
 namespace CustomCADSolutions.Infrastructure.Data.Models
 {
@@ -16,7 +17,7 @@ namespace CustomCADSolutions.Infrastructure.Data.Models
         public byte[]? CadInBytes { get; set; } 
 
         [Required]
-        [MaxLength(DataConstants.Cad.NameMaxLength)]
+        [MaxLength(DataConstants.CadConstants.NameMaxLength)]
         [Comment("Name of 3D Model")]
         public string Name { get; set; } = null!;
 
@@ -27,9 +28,11 @@ namespace CustomCADSolutions.Infrastructure.Data.Models
         [Comment("Category of 3D Model")]
         public Category Category { get; set; }
 
-        public int? OrderId { get; set; }
+        public string? CreatorId { get; set; }
 
-        [ForeignKey(nameof(OrderId))]
-        public Order? Order { get; set; }
+        [ForeignKey(nameof(CreatorId))]
+        public IdentityUser? Creator { get; set; }
+
+        public ICollection<Order> Orders { get; set; } = new List<Order>();
     }
 }

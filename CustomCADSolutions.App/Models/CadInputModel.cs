@@ -6,19 +6,21 @@ namespace CustomCADSolutions.App.Models
 {
     public class CadInputModel
     {
+        public int Id { get; set; }
+
         [Required(ErrorMessage = RequiredErrorMessage)]
-        [StringLength(Cad.NameMaxLength, 
-            MinimumLength = Cad.NameMinLength, 
+        [StringLength(CadConstants.NameMaxLength, 
+            MinimumLength = CadConstants.NameMinLength, 
             ErrorMessage = LengthErrorMessage)]
-        [Display(Name = Cad.NameDisplay)]
+        [Display(Name = CadConstants.NameDisplay)]
         public string Name { get; set; } = null!;
 
         [Required(ErrorMessage = RequiredErrorMessage)]
-        [Display(Name = Cad.CategoryDisplay)]
+        [Display(Name = CadConstants.CategoryDisplay)]
         public Category Category { get; set; }
 
         [Required(ErrorMessage = RequiredErrorMessage)]
-        [Display(Name = Cad.FileDisplay)]
+        [Display(Name = CadConstants.FileDisplay)]
         public IFormFile File { get; set; } = null!;
     }
 }

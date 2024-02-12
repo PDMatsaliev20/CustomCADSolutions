@@ -4,7 +4,7 @@ namespace CustomCADSolutions.Core.Contracts
 {
     public interface ICadService
     {
-        Task CreateAsync(params CadModel[] models);
+        Task CreateRangeAsync(params CadModel[] models);
         
         Task EditAsync(CadModel entity);
         
@@ -15,5 +15,6 @@ namespace CustomCADSolutions.Core.Contracts
         Task<CadModel> GetByIdAsync(int id);
 
         Task<IEnumerable<CadModel>> GetAllAsync();
+        Task CreateAsync(CadModel model);
     }
 }

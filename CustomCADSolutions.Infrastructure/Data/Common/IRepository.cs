@@ -9,7 +9,7 @@ namespace CustomCADSolutions.Infrastructure.Data.Common
 {
     public interface IRepository
     {
-        public Task<T?> GetByIdAsync<T>(params int[] id) where T : class;
+        public Task<T?> GetByIdAsync<T>(params object[] id) where T : class;
         
         Task AddRangeAsync<T>(params T[] entity) where T : class;
         

@@ -2,8 +2,9 @@
 using CustomCADSolutions.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using CustomCADSolutions.App.Models;
-using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
 
 namespace CustomCADSolutions.App.Controllers
 {
@@ -12,29 +13,37 @@ namespace CustomCADSolutions.App.Controllers
     {
         private readonly ICadService cadService;
         private readonly ILogger logger;
+        private readonly UserManager<IdentityUser> userManager;
 
-        public CadController(ICadService service, ILogger<CadModel> logger)
+        public CadController(
+            ICadService cadService, 
+            ILogger<CadModel> logger,
+            UserManager<IdentityUser> userManager)
         {
-            this.cadService = service;
+            this.cadService = cadService;
             this.logger = logger;
+            this.userManager = userManager;
         }
 
         [HttpGet]
-        public IActionResult Categories()
+        public async Task<IActionResult> Index()
         {
-            logger.LogInformation("Entered Categories Page");
-            ViewBag.Categories = string.Join(" ", "All", string.Join(" ", typeof(Category).GetEnumNames())).Split();
-            return View();
-        }
+            string creatorId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            IEnumerable<CadModel> models = (await cadService.GetAllAsync()).Where(cad => cad.CreatorId == creatorId);
 
-        [HttpGet]
-        public async Task<IActionResult> Index(string category)
-        {
-            logger.LogInformation("Entered Explore Page");
-            ViewBag.Category = category;
+            IEnumerable<CadViewModel> views = models
+                .Select((model) =>
+                {
+                    CadViewModel view = new()
+                    {
+                        Id = model.Id,
+                        Name = model.Name,
+                        Category = model.Category.ToString(),
+                        CreationDate = model.CreationDate!.Value.ToString("dd/MM/yyyy HH:mm:ss"),
+                    };
 
-            IEnumerable<CadViewModel> views = (await GetCads(category ?? throw new ArgumentNullException()))
-                .Select(model => ConvertModelToView(model));
+                    return view;
+                });
 
             return View(views);
         }
@@ -54,53 +63,8 @@ namespace CustomCADSolutions.App.Controllers
                 logger.LogError("Invalid 3d Model");
                 return View(input);
             }
-            
-            CadModel model = ConvertInputToModel(input);
-            await cadService.CreateAsync(model);
 
-            logger.LogInformation("Submitted 3d Model");
-            return RedirectToAction(nameof(Index), routeValues: model.Category);
-        }
-
-
-        private async Task<IEnumerable<CadModel>> GetCads(string category)
-        {
-            IEnumerable<CadModel> cads = (await cadService.GetAllAsync())
-                .Where(c => c.CreationDate.HasValue);
-
-            IEnumerable<string> categories = typeof(Category).GetEnumNames();
-            if (categories.Contains(category))
-            {
-                cads = cads.Where(cad => category == cad.Category.ToString());
-            }
-
-            return cads;
-        }
-
-        private static CadViewModel ConvertModelToView(CadModel cad)
-        {
-            int fileLength = cad.CadInBytes!.Length;
-            string cadName = cad.Name;
-            string fileName = cadName.ToLower();
-            using MemoryStream stream = new(cad.CadInBytes);
-            FormFile cadFile = new(stream, 0, fileLength, cadName, fileName);
-
-            string cadCategory = cad.Category.ToString();
-            string? cadCreationDate = cad.CreationDate?.ToString("dd/MM/yyyy HH:mm:ss");
-
-            CadViewModel view = new()
-            {
-                Name = cadName,
-                Category = cadCategory,
-                CreationDate = cadCreationDate,
-                Cad = cadFile,
-            };
-
-            return view;
-        }
-
-        private static CadModel ConvertInputToModel(CadInputModel input)
-        {
+            string creatorId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             using MemoryStream stream = new();
             input.File.CopyTo(stream);
             CadModel model = new()
@@ -109,8 +73,104 @@ namespace CustomCADSolutions.App.Controllers
                 Category = input.Category,
                 CreationDate = DateTime.Now,
                 CadInBytes = stream.ToArray(),
+                CreatorId = creatorId,
+                Creator = await userManager.FindByIdAsync(creatorId)
             };
-            return model;
+            await cadService.CreateAsync(model);
+
+            if (input.File == null || input.File.Length <= 0)
+            {
+                return BadRequest("Dumb 3d model");
+            }
+
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), $@"wwwroot\others\cads\{input.Name}.stl");
+            using var fileStream = new FileStream(filePath, FileMode.Create);
+            await input.File.CopyToAsync(fileStream);
+
+            logger.LogInformation("Submitted 3d Model");
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            CadModel cad = await cadService.GetByIdAsync(id);
+            IdentityUser? creator = cad.Creator;
+
+            if (creator == null)
+            {
+                return BadRequest();
+            }
+
+            if (creator.UserName != User.FindFirstValue(ClaimTypes.Name))
+            {
+                return Unauthorized();
+            }
+
+            CadInputModel input = new()
+            {
+                Name = cad.Name,
+                Category = cad.Category,
+            };
+
+            return View(input);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(CadInputModel input, int id)
+        {
+            CadModel model = await cadService.GetByIdAsync(id);
+            IdentityUser? creator = model.Creator;
+
+            if (creator == null)
+            {
+                return BadRequest();
+            }
+
+            if (creator.UserName != User.FindFirstValue(ClaimTypes.Name))
+            {
+                return Unauthorized();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(input);
+            }
+
+            using MemoryStream stream = new();
+            input.File.CopyTo(stream);
+            model.CadInBytes = stream.ToArray();
+            model.Name = input.Name;
+            model.Category = input.Category;
+
+            await cadService.EditAsync(model);
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id)
+        {
+            CadModel cad = await cadService.GetByIdAsync(id);
+
+            if (cad.Creator == null)
+            {
+                return BadRequest();
+            }
+
+            if (cad.Creator.UserName != User.FindFirstValue(ClaimTypes.Name))
+            {
+                return Unauthorized();
+            }
+
+            await cadService.DeleteAsync(cad.Id);
+
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), $@"wwwroot\others\cads\{cad.Name}.stl");
+            if (System.IO.File.Exists(filePath))
+            {
+                System.IO.File.Delete(filePath);    
+            }
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }

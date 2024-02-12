@@ -1,4 +1,7 @@
 ﻿using CustomCADSolutions.App.Models;
+using CustomCADSolutions.Core.Contracts;
+using CustomCADSolutions.Core.Models;
+using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -7,20 +10,52 @@ namespace CustomCADSolutions.App.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> logger;
-        private const string title = "Where Your Imagination Comes to Life!";
-        private const string message = "In a world sculpted by pixels and imagination, each 3D model is a bridge between dream and reality, transforming visions into virtual 3D masterpieces!";
+        private readonly ICadService cadService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ICadService cadService)
         {
             this.logger = logger;
+            this.cadService = cadService;
         }
 
         public IActionResult Index()
         {
             logger.LogInformation("Entered Home Page");
-            ViewBag.Title = title;
-            ViewBag.Message = message;
             return View();
+        }
+
+        public IActionResult Categories()
+        {
+            logger.LogInformation("Entered Categories Page");
+            ViewBag.Categories = string.Join(" ", "All", string.Join(" ", typeof(Category).GetEnumNames())).Split();
+            return View();
+        }
+
+        public async Task<IActionResult> Category(string category)
+        {
+            logger.LogInformation($"Entered {category} Page");
+            ViewBag.Category = category;
+
+            IEnumerable<CadModel> models = (await cadService.GetAllAsync())
+                .Where(c => c.CreatorId != null);
+
+            IEnumerable<string> categories = typeof(Category).GetEnumNames();
+            if (categories.Contains(category))
+            {
+                models = models.Where(cad => cad.Category.ToString() == category);
+            }
+
+            IEnumerable<CadViewModel> gallery = models
+                .Select(model => new CadViewModel
+                {
+                    Id = model.Id,
+                    Name = model.Name,
+                    Category = model.Category.ToString(),
+                    CreationDate = model.CreationDate!.Value.ToString("dd/MM/yyyy HH:mm:ss"),
+                    CreatorName = model.Creator!.UserName,
+                });
+             
+            return View(gallery);
         }
 
         public IActionResult Privacy()

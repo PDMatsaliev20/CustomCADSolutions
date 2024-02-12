@@ -9,7 +9,11 @@
     <a class="btn btn-primary" asp-area="" asp-controller="Order" asp-action="Add">Add new Order</a>
 </div>
 
-@if (Model.Any())
+@if (!Model.Any())
+{
+    <p class="text-center">No orders yet!</p>
+}
+else
 {
     <div class="mt-4">
         <div class="row">
@@ -21,10 +25,10 @@
                         <div class="card-body">
                             <p class="card-text fs-5">@order.Description</p>
                             <div class="d-grid gap-2">
-                                <a asp-area="" asp-controller="Order" asp-action="Edit" asp-route-id="@order.Id" class="btn btn-primary btn-warning mt-3">
+                                <a asp-area="" asp-controller="Order" asp-action="Edit" asp-route-cadId="@order.CadId" class="btn btn-primary btn-warning mt-3">
                                     Edit
                                 </a>
-                                <form class="mt-2" asp-area="" asp-controller="Order" asp-action="Delete" asp-route-id="@order.Id">
+                                <form class="mt-2" asp-area="" asp-controller="Order" asp-action="Delete" asp-route-cadId="@order.CadId">
                                     <div class="d-grid gap-2">
                                         <input type="submit" value="Delete" class="btn btn-danger mb-2"
                                                onclick="return confirm('Are you sure you want to delete this order: @order.Name?')" />
@@ -38,8 +42,4 @@
             }
         </div>
     </div>
-}
-else
-{
-    <p class="text-center">No orders yet!</p>
 }

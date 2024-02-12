@@ -8,8 +8,7 @@
 <h2 class="text-center mb-3">@ViewData["Title"]</h2>
 <hr />
 <div class="container d-flex justify-content-center">
-    <form class="row" method="post" autocomplete="off">
-        <input asp-for="Id" type="hidden" />
+    <form class="row" method="post" autocomplete="off" asp-route-cadId="@Model.CadId">
         <div class="mb-3">
             <label asp-for="Name" class="form-label"></label>
             <input asp-for="Name" class="form-control" placeholder="Write the name of your wanted 3d model here..." />

@@ -6,9 +6,6 @@ namespace CustomCADSolutions.Core.Models
 {
     public class OrderModel
     {
-        [Key]
-        public int Id { get; set; } 
-
         [Required]
         public int CadId { get; set; }
 

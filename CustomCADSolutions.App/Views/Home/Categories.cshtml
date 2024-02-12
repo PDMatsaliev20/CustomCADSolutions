@@ -1,0 +1,45 @@
+﻿@{
+    ViewData["Title"] = "All Categories";
+    string[] categories = ViewBag.Categories;
+    int rows = 3;
+    int cols = 4;
+}
+
+<html>
+<head>
+    <style>
+        .col a:hover {
+            text-decoration: black underline !important;
+        }
+
+        .col img:hover {
+            opacity: 75%;
+        }
+    </style>
+</head>
+<body>
+    <h3 class="text-center mb-2">@ViewData["Title"]</h3>
+    <hr />
+    <div class="d-grid mt-4">
+        @for (int i = 0; i < rows; i++)
+        {
+            <div class="row mx-5 justify-content-center">
+                @for (int j = 0; j < cols; j++)
+                {
+                    if (categories.Length > j + i * cols)
+                    {
+                        string category = categories[j + i * cols];
+                        <div class="col-@(12/cols) fs-@cols">
+                            <a class="text-decoration-none" asp-area="" asp-controller="Home" asp-action="Category" asp-route-category="@category">
+                                <img class="rounded mw-100 h-auto" src="~/others/categories/@(category).png" alt="@category" width="600px" height="400px">
+                                <p class="text-center text-dark">@category</p>
+                            </a>
+                        </div>
+                    }
+                }
+            </div>
+        }
+    </div>
+
+</body>
+</html>

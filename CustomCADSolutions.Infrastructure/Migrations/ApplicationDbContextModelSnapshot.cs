@@ -43,39 +43,31 @@ namespace CustomCADSolutions.AppWithIdentity.Data.Migrations
                         .HasColumnType("datetime2")
                         .HasComment("CreationDate of 3D Model");
 
+                    b.Property<string>("CreatorId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)")
                         .HasComment("Name of 3D Model");
 
-                    b.Property<int?>("OrderId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("OrderId");
+                    b.HasIndex("CreatorId");
 
                     b.ToTable("Cads");
                 });
 
             modelBuilder.Entity("CustomCADSolutions.Infrastructure.Data.Models.Order", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasComment("Identification of Order");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("BuyerId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)")
-                        .HasComment("Identification of User");
-
                     b.Property<int>("CadId")
                         .HasColumnType("int")
                         .HasComment("Identification of 3D model");
+
+                    b.Property<string>("BuyerId")
+                        .HasColumnType("nvarchar(450)")
+                        .HasComment("Identification of User");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -87,11 +79,9 @@ namespace CustomCADSolutions.AppWithIdentity.Data.Migrations
                         .HasColumnType("datetime2")
                         .HasComment("Date of Order");
 
-                    b.HasKey("Id");
+                    b.HasKey("CadId", "BuyerId");
 
                     b.HasIndex("BuyerId");
-
-                    b.HasIndex("CadId");
 
                     b.ToTable("Orders");
                 });
@@ -300,11 +290,11 @@ namespace CustomCADSolutions.AppWithIdentity.Data.Migrations
 
             modelBuilder.Entity("CustomCADSolutions.Infrastructure.Data.Models.Cad", b =>
                 {
-                    b.HasOne("CustomCADSolutions.Infrastructure.Data.Models.Order", "Order")
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Creator")
                         .WithMany()
-                        .HasForeignKey("OrderId");
+                        .HasForeignKey("CreatorId");
 
-                    b.Navigation("Order");
+                    b.Navigation("Creator");
                 });
 
             modelBuilder.Entity("CustomCADSolutions.Infrastructure.Data.Models.Order", b =>
@@ -316,7 +306,7 @@ namespace CustomCADSolutions.AppWithIdentity.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("CustomCADSolutions.Infrastructure.Data.Models.Cad", "Cad")
-                        .WithMany()
+                        .WithMany("Orders")
                         .HasForeignKey("CadId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -375,6 +365,11 @@ namespace CustomCADSolutions.AppWithIdentity.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("CustomCADSolutions.Infrastructure.Data.Models.Cad", b =>
+                {
+                    b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618
         }

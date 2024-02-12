@@ -8,10 +8,6 @@ namespace CustomCADSolutions.Infrastructure.Data.Models
 {
     public class Order
     {
-        [Key]
-        [Comment("Identification of Order")]
-        public int Id { get; set; }
-
         [Required]
         [Comment("Identification of 3D model")]
         public int CadId { get; set; }
@@ -22,7 +18,7 @@ namespace CustomCADSolutions.Infrastructure.Data.Models
 
         [Required]
         [Comment("Description of Order")]
-        [MaxLength(DataConstants.Order.DescriptionMaxLength)]
+        [MaxLength(DataConstants.OrderConstants.DescriptionMaxLength)]
         public string Description { get; set; } = null!;
 
         [Required]

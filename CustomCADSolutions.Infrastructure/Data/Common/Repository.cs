@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace CustomCADSolutions.Infrastructure.Data.Common
 {
@@ -41,14 +42,11 @@ namespace CustomCADSolutions.Infrastructure.Data.Common
             context.Set<T>().RemoveRange(entities);
         }
 
-        public async Task<T?> GetByIdAsync<T>(params int[] id) where T : class
+        public async Task<T?> GetByIdAsync<T>(params object[] ids) where T : class
         {
-            return await context.Set<T>().FindAsync(id.Length == 1 ? id.FirstOrDefault() : id);
+            return await context.Set<T>().FindAsync(ids);
         }
 
-        public async Task<int> SaveChangesAsync()
-        {
-            return await context.SaveChangesAsync();
-        }
+        public async Task<int> SaveChangesAsync() => await context.SaveChangesAsync();
     }
 }

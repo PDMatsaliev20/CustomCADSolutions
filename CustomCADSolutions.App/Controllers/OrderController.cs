@@ -5,7 +5,7 @@ using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace CustomCADSolutions.App.Controllers
 {
@@ -34,12 +34,13 @@ namespace CustomCADSolutions.App.Controllers
         {
             logger.LogInformation("Entered All Orders Page");
 
-            string username = User.Identity!.Name!;
+            string username = User.FindFirstValue(ClaimTypes.Name);
             IEnumerable<OrderViewModel> orders = (await orderService.GetAllAsync())
                 .Where(o => o.Buyer.UserName == username)
                 .Select(o => new OrderViewModel
                 {
-                    Id = o.Id,
+                    CadId = o.CadId,
+                    BuyerId = o.BuyerId,
                     Category = o.Cad.Category.ToString(),
                     Name = o.Cad.Name,
                     Description = o.Description,
@@ -70,12 +71,11 @@ namespace CustomCADSolutions.App.Controllers
             {
                 Description = input.Description,
                 OrderDate = DateTime.Now,
-                Buyer = await userManager.FindByNameAsync(User.Identity!.Name!),
+                Buyer = await userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier)),
                 Cad = new CadModel()
                 {
                     Name = input.Name,
                     Category = (Category)input.Category,
-                    
                 }
             };
             await orderService.CreateAsync(model);
@@ -85,14 +85,16 @@ namespace CustomCADSolutions.App.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(int cadId)
         {
             logger.LogInformation("Entered Edit Order Page");
 
-            OrderModel order = await orderService.GetByIdAsync(id);
+            string buyerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            OrderModel order = await orderService.GetByIdAsync(cadId, buyerId);
+
             OrderInputModel model = new()
             {
-                Id = id,
+                CadId = order.CadId,
                 Name = order.Cad.Name,
                 Category = (int)order.Cad.Category,
                 Description = order.Description,
@@ -103,7 +105,7 @@ namespace CustomCADSolutions.App.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(OrderInputModel input, int id)
+        public async Task<IActionResult> Edit(OrderInputModel input, int cadId)
         {
             if (!ModelState.IsValid)
             {
@@ -111,8 +113,8 @@ namespace CustomCADSolutions.App.Controllers
                 return View(input);
             }
 
-            //Model's ID is saved seperately from the model itself
-            OrderModel order = (await orderService.GetAllAsync()).First(o => id == o.Id);
+            string buyerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            OrderModel order = await orderService.GetByIdAsync(cadId, buyerId);
 
             order.Cad.Name = input.Name;
             order.Description = input.Description;
@@ -124,9 +126,10 @@ namespace CustomCADSolutions.App.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int cadId)
         {
-            await orderService.DeleteAsync(id);
+            string buyerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            await orderService.DeleteAsync(cadId, buyerId);
 
             return RedirectToAction(nameof(Index));
         }
