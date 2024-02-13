@@ -1,7 +1,8 @@
 ﻿@model IEnumerable<CadViewModel>
 @{
-    ViewData["Title"] = $"All {User.Identity!.Name} Models";
     int constant = 6;
+    
+    ViewData["Title"] = $"{User.Identity!.Name}'s 3D Models";
 }
 <head>
     <script type="importmap">
@@ -14,7 +15,7 @@
     </script>
 </head>
 <body>
-    <h1 class="text-center">@ViewData["Title"]</h1>
+    <h2 class="text-center">@ViewData["Title"]</h2>
     <hr />
 
     <div class="d-flex justify-content-center mb-2">

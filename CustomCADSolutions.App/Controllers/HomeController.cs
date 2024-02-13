@@ -2,8 +2,10 @@
 using CustomCADSolutions.Core.Contracts;
 using CustomCADSolutions.Core.Models;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace CustomCADSolutions.App.Controllers
 {
@@ -11,16 +13,23 @@ namespace CustomCADSolutions.App.Controllers
     {
         private readonly ILogger<HomeController> logger;
         private readonly ICadService cadService;
+        private readonly UserManager<IdentityUser> userManager;
 
-        public HomeController(ILogger<HomeController> logger, ICadService cadService)
+        public HomeController(
+            ICadService cadService,
+            ILogger<HomeController> logger,
+            UserManager<IdentityUser> userManager)
         {
             this.logger = logger;
             this.cadService = cadService;
+            this.userManager = userManager;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             logger.LogInformation("Entered Home Page");
+            //IdentityUser Oracle3000 = await userManager.FindByIdAsync("");
+            //await AssignUserToRoleAsync(Oracle3000, "Contributer");
             return View();
         }
 
@@ -54,7 +63,7 @@ namespace CustomCADSolutions.App.Controllers
                     CreationDate = model.CreationDate!.Value.ToString("dd/MM/yyyy HH:mm:ss"),
                     CreatorName = model.Creator!.UserName,
                 });
-             
+
             return View(gallery);
         }
 
@@ -69,6 +78,23 @@ namespace CustomCADSolutions.App.Controllers
         {
             logger.LogInformation("Entered Error Page");
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        private async Task AssignUserToRoleAsync(IdentityUser user, string role)
+        {
+            if (!await userManager.IsInRoleAsync(user, role))
+            {
+                IdentityResult result = await userManager.AddToRoleAsync(user, role);
+                if (!result.Succeeded)
+                {
+                    foreach (IdentityError error in result.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
+                    logger.LogInformation("Add To Role Gone Wrong");
+                }
+            }
+            else logger.LogInformation("User Already In Role");
         }
     }
 }

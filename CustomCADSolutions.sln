@@ -10,7 +10,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomCADSolutions.Core", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomCADSolutions.Infrastructure", "CustomCADSolutions.Infrastructure\CustomCADSolutions.Infrastructure.csproj", "{FD68ACFD-29B1-4F52-A7C9-5203DF60FE7C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomCADSolutions.AppWithIdentity", "CustomCADSolutions.App\CustomCADSolutions.AppWithIdentity.csproj", "{83A353B2-5F7E-495C-B411-6EBC003AB58C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomCADSolutions.App", "CustomCADSolutions.App\CustomCADSolutions.App.csproj", "{83A353B2-5F7E-495C-B411-6EBC003AB58C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

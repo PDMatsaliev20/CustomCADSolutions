@@ -15,18 +15,15 @@ namespace CustomCADSolutions.App.Controllers
         private readonly IOrderService orderService;
         private readonly ILogger logger;
         private readonly UserManager<IdentityUser> userManager;
-        private readonly SignInManager<IdentityUser> signInManager;
 
         public OrderController(
             ILogger<OrderController> logger, 
             IOrderService orderService, 
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager)
+            UserManager<IdentityUser> userManager)
         {
             this.orderService = orderService;
             this.logger = logger;
             this.userManager = userManager;
-            this.signInManager = signInManager;
         }
 
         [HttpGet]
@@ -36,21 +33,27 @@ namespace CustomCADSolutions.App.Controllers
 
             string username = User.FindFirstValue(ClaimTypes.Name);
             IEnumerable<OrderViewModel> orders = (await orderService.GetAllAsync())
-                .Where(o => o.Buyer.UserName == username)
                 .Select(o => new OrderViewModel
                 {
-                    CadId = o.CadId,
                     BuyerId = o.BuyerId,
+                    BuyerName = o.Buyer.UserName,
+                    CadId = o.CadId,
                     Category = o.Cad.Category.ToString(),
                     Name = o.Cad.Name,
                     Description = o.Description,
                     OrderDate = o.OrderDate.ToString("dd/MM/yyyy HH:mm:ss"),
                 });
 
-            ViewBag.UserName = username;
+            IdentityUser user = await userManager.FindByNameAsync(username);
+            if (!await userManager.IsInRoleAsync(user, "Administrator"))
+            {
+                orders = orders.Where(o => o.BuyerName == username);
+            }
+
             return View(orders);
         }
 
+        [Authorize(Roles = "Contributer")]
         [HttpGet]
         public IActionResult Add()
         {
@@ -58,6 +61,7 @@ namespace CustomCADSolutions.App.Controllers
             return View(new OrderInputModel());
         }
 
+        [Authorize(Roles = "Contributer")]
         [HttpPost]
         public async Task<IActionResult> Add(OrderInputModel input)
         {
@@ -84,6 +88,7 @@ namespace CustomCADSolutions.App.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Contributer")]
         [HttpGet]
         public async Task<IActionResult> Edit(int cadId)
         {
@@ -104,6 +109,7 @@ namespace CustomCADSolutions.App.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Contributer")]
         [HttpPost]
         public async Task<IActionResult> Edit(OrderInputModel input, int cadId)
         {
@@ -125,6 +131,7 @@ namespace CustomCADSolutions.App.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Contributer")]
         [HttpPost]
         public async Task<IActionResult> Delete(int cadId)
         {

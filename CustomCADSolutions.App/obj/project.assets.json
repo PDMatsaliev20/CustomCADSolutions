@@ -11603,9 +11603,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\CustomCADSolutions.AppWithIdentity.csproj",
-      "projectName": "CustomCADSolutions.AppWithIdentity",
-      "projectPath": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\CustomCADSolutions.AppWithIdentity.csproj",
+      "projectUniqueName": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\CustomCADSolutions.App.csproj",
+      "projectName": "CustomCADSolutions.App",
+      "projectPath": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\CustomCADSolutions.App.csproj",
       "packagesPath": "C:\\Users\\35988\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\obj\\",
       "projectStyle": "PackageReference",

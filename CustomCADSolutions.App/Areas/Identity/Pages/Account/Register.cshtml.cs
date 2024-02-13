@@ -114,6 +114,13 @@ namespace CustomCADSolutions.AppWithIdentity.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
+                if (await _userManager.FindByEmailAsync(Input.Email) != null)
+                {
+                    ViewData["IsEmailUnique"] = false;
+                    return Page();
+                }
+                ViewData["IsEmailUnique"] = true;
+
                 var user = CreateUser();
 
                 await _userStore.SetUserNameAsync(user, Input.Username, CancellationToken.None);

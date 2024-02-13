@@ -128,8 +128,9 @@ namespace CustomCADSolutions.Core.Services
 
         public async Task<IEnumerable<CadModel>> GetAllAsync()
         {
-            CadModel[] models = await repository
+            CadModel[] models = (await repository
                 .All<Cad>()
+                .ToArrayAsync())
                 .Select(cad => new CadModel()
                 {
                     Id = cad.Id,
@@ -140,8 +141,7 @@ namespace CustomCADSolutions.Core.Services
                     CreatorId = cad.CreatorId,
                     Creator = cad.Creator,
                     Orders = cad.Orders.Select(o => orderService.GetByIdAsync(o.CadId, o.BuyerId).Result).ToArray(),
-                })
-                .ToArrayAsync();
+                }).ToArray();
 
             return models;
         }

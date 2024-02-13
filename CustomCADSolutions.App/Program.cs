@@ -3,33 +3,46 @@ using CustomCADSolutions.Core.Services;
 using CustomCADSolutions.Infrastructure.Data;
 using CustomCADSolutions.Infrastructure.Data.Common;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Add database to the container.
 var connectionString = builder.Configuration.GetConnectionString("RealConnection");
 builder.Services.AddDbContext<CADContext>(options => options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
+// Add identity to the container
 builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 {
-    options.SignIn.RequireConfirmedAccount = true;
+    options.SignIn.RequireConfirmedAccount = false;
     options.Password.RequireDigit = false;
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequireLowercase = false;
     options.Password.RequireUppercase = false;
-    options.User.RequireUniqueEmail = true;
 })
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<CADContext>();
 
+// Add services to the container
 builder.Services.AddControllersWithViews();
 
+const string Admininstrator = "Administrator", Contributer = "Contributer";
+string[] roles = { Admininstrator, Contributer };
+builder.Services.AddAuthorization(options =>
+{
+    foreach (string role in roles)
+    {
+        options.AddPolicy(role, policy => policy.RequireRole(role));
+    }
+});
+
+// Add abstraction levels to the container
 builder.Services.AddScoped<IRepository, Repository>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<ICadService, CadService>();
 
+// Add redirection to the container
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = "/Identity/Account/Login";
@@ -56,6 +69,18 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+using (IServiceScope scope = app.Services.CreateScope())
+{
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    foreach (string role in roles)
+    {
+        if (!await roleManager.RoleExistsAsync(role))
+        {
+            await roleManager.CreateAsync(new IdentityRole(role));
+        }
+    }
+}
 
 app.MapControllerRoute(
     name: "default",

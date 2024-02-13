@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace CustomCADSolutions.App.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Contributer,Administrator")]
     public class CadController : Controller
     {
         private readonly ICadService cadService;
@@ -83,7 +83,7 @@ namespace CustomCADSolutions.App.Controllers
                 return BadRequest("Dumb 3d model");
             }
 
-            string filePath = Path.Combine(Directory.GetCurrentDirectory(), $@"wwwroot\others\cads\{input.Name}.stl");
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot/others/cads/{input.Name}.stl");
             using var fileStream = new FileStream(filePath, FileMode.Create);
             await input.File.CopyToAsync(fileStream);
 

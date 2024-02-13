@@ -1,6 +1,9 @@
 ﻿@using CustomCADSolutions.Infrastructure.Data.Models.Enums
+@using Microsoft.AspNetCore.Identity
+@using System.Security.Claims
+@inject UserManager<IdentityUser> UserManager
 @{
-    string[] categories = string.Join(" ", "All", string.Join(" ", (typeof(Category).GetEnumValues() as Category[])!)).Split();
+    //await UserManager.AddToRoleAsync(await UserManager.FindByNameAsync("NinjaBG"), "Contributer");
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -28,25 +31,51 @@
 
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between fs-5">
                     <ul class="justify-content-start fade-in navbar-nav flex-grow-1">
-                        @if (!User.Identity!.IsAuthenticated)
+                        @if (User.Identity!.IsAuthenticated)
+                        {
+                            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                            IdentityUser? user = await UserManager.FindByIdAsync(userId);
+                            if (await UserManager.IsInRoleAsync(user, "Administrator"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="Home" asp-action="Categories" role="button">Categories</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="Index" role="button">All Orders</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Cad" asp-action="Index" role="button">Your 3D Models</a>
+                                </li>
+                            }
+                            else if (await UserManager.IsInRoleAsync(user, "Contributer"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="Home" asp-action="Categories" role="button">Categories</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="Index" role="button">Your Orders</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Cad" asp-action="Index" role="button">Your 3D Models</a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="Home" asp-action="Categories" role="button">Categories</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="Index" role="button">Your Orders</a>
+                                </li>
+                            }
+                        }
+                        else 
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-controller="Home" asp-action="Index" role="button">Home</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-controller="Home" asp-action="Categories" role="button">Explore</a>
-                            </li>
-                        }
-                        else 
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Home" asp-action="Categories" role="button">Categories</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="Index" role="button">Orders</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Cad" asp-action="Index" role="button">3D Models</a>
                             </li>
                         }
                     </ul>
