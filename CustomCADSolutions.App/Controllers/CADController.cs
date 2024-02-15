@@ -16,7 +16,7 @@ namespace CustomCADSolutions.App.Controllers
         private readonly UserManager<IdentityUser> userManager;
 
         public CadController(
-            ICadService cadService, 
+            ICadService cadService,
             ILogger<CadModel> logger,
             UserManager<IdentityUser> userManager)
         {
@@ -40,6 +40,7 @@ namespace CustomCADSolutions.App.Controllers
                         Name = model.Name,
                         Category = model.Category.ToString(),
                         CreationDate = model.CreationDate!.Value.ToString("dd/MM/yyyy HH:mm:ss"),
+                        Coords = model.Coords,
                     };
 
                     return view;
@@ -64,28 +65,26 @@ namespace CustomCADSolutions.App.Controllers
                 return View(input);
             }
 
-            string creatorId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            using MemoryStream stream = new();
-            input.File.CopyTo(stream);
+            if (input.CadFile == null || input.CadFile.Length <= 0)
+            {
+                return BadRequest("Dumb 3d model");
+            }
+
             CadModel model = new()
             {
                 Name = input.Name,
                 Category = input.Category,
                 CreationDate = DateTime.Now,
-                CadInBytes = stream.ToArray(),
-                CreatorId = creatorId,
-                Creator = await userManager.FindByIdAsync(creatorId)
+                CreatorId = User.FindFirstValue(ClaimTypes.NameIdentifier),
+                Coords = (input.X, input.Y, input.Z),
             };
-            await cadService.CreateAsync(model);
+            model.Creator = await userManager.FindByIdAsync(model.CreatorId);
 
-            if (input.File == null || input.File.Length <= 0)
-            {
-                return BadRequest("Dumb 3d model");
-            }
+            int cadId = await cadService.CreateAsync(model);
 
-            string filePath = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot/others/cads/{input.Name}.stl");
-            using var fileStream = new FileStream(filePath, FileMode.Create);
-            await input.File.CopyToAsync(fileStream);
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot/others/cads/{input.Name}{cadId}.stl");
+            using FileStream fileStream = new(filePath, FileMode.Create);
+            await input.CadFile.CopyToAsync(fileStream);
 
             logger.LogInformation("Submitted 3d Model");
             return RedirectToAction(nameof(Index));
@@ -111,6 +110,9 @@ namespace CustomCADSolutions.App.Controllers
             {
                 Name = cad.Name,
                 Category = cad.Category,
+                X = cad.Coords.Item1,
+                Y = cad.Coords.Item2,
+                Z = cad.Coords.Item3,
             };
 
             return View(input);
@@ -132,18 +134,25 @@ namespace CustomCADSolutions.App.Controllers
                 return Unauthorized();
             }
 
-            if (!ModelState.IsValid)
+            if (input.CadFile != null && !ModelState.IsValid)
             {
+                logger.LogError("Did NOT Save Model Changes");
+
+                if (input.CadFile == null)
+                {
+                    logger.LogError("Method above DID NOT work");
+                }
+
                 return View(input);
             }
 
-            using MemoryStream stream = new();
-            input.File.CopyTo(stream);
-            model.CadInBytes = stream.ToArray();
             model.Name = input.Name;
             model.Category = input.Category;
+            model.Coords = (input.X, input.Y, input.Z);
 
             await cadService.EditAsync(model);
+            logger.LogInformation("Saved Model Changes");
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -164,10 +173,11 @@ namespace CustomCADSolutions.App.Controllers
 
             await cadService.DeleteAsync(cad.Id);
 
-            string filePath = Path.Combine(Directory.GetCurrentDirectory(), $@"wwwroot\others\cads\{cad.Name}.stl");
-            if (System.IO.File.Exists(filePath))
+            string filePath = $@"wwwroot\others\cads\{cad.Name}{cad.Id}.stl";
+            string fullFilePath = Path.Combine(Directory.GetCurrentDirectory(), filePath);
+            if (System.IO.File.Exists(fullFilePath))
             {
-                System.IO.File.Delete(filePath);    
+                System.IO.File.Delete(fullFilePath);
             }
 
             return RedirectToAction(nameof(Index));

@@ -53,15 +53,22 @@ namespace CustomCADSolutions.App.Controllers
             return View(orders);
         }
 
-        [Authorize(Roles = "Contributer")]
         [HttpGet]
-        public IActionResult Add()
+        public async Task<IActionResult> Add()
         {
             logger.LogInformation("Entered Order Page");
+
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            IdentityUser user = await userManager.FindByIdAsync(userId);
+            if (await userManager.IsInRoleAsync(user, "Administrator"))
+            {
+                return Unauthorized();
+            }
+
+
             return View(new OrderInputModel());
         }
 
-        [Authorize(Roles = "Contributer")]
         [HttpPost]
         public async Task<IActionResult> Add(OrderInputModel input)
         {
@@ -71,11 +78,18 @@ namespace CustomCADSolutions.App.Controllers
                 return View(input);
             }
 
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            IdentityUser user = await userManager.FindByIdAsync(userId);
+            if (await userManager.IsInRoleAsync(user, "Administrator"))
+            {
+                return Unauthorized();
+            }
+
             OrderModel model = new()
             {
                 Description = input.Description,
                 OrderDate = DateTime.Now,
-                Buyer = await userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier)),
+                Buyer = user,
                 Cad = new CadModel()
                 {
                     Name = input.Name,
@@ -88,15 +102,19 @@ namespace CustomCADSolutions.App.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [Authorize(Roles = "Contributer")]
         [HttpGet]
         public async Task<IActionResult> Edit(int cadId)
         {
             logger.LogInformation("Entered Edit Order Page");
 
-            string buyerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            OrderModel order = await orderService.GetByIdAsync(cadId, buyerId);
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            IdentityUser user = await userManager.FindByIdAsync(userId);
+            if (await userManager.IsInRoleAsync(user, "Administrator"))
+            {
+                return Unauthorized();
+            }
 
+            OrderModel order = await orderService.GetByIdAsync(cadId, userId);
             OrderInputModel model = new()
             {
                 CadId = order.CadId,
@@ -109,7 +127,6 @@ namespace CustomCADSolutions.App.Controllers
             return View(model);
         }
 
-        [Authorize(Roles = "Contributer")]
         [HttpPost]
         public async Task<IActionResult> Edit(OrderInputModel input, int cadId)
         {
@@ -119,9 +136,14 @@ namespace CustomCADSolutions.App.Controllers
                 return View(input);
             }
 
-            string buyerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            OrderModel order = await orderService.GetByIdAsync(cadId, buyerId);
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            IdentityUser user = await userManager.FindByIdAsync(userId);
+            if (await userManager.IsInRoleAsync(user, "Administrator"))
+            {
+                return Unauthorized();
+            }
 
+            OrderModel order = await orderService.GetByIdAsync(cadId, userId);
             order.Cad.Name = input.Name;
             order.Description = input.Description;
             order.Cad.Category = (Category)input.Category;
@@ -131,12 +153,18 @@ namespace CustomCADSolutions.App.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [Authorize(Roles = "Contributer")]
         [HttpPost]
         public async Task<IActionResult> Delete(int cadId)
         {
-            string buyerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            await orderService.DeleteAsync(cadId, buyerId);
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            IdentityUser user = await userManager.FindByIdAsync(userId);
+
+            if (await userManager.IsInRoleAsync(user, "Administrator"))
+            {
+                return Unauthorized();
+            }
+
+            await orderService.DeleteAsync(cadId, userId);
 
             return RedirectToAction(nameof(Index));
         }

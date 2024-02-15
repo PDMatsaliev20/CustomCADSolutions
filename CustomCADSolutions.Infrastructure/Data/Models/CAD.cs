@@ -12,9 +12,6 @@ namespace CustomCADSolutions.Infrastructure.Data.Models
         [Key]
         [Comment("Identification of 3D Model")]
         public int Id { get; set; }
-        
-        [Comment("Byte Array representing 3D Model")]
-        public byte[]? CadInBytes { get; set; } 
 
         [Required]
         [MaxLength(DataConstants.CadConstants.NameMaxLength)]
@@ -34,5 +31,8 @@ namespace CustomCADSolutions.Infrastructure.Data.Models
         public IdentityUser? Creator { get; set; }
 
         public ICollection<Order> Orders { get; set; } = new List<Order>();
+        public short X { get; set; }
+        public short Y { get; set; }
+        public short Z { get; set; }
     }
 }

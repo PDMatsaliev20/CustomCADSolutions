@@ -11,8 +11,6 @@ namespace CustomCADSolutions.Core.Models
         [Key]
         public int Id { get; set; }
 
-        public byte[]? CadInBytes { get; set; } 
-
         [Required(ErrorMessage = RequiredErrorMessage)]
         [StringLength(CadConstants.NameMaxLength, MinimumLength = CadConstants.NameMinLength, ErrorMessage = LengthErrorMessage)]
         public string Name { get; set; } = null!;
@@ -29,5 +27,6 @@ namespace CustomCADSolutions.Core.Models
         public IdentityUser? Creator { get; set; }
         
         public ICollection<OrderModel> Orders { get; set; } = new List<OrderModel>();
+        public (short, short, short) Coords { get; set; }
     }
 }

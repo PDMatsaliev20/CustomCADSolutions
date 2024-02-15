@@ -7,13 +7,17 @@
 
         public class CadConstants
         {
-            public const string NameDisplay = "Name of 3D Model";
+            public const string NameDisplay = "Name";
             public const int NameMaxLength = 50;
             public const int NameMinLength = 3;
 
-            public const string CategoryDisplay = "Category of 3D Model";
+            public const string CategoryDisplay = "Category";
 
             public const string FileDisplay = "3D Model";
+
+            public const string XDisplay = "X";
+            public const string YDisplay = "Y";
+            public const string ZDisplay = "Z";
         }
 
         public class OrderConstants

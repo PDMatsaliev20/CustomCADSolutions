@@ -39,6 +39,8 @@ builder.Services.AddAuthorization(options =>
 
 // Add abstraction levels to the container
 builder.Services.AddScoped<IRepository, Repository>();
+builder.Services.AddScoped<IConverter, Converter>();
+
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<ICadService, CadService>();
 

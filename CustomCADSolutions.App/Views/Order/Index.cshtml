@@ -6,7 +6,7 @@
     IdentityUser user = await UserManager.FindByNameAsync(username);
     bool userIsAdmin = await UserManager.IsInRoleAsync(user, "Administrator");
     
-    ViewData["Title"] = userIsAdmin ? "All Orders" : $"All {username} Orders";
+    ViewData["Title"] = userIsAdmin ? "All Orders" : $"{username}\'s Orders";
 }
 
 <h2 class="text-center mb-2">@ViewData["Title"]</h2>

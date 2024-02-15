@@ -1,12 +1,4 @@
 ﻿using CustomCADSolutions.Core.Models;
-using CustomCADSolutions.Infrastructure.Data.Models;
-using CustomCADSolutions.Infrastructure.Data.Models.Enums;
-using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CustomCADSolutions.Core.Contracts
 {

@@ -1,11 +1,11 @@
 ﻿using CustomCADSolutions.App.Models;
 using CustomCADSolutions.Core.Contracts;
 using CustomCADSolutions.Core.Models;
+using CustomCADSolutions.Infrastructure.Data.Models;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using System.Security.Claims;
 
 namespace CustomCADSolutions.App.Controllers
 {
@@ -62,6 +62,7 @@ namespace CustomCADSolutions.App.Controllers
                     Category = model.Category.ToString(),
                     CreationDate = model.CreationDate!.Value.ToString("dd/MM/yyyy HH:mm:ss"),
                     CreatorName = model.Creator!.UserName,
+                    Coords = model.Coords,
                 });
 
             return View(gallery);

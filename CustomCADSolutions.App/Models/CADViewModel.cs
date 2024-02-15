@@ -8,5 +8,6 @@
         public string Category { get; set; } = null!;
         public IFormFile Cad { get; set; } = null!;
         public string? CreationDate { get; set; }
+        public (short, short, short) Coords { get; set; }
     }
 }

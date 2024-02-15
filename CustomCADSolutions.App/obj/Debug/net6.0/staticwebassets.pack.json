@@ -253,12 +253,8 @@
       "PackagePath": "staticwebassets\\logo.png"
     },
     {
-      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\cads\\Airpod.stl",
-      "PackagePath": "staticwebassets\\others\\cads\\Airpod.stl"
-    },
-    {
-      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\cads\\Autism.stl",
-      "PackagePath": "staticwebassets\\others\\cads\\Autism.stl"
+      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\cads\\Banana236.stl",
+      "PackagePath": "staticwebassets\\others\\cads\\Banana236.stl"
     },
     {
       "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\categories\\All.png",
@@ -285,16 +281,20 @@
       "PackagePath": "staticwebassets\\others\\categories\\Fashion.png"
     },
     {
+      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\categories\\Food.png",
+      "PackagePath": "staticwebassets\\others\\categories\\Food.png"
+    },
+    {
       "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\categories\\Furniture.png",
       "PackagePath": "staticwebassets\\others\\categories\\Furniture.png"
     },
     {
-      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\categories\\Medical.png",
-      "PackagePath": "staticwebassets\\others\\categories\\Medical.png"
-    },
-    {
       "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\categories\\Others.png",
       "PackagePath": "staticwebassets\\others\\categories\\Others.png"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\categories\\Science.png",
+      "PackagePath": "staticwebassets\\others\\categories\\Science.png"
     },
     {
       "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\categories\\Sports.png",

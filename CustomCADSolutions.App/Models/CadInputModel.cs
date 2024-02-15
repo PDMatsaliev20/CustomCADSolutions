@@ -21,6 +21,18 @@ namespace CustomCADSolutions.App.Models
 
         [Required(ErrorMessage = RequiredErrorMessage)]
         [Display(Name = CadConstants.FileDisplay)]
-        public IFormFile File { get; set; } = null!;
+        public IFormFile CadFile { get; set; } = null!;
+        
+        [Required(ErrorMessage = RequiredErrorMessage)]
+        [Display(Name = CadConstants.XDisplay)]
+        public short X { get; set; }
+        
+        [Required(ErrorMessage = RequiredErrorMessage)]
+        [Display(Name = CadConstants.YDisplay)]
+        public short Y { get; set; }
+        
+        [Required(ErrorMessage = RequiredErrorMessage)]
+        [Display(Name = CadConstants.ZDisplay)]
+        public short Z { get; set; }
     }
 }

@@ -2,7 +2,6 @@
 using CustomCADSolutions.Core.Models;
 using CustomCADSolutions.Infrastructure.Data.Common;
 using CustomCADSolutions.Infrastructure.Data.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace CustomCADSolutions.Core.Services
@@ -10,13 +9,12 @@ namespace CustomCADSolutions.Core.Services
     public class OrderService : IOrderService
     {
         private readonly IRepository repository;
-        private readonly UserManager<IdentityUser> userManager;
+        private readonly IConverter converter;
 
-        public OrderService(IRepository repository, UserManager<IdentityUser> userManager)
+        public OrderService(IRepository repository, IConverter converter)
         {
             this.repository = repository;
-            this.userManager = userManager;
-
+            this.converter = converter;
         }
 
         public async Task CreateAsync(OrderModel model)
@@ -25,7 +23,7 @@ namespace CustomCADSolutions.Core.Services
             {
                 throw new NullReferenceException();
             }
-            Order order = await ConvertModelToEntity(model);
+            Order order = converter.ModelToOrder(model);
 
             await repository.AddAsync<Order>(order);
             await repository.SaveChangesAsync();
@@ -40,13 +38,12 @@ namespace CustomCADSolutions.Core.Services
                 {
                     throw new NullReferenceException();
                 }
-                Order order = await ConvertModelToEntity(model);
+                Order order = converter.ModelToOrder(model);
                 orders.Add(order);
             }
             await repository.AddRangeAsync<Order>(orders.ToArray());
             await repository.SaveChangesAsync();
         }
-
 
         public async Task EditAsync(OrderModel model)
         {
@@ -59,7 +56,6 @@ namespace CustomCADSolutions.Core.Services
 
             order.Description = model.Description;
             order.Cad.Name = model.Cad.Name;
-            order.Cad.CadInBytes = model.Cad.CadInBytes;
             order.Cad.Category = model.Cad.Category;
             order.Cad.CreationDate = model.Cad.CreationDate;
 
@@ -84,50 +80,15 @@ namespace CustomCADSolutions.Core.Services
                 .GetByIdAsync<Order>(cadId, buyerId)
                 ?? throw new KeyNotFoundException();
 
-            OrderModel model = ConvertEntityToModel(order);
+            OrderModel model = converter.OrderToModel(order);
             return model;
         }
         
         public async Task<IEnumerable<OrderModel>> GetAllAsync()
         {
             return await repository.All<Order>()
-                .Select(o => ConvertEntityToModel(o))
+                .Select(o => converter.OrderToModel(o, true))
                 .ToArrayAsync();
-        }
-
-        private static OrderModel ConvertEntityToModel(Order order)
-        {
-            return new()
-            {
-                CadId = order.CadId,
-                BuyerId = order.BuyerId,
-                Description = order.Description,
-                OrderDate = order.OrderDate,
-                Buyer = order.Buyer,
-                Cad = new CadModel
-                {
-                    Id = order.CadId,
-                    Name = order.Cad.Name,
-                    Category = order.Cad.Category,
-                    CadInBytes = order.Cad.CadInBytes,
-                    CreationDate = order.Cad.CreationDate,
-                },
-            };
-        }
-
-        private async Task<Order> ConvertModelToEntity(OrderModel model)
-        {
-            return new()
-            {
-                Description = model.Description,
-                OrderDate = model.OrderDate,
-                Buyer = await userManager.FindByIdAsync(model.Buyer.Id),
-                Cad = new()
-                {
-                    Name = model.Cad.Name,
-                    Category = model.Cad.Category,
-                },
-            };
         }
     }
 }

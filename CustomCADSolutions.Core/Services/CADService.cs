@@ -9,26 +9,20 @@ namespace CustomCADSolutions.Core.Services
     public class CadService : ICadService
     {
         private readonly IRepository repository;
+        private readonly IConverter converter;
         private readonly IOrderService orderService;
 
-        public CadService(IRepository repository, IOrderService orderService)
+        public CadService(IRepository repository, IConverter converter,
+            IOrderService orderService)
         {
             this.repository = repository;
             this.orderService = orderService;
-
+            this.converter = converter;
         }
 
-        public async Task CreateAsync(CadModel model)
+        public async Task<int> CreateAsync(CadModel model)
         {
-            Cad cad = new()
-            {
-                Name = model.Name,
-                Category = model.Category,
-                CadInBytes = model.CadInBytes,
-                CreationDate = DateTime.Now,
-                CreatorId = model.CreatorId,
-                Creator = model.Creator,
-            };
+            Cad cad = converter.ModelToCad(model);
 
             if (model.Orders.Any())
             {
@@ -37,6 +31,8 @@ namespace CustomCADSolutions.Core.Services
 
             await repository.AddAsync<Cad>(cad);
             await repository.SaveChangesAsync();
+
+            return cad.Id;
         }
 
         public async Task CreateRangeAsync(params CadModel[] models)
@@ -44,15 +40,7 @@ namespace CustomCADSolutions.Core.Services
             List<Cad> cads = new();
             foreach (CadModel model in models)
             {
-                Cad cad = new()
-                {
-                    Name = model.Name,
-                    CreationDate = DateTime.Now,
-                    Category = model.Category,
-                    CadInBytes = model.CadInBytes,
-                    CreatorId = model.CreatorId,
-                    Creator = model.Creator,
-                };
+                Cad cad = converter.ModelToCad(model);
 
                 if (model.Orders.Any())
                 {
@@ -62,6 +50,21 @@ namespace CustomCADSolutions.Core.Services
                 cads.Add(cad);
             }
             await repository.AddRangeAsync<Cad>(cads.ToArray());
+            await repository.SaveChangesAsync();
+        }
+
+        public async Task EditAsync(CadModel entity)
+        {
+            Cad? cad = await this.repository.All<Cad>()
+                .FirstOrDefaultAsync(cad => cad.Id == entity.Id)
+                ?? throw new ArgumentException("Model doesn't exist!");
+
+            cad.Name = entity.Name;
+            cad.Category = entity.Category;
+            cad.X = entity.Coords.Item1;
+            cad.Y = entity.Coords.Item2;
+            cad.Z = entity.Coords.Item3;
+
             await repository.SaveChangesAsync();
         }
 
@@ -85,19 +88,6 @@ namespace CustomCADSolutions.Core.Services
             await repository.SaveChangesAsync();
         }
 
-        public async Task EditAsync(CadModel entity)
-        {
-            Cad? cad = await this.repository.All<Cad>()
-                .FirstOrDefaultAsync(cad => cad.Id == entity.Id)
-                ?? throw new ArgumentException("Model doesn't exist!");
-
-            cad.Name = entity.Name;
-            cad.Category = entity.Category;
-            cad.CadInBytes = entity.CadInBytes;
-
-            await repository.SaveChangesAsync();
-        }
-
         public async Task<CadModel> GetByIdAsync(int id)
         {
             Cad cad = await repository
@@ -105,45 +95,16 @@ namespace CustomCADSolutions.Core.Services
                 .FirstOrDefaultAsync(cad => cad.Id == id)
                 ?? throw new ArgumentException("Model doesn't exist");
 
-            CadModel model = new()
-            {
-                Id = cad.Id,
-                Name = cad.Name,
-                CreationDate = cad.CreationDate,
-                Category = cad.Category,
-                CadInBytes = cad.CadInBytes,
-                CreatorId = cad.CreatorId,
-                Creator = cad.Creator,
-            };
-
-            if (cad.Orders.Any())
-            {
-                model.Orders = cad.Orders
-                    .Select(o => orderService.GetByIdAsync(o.CadId, o.BuyerId).Result)
-                    .ToArray();
-            }
-
+            CadModel model = converter.CadToModel(cad);
             return model;
         }
 
         public async Task<IEnumerable<CadModel>> GetAllAsync()
         {
-            CadModel[] models = (await repository
+            return await repository
                 .All<Cad>()
-                .ToArrayAsync())
-                .Select(cad => new CadModel()
-                {
-                    Id = cad.Id,
-                    Name = cad.Name,
-                    Category = cad.Category,
-                    CreationDate = cad.CreationDate,
-                    CadInBytes = cad.CadInBytes,
-                    CreatorId = cad.CreatorId,
-                    Creator = cad.Creator,
-                    Orders = cad.Orders.Select(o => orderService.GetByIdAsync(o.CadId, o.BuyerId).Result).ToArray(),
-                }).ToArray();
-
-            return models;
+                .Select(cad => converter.CadToModel(cad, true))
+                .ToArrayAsync();
         }
     }
 }
