@@ -55,6 +55,7 @@ namespace CustomCADSolutions.Core.Services
 
 
             order.Description = model.Description;
+            order.Status = model.Status;
             order.Cad.Name = model.Cad.Name;
             order.Cad.Category = model.Cad.Category;
             order.Cad.CreationDate = model.Cad.CreationDate;
@@ -70,7 +71,13 @@ namespace CustomCADSolutions.Core.Services
                                       && order.BuyerId == buyerId)
                 ?? throw new KeyNotFoundException();
             
-            repository.Delete<Order>(order);
+            repository.Delete(order);
+            Cad? cad = await repository.GetByIdAsync<Cad>(cadId);
+            if (cad != null)
+            {
+                repository.Delete<Cad>(cad);
+            }
+
             await repository.SaveChangesAsync();
         }
 

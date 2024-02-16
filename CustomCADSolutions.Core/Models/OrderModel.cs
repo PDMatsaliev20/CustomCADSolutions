@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
+using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 
 namespace CustomCADSolutions.Core.Models
 {
@@ -18,6 +19,9 @@ namespace CustomCADSolutions.Core.Models
 
         [Required]
         public DateTime OrderDate { get; set; }
+
+        [Required]  
+        public OrderStatus Status { get; set; }
 
         [ForeignKey(nameof(CadId))]
         public CadModel Cad { get; set; } = null!;

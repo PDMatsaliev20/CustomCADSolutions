@@ -53,17 +53,19 @@ namespace CustomCADSolutions.Core.Services
             await repository.SaveChangesAsync();
         }
 
-        public async Task EditAsync(CadModel entity)
+        public async Task EditAsync(CadModel model)
         {
-            Cad? cad = await this.repository.All<Cad>()
-                .FirstOrDefaultAsync(cad => cad.Id == entity.Id)
+            Cad cad = await this.repository.All<Cad>()
+                .FirstOrDefaultAsync(cad => cad.Id == model.Id)
                 ?? throw new ArgumentException("Model doesn't exist!");
 
-            cad.Name = entity.Name;
-            cad.Category = entity.Category;
-            cad.X = entity.Coords.Item1;
-            cad.Y = entity.Coords.Item2;
-            cad.Z = entity.Coords.Item3;
+            cad.Name = model.Name;
+            cad.Category = model.Category;
+            cad.X = model.Coords.Item1;
+            cad.Y = model.Coords.Item2;
+            cad.Z = model.Coords.Item3;
+            cad.SpinAxis = model.SpinAxis;
+            cad.SpinFactor = model.SpinFactor;
 
             await repository.SaveChangesAsync();
         }

@@ -26,7 +26,7 @@
             <div class="row">
                 @foreach (CadViewModel cad in Model)
                 {
-                    <div class="col-4">
+                    <div class="col-4 mb-4">
                         <div class="card">
                             <h4 class="card-header text-center mb-1">@cad.Name (@cad.Category)</h4>
                             <div class="card-body">
@@ -35,7 +35,8 @@
                                         import * as THREE from 'three';
                                         import { STLLoader } from 'three/addons/loaders/STLLoader.js';
                                         import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-                                        function loadModel(cadId, cadName, constant, x, y, z) {
+                                        
+                                        function loadModel(cadId, cadName, constant, x, y, z, spin, axis) {
 
                                             // Scene
                                             const scene = new THREE.Scene();
@@ -77,10 +78,35 @@
                                             const controls = new OrbitControls(camera, renderer.domElement);
                                             controls.enableDamping = true;
                                             controls.dampingFactor = 0.25;
+
+                                            let isInteracting = false;
+                                            let resumeTimeout;
+
+                                            controls.addEventListener('change', function (event) {
+                                                isInteracting = true;
+                                                clearTimeout(resumeTimeout);
+
+                                                resumeTimeout = setTimeout(() => {
+                                                    isInteracting = false;
+                                                }, 3000);
+                                            });
+
                                             function animate() {
                                                 requestAnimationFrame(animate);
                                                 renderer.render(scene, camera);
                                                 controls.update();
+
+                                                if (!isInteracting) {
+                                                    scene.traverse(function (object) {
+                                                        if (object instanceof THREE.Mesh && axis != ' ' && spin > 0) {
+                                                            switch (axis) {
+                                                                case 'x': object.rotation.x += spin; break;
+                                                                case 'y': object.rotation.y += spin; break;
+                                                                case 'z': object.rotation.z += spin; break;
+                                                            }
+                                                        }
+                                                    });
+                                                }
                                             }
                                             animate();
 
@@ -92,7 +118,9 @@
                                                 camera.updateProjectionMatrix();
                                             });
                                         }
-                                        loadModel(@cad.Id, "@cad.Name", 4, @cad.Coords.Item1, @cad.Coords.Item2, @cad.Coords.Item3);
+                                        
+                                        let x = @cad.Coords.Item1, y = @cad.Coords.Item2, z = @cad.Coords.Item3;
+                                        loadModel(@cad.Id, '@cad.Name', 4, x, y, z, @cad.SpinFactor, '@cad.SpinAxis');
                                     </script>
                                 </div>
                             </div>

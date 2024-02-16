@@ -1,0 +1,72 @@
+﻿@using CustomCADSolutions.Infrastructure.Data.Models.Enums
+@model IEnumerable<OrderViewModel>
+@{
+    ViewData["Title"] = "All Orders";
+    string[] statuses = typeof(OrderStatus).GetEnumNames();
+}
+
+<h2 class="text-center">@ViewData["Title"]</h2>
+<hr />
+
+@if (!Model.Any())
+{
+    <p class="text-center">No orders yet!</p>
+}
+else
+{
+    <div class="container mt-4">
+        <div class="row">
+            @foreach (string status in statuses)
+            {
+                var orders = Model.Where(o => o.Status == status);
+                <div class="col">
+                    <p class="fs-3 text-center">@status</p>
+
+                    @if (orders.Any())
+                    {
+                        <div class="row d-flex justify-content-center">
+                            @foreach (OrderViewModel order in orders)
+                            {
+                                <div class="card">
+                                    <div class="card-header d-flex justify-content-between">
+                                        <p class="mb-0 fs-4">@order.Category.ToString()</p>
+                                        <p class="mb-0 bg-info small rounded-2 p-2">@order.Status.ToString()</p>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="card-title text-center h4 mt-0 mb-3">@order.Name</p>
+                                        <p class="card-text fs-5">@order.Description</p>
+                                        <div class="row">
+                                            @switch (status)
+                                            {
+                                                case "Pending":
+                                                    <form asp-controller="Order" asp-action="ChangeStatus" asp-route-cadId="@order.CadId" asp-route-status="Begun">
+                                                        <div class="d-grid gap-2">
+                                                            <input class="btn btn-warning" type="submit" value="Begin" />
+                                                        </div>
+                                                    </form>
+                                                    break;
+                                                
+                                                case "Begun":
+                                                    <form asp-controller="Order" asp-action="ChangeStatus" asp-route-cadId="@order.CadId" asp-route-status="Finished">
+                                                        <div class="d-grid gap-2">
+                                                            <input class="btn btn-danger" type="submit" value="Finish" />
+                                                        </div>
+                                                    </form>
+                                                    break;
+
+                                                case "Finished":
+                                                    <div type="button" class="btn btn-success">Done</div>
+                                                    break;
+                                            }
+                                        </div>
+                                    </div>
+                                    <div class="card-footer text-end fs-6">@order.OrderDate</div>
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+}

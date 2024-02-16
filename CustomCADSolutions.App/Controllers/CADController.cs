@@ -41,6 +41,8 @@ namespace CustomCADSolutions.App.Controllers
                         Category = model.Category.ToString(),
                         CreationDate = model.CreationDate!.Value.ToString("dd/MM/yyyy HH:mm:ss"),
                         Coords = model.Coords,
+                        SpinAxis = model.SpinAxis,
+                        SpinFactor = model.SpinFactor,
                     };
 
                     return view;
@@ -77,6 +79,8 @@ namespace CustomCADSolutions.App.Controllers
                 CreationDate = DateTime.Now,
                 CreatorId = User.FindFirstValue(ClaimTypes.NameIdentifier),
                 Coords = (input.X, input.Y, input.Z),
+                SpinAxis = input.SpinAxis,
+                SpinFactor = input.SpinFactor / 100d,
             };
             model.Creator = await userManager.FindByIdAsync(model.CreatorId);
 
@@ -113,6 +117,8 @@ namespace CustomCADSolutions.App.Controllers
                 X = cad.Coords.Item1,
                 Y = cad.Coords.Item2,
                 Z = cad.Coords.Item3,
+                SpinAxis = cad.SpinAxis,
+                SpinFactor = (int)(cad.SpinFactor * 100),
             };
 
             return View(input);
@@ -149,6 +155,8 @@ namespace CustomCADSolutions.App.Controllers
             model.Name = input.Name;
             model.Category = input.Category;
             model.Coords = (input.X, input.Y, input.Z);
+            model.SpinAxis = input.SpinAxis;
+            model.SpinFactor = input.SpinFactor / 100d;
 
             await cadService.EditAsync(model);
             logger.LogInformation("Saved Model Changes");

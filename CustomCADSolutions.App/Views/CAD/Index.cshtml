@@ -31,7 +31,7 @@
         <div class="mt-4">
             <div class="row">
                 @foreach (CadViewModel cad in Model)
-                {                    
+                {
                     <div class="col-3 mt-4">
                         <div class="card">
                             <h4 class="card-header text-center mb-1">@cad.Name (@cad.Category)</h4>
@@ -41,7 +41,8 @@
                                         import * as THREE from 'three';
                                         import { STLLoader } from 'three/addons/loaders/STLLoader.js';
                                         import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-                                        function loadModel(cadId, cadName, constant, x, y, z) {
+
+                                        function loadModel(cadId, cadName, constant, x, y, z, spin, axis) {
 
                                             // Scene
                                             const scene = new THREE.Scene();
@@ -83,10 +84,35 @@
                                             const controls = new OrbitControls(camera, renderer.domElement);
                                             controls.enableDamping = true;
                                             controls.dampingFactor = 0.25;
+
+                                            let isInteracting = false;
+                                            let resumeTimeout;
+
+                                            controls.addEventListener('change', function (event) {
+                                                isInteracting = true;
+                                                clearTimeout(resumeTimeout);
+
+                                                resumeTimeout = setTimeout(() => {
+                                                    isInteracting = false;
+                                                }, 3000);
+                                            });
+
                                             function animate() {
                                                 requestAnimationFrame(animate);
                                                 renderer.render(scene, camera);
                                                 controls.update();
+
+                                                if (!isInteracting) {
+                                                    scene.traverse(function (object) {
+                                                        if (object instanceof THREE.Mesh && axis != ' ' && spin > 0) {
+                                                            switch (axis) {
+                                                                case 'x': object.rotation.x += spin; break;
+                                                                case 'y': object.rotation.y += spin; break;
+                                                                case 'z': object.rotation.z += spin; break;
+                                                            }
+                                                        }
+                                                    });
+                                                }
                                             }
                                             animate();
 
@@ -98,13 +124,13 @@
                                                 camera.updateProjectionMatrix();
                                             });
                                         }
-                                        loadModel(@cad.Id, "@cad.Name", 6, @cad.Coords.Item1, @cad.Coords.Item2, @cad.Coords.Item3);
+                                        
+                                        let x = @cad.Coords.Item1, y = @cad.Coords.Item2, z = @cad.Coords.Item3;
+                                        loadModel(@cad.Id, '@cad.Name', 6, x, y, z, @cad.SpinFactor, '@(cad.SpinAxis ?? ' ')');
                                     </script>
                                 </div>
                                 <div class="d-grid gap-2">
-                                    <a asp-area="" asp-controller="Cad" asp-action="Edit" asp-route-id="@cad.Id" class="btn btn-primary btn-warning mt-3">
-                                        Edit 3D Model Detils
-                                    </a>
+                                    <a asp-area="" asp-controller="Cad" asp-action="Edit" asp-route-id="@cad.Id" class="btn btn-primary btn-warning mt-3">Edit Detils</a>
                                     <form method="post" class="mt-2" asp-area="" asp-controller="Cad" asp-action="Delete" asp-route-id="@cad.Id">
                                         <div class="d-grid gap-2">
                                             <input type="submit" value="Delete" class="btn btn-danger mb-2"

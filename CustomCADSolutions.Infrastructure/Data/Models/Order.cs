@@ -1,4 +1,5 @@
 ﻿using CustomCADSolutions.Infrastructure.Constants;
+using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
@@ -24,6 +25,9 @@ namespace CustomCADSolutions.Infrastructure.Data.Models
         [Required]
         [Comment("Date of Order")]
         public DateTime OrderDate { get; set; }
+
+        [Required]
+        public OrderStatus Status { get; set; }
 
         [ForeignKey(nameof(CadId))]
         public Cad Cad { get; set; } = null!;

@@ -9,5 +9,7 @@
         public IFormFile Cad { get; set; } = null!;
         public string? CreationDate { get; set; }
         public (short, short, short) Coords { get; set; }
+        public double SpinFactor { get; set; }
+        public char? SpinAxis { get; set; }
     }
 }

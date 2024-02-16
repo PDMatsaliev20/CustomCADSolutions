@@ -28,9 +28,16 @@ namespace CustomCADSolutions.App.Controllers
         public async Task<IActionResult> Index()
         {
             logger.LogInformation("Entered Home Page");
-            //IdentityUser Oracle3000 = await userManager.FindByIdAsync("");
-            //await AssignUserToRoleAsync(Oracle3000, "Contributer");
-            return View();
+            CadModel model = (await cadService.GetByIdAsync(246))!;
+            CadViewModel view = new()
+            {
+                Id = model.Id,
+                Name = model.Name,
+                Coords = model.Coords,
+                SpinAxis = model.SpinAxis,
+                SpinFactor = model.SpinFactor,
+            };
+            return View(view);
         }
 
         public IActionResult Categories()
@@ -46,7 +53,8 @@ namespace CustomCADSolutions.App.Controllers
             ViewBag.Category = category;
 
             IEnumerable<CadModel> models = (await cadService.GetAllAsync())
-                .Where(c => c.CreatorId != null);
+                .Where(c => c.CreatorId != null)
+                .OrderByDescending(c => c.CreationDate);
 
             IEnumerable<string> categories = typeof(Category).GetEnumNames();
             if (categories.Contains(category))
@@ -63,6 +71,8 @@ namespace CustomCADSolutions.App.Controllers
                     CreationDate = model.CreationDate!.Value.ToString("dd/MM/yyyy HH:mm:ss"),
                     CreatorName = model.Creator!.UserName,
                     Coords = model.Coords,
+                    SpinAxis = model.SpinAxis,
+                    SpinFactor = model.SpinFactor,
                 });
 
             return View(gallery);
@@ -79,23 +89,6 @@ namespace CustomCADSolutions.App.Controllers
         {
             logger.LogInformation("Entered Error Page");
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-
-        private async Task AssignUserToRoleAsync(IdentityUser user, string role)
-        {
-            if (!await userManager.IsInRoleAsync(user, role))
-            {
-                IdentityResult result = await userManager.AddToRoleAsync(user, role);
-                if (!result.Succeeded)
-                {
-                    foreach (IdentityError error in result.Errors)
-                    {
-                        ModelState.AddModelError("", error.Description);
-                    }
-                    logger.LogInformation("Add To Role Gone Wrong");
-                }
-            }
-            else logger.LogInformation("User Already In Role");
         }
     }
 }

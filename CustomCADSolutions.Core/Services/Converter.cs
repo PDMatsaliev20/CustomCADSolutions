@@ -18,6 +18,8 @@ namespace CustomCADSolutions.Core.Services
                 CreatorId = cad.CreatorId,
                 Creator = cad.Creator,
                 Coords = (cad.X, cad.Y, cad.Z),
+                SpinAxis = cad.SpinAxis,
+                SpinFactor = cad.SpinFactor,
             };
 
             if (firstTime && cad.Orders.Any())
@@ -41,6 +43,8 @@ namespace CustomCADSolutions.Core.Services
                 X = model.Coords.Item1,
                 Y = model.Coords.Item2,
                 Z = model.Coords.Item3,
+                SpinAxis = model.SpinAxis,
+                SpinFactor = model.SpinFactor,
             };
 
             if (firstTime && model.Orders.Any())
@@ -61,6 +65,7 @@ namespace CustomCADSolutions.Core.Services
                 BuyerId = order.BuyerId,
                 Description = order.Description,
                 OrderDate = order.OrderDate,
+                Status = order.Status,
                 Buyer = order.Buyer,
                 Cad = firstTime ? CadToModel(order.Cad) : null!,
             };
@@ -72,6 +77,7 @@ namespace CustomCADSolutions.Core.Services
             {
                 Description = model.Description,
                 OrderDate = model.OrderDate,
+                Status = model.Status,
                 Buyer = model.Buyer,
                 Cad = fisrTime ? ModelToCad(model.Cad) : null!,
             };

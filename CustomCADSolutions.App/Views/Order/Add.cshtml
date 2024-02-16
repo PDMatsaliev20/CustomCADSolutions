@@ -7,31 +7,39 @@
 
 <h2 class="text-center mb-2">@ViewData["Title"]</h2>
 <hr />
-<div class="container d-flex justify-content-center">
-    <form class="row" method="post" autocomplete="off">
-        <div class="mb-3">
-            <label asp-for="Name" class="form-label"></label>
-            <input asp-for="Name" class="form-control" placeholder="Name..." />
-            <span asp-validation-for="@Model.Name" class="small text-danger"></span>
+<div class="container">
+    <form method="post" autocomplete="off">
+        <div class="row justify-content-center mb-3">
+            <div class="col-4">
+                <label asp-for="Name" class="form-label"></label>
+                <input asp-for="Name" class="form-control" placeholder="Name..." />
+                <span asp-validation-for="@Model.Name" class="small text-danger"></span>
+            </div>
+            <div class="col-4">
+                <label asp-for="Category" class="form-label"></label>
+                <select asp-for="Category" class="form-control">
+                    <option value="@null" selected>None</option>
+                    @foreach (Category category in categories)
+                    {
+                        <option value="@((int)category)">@category</option>
+                    }
+                </select>
+                <span asp-validation-for="@Model.Category" class="small text-danger"></span>
+            </div>
         </div>
-        <div class="mb-3">
-            <label asp-for="Category" class="form-label"></label>
-            <select asp-for="Category" class="form-control">
-                <option value="@null" selected>None</option>
-                @foreach (Category category in categories)
-                {
-                    <option value="@((int)category)">@category</option>
-                }
-            </select>
-            <span asp-validation-for="@Model.Category" class="small text-danger"></span>
+        
+        <div class="row justify-content-center mb-4">
+            <div class="col-8">
+                <label asp-for="Description" class="form-label"></label>
+                <textarea asp-for="Description" class="form-control" rows="5" placeholder="Description..."></textarea>
+                <span asp-validation-for="@Model.Description" class="small text-danger"></span>
+            </div>
         </div>
-        <div class="mb-3">
-            <label asp-for="Description" class="form-label"></label>
-            <textarea asp-for="Description" class="form-control" rows="5" placeholder="Description..."></textarea>
-            <span asp-validation-for="@Model.Description" class="small text-danger"></span>
-        </div>
-        <div class="col-12">
-            <input class="btn btn-primary mt-3" type="submit" value="Order" />
+
+        <div class="row justify-content-center mb-4">
+            <div class="col-1">
+                <input class="btn btn-primary" type="submit" value="Order" />
+            </div>
         </div>
     </form>
 </div>

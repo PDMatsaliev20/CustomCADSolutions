@@ -4,6 +4,7 @@ using CustomCADSolutions.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CustomCADSolutions.AppWithIdentity.Data.Migrations
 {
     [DbContext(typeof(CADContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240215212737_AddedSpinningToCad")]
+    partial class AddedSpinningToCad
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,6 +52,7 @@ namespace CustomCADSolutions.AppWithIdentity.Data.Migrations
                         .HasComment("Name of 3D Model");
 
                     b.Property<string>("SpinAxis")
+                        .IsRequired()
                         .HasColumnType("nvarchar(1)")
                         .HasComment("Spin axis of 3D Model");
 
@@ -95,9 +98,6 @@ namespace CustomCADSolutions.AppWithIdentity.Data.Migrations
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2")
                         .HasComment("Date of Order");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
 
                     b.HasKey("CadId", "BuyerId");
 

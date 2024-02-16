@@ -19,6 +19,8 @@ namespace CustomCADSolutions.App.Models
 
         public string OrderDate { get; set; } = null!;
         
+        public string Status { get; set; }
+        
         public string BuyerName { get; set; } = null!;
     }
 }

@@ -23,16 +23,21 @@ namespace CustomCADSolutions.App.Models
         [Display(Name = CadConstants.FileDisplay)]
         public IFormFile CadFile { get; set; } = null!;
         
-        [Required(ErrorMessage = RequiredErrorMessage)]
-        [Display(Name = CadConstants.XDisplay)]
+        [Range(CadConstants.XMin, CadConstants.XMax, ErrorMessage = RangeErrorMessage)]
         public short X { get; set; }
         
-        [Required(ErrorMessage = RequiredErrorMessage)]
-        [Display(Name = CadConstants.YDisplay)]
+        [Range(CadConstants.YMin, CadConstants.YMax, ErrorMessage = RangeErrorMessage)]
         public short Y { get; set; }
-        
-        [Required(ErrorMessage = RequiredErrorMessage)]
-        [Display(Name = CadConstants.ZDisplay)]
+
+        [Range(CadConstants.ZMin, CadConstants.ZMax, ErrorMessage = RangeErrorMessage)]
         public short Z { get; set; }
+
+        [Range(0, CadConstants.SpinFactorMax * 100, ErrorMessage = RangeErrorMessage)]
+        [Display(Name = "Speed")]
+        public int SpinFactor { get; set; }
+
+        [RegularExpression("[xyz]", ErrorMessage = CadConstants.SpinAxisErrorMessage)]
+        [Display(Name = "Axis of spin")]
+        public char? SpinAxis { get; set; }
     }
 }

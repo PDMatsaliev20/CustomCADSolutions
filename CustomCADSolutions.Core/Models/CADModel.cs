@@ -19,14 +19,20 @@ namespace CustomCADSolutions.Core.Models
 
         [Required(ErrorMessage = RequiredErrorMessage)]
         public Category Category { get; set; }
+        
+        public ICollection<OrderModel> Orders { get; set; } = new List<OrderModel>();
+        
+        public (short, short, short) Coords { get; set; }
+
+        [Range(CadConstants.SpinFactorMin, CadConstants.SpinFactorMax)]
+        public double SpinFactor { get; set; }
+
+        [RegularExpression("[xyz]", ErrorMessage = CadConstants.SpinAxisErrorMessage)]
+        public char? SpinAxis { get; set; }
 
         public string? CreatorId { get; set; }
 
-
         [ForeignKey(nameof(CreatorId))]
         public IdentityUser? Creator { get; set; }
-        
-        public ICollection<OrderModel> Orders { get; set; } = new List<OrderModel>();
-        public (short, short, short) Coords { get; set; }
     }
 }
