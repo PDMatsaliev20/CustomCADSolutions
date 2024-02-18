@@ -1,14 +1,13 @@
 ﻿using CustomCADSolutions.App.Models;
 using CustomCADSolutions.Core.Contracts;
 using CustomCADSolutions.Core.Models;
-using CustomCADSolutions.Infrastructure.Data.Models;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 namespace CustomCADSolutions.App.Controllers
-{
+{   
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> logger;
@@ -28,7 +27,7 @@ namespace CustomCADSolutions.App.Controllers
         public async Task<IActionResult> Index()
         {
             logger.LogInformation("Entered Home Page");
-            CadModel model = (await cadService.GetByIdAsync(246))!;
+            CadModel model = (await cadService.GetByIdAsync(269))!;
             CadViewModel view = new()
             {
                 Id = model.Id,

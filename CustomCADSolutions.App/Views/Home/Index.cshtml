@@ -4,6 +4,7 @@
 
 <html>
 <head>
+    <!--3D Model-->
     <script type="importmap">
         {
           "imports": {
@@ -12,22 +13,25 @@
           }
         }
     </script>
+    
     <!--Animation-->
     <link rel="stylesheet" href="~/css/index.css" />
+
 </head>
 
-<body>
-    <h2 class="fade-in text-center mt-4 mb-4">CustomCADSolutions</h2>
+<body class="fade-in">
+    <h2 class="text-center mt-4 mb-4">CustomCADSolutions</h2>
     <hr />
-    <div style="height: 350px;" class="container d-flex fade-in">
-        <div class="fade-in d-flex flex-column justify-content-center w-100">
-            <h4 class="fade-in mb-4 text-center">Where Your Imagination Comes to Life!</h4>
-            <p class="fade-in">
+
+    <div class="container d-flex">
+        <section class="d-flex flex-column justify-content-center w-100">
+            <h4 class="mb-4 text-center">Where Your Imagination Comes to Life!</h4>
+            <p class="mb-4">
                 In a world sculpted by pixels and imagination,
                 each 3D model is a bridge between dream and reality,
                 transforming visions into virtual 3D masterpieces!
             </p>
-        </div>
+        </section>
         <article class="fade-in w-100 h-auto">
             <div id="model" style="background-color: transparent;" class="fade-in"></div>
             <script type="module">
@@ -98,7 +102,7 @@
                         if (!isInteracting) {
                             scene.traverse(function (object) {
                                 if (object instanceof THREE.Mesh) {
-                                    object.rotation.y += 0.025;
+                                    object.rotation.x += 0.011;
                                 }
                             });
                         }
@@ -115,9 +119,34 @@
                 }
 
                 let x = @Model.Coords.Item1, y = @Model.Coords.Item2, z = @Model.Coords.Item3;
-                loadModel(@Model.Id, '@Model.Name', 3, 2, x, y, z);
+                loadModel(@Model.Id, '@Model.Name', 2, 2, x, y, z);
             </script>
-        </article>
+        </article>    
+    </div>
+    <hr />
+
+    <div class="container d-flex justify-content-evenly mt-5 mb-5">
+        <div class="col-2"> 
+            <div style="background-color: #BBB9D9" class="card p-2">
+                <p class="mb-0  text-center">100% recyclable</p>
+            </div>
+            <img src="~/others/images/recycle.png" class="mt-3 w-100 h-auto rounded-circle" />
+        </div>
+        
+        <div class="col-2">
+            <div style="background-color: #BBB9D9" class="card p-2">
+                <p class="mb-0 text-center">3-5 day delivery</p>
+            </div>
+            <img src="~/others/images/delivery.png" class="mt-3 w-100 h-auto rounded-circle" />
+        </div>
+
+        <div class="col-2">
+            <div style="background-color: #BBB9D9" class="card p-2">
+                <p class="mb-0 text-center">High quality</p>
+            </div>
+            <img src="~/others/images/quality.png" class="mt-3 w-100 h-auto rounded-circle" />
+        </div>
+
     </div>
 </body>
 </html>

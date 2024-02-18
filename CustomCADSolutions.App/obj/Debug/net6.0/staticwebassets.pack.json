@@ -265,6 +265,10 @@
       "PackagePath": "staticwebassets\\others\\cads\\Chair246.stl"
     },
     {
+      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\cads\\Tennis Racket251.stl",
+      "PackagePath": "staticwebassets\\others\\cads\\Tennis Racket251.stl"
+    },
+    {
       "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\categories\\All.png",
       "PackagePath": "staticwebassets\\others\\categories\\All.png"
     },
@@ -293,6 +297,10 @@
       "PackagePath": "staticwebassets\\others\\categories\\Furniture.png"
     },
     {
+      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\categories\\Nature.png",
+      "PackagePath": "staticwebassets\\others\\categories\\Nature.png"
+    },
+    {
       "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\categories\\Others.png",
       "PackagePath": "staticwebassets\\others\\categories\\Others.png"
     },
@@ -311,6 +319,18 @@
     {
       "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\categories\\Vehicles.png",
       "PackagePath": "staticwebassets\\others\\categories\\Vehicles.png"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\delivery.png",
+      "PackagePath": "staticwebassets\\others\\images\\delivery.png"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\quality.png",
+      "PackagePath": "staticwebassets\\others\\images\\quality.png"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\recycle.png",
+      "PackagePath": "staticwebassets\\others\\images\\recycle.png"
     },
     {
       "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.CustomCADSolutions.App.Microsoft.AspNetCore.StaticWebAssets.props",

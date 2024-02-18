@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "4RBY5KwKR0v8XpSOreSEnFUqu23cGuPMJTyxlsIypkbosLlqWXURTKWQH/rBrjH8+Mv88hitz3GhrDgjUybFug==",
+  "dgSpecHash": "IMfyYksD6slu+Bon0HXwyhrOYhnodCpKW2j7JJHbj+eVXa7KgafiKY1/PrbedEA3f93IxTWOCBNFDg4ywWHoaA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\35988\\source\\repos\\WebApps\\CustomCADSolutions\\CustomCADSolutions.App\\CustomCADSolutions.App.csproj",
+  "projectFilePath": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\CustomCADSolutions.App.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\35988\\.nuget\\packages\\assimpnet\\4.1.0\\assimpnet.4.1.0.nupkg.sha512",
     "C:\\Users\\35988\\.nuget\\packages\\humanizer\\2.14.1\\humanizer.2.14.1.nupkg.sha512",

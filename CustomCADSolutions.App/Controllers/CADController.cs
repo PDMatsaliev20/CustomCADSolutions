@@ -14,15 +14,18 @@ namespace CustomCADSolutions.App.Controllers
         private readonly ICadService cadService;
         private readonly ILogger logger;
         private readonly UserManager<IdentityUser> userManager;
+        private readonly IWebHostEnvironment hostingEnvironment;
 
         public CadController(
             ICadService cadService,
             ILogger<CadModel> logger,
-            UserManager<IdentityUser> userManager)
+            UserManager<IdentityUser> userManager,
+            IWebHostEnvironment hostingEnvironment)
         {
             this.cadService = cadService;
             this.logger = logger;
             this.userManager = userManager;
+            this.hostingEnvironment = hostingEnvironment;
         }
 
         [HttpGet]
@@ -78,9 +81,6 @@ namespace CustomCADSolutions.App.Controllers
                 Category = input.Category,
                 CreationDate = DateTime.Now,
                 CreatorId = User.FindFirstValue(ClaimTypes.NameIdentifier),
-                Coords = (input.X, input.Y, input.Z),
-                SpinAxis = input.SpinAxis,
-                SpinFactor = input.SpinFactor / 100d,
             };
             model.Creator = await userManager.FindByIdAsync(model.CreatorId);
 
@@ -152,7 +152,17 @@ namespace CustomCADSolutions.App.Controllers
                 return View(input);
             }
 
-            model.Name = input.Name;
+            if (input.Name != model.Name)
+            {
+                string filePath = Path.Combine(hostingEnvironment.WebRootPath, "others", "cads", "{0}{1}.stl");
+
+                string source = string.Format(filePath, model.Name, id);
+                string destination = string.Format(filePath, input.Name, id);
+
+                System.IO.File.Move(source, destination);
+                model.Name = input.Name;
+            } 
+
             model.Category = input.Category;
             model.Coords = (input.X, input.Y, input.Z);
             model.SpinAxis = input.SpinAxis;

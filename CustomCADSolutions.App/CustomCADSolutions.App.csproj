@@ -85,6 +85,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Views\icon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\CustomCADSolutions.Core\CustomCADSolutions.Core.csproj" />
   </ItemGroup>
 

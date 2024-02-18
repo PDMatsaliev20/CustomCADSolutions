@@ -2,7 +2,7 @@
 @model CadInputModel
 @{
     Category[] categories = typeof(Category).GetEnumValues().Cast<Category>().ToArray();
-    ViewData["Title"] = "Edit a 3d model you submitted";
+    ViewData["Title"] = $"Edit {Model.Name}";
 }
 
 <h2 class="text-center mb-2">@ViewData["Title"]</h2>

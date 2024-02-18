@@ -15,8 +15,9 @@
 
     <link rel="shortcut icon" type="image/x-icon" href="~/icon.ico" />
 
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/layout.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
     <header>
@@ -69,7 +70,7 @@
                                 </li>
                             }
                         }
-                        else 
+                        else
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-controller="Home" asp-action="Index" role="button">Home</a>
@@ -93,7 +94,17 @@
     <hr />
 
     <footer class="footer position-relative w-100 bottom-0 left-0">
-        <p class="container text-dark">&copy; 2023 - CustomCADSolutions - <a class="text-dark" asp-area="" asp-controller="Home" asp-action="Privacy"><b>Privacy Policy</b></a></p>
+        <div class="d-flex align-items-center justify-content-evenly fs-5">
+            <p class="mb-0">
+                &copy; @DateTime.Now.Year - CustomCADSolutions -
+                <a class="text-dark" asp-area="" asp-controller="Home" asp-action="Privacy"><b>Privacy Policy</b></a>
+            </p>
+            <p class="mb-0 small rounded-2 p-2">
+                <span>About us:</span>
+                <a href="https://www.instagram.com/customcadsolutions/" class="text-black"><i class="ms-1 fa fa-instagram"></i></a>
+                <a href="https://twitter.com/customcads/" class="text-black"><i class="ms-1 fa fa-twitter"></i></a>
+            </p>
+        </div>
     </footer>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

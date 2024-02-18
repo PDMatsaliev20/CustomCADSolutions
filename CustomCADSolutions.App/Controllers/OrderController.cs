@@ -211,7 +211,7 @@ namespace CustomCADSolutions.App.Controllers
             model.Status = orderStatus;
             await orderService.EditAsync(model);
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(All));
         }
 
         [Authorize(Roles = "Administrator")]

@@ -27,10 +27,9 @@ else
                         <div class="row d-flex justify-content-center">
                             @foreach (OrderViewModel order in orders)
                             {
-                                <div class="card">
-                                    <div class="card-header d-flex justify-content-between">
+                                <div class="card mb-4 ps-0 pe-0">
+                                    <div class="card-header d-flex justify-content-center">
                                         <p class="mb-0 fs-4">@order.Category.ToString()</p>
-                                        <p class="mb-0 bg-info small rounded-2 p-2">@order.Status.ToString()</p>
                                     </div>
                                     <div class="card-body">
                                         <p class="card-title text-center h4 mt-0 mb-3">@order.Name</p>
@@ -60,7 +59,10 @@ else
                                             }
                                         </div>
                                     </div>
-                                    <div class="card-footer text-end fs-6">@order.OrderDate</div>
+                                    <div class="card-footer d-flex justify-content-between pb-0">
+                                        <p class="text-end fs-6">- @order.BuyerName</p>
+                                        <p class="text-end fs-6">@order.OrderDate</p>
+                                    </div>
                                 </div>
                             }
                         </div>
