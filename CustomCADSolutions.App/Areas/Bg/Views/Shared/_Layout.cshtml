@@ -80,15 +80,6 @@
                             </li>
                         }
                     </ul>
-                    <div class="dropdown">
-                        <button class="btn border-0 bg-transparent dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                            Друг език?
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" asp-area="">Английски</a></li>
-                            <li><a class="dropdown-item" asp-area="Bg">Български</a></li>
-                        </ul>
-                    </div>
                     <partial name="_LoginPartial" />
                 </div>
             </div>
@@ -102,13 +93,21 @@
 
     <hr />
 
-    <footer class="footer position-relative w-100 bottom-0 left-0">
-        <div class="d-flex align-items-center justify-content-evenly fs-5">
-            <p class="mb-0">
-                &copy; @DateTime.Now.Year - CustomCADSolutions -
-                <a class="text-dark fw-bold" asp-area="Bg" asp-controller="Home" asp-action="Privacy">Поверителност</a>
+    <footer class="footer position-relative w-100">
+        <div class="d-flex align-items-center justify-content-around">
+            <div class="m-2 dropdown">
+                <button class="btn btn-secondary border-0 bg-transparent text-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Друг език?
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" asp-area="">Английски</a></li>
+                    <li><a class="dropdown-item" asp-area="Bg">Български</a></li>
+                </ul>
+            </div>
+            <p class="m-2">
+                &copy; @DateTime.Now.Year - CustomCADSolutions - <a class="text-dark fw-bold" asp-area="Bg" asp-controller="Home" asp-action="Privacy">Поверителност</a>
             </p>
-            <p class="mb-0 small rounded-2 p-2">
+            <p class="m-2 rounded-2 p-2">
                 <span>За нас:</span>
                 <a href="https://www.instagram.com/customcadsolutions/" class="text-black"><i class="ms-1 fa fa-instagram"></i></a>
                 <a href="https://twitter.com/customcads/" class="text-black"><i class="ms-1 fa fa-twitter"></i></a>
