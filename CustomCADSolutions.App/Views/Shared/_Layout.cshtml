@@ -3,7 +3,7 @@
 @using System.Security.Claims
 @inject UserManager<IdentityUser> UserManager
 @{
-    //await UserManager.AddToRoleAsync(await UserManager.FindByNameAsync("NinjaBG"), "Contributer");
+    //await UserManager.AddToRoleAsync(await UserManager.FindByNameAsync("NinjaBG"), "Designer");
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -31,7 +31,7 @@
                 </a>
 
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between fs-5">
-                    <ul class="justify-content-start fade-in navbar-nav flex-grow-1">
+                    <ul class="fade-in navbar-nav">
                         @if (User.Identity!.IsAuthenticated)
                         {
                             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -48,7 +48,7 @@
                                     <a class="nav-link text-dark" asp-area="" asp-controller="Cad" asp-action="Index" role="button">Your 3D Models</a>
                                 </li>
                             }
-                            else if (await UserManager.IsInRoleAsync(user, "Contributer"))
+                            else if (await UserManager.IsInRoleAsync(user, "Designer"))
                             {
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-controller="Home" asp-action="Categories" role="button">Categories</a>
@@ -80,6 +80,15 @@
                             </li>
                         }
                     </ul>
+                    <div class="dropdown">
+                        <button class="btn text-dark border-0 bg-transparent dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Change language?
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" asp-area="">English</a></li>
+                            <li><a class="dropdown-item" asp-area="Bg">Bulgarian</a></li>
+                        </ul>
+                    </div>
                     <partial name="_LoginPartial" />
                 </div>
             </div>

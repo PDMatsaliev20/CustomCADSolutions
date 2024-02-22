@@ -1,0 +1,48 @@
+﻿@model IEnumerable<OrderViewModel>
+@{
+    ViewData["Title"] = $"Поръчките на {User.Identity!.Name}";
+}
+
+<h2 class="text-center mb-2">@ViewData["Title"]</h2>
+<hr />
+
+<div class="d-flex justify-content-center mb-2">
+    <a class="btn btn-primary" asp-area="Bg" asp-controller="Order" asp-action="Add">Добави нова поръчка</a>
+</div>
+
+@if (!Model.Any())
+{
+    <p class="text-center">Все още няма поръчки!</p>
+}
+else
+{
+    <div class="container mt-4">
+        <div class="row">
+            @foreach (OrderViewModel order in Model)
+            {
+                <div class="col-4">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between">
+                            <p class="mb-0 fs-4">@order.Category</p>
+                            <p class="mb-0 bg-info small rounded-2 p-2">@order.Status.ToString()</p>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-title text-center h4 mt-0 mb-3">@order.Name</p>
+                            <p class="card-text fs-5">@order.Description</p>
+                            <div class="d-grid gap-2">
+                                <a asp-area="Bg" asp-controller="Order" asp-action="Edit" asp-route-cadId="@order.CadId" class="btn btn-primary btn-warning mt-3">Редактирай</a>
+                                <form class="mt-2" asp-area="Bg" asp-controller="Order" asp-action="Delete" asp-route-cadId="@order.CadId">
+                                    <div class="d-grid gap-2">
+                                        <input type="submit" value="Изтрий" class="btn btn-danger mb-2"
+                                               onclick="return confirm('Сигурни ли сте, че искате да изтриете тази поръчка: @order.Name?')" />
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="card-footer text-end fs-6">@order.OrderDate</div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}

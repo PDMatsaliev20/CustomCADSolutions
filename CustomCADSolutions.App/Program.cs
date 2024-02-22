@@ -27,7 +27,7 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 // Add services to the container
 builder.Services.AddControllersWithViews();
 
-const string Admininstrator = "Administrator", Contributer = "Contributer";
+const string Admininstrator = "Administrator", Contributer = "Designer";
 string[] roles = { Admininstrator, Contributer };
 builder.Services.AddAuthorization(options =>
 {
@@ -83,6 +83,11 @@ using (IServiceScope scope = app.Services.CreateScope())
         }
     }
 }
+
+app.MapAreaControllerRoute(
+    name: "MyAreaBg",
+    areaName: "Bg",
+    pattern: "Bg/{controller=Home}/{action=Index}/{id?}");
 
 app.MapControllerRoute(
     name: "default",

@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 
-namespace CustomCADSolutions.AppWithIdentity.Areas.Identity.Pages.Account
+namespace CustomCADSolutions.App.Areas.Identity.Pages.Account
 {
     public class ConfirmEmailModel : PageModel
     {

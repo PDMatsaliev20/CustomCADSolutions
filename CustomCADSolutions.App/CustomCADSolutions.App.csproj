@@ -17,11 +17,11 @@
   <ItemGroup>
     <PackageReference Include="AssimpNet" Version="4.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.24" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.26" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.26" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.26" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.26" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.26">
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.27" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.27" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.27" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.27" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.27">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -82,10 +82,6 @@
 
   <ItemGroup>
     <UpToDateCheckInput Remove="Views\Cad\Categories.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Views\icon.ico" />
   </ItemGroup>
 
   <ItemGroup>

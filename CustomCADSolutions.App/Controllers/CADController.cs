@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace CustomCADSolutions.App.Controllers
 {
-    [Authorize(Roles = "Contributer,Administrator")]
+    [Authorize(Roles = "Designer,Administrator")]
     public class CadController : Controller
     {
         private readonly ICadService cadService;
