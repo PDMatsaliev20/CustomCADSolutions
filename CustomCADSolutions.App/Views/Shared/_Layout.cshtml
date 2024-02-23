@@ -26,7 +26,7 @@
                 <button class="navbar-toggler toggler fade-in" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon toggler-icon"></span>
                 </button>
-                <a style="width: 10vh; height: 10vh;" class="fade-in me-3" asp-area="" asp-controller="Home" asp-action="Index">
+                <a class="logo fade-in me-3" asp-area="" asp-controller="Home" asp-action="Index">
                     <img class="mw-100 h-auto" src="~/logo.png">
                 </a>
 
@@ -80,7 +80,21 @@
                             </li>
                         }
                     </ul>
-                    <partial name="_LoginPartial" />
+                    <ul class="navbar-nav alignt-items-center fade-in">
+                        <li class="me-3 dropdown">
+                            <button class="dropdown-toggle btn btn-secondary text-dark border-0 bg-transparent p-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="~/others/images/flags/4x3/us.svg" alt="English">
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item" asp-area="Bg">
+                                        <img class="w-100 h-auto" src="~/others/images/flags/4x3/bg.svg" alt="Bulgarian">
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <partial name="_LoginPartial" />
+                    </ul>
                 </div>
             </div>
         </nav>
@@ -93,22 +107,11 @@
 
     <hr />
 
-    <footer class="footer position-relative w-100 bottom-0 left-0">
-        <div class="d-flex align-items-center justify-content-around">
-            <div class="m-2 dropdown">
-                <button class="btn btn-secondary text-dark border-0 bg-transparent dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Change language?
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" asp-area="">English</a></li>
-                    <li><a class="dropdown-item" asp-area="Bg">Bulgarian</a></li>
-                </ul>
-            </div>
-            <p class="mb-0">
-                &copy; @DateTime.Now.Year - CustomCADSolutions -
-                <a class="text-dark" asp-area="" asp-controller="Home" asp-action="Privacy"><b>Privacy Policy</b></a>
-            </p>
-            <p class="mb-0 rounded-2 p-2">
+    <footer class="footer position-relative w-100">
+        <div class="d-flex align-items-center justify-content-evenly">
+            <p class="fw-bold"><a class="text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy Policy</a></p>
+            <p>&copy; @DateTime.Now.Year - CustomCADSolutions</p>
+            <p class="rounded-2">
                 <span>About us:</span>
                 <a href="https://www.instagram.com/customcadsolutions/" class="text-black"><i class="ms-1 fa fa-instagram"></i></a>
                 <a href="https://twitter.com/customcads/" class="text-black"><i class="ms-1 fa fa-twitter"></i></a>
