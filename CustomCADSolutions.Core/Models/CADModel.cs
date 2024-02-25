@@ -15,6 +15,8 @@ namespace CustomCADSolutions.Core.Models
         [StringLength(CadConstants.NameMaxLength, MinimumLength = CadConstants.NameMinLength, ErrorMessage = LengthErrorMessage)]
         public string Name { get; set; } = null!;
 
+        public bool Validated { get; set; }
+
         public DateTime? CreationDate { get; set; }
 
         [Required(ErrorMessage = RequiredErrorMessage)]

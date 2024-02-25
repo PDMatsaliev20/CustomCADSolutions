@@ -16,20 +16,6 @@ namespace CustomCADSolutions.App.Areas.Bg.Controllers
         private readonly ILogger logger;
         private readonly UserManager<IdentityUser> userManager;
         private readonly IWebHostEnvironment hostingEnvironment;
-        private readonly Dictionary<int, string> bgCategories = new()
-        {
-            [1] = "Животни",
-            [2] = "Герои",
-            [3] = "Електроники",
-            [4] = "Мода",
-            [5] = "Мебели",
-            [6] = "Природа",
-            [7] = "Наука",
-            [8] = "Спорт",
-            [9] = "Играчки",
-            [10] = "Автомобили",
-            [11] = "Други",
-        };
 
         public CadController(
             ICadService cadService,
@@ -47,38 +33,70 @@ namespace CustomCADSolutions.App.Areas.Bg.Controllers
         public async Task<IActionResult> Index()
         {
             string creatorId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            IEnumerable<CadModel> models = (await cadService.GetAllAsync()).Where(cad => cad.CreatorId == creatorId);
 
-            IEnumerable<CadViewModel> views = (await cadService.GetAllAsync())
-                .Where(cad => cad.CreatorId == creatorId)
-                .Select(m => new CadViewModel()
+            IEnumerable<CadViewModel> views = models
+                .Select((model) => new CadViewModel
                 {
-                    Id = m.Id,
-                    Name = m.Name,
-                    Category = bgCategories[(int)m.Category],
-                    CreationDate = m.CreationDate!.Value.ToString("dd/MM/yyyy HH:mm:ss"),
-                    Coords = m.Coords,
-                    SpinAxis = m.SpinAxis,
-                    SpinFactor = m.SpinFactor,
+                    Id = model.Id,
+                    Name = model.Name,
+                    Category = model.Category.ToString(),
+                    CreationDate = model.CreationDate!.Value.ToString("dd/MM/yyyy HH:mm:ss"),
+                    Coords = model.Coords,
+                    SpinAxis = model.SpinAxis,
+                    SpinFactor = model.SpinFactor,
+                    Validated = model.Validated,
                 });
 
             return View(views);
         }
 
         [HttpGet]
-        public IActionResult Add()
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> All()
         {
-            logger.LogInformation("Entered Submit Page");
-            ViewBag.BgCategories = bgCategories;
-            return View(new Models.CadInputModel());
+            IEnumerable<CadViewModel> views = (await cadService.GetAllAsync())
+                .Where(m => m.Creator != null && !m.Validated)
+                .Select(m => new CadViewModel
+                {
+                    Id = m.Id,
+                    Name = m.Name,
+                    Category = m.Category.ToString(),
+                    CreationDate = m.CreationDate!.Value.ToString("dd/MM/yyyy HH:mm:ss"),
+                    Coords = m.Coords,
+                    SpinAxis = m.SpinAxis,
+                    SpinFactor = m.SpinFactor,
+                    CreatorName = m.Creator!.UserName,
+                });
+
+            return View(views);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(Models.CadInputModel input)
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> Validate(int cadId)
+        {
+            CadModel model = await cadService.GetByIdAsync(cadId);
+
+            model.Validated = true;
+            await cadService.EditAsync(model);
+
+            return RedirectToAction(nameof(All));
+        }
+
+        [HttpGet]
+        public IActionResult Add()
+        {
+            logger.LogInformation("Entered Submit Page");
+            return View(new CadInputModel());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Add(CadInputModel input)
         {
             if (!ModelState.IsValid)
             {
                 logger.LogError("Invalid 3d Model");
-                ViewBag.BgCategories = bgCategories;
                 return View(input);
             }
 
@@ -91,6 +109,7 @@ namespace CustomCADSolutions.App.Areas.Bg.Controllers
             {
                 Name = input.Name,
                 Category = input.Category,
+                Validated = false,
                 CreationDate = DateTime.Now,
                 CreatorId = User.FindFirstValue(ClaimTypes.NameIdentifier),
             };
@@ -103,7 +122,6 @@ namespace CustomCADSolutions.App.Areas.Bg.Controllers
             await input.CadFile.CopyToAsync(fileStream);
 
             logger.LogInformation("Submitted 3d Model");
-
             return RedirectToAction(nameof(Index));
         }
 
@@ -123,7 +141,7 @@ namespace CustomCADSolutions.App.Areas.Bg.Controllers
                 return Unauthorized();
             }
 
-            Models.CadInputModel input = new()
+            CadInputModel input = new()
             {
                 Name = cad.Name,
                 Category = cad.Category,
@@ -138,7 +156,7 @@ namespace CustomCADSolutions.App.Areas.Bg.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(Models.CadInputModel input, int id)
+        public async Task<IActionResult> Edit(CadInputModel input, int id)
         {
             CadModel model = await cadService.GetByIdAsync(id);
             IdentityUser? creator = model.Creator;

@@ -14,6 +14,7 @@ namespace CustomCADSolutions.Core.Services
                 Id = cad.Id,
                 Name = cad.Name,
                 Category = cad.Category,
+                Validated = cad.Validated,
                 CreationDate = cad.CreationDate,
                 CreatorId = cad.CreatorId,
                 Creator = cad.Creator,
@@ -38,7 +39,8 @@ namespace CustomCADSolutions.Core.Services
             {
                 Name = model.Name,
                 Category = model.Category,
-                CreationDate = DateTime.Now,
+                Validated = model.Validated,
+                CreationDate = model.CreationDate ?? DateTime.Now,
                 CreatorId = model.CreatorId,
                 X = model.Coords.Item1,
                 Y = model.Coords.Item2,

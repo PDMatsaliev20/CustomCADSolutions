@@ -2,9 +2,7 @@
 @using Microsoft.AspNetCore.Identity
 @using System.Security.Claims
 @inject UserManager<IdentityUser> UserManager
-@{
-    //await UserManager.AddToRoleAsync(await UserManager.FindByNameAsync("NinjaBG"), "Designer");
-}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -45,7 +43,7 @@
                                     <a class="nav-link text-dark" asp-area="Bg" asp-controller="Order" asp-action="All" role="button">Всички Поръчки</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="Bg" asp-controller="Cad" asp-action="Index" role="button">Вашите 3D Модели</a>
+                                    <a class="nav-link text-dark" asp-area="Bg" asp-controller="Cad" asp-action="Index" role="button">Подадени 3D Модели</a>
                                 </li>
                             }
                             else if (await UserManager.IsInRoleAsync(user, "Designer"))

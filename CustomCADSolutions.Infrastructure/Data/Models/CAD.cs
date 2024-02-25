@@ -17,13 +17,17 @@ namespace CustomCADSolutions.Infrastructure.Data.Models
         [MaxLength(DataConstants.CadConstants.NameMaxLength)]
         [Comment("Name of 3D Model")]
         public string Name { get; set; } = null!;
-
-        [Comment("CreationDate of 3D Model")]
-        public DateTime? CreationDate { get; set; }
         
         [Required]
         [Comment("Category of 3D Model")]
         public Category Category { get; set; }
+
+        [Required]
+        [Comment("Is 3D Model validated")]
+        public bool Validated { get; set; }
+
+        [Comment("CreationDate of 3D Model")]
+        public DateTime? CreationDate { get; set; }
 
         [Comment("X coordinate of 3D Model")]
         public short X { get; set; }

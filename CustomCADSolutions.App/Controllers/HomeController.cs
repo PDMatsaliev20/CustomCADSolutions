@@ -52,7 +52,7 @@ namespace CustomCADSolutions.App.Controllers
             ViewBag.Category = category;
 
             IEnumerable<CadModel> models = (await cadService.GetAllAsync())
-                .Where(c => c.CreatorId != null)
+                .Where(c => c.Creator != null && c.Validated)
                 .OrderByDescending(c => c.CreationDate);
 
             IEnumerable<string> categories = typeof(Category).GetEnumNames();

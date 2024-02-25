@@ -61,6 +61,7 @@ namespace CustomCADSolutions.Core.Services
 
             cad.Name = model.Name;
             cad.Category = model.Category;
+            cad.Validated = model.Validated;
             cad.X = model.Coords.Item1;
             cad.Y = model.Coords.Item2;
             cad.Z = model.Coords.Item3;

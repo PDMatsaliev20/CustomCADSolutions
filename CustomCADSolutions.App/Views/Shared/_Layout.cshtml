@@ -45,7 +45,7 @@
                                     <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="All" role="button">All Orders</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Cad" asp-action="Index" role="button">Your 3D Models</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Cad" asp-action="All" role="button">Submitted 3D Models</a>
                                 </li>
                             }
                             else if (await UserManager.IsInRoleAsync(user, "Designer"))

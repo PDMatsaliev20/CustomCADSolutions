@@ -35,23 +35,52 @@ namespace CustomCADSolutions.App.Controllers
             IEnumerable<CadModel> models = (await cadService.GetAllAsync()).Where(cad => cad.CreatorId == creatorId);
 
             IEnumerable<CadViewModel> views = models
-                .Select((model) =>
+                .Select((model) => new CadViewModel
                 {
-                    CadViewModel view = new()
-                    {
-                        Id = model.Id,
-                        Name = model.Name,
-                        Category = model.Category.ToString(),
-                        CreationDate = model.CreationDate!.Value.ToString("dd/MM/yyyy HH:mm:ss"),
-                        Coords = model.Coords,
-                        SpinAxis = model.SpinAxis,
-                        SpinFactor = model.SpinFactor,
-                    };
-
-                    return view;
+                    Id = model.Id,
+                    Name = model.Name,
+                    Category = model.Category.ToString(),
+                    CreationDate = model.CreationDate!.Value.ToString("dd/MM/yyyy HH:mm:ss"),
+                    Coords = model.Coords,
+                    SpinAxis = model.SpinAxis,
+                    SpinFactor = model.SpinFactor,
+                    Validated = model.Validated,
                 });
 
             return View(views);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> All()
+        {
+            IEnumerable<CadViewModel> views = (await cadService.GetAllAsync())
+                .Where(m => m.Creator != null && !m.Validated)
+                .Select(m => new CadViewModel
+                {
+                    Id = m.Id,
+                    Name = m.Name,
+                    Category = m.Category.ToString(),
+                    CreationDate = m.CreationDate!.Value.ToString("dd/MM/yyyy HH:mm:ss"),
+                    Coords = m.Coords,
+                    SpinAxis = m.SpinAxis,
+                    SpinFactor = m.SpinFactor,
+                    CreatorName = m.Creator!.UserName,
+                });
+
+            return View(views);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> Validate(int cadId)
+        {
+            CadModel model = await cadService.GetByIdAsync(cadId);
+
+            model.Validated = true;
+            await cadService.EditAsync(model);
+
+            return RedirectToAction(nameof(All));
         }
 
         [HttpGet]
@@ -79,6 +108,7 @@ namespace CustomCADSolutions.App.Controllers
             {
                 Name = input.Name,
                 Category = input.Category,
+                Validated = false,
                 CreationDate = DateTime.Now,
                 CreatorId = User.FindFirstValue(ClaimTypes.NameIdentifier),
             };
@@ -161,7 +191,7 @@ namespace CustomCADSolutions.App.Controllers
 
                 System.IO.File.Move(source, destination);
                 model.Name = input.Name;
-            } 
+            }
 
             model.Category = input.Category;
             model.Coords = (input.X, input.Y, input.Z);

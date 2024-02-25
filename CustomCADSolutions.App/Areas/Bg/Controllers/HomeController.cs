@@ -76,7 +76,7 @@ namespace CustomCADSolutions.App.Areas.Bg.Controllers
                 bgCategories[categories.IndexOf(category)];
 
             IEnumerable<CadModel> models = (await cadService.GetAllAsync())
-                .Where(c => c.CreatorId != null)
+                .Where(c => c.CreatorId != null &&  c.Validated)
                 .OrderByDescending(c => c.CreationDate);
 
             if (categories.Contains(category))
