@@ -1,6 +1,6 @@
 ﻿@{
     ViewData["Title"] = "All Categories";
-    string[] categories = ViewBag.Categories;
+    string[] categories = ((string)ViewBag.Categories).Split();
     int rows = 3;
     int cols = 4;
 }
@@ -30,7 +30,7 @@
                     {
                         string category = categories[j + i * cols];
                         <div class="col-@(12/cols) fs-@cols">
-                            <a class="text-decoration-none" asp-area="" asp-controller="Home" asp-action="Category" asp-route-category="@category">
+                            <a class="text-decoration-none" asp-controller="Home" asp-action="Category" asp-route-category="@category">
                                 <img class="rounded mw-100 h-auto" src="~/others/categories/@(category).png" alt="@category" width="600px" height="400px">
                                 <p class="text-center text-dark">@category</p>
                             </a>

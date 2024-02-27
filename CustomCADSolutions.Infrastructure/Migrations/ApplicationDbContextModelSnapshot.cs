@@ -31,7 +31,7 @@ namespace CustomCADSolutions.AppWithIdentity.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("Category")
+                    b.Property<int>("CategoryId")
                         .HasColumnType("int")
                         .HasComment("Category of 3D Model");
 
@@ -75,9 +75,85 @@ namespace CustomCADSolutions.AppWithIdentity.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId");
+
                     b.HasIndex("CreatorId");
 
                     b.ToTable("Cads");
+                });
+
+            modelBuilder.Entity("CustomCADSolutions.Infrastructure.Data.Models.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Animals"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Characters"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Electronics"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Fashion"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Furniture"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "Nature"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Name = "Science"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Name = "Sports"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Name = "Toys"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Name = "Vehicles"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Name = "Others"
+                        });
                 });
 
             modelBuilder.Entity("CustomCADSolutions.Infrastructure.Data.Models.Order", b =>
@@ -100,8 +176,13 @@ namespace CustomCADSolutions.AppWithIdentity.Data.Migrations
                         .HasColumnType("datetime2")
                         .HasComment("Date of Order");
 
+                    b.Property<bool>("ShouldShow")
+                        .HasColumnType("bit")
+                        .HasComment("Should Order Be Visible After Completion");
+
                     b.Property<int>("Status")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasComment("Status of Order");
 
                     b.HasKey("CadId", "BuyerId");
 
@@ -314,9 +395,17 @@ namespace CustomCADSolutions.AppWithIdentity.Data.Migrations
 
             modelBuilder.Entity("CustomCADSolutions.Infrastructure.Data.Models.Cad", b =>
                 {
+                    b.HasOne("CustomCADSolutions.Infrastructure.Data.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Creator")
                         .WithMany()
                         .HasForeignKey("CreatorId");
+
+                    b.Navigation("Category");
 
                     b.Navigation("Creator");
                 });

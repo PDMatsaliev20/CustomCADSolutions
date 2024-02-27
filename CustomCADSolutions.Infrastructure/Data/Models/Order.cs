@@ -27,7 +27,12 @@ namespace CustomCADSolutions.Infrastructure.Data.Models
         public DateTime OrderDate { get; set; }
 
         [Required]
+        [Comment("Status of Order")]
         public OrderStatus Status { get; set; }
+
+        [Required]
+        [Comment("Should Order Be Visible After Completion")]
+        public bool ShouldShow { get; set; }
 
         [ForeignKey(nameof(CadId))]
         public Cad Cad { get; set; } = null!;

@@ -1,6 +1,7 @@
 ﻿using CustomCADSolutions.App.Models;
 using CustomCADSolutions.Core.Contracts;
 using CustomCADSolutions.Core.Models;
+using CustomCADSolutions.Infrastructure.Data.Models;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -9,21 +10,24 @@ using System.Security.Claims;
 
 namespace CustomCADSolutions.App.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Client,Contributer,Designer")]
     public class OrderController : Controller
     {
         private readonly IOrderService orderService;
+        private readonly ICategoryService categoryService;
         private readonly ILogger logger;
         private readonly UserManager<IdentityUser> userManager;
 
         public OrderController(
             ILogger<OrderController> logger,
             IOrderService orderService,
+            ICategoryService categoryService,
             UserManager<IdentityUser> userManager)
         {
             this.orderService = orderService;
             this.logger = logger;
             this.userManager = userManager;
+            this.categoryService = categoryService;
         }
 
         [HttpGet]
@@ -31,23 +35,16 @@ namespace CustomCADSolutions.App.Controllers
         {
             logger.LogInformation("Entered Orders Page");
 
-            string username = User.FindFirstValue(ClaimTypes.Name);
-            IdentityUser user = await userManager.FindByNameAsync(username);
-            if (await userManager.IsInRoleAsync(user, "Administrator"))
-            {
-                return Unauthorized();
-            }
-
             IEnumerable<OrderViewModel> orders = (await orderService.GetAllAsync())
-                .Where(o => o.Buyer == user)
-                .OrderBy(o => (int)o.Status)
+                .Where(o => o.BuyerId == User.FindFirstValue(ClaimTypes.NameIdentifier))
+                .OrderByDescending(o => (int)o.Status)
                     .ThenBy(o => o.OrderDate)
                 .Select(m => new OrderViewModel
                 {
                     BuyerId = m.BuyerId,
                     BuyerName = m.Buyer.UserName,
                     CadId = m.CadId,
-                    Category = m.Cad.Category.ToString(),
+                    Category = m.Cad.Category.Name,
                     Name = m.Cad.Name,
                     Description = m.Description,
                     Status = m.Status.ToString(),
@@ -62,14 +59,8 @@ namespace CustomCADSolutions.App.Controllers
         {
             logger.LogInformation("Entered Order Page");
 
-            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            IdentityUser user = await userManager.FindByIdAsync(userId);
-            if (await userManager.IsInRoleAsync(user, "Administrator"))
-            {
-                return Unauthorized();
-            }
-
-            return View(new OrderInputModel());
+            OrderInputModel input = new() { Categories = await GetCategoriesAsync() };
+            return View(input);
         }
 
         [HttpPost]
@@ -78,14 +69,8 @@ namespace CustomCADSolutions.App.Controllers
             if (!ModelState.IsValid)
             {
                 logger.LogError("Invalid Order");
+                input.Categories = await GetCategoriesAsync();
                 return View(input);
-            }
-
-            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            IdentityUser user = await userManager.FindByIdAsync(userId);
-            if (await userManager.IsInRoleAsync(user, "Administrator"))
-            {
-                return Unauthorized();
             }
 
             OrderModel model = new()
@@ -93,11 +78,12 @@ namespace CustomCADSolutions.App.Controllers
                 Description = input.Description,
                 OrderDate = DateTime.Now,
                 Status = input.Status,
-                Buyer = user,
+                ShouldShow = true,
+                Buyer = await userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier)),
                 Cad = new CadModel()
                 {
                     Name = input.Name,
-                    Category = (Category)input.Category,
+                    CategoryId = input.CategoryId,
                 }
             };
             await orderService.CreateAsync(model);
@@ -112,35 +98,27 @@ namespace CustomCADSolutions.App.Controllers
             logger.LogInformation("Entered Edit Order Page");
 
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            IdentityUser user = await userManager.FindByIdAsync(userId);
-            OrderModel model = await orderService.GetByIdAsync(cadId, userId);
-            OrderInputModel input = new();
-            if (await userManager.IsInRoleAsync(user, "Administrator"))
+            try
             {
-                input = new()
-                {
-                    Status = model.Status,
-                    CadId = model.CadId,
-                    Name = model.Cad.Name,
-                    Category = (int)model.Cad.Category,
-                    Description = model.Description,
-                    OrderDate = model.OrderDate,
-                };
-            }
-            else
-            {
-                input = new()
-                {
-                    Status = model.Status,
-                    CadId = model.CadId,
-                    Name = model.Cad.Name,
-                    Category = (int)model.Cad.Category,
-                    Description = model.Description,
-                    OrderDate = model.OrderDate,
-                };
-            }
+                OrderModel model = await orderService.GetByIdAsync(cadId, userId);
 
-            return View(input);
+                OrderInputModel input = new()
+                {
+                    Categories = await GetCategoriesAsync(),
+                    Status = model.Status,
+                    CadId = model.CadId,
+                    Name = model.Cad.Name,
+                    CategoryId = model.Cad.CategoryId,
+                    Description = model.Description,
+                    OrderDate = model.OrderDate,
+                };
+
+                return View(input);
+            }
+            catch (KeyNotFoundException)
+            {
+                return BadRequest();
+            }
         }
 
         [HttpPost]
@@ -153,91 +131,118 @@ namespace CustomCADSolutions.App.Controllers
             }
 
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            IdentityUser user = await userManager.FindByIdAsync(userId);
-            if (await userManager.IsInRoleAsync(user, "Administrator"))
-            {
-                return Unauthorized();
-            }
-
             OrderModel order = await orderService.GetByIdAsync(cadId, userId);
+
             order.Cad.Name = input.Name;
             order.Description = input.Description;
-            order.Cad.Category = (Category)input.Category;
+            order.Cad.CategoryId = input.CategoryId;
             await orderService.EditAsync(order);
 
             logger.LogInformation("Edited Order");
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Designer")]
         [HttpPost]
         public async Task<IActionResult> Delete(int cadId)
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            IdentityUser user = await userManager.FindByIdAsync(userId);
-
-            if (await userManager.IsInRoleAsync(user, "Administrator"))
-            {
-                return Unauthorized();
-            }
-
             await orderService.DeleteAsync(cadId, userId);
 
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpPost]
-        public async Task<IActionResult> ChangeStatus(int cadId, string status)
+        [Authorize(Roles = "Designer")]
+        [HttpGet]
+        public async Task<IActionResult> All()
         {
-            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            IdentityUser user = await userManager.FindByIdAsync(userId);
+            logger.LogInformation("Entered All Orders Page");
 
-            if (!await userManager.IsInRoleAsync(user, "Administrator"))
-            {
-                return Unauthorized();
-            }
+            IEnumerable<OrderModel> models = await orderService.GetAllAsync();
+            ViewBag.HiddenOrders = $"({models.Count(m => !m.ShouldShow)} hidden)";
 
+            ViewBag.Orders = models
+                .Where(m => m.ShouldShow)
+                .OrderBy(m => m.OrderDate)
+                .Select(m => new OrderViewModel
+                {
+                    BuyerId = m.BuyerId,
+                    BuyerName = m.Buyer.UserName,
+                    CadId = m.CadId,
+                    Category = m.Cad.Category.Name,
+                    Name = m.Cad.Name,
+                    Description = m.Description,
+                    Status = m.Status.ToString(),
+                    OrderDate = m.OrderDate.ToString("dd/MM/yyyy"),
+                });
+
+            return View(new CadInputModel());
+        }
+
+        [Authorize(Roles = "Designer")]
+        [HttpPost]
+        public async Task<IActionResult> BeginOrder(int cadId)
+        {
             OrderModel? model = (await orderService.GetAllAsync()).FirstOrDefault(o => o.CadId == cadId);
             if (model == null)
             {
                 return BadRequest();
             }
 
-            OrderStatus orderStatus = default;
-            if (!Enum.TryParse<OrderStatus>(status, out orderStatus))
-            {
-                return BadRequest();
-            }
-
-            model.Status = orderStatus;
+            model.Status = OrderStatus.Begun;
             await orderService.EditAsync(model);
 
             return RedirectToAction(nameof(All));
         }
 
-        [Authorize(Roles = "Administrator")]
-        [HttpGet]
-        public async Task<IActionResult> All()
+        [Authorize(Roles = "Designer")]
+        [HttpPost]
+        public async Task<IActionResult> FinishOrder(int cadId, CadInputModel input)
         {
-            logger.LogInformation("Entered All Orders Page");
+            OrderModel? order = (await orderService.GetAllAsync()).FirstOrDefault(o => o.CadId == cadId);
+            if (order == null)
+            {
+                return BadRequest();
+            }
 
-            string username = User.FindFirstValue(ClaimTypes.Name);
-            IdentityUser user = await userManager.FindByNameAsync(username);
+            await UploadFileAsync(input.CadFile, cadId, input.Name);
 
-            IEnumerable<OrderViewModel> orders = (await orderService.GetAllAsync())
-                .OrderBy(o => o.OrderDate)
-                .Select(m => new OrderViewModel
-                {
-                    BuyerId = m.BuyerId,
-                    BuyerName = m.Buyer.UserName,
-                    CadId = m.CadId,
-                    Category = m.Cad.Category.ToString(),
-                    Name = m.Cad.Name,
-                    Description = m.Description,
-                    Status = m.Status.ToString(),
-                    OrderDate = m.OrderDate.ToString("dd/MM/yyyy HH:mm:ss"),
-                });
+            order.Cad.CreatorId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            order.Cad.CreationDate = DateTime.Now;
+            order.Cad.Validated = true;
 
-            return View(orders);
+            order.Status = OrderStatus.Finished;
+            await orderService.EditAsync(order);
+
+            return RedirectToAction(nameof(All));
         }
+
+        [Authorize(Roles = "Designer")]
+        [HttpPost]
+        public async Task<IActionResult> HideOrder(int cadId)
+        {
+            OrderModel? model = (await orderService.GetAllAsync())
+                .FirstOrDefault(m => m.CadId == cadId);
+
+            if (model == null)
+            {
+                return BadRequest();
+            }
+
+            model.ShouldShow = false;
+            await orderService.EditAsync(model);
+
+            return RedirectToAction(nameof(All));
+        }
+
+        private async Task UploadFileAsync(IFormFile cad, int cadId, string cadName, string extension = ".stl")
+        {
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot/others/cads/{cadName}{cadId}{extension}");
+            using FileStream fileStream = new(filePath, FileMode.Create);
+            await cad.CopyToAsync(fileStream);
+        }
+
+        public async Task<Category[]> GetCategoriesAsync()
+            => (await categoryService.GetAllAsync()).ToArray();
     }
 }

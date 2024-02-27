@@ -2,6 +2,7 @@
 using CustomCADSolutions.App.Models;
 using CustomCADSolutions.Core.Contracts;
 using CustomCADSolutions.Core.Models;
+using CustomCADSolutions.Infrastructure.Data.Models;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -30,6 +31,7 @@ namespace CustomCADSolutions.App.Areas.Bg.Controllers
             "Автомобили",
             "Други",
         };
+        private readonly ICategoryService categoryService;
 
         public HomeController(
             ICadService cadService,
@@ -59,7 +61,7 @@ namespace CustomCADSolutions.App.Areas.Bg.Controllers
         public IActionResult Categories()
         {
             logger.LogInformation("Entered Categories Page");
-            ViewBag.Categories = string.Join(" ", "All", string.Join(" ", GetCategories())).Split();
+            ViewBag.Categories = string.Join(" ", "All", string.Join(" ", GetCategoriesAsync())).Split();
             ViewBag.BgCategories = string.Join(" ", "Всички", string.Join(" ", bgCategories)).Split();
             return View();
         }
@@ -67,21 +69,15 @@ namespace CustomCADSolutions.App.Areas.Bg.Controllers
         public async Task<IActionResult> Category(string category)
         {
             logger.LogInformation($"Entered {category} Page");
-            
-            List<string> categories = GetCategories().ToList();
-            ViewBag.BgCategories = string.Join(" ", "Всички", string.Join(" ", bgCategories)).Split();
-            ViewBag.Categories = string.Join(" ", "All", string.Join(" ", GetCategories())).Split();
-            ViewBag.BgCategory = category == "All" ? 
-                "Всички 3D модели" :
-                bgCategories[categories.IndexOf(category)];
 
             IEnumerable<CadModel> models = (await cadService.GetAllAsync())
                 .Where(c => c.CreatorId != null &&  c.Validated)
                 .OrderByDescending(c => c.CreationDate);
 
-            if (categories.Contains(category))
+            Category[] categories = await GetCategoriesAsync();
+            if (categories.Any(c => c.Name == category))
             {
-                models = models.Where(cad => cad.Category.ToString() == category);
+                models = models.Where(cad => cad.Category.Name == category);
             }
 
             IEnumerable<CadViewModel> gallery = models
@@ -89,7 +85,7 @@ namespace CustomCADSolutions.App.Areas.Bg.Controllers
                 {
                     Id = model.Id,
                     Name = model.Name,
-                    Category = model.Category.ToString(),
+                    Category = model.Category.Name,
                     CreationDate = model.CreationDate!.Value.ToString("dd/MM/yyyy HH:mm:ss"),
                     CreatorName = model.Creator!.UserName,
                     Coords = model.Coords,
@@ -113,9 +109,7 @@ namespace CustomCADSolutions.App.Areas.Bg.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        private string[] GetCategories()
-        {
-            return typeof(Category).GetEnumNames();
-        }
+        private async Task<Category[]> GetCategoriesAsync()
+            => (await categoryService.GetAllAsync()).ToArray();
     }
 }

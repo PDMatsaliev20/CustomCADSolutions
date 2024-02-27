@@ -1,0 +1,73 @@
+﻿@model UserViewModel[]
+@{
+    string[] roles = new[] { "Administrator", "Designer", "Contributer", "Client" };
+}
+
+<table class="table-bordered w-100 bg-white table-responsive">
+    <thead class="text-center fs-5">
+        <tr>
+            <th class="col m-3">User Id</th>
+            <th class="col m-3">User Name</th>
+            <th class="col m-3">User Role</th>
+            <th class="col m-3">Edit User</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (string role in roles)
+        {
+            @foreach (UserViewModel user in Model.Where(v => v.Role == role))
+            {
+                <tr>
+                    <td>
+                        <span class="d-flex justify-content-center">@user.Id</span>
+                    </td>
+                    <td>
+                        <span class="d-flex justify-content-center">@user.Username</span>
+                    </td>
+                    <td>
+                        <span class="d-flex justify-content-center">@role</span>
+                    </td>
+                    <td>
+                        <div class="d-flex justify-content-center mb-1">
+                            <form class="d-flex" asp-controller="User" asp-action="EditUserRole" asp-route-username="@user.Username">
+                                <select class="me-2" name="selectedRole">
+                                    @foreach (string roleOption in roles)
+                                    {
+                                        if (roleOption == role)
+                                        {
+                                            <option label="@roleOption" value="@roleOption" selected>@roleOption</option>
+                                        }
+                                        else
+                                        {
+                                            <option label="@roleOption" value="@roleOption">@roleOption</option>
+                                        }
+                                    }
+                                </select>
+                                @if (User.Identity!.Name == user.Username)
+                                {
+                                    <input type="submit" value="Change Role" class="btn btn-warning" disabled />
+                                }
+                                else
+                                {
+                                    <input type="submit" value="Change Role" class="btn btn-warning" />
+                                }
+                            </form>
+                            <form class="ms-2 d-flex" asp-controller="User" asp-action="DeleteUser" asp-route-username="@user.Username">
+                                @if (User.Identity!.Name == user.Username)
+                                {
+                                    <input type="submit" value="Delete User" class="btn btn-danger" disabled />
+                                }
+                                else
+                                {
+                                    <input type="submit" value="Delete User" class="btn btn-danger"
+                                           onclick="return confirm(`Are you sure you want to remove this user: ${'@user.Username'}?`);" />
+                                }
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

@@ -1,5 +1,6 @@
 ﻿using static CustomCADSolutions.Infrastructure.Constants.DataConstants;
 using System.ComponentModel.DataAnnotations;
+using CustomCADSolutions.Infrastructure.Data.Models;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 
 namespace CustomCADSolutions.App.Models
@@ -17,7 +18,7 @@ namespace CustomCADSolutions.App.Models
 
         [Required(ErrorMessage = RequiredErrorMessage)]
         [Display(Name = OrderConstants.CategoryDisplay)]
-        public int Category { get; set; }
+        public int CategoryId { get; set; } 
 
         [Required(ErrorMessage = RequiredErrorMessage)]
         [StringLength(OrderConstants.DescriptionMaxLength, 
@@ -26,9 +27,10 @@ namespace CustomCADSolutions.App.Models
         [Display(Name = OrderConstants.DescriptionDisplay)]
         public string Description { get; set; } = null!;
 
-        [Required]
         public DateTime OrderDate { get; set; }
         
         public OrderStatus Status { get; set; }
+
+        public Category[]? Categories { get; set; }
     }
 }

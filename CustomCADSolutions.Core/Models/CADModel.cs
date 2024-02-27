@@ -1,4 +1,4 @@
-﻿using CustomCADSolutions.Infrastructure.Data.Models.Enums;
+﻿using CustomCADSolutions.Infrastructure.Data.Models;
 using static CustomCADSolutions.Infrastructure.Constants.DataConstants;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
@@ -18,11 +18,6 @@ namespace CustomCADSolutions.Core.Models
         public bool Validated { get; set; }
 
         public DateTime? CreationDate { get; set; }
-
-        [Required(ErrorMessage = RequiredErrorMessage)]
-        public Category Category { get; set; }
-        
-        public ICollection<OrderModel> Orders { get; set; } = new List<OrderModel>();
         
         public (short, short, short) Coords { get; set; }
 
@@ -32,9 +27,15 @@ namespace CustomCADSolutions.Core.Models
         [RegularExpression("[xyz]", ErrorMessage = CadConstants.SpinAxisErrorMessage)]
         public char? SpinAxis { get; set; }
 
+        [Required(ErrorMessage = RequiredErrorMessage)]
+        public int CategoryId { get; set; }
+
         public string? CreatorId { get; set; }
 
-        [ForeignKey(nameof(CreatorId))]
+        public Category Category { get; set; } = null!;
+
         public IdentityUser? Creator { get; set; }
+        
+        public ICollection<OrderModel> Orders { get; set; } = new List<OrderModel>();
     }
 }

@@ -13,14 +13,15 @@ namespace CustomCADSolutions.Core.Services
             {
                 Id = cad.Id,
                 Name = cad.Name,
-                Category = cad.Category,
                 Validated = cad.Validated,
                 CreationDate = cad.CreationDate,
-                CreatorId = cad.CreatorId,
-                Creator = cad.Creator,
                 Coords = (cad.X, cad.Y, cad.Z),
                 SpinAxis = cad.SpinAxis,
                 SpinFactor = cad.SpinFactor,
+                CategoryId = cad.CategoryId,
+                CreatorId = cad.CreatorId,
+                Creator = cad.Creator,
+                Category = cad.Category,
             };
 
             if (firstTime && cad.Orders.Any())
@@ -38,7 +39,7 @@ namespace CustomCADSolutions.Core.Services
             Cad cad = new()
             {
                 Name = model.Name,
-                Category = model.Category,
+                CategoryId = model.CategoryId,
                 Validated = model.Validated,
                 CreationDate = model.CreationDate ?? DateTime.Now,
                 CreatorId = model.CreatorId,
@@ -68,6 +69,7 @@ namespace CustomCADSolutions.Core.Services
                 Description = order.Description,
                 OrderDate = order.OrderDate,
                 Status = order.Status,
+                ShouldShow = order.ShouldShow,
                 Buyer = order.Buyer,
                 Cad = firstTime ? CadToModel(order.Cad) : null!,
             };
@@ -80,6 +82,7 @@ namespace CustomCADSolutions.Core.Services
                 Description = model.Description,
                 OrderDate = model.OrderDate,
                 Status = model.Status,
+                ShouldShow = model.ShouldShow,
                 Buyer = model.Buyer,
                 Cad = fisrTime ? ModelToCad(model.Cad) : null!,
             };

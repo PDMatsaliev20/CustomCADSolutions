@@ -1,7 +1,7 @@
 ﻿@using CustomCADSolutions.Infrastructure.Data.Models.Enums
 @model IEnumerable<OrderViewModel>
 @{
-    ViewData["Title"] = "Всички поръчки";
+    ViewData["Title"] = "Всички поръчки " + ViewBag.HiddenOrders;
     string[] statuses = typeof(OrderStatus).GetEnumNames();
     string[] bgStatuses = ViewBag.BgStatuses;
 }
@@ -55,7 +55,11 @@ else
                                                     break;
 
                                                 case "Finished":
-                                                    <div type="button" class="btn btn-success">Готов</div>
+                                                    <form asp-controller="Order" asp-action="Hide" asp-route-cadId="@order.CadId">
+                                                        <div class="d-grid gap-2">
+                                                            <input type="submit" value="Скрий" class="btn btn-success" />
+                                                        </div>
+                                                    </form>
                                                     break;
                                             }
                                         </div>

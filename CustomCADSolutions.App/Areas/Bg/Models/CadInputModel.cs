@@ -1,6 +1,7 @@
 ﻿using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using static CustomCADSolutions.Infrastructure.Constants.DataConstants;
 using System.ComponentModel.DataAnnotations;
+using CustomCADSolutions.Infrastructure.Data.Models;
 
 namespace CustomCADSolutions.App.Areas.Bg.Models
 {
@@ -17,7 +18,7 @@ namespace CustomCADSolutions.App.Areas.Bg.Models
 
         [Required(ErrorMessage = "Категорията е задължителна!")]
         [Display(Name = "Категория")]
-        public Category Category { get; set; }
+        public Category Category { get; set; } = null!;
 
         [Required(ErrorMessage = "3D Моделът е задължителен!")]
         [Display(Name = "3D Модел")]

@@ -1,6 +1,6 @@
-﻿using CustomCADSolutions.Infrastructure.Data.Models.Enums;
-using static CustomCADSolutions.Infrastructure.Constants.DataConstants;
+﻿using static CustomCADSolutions.Infrastructure.Constants.DataConstants;
 using System.ComponentModel.DataAnnotations;
+using CustomCADSolutions.Infrastructure.Data.Models;
 
 namespace CustomCADSolutions.App.Models
 {
@@ -17,7 +17,7 @@ namespace CustomCADSolutions.App.Models
 
         [Required(ErrorMessage = RequiredErrorMessage)]
         [Display(Name = CadConstants.CategoryDisplay)]
-        public Category Category { get; set; }
+        public int CategoryId { get; set; } 
 
         [Required(ErrorMessage = RequiredErrorMessage)]
         [Display(Name = CadConstants.FileDisplay)]
@@ -39,5 +39,7 @@ namespace CustomCADSolutions.App.Models
         [RegularExpression("[xyz]", ErrorMessage = CadConstants.SpinAxisErrorMessage)]
         [Display(Name = "Axis of spin")]
         public char? SpinAxis { get; set; }
+
+        public Category[] Categories { get; set; } = null!;
     }
 }

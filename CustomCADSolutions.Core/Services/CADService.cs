@@ -55,18 +55,21 @@ namespace CustomCADSolutions.Core.Services
 
         public async Task EditAsync(CadModel model)
         {
-            Cad cad = await this.repository.All<Cad>()
+            Cad cad = await repository.All<Cad>()
                 .FirstOrDefaultAsync(cad => cad.Id == model.Id)
                 ?? throw new ArgumentException("Model doesn't exist!");
 
+            cad.CategoryId = model.CategoryId;
             cad.Name = model.Name;
-            cad.Category = model.Category;
             cad.Validated = model.Validated;
             cad.X = model.Coords.Item1;
             cad.Y = model.Coords.Item2;
             cad.Z = model.Coords.Item3;
+            cad.CreationDate = model.CreationDate;
             cad.SpinAxis = model.SpinAxis;
             cad.SpinFactor = model.SpinFactor;
+            cad.CreatorId = model.CreatorId;
+            cad.Creator = model.Creator;
 
             await repository.SaveChangesAsync();
         }
@@ -93,10 +96,12 @@ namespace CustomCADSolutions.Core.Services
 
         public async Task<CadModel> GetByIdAsync(int id)
         {
-            Cad cad = await repository
-                .All<Cad>()
-                .FirstOrDefaultAsync(cad => cad.Id == id)
-                ?? throw new ArgumentException("Model doesn't exist");
+            Cad? cad = await repository.GetByIdAsync<Cad>(id);
+
+            if (cad == null)
+            {
+                throw new ArgumentException($"Model with id: {id} doesn't exist");
+            }
 
             CadModel model = converter.CadToModel(cad);
             return model;

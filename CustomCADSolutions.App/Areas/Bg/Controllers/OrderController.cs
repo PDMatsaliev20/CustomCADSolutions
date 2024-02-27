@@ -69,7 +69,7 @@ namespace CustomCADSolutions.App.Areas.Bg.Controllers
                     BuyerId = m.BuyerId,
                     BuyerName = m.Buyer.UserName,
                     CadId = m.CadId,
-                    Category = bgCategories[(int)m.Cad.Category],
+                    Category = bgCategories[m.Cad.Category.Id],
                     Name = m.Cad.Name,
                     Description = m.Description,
                     Status = bgStatuses[(int)m.Status],
@@ -88,14 +88,18 @@ namespace CustomCADSolutions.App.Areas.Bg.Controllers
             string username = User.FindFirstValue(ClaimTypes.Name);
             IdentityUser user = await userManager.FindByNameAsync(username);
 
-            IEnumerable<OrderViewModel> orders = (await orderService.GetAllAsync())
+            IEnumerable<OrderModel> models = await orderService.GetAllAsync();
+            ViewBag.HiddenOrders = $"({models.Count(m => !m.ShouldShow)} скрити)";
+
+            IEnumerable<OrderViewModel> views = models
+                .Where(m => m.ShouldShow)
                 .OrderBy(o => o.OrderDate)
                 .Select(m => new OrderViewModel
                 {
                     BuyerId = m.BuyerId,
                     BuyerName = m.Buyer.UserName,
                     CadId = m.CadId,
-                    Category = bgCategories[(int)m.Cad.Category],
+                    Category = bgCategories[m.Cad.CategoryId],
                     Name = m.Cad.Name,
                     Description = m.Description,
                     Status = m.Status.ToString(),
@@ -103,34 +107,46 @@ namespace CustomCADSolutions.App.Areas.Bg.Controllers
                 });
 
             ViewBag.BgStatuses = bgStatuses;
-
-            return View(orders);
+            return View(views);
         }
 
+        [Authorize(Roles = "Administrator")]
         [HttpPost]
         public async Task<IActionResult> ChangeStatus(int cadId, string status)
         {
-            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            IdentityUser user = await userManager.FindByIdAsync(userId);
-
-            if (!await userManager.IsInRoleAsync(user, "Administrator"))
-            {
-                return Unauthorized();
-            }
-
-            OrderModel? model = (await orderService.GetAllAsync()).FirstOrDefault(o => o.CadId == cadId);
+            OrderModel? model = (await orderService.GetAllAsync())
+                .FirstOrDefault(o => o.CadId == cadId);
+            
             if (model == null)
             {
                 return BadRequest();
             }
 
-            OrderStatus orderStatus = default;
-            if (!Enum.TryParse<OrderStatus>(status, out orderStatus))
+            if (!Enum.TryParse(status, out OrderStatus orderStatus))
             {
                 return BadRequest();
             }
 
             model.Status = orderStatus;
+            await orderService.EditAsync(model);
+
+            return RedirectToAction(nameof(All));
+        }
+
+
+        [Authorize(Roles = "Administrator")]
+        [HttpPost]
+        public async Task<IActionResult> Hide(int cadId)
+        {
+            OrderModel? model = (await orderService.GetAllAsync())
+                .FirstOrDefault(m => m.CadId == cadId);
+
+            if (model == null)
+            {
+                return BadRequest();
+            }
+
+            model.ShouldShow = false;
             await orderService.EditAsync(model);
 
             return RedirectToAction(nameof(All));
@@ -177,7 +193,7 @@ namespace CustomCADSolutions.App.Areas.Bg.Controllers
                 Cad = new CadModel()
                 {
                     Name = input.Name,
-                    Category = (Category)input.Category,
+                    Category = input.Category,
                 }
             };
             await orderService.CreateAsync(model);
@@ -211,7 +227,7 @@ namespace CustomCADSolutions.App.Areas.Bg.Controllers
                 Status = model.Status,
                 CadId = model.CadId,
                 Name = model.Cad.Name,
-                Category = (int)model.Cad.Category,
+                Category = model.Cad.Category,
                 Description = model.Description,
                 OrderDate = model.OrderDate,
             };
@@ -244,7 +260,7 @@ namespace CustomCADSolutions.App.Areas.Bg.Controllers
 
             model.Cad.Name = input.Name;
             model.Description = input.Description;
-            model.Cad.Category = (Category)input.Category;
+            model.Cad.CategoryId = input.CategoryId;
             await orderService.EditAsync(model);
 
             logger.LogInformation("Edited Order");

@@ -125,9 +125,9 @@
                                     </script>
                                 </div>
                                 <div class="d-grid gap-2">
-                                    <form method="post" class="mt-2" asp-area="" asp-controller="Cad" asp-action="Validate" asp-route-id="@cad.Id">
+                                    <form method="post" class="mt-2" asp-controller="Cad" asp-action="ValidateCad" asp-route-cadId="@cad.Id">
                                         <div class="d-grid gap-2">
-                                            <input type="submit" value="Validate" class="btn btn-danger mb-2"
+                                            <input type="submit" value="Validate" class="btn btn-primary mb-2"
                                                    onclick="return confirm('Are you sure you want to validate this model: @cad.Name?')" />
                                         </div>
                                     </form>

@@ -27,8 +27,7 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 // Add services to the container
 builder.Services.AddControllersWithViews();
 
-const string Admininstrator = "Administrator", Contributer = "Designer";
-string[] roles = { Admininstrator, Contributer };
+string[] roles = { "Administrator", "Designer", "Contributer", "Client"};
 builder.Services.AddAuthorization(options =>
 {
     foreach (string role in roles)
@@ -43,6 +42,7 @@ builder.Services.AddScoped<IConverter, Converter>();
 
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<ICadService, CadService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 // Add redirection to the container
 builder.Services.ConfigureApplicationCookie(options =>
@@ -85,16 +85,9 @@ using (IServiceScope scope = app.Services.CreateScope())
 }
 
 app.MapAreaControllerRoute(
-    name: "MyAreaBg",
+    name: "BgArea",
     areaName: "Bg",
     pattern: "Bg/{controller=Home}/{action=Index}/{id?}");
-
-/*
- app.MapAreaControllerRoute(
-    name: "MyAreaEn",
-    areaName: "En",
-    pattern: "En/{controller=Home}/{action=Index}/{id?}");
- */
 
 app.MapControllerRoute(
     name: "default",

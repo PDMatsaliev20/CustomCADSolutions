@@ -1,6 +1,6 @@
 ﻿using static CustomCADSolutions.Infrastructure.Constants.DataConstants;
 using System.ComponentModel.DataAnnotations;
-using CustomCADSolutions.Infrastructure.Data.Models.Enums;
+using CustomCADSolutions.Infrastructure.Data.Models;
 
 namespace CustomCADSolutions.App.Areas.Bg.Models
 {
@@ -17,7 +17,7 @@ namespace CustomCADSolutions.App.Areas.Bg.Models
 
         [Required(ErrorMessage = RequiredErrorMessage)]
         [Display(Name = "Категория на 3D модела")]
-        public int Category { get; set; }
+        public Category Category { get; set; } = null!;
 
         [Required(ErrorMessage = RequiredErrorMessage)]
         [StringLength(OrderConstants.DescriptionMaxLength, 
@@ -29,6 +29,6 @@ namespace CustomCADSolutions.App.Areas.Bg.Models
         [Required]
         public DateTime OrderDate { get; set; }
         
-        public OrderStatus Status { get; set; }
+        public Infrastructure.Data.Models.Enums.OrderStatus Status { get; set; }
     }
 }

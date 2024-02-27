@@ -23,6 +23,9 @@ namespace CustomCADSolutions.Core.Models
         [Required]  
         public OrderStatus Status { get; set; }
 
+        [Required]
+        public bool ShouldShow { get; set; }
+
         [ForeignKey(nameof(CadId))]
         public CadModel Cad { get; set; } = null!;
 

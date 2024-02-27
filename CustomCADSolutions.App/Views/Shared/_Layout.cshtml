@@ -2,9 +2,7 @@
 @using Microsoft.AspNetCore.Identity
 @using System.Security.Claims
 @inject UserManager<IdentityUser> UserManager
-@{
-    //await UserManager.AddToRoleAsync(await UserManager.FindByNameAsync("NinjaBG"), "Designer");
-}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,38 +34,30 @@
                         {
                             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                             IdentityUser? user = await UserManager.FindByIdAsync(userId);
-                            if (await UserManager.IsInRoleAsync(user, "Administrator"))
+                            if (!(await UserManager.GetRolesAsync(user)).Any())
                             {
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-controller="Home" asp-action="Categories" role="button">Categories</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="All" role="button">All Orders</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Cad" asp-action="All" role="button">Submitted 3D Models</a>
-                                </li>
+                                await UserManager.AddToRoleAsync(user, "Client");
                             }
-                            else if (await UserManager.IsInRoleAsync(user, "Designer"))
+
+                            if (User.IsInRole("Administrator"))
                             {
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-controller="Home" asp-action="Categories" role="button">Categories</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="Index" role="button">Your Orders</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Cad" asp-action="Index" role="button">Your 3D Models</a>
-                                </li>
                             }
-                            else
+                            else if (User.IsInRole("Designer"))
                             {
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-controller="Home" asp-action="Categories" role="button">Categories</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="Index" role="button">Your Orders</a>
-                                </li>
+                                <li class="nav-item"><a class="nav-link text-dark" asp-controller="Order" asp-action="All" role="button">All Orders</a></li>
+                                <li class="nav-item"><a class="nav-link text-dark" asp-controller="Cad" asp-action="All" role="button">Submitted 3D Models</a></li>
+                                <li class="nav-item"><a class="nav-link text-dark" asp-controller="Cad" asp-action="Index" role="button">Your 3D Models</a></li>
+                            }
+                            else if (User.IsInRole("Contributer"))
+                            {
+                                <li class="nav-item"><a class="nav-link text-dark" asp-controller="Home" asp-action="Categories" role="button">Categories</a></li>
+                                <li class="nav-item"><a class="nav-link text-dark" asp-controller="Order" asp-action="Index" role="button">Your Orders</a></li>
+                                <li class="nav-item"><a class="nav-link text-dark" asp-controller="Cad" asp-action="Index" role="button">Your 3D Models</a></li>
+                            }
+                            else if (User.IsInRole("Client"))
+                            {
+                                <li class="nav-item"><a class="nav-link text-dark" asp-controller="Home" asp-action="Categories" role="button">Categories</a></li>
+                                <li class="nav-item"><a class="nav-link text-dark" asp-controller="Order" asp-action="Index" role="button">Your Orders</a></li>
                             }
                         }
                         else

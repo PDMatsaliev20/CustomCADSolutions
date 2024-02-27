@@ -19,7 +19,7 @@ namespace CustomCADSolutions.Core.Services
 
         public async Task CreateAsync(OrderModel model)
         {
-            if (model.Cad == null || model.Buyer == null)
+            if ((model.Cad == null && model.CadId == 0) || (model.Buyer == null && model.BuyerId == null))
             {
                 throw new NullReferenceException();
             }
@@ -56,9 +56,12 @@ namespace CustomCADSolutions.Core.Services
 
             order.Description = model.Description;
             order.Status = model.Status;
+            order.ShouldShow = model.ShouldShow;
             order.Cad.Name = model.Cad.Name;
             order.Cad.Category = model.Cad.Category;
             order.Cad.CreationDate = model.Cad.CreationDate;
+            order.Cad.CreatorId = model.Cad.CreatorId;
+            order.Cad.Validated = model.Cad.Validated;
 
             await repository.SaveChangesAsync();
         }

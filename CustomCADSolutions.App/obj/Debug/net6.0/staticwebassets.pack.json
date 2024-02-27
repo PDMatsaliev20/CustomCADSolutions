@@ -253,6 +253,10 @@
       "PackagePath": "staticwebassets\\logo.png"
     },
     {
+      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\cads\\276.stl",
+      "PackagePath": "staticwebassets\\others\\cads\\276.stl"
+    },
+    {
       "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\cads\\Airpod240.stl",
       "PackagePath": "staticwebassets\\others\\cads\\Airpod240.stl"
     },

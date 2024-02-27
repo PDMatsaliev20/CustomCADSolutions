@@ -1,6 +1,7 @@
 ﻿using CustomCADSolutions.App.Models;
 using CustomCADSolutions.Core.Contracts;
 using CustomCADSolutions.Core.Models;
+using CustomCADSolutions.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +14,7 @@ namespace CustomCADSolutions.App.Areas.Bg.Controllers
     public class CadController : Controller
     {
         private readonly ICadService cadService;
+        private readonly ICategoryService categoryService;
         private readonly ILogger logger;
         private readonly UserManager<IdentityUser> userManager;
         private readonly IWebHostEnvironment hostingEnvironment;
@@ -21,12 +23,14 @@ namespace CustomCADSolutions.App.Areas.Bg.Controllers
             ICadService cadService,
             ILogger<CadModel> logger,
             UserManager<IdentityUser> userManager,
-            IWebHostEnvironment hostingEnvironment)
+            IWebHostEnvironment hostingEnvironment,
+            ICategoryService categoryService)
         {
             this.cadService = cadService;
             this.logger = logger;
             this.userManager = userManager;
             this.hostingEnvironment = hostingEnvironment;
+            this.categoryService = categoryService;
         }
 
         [HttpGet]
@@ -40,7 +44,7 @@ namespace CustomCADSolutions.App.Areas.Bg.Controllers
                 {
                     Id = model.Id,
                     Name = model.Name,
-                    Category = model.Category.ToString(),
+                    Category = model.Category.Name,
                     CreationDate = model.CreationDate!.Value.ToString("dd/MM/yyyy HH:mm:ss"),
                     Coords = model.Coords,
                     SpinAxis = model.SpinAxis,
@@ -61,7 +65,7 @@ namespace CustomCADSolutions.App.Areas.Bg.Controllers
                 {
                     Id = m.Id,
                     Name = m.Name,
-                    Category = m.Category.ToString(),
+                    Category = m.Category.Name,
                     CreationDate = m.CreationDate!.Value.ToString("dd/MM/yyyy HH:mm:ss"),
                     Coords = m.Coords,
                     SpinAxis = m.SpinAxis,
@@ -85,10 +89,11 @@ namespace CustomCADSolutions.App.Areas.Bg.Controllers
         }
 
         [HttpGet]
-        public IActionResult Add()
+        public async Task<IActionResult> Add()
         {
             logger.LogInformation("Entered Submit Page");
-            return View(new CadInputModel());
+            CadInputModel input = new() { Categories = await GetCategoriesAsync() };
+            return View(input);
         }
 
         [HttpPost]
@@ -97,6 +102,7 @@ namespace CustomCADSolutions.App.Areas.Bg.Controllers
             if (!ModelState.IsValid)
             {
                 logger.LogError("Invalid 3d Model");
+                input.Categories = await GetCategoriesAsync();
                 return View(input);
             }
 
@@ -108,8 +114,8 @@ namespace CustomCADSolutions.App.Areas.Bg.Controllers
             CadModel model = new()
             {
                 Name = input.Name,
-                Category = input.Category,
-                Validated = false,
+                CategoryId = input.CategoryId,
+                Validated = User.IsInRole("Administrator"),
                 CreationDate = DateTime.Now,
                 CreatorId = User.FindFirstValue(ClaimTypes.NameIdentifier),
             };
@@ -143,8 +149,9 @@ namespace CustomCADSolutions.App.Areas.Bg.Controllers
 
             CadInputModel input = new()
             {
+                Categories = await GetCategoriesAsync(),
                 Name = cad.Name,
-                Category = cad.Category,
+                CategoryId = cad.CategoryId,
                 X = cad.Coords.Item1,
                 Y = cad.Coords.Item2,
                 Z = cad.Coords.Item3,
@@ -180,6 +187,7 @@ namespace CustomCADSolutions.App.Areas.Bg.Controllers
                     logger.LogError("Method above DID NOT work");
                 }
 
+                input.Categories = await GetCategoriesAsync();
                 return View(input);
             }
 
@@ -194,7 +202,7 @@ namespace CustomCADSolutions.App.Areas.Bg.Controllers
                 model.Name = input.Name;
             }
 
-            model.Category = input.Category;
+            model.CategoryId = input.CategoryId;
             model.Coords = (input.X, input.Y, input.Z);
             model.SpinAxis = input.SpinAxis;
             model.SpinFactor = input.SpinFactor / 100d;
@@ -231,5 +239,8 @@ namespace CustomCADSolutions.App.Areas.Bg.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+        private async Task<Category[]> GetCategoriesAsync()
+            => (await categoryService.GetAllAsync()).ToArray();
     }
 }
