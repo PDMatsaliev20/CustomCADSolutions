@@ -8,8 +8,7 @@ namespace CustomCADSolutions.Core.Services
     public class Converter : IConverter
     {
         public CadModel CadToModel(Cad cad, bool firstTime = true)
-        {
-            CadModel model = new()
+            => new()
             {
                 Id = cad.Id,
                 Name = cad.Name,
@@ -22,21 +21,13 @@ namespace CustomCADSolutions.Core.Services
                 CreatorId = cad.CreatorId,
                 Creator = cad.Creator,
                 Category = cad.Category,
+                Orders = firstTime && cad.Orders.Any() ?
+                    cad.Orders.Select(o => OrderToModel(o, false)).ToArray()
+                    : new List<OrderModel>()
             };
 
-            if (firstTime && cad.Orders.Any())
-            {
-                model.Orders = cad.Orders
-                    .Select(o => OrderToModel(o, false))
-                    .ToArray();
-            }
-
-            return model;
-        }
-
         public Cad ModelToCad(CadModel model, bool firstTime = true)
-        {
-            Cad cad = new()
+            => new()
             {
                 Name = model.Name,
                 CategoryId = model.CategoryId,
@@ -48,21 +39,13 @@ namespace CustomCADSolutions.Core.Services
                 Z = model.Coords.Item3,
                 SpinAxis = model.SpinAxis,
                 SpinFactor = model.SpinFactor,
+                Orders = firstTime && model.Orders.Any() ?
+                    model.Orders.Select(o => ModelToOrder(o, false)).ToArray()
+                    : new List<Order>()
             };
 
-            if (firstTime && model.Orders.Any())
-            {
-                cad.Orders = model.Orders
-                    .Select(o => ModelToOrder(o, false))
-                    .ToArray();
-            }
-
-            return cad;
-        }
-
         public OrderModel OrderToModel(Order order, bool firstTime = true)
-        {
-            return new()
+            => new()
             {
                 CadId = order.CadId,
                 BuyerId = order.BuyerId,
@@ -73,20 +56,19 @@ namespace CustomCADSolutions.Core.Services
                 Buyer = order.Buyer,
                 Cad = firstTime ? CadToModel(order.Cad) : null!,
             };
-        }
 
         public Order ModelToOrder(OrderModel model, bool fisrTime = true)
-        {
-            Order order = new()
+            => new()
             {
                 Description = model.Description,
                 OrderDate = model.OrderDate,
                 Status = model.Status,
                 ShouldShow = model.ShouldShow,
+                BuyerId = model.BuyerId,
+                CadId = model.CadId,
                 Buyer = model.Buyer,
                 Cad = fisrTime ? ModelToCad(model.Cad) : null!,
             };
-            return order;
-        }
+
     }
 }

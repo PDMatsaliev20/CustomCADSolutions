@@ -14,6 +14,7 @@ namespace CustomCADSolutions.Infrastructure.Data.Common.Configurations
     {
         public void Configure(EntityTypeBuilder<Cad> builder)
         {
+            builder.HasOne(c => c.Creator).WithMany().OnDelete(DeleteBehavior.Cascade);
             builder.Navigation(c => c.Creator).AutoInclude();
             builder.Navigation(c => c.Orders).AutoInclude();
             builder.Navigation(c => c.Category).AutoInclude();

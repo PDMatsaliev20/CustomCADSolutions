@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using CustomCADSolutions.Infrastructure.Data.Models;
+using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 
 namespace CustomCADSolutions.App.Controllers
 {
@@ -13,6 +14,7 @@ namespace CustomCADSolutions.App.Controllers
     public class CadController : Controller
     {
         private readonly ICadService cadService;
+        private readonly IOrderService orderService;
         private readonly ICategoryService categoryService;
         private readonly ILogger logger;
         private readonly UserManager<IdentityUser> userManager;
@@ -20,24 +22,26 @@ namespace CustomCADSolutions.App.Controllers
 
         public CadController(
             ICadService cadService,
+            IOrderService orderService,
             ICategoryService categoryService,
             ILogger<CadModel> logger,
             UserManager<IdentityUser> userManager,
             IWebHostEnvironment hostingEnvironment)
         {
             this.cadService = cadService;
+            this.orderService = orderService;
             this.categoryService = categoryService;
             this.logger = logger;
             this.userManager = userManager;
             this.hostingEnvironment = hostingEnvironment;
         }
-
+        
         [HttpGet]
         public async Task<IActionResult> Index()
         {
             IEnumerable<CadViewModel> views = (await cadService.GetAllAsync())
-                .Where(cad => cad.CreatorId == GetUserId())
-                .Select((model) => new CadViewModel
+                .Where(model => model.CreatorId == GetUserId())
+                .Select(model => new CadViewModel
                 {
                     Id = model.Id,
                     Name = model.Name,
@@ -60,7 +64,7 @@ namespace CustomCADSolutions.App.Controllers
             CadInputModel input = new() { Categories = await GetCategories() };
             return View(input);
         }
-
+        
         [HttpPost]
         public async Task<IActionResult> Add(CadInputModel input)
         {
@@ -68,7 +72,10 @@ namespace CustomCADSolutions.App.Controllers
             {
                 logger.LogError("Invalid 3d Model");
                 input.Categories = await GetCategories();
-                return View(input);
+                if (ModelState.ErrorCount > 1)
+                {
+                    return View(input);
+                }
             }
 
             if (input.CadFile == null || input.CadFile.Length <= 0)
@@ -82,7 +89,7 @@ namespace CustomCADSolutions.App.Controllers
                 CategoryId = input.CategoryId,
                 Validated = User.IsInRole("Designer"),
                 CreationDate = DateTime.Now,
-                CreatorId = User.FindFirstValue(ClaimTypes.NameIdentifier),
+                CreatorId = GetUserId(),
             };
             model.Creator = await userManager.FindByIdAsync(model.CreatorId);
             int cadId = await cadService.CreateAsync(model);
@@ -105,7 +112,7 @@ namespace CustomCADSolutions.App.Controllers
                 return BadRequest();
             }
 
-            if (model.CreatorId != User.FindFirstValue(ClaimTypes.NameIdentifier))
+            if (model.CreatorId != GetUserId())
             {
                 return Unauthorized();
             }
@@ -135,7 +142,7 @@ namespace CustomCADSolutions.App.Controllers
                 return BadRequest();
             }
 
-            if (model.CreatorId != User.FindFirstValue(ClaimTypes.NameIdentifier))
+            if (model.CreatorId != GetUserId())
             {
                 return Unauthorized();
             }
@@ -165,15 +172,13 @@ namespace CustomCADSolutions.App.Controllers
         {
             CadModel cad = await cadService.GetByIdAsync(id);
 
-            if (cad.Creator == null)
-            {
-                return BadRequest();
-            }
-
-            if (cad.CreatorId != User.FindFirstValue(ClaimTypes.NameIdentifier))
+            if (cad.CreatorId != GetUserId())
             {
                 return Unauthorized();
             }
+
+            OrderModel[] orders = (await orderService.GetAllAsync()).Where(o => o.CadId == cad.Id).ToArray();
+            orders.ToList().ForEach(o => o.Status = OrderStatus.Pending);
 
             await cadService.DeleteAsync(cad.Id);
 
@@ -187,40 +192,10 @@ namespace CustomCADSolutions.App.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [Authorize(Roles = "Designer")]
-        [HttpGet]
-        public async Task<IActionResult> All()
-        {
-            IEnumerable<CadViewModel> views = (await cadService.GetAllAsync())
-                .Where(m => m.Creator != null && !m.Validated)
-                .Select(m => new CadViewModel
-                {
-                    Id = m.Id,
-                    Name = m.Name,
-                    Category = m.Category.Name,
-                    CreationDate = m.CreationDate!.Value.ToString("dd/MM/yyyy HH:mm:ss"),
-                    Coords = m.Coords,
-                    SpinAxis = m.SpinAxis,
-                    SpinFactor = m.SpinFactor,
-                    CreatorName = m.Creator!.UserName,
-                });
+        // Private methods
 
-            return View(views);
-        }
-
-        [Authorize(Roles = "Designer")]
-        [HttpPost]
-        public async Task<IActionResult> ValidateCad(int cadId)
-        {
-            CadModel model = await cadService.GetByIdAsync(cadId);
-
-            model.Validated = true;
-            await cadService.EditAsync(model);
-
-            return RedirectToAction(nameof(All));
-        }
-
-        private string GetCadPath(string cadName, int cadId) => Path.Combine(hostingEnvironment.WebRootPath, "others", "cads", $"{cadName}{cadId}.stl");
+        private string GetCadPath(string cadName, int cadId) 
+            => Path.Combine(hostingEnvironment.WebRootPath, "others", "cads", $"{cadName}{cadId}.stl");
 
         private string GetUserId() => User.FindFirstValue(ClaimTypes.NameIdentifier);
 

@@ -7,14 +7,14 @@ using Microsoft.EntityFrameworkCore;
 namespace CustomCADSolutions.App.Controllers
 {
     [Authorize(Roles = "Administrator")]
-    public class UserController : Controller
+    public class AdminController : Controller
     {
-        private readonly ILogger<UserController> logger;
+        private readonly ILogger<AdminController> logger;
         private readonly UserManager<IdentityUser> userManager;
 
-        public UserController(
+        public AdminController(
             UserManager<IdentityUser> userManager,
-            ILogger<UserController> logger)
+            ILogger<AdminController> logger)
         {
             this.userManager = userManager;
             this.logger = logger;
@@ -40,7 +40,7 @@ namespace CustomCADSolutions.App.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditUserRole(string username, string selectedRole)
+        public async Task<IActionResult> EditUserRole(string username, string selectedRole) 
         {
             IdentityUser user = await userManager.FindByNameAsync(username);
 

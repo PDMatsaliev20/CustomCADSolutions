@@ -7,6 +7,7 @@ namespace CustomCADSolutions.App.Models
     public class CadInputModel
     {
         public int Id { get; set; }
+        public string? BuyerId { get; set; }
 
         [Required(ErrorMessage = RequiredErrorMessage)]
         [StringLength(CadConstants.NameMaxLength, 
@@ -36,7 +37,7 @@ namespace CustomCADSolutions.App.Models
         [Display(Name = "Speed")]
         public int SpinFactor { get; set; }
 
-        [RegularExpression("[xyz]", ErrorMessage = CadConstants.SpinAxisErrorMessage)]
+        [RegularExpression("[xyz]?", ErrorMessage = CadConstants.SpinAxisErrorMessage)]
         [Display(Name = "Axis of spin")]
         public char? SpinAxis { get; set; }
 

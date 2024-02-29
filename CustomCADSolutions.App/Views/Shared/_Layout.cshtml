@@ -1,7 +1,9 @@
-﻿@using CustomCADSolutions.Infrastructure.Data.Models.Enums
-@using Microsoft.AspNetCore.Identity
-@using System.Security.Claims
+﻿@using System.Security.Claims
 @inject UserManager<IdentityUser> UserManager
+@inject IViewLocalizer Localizer
+@{
+    string currentUrl = Context.Request.Path + Context.Request.QueryString;
+}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -24,12 +26,29 @@
                 <button class="navbar-toggler toggler fade-in" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon toggler-icon"></span>
                 </button>
-                <a class="logo fade-in me-3" asp-area="" asp-controller="Home" asp-action="Index">
+                <a class="logo fade-in me-3" asp-controller="Home" asp-action="Index">
                     <img class="mw-100 h-auto" src="~/logo.png">
                 </a>
 
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between fs-5">
                     <ul class="fade-in navbar-nav">
+                        <li class="nav-item dropdown">
+                            <button class="dropdown-toggle bg-transparent border-0 nav-link text-dark" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Language
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item" asp-controller="Home" asp-action="SetLanguage" asp-route-culture="bg-BG" asp-route-returnUrl="@currentUrl">
+                                        <img class="w-100 h-auto" src="~/others/images/flags/4x3/bg.svg" alt="Bulgarian">
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-controller="Home" asp-action="SetLanguage" asp-route-culture="en-US" asp-route-returnUrl="@currentUrl">
+                                        <img class="w-100 h-auto" src="~/others/images/flags/4x3/us.svg" alt="English">
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
                         @if (User.Identity!.IsAuthenticated)
                         {
                             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -63,26 +82,11 @@
                         else
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Home" asp-action="Index" role="button">Home</a>
-                            </li>
-                            <li class="nav-item">
                                 <a class="nav-link text-dark" asp-controller="Home" asp-action="Categories" role="button">Explore</a>
                             </li>
                         }
                     </ul>
                     <ul class="navbar-nav alignt-items-center fade-in">
-                        <li class="me-3 dropdown">
-                            <button class="dropdown-toggle btn btn-secondary text-dark border-0 bg-transparent p-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <img src="~/others/images/flags/4x3/us.svg" alt="English">
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <a class="dropdown-item" asp-area="Bg">
-                                        <img class="w-100 h-auto" src="~/others/images/flags/4x3/bg.svg" alt="Bulgarian">
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
                         <partial name="_LoginPartial" />
                     </ul>
                 </div>

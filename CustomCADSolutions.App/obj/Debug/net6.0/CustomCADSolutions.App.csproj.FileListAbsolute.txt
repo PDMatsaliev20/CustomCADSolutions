@@ -881,3 +881,17 @@ C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\o
 C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.genruntimeconfig.cache
 C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\ref\CustomCADSolutions.App.dll
 C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\scopedcss\Areas\Bg\Views\Shared\_Layout.cshtml.rz.scp.css
+C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\bin\Debug\net6.0\Microsoft.AspNetCore.JsonPatch.dll
+C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\bin\Debug\net6.0\Microsoft.AspNetCore.Mvc.Razor.Extensions.dll
+C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\bin\Debug\net6.0\Newtonsoft.Json.Bson.dll
+C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\bin\Debug\net6.0\bg-BG\CustomCADSolutions.App.resources.dll
+C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\bin\Debug\net6.0\en-US\CustomCADSolutions.App.resources.dll
+C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.csproj.GenerateResource.cache
+C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\bg-BG\CustomCADSolutions.App.resources.dll
+C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\en-US\CustomCADSolutions.App.resources.dll
+C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Home.Index.bg-BG.resources
+C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Home.Index.en-US.resources
+C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Home.Categories.bg-BG.resources
+C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Home.Categories.en-US.resources
+C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Home.Category.bg-BG.resources
+C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Home.Category.en-US.resources

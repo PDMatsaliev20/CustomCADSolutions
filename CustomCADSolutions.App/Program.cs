@@ -4,6 +4,9 @@ using CustomCADSolutions.Infrastructure.Data;
 using CustomCADSolutions.Infrastructure.Data.Common;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Razor;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,7 +28,22 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
     .AddEntityFrameworkStores<CADContext>();
 
 // Add services to the container
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews()
+    .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix);
+
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    options.DefaultRequestCulture = new RequestCulture("en-US");
+    
+    var cultures = new CultureInfo[]
+    {
+        new("en-US"),
+        new("bg-BG")
+    };
+    options.SupportedCultures = cultures;
+    options.SupportedUICultures = cultures;
+});
 
 string[] roles = { "Administrator", "Designer", "Contributer", "Client"};
 builder.Services.AddAuthorization(options =>
@@ -51,6 +69,12 @@ builder.Services.ConfigureApplicationCookie(options =>
 });
 
 var app = builder.Build();
+app.UseRequestLocalization(new RequestLocalizationOptions
+{
+    DefaultRequestCulture = new RequestCulture("en-US"),
+    SupportedCultures = new[] { new CultureInfo("bg-BG"), new CultureInfo("en-US") },
+    SupportedUICultures = new[] { new CultureInfo("bg-BG"), new CultureInfo("en-US") }
+});
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -68,7 +92,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+ 
 app.UseAuthentication();
 app.UseAuthorization();
 
@@ -83,11 +107,6 @@ using (IServiceScope scope = app.Services.CreateScope())
         }
     }
 }
-
-app.MapAreaControllerRoute(
-    name: "BgArea",
-    areaName: "Bg",
-    pattern: "Bg/{controller=Home}/{action=Index}/{id?}");
 
 app.MapControllerRoute(
     name: "default",

@@ -1,8 +1,14 @@
-﻿@{
-    ViewData["Title"] = "All Categories";
+﻿@inject IViewLocalizer Localizer
+@{
     string[] categories = ((string)ViewBag.Categories).Split();
+    string[] bgCategories = ((string)ViewBag.BgCategories).Split();
+    CultureInfo culture = System.Globalization.CultureInfo.CurrentCulture;
+    bool isBg = culture.Name == "bg-BG";
+
     int rows = 3;
     int cols = 4;
+
+
 }
 
 <html>
@@ -18,7 +24,7 @@
     </style>
 </head>
 <body>
-    <h2 class="text-center mb-2">@ViewData["Title"]</h2>
+    <h2 class="text-center mb-2">@Localizer["Title"]</h2>
     <hr />
     <div class="d-grid mt-4">
         @for (int i = 0; i < rows; i++)
@@ -28,11 +34,13 @@
                 {
                     if (categories.Length > j + i * cols)
                     {
-                        string category = categories[j + i * cols];
+                        string category = categories[j + i * cols], 
+                        bgCategory = bgCategories[j + i * cols];
+
                         <div class="col-@(12/cols) fs-@cols">
                             <a class="text-decoration-none" asp-controller="Home" asp-action="Category" asp-route-category="@category">
                                 <img class="rounded mw-100 h-auto" src="~/others/categories/@(category).png" alt="@category" width="600px" height="400px">
-                                <p class="text-center text-dark">@category</p>
+                                <p class="text-center text-dark">@(isBg ? bgCategory : category)</p>
                             </a>
                         </div>
                     }

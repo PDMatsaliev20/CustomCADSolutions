@@ -1,24 +1,28 @@
 ﻿@model IEnumerable<CadViewModel>
+@inject IViewLocalizer Localizer
 @{
-    ViewData["Title"] = ViewBag.Category == "All" ? "All 3D Models" : ViewBag.Category;
+    CultureInfo culture = System.Globalization.CultureInfo.CurrentCulture;
+    bool isBg = culture.Name == "bg-BG";
+    CultureInfo en = new CultureInfo("en-US");
+    double constant = 4.1;
 }
 <head>
     <script type="importmap">
         {
-          "imports": {
-              "three": "https://unpkg.com/three@v0.161.0/build/three.module.js",
-              "three/addons/": "https://unpkg.com/three@v0.161.0/examples/jsm/"
-          }
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@latest/build/three.module.js",
+                "three/addons/": "https://cdn.jsdelivr.net/npm/three@latest/examples/jsm/"
+            }
         }
     </script>
 </head>
 <body>
-    <h2 class="text-center">@ViewData["Title"]</h2>
+    <h2 class="text-center">@Localizer[ViewBag.Category]</h2>
     <hr />
 
     @if (!Model.Any())
     {
-        <p class="text-center">No models yet...</p>
+        <p class="text-center">@Localizer["No models"]</p>
     }
     else
     {
@@ -26,103 +30,25 @@
             <div class="row">
                 @foreach (CadViewModel cad in Model)
                 {
+                    <script type="module">
+                        import { loadModel } from '../../js/site.mjs';
+
+                        let id = @cad.Id, name = '@cad.Name';
+                        let widthConstant = @constant.ToString(en), heightConstant = @constant.ToString(en);
+                        let x = @cad.Coords.Item1, y = @cad.Coords.Item2, z = @cad.Coords.Item3;
+                        let axis = '@cad.SpinAxis', speed = @cad.SpinFactor.ToString(en);
+
+                        loadModel(id, name, widthConstant, heightConstant, x, y, z, axis, speed);
+                    </script>
                     <div class="col-4 mb-4">
                         <div class="card">
-                            <h4 class="card-header text-center mb-1">@cad.Name (@cad.Category)</h4>
+                            <h4 class="card-header text-center mb-1">@cad.Name (@(isBg ? cad.BgCategory : cad.Category))</h4>
                             <div class="card-body">
-                                <div id="model-@cad.Id">
-                                    <script type="module">
-                                        import * as THREE from 'three';
-                                        import { STLLoader } from 'three/addons/loaders/STLLoader.js';
-                                        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-                                        
-                                        function loadModel(cadId, cadName, constant, x, y, z, spin, axis) {
-
-                                            // Scene
-                                            const scene = new THREE.Scene();
-                                            scene.background = null;
-
-                                            // Camera
-                                            const camera = new THREE.PerspectiveCamera(90, window.innerWidth / window.innerHeight, 0.1, 1000);
-                                            camera.position.set(x, y, z);
-                                            camera.lookAt(0, 0, 0);
-
-                                            // Renderer
-                                            const renderer = new THREE.WebGLRenderer();
-                                            renderer.setSize(window.innerWidth / constant, window.innerHeight / constant);
-                                            renderer.setClearColor(0x000000, 0);
-                                            document.getElementById(`model-${cadId}`).appendChild(renderer.domElement);
-
-                                            // Lights
-                                            const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-                                            directionalLight.position.set(0, 1, 0);
-                                            scene.add(directionalLight);
-
-                                            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-                                            scene.add(ambientLight);
-
-                                            // STL Loader
-                                            const loader = new STLLoader();
-                                            loader.load(`/others/cads/${cadName}${cadId}.stl`, function (stl) {
-                                                const material = new THREE.MeshLambertMaterial();
-                                                const mesh = new THREE.Mesh(stl, material);
-                                                scene.add(mesh);
-                                                stl.center();
-                                            }, undefined, function (error) {
-
-                                                console.error(error);
-
-                                            });
-
-                                            // Animation
-                                            const controls = new OrbitControls(camera, renderer.domElement);
-                                            controls.enableDamping = true;
-                                            controls.dampingFactor = 0.25;
-
-                                            let isInteracting = false;
-                                            let resumeTimeout;
-
-                                            controls.addEventListener('change', function (event) {
-                                                isInteracting = true;
-                                                clearTimeout(resumeTimeout);
-
-                                                resumeTimeout = setTimeout(() => {
-                                                    isInteracting = false;
-                                                }, 3000);
-                                            });
-
-                                            function animate() {
-                                                requestAnimationFrame(animate);
-                                                renderer.render(scene, camera);
-                                                controls.update();
-
-                                                if (!isInteracting) {
-                                                    scene.traverse(function (object) {
-                                                        if (object instanceof THREE.Mesh && axis != ' ' && spin > 0) {
-                                                            switch (axis) {
-                                                                case 'x': object.rotation.x += spin; break;
-                                                                case 'y': object.rotation.y += spin; break;
-                                                                case 'z': object.rotation.z += spin; break;
-                                                            }
-                                                        }
-                                                    });
-                                                }
-                                            }
-                                            animate();
-
-                                            window.addEventListener('resize', function () {
-                                                const width = window.innerWidth / constant;
-                                                const height = window.innerHeight / constant;
-                                                renderer.setSize(width, height);
-                                                camera.aspect = width / height;
-                                                camera.updateProjectionMatrix();
-                                            });
-                                        }
-                                        
-                                        let x = @cad.Coords.Item1, y = @cad.Coords.Item2, z = @cad.Coords.Item3;
-                                        loadModel(@cad.Id, '@cad.Name', 4, x, y, z, @cad.SpinFactor, '@cad.SpinAxis');
-                                    </script>
-                                </div>
+                                <div id="model-@cad.Id"></div>
+                                @if (User.Identity!.IsAuthenticated)
+                                {
+                                    <a class="btn btn-secondary text-decoration-none" asp-action="AddOrder" asp-route-id="@cad.Id">Order</a>
+                                }
                             </div>
                             <ul class="card-footer fs-6 mb-0">
                                 <li class="list-group">@cad.CreatorName</li>

@@ -29,10 +29,25 @@ namespace CustomCADSolutions.Infrastructure.Data.Common.Configurations
                 "Others",
             };
 
+            string[] categoriesNamesBg = new[]
+           {
+                "Животни",
+                "Герои",
+                "Електроника",
+                "Мода",
+                "Мебели",
+                "Природа",
+                "Наука",
+                "Спорт",
+                "Играчки",
+                "Коли",
+                "Други",
+            };
+
             Category[] categories = new Category[categoriesNames.Length];
             for (int i = 0; i < categories.Length; i++)
             {
-                categories[i] = new() { Id = i + 1, Name = categoriesNames[i] };
+                categories[i] = new() { Id = i + 1, Name = categoriesNames[i], BgName = categoriesNamesBg[i] };
             }
             builder.HasData(categories);
         }

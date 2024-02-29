@@ -21,6 +21,10 @@
       "PackagePath": "staticwebassets\\js\\site.js"
     },
     {
+      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\js\\site.mjs",
+      "PackagePath": "staticwebassets\\js\\site.mjs"
+    },
+    {
       "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\lib\\bootstrap\\LICENSE",
       "PackagePath": "staticwebassets\\lib\\bootstrap"
     },
@@ -253,16 +257,20 @@
       "PackagePath": "staticwebassets\\logo.png"
     },
     {
-      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\cads\\276.stl",
-      "PackagePath": "staticwebassets\\others\\cads\\276.stl"
-    },
-    {
       "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\cads\\Airpod240.stl",
       "PackagePath": "staticwebassets\\others\\cads\\Airpod240.stl"
     },
     {
       "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\cads\\Tennis Racket269.stl",
       "PackagePath": "staticwebassets\\others\\cads\\Tennis Racket269.stl"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\cads\\Tennis racket290.stl",
+      "PackagePath": "staticwebassets\\others\\cads\\Tennis racket290.stl"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\cads\\Watch281.stl",
+      "PackagePath": "staticwebassets\\others\\cads\\Watch281.stl"
     },
     {
       "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\categories\\All.png",

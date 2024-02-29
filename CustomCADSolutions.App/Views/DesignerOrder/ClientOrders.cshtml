@@ -1,8 +1,7 @@
-﻿@using CustomCADSolutions.Infrastructure.Data.Models.Enums
-@model CadInputModel
+﻿@model CadInputModel
+@inject IViewLocalizer Localizer
 @{
     ViewData["Title"] = "All Orders " + ViewBag.HiddenOrders;
-    string[] statuses = typeof(OrderStatus).GetEnumNames();
     IEnumerable<OrderViewModel> allOrders = ViewBag.Orders;
 }
 <head>
@@ -44,7 +43,7 @@
     {
         <div class="container mt-4">
             <div class="row d-flex justify-content-evenly">
-                @foreach (string status in statuses)
+                @foreach (string status in (string[])ViewBag.Statuses)
                 {
                     var orders = allOrders.Where(o => o.Status == status);
                     <div class="col ms-3 me-3">
@@ -65,8 +64,10 @@
                                             @switch (status)
                                             {
                                                 case "Pending":
-                                                    <form asp-controller="Cad" asp-action="BeginOrder" asp-route-cadId="@order.CadId">
+                                                    <form asp-controller="Order" asp-action="BeginOrder">
                                                         <div class="row justify-content-center">
+                                                            <input asp-for="Id" value="@order.CadId" hidden />
+                                                            <input asp-for="BuyerId" value="@order.BuyerId" hidden />
                                                             <div class="col-6">
                                                                 <input type="submit" value="Begin Order" class="btn btn-warning w-100" />
                                                             </div>
@@ -75,9 +76,10 @@
                                                     break;
 
                                                 case "Begun":
-                                                    <form asp-controller="Cad" asp-action="FinishOrder" asp-route-cadId="@order.CadId"
-                                                          method="post" autocomplete="off" enctype="multipart/form-data">
+                                                    <form asp-controller="Order" asp-action="FinishOrder" method="post" autocomplete="off" enctype="multipart/form-data">
                                                         <div class="row d-flex justify-content-center">
+                                                            <input asp-for="Id" value="@order.CadId" hidden />
+                                                            <input asp-for="BuyerId" value="@order.BuyerId" hidden />
                                                             <div class="col-4">
                                                                 <input asp-for="CadFile" type="file" accept=".stl" class="custom-file-input w-100" />
                                                                 <span asp-validation-for="CadFile" class="small text-danger"></span>
@@ -90,7 +92,9 @@
                                                     break;
 
                                                 case "Finished":
-                                                    <form asp-controller="Cad" asp-action="HideOrder" asp-route-cadId="@order.CadId">
+                                                    <form asp-controller="Order" asp-action="HideOrder">
+                                                        <input asp-for="Id" value="@order.CadId" hidden />
+                                                        <input asp-for="BuyerId" value="@order.BuyerId" hidden />
                                                         <div class="row justify-content-center">
                                                             <div class="col-6">
                                                                 <input type="submit" value="Hide Order" class="btn btn-success w-100" />

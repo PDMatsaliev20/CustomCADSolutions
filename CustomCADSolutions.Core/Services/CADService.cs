@@ -70,6 +70,9 @@ namespace CustomCADSolutions.Core.Services
             cad.SpinFactor = model.SpinFactor;
             cad.CreatorId = model.CreatorId;
             cad.Creator = model.Creator;
+            cad.Orders = model.Orders
+                .Select(o => converter.ModelToOrder(o, false))
+                .ToArray();
 
             await repository.SaveChangesAsync();
         }
@@ -77,9 +80,20 @@ namespace CustomCADSolutions.Core.Services
         public async Task DeleteAsync(int id)
         {
             Cad? cad = await this.repository.GetByIdAsync<Cad>(id)
-                ?? throw new KeyNotFoundException("Cad not found");
+                ?? throw new KeyNotFoundException();
 
-            repository.Delete<Cad>(cad);
+            cad.CreatorId = default;
+            cad.Creator = default;
+            cad.CreationDate = default;
+            cad.Validated = default;
+            
+            // Cad animation info
+            cad.X = default;
+            cad.Y = default;
+            cad.Z = default;
+            cad.SpinAxis = default;
+            cad.SpinFactor = default;
+
             await repository.SaveChangesAsync();
         }
 
@@ -96,13 +110,8 @@ namespace CustomCADSolutions.Core.Services
 
         public async Task<CadModel> GetByIdAsync(int id)
         {
-            Cad? cad = await repository.GetByIdAsync<Cad>(id);
-
-            if (cad == null)
-            {
-                throw new ArgumentException($"Model with id: {id} doesn't exist");
-            }
-
+            Cad? cad = await repository.GetByIdAsync<Cad>(id)
+                ?? throw new KeyNotFoundException($"Model with id: {id} doesn't exist");
             CadModel model = converter.CadToModel(cad);
             return model;
         }

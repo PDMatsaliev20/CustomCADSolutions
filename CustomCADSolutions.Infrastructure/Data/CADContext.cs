@@ -1,5 +1,6 @@
 ﻿using CustomCADSolutions.Infrastructure.Data.Common.Configurations;
 using CustomCADSolutions.Infrastructure.Data.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,7 +15,7 @@ namespace CustomCADSolutions.Infrastructure.Data
 
         public DbSet<Order> Orders { get; set; } = null!;
         public DbSet<Cad> Cads { get; set; } = null!;
-        public DbSet<Category> Categories { get; set; }
+        public DbSet<Category> Categories { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

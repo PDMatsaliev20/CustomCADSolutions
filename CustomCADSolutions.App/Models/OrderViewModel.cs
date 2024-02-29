@@ -1,9 +1,4 @@
-﻿using CustomCADSolutions.Infrastructure.Data.Models;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using CustomCADSolutions.Infrastructure.Data.Models.Enums;
-
-namespace CustomCADSolutions.App.Models
+﻿namespace CustomCADSolutions.App.Models
 {
     public class OrderViewModel
     {

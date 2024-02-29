@@ -6,6 +6,7 @@
         public string Name { get; set; } = null!;
         public string CreatorName { get; set; } = null!;
         public string Category { get; set; } = null!;
+        public string BgCategory { get; set; } = null!;
         public IFormFile Cad { get; set; } = null!;
         public bool Validated { get; internal set; }
         public string? CreationDate { get; set; }
