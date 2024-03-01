@@ -72,7 +72,7 @@ namespace CustomCADSolutions.Core.Services
             cad.Creator = model.Creator;
             cad.Orders = model.Orders
                 .Select(o => converter.ModelToOrder(o, false))
-                .ToArray();
+                .ToList();
 
             await repository.SaveChangesAsync();
         }

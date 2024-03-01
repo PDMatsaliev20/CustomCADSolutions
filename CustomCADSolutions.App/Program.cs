@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Razor;
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
+using CustomCADSolutions.App.Resources.Shared;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,8 +30,14 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 
 // Add services to the container
 builder.Services.AddControllersWithViews()
-    .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix);
+    .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+   .AddDataAnnotationsLocalization(options =>
+   {
+       options.DataAnnotationLocalizerProvider = (type, factory) =>
+           factory.Create(typeof(SharedResources));
+   });
 
+// Add localization to the container
 builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 builder.Services.Configure<RequestLocalizationOptions>(options =>
 {
@@ -45,6 +52,7 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
     options.SupportedUICultures = cultures;
 });
 
+// Add roles to the container
 string[] roles = { "Administrator", "Designer", "Contributer", "Client"};
 builder.Services.AddAuthorization(options =>
 {
@@ -68,7 +76,10 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.LoginPath = "/Identity/Account/Login";
 });
 
+//  Build app
 var app = builder.Build();
+
+// Request Localization
 app.UseRequestLocalization(new RequestLocalizationOptions
 {
     DefaultRequestCulture = new RequestCulture("en-US"),
@@ -107,6 +118,27 @@ using (IServiceScope scope = app.Services.CreateScope())
         }
     }
 }
+
+
+app.MapAreaControllerRoute(
+    name: "AdminArea",
+    areaName: "Admin",
+    pattern: "Admin/{controller}/{action=Index}/{id?}");
+
+app.MapAreaControllerRoute(
+    name: "DesignerArea",
+    areaName: "Designer",
+    pattern: "Designer/{controller}/{action=Index}/{id?}");
+
+app.MapAreaControllerRoute(
+    name: "ContributerArea",
+    areaName: "Contributer",
+    pattern: "Contributer/{controller=Home}/{action=Index}/{id?}");
+
+app.MapAreaControllerRoute(
+    name: "ClientArea",
+    areaName: "Client",
+    pattern: "Client/{controller=Home}/{action=Index}/{id?}");
 
 app.MapControllerRoute(
     name: "default",

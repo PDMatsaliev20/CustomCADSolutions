@@ -1,8 +1,7 @@
 ﻿@model IEnumerable<CadViewModel>
 @inject IViewLocalizer Localizer
 @{
-    CultureInfo culture = System.Globalization.CultureInfo.CurrentCulture;
-    bool isBg = culture.Name == "bg-BG";
+    bool isBg = CultureInfo.CurrentCulture.Name == "bg-BG";
     CultureInfo en = new CultureInfo("en-US");
     double constant = 4.1;
 }
@@ -43,11 +42,25 @@
                     <div class="col-4 mb-4">
                         <div class="card">
                             <h4 class="card-header text-center mb-1">@cad.Name (@(isBg ? cad.BgCategory : cad.Category))</h4>
-                            <div class="card-body">
+                            <div class="card-body mb-0">
                                 <div id="model-@cad.Id"></div>
                                 @if (User.Identity!.IsAuthenticated)
                                 {
-                                    <a class="btn btn-secondary text-decoration-none" asp-action="AddOrder" asp-route-id="@cad.Id">Order</a>
+                                    if (User.IsInRole("Client") || User.IsInRole("Contributer"))
+                                    {
+                                        <form asp-area="@(User.IsInRole("Client") ? "Client" : "Contributer")" asp-controller="Order" asp-action="Order" asp-route-id="@cad.Id">
+                                            <input type="submit" value="@Localizer["Order"]" class="btn btn-secondary text-decoration-none" />
+                                        </form>
+                                    }
+                                }
+                                else
+                                {
+                                    <p class="text-center small mt-3 mb-0">
+                                        <a class="text-dark " asp-area="Identity" asp-page="/Account/Login">Log in your account</a>
+                                        or
+                                        <a class="text-dark " asp-area="Identity" asp-page="/Account/Register">create a new one</a>
+                                        to order
+                                    </p>
                                 }
                             </div>
                             <ul class="card-footer fs-6 mb-0">

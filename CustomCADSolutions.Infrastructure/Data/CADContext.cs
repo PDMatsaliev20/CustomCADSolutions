@@ -1,6 +1,5 @@
 ﻿using CustomCADSolutions.Infrastructure.Data.Common.Configurations;
 using CustomCADSolutions.Infrastructure.Data.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 

@@ -1,10 +1,6 @@
 {
   "Files": [
     {
-      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\CustomCADSolutions.App.bundle.scp.css",
-      "PackagePath": "staticwebassets\\CustomCADSolutions.App.bundle.scp.css"
-    },
-    {
       "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\css\\index.css",
       "PackagePath": "staticwebassets\\css\\index.css"
     },

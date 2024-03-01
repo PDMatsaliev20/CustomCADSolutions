@@ -141,6 +141,9 @@
   <data name="No models" xml:space="preserve">
     <value>No models yet...</value>
   </data>
+  <data name="Order" xml:space="preserve">
+    <value>Order</value>
+  </data>
   <data name="Others" xml:space="preserve">
     <value>All Others</value>
   </data>

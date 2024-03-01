@@ -1,6 +1,7 @@
 ﻿using static CustomCADSolutions.Infrastructure.Constants.DataConstants;
 using System.ComponentModel.DataAnnotations;
 using CustomCADSolutions.Infrastructure.Data.Models;
+using CustomCADSolutions.App.Resources.Shared;
 
 namespace CustomCADSolutions.App.Models
 {
@@ -9,38 +10,49 @@ namespace CustomCADSolutions.App.Models
         public int Id { get; set; }
         public string? BuyerId { get; set; }
 
-        [Required(ErrorMessage = RequiredErrorMessage)]
+        [Required(ErrorMessageResourceType = typeof(SharedResources), 
+            ErrorMessageResourceName = nameof(SharedResources.Required))]
         [StringLength(CadConstants.NameMaxLength, 
-            MinimumLength = CadConstants.NameMinLength, 
-            ErrorMessage = LengthErrorMessage)]
-        [Display(Name = CadConstants.NameDisplay)]
+            MinimumLength = CadConstants.NameMinLength,
+            ErrorMessageResourceType = typeof(SharedResources),
+            ErrorMessageResourceName = nameof(SharedResources.Length))]
+        [Display(Name = "Name", ResourceType = typeof(SharedResources))]
         public string Name { get; set; } = null!;
 
-        [Required(ErrorMessage = RequiredErrorMessage)]
-        [Display(Name = CadConstants.CategoryDisplay)]
+        [Required(ErrorMessageResourceType = typeof(SharedResources),
+            ErrorMessageResourceName = nameof(SharedResources.Required))]
+        [Display(Name = "Category", ResourceType = typeof(SharedResources))]
         public int CategoryId { get; set; } 
 
-        [Required(ErrorMessage = RequiredErrorMessage)]
-        [Display(Name = CadConstants.FileDisplay)]
+        [Required(ErrorMessageResourceType = typeof(SharedResources),
+            ErrorMessageResourceName = nameof(SharedResources.Required))]
+        [Display(Name = "File", ResourceType = typeof(SharedResources))]
         public IFormFile CadFile { get; set; } = null!;
         
-        [Range(CadConstants.XMin, CadConstants.XMax, ErrorMessage = RangeErrorMessage)]
+        [Range(CadConstants.XMin, CadConstants.XMax,
+            ErrorMessageResourceType = typeof(SharedResources),
+            ErrorMessageResourceName = nameof(SharedResources.Range))]
         public short X { get; set; }
         
-        [Range(CadConstants.YMin, CadConstants.YMax, ErrorMessage = RangeErrorMessage)]
+        [Range(CadConstants.YMin, CadConstants.YMax, 
+            ErrorMessageResourceType = typeof(SharedResources),
+            ErrorMessageResourceName = nameof(SharedResources.Range))]
         public short Y { get; set; }
 
-        [Range(CadConstants.ZMin, CadConstants.ZMax, ErrorMessage = RangeErrorMessage)]
+        [Range(CadConstants.ZMin, CadConstants.ZMax, 
+            ErrorMessageResourceType = typeof(SharedResources),
+            ErrorMessageResourceName = nameof(SharedResources.Range))]
         public short Z { get; set; }
 
-        [Range(0, CadConstants.SpinFactorMax * 100, ErrorMessage = RangeErrorMessage)]
-        [Display(Name = "Speed")]
+        [Range(0, CadConstants.SpinFactorMax * 100,
+            ErrorMessageResourceType = typeof(SharedResources),
+            ErrorMessageResourceName = nameof(SharedResources.Range))]
+        [Display(Name = "Speed", ResourceType = typeof(SharedResources))]
         public int SpinFactor { get; set; }
 
-        [RegularExpression("[xyz]?", ErrorMessage = CadConstants.SpinAxisErrorMessage)]
-        [Display(Name = "Axis of spin")]
+        [Display(Name = "Axis", ResourceType = typeof(SharedResources))]
         public char? SpinAxis { get; set; }
 
-        public Category[] Categories { get; set; } = null!;
+        public Category[]? Categories { get; set; }
     }
 }

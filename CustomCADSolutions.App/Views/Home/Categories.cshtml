@@ -2,7 +2,7 @@
 @{
     string[] categories = ((string)ViewBag.Categories).Split();
     string[] bgCategories = ((string)ViewBag.BgCategories).Split();
-    CultureInfo culture = System.Globalization.CultureInfo.CurrentCulture;
+    CultureInfo culture = CultureInfo.CurrentCulture;
     bool isBg = culture.Name == "bg-BG";
 
     int rows = 3;

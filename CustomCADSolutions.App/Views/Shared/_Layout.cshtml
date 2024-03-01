@@ -3,12 +3,13 @@
 @inject IViewLocalizer Localizer
 @{
     string currentUrl = Context.Request.Path + Context.Request.QueryString;
+    ViewData["Title"] = "CustomCADSolutions";
 }
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>CustomCADSolutions</title>
+    <title>@ViewData["Title"]</title>
 
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -26,7 +27,7 @@
                 <button class="navbar-toggler toggler fade-in" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon toggler-icon"></span>
                 </button>
-                <a class="logo fade-in me-3" asp-controller="Home" asp-action="Index">
+                <a class="logo fade-in me-3" asp-area="" asp-controller="Home" asp-action="Index">
                     <img class="mw-100 h-auto" src="~/logo.png">
                 </a>
 
@@ -34,16 +35,16 @@
                     <ul class="fade-in navbar-nav">
                         <li class="nav-item dropdown">
                             <button class="dropdown-toggle bg-transparent border-0 nav-link text-dark" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Language
+                                @Localizer["Language"]
                             </button>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <a class="dropdown-item" asp-controller="Home" asp-action="SetLanguage" asp-route-culture="bg-BG" asp-route-returnUrl="@currentUrl">
+                                    <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="SetLanguage" asp-route-culture="bg-BG" asp-route-returnUrl="@currentUrl">
                                         <img class="w-100 h-auto" src="~/others/images/flags/4x3/bg.svg" alt="Bulgarian">
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" asp-controller="Home" asp-action="SetLanguage" asp-route-culture="en-US" asp-route-returnUrl="@currentUrl">
+                                    <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="SetLanguage" asp-route-culture="en-US" asp-route-returnUrl="@currentUrl">
                                         <img class="w-100 h-auto" src="~/others/images/flags/4x3/us.svg" alt="English">
                                     </a>
                                 </li>
@@ -63,26 +64,25 @@
                             }
                             else if (User.IsInRole("Designer"))
                             {
-                                <li class="nav-item"><a class="nav-link text-dark" asp-controller="Order" asp-action="All" role="button">All Orders</a></li>
-                                <li class="nav-item"><a class="nav-link text-dark" asp-controller="Cad" asp-action="All" role="button">Submitted 3D Models</a></li>
-                                <li class="nav-item"><a class="nav-link text-dark" asp-controller="Cad" asp-action="Index" role="button">Your 3D Models</a></li>
+                                <li class="nav-item"><a class="nav-link text-dark" asp-area="Designer" asp-controller="Order" asp-action="All" role="button">@Localizer["AllOrders"]</a></li>
+                                <li class="nav-item"><a class="nav-link text-dark" asp-area="Designer" asp-controller="Cad" asp-action="All" role="button">@Localizer["AllCads"]</a></li>
                             }
                             else if (User.IsInRole("Contributer"))
                             {
-                                <li class="nav-item"><a class="nav-link text-dark" asp-controller="Home" asp-action="Categories" role="button">Categories</a></li>
-                                <li class="nav-item"><a class="nav-link text-dark" asp-controller="Order" asp-action="Index" role="button">Your Orders</a></li>
-                                <li class="nav-item"><a class="nav-link text-dark" asp-controller="Cad" asp-action="Index" role="button">Your 3D Models</a></li>
+                                <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Categories" role="button">@Localizer["Explore"]</a></li>
+                                <li class="nav-item"><a class="nav-link text-dark" asp-area="Contributer" asp-controller="Order" asp-action="Index" role="button">@Localizer["UrOrders"]</a></li>
+                                <li class="nav-item"><a class="nav-link text-dark" asp-area="Contributer" asp-controller="Cad" asp-action="Index" role="button">@Localizer["UrCads"]</a></li>
                             }
                             else if (User.IsInRole("Client"))
                             {
-                                <li class="nav-item"><a class="nav-link text-dark" asp-controller="Home" asp-action="Categories" role="button">Categories</a></li>
-                                <li class="nav-item"><a class="nav-link text-dark" asp-controller="Order" asp-action="Index" role="button">Your Orders</a></li>
+                                <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Categories" role="button">@Localizer["Explore"]</a></li>
+                                <li class="nav-item"><a class="nav-link text-dark" asp-area="Client" asp-controller="Order" asp-action="Index" role="button">@Localizer["UrOrders"]</a></li>
                             }
                         }
                         else
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Home" asp-action="Categories" role="button">Explore</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Categories" role="button">@Localizer["Explore"]</a>
                             </li>
                         }
                     </ul>
@@ -103,10 +103,10 @@
 
     <footer class="footer position-relative w-100">
         <div class="d-flex align-items-center justify-content-evenly">
-            <p class="fw-bold"><a class="text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy Policy</a></p>
-            <p>&copy; @DateTime.Now.Year - CustomCADSolutions</p>
+            <p class="fw-bold"><a class="text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">@Localizer["Privacy"]</a></p>
+            <p>&copy; 2023-@DateTime.Now.Year - CustomCADSolutions</p>
             <p class="rounded-2">
-                <span>About us:</span>
+                <span>@Localizer["AboutUs"]</span>
                 <a href="https://www.instagram.com/customcadsolutions/" class="text-black"><i class="ms-1 fa fa-instagram"></i></a>
                 <a href="https://twitter.com/customcads/" class="text-black"><i class="ms-1 fa fa-twitter"></i></a>
             </p>

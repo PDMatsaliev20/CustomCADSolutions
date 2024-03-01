@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using CustomCADSolutions.Infrastructure.Data.Models;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
+using CustomCADSolutions.App.Resources.Shared;
 
 namespace CustomCADSolutions.App.Models
 {
@@ -9,22 +10,27 @@ namespace CustomCADSolutions.App.Models
     {
         public int CadId { get; set; }
 
-        [Required(ErrorMessage = RequiredErrorMessage)]
-        [StringLength(CadConstants.NameMaxLength, 
-            MinimumLength = CadConstants.NameMinLength, 
-            ErrorMessage = LengthErrorMessage)]
-        [Display(Name = OrderConstants.NameDisplay)]
+        [Required(ErrorMessageResourceType = typeof(SharedResources),
+            ErrorMessageResourceName = nameof(SharedResources.Required))]
+        [StringLength(CadConstants.NameMaxLength,
+            MinimumLength = CadConstants.NameMinLength,
+            ErrorMessageResourceType = typeof(SharedResources),
+            ErrorMessageResourceName = nameof(SharedResources.Length))]
+        [Display(Name = "Name", ResourceType = typeof(SharedResources))]
         public string Name { get; set; } = null!;
 
-        [Required(ErrorMessage = RequiredErrorMessage)]
-        [Display(Name = OrderConstants.CategoryDisplay)]
-        public int CategoryId { get; set; } 
+        [Required(ErrorMessageResourceType = typeof(SharedResources),
+            ErrorMessageResourceName = nameof(SharedResources.Required))]
+        [Display(Name = "Category", ResourceType = typeof(SharedResources))]
+        public int CategoryId { get; set; }
 
-        [Required(ErrorMessage = RequiredErrorMessage)]
-        [StringLength(OrderConstants.DescriptionMaxLength, 
-            MinimumLength = OrderConstants.DescriptionMinLength, 
-            ErrorMessage = LengthErrorMessage)]
-        [Display(Name = OrderConstants.DescriptionDisplay)]
+        [Required(ErrorMessageResourceType = typeof(SharedResources),
+            ErrorMessageResourceName = nameof(SharedResources.Required))]
+        [StringLength(OrderConstants.DescriptionMaxLength,
+            MinimumLength = OrderConstants.DescriptionMinLength,
+            ErrorMessageResourceType = typeof(SharedResources),
+            ErrorMessageResourceName = nameof(SharedResources.Length))]
+        [Display(Name = "Description", ResourceType = typeof(SharedResources))]
         public string Description { get; set; } = null!;
 
         public DateTime OrderDate { get; set; }

@@ -1,17 +1,23 @@
 ﻿@page
+@using System.Globalization
 @model RegisterModel
 @{
-    ViewData["Title"] = "Register";
-    ViewBag.DuplicateEmail = ((bool?)ViewData["IsEmailUnique"] ?? true) ? null : $"Email {Model.Input.Email} is already taken.";
+    bool isBg = CultureInfo.CurrentCulture.Name == "bg-BG";
+    if ((bool?)ViewData["IsEmailUnique"] ?? false)
+    {
+        ViewBag.DuplicateEmail = isBg ?
+            $"Имейлът {Model.Input.Email} вече е зает." :
+            $"Email {Model.Input.Email} is already taken.";
+    }
 }
 
-<h1 class="text-center">@ViewData["Title"]</h1>
+<h1 class="text-center">@(isBg ? "Регистрирай се" : "Register")</h1>
 <br />
 
 <div class="row d-flex justify-content-center align-items-center">
     <div class="col-md-6">
         <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <h2 class="text-center">Create a new account.</h2>
+            <h2 class="text-center">@(isBg ? "Създай нов акаунт." : "Create a new account.")</h2>
             <hr />
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-floating">
@@ -34,7 +40,7 @@
                 <label asp-for="Input.ConfirmPassword"></label>
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
-            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">@(isBg ? "Регистрирай се" : "Register")</button>
         </form>
     </div>
 </div>

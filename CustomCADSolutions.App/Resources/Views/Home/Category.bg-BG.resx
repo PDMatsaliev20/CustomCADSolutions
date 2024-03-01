@@ -141,6 +141,9 @@
   <data name="No models" xml:space="preserve">
     <value>Все още няма модели...</value>
   </data>
+  <data name="Order" xml:space="preserve">
+    <value>Поръчай</value>
+  </data>
   <data name="Others" xml:space="preserve">
     <value>Всички Други</value>
   </data>

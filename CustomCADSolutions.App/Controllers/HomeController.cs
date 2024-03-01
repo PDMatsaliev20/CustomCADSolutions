@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using System.Globalization;
 using System.Security.Claims;
 
 namespace CustomCADSolutions.App.Controllers
@@ -39,7 +38,7 @@ namespace CustomCADSolutions.App.Controllers
         {
             if (User.IsInRole("Administrator"))
             {
-                return RedirectToAction("Index", "User");
+                return RedirectToAction("Index", "User", new { area = "Admin" });
             }
 
             if (User.IsInRole("Designer"))
@@ -113,40 +112,13 @@ namespace CustomCADSolutions.App.Controllers
             return View(gallery);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> AddOrder(int id)
-        {
-            CadModel cad = await cadService.GetByIdAsync(id);
-            if (!ModelState.IsValid)
-            {
-                logger.LogError("Invalid Order");
-                return RedirectToAction(nameof(Categories));
-            }
-
-            cad.Orders.Add(new()
-            {
-                Description = $"3D Model from the gallery with id: {cad.Id}",
-                OrderDate = DateTime.Now,
-                Status = OrderStatus.Finished,
-                ShouldShow = true,
-                CadId = cad.Id,
-                BuyerId = GetUserId(),
-            });
-            await cadService.EditAsync(cad);
-
-            logger.LogInformation("Ordered 3d model");
-            return RedirectToAction(nameof(Index), "Order");
-        }
-
         public IActionResult SetLanguage(string culture, string returnUrl)
         {
-            // Set cookie to store language preference
             Response.Cookies.Append(
                 CookieRequestCultureProvider.DefaultCookieName,
                 CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
                 new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) });
 
-            // Redirect back to the previous page or the specified returnUrl
             return LocalRedirect(returnUrl);
         }
 

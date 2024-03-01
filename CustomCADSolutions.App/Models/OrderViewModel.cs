@@ -10,6 +10,8 @@
 
         public string Category { get; set; } = null!;
 
+        public string BgCategory { get; set; } = null!;
+
         public string Description { get; set; } = null!;
 
         public string OrderDate { get; set; } = null!;
