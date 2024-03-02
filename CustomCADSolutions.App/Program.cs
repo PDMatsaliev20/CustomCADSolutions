@@ -140,9 +140,15 @@ app.MapAreaControllerRoute(
     areaName: "Client",
     pattern: "Client/{controller=Home}/{action=Index}/{id?}");
 
+app.MapAreaControllerRoute(
+    name: "IdentityArea",
+    areaName: "Identity",
+    pattern: "Identity/{controller=Account}/{action=Register}");
+
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-app.MapRazorPages();
+
 
 app.Run();

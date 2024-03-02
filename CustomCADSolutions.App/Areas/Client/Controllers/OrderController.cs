@@ -256,7 +256,7 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
         {
             string name = (await cadService.GetByIdAsync(id)).Name;
             string filePath = GetCadPath(name, id);
-            return PhysicalFile(filePath, "application/sla", name);
+            return PhysicalFile(filePath, "application/sla", name + ".stl");
         }
 
         private static async Task UploadFileAsync(IFormFile cad, int cadId, string cadName, string extension = ".stl")

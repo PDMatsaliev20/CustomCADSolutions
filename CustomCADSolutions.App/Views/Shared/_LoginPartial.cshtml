@@ -6,10 +6,10 @@
 @if (SignInManager.IsSignedIn(User))
 {
     <li class="nav-item me-2">
-        <a  class="nav-link small text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@User.Identity?.Name</a>
+        <p class="nav-link small text-dark mb-0" title="Manage">@User.Identity?.Name</p>
     </li>
     <li class="nav-item">
-        <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+        <form  class="form-inline" asp-area="Identity" asp-controller="Account" asp-action="Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
             <button  type="submit" class="nav-link btn btn-link text-dark">@Localizer["Logout"]</button>
         </form>
     </li>
@@ -17,9 +17,9 @@
 else
 {
     <li class="nav-item">
-        <a class="nav-link small text-dark" asp-area="Identity" asp-page="/Account/Login">@Localizer["Login"]</a>
+        <a class="nav-link small text-dark" asp-area="Identity" asp-controller="Account" asp-action="Login">@Localizer["Login"]</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link small text-dark" asp-area="Identity" asp-page="/Account/Register">@Localizer["Register"]</a>
+        <a class="nav-link small text-dark" asp-area="Identity" asp-controller="Account" asp-action="Register">@Localizer["Register"]</a>
     </li>
 }
