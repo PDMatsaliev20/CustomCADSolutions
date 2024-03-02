@@ -77,6 +77,34 @@ namespace CustomCADSolutions.Core.Services
             await repository.SaveChangesAsync();
         }
 
+        public async Task EditRangeAsync(params CadModel[] models)
+        {
+            CadModel[] newModels = models;
+            foreach (CadModel model in models)
+            {
+                Cad cad = await repository.All<Cad>()
+                .FirstOrDefaultAsync(cad => cad.Id == model.Id)
+                ?? throw new ArgumentException("Model doesn't exist!");
+
+                cad.CategoryId = model.CategoryId;
+                cad.Name = model.Name;
+                cad.Validated = model.Validated;
+                cad.X = model.Coords.Item1;
+                cad.Y = model.Coords.Item2;
+                cad.Z = model.Coords.Item3;
+                cad.CreationDate = model.CreationDate;
+                cad.SpinAxis = model.SpinAxis;
+                cad.SpinFactor = model.SpinFactor;
+                cad.CreatorId = model.CreatorId;
+                cad.Creator = model.Creator;
+                cad.Orders = model.Orders
+                    .Select(o => converter.ModelToOrder(o, false))
+                    .ToList();
+            }
+
+            await repository.SaveChangesAsync();
+        }
+
         public async Task DeleteAsync(int id)
         {
             Cad? cad = await this.repository.GetByIdAsync<Cad>(id)

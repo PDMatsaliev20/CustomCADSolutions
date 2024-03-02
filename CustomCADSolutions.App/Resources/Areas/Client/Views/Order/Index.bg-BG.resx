@@ -123,11 +123,20 @@
   <data name="Delete" xml:space="preserve">
     <value>Изтрий</value>
   </data>
+  <data name="DeleteWarning" xml:space="preserve">
+    <value>Сигурни ли сте, че искате да изтриете тази поръчка: {0}?</value>
+  </data>
   <data name="Details" xml:space="preserve">
     <value>Детайли</value>
   </data>
   <data name="Edit" xml:space="preserve">
     <value>Редактирай</value>
+  </data>
+  <data name="Hide" xml:space="preserve">
+    <value>Скрий</value>
+  </data>
+  <data name="HideWarning" xml:space="preserve">
+    <value>Сиугрни ли сте, че искате да скриете тази поръчка: {0}?</value>
   </data>
   <data name="NoOrders" xml:space="preserve">
     <value>Все още няма поръчки!</value>

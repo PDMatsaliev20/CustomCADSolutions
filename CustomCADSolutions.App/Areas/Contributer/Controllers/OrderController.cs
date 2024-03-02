@@ -95,6 +95,7 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
             return View(orders);
         }
 
+
         [HttpPost]
         public async Task<IActionResult> Order(int id)
         {
@@ -110,11 +111,12 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
                 Description = $"3D Model from the gallery with id: {cad.Id}",
                 OrderDate = DateTime.Now,
                 Status = OrderStatus.Finished,
-                ShouldShow = true,
+                ShouldShow = false,
+                CadId = id,
+                BuyerId = GetUserId(),
                 Cad = cad,
                 Buyer = await userManager.FindByIdAsync(GetUserId()),
             });
-            await cadService.EditAsync(cad);
 
             logger.LogInformation("Ordered 3d model");
             return RedirectToAction(nameof(Index));
@@ -167,6 +169,11 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
             {
                 OrderModel model = await orderService.GetByIdAsync(cadId, GetUserId());
 
+                if (model.Status != OrderStatus.Pending)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+
                 OrderInputModel input = new()
                 {
                     Categories = await GetCategoriesAsync(),
@@ -201,6 +208,10 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
             }
 
             OrderModel order = await orderService.GetByIdAsync(cadId, buyerId);
+            if (order.Status != OrderStatus.Pending)
+            {
+                return RedirectToAction(nameof(Index));
+            }
 
             order.Cad.Name = input.Name;
             order.Description = input.Description;

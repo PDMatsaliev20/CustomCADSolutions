@@ -1,9 +1,9 @@
-﻿@model IEnumerable<OrderViewModel>
+﻿@model CadInputModel
 @inject IViewLocalizer Localizer
 @{
     bool isBg = CultureInfo.CurrentCulture.Name == "bg-BG";
+    IEnumerable<OrderViewModel> orders = ViewBag.Orders;
 }
-
 
 <h2 class="text-center mb-2">@Localizer["Title", User.Identity!.Name!]</h2>
 <hr />
@@ -12,7 +12,7 @@
     <a class="btn btn-primary" asp-area="Client" asp-controller="Order" asp-action="Add">@Localizer["Add"]</a>
 </div>
 
-@if (!Model.Any())
+@if (!orders.Any())
 {
     <p class="text-center">@Localizer["NoOrders"]</p>
 }
@@ -20,7 +20,7 @@ else
 {
     <div class="container mt-4">
         <div class="row">
-            @foreach (OrderViewModel order in Model)
+            @foreach (OrderViewModel order in orders)
             {
                 string status = order.Status, statusBg = status switch { "Pending" => "Предстояща", "Begun" => "Започната", "Finished" => "Завършена" };
                 <div class="col-4">
@@ -34,17 +34,39 @@ else
                             <p class="card-text fs-5">@order.Description</p>
                             <div class="d-grid gap-2">
                                 <div class="d-flex justify-content-evenly mb-3 gap-2">
-                                    @if (order.Status == "Finished")
+                                    @switch (order.Status)
                                     {
-                                        <a class="col btn btn-secondary" asp-area="Client" asp-controller="Order" asp-action="Details" asp-route-id="@order.CadId">@Localizer["Details"]</a>
+                                        case "Pending":
+                                            <a asp-area="Client" asp-controller="Order" asp-action="Edit" asp-route-cadId="@order.CadId" class="col btn btn-warning">@Localizer["Edit"]</a>
+                                            <form asp-area="Client" asp-controller="Order" asp-action="Delete" asp-route-cadId="@order.CadId" asp-route-buyerId="@order.BuyerId" class="col">
+                                                <div class="d-grid gap-2">
+                                                    <input type="submit" value="@Localizer["Delete"]" class="btn btn-danger"
+                                                           onclick="return confirm('Are you sure you want to delete this order: @order.Name?')" />
+                                                </div>
+                                            </form>
+                                            break;
+
+                                        case "Begun":
+                                            <form asp-area="Client" asp-controller="Order" asp-action="Delete" class="col">
+                                                <input asp-for="Id" value="@order.CadId" hidden />
+                                                <input asp-for="BuyerId" value="@order.BuyerId" hidden />
+                                                <div class="d-grid gap-2">
+                                                    <input type="submit" value="@Localizer["Delete"]" class="btn btn-danger"
+                                                           onclick="return confirm('@Localizer["DeleteWarning", order.Name]" />
+                                                </div>
+                                            </form>
+                                            break;
+
+                                        case "Finished":
+                                            <a class="col btn btn-secondary" asp-area="Client" asp-controller="Order" asp-action="Details" asp-route-id="@order.CadId">@Localizer["Details"]</a>
+                                            <form asp-area="Client" asp-controller="Order" asp-action="Hide" asp-route-cadId="@order.CadId" asp-route-buyerId="@order.BuyerId" class="col">
+                                                <div class="d-grid gap-2">
+                                                    <input type="submit" value="@Localizer["Hide"]" class="btn btn-danger"
+                                                           onclick="return confirm('@Localizer["HideWarning", order.Name]')" />
+                                                </div>
+                                            </form>
+                                            break;
                                     }
-                                    <a asp-area="Client" asp-controller="Order" asp-action="Edit" asp-route-cadId="@order.CadId" class="col btn btn-warning">@Localizer["Edit"]</a>
-                                    <form asp-area="Client" asp-controller="Order" asp-action="Delete" asp-route-cadId="@order.CadId" asp-route-buyerId="@order.BuyerId" class="col">
-                                        <div class="d-grid gap-2">
-                                            <input type="submit" value="@Localizer["Delete"]" class="btn btn-danger"
-                                                   onclick="return confirm('Are you sure you want to delete this order: @order.Name?')" />
-                                        </div>
-                                    </form>
                                 </div>
                             </div>
                         </div>

@@ -1,5 +1,8 @@
-﻿@model IEnumerable<CadViewModel>
+﻿@using CustomCADSolutions.Core.Contracts
+@model IEnumerable<CadViewModel>
 @inject IViewLocalizer Localizer
+@inject IOrderService OrderService
+@inject UserManager<IdentityUser> UserManager
 @{
     bool isBg = CultureInfo.CurrentCulture.Name == "bg-BG";
     CultureInfo en = new CultureInfo("en-US");
@@ -46,20 +49,40 @@
                                 <div id="model-@cad.Id"></div>
                                 @if (User.Identity!.IsAuthenticated)
                                 {
-                                    if (User.IsInRole("Client") || User.IsInRole("Contributer"))
+                                    string buyerId = (await UserManager.FindByNameAsync(User.Identity!.Name!)).Id;
+
+                                    bool alreadyOrdered = default;
+                                    try 
+                                    {
+                                        var order = await OrderService.GetByIdAsync(cad.Id, buyerId);
+                                        alreadyOrdered = true;
+                                    }
+                                    catch 
+                                    {
+                                        alreadyOrdered = false; 
+                                    }
+
+                                    bool isClient = User.IsInRole("Client"),
+                                        isContributer = User.IsInRole("Contributer");
+
+                                    if ((isClient || isContributer) && !alreadyOrdered)
                                     {
                                         <form asp-area="@(User.IsInRole("Client") ? "Client" : "Contributer")" asp-controller="Order" asp-action="Order" asp-route-id="@cad.Id">
                                             <input type="submit" value="@Localizer["Order"]" class="btn btn-secondary text-decoration-none" />
                                         </form>
                                     }
+                                    else
+                                    {
+                                        
+                                    }
                                 }
                                 else
                                 {
                                     <p class="text-center small mt-3 mb-0">
-                                        <a class="text-dark " asp-area="Identity" asp-page="/Account/Login">Log in your account</a>
-                                        or
-                                        <a class="text-dark " asp-area="Identity" asp-page="/Account/Register">create a new one</a>
-                                        to order
+                                        <a class="text-dark " asp-area="Identity" asp-page="/Account/Login">@Localizer["Login"]</a>
+                                        @Localizer["Or"]
+                                        <a class="text-dark " asp-area="Identity" asp-page="/Account/Register">@Localizer["Register"]</a>
+                                        @Localizer["ToOrder"]
                                     </p>
                                 }
                             </div>

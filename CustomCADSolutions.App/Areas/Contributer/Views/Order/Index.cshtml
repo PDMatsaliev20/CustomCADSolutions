@@ -34,17 +34,31 @@ else
                             <p class="card-text fs-5">@order.Description</p>
                             <div class="d-grid gap-2">
                                 <div class="d-flex justify-content-evenly mb-3 gap-2">
-                                    @if (order.Status == "Finished")
+                                    @switch (order.Status)
                                     {
-                                        <a class="col btn btn-secondary" asp-area="Contributer" asp-controller="Order" asp-action="Details" asp-route-id="@order.CadId">@Localizer["Details"]</a>
+                                        case "Pending":
+                                            <a asp-area="Contributer" asp-controller="Order" asp-action="Edit" asp-route-cadId="@order.CadId" class="col btn btn-warning">@Localizer["Edit"]</a>
+                                            <form asp-area="Contributer" asp-controller="Order" asp-action="Delete" asp-route-cadId="@order.CadId" asp-route-buyerId="@order.BuyerId" class="col">
+                                                <div class="d-grid gap-2">
+                                                    <input type="submit" value="@Localizer["Delete"]" class="btn btn-danger"
+                                                           onclick="return confirm('Are you sure you want to delete this order: @order.Name?')" />
+                                                </div>
+                                            </form>
+                                            break;
+                                        
+                                        case "Begun":
+                                            <form asp-area="Contributer" asp-controller="Order" asp-action="Delete" asp-route-cadId="@order.CadId" asp-route-buyerId="@order.BuyerId" class="col">
+                                                <div class="d-grid gap-2">
+                                                    <input type="submit" value="@Localizer["Delete"]" class="btn btn-danger"
+                                                           onclick="return confirm('Are you sure you want to delete this order: @order.Name?')" />
+                                                </div>
+                                            </form>
+                                            break;
+                                        
+                                        case "Finished": 
+                                            <a class="col btn btn-secondary" asp-area="Contributer" asp-controller="Order" asp-action="Details" asp-route-id="@order.CadId">@Localizer["Details"]</a>
+                                        break;
                                     }
-                                    <a asp-area="Contributer" asp-controller="Order" asp-action="Edit" asp-route-cadId="@order.CadId" class="col btn btn-warning">@Localizer["Edit"]</a>
-                                    <form asp-area="Contributer" asp-controller="Order" asp-action="Delete" asp-route-cadId="@order.CadId" asp-route-buyerId="@order.BuyerId" class="col">
-                                        <div class="d-grid gap-2">
-                                            <input type="submit" value="@Localizer["Delete"]" class="btn btn-danger"
-                                                   onclick="return confirm('Are you sure you want to delete this order: @order.Name?')" />
-                                        </div>
-                                    </form>
                                 </div>
                             </div>
                         </div>

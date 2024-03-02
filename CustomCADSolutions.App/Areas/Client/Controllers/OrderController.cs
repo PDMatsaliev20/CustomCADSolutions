@@ -91,7 +91,8 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
                     OrderDate = m.OrderDate.ToString("dd/MM/yyyy HH:mm:ss"),
                 });
 
-            return View(orders);
+            ViewBag.Orders = orders;
+            return View(new CadInputModel());
         }
 
 
@@ -110,11 +111,12 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
                 Description = $"3D Model from the gallery with id: {cad.Id}",
                 OrderDate = DateTime.Now,
                 Status = OrderStatus.Finished,
-                ShouldShow = true,
+                ShouldShow = false,
+                CadId = id,
+                BuyerId = GetUserId(),
                 Cad = cad,
                 Buyer = await userManager.FindByIdAsync(GetUserId()),
             });
-            await cadService.EditAsync(cad);
 
             logger.LogInformation("Ordered 3d model");
             return RedirectToAction(nameof(Index));
@@ -167,6 +169,11 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
             {
                 OrderModel model = await orderService.GetByIdAsync(cadId, GetUserId());
 
+                if (model.Status != OrderStatus.Pending)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+
                 OrderInputModel input = new()
                 {
                     Categories = await GetCategoriesAsync(),
@@ -201,6 +208,10 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
             }
 
             OrderModel order = await orderService.GetByIdAsync(cadId, buyerId);
+            if (order.Status != OrderStatus.Pending)
+            {
+                return RedirectToAction(nameof(Index));
+            }
 
             order.Cad.Name = input.Name;
             order.Description = input.Description;
@@ -220,6 +231,22 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
             }
             
             await orderService.DeleteAsync(cadId, buyerId);
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Hide(CadInputModel input)
+        {
+            OrderModel? model = await orderService.GetByIdAsync(input.Id, input.BuyerId!);
+
+            if (model == null)
+            {
+                return BadRequest();
+            }
+
+            model.ShouldShow = false;
+            await orderService.EditAsync(model);
 
             return RedirectToAction(nameof(Index));
         }

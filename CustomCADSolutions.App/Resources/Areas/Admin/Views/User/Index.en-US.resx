@@ -127,7 +127,7 @@
     <value>Edit User</value>
   </data>
   <data name="Id" xml:space="preserve">
-    <value>User Id</value>
+    <value>User Identification</value>
   </data>
   <data name="Name" xml:space="preserve">
     <value>User Name</value>

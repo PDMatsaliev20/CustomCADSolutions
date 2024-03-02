@@ -68,7 +68,7 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> BeginOrder(CadInputModel input)
+        public async Task<IActionResult> Begin(CadInputModel input)
         {
             OrderModel? model = await orderService.GetByIdAsync(input.Id, input.BuyerId!);
             if (model == null)
@@ -83,7 +83,7 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> FinishOrder(CadInputModel input)
+        public async Task<IActionResult> Finish(CadInputModel input)
         {
             OrderModel? model = await orderService.GetByIdAsync(input.Id, input.BuyerId!);
 
@@ -105,7 +105,7 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> HideOrder(CadInputModel input)
+        public async Task<IActionResult> Hide(CadInputModel input)
         {
             OrderModel? model = await orderService.GetByIdAsync(input.Id, input.BuyerId!);
 

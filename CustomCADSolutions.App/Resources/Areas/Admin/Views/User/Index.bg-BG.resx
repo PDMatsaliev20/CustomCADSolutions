@@ -127,13 +127,13 @@
     <value>Редактирай Потребител</value>
   </data>
   <data name="Id" xml:space="preserve">
-    <value>Id</value>
+    <value>Потр. Идентификатор</value>
   </data>
   <data name="Name" xml:space="preserve">
-    <value>Име</value>
+    <value>Потр. Име</value>
   </data>
   <data name="Role" xml:space="preserve">
-    <value>Роля</value>
+    <value>Потр. Роля</value>
   </data>
   <data name="Warning" xml:space="preserve">
     <value>Сигурни ли Сте, че искате да изтриете потребителя:</value>

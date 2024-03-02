@@ -135,11 +135,17 @@
   <data name="Furniture" xml:space="preserve">
     <value>All Furniture</value>
   </data>
+  <data name="Login" xml:space="preserve">
+    <value>Log in your account</value>
+  </data>
   <data name="Nature" xml:space="preserve">
     <value>All Nature</value>
   </data>
   <data name="No models" xml:space="preserve">
     <value>No models yet...</value>
+  </data>
+  <data name="Or" xml:space="preserve">
+    <value>or</value>
   </data>
   <data name="Order" xml:space="preserve">
     <value>Order</value>
@@ -147,11 +153,17 @@
   <data name="Others" xml:space="preserve">
     <value>All Others</value>
   </data>
+  <data name="Register" xml:space="preserve">
+    <value>create a new one</value>
+  </data>
   <data name="Science" xml:space="preserve">
     <value>All Science</value>
   </data>
   <data name="Sports" xml:space="preserve">
     <value>All Sports</value>
+  </data>
+  <data name="ToOrder" xml:space="preserve">
+    <value>to order</value>
   </data>
   <data name="Toys" xml:space="preserve">
     <value>All Toys</value>

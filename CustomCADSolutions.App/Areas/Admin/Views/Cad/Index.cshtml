@@ -1,0 +1,62 @@
+﻿@model CadViewModel[]
+@inject IViewLocalizer Localizer
+@{
+    double constant = 4;
+    CultureInfo en = new("en-US"), bg = new("bg-BG");
+    bool isBg = CultureInfo.CurrentCulture.Name == bg.Name;
+}
+<head>
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@latest/build/three.module.js",
+                "three/addons/": "https://cdn.jsdelivr.net/npm/three@latest/examples/jsm/"
+            }
+        }
+    </script>
+</head>
+<body>
+    <h2 class="text-center">@Localizer["Title"]</h2>
+    <hr />
+
+    <div class="container">
+        @if (Model.Any())
+        {
+            <div class="row d-flex">
+                @foreach (CadViewModel cad in Model)
+                {
+                    <script type="module">
+                        import { loadModel } from '../../js/site.mjs';
+
+                        let id = @cad.Id, name = '@cad.Name';
+                        let width = @constant.ToString(en), height = @constant.ToString(en);
+                        let x = @cad.Coords.Item1, y = @cad.Coords.Item2, z = @cad.Coords.Item3;
+                        let axis = '@cad.SpinAxis', speed = @cad.SpinFactor.ToString(en);
+
+                        loadModel(id, name, width, height, x, y, z, axis, speed);
+                    </script>
+
+                    <div class="col-4 mt-4">
+                        <div class="card">
+                            <h4 class="card-header text-center mb-1">@cad.Name (@(isBg ? cad.BgCategory : cad.Category))</h4>
+                            <div class="card-body">
+                                <div id="model-@cad.Id"></div>                            
+                                <div>
+
+                                </div>
+                            </div>
+                            <div class="card-footer d-flex justify-content-between fs-6">
+                                <span>@cad.CreatorName</span>
+                                <span>@cad.CreationDate</span>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <p>@Localizer["NoCads"]</p>
+        }
+    </div>
+</body>

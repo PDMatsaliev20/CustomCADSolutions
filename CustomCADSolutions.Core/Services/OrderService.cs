@@ -23,7 +23,14 @@ namespace CustomCADSolutions.Core.Services
             {
                 throw new NullReferenceException();
             }
-            Order order = converter.ModelToOrder(model);
+
+            Order order = converter.ModelToOrder(model, false);
+            Cad? cad = await repository.GetByIdAsync<Cad>(model.CadId);
+            if (cad != null)
+            {
+                order.Cad = cad;
+            }
+            else order.Cad = converter.ModelToCad(model.Cad!);
 
             await repository.AddAsync<Order>(order);
             await repository.SaveChangesAsync();

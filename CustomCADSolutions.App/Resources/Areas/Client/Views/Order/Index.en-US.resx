@@ -123,11 +123,20 @@
   <data name="Delete" xml:space="preserve">
     <value>Delete</value>
   </data>
+  <data name="DeleteWarning" xml:space="preserve">
+    <value>Are you sure you want to delete this order: {0}?</value>
+  </data>
   <data name="Details" xml:space="preserve">
     <value>Details</value>
   </data>
   <data name="Edit" xml:space="preserve">
     <value>Edit</value>
+  </data>
+  <data name="Hide" xml:space="preserve">
+    <value>Hide</value>
+  </data>
+  <data name="HideWarning" xml:space="preserve">
+    <value>Are you sure you want to hide this order: {0}?</value>
   </data>
   <data name="NoOrders" xml:space="preserve">
     <value>No orders yet!</value>

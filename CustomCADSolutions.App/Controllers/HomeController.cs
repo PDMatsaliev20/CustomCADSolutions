@@ -47,21 +47,14 @@ namespace CustomCADSolutions.App.Controllers
             }
 
             logger.LogInformation("Entered Home Page");
-            CadModel? model = (await cadService.GetAllAsync())
-                .FirstOrDefault(c => c.Name.ToUpper() == "WATCH");
-
-            if (model == null)
-            {
-                return BadRequest();
-            }
 
             CadViewModel view = new()
             {
-                Id = model.Id,
-                Name = model.Name,
-                Coords = model.Coords,
-                SpinAxis = model.SpinAxis,
-                SpinFactor = model.SpinFactor,
+                Id = 0,
+                Name = "Watch",
+                Coords = (40, 14, 33),
+                SpinAxis = 'y',
+                SpinFactor = 0.01,
             };
             return View(view);
         }

@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "yJlLsF8sdof0EJ+t2MEQY84ANZwtNdJQiWrfOmRF6n8=",
+  "Hash": "1StXoxgQ5MVQioe3fRF9G+Q3Rbp8zpCyUzmfwtJLmPM=",
   "Source": "CustomCADSolutions.App",
   "BasePath": "_content/CustomCADSolutions.App",
   "Mode": "Default",
@@ -2411,12 +2411,12 @@
       "OriginalItemSpec": "wwwroot\\others\\cads\\Tennis racket290.stl"
     },
     {
-      "Identity": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\cads\\Watch281.stl",
+      "Identity": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\cads\\Watch0.stl",
       "SourceId": "CustomCADSolutions.App",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\",
       "BasePath": "_content/CustomCADSolutions.App",
-      "RelativePath": "others/cads/Watch281.stl",
+      "RelativePath": "others/cads/Watch0.stl",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -2427,7 +2427,7 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\others\\cads\\Watch281.stl"
+      "OriginalItemSpec": "wwwroot\\others\\cads\\Watch0.stl"
     },
     {
       "Identity": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\categories\\All.png",

@@ -135,11 +135,17 @@
   <data name="Furniture" xml:space="preserve">
     <value>Всички Мебели</value>
   </data>
+  <data name="Login" xml:space="preserve">
+    <value>Влез в акаунта си</value>
+  </data>
   <data name="Nature" xml:space="preserve">
     <value>Всички Природни</value>
   </data>
   <data name="No models" xml:space="preserve">
     <value>Все още няма модели...</value>
+  </data>
+  <data name="Or" xml:space="preserve">
+    <value>или</value>
   </data>
   <data name="Order" xml:space="preserve">
     <value>Поръчай</value>
@@ -147,11 +153,17 @@
   <data name="Others" xml:space="preserve">
     <value>Всички Други</value>
   </data>
+  <data name="Register" xml:space="preserve">
+    <value>създай нов</value>
+  </data>
   <data name="Science" xml:space="preserve">
     <value>Всички Научни</value>
   </data>
   <data name="Sports" xml:space="preserve">
     <value>Всички Спортни</value>
+  </data>
+  <data name="ToOrder" xml:space="preserve">
+    <value>за да поръчаш</value>
   </data>
   <data name="Toys" xml:space="preserve">
     <value>Всички Играчки</value>
