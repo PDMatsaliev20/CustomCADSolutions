@@ -55,7 +55,7 @@ namespace CustomCADSolutions.App.Controllers
             {
                 Id = 0,
                 Name = "Watch",
-                Coords = (40, 20, 35),
+                Coords = (30, 40, 30),
                 SpinAxis = 'y',
                 SpinFactor = speed / 100d,
             };
@@ -69,8 +69,7 @@ namespace CustomCADSolutions.App.Controllers
 
             Category[] categories = await GetCategoriesAsync();
 
-            ViewBag.Categories = GetCategoriesName("All", categories.Select(c => c.Name));
-            ViewBag.BgCategories = GetCategoriesName("Всички", categories.Select(c => c.BgName));
+            ViewBag.Categories = GetCategoriesName(categories.Select(c => c.Name));
 
             return View();
         }
@@ -153,8 +152,8 @@ namespace CustomCADSolutions.App.Controllers
         public async Task<Category[]> GetCategoriesAsync()
             => (await categoryService.GetAllAsync()).ToArray();
 
-        private string GetCategoriesName(string all, IEnumerable<string> names)
-            => string.Join(" ", all, string.Join(" ", names));
+        private static string[] GetCategoriesName(IEnumerable<string> names)
+            => string.Join(" ", "All", string.Join(" ", names)).Split();
 
         private string GetUserId() => User.FindFirstValue(ClaimTypes.NameIdentifier);
     }

@@ -34,14 +34,15 @@
                         loadModel(id, name, x, y, z, axis, speed);
                     </script>
 
-                    <div class="col-3 mt-4">
+                    <div class="col-lg-3 col-md-4 col-12 mt-4">
                         <div class="card">
                             <h4 class="card-header text-center mb-1">@cad.Name (@(isBg ? cad.BgCategory : cad.Category))</h4>
                             <div class="card-body">
-                                <div id="model-@cad.Id"></div>                            
-                                <div>
-
-                                </div>
+                                <div id="model-@cad.Id"></div>
+                                <form class="mt-2" asp-action="Delete" asp-route-id="@cad.Id">
+                                    <input type="submit" value="@Localizer["Delete"]" class="btn btn-danger col-12"
+                                        onclick="return confirm(@Localizer["DeleteWarning", cad.Name])"/>
+                                </form>
                             </div>
                             <div class="card-footer d-flex justify-content-center fs-6">
                                 <span>@cad.CreatorName</span>

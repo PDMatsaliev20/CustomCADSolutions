@@ -132,16 +132,16 @@
   <data name="Explore" xml:space="preserve">
     <value>Explore</value>
   </data>
-  <data name="Language" xml:space="preserve">
-    <value>Language</value>
+  <data name="Home" xml:space="preserve">
+    <value>Home</value>
   </data>
   <data name="Privacy" xml:space="preserve">
     <value>Privacy Policy</value>
   </data>
   <data name="UrCads" xml:space="preserve">
-    <value>Your 3D Models</value>
+    <value>3D Models</value>
   </data>
   <data name="UrOrders" xml:space="preserve">
-    <value>Your Orders</value>
+    <value>Orders</value>
   </data>
 </root>

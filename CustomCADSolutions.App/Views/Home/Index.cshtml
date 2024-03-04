@@ -6,8 +6,10 @@
 
 <html>
 <head>
+    @*Fade-in effect*@
     <link rel="stylesheet" href="~/css/index.css" />
 
+    @*3D Model*@
     <script type="importmap">
         {
             "imports": {
@@ -15,7 +17,6 @@
                 "three/addons/": "https://cdn.jsdelivr.net/npm/three@latest/examples/jsm/"
             }
         }
-
     </script>
     <script type="module">
         import { loadModel } from '../../js/site.mjs';
@@ -24,7 +25,7 @@
         let x = @Model.Coords.Item1, y = @Model.Coords.Item2, z = @Model.Coords.Item3;
         let axis = '@Model.SpinAxis', speed = @Model.SpinFactor.ToString(new CultureInfo("en-US"));
 
-        loadModel(id, name, x, y, z, axis, speed, texture);
+        loadModel(id, name, x, y, z, axis, speed, texture, 65);
     </script>
 </head>
 
@@ -32,63 +33,58 @@
     <h2 class="text-center mt-4 mb-4">CustomCADSolutions</h2>
     <hr />
 
-    <div class="container d-flex justify-content-between">
-        <div class="col-7 d-flex flex-column justify-content-center">
-            <h4 class="mt-4 text-center">@Localizer["Title"]</h4>
-            <div class="mt-4">
-                <p class="col fs-5 text-center">@Localizer["Start"]</p>
+    <div class="container d-flex flex-column justify-content-between">
+        <div class="row gap1 mt-2">
+            <h4 class="col-12 text-center">@Localizer["Title"]</h4>
+            <h5 class="col-12 mt-2 text-center">@Localizer["Start"]</h5>
+        </div>
+        <div class="row flex-sm-row flex-column-reverse mt-sm-2">
+            <div class="col-sm-7 col-12 d-flex flex-column justify-content-center">
+                <p class="fs-5 text-center">@Localizer["End"]</p>
                 <p class="d-flex flex-columns">
-                    <span class="col d-flex flex-column">
-                        <span class="text-center">@Localizer["Explore"]</span>
-                    </span>
-                    <span class="col d-flex flex-column ms-2 me-2">
-                        <span class="text-center">@Localizer["Order"]</span>
-                    </span>
-                    <span class="col d-flex flex-column">
-                        <span class="text-center">@Localizer["Contribute"]</span>
-                    </span>
+                    <span class="col text-center">@Localizer["Explore"]</span>
+                    <span class="col text-center ms-2 me-2">@Localizer["Order"]</span>
+                    <span class="col text-center">@Localizer["Contribute"]</span>
                 </p>
                 <p class="d-flex flex-columns justify-content-around">
-                    <a style="background-color: #BBB9D9 !important" class="col btn" 
-                        asp-area="", asp-controller="Home", asp-action="Categories">@Localizer["ExploreBtn"]</a>
-                    <a style="background-color: #BBB9D9 !important" class="col ms-2 me-2 btn"
-                        asp-area="Client" asp-controller="Order" asp-action="Index">@Localizer["OrderBtn"]</a>
                     <a style="background-color: #BBB9D9 !important" class="col btn"
-                        asp-area="" asp-controller="Home" asp-action="MakeContributer">@Localizer["ContributeBtn"]</a>
+                       asp-area="" , asp-controller="Home" , asp-action="Categories">@Localizer["ExploreBtn"]</a>
+                    <a style="background-color: #BBB9D9 !important" class="col ms-2 me-2 btn"
+                       asp-area="Client" asp-controller="Order" asp-action="Index">@Localizer["OrderBtn"]</a>
+                    <a style="background-color: #BBB9D9 !important" class="col btn"
+                       asp-area="" asp-controller="Home" asp-action="MakeContributer">@Localizer["ContributeBtn"]</a>
                 </p>
-                @*
-                *@
-                <p class="col fs-4 text-center">@Localizer["End"]</p>
             </div>
-        </div>
-        <div class="col-5">
-            <div style="height: 20rem !important" id="model-@Model.Id" class="bg-transparent"></div>
+            <div class="col-sm-5 col-12 mt-0 mb-2">
+                <div style="height: 14rem !important" id="model-@Model.Id" class="bg-transparent"></div>
+            </div>
         </div>
     </div>
     <hr />
 
-    <div class="container d-flex justify-content-evenly mt-5 mb-5">
-        <div class="col-2">
-            <div style="background-color: #BBB9D9" class="card p-2">
-                <p class="mb-0  text-center">@Localizer["Recycle"]</p>
+    <div class="container">
+        <div class="row d-flex justify-content-evenly mt-5 mb-5 gap-sm-0 gap-5">
+            <div class="col-sm-2 col-12">
+                <div style="background-color: #BBB9D9" class="card p-2">
+                    <p class="mb-0  text-center">@Localizer["Recycle"]</p>
+                </div>
+                <img src="~/others/images/recycle.png" class="mt-3 w-100 h-auto rounded-circle" />
             </div>
-            <img src="~/others/images/recycle.png" class="mt-3 w-100 h-auto rounded-circle" />
-        </div>
 
-        <div class="col-2">
-            <div style="background-color: #BBB9D9" class="card p-2">
-                <p class="mb-0 text-center">@Localizer["Delivery"]</p>
+            <div class="col-sm-2 col-12">
+                <div style="background-color: #BBB9D9" class="card p-2">
+                    <p class="mb-0 text-center">@Localizer["Delivery"]</p>
+                </div>
+                <img src="~/others/images/delivery.png" class="mt-3 w-100 h-auto rounded-circle" />
             </div>
-            <img src="~/others/images/delivery.png" class="mt-3 w-100 h-auto rounded-circle" />
-        </div>
 
-        <div class="col-2">
-            <div style="background-color: #BBB9D9" class="card p-2">
-                <p class="mb-0 text-center">@Localizer["Quality"]</p>
+            <div class="col-sm-2 col-12">
+                <div style="background-color: #BBB9D9" class="card p-2">
+                    <p class="mb-0 text-center">@Localizer["Quality"]</p>
+                </div>
+                <img src="~/others/images/quality.png" class="mt-3 w-100 h-auto rounded-circle" />
             </div>
-            <img src="~/others/images/quality.png" class="mt-3 w-100 h-auto rounded-circle" />
         </div>
-
     </div>
 </body>
 </html>

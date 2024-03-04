@@ -25,25 +25,26 @@
 <body>
     <h1 class="text-center">@Localizer["Title", Model.Name]</h1>
     <hr />
-    <div class="container col-6">
+    <div class="container col-xl-6 col-lg-8 col-md-10 col-12">
         <div class="card">
-            <div class="card-header">
-                <div class="d-flex justify-content-evenly">
-                    <span>@Localizer["Camera"] - X@(Model.Coords.Item1) Y@(Model.Coords.Item2) Z@(Model.Coords.Item3)</span>
-                    <span>@Localizer["Axis"] - O@(Model.SpinAxis)</span>
-                    <span>@Localizer["Speed"] - @(Model.SpinFactor * 100)</span>
-                </div>
+            <div class="card-header text-center">
+                <span>
+                    @Localizer["Camera"] - 
+                    X:@(Model.Coords.Item1) 
+                    Y:@(Model.Coords.Item2) 
+                    Z:@(Model.Coords.Item3)
+                </span>
             </div>
             <div class="card-body">
                 <div class="d-flex flex-column align-items-center">
-                    <div id="model-@Model.Id"></div>
+                    <div style="height: 50vh; width: 100%" id="model-@Model.Id"></div>
                     <div><a asp-action="DownloadCad" asp-route-id="@Model.Id" class="btn btn-primary mt-3">@Localizer["Download"]</a></div>
                 </div>
             </div>
             <div class="card-footer">
                 <div class="d-flex justify-content-between">
-                    <span>@Localizer["Designer"] - @Model.CreatorName</span>
-                    <span>@Model.CreationDate</span>
+                    <span>@Localizer["Designer"]: @Model.CreatorName</span>
+                    <span class="text-end">@Model.CreationDate</span>
                 </div>
             </div>
         </div>

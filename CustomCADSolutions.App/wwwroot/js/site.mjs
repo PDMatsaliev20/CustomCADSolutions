@@ -12,13 +12,13 @@
             camera.updateProjectionMatrix();
         }
 
-        function loadModel(cadId, cadName, x, y, z, axis, speed, texturePath = '/textures/texture5.jpg') {
+        function loadModel(cadId, cadName, x, y, z, axis, speed, texturePath = '/textures/texture5.jpg', fov = 90) {
             // Scene
             const scene = new THREE.Scene();
             scene.background = null;
 
             // Camera
-            const camera = new THREE.PerspectiveCamera(90, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const camera = new THREE.PerspectiveCamera(fov, window.innerWidth / window.innerHeight, 0.01, 10000);
             camera.position.set(x, y, z);
             camera.lookAt(0, 0, 0);
 

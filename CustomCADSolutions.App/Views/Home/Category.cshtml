@@ -34,7 +34,7 @@
                     <script type="module">
                         import { loadModel } from '../../js/site.mjs';
 
-                        let id = @cad.Id, name = '@cad.Name';
+                        let id = @cad.Id, name = '@cad.Name', fov = 90;
                         let x = @cad.Coords.Item1, y = @cad.Coords.Item2, z = @cad.Coords.Item3;
                         let axis = '@cad.SpinAxis', speed = @cad.SpinFactor.ToString(en);
 
@@ -77,9 +77,9 @@
                                 else
                                 {
                                     <p class="text-center small mt-3 mb-0">
-                                        <a class="text-dark " asp-area="Identity" asp-page="/Account/Login">@Localizer["Login"]</a>
+                                        <a class="text-dark " asp-area="Identity" asp-controller="Account" asp-action="Login">@Localizer["Login"]</a>
                                         @Localizer["Or"]
-                                        <a class="text-dark " asp-area="Identity" asp-page="/Account/Register">@Localizer["Register"]</a>
+                                        <a class="text-dark " asp-area="Identity" asp-controller="Account" asp-action="Register">@Localizer["Register"]</a>
                                         @Localizer["ToOrder"]
                                     </p>
                                 }

@@ -77,8 +77,7 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
 
             IEnumerable<OrderViewModel> orders = (await orderService.GetAllAsync())
                 .Where(o => o.BuyerId == GetUserId())
-                .OrderByDescending(o => (int)o.Status)
-                    .ThenBy(o => o.OrderDate)
+                .OrderBy(o => (int)o.Status).ThenBy(o => o.OrderDate)
                 .Select(m => new OrderViewModel
                 {
                     BuyerId = m.BuyerId,

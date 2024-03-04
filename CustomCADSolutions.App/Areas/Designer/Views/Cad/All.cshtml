@@ -20,10 +20,10 @@
 
     <div class="container">
         <div class="row d-flex justify-content-evenly">
-            <a class="col-2 btn btn-primary" asp-area="Designer" asp-controller="Cad" asp-action="Index">
+            <a class="col-sm-2 col-12 mb-sm-0 mb-3 btn btn-primary" asp-area="Designer" asp-controller="Cad" asp-action="Index">
                 @Localizer["UrCads", ViewBag.UserModelsCount]
             </a>
-            <a class="col-2 btn btn-secondary" asp-area="Designer" asp-controller="Cad" asp-action="Submitted">
+            <a class="col-sm-2 col-12 mb-sm-0 mb-3 btn btn-secondary" asp-area="Designer" asp-controller="Cad" asp-action="Submitted">
                 @Localizer["UnvCads", Model.Count(c => !c.Validated)]
             </a>
         </div>
@@ -42,7 +42,7 @@
                         loadModel(id, name, x, y, z, axis, speed);
                     </script>
 
-                    <div class="col-4 mt-4">
+                    <div class="col-sm-4 col-12 mt-4">
                         <div class="card">
                             <h4 class="card-header text-center mb-1">@cad.Name (@(isBg ? cad.BgCategory : cad.Category))</h4>
                             <div class="card-body">

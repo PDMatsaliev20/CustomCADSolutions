@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Contribute" xml:space="preserve">
-    <value>Become a contribtuer and unleash your imagination with our premium 3D models</value>
+    <value>Become a contribtuer and unleash your imagination with our 3D models</value>
   </data>
   <data name="ContributeBtn" xml:space="preserve">
     <value>Send a Request</value>
@@ -136,7 +136,7 @@
     <value>Explore The Gallery</value>
   </data>
   <data name="Order" xml:space="preserve">
-    <value>Оrder to your address and recieve your desired 3D Model printed in a box.</value>
+    <value>Оrder to your address and recieve your desired 3D model printed in a box.</value>
   </data>
   <data name="OrderBtn" xml:space="preserve">
     <value>Make an Order</value>

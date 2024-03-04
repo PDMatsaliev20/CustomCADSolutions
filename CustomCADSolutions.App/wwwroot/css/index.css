@@ -1,4 +1,6 @@
-﻿.fade-in {
+﻿/* Animation */
+
+.fade-in {
 	opacity: 0;
 	animation: fadeIn 2s;
 	animation-iteration-count: 1;

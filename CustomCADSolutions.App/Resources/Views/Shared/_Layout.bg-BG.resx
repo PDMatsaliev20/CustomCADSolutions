@@ -132,16 +132,16 @@
   <data name="Explore" xml:space="preserve">
     <value>Разгледай</value>
   </data>
-  <data name="Language" xml:space="preserve">
-    <value>Език</value>
+  <data name="Home" xml:space="preserve">
+    <value>Начало</value>
   </data>
   <data name="Privacy" xml:space="preserve">
     <value>Поверителност</value>
   </data>
   <data name="UrCads" xml:space="preserve">
-    <value>Вашите 3D Модели</value>
+    <value>3D Модели</value>
   </data>
   <data name="UrOrders" xml:space="preserve">
-    <value>Вашите Поръчки</value>
+    <value>Поръчки</value>
   </data>
 </root>
