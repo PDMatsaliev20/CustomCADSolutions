@@ -6,7 +6,6 @@
 @{
     bool isBg = CultureInfo.CurrentCulture.Name == "bg-BG";
     CultureInfo en = new CultureInfo("en-US");
-    double constant = 4.1;
 }
 <head>
     <script type="importmap">
@@ -36,13 +35,12 @@
                         import { loadModel } from '../../js/site.mjs';
 
                         let id = @cad.Id, name = '@cad.Name';
-                        let widthConstant = @constant.ToString(en), heightConstant = @constant.ToString(en);
                         let x = @cad.Coords.Item1, y = @cad.Coords.Item2, z = @cad.Coords.Item3;
                         let axis = '@cad.SpinAxis', speed = @cad.SpinFactor.ToString(en);
 
-                        loadModel(id, name, widthConstant, heightConstant, x, y, z, axis, speed);
+                        loadModel(id, name, x, y, z, axis, speed);
                     </script>
-                    <div class="col-4 mb-4">
+                    <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-4">
                         <div class="card">
                             <h4 class="card-header text-center mb-1">@cad.Name (@(isBg ? cad.BgCategory : cad.Category))</h4>
                             <div class="card-body mb-0">

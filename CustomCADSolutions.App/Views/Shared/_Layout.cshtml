@@ -1,6 +1,4 @@
-﻿@using System.Security.Claims
-@inject UserManager<IdentityUser> UserManager
-@inject IViewLocalizer Localizer
+﻿@inject IViewLocalizer Localizer
 @{
     string currentUrl = Context.Request.Path + Context.Request.QueryString;
     ViewData["Title"] = "CustomCADSolutions";
@@ -52,15 +50,10 @@
                         </li>
                         @if (User.Identity!.IsAuthenticated)
                         {
-                            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                            IdentityUser? user = await UserManager.FindByIdAsync(userId);
-                            if (!(await UserManager.GetRolesAsync(user)).Any())
-                            {
-                                await UserManager.AddToRoleAsync(user, "Client");
-                            }
-
                             if (User.IsInRole("Administrator"))
                             {
+                                <li class="nav-item"><a class="nav-link text-dark" asp-area="Admin" asp-controller="User" asp-action="Index" role="button">@Localizer["AllUsers"]</a></li>
+                                <li class="nav-item"><a class="nav-link text-dark" asp-area="Admin" asp-controller="Cad" asp-action="Index" role="button">@Localizer["AllCads"]</a></li>
                             }
                             else if (User.IsInRole("Designer"))
                             {
@@ -106,7 +99,7 @@
             <p class="fw-bold"><a class="text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">@Localizer["Privacy"]</a></p>
             <p>&copy; 2023-@DateTime.Now.Year - CustomCADSolutions</p>
             <p class="rounded-2">
-                <span>@Localizer["AboutUs"]</span>
+                <span>@Localizer["Contacts"]</span>
                 <a href="https://www.instagram.com/customcadsolutions/" class="text-black"><i class="ms-1 fa fa-instagram"></i></a>
                 <a href="https://twitter.com/customcads/" class="text-black"><i class="ms-1 fa fa-twitter"></i></a>
             </p>

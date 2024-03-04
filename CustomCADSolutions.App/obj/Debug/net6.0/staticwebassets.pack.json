@@ -2493,6 +2493,34 @@
       "PackagePath": "staticwebassets\\others\\images\\recycle.png"
     },
     {
+      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\textures\\texture.jpg",
+      "PackagePath": "staticwebassets\\textures\\texture.jpg"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\textures\\texture2.jpg",
+      "PackagePath": "staticwebassets\\textures\\texture2.jpg"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\textures\\texture3.jpg",
+      "PackagePath": "staticwebassets\\textures\\texture3.jpg"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\textures\\texture4.jpg",
+      "PackagePath": "staticwebassets\\textures\\texture4.jpg"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\textures\\texture5.jpg",
+      "PackagePath": "staticwebassets\\textures\\texture5.jpg"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\textures\\texture6.jpg",
+      "PackagePath": "staticwebassets\\textures\\texture6.jpg"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\textures\\texture7.jpg",
+      "PackagePath": "staticwebassets\\textures\\texture7.jpg"
+    },
+    {
       "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.CustomCADSolutions.App.Microsoft.AspNetCore.StaticWebAssets.props",
       "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
     },

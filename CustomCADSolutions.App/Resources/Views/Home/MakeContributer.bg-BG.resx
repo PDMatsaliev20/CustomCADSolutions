@@ -117,25 +117,28 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="CadFile" xml:space="preserve">
-    <value>3D Model</value>
+  <data name="Guidance" xml:space="preserve">
+    <value>След създаването на или влизането в акаунт отново подайте заявка за сътрудничество.</value>
   </data>
-  <data name="CadName" xml:space="preserve">
-    <value>Name of 3D Model</value>
+  <data name="Login" xml:space="preserve">
+    <value>влезте</value>
   </data>
-  <data name="CategoryName" xml:space="preserve">
-    <value>Category of 3D Model</value>
+  <data name="Register" xml:space="preserve">
+    <value>Регистрирайте се</value>
   </data>
-  <data name="LengthErrorMessage" xml:space="preserve">
-    <value>{0} length must be between {2} and {1} characters</value>
+  <data name="Sublogin" xml:space="preserve">
+    <value>в съществуващ акаунт.</value>
   </data>
-  <data name="RangeErrorMessage" xml:space="preserve">
-    <value>{0} must be between {2} and {1}</value>
+  <data name="Subregister" xml:space="preserve">
+    <value>ако за пръв път сте тук или</value>
   </data>
-  <data name="RequiredErrorMessage" xml:space="preserve">
-    <value>{0} is required!</value>
+  <data name="Subtitle" xml:space="preserve">
+    <value>Искате да качите своите 3D модели в CustomCADSolutions? </value>
   </data>
-  <data name="SpinAxisErrorMessage" xml:space="preserve">
-    <value>{0} must be either x, y or z</value>
+  <data name="Title" xml:space="preserve">
+    <value>Стани Наш Сътрудник</value>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Ако не забележите промяна, излезте и влезте в акаунта си.</value>
   </data>
 </root>

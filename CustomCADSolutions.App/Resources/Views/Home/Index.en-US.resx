@@ -117,8 +117,29 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Contribute" xml:space="preserve">
+    <value>Become a contribtuer and unleash your imagination with our premium 3D models</value>
+  </data>
+  <data name="ContributeBtn" xml:space="preserve">
+    <value>Send a Request</value>
+  </data>
   <data name="Delivery" xml:space="preserve">
     <value>3-5 Day Delivery</value>
+  </data>
+  <data name="End" xml:space="preserve">
+    <value>Start exploring our collection today and take your projects to new heights with our stunning 3D models!</value>
+  </data>
+  <data name="Explore" xml:space="preserve">
+    <value>Browse through our extensive categories and find the perfect 3D model.</value>
+  </data>
+  <data name="ExploreBtn" xml:space="preserve">
+    <value>Explore The Gallery</value>
+  </data>
+  <data name="Order" xml:space="preserve">
+    <value>Оrder to your address and recieve your desired 3D Model printed in a box.</value>
+  </data>
+  <data name="OrderBtn" xml:space="preserve">
+    <value>Make an Order</value>
   </data>
   <data name="Quality" xml:space="preserve">
     <value>High Quality</value>
@@ -126,10 +147,10 @@
   <data name="Recycle" xml:space="preserve">
     <value>100% Recyclable</value>
   </data>
-  <data name="Subtitle" xml:space="preserve">
-    <value>In a world sculpted by pixels and imagination, each 3D model is a bridge between dream and reality!</value>
+  <data name="Start" xml:space="preserve">
+    <value>Whether you're a professional designer, architect, game developer, or hobbyist, we have something for everyone!</value>
   </data>
   <data name="Title" xml:space="preserve">
-    <value>Where Your Imagination Comes to Life!</value>
+    <value>Where Your Imagination Comes to Life</value>
   </data>
 </root>

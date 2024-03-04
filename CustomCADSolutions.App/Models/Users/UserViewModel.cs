@@ -1,4 +1,4 @@
-﻿namespace CustomCADSolutions.App.Models
+﻿namespace CustomCADSolutions.App.Models.Users
 {
     public class UserViewModel
     {

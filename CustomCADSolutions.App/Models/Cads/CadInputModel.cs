@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using CustomCADSolutions.Infrastructure.Data.Models;
 using CustomCADSolutions.App.Resources.Shared;
 
-namespace CustomCADSolutions.App.Models
+namespace CustomCADSolutions.App.Models.Cads
 {
     public class CadInputModel
     {

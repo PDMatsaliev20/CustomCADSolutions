@@ -42,5 +42,14 @@
             public const int DescriptionMaxLength = 1500;
             public const int DescriptionMinLength = 5;
         }
+
+        public class UserConstants 
+        {
+            public const int NameMaxLength = 62;
+            public const int NameMinLength = 3;
+
+            public const int PasswordMaxLength = 100;
+            public const int PasswordMinLength = 6;
+        }
     }
 }

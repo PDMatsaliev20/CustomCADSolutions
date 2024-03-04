@@ -1,17 +1,19 @@
 ﻿@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 @model LoginInputModel   
 @{
     bool isBg = CultureInfo.CurrentCulture.Name == "bg-BG";
 }
 
-<h1 class="text-center">@(isBg ? "Влез" : "Log in")</h1>
+<h1 class="text-center">@Localizer["Title"]</h1>
 <br />
 
 <div class="row d-flex justify-content-center align-items-center">
     <div class="col-md-6">
         <section>
             <form id="account" method="post">
-                <h2 class="text-center">@(isBg ? "Влез в съществуващ акаунт." : "Use a local account to log in.")</h2>
+                <h2 class="text-center">@Localizer["Subtitle"]</h2>
                 <hr />
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-floating">
@@ -33,7 +35,7 @@
                     </div>
                 </div>
                 <div class="mb-4">
-                    <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">@(isBg ? "Влез" : "Log in")</button>
+                    <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">@Localizer["Title"]</button>
                 </div>
             </form>
         </section>

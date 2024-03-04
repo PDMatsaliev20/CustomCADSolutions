@@ -1,4 +1,4 @@
-﻿namespace CustomCADSolutions.App.Models
+﻿namespace CustomCADSolutions.App.Models.Cads
 {
     public class CadViewModel
     {

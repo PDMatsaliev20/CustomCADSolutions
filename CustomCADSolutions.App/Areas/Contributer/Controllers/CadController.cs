@@ -1,7 +1,7 @@
 ﻿using CustomCADSolutions.Core.Contracts;
 using CustomCADSolutions.Core.Models;
 using Microsoft.AspNetCore.Mvc;
-using CustomCADSolutions.App.Models;
+using CustomCADSolutions.App.Models.Cads;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;

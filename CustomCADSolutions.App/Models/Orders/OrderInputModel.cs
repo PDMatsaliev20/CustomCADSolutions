@@ -4,7 +4,7 @@ using CustomCADSolutions.Infrastructure.Data.Models;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using CustomCADSolutions.App.Resources.Shared;
 
-namespace CustomCADSolutions.App.Models
+namespace CustomCADSolutions.App.Models.Orders
 {
     public class OrderInputModel
     {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using CustomCADSolutions.App.Areas.Identity.Models;
 using Microsoft.AspNetCore.Authentication;
+using CustomCADSolutions.App.Models.Users;
 
 namespace CustomCADSolutions.App.Areas.Identity.Controllers
 {
@@ -55,6 +55,7 @@ namespace CustomCADSolutions.App.Areas.Identity.Controllers
 
             if (result.Succeeded)
             {
+                await userManager.AddToRoleAsync(user, "Client");
                 await signInManager.SignInAsync(user, isPersistent: false);
                 return LocalRedirect(returnUrl);
             }

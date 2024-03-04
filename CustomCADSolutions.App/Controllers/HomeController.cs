@@ -1,8 +1,8 @@
 ﻿using CustomCADSolutions.App.Models;
+using CustomCADSolutions.App.Models.Cads;
 using CustomCADSolutions.Core.Contracts;
 using CustomCADSolutions.Core.Models;
 using CustomCADSolutions.Infrastructure.Data.Models;
-using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,23 +18,26 @@ namespace CustomCADSolutions.App.Controllers
         private readonly IOrderService orderService;
         private readonly ICategoryService categoryService;
         private readonly UserManager<IdentityUser> userManager;
+        private readonly SignInManager<IdentityUser> signInManager;
 
         public HomeController(
             ICadService cadService,
             IOrderService orderService,
             ICategoryService categoryService,
             ILogger<HomeController> logger,
-            UserManager<IdentityUser> userManager)
+            UserManager<IdentityUser> userManager,
+            SignInManager<IdentityUser> signInManager)
         {
             this.logger = logger;
             this.cadService = cadService;
             this.orderService = orderService;
             this.categoryService = categoryService;
             this.userManager = userManager;
+            this.signInManager = signInManager;
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public IActionResult Index(int speed = 1)
         {
             if (User.IsInRole("Administrator"))
             {
@@ -52,9 +55,9 @@ namespace CustomCADSolutions.App.Controllers
             {
                 Id = 0,
                 Name = "Watch",
-                Coords = (40, 14, 33),
+                Coords = (40, 20, 35),
                 SpinAxis = 'y',
-                SpinFactor = 0.01,
+                SpinFactor = speed / 100d,
             };
             return View(view);
         }
@@ -113,6 +116,25 @@ namespace CustomCADSolutions.App.Controllers
                 new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) });
 
             return LocalRedirect(returnUrl);
+        }
+
+        public async Task<IActionResult> MakeContributer()
+        {
+            if (!User.Identity!.IsAuthenticated)
+            {
+                return View();
+            }
+            
+            IdentityUser user = await userManager.FindByIdAsync(GetUserId());
+            IEnumerable<string> roles = await userManager.GetRolesAsync(user);
+
+            await userManager.RemoveFromRoleAsync(user, roles.Single());
+            await userManager.AddToRoleAsync(user, "Contributer");
+            
+            await signInManager.SignOutAsync();
+            await signInManager.SignInAsync(user, false);
+            
+            return RedirectToAction("Index", "Cad", new { area = "Contributer" });
         }
 
         public IActionResult Privacy()

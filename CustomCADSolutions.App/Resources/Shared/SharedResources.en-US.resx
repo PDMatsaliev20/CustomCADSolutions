@@ -123,11 +123,20 @@
   <data name="Category" xml:space="preserve">
     <value>Category of 3D Model</value>
   </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>Confirm Password</value>
+  </data>
   <data name="Description" xml:space="preserve">
     <value>Description of 3D Model</value>
   </data>
+  <data name="Email" xml:space="preserve">
+    <value>Email</value>
+  </data>
   <data name="File" xml:space="preserve">
     <value>3D Model File</value>
+  </data>
+  <data name="InvalidEmail" xml:space="preserve">
+    <value>The {0} field is not a valid e-mail address.</value>
   </data>
   <data name="Length" xml:space="preserve">
     <value>Length of field {0} must be between {2} and {1} characters</value>
@@ -135,13 +144,22 @@
   <data name="Name" xml:space="preserve">
     <value>Name of 3D Model</value>
   </data>
+  <data name="Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
   <data name="Range" xml:space="preserve">
     <value>Value of field {0} must be between {1} and {2}</value>
+  </data>
+  <data name="Remember" xml:space="preserve">
+    <value>Remember me?</value>
   </data>
   <data name="Required" xml:space="preserve">
     <value>Field {0} is required!</value>
   </data>
   <data name="Speed" xml:space="preserve">
     <value>Speed of Spinning</value>
+  </data>
+  <data name="Username" xml:space="preserve">
+    <value>Username</value>
   </data>
 </root>

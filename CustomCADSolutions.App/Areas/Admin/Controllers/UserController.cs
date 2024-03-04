@@ -1,4 +1,4 @@
-﻿using CustomCADSolutions.App.Models;
+﻿using CustomCADSolutions.App.Models.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -36,6 +36,9 @@ namespace CustomCADSolutions.App.Areas.Admin.Controllers
                 })
                 .Select(t => t.Result)
                 .ToArray();
+
+            ViewBag.Roles = new[] { "Administrator", "Designer", "Contributer", "Client" };
+            ViewBag.RolesBg = new[] { "Администратор", "Дизайнер", "Помощник", "Клиент" };
 
             return View(views);
         }

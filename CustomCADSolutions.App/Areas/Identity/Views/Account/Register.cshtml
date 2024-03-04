@@ -1,23 +1,21 @@
 ﻿@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
 @model RegisterInputModel
+@inject IViewLocalizer Localizer
 @{
-    bool isBg = CultureInfo.CurrentCulture.Name == "bg-BG";
-    bool emailIsUnique = (bool?)ViewData["IsEmailUnique"] ?? true;
-    if (!emailIsUnique)
+    if (ViewData["IsEmailUnique"] != null)
     {
-        ViewBag.DuplicateEmail = isBg ?
-            $"Имейлът {Model.Email} вече е зает." :
-            $"Email {Model.Email} is already taken.";
+        ViewBag.DuplicateEmail = Localizer["EmailError", Model.Email];
     }
 }
 
-<h1 class="text-center">@(isBg ? "Регистрирай се" : "Register")</h1>
+<h1 class="text-center">@Localizer["Title"]</h1>
 <br />
 
 <div class="row d-flex justify-content-center align-items-center">
     <div class="col-md-6">
         <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <h2 class="text-center">@(isBg ? "Създай нов акаунт." : "Create a new account.")</h2>
+            <h2 class="text-center">@Localizer["Subtitle"]</h2>
             <hr />
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-floating">
@@ -40,7 +38,7 @@
                 <label asp-for="ConfirmPassword"></label>
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>
-            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">@(isBg ? "Регистрирай се" : "Register")</button>
+            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">@Localizer["Title"]</button>
         </form>
     </div>
 </div>

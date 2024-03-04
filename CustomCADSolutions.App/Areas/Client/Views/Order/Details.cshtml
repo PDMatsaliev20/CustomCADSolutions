@@ -2,7 +2,6 @@
 @inject IViewLocalizer Localizer
 @{
     CultureInfo en = new("en-US");
-    double constant = 2.5;
 }
 <head>
     <script type="importmap">
@@ -17,11 +16,10 @@
         import { loadModel } from '../../../js/site.mjs';
 
         let id = @Model.Id, name = '@Model.Name';
-        let width = @constant.ToString(en), height = @constant.ToString(en);
         let x = @Model.Coords.Item1, y = @Model.Coords.Item2, z = @Model.Coords.Item3;
         let axis = '@Model.SpinAxis', speed = @Model.SpinFactor.ToString(en);
 
-        loadModel(id, name, width, height, x, y, z, axis, speed);
+        loadModel(id, name, x, y, z, axis, speed);
     </script>
 </head>
 <body>

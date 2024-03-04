@@ -123,12 +123,12 @@ using (IServiceScope scope = app.Services.CreateScope())
 app.MapAreaControllerRoute(
     name: "AdminArea",
     areaName: "Admin",
-    pattern: "Admin/{controller}/{action=Index}/{id?}");
+    pattern: "Admin/{controller=User}/{action=Index}/{id?}");
 
 app.MapAreaControllerRoute(
     name: "DesignerArea",
     areaName: "Designer",
-    pattern: "Designer/{controller}/{action=Index}/{id?}");
+    pattern: "Designer/{controller=Home}/{action=Categories}/{id?}");
 
 app.MapAreaControllerRoute(
     name: "ContributerArea",
@@ -144,7 +144,6 @@ app.MapAreaControllerRoute(
     name: "IdentityArea",
     areaName: "Identity",
     pattern: "Identity/{controller=Account}/{action=Register}");
-
 
 app.MapControllerRoute(
     name: "default",

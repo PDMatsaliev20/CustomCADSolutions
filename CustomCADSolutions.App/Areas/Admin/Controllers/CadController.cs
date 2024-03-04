@@ -1,15 +1,17 @@
-﻿using CustomCADSolutions.App.Models;
+﻿using CustomCADSolutions.App.Models.Cads;
 using CustomCADSolutions.Core.Contracts;
 using CustomCADSolutions.Core.Models;
 using CustomCADSolutions.Infrastructure.Data.Models;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace CustomCADSolutions.App.Areas.Admin.Controllers
 {
+    [Area("Admin")]
+    [Authorize(Roles = "Administrator")]
     public class CadController : Controller
     {
         private readonly ICadService cadService;
@@ -35,9 +37,11 @@ namespace CustomCADSolutions.App.Areas.Admin.Controllers
             this.hostingEnvironment = hostingEnvironment;
         }
 
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             CadViewModel[] views = (await cadService.GetAllAsync())
+                .Where(c => !string.IsNullOrEmpty(c.CreatorId))
                 .Select(m => new CadViewModel
                 {
                     Id = m.Id,
@@ -54,7 +58,6 @@ namespace CustomCADSolutions.App.Areas.Admin.Controllers
 
             return View(views);
         }
-
 
         [HttpPost]
         public async Task<IActionResult> Delete(int id)

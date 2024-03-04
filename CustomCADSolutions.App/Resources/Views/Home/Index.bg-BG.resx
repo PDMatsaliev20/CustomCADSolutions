@@ -117,14 +117,38 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Contribute" xml:space="preserve">
+    <value>Станете наш сътрудник и отприщете триизмерното Ви въображение.</value>
+  </data>
+  <data name="ContributeBtn" xml:space="preserve">
+    <value>Прати ни Заявка</value>
+  </data>
   <data name="Delivery" xml:space="preserve">
     <value>3-5 Дневна Доставка</value>
+  </data>
+  <data name="End" xml:space="preserve">
+    <value>Започни пътешествието си из галерията ни сега и извиси проектите си със зашеметяващите ни 3D модели!</value>
+  </data>
+  <data name="Explore" xml:space="preserve">
+    <value>Сърфирайте из обширните ни категории и открийте перфектния 3D модел.</value>
+  </data>
+  <data name="ExploreBtn" xml:space="preserve">
+    <value>Разгледай Галерията</value>
+  </data>
+  <data name="Order" xml:space="preserve">
+    <value>Поръчайте и получете желания 3D принтиран модел в кутийка.</value>
+  </data>
+  <data name="OrderBtn" xml:space="preserve">
+    <value>Направи Поръчка</value>
   </data>
   <data name="Quality" xml:space="preserve">
     <value>Невероятно Качество</value>
   </data>
   <data name="Recycle" xml:space="preserve">
     <value>100% Рециклируемо</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Без значение дали сте дизайнер, архитект, разработчик на игри или просто имате хобита, тук има по нещо за всеки!</value>
   </data>
   <data name="Subtitle" xml:space="preserve">
     <value>В света на пиксели всеки 3D модел е мост между мечта и реалност!</value>

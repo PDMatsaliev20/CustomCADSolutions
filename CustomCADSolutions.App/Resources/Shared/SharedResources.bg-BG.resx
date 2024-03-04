@@ -123,25 +123,43 @@
   <data name="Category" xml:space="preserve">
     <value>Категория на 3D Модела</value>
   </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>Повтори паролата</value>
+  </data>
   <data name="Description" xml:space="preserve">
     <value>Описание на 3D Модела</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>Имейл</value>
   </data>
   <data name="File" xml:space="preserve">
     <value>Файл с 3D Модела</value>
   </data>
+  <data name="InvalidEmail" xml:space="preserve">
+    <value>Полето {0} не е валиден имейл адрес</value>
+  </data>
   <data name="Length" xml:space="preserve">
-    <value>Дължината на полето {0} трябва да бъде между {2} и {1} characters</value>
+    <value>Дължината на полето {0} трябва да бъде между {2} и {1} символа</value>
   </data>
   <data name="Name" xml:space="preserve">
     <value>Име на 3D Моделa</value>
   </data>
+  <data name="Password" xml:space="preserve">
+    <value>Парола</value>
+  </data>
   <data name="Range" xml:space="preserve">
     <value>Стойността на полето {0} трябва да бъде между {1} и {2}</value>
+  </data>
+  <data name="Remember" xml:space="preserve">
+    <value>Запомни ме?</value>
   </data>
   <data name="Required" xml:space="preserve">
     <value>Полето {0} е задължително!</value>
   </data>
   <data name="Speed" xml:space="preserve">
     <value>Скорост на Въртежa</value>
+  </data>
+  <data name="Username" xml:space="preserve">
+    <value>Потребителско име</value>
   </data>
 </root>

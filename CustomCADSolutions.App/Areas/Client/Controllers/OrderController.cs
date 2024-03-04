@@ -1,4 +1,5 @@
-﻿using CustomCADSolutions.App.Models;
+﻿using CustomCADSolutions.App.Models.Orders;
+using CustomCADSolutions.App.Models.Cads;
 using CustomCADSolutions.Core.Contracts;
 using CustomCADSolutions.Core.Models;
 using CustomCADSolutions.Infrastructure.Data.Models;
@@ -92,7 +93,7 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
                 });
 
             ViewBag.Orders = orders;
-            return View(new CadInputModel());
+            return View(orders);
         }
 
 

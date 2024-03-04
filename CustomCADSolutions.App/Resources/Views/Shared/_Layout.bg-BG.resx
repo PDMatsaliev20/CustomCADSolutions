@@ -117,14 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AboutUs" xml:space="preserve">
-    <value>За нас:</value>
-  </data>
   <data name="AllCads" xml:space="preserve">
     <value>Всички 3D Модели</value>
   </data>
   <data name="AllOrders" xml:space="preserve">
     <value>Всички Поръчки</value>
+  </data>
+  <data name="AllUsers" xml:space="preserve">
+    <value>Всички Потребители</value>
+  </data>
+  <data name="Contacts" xml:space="preserve">
+    <value>Свържете се с нас:</value>
   </data>
   <data name="Explore" xml:space="preserve">
     <value>Разгледай</value>
