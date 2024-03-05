@@ -48,7 +48,7 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
 
                 if (model.Creator == null || !model.CreationDate.HasValue)
                 {
-                    throw new Exception("Model not created yet");
+                    return BadRequest("Model not created yet");
                 }
             }
             catch (Exception ex)

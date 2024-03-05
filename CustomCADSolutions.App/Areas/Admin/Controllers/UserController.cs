@@ -1,4 +1,7 @@
 ﻿using CustomCADSolutions.App.Models.Users;
+using CustomCADSolutions.Core.Contracts;
+using CustomCADSolutions.Core.Models;
+using CustomCADSolutions.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -12,12 +15,15 @@ namespace CustomCADSolutions.App.Areas.Admin.Controllers
     {
         private readonly ILogger<UserController> logger;
         private readonly UserManager<IdentityUser> userManager;
+        private readonly ICadService cadService;
 
         public UserController(
             UserManager<IdentityUser> userManager,
+            ICadService cadService,
             ILogger<UserController> logger)
         {
             this.userManager = userManager;
+            this.cadService = cadService;
             this.logger = logger;
         }
 
@@ -61,8 +67,11 @@ namespace CustomCADSolutions.App.Areas.Admin.Controllers
         {
             IdentityUser user = await userManager.FindByNameAsync(username);
 
+            foreach (CadModel model in (await cadService.GetAllAsync()).Where(c => c.CreatorId == user.Id))
+            {
+                RedirectToAction(nameof(CadController.Delete), "Cad", new { id = model.Id });
+            }
             await userManager.DeleteAsync(user);
-
             return RedirectToAction(nameof(Index));
         }
     }

@@ -12,27 +12,27 @@
             camera.updateProjectionMatrix();
         }
 
-        function loadModel(cadId, cadName, x, y, z, axis, speed, texturePath = '/textures/texture5.jpg', fov = 90) {
+        function loadModel(cad) {
             // Scene
             const scene = new THREE.Scene();
             scene.background = null;
 
             // Camera
-            const camera = new THREE.PerspectiveCamera(fov, window.innerWidth / window.innerHeight, 0.01, 10000);
-            camera.position.set(x, y, z);
+            const camera = new THREE.PerspectiveCamera(cad.fov, window.innerWidth / window.innerHeight, 0.01, 10000);
+            camera.position.set(cad.x, cad.y, cad.z);
             camera.lookAt(0, 0, 0);
 
             // Renderer
-            const parentContainer = document.getElementById(`model-${cadId}`);
+            const parentContainer = document.getElementById(`model-${cad.id}`);
             if (!parentContainer) {
-                console.log(`Parent container for model-${cadId} not found.`);
+                console.log(`Parent container for model-${cad.id} not found.`);
                 return;
             }
 
             const renderer = new THREE.WebGLRenderer({ alpha: true, preserveDrawingBuffer: true, antialias: true });
             renderer.setClearColor(0x000000, 0);
             parentContainer.appendChild(renderer.domElement);
-            updateRendererSize(renderer, camera, cadId);
+            updateRendererSize(renderer, camera, cad.id);
 
             // Lights
             const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
@@ -44,14 +44,14 @@
 
             // Loading
             const loader = new STLLoader();
-            loader.load(`/others/cads/${cadName}${cadId}.stl`, function (stl) {
+            loader.load(`/others/cads/${cad.name}${cad.id}.stl`, function (stl) {
                 const material = new THREE.MeshStandardMaterial();
                 material.roughness = 0.5;
                 material.metalness = 0.5;
                 material.emissiveIntensity = 1;
         
                 const textureLoader = new THREE.TextureLoader();
-                const texture = textureLoader.load(texturePath);
+                const texture = textureLoader.load(cad.texture);
                 texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
                 material.map = texture;
 
@@ -94,10 +94,10 @@
                 if (!isInteracting) {
                     scene.traverse(function (object) {
                         if (object instanceof THREE.Mesh) {
-                            switch (axis) {
-                                case 'x': object.rotation.x += speed; break;
-                                case 'y': object.rotation.y += speed; break;
-                                case 'z': object.rotation.z += speed; break;
+                            switch (cad.axis) {
+                                case 'x': object.rotation.x += cad.speed; break;
+                                case 'y': object.rotation.y += cad.speed; break;
+                                case 'z': object.rotation.z += cad.speed; break;
                             }
                         }
                     });
@@ -106,10 +106,10 @@
             animate();
 
             window.addEventListener('resize', function () {
-                const parentContainer = document.getElementById(`model-${cadId}`);
+                const parentContainer = document.getElementById(`model-${cad.id}`);
                 const width = parentContainer.clientWidth;
                 const height = parentContainer.clientHeight;
-                updateRendererSize(renderer, camera, cadId);
+                updateRendererSize(renderer, camera, cad.id);
                 camera.aspect = width / height;
                 camera.updateProjectionMatrix();
             });

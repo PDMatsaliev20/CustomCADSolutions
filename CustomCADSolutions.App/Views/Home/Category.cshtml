@@ -3,9 +3,7 @@
 @inject IViewLocalizer Localizer
 @inject IOrderService OrderService
 @inject UserManager<IdentityUser> UserManager
-@{
-    bool isBg = CultureInfo.CurrentCulture.Name == "bg-BG";
-    CultureInfo en = new CultureInfo("en-US");
+@{   
 }
 <head>
     <script type="importmap">
@@ -18,7 +16,7 @@
     </script>
 </head>
 <body>
-    <h2 class="text-center">@Localizer[ViewBag.Category]</h2>
+    <h2 class="text-center">@Localizer[$"{ViewBag.Category}Title"]</h2>
     <hr />
 
     @if (!Model.Any())
@@ -34,15 +32,23 @@
                     <script type="module">
                         import { loadModel } from '../../js/site.mjs';
 
-                        let id = @cad.Id, name = '@cad.Name', fov = 90;
-                        let x = @cad.Coords.Item1, y = @cad.Coords.Item2, z = @cad.Coords.Item3;
-                        let axis = '@cad.SpinAxis', speed = @cad.SpinFactor.ToString(en);
+                        const cad = {
+                            id: @cad.Id,
+                            name: '@cad.Name',
+                            texture: '@cad.TexturePath',
+                            x: @cad.Coords.Item1,
+                            y: @cad.Coords.Item2,
+                            z: @cad.Coords.Item3,
+                            axis: '@cad.SpinAxis',
+                            speed: @cad.SpinFactor.ToString(new CultureInfo("en-US")),
+                            fov: '@cad.Fov',
+                        };
 
-                        loadModel(id, name, x, y, z, axis, speed);
+                        loadModel(cad);
                     </script>
-                    <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-4">
+                    <div class="col-xxl-2 col-lg-4 col-md-6 col-sm-12 mb-4">
                         <div class="card">
-                            <h4 class="card-header text-center mb-1">@cad.Name (@(isBg ? cad.BgCategory : cad.Category))</h4>
+                            <h4 class="card-header text-center mb-1">@cad.Name (@Localizer[cad.Category])</h4>
                             <div class="card-body mb-0">
                                 <div id="model-@cad.Id"></div>
                                 @if (User.Identity!.IsAuthenticated)

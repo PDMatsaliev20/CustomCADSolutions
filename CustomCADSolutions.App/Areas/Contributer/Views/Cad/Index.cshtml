@@ -36,11 +36,20 @@
                     <script type="module">
                         import { loadModel } from '../../js/site.mjs';
 
-                        let id = @cad.Id, name = '@cad.Name';
-                        let x = @cad.Coords.Item1, y = @cad.Coords.Item2, z = @cad.Coords.Item3;
-                        let axis = '@cad.SpinAxis', speed = @cad.SpinFactor.ToString(en);
 
-                        loadModel(id, name, x, y, z, axis, speed);
+                        const cad = {
+                            id: @cad.Id,
+                            name: '@cad.Name',
+                            texture: '@cad.TexturePath',
+                            x: @cad.Coords.Item1,
+                            y: @cad.Coords.Item2,
+                            z: @cad.Coords.Item3,
+                            axis: '@cad.SpinAxis',
+                            speed: @cad.SpinFactor.ToString(new CultureInfo("en-US")),
+                            fov: @cad.Fov,
+                        };
+
+                        loadModel(cad);
                     </script>
                     <div class="col-3 mt-4">
                         <div class="card">

@@ -118,16 +118,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Contribute" xml:space="preserve">
-    <value>Become a contribtuer and unleash your imagination with our 3D models</value>
+    <value>You have 3D models? Become a contribtuer and unleash your imagination with our 3D models. Provide models to our gallery and recieve initial payment + 50% of the model's profits.</value>
   </data>
   <data name="ContributeBtn" xml:space="preserve">
     <value>Send a Request</value>
   </data>
   <data name="Delivery" xml:space="preserve">
     <value>3-5 Day Delivery</value>
-  </data>
-  <data name="End" xml:space="preserve">
-    <value>Start exploring our collection today and take your projects to new heights with our stunning 3D models!</value>
   </data>
   <data name="Explore" xml:space="preserve">
     <value>Browse through our extensive categories and find the perfect 3D model.</value>
@@ -144,13 +141,19 @@
   <data name="Quality" xml:space="preserve">
     <value>High Quality</value>
   </data>
+  <data name="Question" xml:space="preserve">
+    <value />
+  </data>
   <data name="Recycle" xml:space="preserve">
     <value>100% Recyclable</value>
   </data>
   <data name="Start" xml:space="preserve">
-    <value>Whether you're a professional designer, architect, game developer, or hobbyist, we have something for everyone!</value>
+    <value>Start exploring our collection today and take your projects to new heights with our stunning 3D models!</value>
   </data>
   <data name="Title" xml:space="preserve">
     <value>Where Your Imagination Comes to Life</value>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Are you sure you want to become a contributer?</value>
   </data>
 </root>

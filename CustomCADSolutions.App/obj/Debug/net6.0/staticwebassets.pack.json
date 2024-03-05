@@ -1,6 +1,10 @@
 {
   "Files": [
     {
+      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\css\\animation.css",
+      "PackagePath": "staticwebassets\\css\\animation.css"
+    },
+    {
       "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\css\\index.css",
       "PackagePath": "staticwebassets\\css\\index.css"
     },
@@ -253,8 +257,12 @@
       "PackagePath": "staticwebassets\\logo.png"
     },
     {
-      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\cads\\Airpod240.stl",
-      "PackagePath": "staticwebassets\\others\\cads\\Airpod240.stl"
+      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\cads\\Chair-2.stl",
+      "PackagePath": "staticwebassets\\others\\cads\\Chair-2.stl"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\cads\\Racket-1.stl",
+      "PackagePath": "staticwebassets\\others\\cads\\Racket-1.stl"
     },
     {
       "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\cads\\Tennis Racket269.stl",
@@ -2519,6 +2527,10 @@
     {
       "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\textures\\texture7.jpg",
       "PackagePath": "staticwebassets\\textures\\texture7.jpg"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\textures\\texture8.jpg",
+      "PackagePath": "staticwebassets\\textures\\texture8.jpg"
     },
     {
       "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.CustomCADSolutions.App.Microsoft.AspNetCore.StaticWebAssets.props",

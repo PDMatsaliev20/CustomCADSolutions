@@ -118,16 +118,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Contribute" xml:space="preserve">
-    <value>Станете наш сътрудник и отприщете триизмерното Ви въображение.</value>
+    <value>Имате 3D модели? Станете наш сътрудник и отприщете триизмерното си въображение. Снабди галерията ни с модели и получете първоначално плащане + 50% от печалбата.</value>
   </data>
   <data name="ContributeBtn" xml:space="preserve">
     <value>Прати ни Заявка</value>
   </data>
   <data name="Delivery" xml:space="preserve">
     <value>3-5 Дневна Доставка</value>
-  </data>
-  <data name="End" xml:space="preserve">
-    <value>Започни пътешествието си из галерията ни сега и извиси проектите си със зашеметяващите ни 3D модели!</value>
   </data>
   <data name="Explore" xml:space="preserve">
     <value>Сърфирайте из обширните ни категории и открийте перфектния 3D модел.</value>
@@ -144,16 +141,22 @@
   <data name="Quality" xml:space="preserve">
     <value>Невероятно Качество</value>
   </data>
+  <data name="Question" xml:space="preserve">
+    <value />
+  </data>
   <data name="Recycle" xml:space="preserve">
     <value>100% Рециклируемо</value>
   </data>
   <data name="Start" xml:space="preserve">
-    <value>Без значение дали сте дизайнер, архитект, разработчик на игри или просто имате хобита, тук има по нещо за всеки!</value>
+    <value>Започни пътешествието си из галерията ни сега и извиси проектите си със зашеметяващите ни 3D модели!</value>
   </data>
   <data name="Subtitle" xml:space="preserve">
     <value>В света на пиксели всеки 3D модел е мост между мечта и реалност!</value>
   </data>
   <data name="Title" xml:space="preserve">
     <value>Където Въображението Ви Оживява!</value>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Сигурни ли Сте, че искате да станете наш сътрудник?</value>
   </data>
 </root>

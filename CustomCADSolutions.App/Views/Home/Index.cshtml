@@ -1,12 +1,16 @@
 ﻿@using System.Globalization
-@model CadViewModel
 @inject IViewLocalizer Localizer
 @{
+    CadViewModel cad1 = ViewBag.Watch;
+    CadViewModel cad2 = ViewBag.Chair;
 }
 
 <html>
 <head>
     @*Fade-in effect*@
+    <link rel="stylesheet" href="~/css/animation.css" />
+
+    @*Style*@
     <link rel="stylesheet" href="~/css/index.css" />
 
     @*3D Model*@
@@ -21,65 +25,82 @@
     <script type="module">
         import { loadModel } from '../../js/site.mjs';
 
-        let id = @Model.Id, name = '@Model.Name', texture = '/textures/texture7.jpg';
-        let x = @Model.Coords.Item1, y = @Model.Coords.Item2, z = @Model.Coords.Item3;
-        let axis = '@Model.SpinAxis', speed = @Model.SpinFactor.ToString(new CultureInfo("en-US"));
+        const cad1 = {
+            id: @cad1.Id,
+            name: '@cad1.Name',
+            x: @cad1.Coords.Item1,
+            y: @cad1.Coords.Item2,
+            z: @cad1.Coords.Item3,
+            axis: '@cad1.SpinAxis',
+            speed: @cad1.SpinFactor.ToString(new CultureInfo("en-US")),
+            texture: '@cad1.TexturePath',
+            fov: @cad1.Fov,
+        };
 
-        loadModel(id, name, x, y, z, axis, speed, texture, 65);
+        const cad2 = {
+            id: @cad2.Id,
+            name: '@cad2.Name',
+            x: @cad2.Coords.Item1,
+            y: @cad2.Coords.Item2,
+            z: @cad2.Coords.Item3,
+            axis: '@cad2.SpinAxis',
+            speed: @cad2.SpinFactor.ToString(new CultureInfo("en-US")),
+            texture: '@cad2.TexturePath',
+            fov: @cad2.Fov,
+        };
+
+        loadModel(cad1);
+        loadModel(cad2);
     </script>
 </head>
 
 <body class="fade-in">
-    <h2 class="text-center mt-4 mb-4">CustomCADSolutions</h2>
+    <h1 class="text-center mt-4 mb-4">CustomCADSolutions</h1>
     <hr />
 
-    <div class="container d-flex flex-column justify-content-between">
-        <div class="row gap1 mt-2">
-            <h4 class="col-12 text-center">@Localizer["Title"]</h4>
-            <h5 class="col-12 mt-2 text-center">@Localizer["Start"]</h5>
-        </div>
-        <div class="row flex-sm-row flex-column-reverse mt-sm-2">
-            <div class="col-sm-7 col-12 d-flex flex-column justify-content-center">
-                <p class="fs-5 text-center">@Localizer["End"]</p>
-                <p class="d-flex flex-columns">
-                    <span class="col text-center">@Localizer["Explore"]</span>
-                    <span class="col text-center ms-2 me-2">@Localizer["Order"]</span>
-                    <span class="col text-center">@Localizer["Contribute"]</span>
-                </p>
-                <p class="d-flex flex-columns justify-content-around">
-                    <a style="background-color: #BBB9D9 !important" class="col btn"
-                       asp-area="" , asp-controller="Home" , asp-action="Categories">@Localizer["ExploreBtn"]</a>
-                    <a style="background-color: #BBB9D9 !important" class="col ms-2 me-2 btn"
-                       asp-area="Client" asp-controller="Order" asp-action="Index">@Localizer["OrderBtn"]</a>
-                    <a style="background-color: #BBB9D9 !important" class="col btn"
-                       asp-area="" asp-controller="Home" asp-action="MakeContributer">@Localizer["ContributeBtn"]</a>
-                </p>
+    <div class="container d-flex flex-column justify-content-between mt-4">
+        <div class="row flex-sm-row flex-column-reverse mt">
+            <div class="col-sm-4 col-12 mt-0 mb-3">
+                <div style="height: 20rem !important" id="model-@cad1.Id" class="bg-transparent"></div>
             </div>
-            <div class="col-sm-5 col-12 mt-0 mb-2">
-                <div style="height: 14rem !important" id="model-@Model.Id" class="bg-transparent"></div>
+            
+            <div class="col d-flex flex-column justify-content-evenly align-content-center">
+                <h3 class="col-12 text-center">@Localizer["Title"]</h3>
+                
+                <div class="col-sm-12 mt-5 mt-sm-0 d-flex flex-column justify-items-center">
+                    <p class="col text-center">@Localizer["Contribute"]</p>
+                    <p class="col-12 d-flex flex-columns justify-content-around" onclick="return confirm('@Localizer["Warning"]')">
+                        <a asp-area="" asp-controller="Home" asp-action="MakeContributer"
+                           class="col-6 btn custombtn">@Localizer["ContributeBtn"]</a>
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-sm-4 col-12 mt-0 mb-3">
+                <div style="height: 20rem !important" id="model-@cad2.Id" class="bg-transparent"></div>
             </div>
         </div>
     </div>
     <hr />
 
     <div class="container">
-        <div class="row d-flex justify-content-evenly mt-5 mb-5 gap-sm-0 gap-5">
-            <div class="col-sm-2 col-12">
-                <div style="background-color: #BBB9D9" class="card p-2">
+        <div class="row d-flex flex-row justify-content-evenly mt-5 mb-5 ">
+            <div class="col-sm-2 col-4">
+                <div class="card custombtn p-2">
                     <p class="mb-0  text-center">@Localizer["Recycle"]</p>
                 </div>
                 <img src="~/others/images/recycle.png" class="mt-3 w-100 h-auto rounded-circle" />
             </div>
 
-            <div class="col-sm-2 col-12">
-                <div style="background-color: #BBB9D9" class="card p-2">
+            <div class="col-sm-2 col-4">
+                <div class="card custombtn p-2">
                     <p class="mb-0 text-center">@Localizer["Delivery"]</p>
                 </div>
                 <img src="~/others/images/delivery.png" class="mt-3 w-100 h-auto rounded-circle" />
             </div>
 
-            <div class="col-sm-2 col-12">
-                <div style="background-color: #BBB9D9" class="card p-2">
+            <div class="col-sm-2 col-4  ">
+                <div class="card custombtn p-2">
                     <p class="mb-0 text-center">@Localizer["Quality"]</p>
                 </div>
                 <img src="~/others/images/quality.png" class="mt-3 w-100 h-auto rounded-circle" />

@@ -37,7 +37,7 @@ namespace CustomCADSolutions.App.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index(int speed = 1)
+        public IActionResult Index()
         {
             if (User.IsInRole("Administrator"))
             {
@@ -51,15 +51,27 @@ namespace CustomCADSolutions.App.Controllers
 
             logger.LogInformation("Entered Home Page");
 
-            CadViewModel view = new()
+            ViewBag.Watch = new CadViewModel()
             {
-                Id = 0,
-                Name = "Watch",
-                Coords = (30, 40, 30),
-                SpinAxis = 'y',
-                SpinFactor = speed / 100d,
+                Id = -1,
+                Name = "Racket",
+                Coords = (1, 400, 1),
+                SpinAxis = 'x',
+                SpinFactor = -0.01,
+                TexturePath = "/textures/texture4.jpg",
             };
-            return View(view);
+
+            ViewBag.Chair = new CadViewModel()
+            {
+                Id = -2,
+                Name = "Chair",
+                Coords = (750, 300, 0),
+                SpinAxis = 'y',
+                SpinFactor = -0.01,
+                TexturePath = "/textures/texture3.jpg",
+            };
+
+            return View();
         }
 
         [HttpGet]
@@ -101,7 +113,7 @@ namespace CustomCADSolutions.App.Controllers
                     CreatorName = model.Creator!.UserName,
                     Coords = model.Coords,
                     SpinAxis = model.SpinAxis,
-                    SpinFactor = model.SpinFactor,
+                    SpinFactor = model.SpinFactor
                 });
 
             return View(gallery);

@@ -7,7 +7,7 @@
 <hr />
 
 <div class="d-flex justify-content-center mb-2">
-    <a class="btn btn-primary" asp-area="Client" asp-controller="Order" asp-action="Add">@Localizer["Add"]</a>
+    <a class="btn btn-primary" asp-area="Contributer" asp-controller="Order" asp-action="Add">@Localizer["Add"]</a>
 </div>
 
 @if (!Model.Any())
@@ -34,8 +34,8 @@ else
                                     @switch (order.Status)
                                     {
                                         case "Pending":
-                                            <a asp-area="Client" asp-controller="Order" asp-action="Edit" asp-route-cadId="@order.CadId" class="col btn btn-warning">@Localizer["Edit"]</a>
-                                            <form asp-area="Client" asp-controller="Order" asp-action="Delete" class="col">
+                                            <a asp-area="Contributer" asp-controller="Order" asp-action="Edit" asp-route-cadId="@order.CadId" class="col btn btn-warning">@Localizer["Edit"]</a>
+                                            <form asp-area="Contributer" asp-controller="Order" asp-action="Delete" class="col">
                                                 <input name="cadId" value="@order.CadId" hidden />
                                                 <input name="buyerId" value="@order.BuyerId" hidden />
                                                  <div class="d-grid gap-2">
@@ -46,7 +46,7 @@ else
                                             break;
 
                                         case "Begun":
-                                            <form asp-area="Client" asp-controller="Order" asp-action="Delete" class="col">
+                                            <form asp-area="Contributer" asp-controller="Order" asp-action="Delete" class="col">
                                                 <input name="cadId" value="@order.CadId" hidden />
                                                 <input name="buyerId" value="@order.BuyerId" hidden />
                                                 <div class="d-grid gap-2">
@@ -57,7 +57,7 @@ else
                                             break;
 
                                         case "Finished":
-                                            <a class="col btn btn-secondary" asp-area="Client" asp-controller="Order" asp-action="Details" asp-route-id="@order.CadId">@Localizer["Details"]</a>
+                                            <a class="col btn btn-secondary" asp-area="Contributer" asp-controller="Order" asp-action="Details" asp-route-id="@order.CadId">@Localizer["Details"]</a>
                                             break;
                                     }
                                 </div>

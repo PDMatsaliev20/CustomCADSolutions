@@ -3,7 +3,6 @@
 @{
     CultureInfo en = new("en-US"), bg = new("bg-BG");
     bool isBg = CultureInfo.CurrentCulture == bg;
-    double constant = 5.63;
 }
 
 <head>
@@ -33,12 +32,19 @@
                     <script type="module">
                         import { loadModel } from '../../js/site.mjs';
 
-                        let id = @cad.Id, name = '@cad.Name';
-                        let width = @constant.ToString(en), height = @constant.ToString(en);
-                        let x = @cad.Coords.Item1, y = @cad.Coords.Item2, z = @cad.Coords.Item3;
-                        let axis = '@cad.SpinAxis', speed = @cad.SpinFactor;
+                        const cad = {
+                            id: @cad.Id,
+                            name: '@cad.Name',
+                            texture: '@cad.TexturePath',
+                            x: @cad.Coords.Item1,
+                            y: @cad.Coords.Item2,
+                            z: @cad.Coords.Item3,
+                            axis: '@cad.SpinAxis',
+                            speed: @cad.SpinFactor.ToString(new CultureInfo("en-US")),
+                            fov: @cad.Fov,
+                        };
 
-                        loadModel(id, name, width, height, x, y, z, axis, speed);
+                        loadModel(cad);
                     </script>
                     <div class="col-sm-3 col-12 mt-4">
                         <div class="card">
