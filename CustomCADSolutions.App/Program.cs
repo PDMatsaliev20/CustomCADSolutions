@@ -31,11 +31,11 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 // Add services to the container
 builder.Services.AddControllersWithViews()
     .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
-   .AddDataAnnotationsLocalization(options =>
-   {
-       options.DataAnnotationLocalizerProvider = (type, factory) =>
-           factory.Create(typeof(SharedResources));
-   });
+    .AddDataAnnotationsLocalization(options =>
+    {
+        options.DataAnnotationLocalizerProvider = (type, factory) =>
+            factory.Create(typeof(SharedResources));
+    });
 
 // Add localization to the container
 builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
@@ -95,7 +95,6 @@ if (app.Environment.IsDevelopment())
 else
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 

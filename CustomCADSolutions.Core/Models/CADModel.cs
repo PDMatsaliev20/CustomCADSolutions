@@ -2,7 +2,6 @@
 using static CustomCADSolutions.Infrastructure.Constants.DataConstants;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CustomCADSolutions.Core.Models
 {

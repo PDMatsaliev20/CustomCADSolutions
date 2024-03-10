@@ -107,7 +107,7 @@ namespace CustomCADSolutions.Core.Services
 
         public async Task DeleteAsync(int id)
         {
-            Cad? cad = await this.repository.GetByIdAsync<Cad>(id)
+            Cad cad = await repository.GetByIdAsync<Cad>(id)
                 ?? throw new KeyNotFoundException();
 
             cad.CreatorId = default;
@@ -140,6 +140,7 @@ namespace CustomCADSolutions.Core.Services
         {
             Cad? cad = await repository.GetByIdAsync<Cad>(id)
                 ?? throw new KeyNotFoundException($"Model with id: {id} doesn't exist");
+
             CadModel model = converter.CadToModel(cad);
             return model;
         }

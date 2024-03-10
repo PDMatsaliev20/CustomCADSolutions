@@ -1,0 +1,89 @@
+﻿@{
+}
+
+<ul class="navbar-nav d-flex flex-row justify-content-around">
+    <li class="nav-item">
+        <a asp-area="" asp-controller="Home" asp-action="Index"
+           class="nav-link text-dark text-end" role="button">
+            @ViewData["Home"]
+        </a>
+    </li>
+    @if (User.Identity!.IsAuthenticated)
+    {
+        if (User.IsInRole("Client"))
+        {
+            <li class="nav-item">
+                <a asp-area="" asp-controller="Home" asp-action="Categories"
+                   class="nav-link text-dark text-end" role="button">
+                    @ViewData["Explore"]
+                </a>
+            </li>
+            <li class="nav-item">
+                <a asp-area="Client" asp-controller="Order" asp-action="Index"
+                   class="nav-link text-dark" role="button">
+                    @ViewData["UrOrders"]
+                </a>
+            </li>
+        }
+        else if (User.IsInRole("Contributer"))
+        {
+            <li class="nav-item">
+                <a asp-area="" asp-controller="Home" asp-action="Categories"
+                   class="nav-link text-dark text-end" role="button">
+                    @ViewData["Explore"]
+                </a>
+            </li>
+            <li class="nav-item">
+                <a asp-area="Contributer" asp-controller="Order" asp-action="Index" 
+                    class="nav-link text-dark" role="button">
+                    @ViewData["UrOrders"]
+                </a>
+            </li>
+            <li class="nav-item">
+                <a asp-area="Contributer" asp-controller="Cad" asp-action="Index" 
+                    class="nav-link text-dark" role="button">
+                    @ViewData["UrCads"]
+                </a>
+            </li>
+        }
+        else if (User.IsInRole("Designer"))
+        {
+            <li class="nav-item">
+                <a asp-area="Designer" asp-controller="Order" asp-action="All" 
+                    class="nav-link text-dark" role="button">
+                    @ViewData["AllOrders"]
+                </a>
+            </li>
+            <li class="nav-item">
+                <a asp-area="Designer" asp-controller="Cad" asp-action="All" 
+                    class="nav-link text-dark" role="button">
+                    @ViewData["AllCads"]
+                </a>
+            </li>
+        }
+        else if (User.IsInRole("Administrator"))
+        {
+            <li class="nav-item">
+                <a asp-area="Admin" asp-controller="User" asp-action="Index" 
+                    class="nav-link text-dark" role="button">
+                    @ViewData["AllUsers"]
+                </a>
+            </li>
+            <li class="nav-item">
+                <a asp-area="Admin" asp-controller="Cad" asp-action="Index" 
+                    class="nav-link text-dark" role="button">
+                    @ViewData["AllCads"]
+                </a>
+            </li>
+        }
+    }
+    else
+    {
+        <li class="nav-item">
+            <a asp-area="" asp-controller="Home" asp-action="Categories"
+               class="nav-link text-dark text-end" role="button">
+                @ViewData["Explore"]
+            </a>
+        </li>
+    }
+</ul>

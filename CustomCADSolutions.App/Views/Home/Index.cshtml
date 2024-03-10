@@ -1,7 +1,6 @@
-﻿@using System.Globalization
-@inject IViewLocalizer Localizer
+﻿@inject IViewLocalizer Localizer
 @{
-    CadViewModel cad1 = ViewBag.Chair;
+    CadViewModel cad = ViewBag.Chair;
 }
 
 <html>
@@ -25,15 +24,15 @@
         import { loadModel } from '../../js/site.mjs';
 
         const cad = {
-            id: @cad1.Id,
-            name: '@cad1.Name',
-            x: @cad1.Coords.Item1,
-            y: @cad1.Coords.Item2,
-            z: @cad1.Coords.Item3,
-            axis: '@cad1.SpinAxis',
-            speed: @cad1.SpinFactor.ToString(new CultureInfo("en-US")),
-            texture: '@cad1.TexturePath',
-            fov: @cad1.Fov,
+            id: @cad.Id,
+            name: '@cad.Name',
+            x: @cad.Coords.Item1,
+            y: @cad.Coords.Item2,
+            z: @cad.Coords.Item3,
+            axis: '@cad.SpinAxis',
+            speed: @cad.SpinFactor.ToString(new CultureInfo("en-US")),
+            texture: '@cad.TexturePath',
+            fov: @cad.Fov,
         };
 
         loadModel(cad);
@@ -58,7 +57,7 @@
             </div>
 
             <div class="col-sm-4 col-12 mt-0 mb-3">
-                <div style="height: 20rem !important" id="model-@cad1.Id" class="bg-transparent"></div>
+                <div style="height: 20rem !important" id="model-@cad.Id" class="bg-transparent"></div>
             </div>
         </div>
     </div>

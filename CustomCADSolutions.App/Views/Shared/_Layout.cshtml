@@ -31,63 +31,11 @@
 
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between fs-5">
                     <div class="fade-in d-flex flex-sm-row flex-column">
-                        <ul class="navbar-nav d-flex flex-row justify-content-around">
-                            <li class="nav-item">
-                                <a asp-area="" asp-controller="Home" asp-action="Index"
-                                   class="nav-link text-dark text-end" role="button">
-                                    @Localizer["Home"]
-                                </a>
-                            </li>
-                            @if (User.Identity!.IsAuthenticated)
-                            {
-                                if (User.IsInRole("Client"))
-                                {
-                                    <li class="nav-item">
-                                        <a asp-area="" asp-controller="Home" asp-action="Categories"
-                                           class="nav-link text-dark text-end" role="button">
-                                            @Localizer["Explore"]
-                                        </a>
-                                    </li>
-                                    <li class="nav-item"><a class="nav-link text-dark" asp-area="Client" asp-controller="Order" asp-action="Index" role="button">@Localizer["UrOrders"]</a></li>
-                                }
-                                else if (User.IsInRole("Contributer"))
-                                {
-                                    <li class="nav-item">
-                                        <a asp-area="" asp-controller="Home" asp-action="Categories"
-                                           class="nav-link text-dark text-end" role="button">
-                                            @Localizer["Explore"]
-                                        </a>
-                                    </li>
-                                    <li class="nav-item"><a class="nav-link text-dark" asp-area="Contributer" asp-controller="Order" asp-action="Index" role="button">@Localizer["UrOrders"]</a></li>
-                                    <li class="nav-item"><a class="nav-link text-dark" asp-area="Contributer" asp-controller="Cad" asp-action="Index" role="button">@Localizer["UrCads"]</a></li>
-                                }
-                                else if (User.IsInRole("Designer"))
-                                {
-                                    <li class="nav-item"><a class="nav-link text-dark" asp-area="Designer" asp-controller="Order" asp-action="All" role="button">@Localizer["AllOrders"]</a></li>
-                                    <li class="nav-item"><a class="nav-link text-dark" asp-area="Designer" asp-controller="Cad" asp-action="All" role="button">@Localizer["AllCads"]</a></li>
-                                }
-                                else if (User.IsInRole("Administrator"))
-                                {
-                                    <li class="nav-item"><a class="nav-link text-dark" asp-area="Admin" asp-controller="User" asp-action="Index" role="button">@Localizer["AllUsers"]</a></li>
-                                    <li class="nav-item"><a class="nav-link text-dark" asp-area="Admin" asp-controller="Cad" asp-action="Index" role="button">@Localizer["AllCads"]</a></li>
-                                }
-                            }
-                            else
-                            {
-                                <li class="nav-item">
-                                    <a asp-area="" asp-controller="Home" asp-action="Categories"
-                                       class="nav-link text-dark text-end" role="button">
-                                        @Localizer["Explore"]
-                                    </a>
-                                </li>
-                            }
-                        </ul>
+                        @await Component.InvokeAsync("MainMenuComponent", new { home = Localizer["Home"].Value, explore = Localizer["Explore"].Value, urOrders = Localizer["UrOrders"].Value, urCads = Localizer["UrCads"].Value, allOrders = Localizer["AllOrders"].Value, allCads = Localizer["AllCads"].Value, allUsers = Localizer["AllUsers"].Value, })
                     </div>
                     <div>
                         <ul class="navbar-nav d-flex flex-row justify-content-around alignt-items-center fade-in">
-                            <li class="nav-item dropdown">
-                                <partial name="_LanguageBtnPartial" model="@currentUrl" />
-                            </li>
+                            <partial name="_LanguageBtnPartial" model="@currentUrl" />
                             <partial name="_LoginPartial" />
                         </ul>
                     </div>
@@ -104,15 +52,7 @@
     <hr />
 
     <footer class="footer position-relative w-100">
-        <div class="d-flex flex-sm-row flex-column align-items-center justify-content-evenly">
-            <p class="fw-bold"><a class="text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">@Localizer["Privacy"]</a></p>
-            <p>&copy; 2023-@DateTime.Now.Year - CustomCADSolutions</p>
-            <p class="rounded-2">
-                <span>@Localizer["Contacts"]</span>
-                <a href="https://www.instagram.com/customcadsolutions/" class="text-black"><i class="ms-1 fa fa-instagram"></i></a>
-                <a href="https://twitter.com/customcads/" class="text-black"><i class="ms-1 fa fa-twitter"></i></a>
-            </p>
-        </div>
+        @await Component.InvokeAsync("FooterComponent", new { privacy = Localizer["Privacy"].Value, contacts = Localizer["Contacts"].Value, })
     </footer>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

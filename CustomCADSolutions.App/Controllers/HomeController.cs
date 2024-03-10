@@ -37,7 +37,7 @@ namespace CustomCADSolutions.App.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             if (User.IsInRole("Administrator"))
             {
@@ -50,16 +50,6 @@ namespace CustomCADSolutions.App.Controllers
             }
 
             logger.LogInformation("Entered Home Page");
-
-            ViewBag.Watch = new CadViewModel()
-            {
-                Id = -1,
-                Name = "Racket",
-                Coords = (1, 400, 1),
-                SpinAxis = 'x',
-                SpinFactor = -0.01,
-                TexturePath = "/textures/texture4.jpg",
-            };
 
             ViewBag.Chair = new CadViewModel()
             {
