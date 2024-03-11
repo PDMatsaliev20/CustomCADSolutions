@@ -47,7 +47,6 @@ namespace CustomCADSolutions.App.Areas.Admin.Controllers
                     Id = m.Id,
                     Name = m.Name,
                     Category = m.Category.Name,
-                    BgCategory = m.Category.BgName,
                     CreationDate = m.CreationDate!.Value.ToString("dd/MM/yyyy HH:mm:ss"),
                     CreatorName = m.Creator!.UserName,
                     Coords = m.Coords,

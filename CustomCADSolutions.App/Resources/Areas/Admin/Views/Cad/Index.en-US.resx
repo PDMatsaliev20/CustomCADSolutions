@@ -123,8 +123,14 @@
   <data name="DeleteWarning" xml:space="preserve">
     <value>Are you sure you want to delete this model: {0}?</value>
   </data>
+  <data name="InGallery" xml:space="preserve">
+    <value>Visible</value>
+  </data>
   <data name="NoCads" xml:space="preserve">
     <value>No cads yet!</value>
+  </data>
+  <data name="NotInGallery" xml:space="preserve">
+    <value>Invisible</value>
   </data>
   <data name="Title" xml:space="preserve">
     <value>3D Models Management</value>

@@ -120,6 +120,18 @@
   <data name="Add" xml:space="preserve">
     <value>Add new Order</value>
   </data>
+  <data name="All" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="Animals" xml:space="preserve">
+    <value>Animals</value>
+  </data>
+  <data name="Begun" xml:space="preserve">
+    <value>Begun</value>
+  </data>
+  <data name="Characters" xml:space="preserve">
+    <value>Characters</value>
+  </data>
   <data name="Delete" xml:space="preserve">
     <value>Delete</value>
   </data>
@@ -129,10 +141,43 @@
   <data name="Edit" xml:space="preserve">
     <value>Edit</value>
   </data>
+  <data name="Electronics" xml:space="preserve">
+    <value>Electronics</value>
+  </data>
+  <data name="Fashion" xml:space="preserve">
+    <value>Fashion</value>
+  </data>
+  <data name="Finished" xml:space="preserve">
+    <value>Finished</value>
+  </data>
+  <data name="Furniture" xml:space="preserve">
+    <value>Furniture</value>
+  </data>
+  <data name="Nature" xml:space="preserve">
+    <value>Nature</value>
+  </data>
   <data name="NoOrders" xml:space="preserve">
     <value>No orders yet!</value>
   </data>
+  <data name="Others" xml:space="preserve">
+    <value>Others</value>
+  </data>
+  <data name="Pending" xml:space="preserve">
+    <value>Pending</value>
+  </data>
+  <data name="Science" xml:space="preserve">
+    <value>Science</value>
+  </data>
+  <data name="Sports" xml:space="preserve">
+    <value>Sports</value>
+  </data>
   <data name="Title" xml:space="preserve">
     <value>{0}'s Orders</value>
+  </data>
+  <data name="Toys" xml:space="preserve">
+    <value>Toys</value>
+  </data>
+  <data name="Vehicles" xml:space="preserve">
+    <value>Vehicles</value>
   </data>
 </root>

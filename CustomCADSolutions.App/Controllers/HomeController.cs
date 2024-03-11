@@ -98,7 +98,6 @@ namespace CustomCADSolutions.App.Controllers
                     Id = model.Id,
                     Name = model.Name,
                     Category = model.Category.Name,
-                    BgCategory = model.Category.BgName,
                     CreationDate = model.CreationDate!.Value.ToString("dd/MM/yyyy HH:mm:ss"),
                     CreatorName = model.Creator!.UserName,
                     Coords = model.Coords,

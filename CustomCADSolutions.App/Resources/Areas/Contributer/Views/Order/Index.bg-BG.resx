@@ -120,6 +120,18 @@
   <data name="Add" xml:space="preserve">
     <value>Добави нова поръчка</value>
   </data>
+  <data name="All" xml:space="preserve">
+    <value>Всички</value>
+  </data>
+  <data name="Animals" xml:space="preserve">
+    <value>Животни</value>
+  </data>
+  <data name="Begun" xml:space="preserve">
+    <value>Започната</value>
+  </data>
+  <data name="Characters" xml:space="preserve">
+    <value>Герои</value>
+  </data>
   <data name="Delete" xml:space="preserve">
     <value>Изтрий</value>
   </data>
@@ -129,10 +141,43 @@
   <data name="Edit" xml:space="preserve">
     <value>Редактирай</value>
   </data>
+  <data name="Electronics" xml:space="preserve">
+    <value>Електроника</value>
+  </data>
+  <data name="Fashion" xml:space="preserve">
+    <value>Мода</value>
+  </data>
+  <data name="Finished" xml:space="preserve">
+    <value>Завършена</value>
+  </data>
+  <data name="Furniture" xml:space="preserve">
+    <value>Мебели</value>
+  </data>
+  <data name="Nature" xml:space="preserve">
+    <value>Природа</value>
+  </data>
   <data name="NoOrders" xml:space="preserve">
     <value>Все още няма поръчки!</value>
   </data>
+  <data name="Others" xml:space="preserve">
+    <value>Други</value>
+  </data>
+  <data name="Pending" xml:space="preserve">
+    <value>Предстояща</value>
+  </data>
+  <data name="Science" xml:space="preserve">
+    <value>Наука</value>
+  </data>
+  <data name="Sports" xml:space="preserve">
+    <value>Спорт</value>
+  </data>
   <data name="Title" xml:space="preserve">
     <value>Поръчките на {0}</value>
+  </data>
+  <data name="Toys" xml:space="preserve">
+    <value>Играчки</value>
+  </data>
+  <data name="Vehicles" xml:space="preserve">
+    <value>Коли</value>
   </data>
 </root>

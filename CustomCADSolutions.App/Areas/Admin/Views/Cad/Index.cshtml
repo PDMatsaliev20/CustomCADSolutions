@@ -44,7 +44,7 @@
 
                     <div class="col-lg-3 col-md-4 col-12 mt-4">
                         <div class="card">
-                            <h4 class="card-header text-center mb-1">@cad.Name (@(isBg ? cad.BgCategory : cad.Category))</h4>
+                            <h4 class="card-header text-center mb-1">@cad.Name (@Localizer[cad.Validated ? "InGallery" : "NotInGallery"])</h4>
                             <div class="card-body">
                                 <div id="model-@cad.Id"></div>
                                 <form class="mt-2" asp-action="Delete" asp-route-id="@cad.Id">

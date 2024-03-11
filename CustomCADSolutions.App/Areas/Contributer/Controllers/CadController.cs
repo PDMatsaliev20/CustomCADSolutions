@@ -47,14 +47,14 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
                     Id = model.Id,
                     Name = model.Name,
                     Category = model.Category.Name,
-                    BgCategory = model.Category.BgName,
                     CreationDate = model.CreationDate!.Value.ToString("dd/MM/yyyy HH:mm:ss"),
                     CreatorName = model.Creator!.UserName,
                     Coords = model.Coords,
                     SpinAxis = model.SpinAxis,
                     SpinFactor = model.SpinFactor,
                     Validated = model.Validated,
-                });
+                })
+                .OrderByDescending(view => view.CreationDate);
 
             return View(views);
         }

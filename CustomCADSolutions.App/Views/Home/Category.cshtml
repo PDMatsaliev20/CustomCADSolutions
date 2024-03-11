@@ -53,31 +53,34 @@
                                 <div id="model-@cad.Id"></div>
                                 @if (User.Identity!.IsAuthenticated)
                                 {
-                                    string buyerId = (await UserManager.FindByNameAsync(User.Identity!.Name!)).Id;
+                                    string username = User.Identity!.Name!;
+                                    IdentityUser user = await UserManager.FindByNameAsync(username);
 
-                                    bool alreadyOrdered = default;
+                                    bool alreadyOrdered = true;
                                     try 
                                     {
-                                        var order = await OrderService.GetByIdAsync(cad.Id, buyerId);
-                                        alreadyOrdered = true;
+                                        var order = await OrderService.GetByIdAsync(cad.Id, user.Id);
                                     }
                                     catch 
                                     {
                                         alreadyOrdered = false; 
                                     }
 
-                                    bool isClient = User.IsInRole("Client"),
-                                        isContributer = User.IsInRole("Contributer");
+                                    if (!alreadyOrdered)
+                                    {
+                                        if (User.IsInRole("Contributer") && username != cad.CreatorName!)
+                                        {
+                                            <form asp-area="Contributer" asp-controller="Order" asp-action="Order" asp-route-id="@cad.Id">
+                                                <input type="submit" value="@Localizer["Order"]" class="btn btn-secondary text-decoration-none" />
+                                            </form>
+                                        }
 
-                                    if ((isClient || isContributer) && !alreadyOrdered)
-                                    {
-                                        <form asp-area="@(User.IsInRole("Client") ? "Client" : "Contributer")" asp-controller="Order" asp-action="Order" asp-route-id="@cad.Id">
-                                            <input type="submit" value="@Localizer["Order"]" class="btn btn-secondary text-decoration-none" />
-                                        </form>
-                                    }
-                                    else
-                                    {
-                                        
+                                        if (User.IsInRole("Client"))
+                                        {
+                                            <form asp-area="Client" asp-controller="Order" asp-action="Order" asp-route-id="@cad.Id">
+                                                <input type="submit" value="@Localizer["Order"]" class="btn btn-secondary text-decoration-none" />
+                                            </form>
+                                        }
                                     }
                                 }
                                 else

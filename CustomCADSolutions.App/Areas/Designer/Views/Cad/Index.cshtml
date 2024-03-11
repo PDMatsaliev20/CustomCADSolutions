@@ -1,8 +1,6 @@
 ﻿@model IEnumerable<CadViewModel>
 @inject IViewLocalizer Localizer
 @{
-    CultureInfo en = new("en-US"), bg = new("bg-BG");
-    bool isBg = CultureInfo.CurrentCulture == bg;
 }
 <head>
     <script type="importmap">
@@ -52,7 +50,7 @@
                     </script>
                     <div class="col-sm-3 col-12 mt-4">
                         <div class="card">
-                            <h4 class="card-header text-center mb-1">@cad.Name (@(isBg ? cad.BgCategory : cad.Category))</h4>
+                            <h4 class="card-header text-center mb-1">@cad.Name (@Localizer[cad.Category])</h4>
                             <div class="card-body">
                                 <div id="model-@cad.Id"></div>
                                 <div class="d-grid gap-2">
