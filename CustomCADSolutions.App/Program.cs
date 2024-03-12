@@ -1,9 +1,4 @@
-using CustomCADSolutions.Core.Contracts;
-using CustomCADSolutions.Core.Services;
-using CustomCADSolutions.Infrastructure.Data;
-using CustomCADSolutions.Infrastructure.Data.Common;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Razor;
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
@@ -11,24 +6,9 @@ using CustomCADSolutions.App.Resources.Shared;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add database to the container.
-var connectionString = builder.Configuration.GetConnectionString("RealConnection");
-builder.Services.AddDbContext<CADContext>(options => options.UseSqlServer(connectionString));
-builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+builder.Services.AddApplicationDbContext(builder.Configuration);
+builder.Services.AddApplicationIdentity();
 
-// Add identity to the container
-builder.Services.AddDefaultIdentity<IdentityUser>(options =>
-{
-    options.SignIn.RequireConfirmedAccount = false;
-    options.Password.RequireDigit = false;
-    options.Password.RequireNonAlphanumeric = false;
-    options.Password.RequireLowercase = false;
-    options.Password.RequireUppercase = false;
-})
-    .AddRoles<IdentityRole>()
-    .AddEntityFrameworkStores<CADContext>();
-
-// Add services to the container
 builder.Services.AddControllersWithViews()
     .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
     .AddDataAnnotationsLocalization(options =>
@@ -37,49 +17,19 @@ builder.Services.AddControllersWithViews()
             factory.Create(typeof(SharedResources));
     });
 
-// Add localization to the container
-builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
-builder.Services.Configure<RequestLocalizationOptions>(options =>
-{
-    options.DefaultRequestCulture = new RequestCulture("en-US");
-    
-    var cultures = new CultureInfo[]
-    {
-        new("en-US"),
-        new("bg-BG")
-    };
-    options.SupportedCultures = cultures;
-    options.SupportedUICultures = cultures;
-});
+builder.Services.AddApplicationServices();
 
-// Add roles to the container
-string[] roles = { "Administrator", "Designer", "Contributer", "Client"};
-builder.Services.AddAuthorization(options =>
-{
-    foreach (string role in roles)
-    {
-        options.AddPolicy(role, policy => policy.RequireRole(role));
-    }
-});
+builder.Services.AddLocalizater();
 
-// Add abstraction levels to the container
-builder.Services.AddScoped<IRepository, Repository>();
-builder.Services.AddScoped<IConverter, Converter>();
+string[] roles = { "Administrator", "Designer", "Contributer", "Client" };
+builder.Services.AddRoles(roles);
 
-builder.Services.AddScoped<IOrderService, OrderService>();
-builder.Services.AddScoped<ICadService, CadService>();
-builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddAbstractions();
 
-// Add redirection to the container
-builder.Services.ConfigureApplicationCookie(options =>
-{
-    options.LoginPath = "/Identity/Account/Login";
-});
+builder.Services.ConfigureApplicationCookie(options => options.LoginPath = "/Identity/Account/Login");
 
-//  Build app
 var app = builder.Build();
 
-// Request Localization
 app.UseRequestLocalization(new RequestLocalizationOptions
 {
     DefaultRequestCulture = new RequestCulture("en-US"),
@@ -87,7 +37,6 @@ app.UseRequestLocalization(new RequestLocalizationOptions
     SupportedUICultures = new[] { new CultureInfo("bg-BG"), new CultureInfo("en-US") }
 });
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseMigrationsEndPoint();
@@ -147,6 +96,5 @@ app.MapAreaControllerRoute(
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-
 
 app.Run();
