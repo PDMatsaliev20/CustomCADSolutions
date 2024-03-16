@@ -3,10 +3,9 @@ using CustomCADSolutions.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using CustomCADSolutions.App.Models.Cads;
 using Microsoft.AspNetCore.Authorization;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
-using CustomCADSolutions.Infrastructure.Data.Models;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
+using CustomCADSolutions.App.Controllers;
 
 namespace CustomCADSolutions.App.Areas.Designer.Controllers
 {
@@ -57,7 +56,7 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
                 .ToArray();
             
             ViewBag.UserModelsCount = (await cadService.GetAllAsync())
-                .Count(model => model.CreatorId == GetUserId());
+                .Count(model => model.CreatorId == User.GetId());
 
             return View(views);
         }
@@ -97,7 +96,7 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
         public async Task<IActionResult> Index()
         {
             IEnumerable<CadViewModel> views = (await cadService.GetAllAsync())
-                .Where(model => model.CreatorId == GetUserId())
+                .Where(model => model.CreatorId == User.GetId())
                 .Select(model => new CadViewModel
                 {
                     Id = model.Id,
@@ -119,7 +118,7 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
         {
             logger.LogInformation("Entered Submit Page");
 
-            CadInputModel input = new() { Categories = await GetCategories() };
+            CadInputModel input = new() { Categories = await categoryService.GetAllAsync() };
             return View(input);
         }
         
@@ -129,7 +128,7 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
             if (!ModelState.IsValid)
             {
                 logger.LogError("Invalid 3d Model");
-                input.Categories = await GetCategories();
+                input.Categories = await categoryService.GetAllAsync();
                 if (ModelState.ErrorCount > 1)
                 {
                     return View(input);
@@ -147,16 +146,12 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
                 CategoryId = input.CategoryId,
                 Validated = User.IsInRole("Designer"),
                 CreationDate = DateTime.Now,
-                CreatorId = GetUserId(),
+                CreatorId = User.GetId()
             };
-            model.Creator = await userManager.FindByIdAsync(model.CreatorId);
-            int cadId = await cadService.CreateAsync(model);
-            
-            string filePath = GetCadPath(input.Name, cadId);
-            using FileStream fileStream = new(filePath, FileMode.Create);
-            await input.CadFile.CopyToAsync(fileStream);
 
-            logger.LogInformation("Submitted 3d Model");
+            int cadId = await cadService.CreateAsync(model);
+            await hostingEnvironment.UploadCadAsync(input.CadFile, cadId, input.Name);
+            
             return RedirectToAction(nameof(Index));
         }
 
@@ -170,14 +165,14 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
                 return BadRequest();
             }
 
-            if (model.CreatorId != GetUserId())
+            if (model.CreatorId != User.GetId())
             {
                 return Unauthorized();
             }
 
             CadInputModel input = new()
             {
-                Categories = await GetCategories(),
+                Categories = await categoryService.GetAllAsync(),
                 Name = model.Name,
                 CategoryId = model.CategoryId,
                 X = model.Coords.Item1,
@@ -200,17 +195,14 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
                 return BadRequest();
             }
 
-            if (model.CreatorId != GetUserId())
+            if (model.CreatorId != User.GetId())
             {
                 return Unauthorized();
             }
 
             if (input.Name != model.Name)
             {
-                string source = GetCadPath(model.Name, id);
-                string destination = GetCadPath(input.Name, id);
-
-                System.IO.File.Move(source, destination);
+                hostingEnvironment.EditCad(id, model.Name, input.Name);
                 model.Name = input.Name;
             }
 
@@ -230,7 +222,7 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
         {
             CadModel cad = await cadService.GetByIdAsync(id);
 
-            if (cad.CreatorId != GetUserId())
+            if (cad.CreatorId != User.GetId())
             {
                 return Unauthorized();
             }
@@ -239,25 +231,9 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
             orders.ToList().ForEach(o => o.Status = OrderStatus.Pending);
 
             await cadService.DeleteAsync(cad.Id);
-
-            string filePath = GetCadPath(cad.Name, cad.Id);
-            if (System.IO.File.Exists(filePath))
-            {
-                System.IO.File.Delete(filePath);
-            }
-            else logger.LogWarning("File not found");
+            hostingEnvironment.DeleteCad(cad.Name, cad.Id);
 
             return RedirectToAction(nameof(Index));
         }
-
-        // Private methods
-
-        private string GetCadPath(string cadName, int cadId) 
-            => Path.Combine(hostingEnvironment.WebRootPath, "others", "cads", $"{cadName}{cadId}.stl");
-
-        private string GetUserId() => User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-        private async Task<Category[]> GetCategories()
-            => (await categoryService.GetAllAsync()).ToArray();
     }
 }

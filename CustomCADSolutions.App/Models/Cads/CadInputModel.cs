@@ -53,6 +53,6 @@ namespace CustomCADSolutions.App.Models.Cads
         [Display(Name = "Axis", ResourceType = typeof(SharedResources))]
         public char? SpinAxis { get; set; }
 
-        public Category[]? Categories { get; set; }
+        public IEnumerable<Category>? Categories { get; set; }
     }
 }

@@ -2537,6 +2537,10 @@
       "PackagePath": "staticwebassets\\others\\images\\flags\\4x3\\zw.svg"
     },
     {
+      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\puppy.png",
+      "PackagePath": "staticwebassets\\others\\images\\puppy.png"
+    },
+    {
       "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\quality.png",
       "PackagePath": "staticwebassets\\others\\images\\quality.png"
     },

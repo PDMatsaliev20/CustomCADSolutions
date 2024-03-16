@@ -1,45 +1,29 @@
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc.Razor;
-using System.Globalization;
-using Microsoft.AspNetCore.Localization;
-using CustomCADSolutions.App.Resources.Shared;
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddApplicationDbContext(builder.Configuration);
 builder.Services.AddApplicationIdentity();
+builder.Services.AddControllersWithViews().AddViewLocalizer();
 
-builder.Services.AddControllersWithViews()
-    .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
-    .AddDataAnnotationsLocalization(options =>
-    {
-        options.DataAnnotationLocalizerProvider = (type, factory) =>
-            factory.Create(typeof(SharedResources));
-    });
-
-builder.Services.AddApplicationServices();
-
-builder.Services.AddLocalizater();
+System.Globalization.CultureInfo[] cultures = { new("en-US"), new("bg-BG") };
+builder.Services.AddLocalizer(cultures);
 
 string[] roles = { "Administrator", "Designer", "Contributer", "Client" };
 builder.Services.AddRoles(roles);
 
 builder.Services.AddAbstractions();
-
-builder.Services.ConfigureApplicationCookie(options => options.LoginPath = "/Identity/Account/Login");
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Identity/Account/Login";
+    options.AccessDeniedPath = "/Home/Unauthorized";
+});
 
 var app = builder.Build();
 
-app.UseRequestLocalization(new RequestLocalizationOptions
-{
-    DefaultRequestCulture = new RequestCulture("en-US"),
-    SupportedCultures = new[] { new CultureInfo("bg-BG"), new CultureInfo("en-US") },
-    SupportedUICultures = new[] { new CultureInfo("bg-BG"), new CultureInfo("en-US") }
-});
+app.UseLocalizion("en-US", cultures);
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseMigrationsEndPoint();
+    app.UseStatusCodePagesWithReExecute("/Home/StatusCodeHandler", "?statusCode={0}");
 }
 else
 {
@@ -51,22 +35,11 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
- 
+
 app.UseAuthentication();
 app.UseAuthorization();
 
-using (IServiceScope scope = app.Services.CreateScope())
-{
-    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-    foreach (string role in roles)
-    {
-        if (!await roleManager.RoleExistsAsync(role))
-        {
-            await roleManager.CreateAsync(new IdentityRole(role));
-        }
-    }
-}
-
+await app.Services.UseRolesAsync(roles);
 
 app.MapAreaControllerRoute(
     name: "AdminArea",
@@ -93,8 +66,6 @@ app.MapAreaControllerRoute(
     areaName: "Identity",
     pattern: "Identity/{controller=Account}/{action=Register}");
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapDefaultControllerRoute();
 
-app.Run();
+await app.RunAsync();

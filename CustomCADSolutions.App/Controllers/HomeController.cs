@@ -2,12 +2,11 @@
 using CustomCADSolutions.App.Models.Cads;
 using CustomCADSolutions.Core.Contracts;
 using CustomCADSolutions.Core.Models;
-using CustomCADSolutions.Infrastructure.Data.Models;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using System.Security.Claims;
 
 namespace CustomCADSolutions.App.Controllers
 {
@@ -67,30 +66,31 @@ namespace CustomCADSolutions.App.Controllers
         [HttpGet]
         public async Task<IActionResult> Categories()
         {
-            logger.LogInformation("Entered Categories Page");
-
-            Category[] categories = await GetCategoriesAsync();
-
-            ViewBag.Categories = GetCategoriesName(categories.Select(c => c.Name));
-
+            ViewBag.Categories = new string[] { "All" }
+                .Concat((await categoryService
+                    .GetAllAsync())
+                    .Select(c => c.Name));
+            
             return View();
         }
 
         [HttpGet]
         public async Task<IActionResult> Category(string category)
         {
-            logger.LogInformation($"Entered {category} Page");
-            ViewBag.Category = category;
-
             IEnumerable<CadModel> models = (await cadService.GetAllAsync())
                 .Where(c => c.Creator != null && c.Validated)
                 .OrderByDescending(c => c.CreationDate);
 
-            IEnumerable<string> categories = (await GetCategoriesAsync()).Select(c => c.Name);
+            IEnumerable<string> categories = (await categoryService.GetAllAsync()).Select(c => c.Name);
             if (categories.Contains(category))
             {
                 models = models.Where(cad => cad.Category.Name == category);
             }
+            else if (category != "All")
+            {
+                return NotFound();
+            }
+            ViewBag.Category = category;
 
             IEnumerable<CadViewModel> gallery = models
                 .Select(model => new CadViewModel
@@ -124,16 +124,16 @@ namespace CustomCADSolutions.App.Controllers
             {
                 return View();
             }
-            
-            IdentityUser user = await userManager.FindByIdAsync(GetUserId());
+
+            IdentityUser user = await userManager.FindByIdAsync(User.GetId());
             IEnumerable<string> roles = await userManager.GetRolesAsync(user);
 
             await userManager.RemoveFromRoleAsync(user, roles.Single());
             await userManager.AddToRoleAsync(user, "Contributer");
-            
+
             await signInManager.SignOutAsync();
             await signInManager.SignInAsync(user, false);
-            
+
             return RedirectToAction("Index", "Cad", new { area = "Contributer" });
         }
 
@@ -144,18 +144,22 @@ namespace CustomCADSolutions.App.Controllers
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public IActionResult Error() => View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+
+        public IActionResult StatusCodeHandler(int statusCode)
         {
-            logger.LogInformation("Entered Error Page");
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            ViewBag.OriginalStatusCode = statusCode;
+
+            ViewBag.ErrorMessage = statusCode switch
+            {
+                400 => "Your request could not be understood by the server due to malformed syntax or other client-side errors.",
+                401 => "You do not have access to the resource you requested.",
+                404 => "The resource you requested could not be found.",
+                _ => "An error occurred.",
+            };
+            return View();
         }
 
-        public async Task<Category[]> GetCategoriesAsync()
-            => (await categoryService.GetAllAsync()).ToArray();
-
-        private static string[] GetCategoriesName(IEnumerable<string> names)
-            => string.Join(" ", "All", string.Join(" ", names)).Split();
-
-        private string GetUserId() => User.FindFirstValue(ClaimTypes.NameIdentifier);
+        public new IActionResult Unauthorized() => base.Unauthorized();
     }
 }

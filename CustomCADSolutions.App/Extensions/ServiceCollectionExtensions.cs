@@ -1,27 +1,22 @@
-﻿using CustomCADSolutions.Core.Contracts;
+﻿using CustomCADSolutions.App.Resources.Shared;
+using CustomCADSolutions.Core.Contracts;
 using CustomCADSolutions.Core.Services;
 using CustomCADSolutions.Infrastructure.Data;
 using CustomCADSolutions.Infrastructure.Data.Common;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
-    public static class ServiceCollectionExtension
+    public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddApplicationServices(this IServiceCollection services)
-        {
-            return services;
-        }
-
         public static IServiceCollection AddApplicationDbContext(this IServiceCollection services, IConfiguration config)
         {
             string connectionString = config.GetConnectionString("RealConnection");
             services.AddDbContext<CADContext>(options => options.UseSqlServer(connectionString));
-            services.AddDatabaseDeveloperPageExceptionFilter();
 
             return services;
         }
@@ -42,18 +37,26 @@ namespace Microsoft.Extensions.DependencyInjection
             return services;
         }
 
-        public static IServiceCollection AddLocalizater(this IServiceCollection services)
+        public static IMvcBuilder AddViewLocalizer(this IMvcBuilder builder)
+        {
+            builder.AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix);
+
+            builder.AddDataAnnotationsLocalization(options =>
+            {
+                options.DataAnnotationLocalizerProvider = (type, factory) =>
+                    factory.Create(typeof(SharedResources));
+            });
+
+            return builder;
+        }
+
+        public static IServiceCollection AddLocalizer(this IServiceCollection services, CultureInfo[] cultures)
         {
             services.AddLocalization(options => options.ResourcesPath = "Resources");
             services.Configure<RequestLocalizationOptions>(options =>
             {
                 options.DefaultRequestCulture = new RequestCulture("en-US");
 
-                CultureInfo[] cultures = new CultureInfo[]
-                {
-                    new("en-US"),
-                    new("bg-BG")
-                };
                 options.SupportedCultures = cultures;
                 options.SupportedUICultures = cultures;
             });

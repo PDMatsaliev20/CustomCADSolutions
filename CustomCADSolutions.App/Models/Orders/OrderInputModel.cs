@@ -37,6 +37,6 @@ namespace CustomCADSolutions.App.Models.Orders
         
         public OrderStatus Status { get; set; }
 
-        public Category[]? Categories { get; set; }
+        public IEnumerable<Category>? Categories { get; set; }
     }
 }

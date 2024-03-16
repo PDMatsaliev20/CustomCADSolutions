@@ -6,7 +6,7 @@ using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
+using static CustomCADSolutions.App.Controllers.UtilitiesNotController;
 
 namespace CustomCADSolutions.App.Areas.Designer.Controllers
 {
@@ -92,9 +92,9 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
                 return BadRequest();
             }
 
-            await UploadFileAsync(input.CadFile, input.Id, model.Cad.Name);
+            await hostingEnvironment.UploadCadAsync(input.CadFile, input.Id, model.Cad.Name);
 
-            model.Cad.CreatorId = GetUserId();
+            model.Cad.CreatorId = User.GetId();
             model.Cad.CreationDate = DateTime.Now;
             model.Cad.Validated = true;
 
@@ -119,16 +119,5 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
 
             return RedirectToAction(nameof(All));
         }
-
-        // Private methods
-
-        private static async Task UploadFileAsync(IFormFile cad, int cadId, string cadName, string extension = ".stl")
-        {
-            string filePath = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot/others/cads/{cadName}{cadId}{extension}");
-            using FileStream fileStream = new(filePath, FileMode.Create);
-            await cad.CopyToAsync(fileStream);
-        }
-
-        private string GetUserId() => User.FindFirstValue(ClaimTypes.NameIdentifier);
     }
 }

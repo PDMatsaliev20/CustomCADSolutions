@@ -1,12 +1,12 @@
 ﻿using CustomCADSolutions.App.Models.Cads;
 using CustomCADSolutions.Core.Contracts;
 using CustomCADSolutions.Core.Models;
-using CustomCADSolutions.Infrastructure.Data.Models;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using static CustomCADSolutions.App.Controllers.UtilitiesNotController;
 
 namespace CustomCADSolutions.App.Areas.Admin.Controllers
 {
@@ -69,7 +69,7 @@ namespace CustomCADSolutions.App.Areas.Admin.Controllers
 
             await cadService.DeleteAsync(cad.Id);
 
-            string filePath = GetCadPath(cad.Name, cad.Id);
+            string filePath = hostingEnvironment.GetCadPath(cad.Name, cad.Id);
             if (System.IO.File.Exists(filePath))
             {
                 System.IO.File.Delete(filePath);
@@ -78,13 +78,5 @@ namespace CustomCADSolutions.App.Areas.Admin.Controllers
 
             return RedirectToAction(nameof(Index));
         }
-
-        private string GetCadPath(string cadName, int cadId)
-            => Path.Combine(hostingEnvironment.WebRootPath, "others", "cads", $"{cadName}{cadId}.stl");
-
-        private string GetUserId() => User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-        private async Task<Category[]> GetCategories()
-            => (await categoryService.GetAllAsync()).ToArray();
     }
 }

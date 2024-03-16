@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using static CustomCADSolutions.App.Controllers.UtilitiesNotController;
 
 namespace CustomCADSolutions.App.Areas.Client.Controllers
 {
@@ -76,7 +77,7 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
             logger.LogInformation("Entered Orders Page");
 
             IEnumerable<OrderViewModel> orders = (await orderService.GetAllAsync())
-                .Where(o => o.BuyerId == GetUserId())
+                .Where(o => o.BuyerId == User.GetId())
                 .OrderBy(o => (int)o.Status).ThenBy(o => o.OrderDate)
                 .Select(m => new OrderViewModel
                 {
@@ -113,9 +114,9 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
                 Status = OrderStatus.Finished,
                 ShouldShow = false,
                 CadId = id,
-                BuyerId = GetUserId(),
+                BuyerId = User.GetId(),
                 Cad = cad,
-                Buyer = await userManager.FindByIdAsync(GetUserId()),
+                Buyer = await userManager.FindByIdAsync(User.GetId()),
             });
 
             logger.LogInformation("Ordered 3d model");
@@ -127,7 +128,7 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
         {
             logger.LogInformation("Entered Order Page");
 
-            OrderInputModel input = new() { Categories = await GetCategoriesAsync() };
+            OrderInputModel input = new() { Categories = await categoryService.GetAllAsync() };
             return View(input);
         }
 
@@ -137,7 +138,7 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
             if (!ModelState.IsValid)
             {
                 logger.LogError("Invalid Order");
-                input.Categories = await GetCategoriesAsync();
+                input.Categories = await categoryService.GetAllAsync();
                 return View(input);
             }
 
@@ -147,7 +148,7 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
                 OrderDate = DateTime.Now,
                 Status = input.Status,
                 ShouldShow = true,
-                Buyer = await userManager.FindByIdAsync(GetUserId()),
+                Buyer = await userManager.FindByIdAsync(User.GetId()),
                 Cad = new CadModel()
                 {
                     Name = input.Name,
@@ -167,7 +168,7 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
 
             try
             {
-                OrderModel model = await orderService.GetByIdAsync(cadId, GetUserId());
+                OrderModel model = await orderService.GetByIdAsync(cadId, User.GetId());
 
                 if (model.Status != OrderStatus.Pending)
                 {
@@ -176,7 +177,7 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
 
                 OrderInputModel input = new()
                 {
-                    Categories = await GetCategoriesAsync(),
+                    Categories = await categoryService.GetAllAsync(),
                     Status = model.Status,
                     CadId = model.CadId,
                     Name = model.Cad.Name,
@@ -202,7 +203,7 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
                 return View(input);
             }
 
-            if (GetUserId() != buyerId)
+            if (User.GetId() != buyerId)
             {
                 return Unauthorized();
             }
@@ -225,7 +226,7 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete(int cadId, string buyerId)
         {
-            if (GetUserId() != buyerId)
+            if (User.GetId() != buyerId)
             {
                 return Unauthorized();
             }
@@ -255,23 +256,8 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
         public async Task<FileResult> DownloadCad(int id)
         {
             string name = (await cadService.GetByIdAsync(id)).Name;
-            string filePath = GetCadPath(name, id);
+            string filePath = hostingEnvironment.GetCadPath(name, id);
             return PhysicalFile(filePath, "application/sla", name + ".stl");
         }
-
-        private static async Task UploadFileAsync(IFormFile cad, int cadId, string cadName, string extension = ".stl")
-        {
-            string filePath = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot/others/cads/{cadName}{cadId}{extension}");
-            using FileStream fileStream = new(filePath, FileMode.Create);
-            await cad.CopyToAsync(fileStream);
-        }
-
-        private string GetCadPath(string cadName, int cadId) 
-            => Path.Combine(hostingEnvironment.WebRootPath, "others", "cads", $"{cadName}{cadId}.stl");
-
-        public async Task<Category[]> GetCategoriesAsync()
-            => (await categoryService.GetAllAsync()).ToArray();
-
-        private string GetUserId() => User.FindFirstValue(ClaimTypes.NameIdentifier);
     }
 }

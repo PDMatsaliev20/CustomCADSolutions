@@ -53,10 +53,9 @@ namespace CustomCADSolutions.App.Areas.Admin.Controllers
         public async Task<IActionResult> EditUserRole(string username, string selectedRole)
         {
             IdentityUser user = await userManager.FindByNameAsync(username);
-
             var roles = await userManager.GetRolesAsync(user);
-            await userManager.RemoveFromRoleAsync(user, roles.Single());
 
+            await userManager.RemoveFromRoleAsync(user, roles.Single());
             await userManager.AddToRoleAsync(user, selectedRole);
 
             return RedirectToAction(nameof(Index));
