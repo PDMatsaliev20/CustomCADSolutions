@@ -9,8 +9,5 @@ namespace CustomCADSolutions.Infrastructure.Data.Models
 
         [Required]
         public string Name { get; set; } = null!;
-        
-        [Required]
-        public string BgName { get; set; } = null!;
     }
 }

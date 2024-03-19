@@ -17,7 +17,7 @@ namespace CustomCADSolutions.AppWithIdentity.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.27")
+                .HasAnnotation("ProductVersion", "6.0.28")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -90,10 +90,6 @@ namespace CustomCADSolutions.AppWithIdentity.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("BgName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -106,67 +102,56 @@ namespace CustomCADSolutions.AppWithIdentity.Data.Migrations
                         new
                         {
                             Id = 1,
-                            BgName = "Животни",
                             Name = "Animals"
                         },
                         new
                         {
                             Id = 2,
-                            BgName = "Герои",
                             Name = "Characters"
                         },
                         new
                         {
                             Id = 3,
-                            BgName = "Електроника",
                             Name = "Electronics"
                         },
                         new
                         {
                             Id = 4,
-                            BgName = "Мода",
                             Name = "Fashion"
                         },
                         new
                         {
                             Id = 5,
-                            BgName = "Мебели",
                             Name = "Furniture"
                         },
                         new
                         {
                             Id = 6,
-                            BgName = "Природа",
                             Name = "Nature"
                         },
                         new
                         {
                             Id = 7,
-                            BgName = "Наука",
                             Name = "Science"
                         },
                         new
                         {
                             Id = 8,
-                            BgName = "Спорт",
                             Name = "Sports"
                         },
                         new
                         {
                             Id = 9,
-                            BgName = "Играчки",
                             Name = "Toys"
                         },
                         new
                         {
                             Id = 10,
-                            BgName = "Коли",
                             Name = "Vehicles"
                         },
                         new
                         {
                             Id = 11,
-                            BgName = "Други",
                             Name = "Others"
                         });
                 });

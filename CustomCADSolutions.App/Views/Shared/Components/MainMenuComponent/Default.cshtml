@@ -19,7 +19,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a asp-area="Client" asp-controller="Order" asp-action="Index"
+                <a asp-area="Client" asp-controller="Orders" asp-action="Index"
                    class="nav-link text-dark" role="button">
                     @ViewData["UrOrders"]
                 </a>
@@ -34,13 +34,13 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a asp-area="Contributer" asp-controller="Order" asp-action="Index" 
+                <a asp-area="Contributer" asp-controller="Orders" asp-action="Index" 
                     class="nav-link text-dark" role="button">
                     @ViewData["UrOrders"]
                 </a>
             </li>
             <li class="nav-item">
-                <a asp-area="Contributer" asp-controller="Cad" asp-action="Index" 
+                <a asp-area="Contributer" asp-controller="Cads" asp-action="Index" 
                     class="nav-link text-dark" role="button">
                     @ViewData["UrCads"]
                 </a>
@@ -49,13 +49,13 @@
         else if (User.IsInRole("Designer"))
         {
             <li class="nav-item">
-                <a asp-area="Designer" asp-controller="Order" asp-action="All" 
+                <a asp-area="Designer" asp-controller="Orders" asp-action="All" 
                     class="nav-link text-dark" role="button">
                     @ViewData["AllOrders"]
                 </a>
             </li>
             <li class="nav-item">
-                <a asp-area="Designer" asp-controller="Cad" asp-action="All" 
+                <a asp-area="Designer" asp-controller="Cads" asp-action="All" 
                     class="nav-link text-dark" role="button">
                     @ViewData["AllCads"]
                 </a>
@@ -64,13 +64,13 @@
         else if (User.IsInRole("Administrator"))
         {
             <li class="nav-item">
-                <a asp-area="Admin" asp-controller="User" asp-action="Index" 
+                <a asp-area="Admin" asp-controller="Users" asp-action="Index" 
                     class="nav-link text-dark" role="button">
                     @ViewData["AllUsers"]
                 </a>
             </li>
             <li class="nav-item">
-                <a asp-area="Admin" asp-controller="Cad" asp-action="Index" 
+                <a asp-area="Admin" asp-controller="Cads" asp-action="Index" 
                     class="nav-link text-dark" role="button">
                     @ViewData["AllCads"]
                 </a>

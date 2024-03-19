@@ -21,15 +21,12 @@ var app = builder.Build();
 
 app.UseLocalizion("en-US", cultures);
 
-if (app.Environment.IsDevelopment())
+if (!app.Environment.IsDevelopment())
 {
-    app.UseStatusCodePagesWithReExecute("/Home/StatusCodeHandler", "?statusCode={0}");
-}
-else
-{
-    app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
+    app.UseExceptionHandler("/Home/StatusCodeHandler");
+app.UseStatusCodePagesWithReExecute("/Home/StatusCodeHandler", "?statusCode={0}");
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
@@ -44,12 +41,12 @@ await app.Services.UseRolesAsync(roles);
 app.MapAreaControllerRoute(
     name: "AdminArea",
     areaName: "Admin",
-    pattern: "Admin/{controller=User}/{action=Index}/{id?}");
+    pattern: "Admin/{controller=Users}/{action=Index}/{id?}");
 
 app.MapAreaControllerRoute(
     name: "DesignerArea",
     areaName: "Designer",
-    pattern: "Designer/{controller=Home}/{action=Categories}/{id?}");
+    pattern: "Designer/{controller}/{action=All}/{id?}");
 
 app.MapAreaControllerRoute(
     name: "ContributerArea",

@@ -44,7 +44,6 @@ namespace CustomCADSolutions.Core.Services
 
             entity.Id = model.Id;
             entity.Name = model.Name;
-            entity.BgName = model.BgName;
             await repository.SaveChangesAsync();
         }
 

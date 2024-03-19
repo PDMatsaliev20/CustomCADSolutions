@@ -2,7 +2,6 @@
 using CustomCADSolutions.App.Models.Cads;
 using CustomCADSolutions.Core.Contracts;
 using CustomCADSolutions.Core.Models;
-using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
@@ -40,12 +39,12 @@ namespace CustomCADSolutions.App.Controllers
         {
             if (User.IsInRole("Administrator"))
             {
-                return RedirectToAction("Index", "User", new { area = "Admin" });
+                return Redirect("/Admin");
             }
 
             if (User.IsInRole("Designer"))
             {
-                return RedirectToAction("Categories");
+                return Redirect("/Home/Categories");
             }
 
             logger.LogInformation("Entered Home Page");
@@ -148,15 +147,22 @@ namespace CustomCADSolutions.App.Controllers
 
         public IActionResult StatusCodeHandler(int statusCode)
         {
-            ViewBag.OriginalStatusCode = statusCode;
-
-            ViewBag.ErrorMessage = statusCode switch
+            if (statusCode == 0)
             {
-                400 => "Your request could not be understood by the server due to malformed syntax or other client-side errors.",
-                401 => "You do not have access to the resource you requested.",
-                404 => "The resource you requested could not be found.",
-                _ => "An error occurred.",
-            };
+                ViewBag.OriginalStatusCode = "An exception was thrown";
+                ViewBag.ErrorMessage = "I wonder what it could be...";
+            }
+            else
+            {
+                ViewBag.OriginalStatusCode = $"A {statusCode} error occured";
+                ViewBag.ErrorMessage = statusCode switch
+                {
+                    400 => "Your request could not be understood by the server due to malformed syntax or other client-side errors.",
+                    401 => "You do not have access to the resource you requested.",
+                    404 => "The resource you requested could not be found.",
+                    _ => "An error occurred.",
+                } + "Sowwy";
+            }
             return View();
         }
 

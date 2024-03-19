@@ -1,0 +1,64 @@
+﻿@model CadViewModel
+@inject IViewLocalizer Localizer
+@{
+    CultureInfo en = new("en-US");
+}
+<head>
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@latest/build/three.module.js",
+                "three/addons/": "https://cdn.jsdelivr.net/npm/three@latest/examples/jsm/"
+            }
+        }
+    </script>
+    <script type="module">
+        import { loadModel } from '../../../js/site.mjs';
+
+        const cad = {
+            id: @Model.Id,
+            name: '@Model.Name',
+            texture: '@Model.TexturePath',
+            x: @Model.Coords.Item1,
+            y: @Model.Coords.Item2,
+            z: @Model.Coords.Item3,
+            axis: '@Model.SpinAxis',
+            speed: @Model.SpinFactor.ToString(new CultureInfo("en-US")),
+            fov: '@Model.Fov',
+        };
+
+        loadModel(cad);
+    </script>
+</head>
+<body>
+    <h1 class="text-center">@Localizer["Title", Model.Name]</h1>
+    <hr />
+    <div class="container col-xl-6 col-lg-8 col-md-10 col-12">
+        <div class="card">
+            <div class="card-header text-center">
+                <span>
+                    @Localizer["Camera"] -
+                    X:@(Model.Coords.Item1)
+                    Y:@(Model.Coords.Item2)
+                    Z:@(Model.Coords.Item3)
+                </span>
+            </div>
+            <div class="card-body">
+                <div class="d-flex flex-column align-items-center">
+                    <div style="height: 50vh; width: 100%" id="model-@Model.Id"></div>
+                    <div>
+                        <a asp-action="DownloadCad" asp-route-id="@Model.Id" class="btn btn-primary mt-3">@Localizer["Download"]</a>
+                        <input id="pickColor" type="color" />
+                        <input id="submit" type="button" value="Apply" class="btn btn-secondary" />
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="d-flex justify-content-between">
+                    <span>@Localizer["Designer"]: @Model.CreatorName</span>
+                    <span class="text-end">@Model.CreationDate</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

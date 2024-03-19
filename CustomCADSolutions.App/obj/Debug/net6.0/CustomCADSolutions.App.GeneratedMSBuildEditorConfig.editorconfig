@@ -18,12 +18,12 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App
 build_property._RazorSourceGeneratorDebug = 
 
-[C:/Users/35988/source/repos/Web Apps/CustomCADSolutions/CustomCADSolutions.App/Areas/Admin/Views/Cad/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQ2FkXEluZGV4LmNzaHRtbA==
+[C:/Users/35988/source/repos/Web Apps/CustomCADSolutions/CustomCADSolutions.App/Areas/Admin/Views/Cads/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQ2Fkc1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/35988/source/repos/Web Apps/CustomCADSolutions/CustomCADSolutions.App/Areas/Admin/Views/User/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcVXNlclxJbmRleC5jc2h0bWw=
+[C:/Users/35988/source/repos/Web Apps/CustomCADSolutions/CustomCADSolutions.App/Areas/Admin/Views/Users/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcVXNlcnNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/35988/source/repos/Web Apps/CustomCADSolutions/CustomCADSolutions.App/Areas/Admin/Views/_ViewImports.cshtml]
@@ -34,20 +34,20 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/35988/source/repos/Web Apps/CustomCADSolutions/CustomCADSolutions.App/Areas/Client/Views/Order/Add.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ2xpZW50XFZpZXdzXE9yZGVyXEFkZC5jc2h0bWw=
+[C:/Users/35988/source/repos/Web Apps/CustomCADSolutions/CustomCADSolutions.App/Areas/Client/Views/Orders/Add.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ2xpZW50XFZpZXdzXE9yZGVyc1xBZGQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/35988/source/repos/Web Apps/CustomCADSolutions/CustomCADSolutions.App/Areas/Client/Views/Order/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ2xpZW50XFZpZXdzXE9yZGVyXERldGFpbHMuY3NodG1s
+[C:/Users/35988/source/repos/Web Apps/CustomCADSolutions/CustomCADSolutions.App/Areas/Client/Views/Orders/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ2xpZW50XFZpZXdzXE9yZGVyc1xEZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/35988/source/repos/Web Apps/CustomCADSolutions/CustomCADSolutions.App/Areas/Client/Views/Order/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ2xpZW50XFZpZXdzXE9yZGVyXEVkaXQuY3NodG1s
+[C:/Users/35988/source/repos/Web Apps/CustomCADSolutions/CustomCADSolutions.App/Areas/Client/Views/Orders/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ2xpZW50XFZpZXdzXE9yZGVyc1xFZGl0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/35988/source/repos/Web Apps/CustomCADSolutions/CustomCADSolutions.App/Areas/Client/Views/Order/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ2xpZW50XFZpZXdzXE9yZGVyXEluZGV4LmNzaHRtbA==
+[C:/Users/35988/source/repos/Web Apps/CustomCADSolutions/CustomCADSolutions.App/Areas/Client/Views/Orders/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ2xpZW50XFZpZXdzXE9yZGVyc1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/35988/source/repos/Web Apps/CustomCADSolutions/CustomCADSolutions.App/Areas/Client/Views/_ViewImports.cshtml]
@@ -58,32 +58,32 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ2xpZW50XFZpZXdzXF9WaWV3U3RhcnQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/35988/source/repos/Web Apps/CustomCADSolutions/CustomCADSolutions.App/Areas/Contributer/Views/Cad/Add.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ29udHJpYnV0ZXJcVmlld3NcQ2FkXEFkZC5jc2h0bWw=
+[C:/Users/35988/source/repos/Web Apps/CustomCADSolutions/CustomCADSolutions.App/Areas/Contributer/Views/Cads/Add.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ29udHJpYnV0ZXJcVmlld3NcQ2Fkc1xBZGQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/35988/source/repos/Web Apps/CustomCADSolutions/CustomCADSolutions.App/Areas/Contributer/Views/Cad/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ29udHJpYnV0ZXJcVmlld3NcQ2FkXEVkaXQuY3NodG1s
+[C:/Users/35988/source/repos/Web Apps/CustomCADSolutions/CustomCADSolutions.App/Areas/Contributer/Views/Cads/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ29udHJpYnV0ZXJcVmlld3NcQ2Fkc1xFZGl0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/35988/source/repos/Web Apps/CustomCADSolutions/CustomCADSolutions.App/Areas/Contributer/Views/Cad/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ29udHJpYnV0ZXJcVmlld3NcQ2FkXEluZGV4LmNzaHRtbA==
+[C:/Users/35988/source/repos/Web Apps/CustomCADSolutions/CustomCADSolutions.App/Areas/Contributer/Views/Cads/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ29udHJpYnV0ZXJcVmlld3NcQ2Fkc1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/35988/source/repos/Web Apps/CustomCADSolutions/CustomCADSolutions.App/Areas/Contributer/Views/Order/Add.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ29udHJpYnV0ZXJcVmlld3NcT3JkZXJcQWRkLmNzaHRtbA==
+[C:/Users/35988/source/repos/Web Apps/CustomCADSolutions/CustomCADSolutions.App/Areas/Contributer/Views/Orders/Add.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ29udHJpYnV0ZXJcVmlld3NcT3JkZXJzXEFkZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/35988/source/repos/Web Apps/CustomCADSolutions/CustomCADSolutions.App/Areas/Contributer/Views/Order/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ29udHJpYnV0ZXJcVmlld3NcT3JkZXJcRGV0YWlscy5jc2h0bWw=
+[C:/Users/35988/source/repos/Web Apps/CustomCADSolutions/CustomCADSolutions.App/Areas/Contributer/Views/Orders/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ29udHJpYnV0ZXJcVmlld3NcT3JkZXJzXERldGFpbHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/35988/source/repos/Web Apps/CustomCADSolutions/CustomCADSolutions.App/Areas/Contributer/Views/Order/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ29udHJpYnV0ZXJcVmlld3NcT3JkZXJcRWRpdC5jc2h0bWw=
+[C:/Users/35988/source/repos/Web Apps/CustomCADSolutions/CustomCADSolutions.App/Areas/Contributer/Views/Orders/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ29udHJpYnV0ZXJcVmlld3NcT3JkZXJzXEVkaXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/35988/source/repos/Web Apps/CustomCADSolutions/CustomCADSolutions.App/Areas/Contributer/Views/Order/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ29udHJpYnV0ZXJcVmlld3NcT3JkZXJcSW5kZXguY3NodG1s
+[C:/Users/35988/source/repos/Web Apps/CustomCADSolutions/CustomCADSolutions.App/Areas/Contributer/Views/Orders/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ29udHJpYnV0ZXJcVmlld3NcT3JkZXJzXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/35988/source/repos/Web Apps/CustomCADSolutions/CustomCADSolutions.App/Areas/Contributer/Views/_ViewImports.cshtml]
@@ -94,28 +94,28 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ29udHJpYnV0ZXJcVmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/35988/source/repos/Web Apps/CustomCADSolutions/CustomCADSolutions.App/Areas/Designer/Views/Cad/Add.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcRGVzaWduZXJcVmlld3NcQ2FkXEFkZC5jc2h0bWw=
+[C:/Users/35988/source/repos/Web Apps/CustomCADSolutions/CustomCADSolutions.App/Areas/Designer/Views/Cads/Add.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcRGVzaWduZXJcVmlld3NcQ2Fkc1xBZGQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/35988/source/repos/Web Apps/CustomCADSolutions/CustomCADSolutions.App/Areas/Designer/Views/Cad/All.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcRGVzaWduZXJcVmlld3NcQ2FkXEFsbC5jc2h0bWw=
+[C:/Users/35988/source/repos/Web Apps/CustomCADSolutions/CustomCADSolutions.App/Areas/Designer/Views/Cads/All.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcRGVzaWduZXJcVmlld3NcQ2Fkc1xBbGwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/35988/source/repos/Web Apps/CustomCADSolutions/CustomCADSolutions.App/Areas/Designer/Views/Cad/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcRGVzaWduZXJcVmlld3NcQ2FkXEVkaXQuY3NodG1s
+[C:/Users/35988/source/repos/Web Apps/CustomCADSolutions/CustomCADSolutions.App/Areas/Designer/Views/Cads/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcRGVzaWduZXJcVmlld3NcQ2Fkc1xFZGl0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/35988/source/repos/Web Apps/CustomCADSolutions/CustomCADSolutions.App/Areas/Designer/Views/Cad/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcRGVzaWduZXJcVmlld3NcQ2FkXEluZGV4LmNzaHRtbA==
+[C:/Users/35988/source/repos/Web Apps/CustomCADSolutions/CustomCADSolutions.App/Areas/Designer/Views/Cads/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcRGVzaWduZXJcVmlld3NcQ2Fkc1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/35988/source/repos/Web Apps/CustomCADSolutions/CustomCADSolutions.App/Areas/Designer/Views/Cad/Submitted.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcRGVzaWduZXJcVmlld3NcQ2FkXFN1Ym1pdHRlZC5jc2h0bWw=
+[C:/Users/35988/source/repos/Web Apps/CustomCADSolutions/CustomCADSolutions.App/Areas/Designer/Views/Cads/Submitted.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcRGVzaWduZXJcVmlld3NcQ2Fkc1xTdWJtaXR0ZWQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/35988/source/repos/Web Apps/CustomCADSolutions/CustomCADSolutions.App/Areas/Designer/Views/Order/All.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcRGVzaWduZXJcVmlld3NcT3JkZXJcQWxsLmNzaHRtbA==
+[C:/Users/35988/source/repos/Web Apps/CustomCADSolutions/CustomCADSolutions.App/Areas/Designer/Views/Orders/All.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcRGVzaWduZXJcVmlld3NcT3JkZXJzXEFsbC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/35988/source/repos/Web Apps/CustomCADSolutions/CustomCADSolutions.App/Areas/Designer/Views/_ViewImports.cshtml]

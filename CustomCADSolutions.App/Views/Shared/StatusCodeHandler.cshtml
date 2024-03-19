@@ -1,13 +1,13 @@
 ﻿@{
-    int code = ViewBag.OriginalStatusCode;
-    string error = ViewBag.ErrorMessage;
+    string error = ViewBag.OriginalStatusCode;
+    string details = ViewBag.ErrorMessage;
 }
 
 <h2 class="text-center text-danger mb-2">OOPS</h2>
-<h4 class="text-center mb-4">A @code error occurred while processing your request.</h4>
+<h4 class="text-center mb-4">@error while processing your request.</h4>
 <div class="d-flex flex-column align-items-center">
     <div class="col-sm-6 col-12">
         <img src="~/others/images/puppy.png" class="w-100 h-auto" />
-        <p class="text-center fw-bold">@error Sowwy</p>
+        <p class="text-center fw-bold">@details</p>
     </div>
 </div>

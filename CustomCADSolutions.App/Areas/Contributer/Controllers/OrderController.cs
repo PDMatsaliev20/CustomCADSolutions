@@ -84,7 +84,6 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
                     BuyerName = m.Buyer.UserName,
                     CadId = m.CadId,
                     Category = m.Cad.Category.Name,
-                    BgCategory = m.Cad.Category.BgName,
                     Name = m.Cad.Name,
                     Description = m.Description,
                     Status = m.Status.ToString(),

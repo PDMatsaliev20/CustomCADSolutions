@@ -1,0 +1,129 @@
+﻿@model CadInputModel
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = Localizer["Title", ViewBag.HiddenOrders];
+    IEnumerable<OrderViewModel> allOrders = ViewBag.Orders;
+    string[] statuses = ViewBag.Statuses;
+
+    bool isBg = CultureInfo.CurrentCulture.Name == "bg-BG";
+}
+<head>
+    <style>
+        .custom-file-input::-webkit-file-upload-button {
+            visibility: hidden;
+        }
+
+        .custom-file-input::before {
+            content: '@Localizer["Upload"]';
+            display: inline-block;
+            background: #6c757d;
+            color: #fff;
+            padding: 6px 12px;
+            outline: none;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .custom-file-input:hover::before {
+            background: #6c757d;
+        }
+
+        .custom-file-input:active::before {
+            background: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <h2 class="text-center">@ViewData["Title"]</h2>
+    <hr />
+
+    @if (!allOrders.Any())
+    {
+        <p class="text-center">@Localizer["NoOrders"]</p>
+    }
+    else
+    {
+        <div class="container mt-4">
+            <div class="row d-flex justify-content-evenly">
+                @for (int i = 0; i < statuses.Length; i++)
+                {
+                    string status = statuses[i];
+                    var orders = allOrders.Where(o => o.Status == status);
+
+                    <div class="col ms-3 me-3">
+                        <p class="fs-3 text-center mb-3">@Localizer[status]</p>
+
+                        @if (orders.Any())
+                        {
+                            <div class="row d-flex justify-content-center">
+                                @foreach (OrderViewModel order in orders)
+                                {
+                                    <div class="card mb-4 ps-0 pe-0">
+                                        <div class="card-header d-flex justify-content-center">
+                                            <p class="mb-0 fs-4">@Localizer[order.Category]</p>
+                                        </div>
+                                        <div class="card-body">
+                                            <p class="card-title text-center h4 mt-0 mb-3">@order.Name</p>
+                                            <p class="card-text fs-5 mb-3">@order.Description</p>
+                                            @switch (status)
+                                            {
+                                                case "Pending":
+                                                    <form asp-area="Designer" asp-controller="Order" asp-action="Begin">
+                                                        <div class="row justify-content-center">
+                                                            <input asp-for="Id" value="@order.CadId" hidden />
+                                                            <input asp-for="BuyerId" value="@order.BuyerId" hidden />
+                                                            <div class="col-6">
+                                                                <input type="submit" value="@Localizer["Begin"]" class="btn btn-warning w-100" />
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                    break;
+
+                                                case "Begun":
+                                                    <form asp-area="Designer" asp-controller="Order" asp-action="Finish" method="post" autocomplete="off" enctype="multipart/form-data">
+                                                        <div class="row d-flex justify-content-center">
+                                                            <input asp-for="Id" value="@order.CadId" hidden />
+                                                            <input asp-for="BuyerId" value="@order.BuyerId" hidden />
+                                                            <div class="col-4">
+                                                                <input asp-for="CadFile" type="file" accept=".stl" class="custom-file-input w-100" />
+                                                                <span asp-validation-for="CadFile" class="small text-danger"></span>
+                                                            </div>
+                                                            <div class="col-4">
+                                                                <input type="submit" value="@Localizer["Finish"]" class="btn btn-danger w-100" />
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                    break;
+
+                                                case "Finished":
+                                                    <form asp-area="Designer" asp-controller="Order" asp-action="Hide">
+                                                        <input asp-for="Id" value="@order.CadId" hidden />
+                                                        <input asp-for="BuyerId" value="@order.BuyerId" hidden />
+                                                        <div class="row justify-content-center">
+                                                            <div class="col-6">
+                                                                <input type="submit" value="@Localizer["Hide"]" class="btn btn-success w-100" />
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                    break;
+                                            }
+                                        </div>
+                                        <div class="card-footer d-flex justify-content-between pb-0">
+                                            <p class="text-end fs-6">-@order.BuyerName</p>
+                                            <p class="text-end fs-6">@order.OrderDate</p>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    }
+
+    @section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+    }
+</body>

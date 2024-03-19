@@ -70,14 +70,14 @@
                                     {
                                         if (User.IsInRole("Contributer") && username != cad.CreatorName!)
                                         {
-                                            <form asp-area="Contributer" asp-controller="Order" asp-action="Order" asp-route-id="@cad.Id">
+                                            <form asp-area="Contributer" asp-controller="Orders" asp-action="Order" asp-route-id="@cad.Id">
                                                 <input type="submit" value="@Localizer["Order"]" class="btn btn-secondary text-decoration-none" />
                                             </form>
                                         }
 
                                         if (User.IsInRole("Client"))
                                         {
-                                            <form asp-area="Client" asp-controller="Order" asp-action="Order" asp-route-id="@cad.Id">
+                                            <form asp-area="Client" asp-controller="Orders" asp-action="Order" asp-route-id="@cad.Id">
                                                 <input type="submit" value="@Localizer["Order"]" class="btn btn-secondary text-decoration-none" />
                                             </form>
                                         }
