@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication;
 using CustomCADSolutions.App.Models.Users;
+using Microsoft.Extensions.Localization;
 
 namespace CustomCADSolutions.App.Areas.Identity.Controllers
 {
@@ -12,16 +13,19 @@ namespace CustomCADSolutions.App.Areas.Identity.Controllers
         private readonly UserManager<IdentityUser> userManager;
         private readonly IUserStore<IdentityUser> userStore;
         private readonly IUserEmailStore<IdentityUser> emailStore;
+        private readonly IStringLocalizer<AccountController> localizer;
 
         public AccountController(
             UserManager<IdentityUser> userManager,
             IUserStore<IdentityUser> userStore,
-            SignInManager<IdentityUser> signInManager)
+            SignInManager<IdentityUser> signInManager,
+            IStringLocalizer<AccountController> localizer)
         {
             this.userManager = userManager;
             this.userStore = userStore;
             this.signInManager = signInManager;
             this.emailStore = (IUserEmailStore<IdentityUser>)this.userStore;
+            this.localizer = localizer;
         }
 
         [HttpGet]
@@ -36,15 +40,14 @@ namespace CustomCADSolutions.App.Areas.Identity.Controllers
             returnUrl ??= Url.Content("~/");
             model.ReturnUrl = returnUrl;
 
-            if (!ModelState.IsValid)
-            {
-                return View();
-            }
-
             if (await userManager.FindByEmailAsync(model.Email) != null)
             {
-                ViewData["IsEmailUnique"] = false;
-                return View();
+                ModelState.AddModelError(nameof(model.Email), localizer["EmailError", model.Email].Value);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
             }
 
             IdentityUser user = new();
@@ -63,7 +66,7 @@ namespace CustomCADSolutions.App.Areas.Identity.Controllers
             {
                 ModelState.AddModelError(string.Empty, error.Description);
             }
-            return View();
+            return View(model);
         }
 
         [HttpGet]

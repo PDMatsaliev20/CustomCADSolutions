@@ -3,10 +3,6 @@
 @model RegisterInputModel
 @inject IViewLocalizer Localizer
 @{
-    if (ViewData["IsEmailUnique"] != null)
-    {
-        ViewBag.DuplicateEmail = Localizer["EmailError", Model.Email];
-    }
 }
 
 <h1 class="text-center">@Localizer["Title"]</h1>
@@ -26,7 +22,7 @@
             <div class="form-floating">
                 <input asp-for="Email" class="form-control" autocomplete="email" aria-required="true" />
                 <label asp-for="Email"></label>
-                <span asp-validation-for="Email" class="text-danger">@ViewBag.DuplicateEmail</span>
+                <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-floating">
                 <input asp-for="Password" class="form-control" autocomplete="new-password" aria-required="true" />
