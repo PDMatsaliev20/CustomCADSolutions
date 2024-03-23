@@ -12,7 +12,18 @@ function updateRendererSize(renderer, camera, cadId) {
     camera.updateProjectionMatrix();
 }
 
-function loadModel({ id, name, texture, x, y, z, axis, speed, fov }) {
+function changeColor(material) {
+    const color = document.getElementById('pickColor').value;
+    const hexInt = parseInt(color.replace('#', ''), 16);
+    
+    const r = ((hexInt >> 16) & 255) / 255;
+    const g = ((hexInt >> 8) & 255) / 255;
+    const b = (hexInt & 255) / 255
+    
+    material.color.setRGB(r, g, b);
+}
+
+function loadModel({ id, name, texture, x, y, z, axis, speed, fov }, canChangeColor = false) {
     // Scene
     const scene = new THREE.Scene();
     scene.background = null;
@@ -50,19 +61,9 @@ function loadModel({ id, name, texture, x, y, z, axis, speed, fov }) {
         material.metalness = 0.5;
         material.emissiveIntensity = 1;
 
-        document.getElementById('submit').addEventListener('click', function () {
-            const color = document.getElementById('pickColor').value;
-            console.log(`Color - ${color}`);
-            const hexInt = parseInt(color.replace('#', ''), 16);
-            console.log(`Hex - ${hexInt}`);
-            const r = ((hexInt >> 16) & 255) / 255;
-            console.log(`R - ${r}`);
-            const g = ((hexInt >> 8) & 255) / 255;
-            console.log(`G - ${g}`);
-            const b = (hexInt & 255) / 255
-            console.log(`B - ${b}`);
-            material.color.setRGB(r, g, b);
-        });
+        if (canChangeColor) {
+            document.getElementById('submit').addEventListener('click', changeColor(material));
+        }
 
         //const textureLoader = new THREE.TextureLoader();
         //const loadedTexture = textureLoader.load(texture);

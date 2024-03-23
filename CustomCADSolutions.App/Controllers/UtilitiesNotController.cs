@@ -1,7 +1,4 @@
-﻿using CustomCADSolutions.Core.Services;
-using CustomCADSolutions.Infrastructure.Data.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Hosting.Internal;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace CustomCADSolutions.App.Controllers
@@ -9,8 +6,7 @@ namespace CustomCADSolutions.App.Controllers
     [NonController]
     public static class UtilitiesNotController
     {
-        public static string GetId(this ClaimsPrincipal user) 
-            => user.FindFirstValue(ClaimTypes.NameIdentifier);
+        public static string GetId(this ClaimsPrincipal user) => user.FindFirstValue(ClaimTypes.NameIdentifier);
 
         public static string GetCadPath(this IWebHostEnvironment hostingEnvironment, string name, int id, string extension = ".stl")
             => Path.Combine(hostingEnvironment.WebRootPath, "others", "cads", $"{name}{id}{extension}");

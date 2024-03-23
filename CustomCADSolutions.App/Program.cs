@@ -24,9 +24,9 @@ app.UseLocalizion("en-US", cultures);
 if (!app.Environment.IsDevelopment())
 {
     app.UseHsts();
-}
     app.UseExceptionHandler("/Home/StatusCodeHandler");
-app.UseStatusCodePagesWithReExecute("/Home/StatusCodeHandler", "?statusCode={0}");
+    app.UseStatusCodePagesWithReExecute("/Home/StatusCodeHandler", "?statusCode={0}");
+}
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

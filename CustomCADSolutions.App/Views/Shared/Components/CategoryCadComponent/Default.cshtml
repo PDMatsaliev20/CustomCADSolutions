@@ -1,0 +1,37 @@
+﻿@using CustomCADSolutions.Core.Contracts
+@model CadViewModel
+@inject IOrderService OrderService
+@inject UserManager<IdentityUser> UserManager
+@inject IViewLocalizer Localizer
+@{
+}
+<div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+    <div class="card">
+        <h4 class="card-header text-center mb-1">@Model.Name (@Localizer[Model.Category])</h4>
+        <div class="card-body mb-0">
+            <div id="model-@Model.Id"></div>
+            @if (User.Identity!.IsAuthenticated)
+            {
+                @if (ViewBag.AlreadyOrdered)
+                {
+                    <form asp-area="ViewBag.Area" asp-controller="Orders" asp-action="Order" asp-route-id="@Model.Id">
+                        <input type="submit" value="@Localizer["Order"]" class="btn btn-secondary text-decoration-none" />
+                    </form>
+                }
+            }
+            else
+            {
+                <p class="text-center small mt-3 mb-0">
+                    <a class="text-dark " asp-area="Identity" asp-controller="Account" asp-action="Login">@Localizer["Login"]</a>
+                    @Localizer["Or"]
+                    <a class="text-dark " asp-area="Identity" asp-controller="Account" asp-action="Register">@Localizer["Register"]</a>
+                    @Localizer["ToOrder"]
+                </p>
+            }
+        </div>
+        <ul class="card-footer fs-6 mb-0">
+            <li class="list-group">@Model.CreatorName</li>
+            <li class="list-group">@Model.CreationDate</li>
+        </ul>
+    </div>
+</div>
