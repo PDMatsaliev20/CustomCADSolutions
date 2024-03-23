@@ -1,72 +1,26 @@
 ﻿@model IEnumerable<CadViewModel>
 @inject IViewLocalizer Localizer
 @{
+    ViewBag.Cols = 4;
+    ViewBag.Buttons = new string[] { "Validate" };
 }
 
-<head>
-    <script type="importmap">
-        {
-            "imports": {
-                "three": "https://cdn.jsdelivr.net/npm/three@latest/build/three.module.js",
-                "three/addons/": "https://cdn.jsdelivr.net/npm/three@latest/examples/jsm/"
+<h2 class="text-center">@Localizer["Title"]</h2>
+<hr />
+
+@if (!Model.Any())
+{
+    <p class="text-center">@Localizer["NoModels"]</p>
+}
+else
+{
+    <div class="mt-4">
+        <div class="row">
+            @foreach (CadViewModel cad in Model)
+            {
+                ViewBag.Header = $"{cad.Name} ({Localizer[cad.Category].Value})";
+                <partial name="_CardCadPartial" model="cad" view-data="ViewData" />
             }
-        }
-    </script>
-</head>
-<body>
-    <h2 class="text-center">@Localizer["Title"]</h2>
-    <hr />
-
-    @if (!Model.Any())
-    {
-        <p class="text-center">@Localizer["NoModels"]</p>
-    }
-    else
-    {
-        <div class="mt-4">
-            <div class="row">
-                @foreach (CadViewModel cad in Model)
-                {
-                    <script type="module">
-                        import { loadModel } from '../../js/site.mjs';
-
-                        const cad = {
-                            id: @cad.Id,
-                            name: '@cad.Name',
-                            texture: '@cad.TexturePath',
-                            x: @cad.Coords.Item1,
-                            y: @cad.Coords.Item2,
-                            z: @cad.Coords.Item3,
-                            axis: '@cad.SpinAxis',
-                            speed: @cad.SpinFactor.ToString(new CultureInfo("en-US")),
-                            fov: @cad.Fov,
-                        };
-
-                        loadModel(cad);
-                    </script>
-                    <div class="col-sm-3 col-12 mt-4">
-                        <div class="card">
-                            <h4 class="card-header text-center mb-1">@cad.Name (@Localizer[cad.Category])</h4>
-                            <div class="card-body">
-                                <div id="model-@cad.Id"></div>
-                                <div class="d-grid gap-2">
-                                    <form method="post" class="mt-2" asp-controller="Cad" asp-action="ValidateCad" asp-route-cadId="@cad.Id">
-                                        <div class="d-grid gap-2">
-                                            <input type="submit" value="Validate" class="btn btn-primary mb-2"
-                                                   onclick="return confirm('@Localizer["Warning"] @(cad.Name)?')" />
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                            <div class="card-footer d-flex justify-content-between fs-6">
-                                <p>@cad.CreatorName</p>
-                                <p>@cad.CreationDate</p>
-                            </div>
-                        </div>
-                    </div>
-
-                }
-            </div>
         </div>
-    }
-</body>
+    </div>
+}

@@ -7,7 +7,7 @@
 <hr />
 
 <div class="d-flex justify-content-center mb-2">
-    <a class="btn btn-primary" asp-area="Contributer" asp-controller="Order" asp-action="Add">@Localizer["Add"]</a>
+    <a class="btn btn-primary" asp-controller="Orders" asp-action="Add">@Localizer["Add"]</a>
 </div>
 
 @if (!Model.Any())
@@ -20,52 +20,7 @@ else
         <div class="row">
             @foreach (OrderViewModel order in Model)
             {
-                <div class="col-sm-4 col-12 mb-2">
-                    <div class="card">
-                        <div class="card-header d-flex justify-content-between">
-                            <p class="mb-0 fs-4">@Localizer[order.Category]</p>
-                            <p class="mb-0 bg-info small rounded-2 p-2">@Localizer[order.Status]</p>
-                        </div>
-                        <div class="card-body">
-                            <p class="card-title text-center h4 mb-3">@order.Name</p>
-                            <p class="card-text fs-5">@order.Description</p>
-                            <div class="d-grid gap-2">
-                                <div class="d-flex justify-content-evenly mb-3 gap-2">
-                                    @switch (order.Status)
-                                    {
-                                        case "Pending":
-                                            <a asp-area="Contributer" asp-controller="Order" asp-action="Edit" asp-route-cadId="@order.CadId" class="col btn btn-warning">@Localizer["Edit"]</a>
-                                            <form asp-area="Contributer" asp-controller="Order" asp-action="Delete" class="col">
-                                                <input name="cadId" value="@order.CadId" hidden />
-                                                <input name="buyerId" value="@order.BuyerId" hidden />
-                                                 <div class="d-grid gap-2">
-                                                    <input type="submit" value="@Localizer["Delete"]" class="btn btn-danger"
-                                                           onclick="return confirm('@Localizer["DeleteWarning", order.Name]" />
-                                                </div>
-                                            </form>
-                                            break;
-
-                                        case "Begun":
-                                            <form asp-area="Contributer" asp-controller="Order" asp-action="Delete" class="col">
-                                                <input name="cadId" value="@order.CadId" hidden />
-                                                <input name="buyerId" value="@order.BuyerId" hidden />
-                                                <div class="d-grid gap-2">
-                                                    <input type="submit" value="@Localizer["Delete"]" class="btn btn-danger"
-                                                           onclick="return confirm('@Localizer["DeleteWarning", order.Name]" />
-                                                </div>
-                                            </form>
-                                            break;
-
-                                        case "Finished":
-                                            <a class="col btn btn-secondary" asp-area="Contributer" asp-controller="Order" asp-action="Details" asp-route-id="@order.CadId">@Localizer["Details"]</a>
-                                            break;
-                                    }
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-footer text-end fs-6">@order.OrderDate</div>
-                    </div>
-                </div>
+                <partial name="_OrdersPartial" model="order" />
             }
         </div>
     </div>

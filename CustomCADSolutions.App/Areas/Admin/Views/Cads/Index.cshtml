@@ -1,68 +1,26 @@
 ﻿@model CadViewModel[]
 @inject IViewLocalizer Localizer
 @{
-    CultureInfo en = new("en-US"), bg = new("bg-BG");
-    bool isBg = CultureInfo.CurrentCulture.Name == bg.Name;
+    ViewBag.Cols = 4;
+    ViewBag.Buttons = new string[] { "Delete" };
 }
-<head>
-    <script type="importmap">
-        {
-            "imports": {
-                "three": "https://cdn.jsdelivr.net/npm/three@latest/build/three.module.js",
-                "three/addons/": "https://cdn.jsdelivr.net/npm/three@latest/examples/jsm/"
+
+<h2 class="text-center">@Localizer["Title"]</h2>
+<hr />
+
+<div class="container">
+    @if (Model.Any())
+    {
+        <div class="row d-flex">
+            @foreach (CadViewModel cad in Model)
+            {
+                ViewBag.Header = $"{cad.Name} ({Localizer[cad.Category].Value})";
+                <partial name="_CardCadPartial" model="cad" view-data="ViewData" />
             }
-        }
-    </script>
-</head>
-<body>
-    <h2 class="text-center">@Localizer["Title"]</h2>
-    <hr />
-
-    <div class="container">
-        @if (Model.Any())
-        {
-            <div class="row d-flex">
-                @foreach (CadViewModel cad in Model)
-                {
-                    <script type="module">
-                        import { loadModel } from '../../js/site.mjs';
-
-                        const cad = {
-                            id: @cad.Id,
-                            name: '@cad.Name',
-                            texture: '@cad.TexturePath',
-                            x: @cad.Coords.Item1,
-                            y: @cad.Coords.Item2,
-                            z: @cad.Coords.Item3,
-                            axis: '@cad.SpinAxis',
-                            speed: @cad.SpinFactor.ToString(new CultureInfo("en-US")),
-                            fov: @cad.Fov,
-                        };
-
-                        loadModel(cad);
-                    </script>
-
-                    <div class="col-lg-3 col-md-4 col-12 mt-4">
-                        <div class="card">
-                            <h4 class="card-header text-center mb-1">@cad.Name (@Localizer[cad.Validated ? "InGallery" : "NotInGallery"])</h4>
-                            <div class="card-body">
-                                <div id="model-@cad.Id"></div>
-                                <form class="mt-2" asp-action="Delete" asp-route-id="@cad.Id">
-                                    <input type="submit" value="@Localizer["Delete"]" class="btn btn-danger col-12"
-                                        onclick="return confirm(@Localizer["DeleteWarning", cad.Name])"/>
-                                </form>
-                            </div>
-                            <div class="card-footer d-flex justify-content-center fs-6">
-                                <span>@cad.CreatorName</span>
-                            </div>
-                        </div>
-                    </div>
-                }
-            </div>
-        }
-        else
-        {
-            <p class="text-center">@Localizer["NoCads"]</p>
-        }
-    </div>
-</body>
+        </div>
+    }
+    else
+    {
+        <p class="text-center">@Localizer["NoCads"]</p>
+    }
+</div>

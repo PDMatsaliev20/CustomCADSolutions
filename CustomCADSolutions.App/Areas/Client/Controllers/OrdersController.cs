@@ -179,6 +179,7 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
                     Categories = await categoryService.GetAllAsync(),
                     Status = model.Status,
                     CadId = model.CadId,
+                    BuyerId = model.BuyerId,
                     Name = model.Cad.Name,
                     CategoryId = model.Cad.CategoryId,
                     Description = model.Description,

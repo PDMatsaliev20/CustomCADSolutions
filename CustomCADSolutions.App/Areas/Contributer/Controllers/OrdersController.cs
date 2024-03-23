@@ -2,18 +2,18 @@
 using CustomCADSolutions.App.Models.Cads;
 using CustomCADSolutions.Core.Contracts;
 using CustomCADSolutions.Core.Models;
-using CustomCADSolutions.Infrastructure.Data.Models;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using CustomCADSolutions.App.Controllers;
+using CustomCADSolutions.AppWithIdentity.Data.Migrations;
 
 namespace CustomCADSolutions.App.Areas.Contributer.Controllers
 {
     [Area("Contributer")]
     [Authorize(Roles = "Contributer")]
-    public class OrderController : Controller
+    public class OrdersController : Controller
     {
         private readonly IOrderService orderService;
         private readonly ICadService cadService;
@@ -22,8 +22,8 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
         private readonly UserManager<IdentityUser> userManager;
         private readonly IWebHostEnvironment hostingEnvironment;
 
-        public OrderController(
-            ILogger<OrderController> logger,
+        public OrdersController(
+            ILogger<OrdersController> logger,
             IOrderService orderService,
             ICadService cadService,
             ICategoryService categoryService,
@@ -45,15 +45,15 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
             try
             {
                 model = await cadService.GetByIdAsync(id);
-
-                if (model.Creator == null || !model.CreationDate.HasValue)
-                {
-                    return BadRequest("Model not created yet");
-                }
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
+            }
+            
+            if (model.Creator == null || !model.CreationDate.HasValue)
+            {
+                return BadRequest("Model not created yet");
             }
 
             CadViewModel view = new()
@@ -177,6 +177,7 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
                     Categories = await categoryService.GetAllAsync(),
                     Status = model.Status,
                     CadId = model.CadId,
+                    BuyerId = model.BuyerId,
                     Name = model.Cad.Name,
                     CategoryId = model.Cad.CategoryId,
                     Description = model.Description,
@@ -194,15 +195,16 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(int cadId, string buyerId, OrderInputModel input)
         {
-            if (!ModelState.IsValid)
-            {
-                logger.LogError("Invalid Order");
-                return View(input);
-            }
-
             if (User.GetId() != buyerId)
             {
                 return Unauthorized();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                logger.LogError("Invalid Order");
+                input.Categories = await categoryService.GetAllAsync();
+                return View(input);
             }
 
             OrderModel order = await orderService.GetByIdAsync(cadId, buyerId);
@@ -216,7 +218,6 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
             order.Cad.CategoryId = input.CategoryId;
             await orderService.EditAsync(order);
 
-            logger.LogInformation("Edited Order");
             return RedirectToAction(nameof(Index));
         }
 

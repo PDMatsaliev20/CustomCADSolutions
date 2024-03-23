@@ -12,18 +12,7 @@ function updateRendererSize(renderer, camera, cadId) {
     camera.updateProjectionMatrix();
 }
 
-function changeColor(material) {
-    const color = document.getElementById('pickColor').value;
-    const hexInt = parseInt(color.replace('#', ''), 16);
-    
-    const r = ((hexInt >> 16) & 255) / 255;
-    const g = ((hexInt >> 8) & 255) / 255;
-    const b = (hexInt & 255) / 255
-    
-    material.color.setRGB(r, g, b);
-}
-
-function loadModel({ id, name, texture, x, y, z, axis, speed, fov }, canChangeColor = false) {
+function loadModel({ id, name, x, y, z, axis, speed, fov }) {
     // Scene
     const scene = new THREE.Scene();
     scene.background = null;
@@ -61,27 +50,27 @@ function loadModel({ id, name, texture, x, y, z, axis, speed, fov }, canChangeCo
         material.metalness = 0.5;
         material.emissiveIntensity = 1;
 
-        if (canChangeColor) {
-            document.getElementById('submit').addEventListener('click', changeColor(material));
+        const submitButton = document.getElementById('submit');
+        if (submitButton != null) {
+            console.log('submit exists');
+            submitButton.addEventListener('click', function () {
+                const color = document.getElementById('pickColor');
+                console.log('color exists');
+                if (color != null) {
+                    const hexInt = parseInt(color.value.replace('#', ''), 16);
+                    const r = ((hexInt >> 16) & 255) / 255;
+                    const g = ((hexInt >> 8) & 255) / 255;
+                    const b = (hexInt & 255) / 255
+
+                    material.color.setRGB(r, g, b);
+                }
+            });
         }
-
-        //const textureLoader = new THREE.TextureLoader();
-        //const loadedTexture = textureLoader.load(texture);
-        //loadedTexture.anisotropy = renderer.capabilities.getMaxAnisotropy();
-        //material.map = loadedTexture;
-
-        //loadedTexture.wrapS = THREE.RepeatWrapping;
-        //loadedTexture.wrapT = THREE.RepeatWrapping;
-        //loadedTexture.repeat.set(2, 2);
 
         const mesh = new THREE.Mesh(stl, material);
         scene.add(mesh);
         stl.center();
-    }, undefined, function (error) {
-
-        console.error(error);
-
-    });
+    }, undefined, (error) => console.error(error));
 
     // Controls
     const controls = new OrbitControls(camera, renderer.domElement);

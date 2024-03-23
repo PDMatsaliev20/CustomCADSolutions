@@ -163,7 +163,7 @@
     <value>Невалидирани 3D Модели - {0}</value>
   </data>
   <data name="UrCads" xml:space="preserve">
-    <value>3D Моделите Ви ({0})</value>
+    <value>Качените От Вас 3D Модели - {0}</value>
   </data>
   <data name="Vehicles" xml:space="preserve">
     <value>Коли</value>

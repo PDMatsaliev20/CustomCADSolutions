@@ -3,41 +3,6 @@
     CadViewModel cad = ViewBag.Chair;
 }
 
-<html>
-<head>
-    @*Fade-in effect*@
-    <link rel="stylesheet" href="~/css/animation.css" />
-
-    @*Style*@
-    <link rel="stylesheet" href="~/css/index.css" />
-
-    @*3D Model*@
-    <script type="importmap">
-        {
-            "imports": {
-                "three": "https://cdn.jsdelivr.net/npm/three@latest/build/three.module.js",
-                "three/addons/": "https://cdn.jsdelivr.net/npm/three@latest/examples/jsm/"
-            }
-        }
-    </script>
-    <script type="module">
-        import { loadModel } from '../../js/site.mjs';
-
-        const cad = {
-            id: @cad.Id,
-            name: '@cad.Name',
-            x: @cad.Coords.Item1,
-            y: @cad.Coords.Item2,
-            z: @cad.Coords.Item3,
-            axis: '@cad.SpinAxis',
-            speed: @cad.SpinFactor.ToString(new CultureInfo("en-US")),
-            texture: '@cad.TexturePath',
-            fov: @cad.Fov,
-        };
-
-        loadModel(cad);
-    </script>
-</head>
 <body class="fade-in">
     <h2 class="text-center mt-4 mb-4">CustomCADSolutions</h2>
     <hr />
@@ -57,7 +22,7 @@
             </div>
 
             <div class="col-sm-4 col-12 mt-0 mb-3">
-                <div style="height: 20rem !important" id="model-@cad.Id" class="bg-transparent"></div>
+                <div id="model-@cad.Id" class="bg-transparent"></div>
             </div>
         </div>
     </div>
@@ -87,4 +52,37 @@
 
     </div>
 </body>
-</html>
+
+@section Scripts {
+    <script type="module">
+        import { loadModel } from '../../js/site.mjs';
+
+        const cad = {
+            id: @cad.Id,
+            name: '@cad.Name',
+            x: @cad.Coords.Item1,
+            y: @cad.Coords.Item2,
+            z: @cad.Coords.Item3,
+            axis: '@cad.SpinAxis',
+            speed: @cad.SpinFactor.ToString(new CultureInfo("en-US")),
+            texture: '@cad.TexturePath', // !
+            fov: @cad.Fov,
+        };
+
+        loadModel(cad);
+    </script>
+
+
+    <script>
+        const divElement = document.getElementById('model-@cad.Id');
+        divElement.setAttribute('style', 'height: 20rem !important');
+    </script>
+}
+
+@section Styles {
+    @*Fade-in effect*@
+    <link rel="stylesheet" href="~/css/animation.css" />
+
+    @*Style*@
+    <link rel="stylesheet" href="~/css/index.css" />
+}

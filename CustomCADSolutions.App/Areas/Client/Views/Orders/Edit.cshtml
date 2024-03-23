@@ -1,14 +1,13 @@
 ﻿@model OrderInputModel
 @inject IViewLocalizer Localizer
 @{
-    bool isBg = CultureInfo.CurrentCulture.Name == "bg-BG";
 }
 
 <h2 class="text-center mb-3">@Localizer["Title", Model.Name]</h2>
 <hr />
 
 <div class="container">
-    <form method="post" autocomplete="off" asp-route-cadId="@Model.CadId">
+    <form method="post" autocomplete="off" asp-route-cadId="@Model.CadId" asp-route-buyerId="@Model.BuyerId">
         <div class="row justify-content-center">
             <div class="col-4 mb-3">
                 <label asp-for="Name" class="form-label"></label>

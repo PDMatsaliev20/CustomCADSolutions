@@ -1,0 +1,7 @@
+﻿.col a:hover {
+	text-decoration: black underline !important;
+}
+
+div a img:hover {
+	opacity: 60%;
+}

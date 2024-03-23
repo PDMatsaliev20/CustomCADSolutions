@@ -1,54 +1,24 @@
-﻿@using CustomCADSolutions.App.Controllers
+﻿@model IEnumerable<CadViewModel>
 @inject IViewLocalizer Localizer
-@model IEnumerable<CadViewModel>
 @{
 }
-<head>
-    <script type="importmap">
-        {
-            "imports": {
-                "three": "https://cdn.jsdelivr.net/npm/three@latest/build/three.module.js",
-                "three/addons/": "https://cdn.jsdelivr.net/npm/three@latest/examples/jsm/"
+
+<h2 class="text-center">@Localizer[$"{ViewBag.Category}Title"]</h2>
+<hr />
+
+@if (!Model.Any())
+{
+    <p class="text-center">@Localizer["No models"]</p>
+}
+else
+{
+    <div class="container text-center mt-5">
+        <div class="row">
+            @foreach (CadViewModel cad in Model)
+            {
+                string userId = User.GetId();
+                @await Component.InvokeAsync("CategoryCadComponent", new { cad, userId })
             }
-        }
-    </script>
-</head>
-<body>
-    <h2 class="text-center">@Localizer[$"{ViewBag.Category}Title"]</h2>
-    <hr />
-
-    @if (!Model.Any())
-    {
-        <p class="text-center">@Localizer["No models"]</p>
-    }
-    else
-    {
-        <div class="container text-center mt-5">
-            <div class="row">
-                @foreach (CadViewModel cad in Model)
-                {
-                    <script type="module">
-                        import { loadModel } from '../../js/site.mjs';
-
-                        const cad = {
-                            id: @cad.Id,
-                            name: '@cad.Name',
-                            texture: '@cad.TexturePath',
-                            x: @cad.Coords.Item1,
-                            y: @cad.Coords.Item2,
-                            z: @cad.Coords.Item3,
-                            axis: '@cad.SpinAxis',
-                            speed: @cad.SpinFactor.ToString(new CultureInfo("en-US")),
-                            fov: '@cad.Fov',
-                        };
-
-                        loadModel(cad);
-                    </script>
-                    
-                    string userId = User.GetId();
-                    @await Component.InvokeAsync("CategoryCadComponent", new { cad, userId })
-                }
-            </div>
         </div>
-    }
-</body>
+    </div>
+}

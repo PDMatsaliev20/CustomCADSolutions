@@ -2,35 +2,23 @@
 @{
 }
 
-<html>
-<head>
-    <style>
-        .col a:hover {
-            text-decoration: black underline !important;
-        }
+<h2 class="text-center mb-2">@Localizer["Title"]</h2>
+<hr />
 
-        div a img:hover {
-            opacity: 60%;
+<div class="col-11 container d-flex flex-rows justify-content-center">
+    <div class="row">
+        @foreach (string category in ViewBag.Categories)
+        {
+            <div class="col-6 col-xl-3 col-sm-4 fs-4">
+                <a class="text-decoration-none" asp-controller="Home" asp-action="Category" asp-route-category="@category">
+                    <img class="rounded mw-100 h-auto" src="~/others/categories/@(category).png" alt="@Localizer[category]">
+                    <p class="text-center text-dark">@Localizer[category]</p>
+                </a>
+            </div>
         }
-    </style>
-</head>
-<body>
-    <h2 class="text-center mb-2">@Localizer["Title"]</h2>
-    <hr />
-
-    <div class="col-11 container d-flex flex-rows justify-content-center">
-        <div class="row">
-            @foreach (string category in ViewBag.Categories)
-            {
-                <div class="col-6 col-xl-3 col-sm-4 fs-4">
-                    <a class="text-decoration-none" asp-controller="Home" asp-action="Category" asp-route-category="@category">
-                        <img class="rounded mw-100 h-auto" src="~/others/categories/@(category).png" alt="@Localizer[category]">
-                        <p class="text-center text-dark">@Localizer[category]</p>
-                    </a>
-                </div>
-            }
-        </div>
     </div>
+</div>
 
-</body>
-</html>
+@section Styles {
+    <link rel="stylesheet" href="~/css/categories.css" />
+}

@@ -1,75 +1,40 @@
 ﻿@model CadViewModel[]
 @inject IViewLocalizer Localizer
 @{
-    int count = ViewBag.UserModelsCount;
-    string detail = Model.Count(c => !c.Validated) > 0 ? 
-        Localizer["Has"].Value :
-        Localizer["Hasn't"].Value;
+    int designerModelsCount = ViewBag.UserModelsCount;
+    var designerDetails = designerModelsCount > 0 ? Localizer["Has", designerModelsCount] : Localizer["Hasn't"];
+    
+    int unvalidatedModelsCount = Model.Count(c => !c.Validated);
+    var unvalidatedDetails = unvalidatedModelsCount > 0 ? Localizer["Has", unvalidatedModelsCount] : Localizer["Hasn't"];
+
+    ViewBag.Cols = 3;
+    ViewBag.Buttons = Array.Empty<string>();
 }
-<head>
-    <script type="importmap">
-        {
-            "imports": {
-                "three": "https://cdn.jsdelivr.net/npm/three@latest/build/three.module.js",
-                "three/addons/": "https://cdn.jsdelivr.net/npm/three@latest/examples/jsm/"
-            }
-        }
-    </script>
-</head>
-<body>
-    <h2 class="text-center">@Localizer["Title"]</h2>
-    <hr />
 
-    <div class="container">
-        <div class="row d-flex justify-content-evenly">
-            <a class="col-sm-2 col-12 mb-sm-0 mb-3 btn btn-primary" asp-area="Designer" asp-controller="Cad" asp-action="Index">
-                @Localizer["UrCads", count]
-            </a>
-            <a class="col-sm-2 col-12 mb-sm-0 mb-3 btn btn-secondary" asp-area="Designer" asp-controller="Cad" asp-action="Submitted">
-                @Localizer["UnvCads", detail]
-            </a>
-        </div>
-        @if (Model.Any())
-        {
-            <div class="row d-flex">
-                @foreach (CadViewModel cad in Model)
-                {
-                    <script type="module">
-                        import { loadModel } from '../../js/site.mjs';
+<h2 class="text-center">@Localizer["Title"]</h2>
+<hr />
 
-                        const cad = {
-                            id: @cad.Id,
-                            name: '@cad.Name',
-                            texture: '@cad.TexturePath',
-                            x: @cad.Coords.Item1,
-                            y: @cad.Coords.Item2,
-                            z: @cad.Coords.Item3,
-                            axis: '@cad.SpinAxis',
-                            speed: @cad.SpinFactor.ToString(new CultureInfo("en-US")),
-                            fov: @cad.Fov,
-                        };
-
-                        loadModel(cad);
-                    </script>
-
-                    <div class="col-sm-4 col-12 mt-4">
-                        <div class="card">
-                            <h4 class="card-header text-center mb-1">@cad.Name (@Localizer[cad.Category])</h4>
-                            <div class="card-body">
-                                <div id="model-@cad.Id"></div>
-                            </div>
-                            <div class="card-footer d-flex justify-content-between fs-6">
-                                <span>@cad.CreatorName</span>
-                                <span>@cad.CreationDate</span>
-                            </div>
-                        </div>
-                    </div>
-                }
-            </div>
-        }
-        else
-        {
-            <p>@Localizer["NoCads"]</p>
-        }
+<div class="container">
+    <div class="row d-flex justify-content-evenly">
+        <a class="col-sm-2 col-12 mb-sm-0 mb-3 btn btn-primary" asp-area="Designer" asp-controller="Cads" asp-action="Index">
+            @Localizer["UrCads", designerDetails]
+        </a>
+        <a class="col-sm-2 col-12 mb-sm-0 mb-3 btn btn-secondary" asp-area="Designer" asp-controller="Cads" asp-action="Submitted">
+            @Localizer["UnvCads", unvalidatedDetails]
+        </a>
     </div>
-</body>
+    @if (Model.Any())
+    {
+        <div class="row d-flex">
+            @foreach (CadViewModel cad in Model)
+            {
+                ViewBag.Header = $"{cad.Name} ({Localizer[cad.Category].Value})";
+                <partial name="_CardCadPartial" model="cad" view-data="ViewData" />
+            }
+        </div>
+    }
+    else
+    {
+        <p>@Localizer["NoCads"]</p>
+    }
+</div>

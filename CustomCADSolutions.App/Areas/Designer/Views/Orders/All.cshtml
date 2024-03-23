@@ -69,7 +69,7 @@
                                             @switch (status)
                                             {
                                                 case "Pending":
-                                                    <form asp-area="Designer" asp-controller="Order" asp-action="Begin">
+                                                    <form asp-area="Designer" asp-controller="Orders" asp-action="Begin">
                                                         <div class="row justify-content-center">
                                                             <input asp-for="Id" value="@order.CadId" hidden />
                                                             <input asp-for="BuyerId" value="@order.BuyerId" hidden />
@@ -81,7 +81,7 @@
                                                     break;
 
                                                 case "Begun":
-                                                    <form asp-area="Designer" asp-controller="Order" asp-action="Finish" method="post" autocomplete="off" enctype="multipart/form-data">
+                                                    <form asp-area="Designer" asp-controller="Orders" asp-action="Finish" method="post" autocomplete="off" enctype="multipart/form-data">
                                                         <div class="row d-flex justify-content-center">
                                                             <input asp-for="Id" value="@order.CadId" hidden />
                                                             <input asp-for="BuyerId" value="@order.BuyerId" hidden />
@@ -97,7 +97,7 @@
                                                     break;
 
                                                 case "Finished":
-                                                    <form asp-area="Designer" asp-controller="Order" asp-action="Hide">
+                                                    <form asp-area="Designer" asp-controller="Orders" asp-action="Hide">
                                                         <input asp-for="Id" value="@order.CadId" hidden />
                                                         <input asp-for="BuyerId" value="@order.BuyerId" hidden />
                                                         <div class="row justify-content-center">

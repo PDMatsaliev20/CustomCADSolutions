@@ -118,57 +118,51 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="All" xml:space="preserve">
-    <value>All</value>
+    <value>Всички</value>
   </data>
   <data name="Animals" xml:space="preserve">
-    <value>Animals</value>
+    <value>Животни</value>
   </data>
   <data name="Characters" xml:space="preserve">
-    <value>Characters</value>
+    <value>Герои</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Изтрий</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>Детайли</value>
   </data>
   <data name="Electronics" xml:space="preserve">
-    <value>Electronics</value>
+    <value>Електроника</value>
   </data>
   <data name="Fashion" xml:space="preserve">
-    <value>Fashion</value>
+    <value>Мода</value>
   </data>
   <data name="Furniture" xml:space="preserve">
-    <value>Furniture</value>
-  </data>
-  <data name="Has" xml:space="preserve">
-    <value>you have {0}</value>
-  </data>
-  <data name="Hasn't" xml:space="preserve">
-    <value>none</value>
+    <value>Мебели</value>
   </data>
   <data name="Nature" xml:space="preserve">
-    <value>Nature</value>
-  </data>
-  <data name="NoCads" xml:space="preserve">
-    <value>No cads yet!</value>
+    <value>Природа</value>
   </data>
   <data name="Others" xml:space="preserve">
-    <value>Others</value>
+    <value>Други</value>
   </data>
   <data name="Science" xml:space="preserve">
-    <value>Science</value>
+    <value>Наука</value>
   </data>
   <data name="Sports" xml:space="preserve">
-    <value>Sports</value>
-  </data>
-  <data name="Title" xml:space="preserve">
-    <value>All 3D Models</value>
+    <value>Спорт</value>
   </data>
   <data name="Toys" xml:space="preserve">
-    <value>Toys</value>
+    <value>Играчки</value>
   </data>
-  <data name="UnvCads" xml:space="preserve">
-    <value>3D Models Awaiting Validation - {0}</value>
-  </data>
-  <data name="UrCads" xml:space="preserve">
-    <value>Uploaded By You 3D Models - {0}</value>
+  <data name="Validate" xml:space="preserve">
+    <value>Валидирай</value>
   </data>
   <data name="Vehicles" xml:space="preserve">
-    <value>Vehicles</value>
+    <value>Коли</value>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Сигурни ли Сте, че искате да изтриете този модел:</value>
   </data>
 </root>

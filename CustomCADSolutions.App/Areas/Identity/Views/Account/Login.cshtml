@@ -1,9 +1,6 @@
-﻿@using System.Globalization
-@using Microsoft.AspNetCore.Mvc.Localization
-@inject IViewLocalizer Localizer
+﻿@inject IViewLocalizer Localizer
 @model LoginInputModel   
 @{
-    bool isBg = CultureInfo.CurrentCulture.Name == "bg-BG";
 }
 
 <h1 class="text-center">@Localizer["Title"]</h1>

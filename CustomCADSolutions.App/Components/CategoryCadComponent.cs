@@ -34,7 +34,7 @@ namespace CustomCADSolutions.App.Components
             {
                 ViewBag.Area = "Contributer";
             }
-            else if (User.IsInRole("Client"))
+            else 
             {
                 ViewBag.Area = "Client";
             }

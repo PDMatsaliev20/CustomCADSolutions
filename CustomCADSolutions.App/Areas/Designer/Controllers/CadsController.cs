@@ -55,8 +55,7 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
                 })
                 .ToArray();
             
-            ViewBag.UserModelsCount = (await cadService.GetAllAsync())
-                .Count(model => model.CreatorId == User.GetId());
+            ViewBag.UserModelsCount = await cadService.GetUserModelsCountAsync(User.GetId());
 
             return View(views);
         }
