@@ -14,9 +14,6 @@ namespace CustomCADSolutions.App.Controllers
         public static string GetCadPath(this IWebHostEnvironment hostingEnvironment, string name, int id, string extension = ".stl")
             => Path.Combine(hostingEnvironment.WebRootPath, "others", "cads", $"{name}{id}{extension}");
 
-        public static async Task<int> GetUserModelsCountAsync(this ICadService cadService, string userId) 
-            => (await cadService.GetAllAsync()).Count(model => model.CreatorId == userId);
-
         public static IEnumerable<string> GetErrors(this ModelStateDictionary model) => model.Values.Select(v => v.Errors).SelectMany(ec => ec.Select(e => e.ErrorMessage));
 
         public static async Task UploadCadAsync(this IWebHostEnvironment hostingEnvironment, IFormFile cad, int id, string name, string extension = ".stl")

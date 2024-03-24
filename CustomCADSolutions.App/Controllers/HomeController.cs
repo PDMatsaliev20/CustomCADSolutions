@@ -2,6 +2,8 @@
 using CustomCADSolutions.App.Models.Cads;
 using CustomCADSolutions.Core.Contracts;
 using CustomCADSolutions.Core.Models;
+using CustomCADSolutions.Infrastructure.Data.Models;
+using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
@@ -65,46 +67,45 @@ namespace CustomCADSolutions.App.Controllers
         [HttpGet]
         public async Task<IActionResult> Categories()
         {
-            ViewBag.Categories = new string[] { "All" }
-                .Concat((await categoryService
+            return View(new CadQueryInputModel() 
+            {
+                Categories = (await categoryService
                     .GetAllAsync())
-                    .Select(c => c.Name));
-            
-            return View();
+                    .Select(c => c.Name) 
+            });
         }
 
         [HttpGet]
-        public async Task<IActionResult> Category(string category)
+        public async Task<IActionResult> Category(CadQueryInputModel inputQuery, string category)
         {
-            IEnumerable<CadModel> models = (await cadService.GetAllAsync())
-                .Where(c => c.Creator != null && c.Validated)
-                .OrderByDescending(c => c.CreationDate);
+            ViewBag.ModelsPerPage = 16;
+            CadQueryModel query = await cadService.GetAllAsync(
+                category: inputQuery.Category,
+                creatorName: inputQuery.Creator,
+                searchTerm: inputQuery.SearchTerm,
+                sorting: inputQuery.Sorting,
+                currentPage: inputQuery.CurrentPage,
+                modelsPerPage: ViewBag.ModelsPerPage);
 
-            IEnumerable<string> categories = (await categoryService.GetAllAsync()).Select(c => c.Name);
-            if (categories.Contains(category))
-            {
-                models = models.Where(cad => cad.Category.Name == category);
-            }
-            else if (category != "All")
-            {
-                return NotFound();
-            }
-            ViewBag.Category = category;
-
-            IEnumerable<CadViewModel> gallery = models
-                .Select(model => new CadViewModel
+            inputQuery.TotalCadsCount = query.TotalCount;
+            inputQuery.Categories = (await categoryService.GetAllAsync()).Select(c => c.Name);
+            inputQuery.Cads = query.CadModels
+                .Select(m => new CadViewModel
                 {
-                    Id = model.Id,
-                    Name = model.Name,
-                    Category = model.Category.Name,
-                    CreationDate = model.CreationDate!.Value.ToString("dd/MM/yyyy HH:mm:ss"),
-                    CreatorName = model.Creator!.UserName,
-                    Coords = model.Coords,
-                    SpinAxis = model.SpinAxis,
-                    SpinFactor = model.SpinFactor
-                });
+                    Id = m.Id,
+                    Name = m.Name,
+                    Category = m.Category.Name,
+                    CreationDate = m.CreationDate!.Value.ToString("dd/MM/yyyy HH:mm:ss"),
+                    CreatorName = m.Creator!.UserName,
+                    Coords = m.Coords,
+                    SpinAxis = m.SpinAxis,
+                    SpinFactor = m.SpinFactor,
+                    IsValidated = m.IsValidated,
+                }).ToArray();
 
-            return View(gallery);
+            ViewBag.Sortings = typeof(CadSorting).GetEnumNames();
+            ViewBag.Category = category;
+            return View(inputQuery);
         }
 
         public IActionResult SetLanguage(string culture, string returnUrl)

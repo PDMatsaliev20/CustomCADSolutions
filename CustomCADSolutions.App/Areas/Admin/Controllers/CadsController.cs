@@ -5,7 +5,6 @@ using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 using static CustomCADSolutions.App.Controllers.UtilitiesNotController;
 
 namespace CustomCADSolutions.App.Areas.Admin.Controllers
@@ -38,10 +37,21 @@ namespace CustomCADSolutions.App.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index([FromQuery] CadQueryInputModel inputQuery)
         {
-            CadViewModel[] views = (await cadService.GetAllAsync())
-                .Where(c => !string.IsNullOrEmpty(c.CreatorId))
+            ViewBag.ModelsPerPage = 4;
+            CadQueryModel query = await cadService.GetAllAsync(
+                category: inputQuery.Category,
+                creatorName: inputQuery.Creator,
+                searchTerm: inputQuery.SearchTerm,
+                sorting: inputQuery.Sorting,
+                unvalidated: true,
+                currentPage: inputQuery.CurrentPage,
+                modelsPerPage: ViewBag.ModelsPerPage);
+
+            inputQuery.TotalCadsCount = query.TotalCount;
+            inputQuery.Categories = (await categoryService.GetAllAsync()).Select(c => c.Name);
+            inputQuery.Cads = query.CadModels
                 .Select(m => new CadViewModel
                 {
                     Id = m.Id,
@@ -52,29 +62,27 @@ namespace CustomCADSolutions.App.Areas.Admin.Controllers
                     Coords = m.Coords,
                     SpinAxis = m.SpinAxis,
                     SpinFactor = m.SpinFactor,
-                    Validated = m.Validated,
+                    IsValidated = m.IsValidated,
                 }).ToArray();
 
-            return View(views);
+            ViewBag.Sortings = typeof(CadSorting).GetEnumNames();
+            return View(inputQuery);
         }
 
         [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
             CadModel cad = await cadService.GetByIdAsync(id);
+            hostingEnvironment.DeleteCad(cad.Name, cad.Id);
 
             OrderModel[] orders = (await orderService.GetAllAsync()).Where(o => o.CadId == cad.Id).ToArray();
-            orders.ToList().ForEach(o => o.Status = OrderStatus.Pending);
-            orders.ToList().ForEach(async o => await orderService.EditAsync(o));
-
-            await cadService.DeleteAsync(cad.Id);
-
-            string filePath = hostingEnvironment.GetCadPath(cad.Name, cad.Id);
-            if (System.IO.File.Exists(filePath))
+            foreach (OrderModel order in orders)
             {
-                System.IO.File.Delete(filePath);
+                order.Status = OrderStatus.Pending;
             }
-            else logger.LogWarning("File not found");
+
+            await orderService.EditRangeAsync(orders);
+            await cadService.DeleteAsync(cad.Id);
 
             return RedirectToAction(nameof(Index));
         }

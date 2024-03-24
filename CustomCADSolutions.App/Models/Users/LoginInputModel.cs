@@ -1,7 +1,7 @@
 ﻿using CustomCADSolutions.App.Resources.Shared;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
-using static CustomCADSolutions.Infrastructure.Constants.DataConstants;
+using static CustomCADSolutions.Infrastructure.Data.DataConstants;
 
 namespace CustomCADSolutions.App.Models.Users
 {

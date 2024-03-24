@@ -2,6 +2,7 @@
 using CustomCADSolutions.Core.Models;
 using CustomCADSolutions.Infrastructure.Data.Common;
 using CustomCADSolutions.Infrastructure.Data.Models;
+using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace CustomCADSolutions.Core.Services
@@ -61,7 +62,7 @@ namespace CustomCADSolutions.Core.Services
 
             cad.CategoryId = model.CategoryId;
             cad.Name = model.Name;
-            cad.Validated = model.Validated;
+            cad.IsValidated = model.IsValidated;
             cad.X = model.Coords.Item1;
             cad.Y = model.Coords.Item2;
             cad.Z = model.Coords.Item3;
@@ -88,7 +89,7 @@ namespace CustomCADSolutions.Core.Services
 
                 cad.CategoryId = model.CategoryId;
                 cad.Name = model.Name;
-                cad.Validated = model.Validated;
+                cad.IsValidated = model.IsValidated;
                 cad.X = model.Coords.Item1;
                 cad.Y = model.Coords.Item2;
                 cad.Z = model.Coords.Item3;
@@ -110,29 +111,20 @@ namespace CustomCADSolutions.Core.Services
             Cad cad = await repository.GetByIdAsync<Cad>(id)
                 ?? throw new KeyNotFoundException();
 
-            cad.CreatorId = default;
-            cad.Creator = default;
-            cad.CreationDate = default;
-            cad.Validated = default;
-            
-            // Cad animation info
-            cad.X = default;
-            cad.Y = default;
-            cad.Z = default;
-            cad.SpinAxis = default;
-            cad.SpinFactor = default;
-
+            repository.Delete(cad);
             await repository.SaveChangesAsync();
         }
 
         public async Task DeleteRangeAsync(params int[] ids)
         {
-            Cad[] cads = (await Task.WhenAll(
-                    ids.Select(async id => await repository.GetByIdAsync<Cad>(id))))
-                .Where(result => result != null)
-                .ToArray()!;
+            Cad[] cads = new Cad[ids.Length];
+            for (int i = 0; i < ids.Length; i++)
+            {
+                cads[i] = await repository.GetByIdAsync<Cad>(ids[i])
+                    ?? throw new KeyNotFoundException();
+            }
 
-            repository.DeleteRange<Cad>(cads);
+            repository.DeleteRange(cads);
             await repository.SaveChangesAsync();
         }
 
@@ -145,12 +137,74 @@ namespace CustomCADSolutions.Core.Services
             return model;
         }
 
-        public async Task<IEnumerable<CadModel>> GetAllAsync()
+        public async Task<CadQueryModel> GetAllAsync(
+            string? category = null, string? creator = null,
+            string? searchTerm = null, CadSorting sorting = CadSorting.Newest,
+            int currentPage = 1, int housesPerPage = 1,
+            bool validated = true, bool unvalidated = false)
         {
-            return await repository
-                .All<Cad>()
+            IQueryable<Cad> cads = repository.All<Cad>()
+                .Where(c => c.CreatorId != null);
+
+            if (category != null)
+            {
+                cads = cads.Where(c => c.Category.Name == category);
+            }
+
+            if (creator != null)
+            {
+                cads = cads.Where(c => c.Creator!.UserName == creator);
+            }
+
+            if (validated ^ unvalidated)
+            {
+                if (validated)
+                {
+                    cads = cads.Where(c => c.IsValidated);
+                }
+                
+                if (unvalidated)
+                {
+                    cads = cads.Where(c => !c.IsValidated);
+                }
+
+            }
+            if (searchTerm != null)
+            {
+                cads = cads
+                    .Where(c => c.Name.Contains(searchTerm) ||
+                        c.Category.Name.Contains(searchTerm) ||
+                        c.Creator!.UserName.Contains(searchTerm) ||
+                        c.Creator!.Email.Contains(searchTerm));
+            }
+
+            cads = sorting switch
+            {
+                CadSorting.Newest => cads.OrderBy(c => c.CreationDate),
+                CadSorting.Oldest => cads.OrderByDescending(c => c.CreationDate),
+                CadSorting.Alphabetical => cads.OrderBy(c => c.Name),
+                CadSorting.Unalphabetical => cads.OrderByDescending(c => c.Name),
+                CadSorting.Category => cads.OrderBy(m => m.Category.Name),
+                _ => cads.OrderBy(c => c.Id),
+            };
+
+
+            if (housesPerPage > 16)
+            {
+                housesPerPage = 16;
+            }
+
+            CadModel[] models = await cads
+                .Skip((currentPage - 1) * housesPerPage)
+                .Take(housesPerPage)
                 .Select(cad => converter.CadToModel(cad, true))
                 .ToArrayAsync();
+
+            return new()
+            {
+                TotalCount = cads.Count(),
+                CadModels = models
+            };
         }
     }
 }

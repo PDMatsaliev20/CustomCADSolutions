@@ -37,10 +37,20 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index([FromQuery] CadQueryInputModel inputQuery)
         {
-            IEnumerable<CadViewModel> views = (await cadService.GetAllAsync())
-                .Where(model => model.CreatorId == User.GetId())
+            ViewBag.ModelsPerPage = 8;
+            CadQueryModel query = await cadService
+                .GetAllAsync(category: inputQuery.Category,
+                    creatorName: User.Identity!.Name, 
+                    sorting: CadSorting.Oldest,
+                    searchTerm: inputQuery.SearchTerm,
+                    currentPage: inputQuery.CurrentPage,
+                    modelsPerPage: ViewBag.ModelsPerPage);
+
+            inputQuery.Categories = (await categoryService.GetAllAsync()).Select(c => c.Name);
+            inputQuery.TotalCadsCount = query.TotalCount;
+            inputQuery.Cads = query.CadModels
                 .Select(model => new CadViewModel
                 {
                     Id = model.Id,
@@ -51,11 +61,11 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
                     Coords = model.Coords,
                     SpinAxis = model.SpinAxis,
                     SpinFactor = model.SpinFactor,
-                    Validated = model.Validated,
+                    IsValidated = model.IsValidated,
                 })
-                .OrderByDescending(view => view.CreationDate);
+                .ToArray();
 
-            return View(views);
+            return View(inputQuery);
         }
 
         [HttpGet]
@@ -89,7 +99,7 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
             {
                 Name = input.Name,
                 CategoryId = input.CategoryId,
-                Validated = User.IsInRole("Designer"),
+                IsValidated = User.IsInRole("Designer"),
                 CreationDate = DateTime.Now,
                 CreatorId = User.GetId()
             };
@@ -167,18 +177,16 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             CadModel cad = await cadService.GetByIdAsync(id);
-
-            if (cad.CreatorId != User.GetId())
-            {
-                return Unauthorized();
-            }
+            hostingEnvironment.DeleteCad(cad.Name, cad.Id);
 
             OrderModel[] orders = (await orderService.GetAllAsync()).Where(o => o.CadId == cad.Id).ToArray();
-            orders.ToList().ForEach(o => o.Status = OrderStatus.Pending);
-            await orderService.EditRangeAsync(orders);
+            foreach (OrderModel order in orders)
+            {
+                order.Status = OrderStatus.Pending;
+            }
 
+            await orderService.EditRangeAsync(orders);
             await cadService.DeleteAsync(cad.Id);
-            hostingEnvironment.DeleteCad(cad.Name, cad.Id);
 
             return RedirectToAction(nameof(Index));
         }

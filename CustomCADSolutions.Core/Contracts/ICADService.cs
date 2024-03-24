@@ -1,5 +1,5 @@
 ﻿using CustomCADSolutions.Core.Models;
-using CustomCADSolutions.Infrastructure.Data.Models;
+using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 
 namespace CustomCADSolutions.Core.Contracts
 {
@@ -17,6 +17,10 @@ namespace CustomCADSolutions.Core.Contracts
         
         Task<CadModel> GetByIdAsync(int id);
 
-        Task<IEnumerable<CadModel>> GetAllAsync();
+        Task<CadQueryModel> GetAllAsync(
+            string? category = null,string? creatorName = null,
+            string? searchTerm = null,CadSorting sorting = CadSorting.Newest,
+            int currentPage = 1,int modelsPerPage = 1,
+            bool validated = true, bool unvalidated = false);
     }
 }

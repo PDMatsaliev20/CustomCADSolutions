@@ -10,7 +10,7 @@ namespace CustomCADSolutions.Core.Services
             {
                 Id = cad.Id,
                 Name = cad.Name,
-                Validated = cad.Validated,
+                IsValidated = cad.IsValidated,
                 CreationDate = cad.CreationDate,
                 Coords = (cad.X, cad.Y, cad.Z),
                 SpinAxis = cad.SpinAxis,
@@ -53,7 +53,7 @@ namespace CustomCADSolutions.Core.Services
             {
                 Name = model.Name,
                 CategoryId = model.CategoryId,
-                Validated = model.Validated,
+                IsValidated = model.IsValidated,
                 CreationDate = model.CreationDate ?? DateTime.Now,
                 CreatorId = model.CreatorId,
                 X = model.Coords.Item1,

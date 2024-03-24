@@ -1,4 +1,4 @@
-﻿namespace CustomCADSolutions.Infrastructure.Constants
+﻿namespace CustomCADSolutions.Infrastructure.Data
 {
     public static class DataConstants
     {
@@ -22,12 +22,12 @@
 
             public const int YMin = -1000;
             public const int YMax = 1000;
-            
+
             public const int ZMin = -1000;
             public const int ZMax = 1000;
-            
+
             public const string SpinAxisErrorMessage = "{0} must be either x, y or z";
-            
+
             public const double SpinFactorMin = 0.01;
             public const double SpinFactorMax = 1;
         }
@@ -43,7 +43,7 @@
             public const int DescriptionMinLength = 5;
         }
 
-        public class UserConstants 
+        public class UserConstants
         {
             public const int NameMaxLength = 62;
             public const int NameMinLength = 3;

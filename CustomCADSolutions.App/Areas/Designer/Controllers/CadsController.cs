@@ -41,10 +41,22 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> All()
+        public async Task<IActionResult> All([FromQuery] CadQueryInputModel inputQuery)
         {
-            CadViewModel[] views = (await cadService.GetAllAsync())
-                .Where(c => c.CreatorId != null)
+            ViewBag.ModelsPerPage = 3;
+            CadQueryModel query = await cadService.GetAllAsync(
+                category: inputQuery.Category,
+                creatorName: inputQuery.Creator,
+                searchTerm: inputQuery.SearchTerm,
+                sorting: inputQuery.Sorting,
+                validated: true,
+                unvalidated: true,
+                currentPage: inputQuery.CurrentPage,
+                modelsPerPage: ViewBag.ModelsPerPage);
+
+            inputQuery.TotalCadsCount = query.TotalCount;
+            inputQuery.Categories = (await categoryService.GetAllAsync()).Select(c => c.Name);
+            inputQuery.Cads = query.CadModels
                 .Select(c => new CadViewModel
                 {
                     Id = c.Id,
@@ -55,37 +67,60 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
                     Coords = c.Coords,
                     SpinAxis = c.SpinAxis,
                     SpinFactor = c.SpinFactor,
-                    Validated = c.Validated,
-                })
-                .ToArray();
+                    IsValidated = c.IsValidated,
+                }).ToArray();
 
-            int designerModelsCount = await cadService.GetUserModelsCountAsync(User.GetId());
-            ViewBag.DesignerDetails = designerModelsCount > 0 ? localizer["Has", designerModelsCount] : localizer["Hasn't"];
+            ViewBag.Sortings = typeof(CadSorting).GetEnumNames();
 
-            int unvalidatedModelsCount = views.Count(c => !c.Validated);
-            ViewBag.UnvalidatedDetails = unvalidatedModelsCount > 0 ? localizer["Has", unvalidatedModelsCount] : localizer["Hasn't"];
+            int designerModelsCount = (await cadService
+                .GetAllAsync(creatorName: User.Identity!.Name))
+                .TotalCount;
 
-            return View(views);
+            ViewBag.DesignerDetails = designerModelsCount > 0 ?
+                localizer["Has", designerModelsCount] :
+                localizer["Hasn't"];
+
+            int unvalidatedModelsCount = inputQuery.Cads.Count(c => !c.IsValidated);
+
+            ViewBag.UnvalidatedDetails = unvalidatedModelsCount > 0 ?
+                localizer["Has", unvalidatedModelsCount] :
+                localizer["Hasn't"];
+
+            return View(inputQuery);
         }
 
         [HttpGet]
-        public async Task<IActionResult> Submitted()
+        public async Task<IActionResult> Submitted([FromQuery] CadQueryInputModel inputQuery)
         {
-            IEnumerable<CadViewModel> views = (await cadService.GetAllAsync())
-                .Where(m => m.Creator != null && !m.Validated)
+            ViewBag.ModelsPerPage = 4;
+            CadQueryModel query = await cadService.GetAllAsync(
+                category: inputQuery.Category,
+                creatorName: inputQuery.Creator,
+                validated: false,
+                unvalidated: true,
+                searchTerm: inputQuery.SearchTerm,
+                sorting: inputQuery.Sorting,
+                currentPage: inputQuery.CurrentPage,
+                modelsPerPage: ViewBag.ModelsPerPage);
+
+            inputQuery.TotalCadsCount = query.TotalCount;
+            inputQuery.Categories = (await categoryService.GetAllAsync()).Select(c => c.Name);
+            inputQuery.Cads = query.CadModels
                 .Select(m => new CadViewModel
                 {
                     Id = m.Id,
                     Name = m.Name,
                     Category = m.Category.Name,
                     CreationDate = m.CreationDate!.Value.ToString("dd/MM/yyyy HH:mm:ss"),
+                    CreatorName = m.Creator!.UserName,
                     Coords = m.Coords,
                     SpinAxis = m.SpinAxis,
                     SpinFactor = m.SpinFactor,
-                    CreatorName = m.Creator!.UserName,
-                });
+                    IsValidated = m.IsValidated,
+                }).ToArray();
 
-            return View(views);
+            ViewBag.Sortings = typeof(CadSorting).GetEnumNames();
+            return View(inputQuery);
         }
 
         [HttpPost]
@@ -93,17 +128,23 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
         {
             CadModel model = await cadService.GetByIdAsync(cadId);
 
-            model.Validated = true;
+            model.IsValidated = true;
             await cadService.EditAsync(model);
 
             return RedirectToAction(nameof(Submitted));
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index([FromQuery] CadQueryInputModel inputQuery)
         {
-            IEnumerable<CadViewModel> views = (await cadService.GetAllAsync())
-                .Where(model => model.CreatorId == User.GetId())
+            ViewBag.ModelsPerPage = 8;
+            CadQueryModel query = await cadService
+                .GetAllAsync(creatorName: User.Identity!.Name, 
+                currentPage: inputQuery.CurrentPage,
+                modelsPerPage: ViewBag.ModelsPerPage);
+
+            inputQuery.TotalCadsCount = query.TotalCount;
+            inputQuery.Cads = query.CadModels
                 .Select(model => new CadViewModel
                 {
                     Id = model.Id,
@@ -114,10 +155,11 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
                     Coords = model.Coords,
                     SpinAxis = model.SpinAxis,
                     SpinFactor = model.SpinFactor,
-                    Validated = model.Validated,
-                });
+                    IsValidated = model.IsValidated,
+                })
+                .ToArray();
 
-            return View(views);
+            return View(inputQuery);
         }
 
         [HttpGet]
@@ -151,7 +193,7 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
             {
                 Name = input.Name,
                 CategoryId = input.CategoryId,
-                Validated = User.IsInRole("Designer"),
+                IsValidated = User.IsInRole("Designer"),
                 CreationDate = DateTime.Now,
                 CreatorId = User.GetId()
             };
@@ -234,12 +276,16 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
                 return Unauthorized();
             }
 
-            OrderModel[] orders = (await orderService.GetAllAsync()).Where(o => o.CadId == cad.Id).ToArray();
-            orders.ToList().ForEach(o => o.Status = OrderStatus.Pending);
-            await orderService.EditRangeAsync(orders);
-
-            await cadService.DeleteAsync(cad.Id);
             hostingEnvironment.DeleteCad(cad.Name, cad.Id);
+
+            OrderModel[] orders = (await orderService.GetAllAsync()).Where(o => o.CadId == cad.Id).ToArray();
+            foreach (OrderModel order in orders)
+            {
+                order.Status = OrderStatus.Pending;
+            }
+
+            await orderService.EditRangeAsync(orders);
+            await cadService.DeleteAsync(cad.Id);
 
             return RedirectToAction(nameof(Index));
         }

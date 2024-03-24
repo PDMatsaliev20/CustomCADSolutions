@@ -65,7 +65,7 @@ namespace CustomCADSolutions.Core.Services
             order.Cad.Category = model.Cad.Category;
             order.Cad.CreationDate = model.Cad.CreationDate;
             order.Cad.CreatorId = model.Cad.CreatorId;
-            order.Cad.Validated = model.Cad.Validated;
+            order.Cad.IsValidated = model.Cad.IsValidated;
 
             await repository.SaveChangesAsync();
         }
@@ -86,7 +86,7 @@ namespace CustomCADSolutions.Core.Services
                 order.Cad.Category = model.Cad.Category;
                 order.Cad.CreationDate = model.Cad.CreationDate;
                 order.Cad.CreatorId = model.Cad.CreatorId;
-                order.Cad.Validated = model.Cad.Validated;
+                order.Cad.IsValidated = model.Cad.IsValidated;
             }
             await repository.SaveChangesAsync();
         }

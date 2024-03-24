@@ -19,6 +19,11 @@ namespace CustomCADSolutions.Core.Services
             return await repository.GetByIdAsync<Category>(id) ?? throw new KeyNotFoundException();
         }
 
+        public async Task<Category> GetByNameAsync(string name)
+        {
+            return (await GetAllAsync()).FirstOrDefault(c => c.Name == name) ?? throw new KeyNotFoundException();
+        }
+
         public async Task<IEnumerable<Category>> GetAllAsync()
         {
             return await repository.All<Category>().ToArrayAsync();

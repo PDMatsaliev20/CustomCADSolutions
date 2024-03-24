@@ -1,4 +1,4 @@
-﻿@model IEnumerable<CadViewModel>
+﻿@model CadQueryInputModel
 @inject IViewLocalizer Localizer
 @{
 }
@@ -6,7 +6,9 @@
 <h2 class="text-center">@Localizer[$"{ViewBag.Category}Title"]</h2>
 <hr />
 
-@if (!Model.Any())
+<partial name="_CadQueryPartial" model="Model" view-data="ViewData" />
+
+@if (!Model.Cads.Any())
 {
     <p class="text-center">@Localizer["No models"]</p>
 }
@@ -14,7 +16,7 @@ else
 {
     <div class="container text-center mt-5">
         <div class="row">
-            @foreach (CadViewModel cad in Model)
+            @foreach (CadViewModel cad in Model.Cads)
             {
                 string userId = User.GetId();
                 @await Component.InvokeAsync("CategoryCadComponent", new { cad, userId })
@@ -22,3 +24,5 @@ else
         </div>
     </div>
 }
+
+<partial name="_PaginationPartial" model="Model" view-data="ViewData" />

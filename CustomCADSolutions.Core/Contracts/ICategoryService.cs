@@ -10,6 +10,8 @@ namespace CustomCADSolutions.Core.Contracts
     public interface ICategoryService
     {
         Task<Category> GetByIdAsync(int id);
+        
+        Task<Category> GetByNameAsync(string name);
 
         Task<IEnumerable<Category>> GetAllAsync();
 

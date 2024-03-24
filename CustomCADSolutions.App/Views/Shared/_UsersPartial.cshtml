@@ -6,6 +6,7 @@
 
 @foreach (UserViewModel user in Model)
 {
+    bool isSelf = User.Identity!.Name == user.Username;
     <tr>
         <td>
             <span class="d-flex justify-content-center text-center">@user.Id</span>
@@ -33,16 +34,8 @@
                             }
                         }
                     </select>
-                    @if (User.Identity!.Name == user.Username)
-                    {
-                        <input type="submit" value="@Localizer["ChangeRole"]" 
-                            class="btn btn-warning" disabled />
-                    }
-                    else
-                    {
-                        <input type="submit" value="@Localizer["ChangeRole"]" 
-                            class="btn btn-warning" />
-                    }
+                    <input type="submit" value="@Localizer["ChangeRole"]"
+                           class="btn btn-warning @(isSelf ? "disabled" : string.Empty)" />
                 </form>
                 <form asp-controller="User" asp-action="DeleteUser"
                       asp-route-username="@user.Username" class="ms-2 d-flex">

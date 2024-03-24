@@ -62,11 +62,15 @@ namespace CustomCADSolutions.App.Areas.Admin.Controllers
         public async Task<IActionResult> DeleteUser(string username)
         {
             IdentityUser user = await userManager.FindByNameAsync(username);
-
-            foreach (CadModel model in (await cadService.GetAllAsync()).Where(c => c.CreatorId == user.Id))
+            
+            CadQueryModel query = await cadService.GetAllAsync(creatorName: username);
+            foreach (CadModel model in query.CadModels)
             {
-                RedirectToAction(nameof(CadsController.Delete), "Cad", new { id = model.Id });
+                RedirectToAction(nameof(CadsController.Delete),
+                        nameof(CadsController).Replace("Controller", string.Empty),
+                        new { id = model.Id });
             }
+            
             await userManager.DeleteAsync(user);
             return RedirectToAction(nameof(Index));
         }

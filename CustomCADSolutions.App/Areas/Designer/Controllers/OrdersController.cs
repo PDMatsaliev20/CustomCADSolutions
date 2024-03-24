@@ -93,7 +93,7 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
 
             model.Cad.CreatorId = User.GetId();
             model.Cad.CreationDate = DateTime.Now;
-            model.Cad.Validated = true;
+            model.Cad.IsValidated = true;
 
             model.Status = OrderStatus.Finished;
             await orderService.EditAsync(model);

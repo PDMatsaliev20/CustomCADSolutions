@@ -1,5 +1,4 @@
-﻿using CustomCADSolutions.Infrastructure.Constants;
-using CustomCADSolutions.Infrastructure.Data.Models.Enums;
+﻿using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;

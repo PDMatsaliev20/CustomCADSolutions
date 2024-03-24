@@ -46,7 +46,7 @@
                 }
                 @if (buttons.Contains("Validate"))
                 {
-                    <form method="post" class="mt-2" asp-controller="Cad" asp-action="ValidateCad" asp-route-cadId="@Model.Id">
+                    <form method="post" class="mt-2" asp-controller="Cads" asp-action="ValidateCad" asp-route-cadId="@Model.Id">
                         <div class="d-grid gap-2">
                             <input type="submit" value="@Localizer["Validate"]" class="btn btn-primary mb-2"
                                    onclick="return confirm('@Localizer["ValidateWarning", Model.Name]?')" />

@@ -1,0 +1,49 @@
+﻿@model CadQueryInputModel
+@{
+    string[] sorts = ViewBag.Sortings;
+}
+
+<div class="mt-4 mb-3">
+    <form method="get">
+        <div class="row">
+            <div class="col-md d-flex justify-content-center">
+                <div class="form-group">
+                    <label asp-for="Category" class="form-label"></label>
+                    <select asp-for="Category" class="form-control">
+                        <option value="">All</option>
+                        @foreach (string category in Model.Categories)
+                        {
+                            <option value="@category">@category</option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-md d-flex justify-content-end">
+                <div class="form-group">
+                    <label asp-for="SearchTerm" class="form-label"></label>
+                    <input asp-for="SearchTerm" class="form-control" placeholder="Search" autocomplete="off">
+                </div>
+            </div>
+
+            <div class="col-md d-flex justify-content-start">
+                <div class="form-group">
+                    <label asp-for="Sorting" class="form-label"></label>
+                    <select asp-for="Sorting" class="form-control">
+                        @for (int i = 0; i < sorts.Length; i++)
+                        {
+                            <option value=@i>@sorts[i]</option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-md d-flex justify-content-center">
+                <div class="form-group mt-4 p-2">
+                    <input type="submit" value="Search" class="btn btn-primary" />
+                </div>
+            </div>
+        </div>
+    </form>
+
+</div>

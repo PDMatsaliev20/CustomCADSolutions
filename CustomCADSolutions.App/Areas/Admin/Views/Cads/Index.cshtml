@@ -1,4 +1,4 @@
-﻿@model CadViewModel[]
+﻿@model CadQueryInputModel
 @inject IViewLocalizer Localizer
 @{
     ViewBag.Cols = 4;
@@ -8,11 +8,13 @@
 <h2 class="text-center">@Localizer["Title"]</h2>
 <hr />
 
+<partial name="_CadQueryPartial" model="Model" view-data="ViewData" />
+
 <div class="container">
-    @if (Model.Any())
+    @if (Model.Cads.Any())
     {
         <div class="row d-flex">
-            @foreach (CadViewModel cad in Model)
+            @foreach (CadViewModel cad in Model.Cads)
             {
                 ViewBag.Header = $"{cad.Name} ({Localizer[cad.Category].Value})";
                 <partial name="_CardCadPartial" model="cad" view-data="ViewData" />
@@ -24,3 +26,5 @@
         <p class="text-center">@Localizer["NoCads"]</p>
     }
 </div>
+
+<partial name="_PaginationPartial" model="Model" view-data="ViewData" />

@@ -1,7 +1,6 @@
 ﻿using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
-using CustomCADSolutions.Infrastructure.Constants;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
 
@@ -27,7 +26,7 @@ namespace CustomCADSolutions.Infrastructure.Data.Models
 
         [Required]
         [Comment("Is 3D Model validated")]
-        public bool Validated { get; set; }
+        public bool IsValidated { get; set; }
 
         [Comment("CreationDate of 3D Model")]
         public DateTime? CreationDate { get; set; }

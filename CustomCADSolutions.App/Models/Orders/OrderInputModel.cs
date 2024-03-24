@@ -1,4 +1,4 @@
-﻿using static CustomCADSolutions.Infrastructure.Constants.DataConstants;
+﻿using static CustomCADSolutions.Infrastructure.Data.DataConstants;
 using System.ComponentModel.DataAnnotations;
 using CustomCADSolutions.Infrastructure.Data.Models;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;

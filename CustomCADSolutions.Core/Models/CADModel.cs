@@ -1,5 +1,5 @@
 ﻿using CustomCADSolutions.Infrastructure.Data.Models;
-using static CustomCADSolutions.Infrastructure.Constants.DataConstants;
+using static CustomCADSolutions.Infrastructure.Data.DataConstants;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 
@@ -14,7 +14,7 @@ namespace CustomCADSolutions.Core.Models
         [StringLength(CadConstants.NameMaxLength, MinimumLength = CadConstants.NameMinLength, ErrorMessage = LengthErrorMessage)]
         public string Name { get; set; } = null!;
 
-        public bool Validated { get; set; }
+        public bool IsValidated { get; set; }
 
         public DateTime? CreationDate { get; set; }
         
