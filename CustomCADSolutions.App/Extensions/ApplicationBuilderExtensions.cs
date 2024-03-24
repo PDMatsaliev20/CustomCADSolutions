@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using System.Globalization;
 
@@ -32,6 +31,38 @@ namespace Microsoft.AspNetCore.Builder
             }
 
             return service;
+        }
+
+        public static IApplicationBuilder MapRoutes(this WebApplication app)
+        {
+            app.MapAreaControllerRoute(
+                name: "AdminArea",
+                areaName: "Admin",
+                pattern: "Admin/{controller=Users}/{action=Index}/{id?}");
+
+            app.MapAreaControllerRoute(
+                name: "DesignerArea",
+                areaName: "Designer",
+                pattern: "Designer/{controller}/{action=All}/{id?}");
+
+            app.MapAreaControllerRoute(
+                name: "ContributerArea",
+                areaName: "Contributer",
+                pattern: "Contributer/{controller=Home}/{action=Index}/{id?}");
+
+            app.MapAreaControllerRoute(
+                name: "ClientArea",
+                areaName: "Client",
+                pattern: "Client/{controller=Home}/{action=Index}/{id?}");
+
+            app.MapAreaControllerRoute(
+                name: "IdentityArea",
+                areaName: "Identity",
+                pattern: "Identity/{controller=Account}/{action=Register}");
+
+            app.MapDefaultControllerRoute();
+
+            return app;
         }
     }
 }

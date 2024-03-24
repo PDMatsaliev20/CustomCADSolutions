@@ -1,8 +1,8 @@
-﻿using CustomCADSolutions.App.Models;
+﻿using CustomCADSolutions.App.Extensions;
+using CustomCADSolutions.App.Models;
 using CustomCADSolutions.App.Models.Cads;
 using CustomCADSolutions.Core.Contracts;
 using CustomCADSolutions.Core.Models;
-using CustomCADSolutions.Infrastructure.Data.Models;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;

@@ -8,7 +8,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using static CustomCADSolutions.App.Controllers.UtilitiesNotController;
+using static CustomCADSolutions.App.Extensions.Utilities;
+using CustomCADSolutions.App.Extensions;
 
 namespace CustomCADSolutions.App.Areas.Client.Controllers
 {

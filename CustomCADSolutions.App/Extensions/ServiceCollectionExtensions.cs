@@ -17,7 +17,7 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             string connectionString = config.GetConnectionString("RealConnection");
             services.AddDbContext<CADContext>(options => options.UseSqlServer(connectionString));
-
+            services.AddScoped<IRepository, Repository>();
             return services;
         }
 
@@ -79,9 +79,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
         public static IServiceCollection AddAbstractions(this IServiceCollection services)
         {
-            services.AddScoped<IRepository, Repository>();
             services.AddScoped<IConverter, Converter>();
-
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<ICadService, CadService>();
             services.AddScoped<ICategoryService, CategoryService>();

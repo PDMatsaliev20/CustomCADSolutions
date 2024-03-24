@@ -1,13 +1,10 @@
-﻿using CustomCADSolutions.Core.Contracts;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.Security.Claims;
 
-namespace CustomCADSolutions.App.Controllers
+namespace CustomCADSolutions.App.Extensions
 {
-    [NonController]
-    public static class UtilitiesNotController
+    public static class Utilities
     {
         public static string GetId(this ClaimsPrincipal user) => user.FindFirstValue(ClaimTypes.NameIdentifier);
 
@@ -33,9 +30,9 @@ namespace CustomCADSolutions.App.Controllers
         public static void DeleteCad(this IWebHostEnvironment hostingEnvironment, string name, int id)
         {
             string filePath = hostingEnvironment.GetCadPath(name, id);
-            if (System.IO.File.Exists(filePath))
+            if (File.Exists(filePath))
             {
-                System.IO.File.Delete(filePath);
+                File.Delete(filePath);
             }
         }
     }
