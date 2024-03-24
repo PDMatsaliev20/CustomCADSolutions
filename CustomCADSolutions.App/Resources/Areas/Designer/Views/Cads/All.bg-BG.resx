@@ -132,12 +132,6 @@
   <data name="Furniture" xml:space="preserve">
     <value>Мебели</value>
   </data>
-  <data name="Has" xml:space="preserve">
-    <value>имате {0}</value>
-  </data>
-  <data name="Hasn't" xml:space="preserve">
-    <value>нямате</value>
-  </data>
   <data name="Nature" xml:space="preserve">
     <value>Природа</value>
   </data>

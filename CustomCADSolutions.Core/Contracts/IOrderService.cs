@@ -9,6 +9,8 @@ namespace CustomCADSolutions.Core.Contracts
         Task CreateRangeAsync(params OrderModel[] models);
 
         Task EditAsync(OrderModel entity);
+        
+        Task EditRangeAsync(params OrderModel[] orders);
 
         Task DeleteAsync(int cadId, string buyerId);
 

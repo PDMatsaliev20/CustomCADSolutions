@@ -1,9 +1,6 @@
 ﻿@model UserViewModel[]
 @inject IViewLocalizer Localizer
 @{
-    string[] roles = ViewBag.Roles;
-    string[] rolesBg = ViewBag.RolesBg;
-    bool isBg = CultureInfo.CurrentCulture == new CultureInfo("bg-BG");
 }
 
 <h1 class="text-center">@Localizer["Title"]</h1>
@@ -20,65 +17,10 @@
         </thead>
 
         <tbody>
-            @for (int i = 0; i < roles.Length; i++)
+            @foreach (string role in ViewBag.Roles)
             {
-                string role = roles[i];
-                string roleBg = rolesBg[i];
-
-                @foreach (UserViewModel user in Model.Where(v => v.Role == role))
-                {
-                    <tr>
-                        <td>
-                            <span class="d-flex justify-content-center text-center">@user.Id</span>
-                        </td>
-                        <td>
-                            <span class="d-flex justify-content-center">@user.Username</span>
-                        </td>
-                        <td>
-                            <span class="d-flex justify-content-center">@(isBg ? roleBg : role)</span>
-                        </td>
-                        <td>
-                            <div class="d-flex justify-content-center mb-1">
-                                <form class="d-flex" asp-controller="User" asp-action="EditUserRole" asp-route-username="@user.Username">
-                                    <select class="me-2" name="selectedRole">
-                                        @for (int j = 0; j < roles.Length; j++)
-                                        {
-                                            string roleOption = roles[j];
-                                            string roleBgOption = rolesBg[j];
-                                            if (roleOption == role)
-                                            {
-                                                <option label="@roleOption" value="@roleOption" selected>@(isBg ? roleBgOption : roleOption)</option>
-                                            }
-                                            else
-                                            {
-                                                <option label="@roleOption" value="@roleOption">@(isBg ? roleBgOption : roleOption))</option>
-                                            }
-                                        }
-                                    </select>
-                                    @if (User.Identity!.Name == user.Username)
-                                    {
-                                        <input type="submit" value="@Localizer["ChangeRole"]" class="btn btn-warning" disabled />
-                                    }
-                                    else
-                                    {
-                                        <input type="submit" value="@Localizer["ChangeRole"]" class="btn btn-warning" />
-                                    }
-                                </form>
-                                <form class="ms-2 d-flex" asp-controller="User" asp-action="DeleteUser" asp-route-username="@user.Username">
-                                    @if (User.Identity!.Name == user.Username)
-                                    {
-                                        <input type="submit" value="@Localizer["DeleteUser"]" class="btn btn-danger" disabled />
-                                    }
-                                    else
-                                    {
-                                        <input type="submit" value="@Localizer["DeleteUser"]" class="btn btn-danger"
-                                               onclick="return confirm(`@Localizer["Warning"] ${'@user.Username'}?`);" />
-                                    }
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
-                }
+                <partial name="_UsersPartial" model="Model.Where(v => v.Role == role)" 
+                    view-data="ViewData" view-data-role="role" />
             }
         </tbody>
     </table>

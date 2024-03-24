@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "uqkt9uKTqmnE1KXDi/RyUi+8ceJ/xMX5Ku/S0URR0jA=",
+  "Hash": "+2Yfk70yL7Kh46YX7Nqdp+Jie5fhNN9/08njQ4XZ07I=",
   "Source": "CustomCADSolutions.App",
   "BasePath": "_content/CustomCADSolutions.App",
   "Mode": "Default",
@@ -1155,6 +1155,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "C:\\Users\\35988\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.28\\staticwebassets\\V5\\lib\\jquery-validation-unobtrusive\\LICENSE.txt"
+    },
+    {
+      "Identity": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\css\\all.css",
+      "SourceId": "CustomCADSolutions.App",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\",
+      "BasePath": "_content/CustomCADSolutions.App",
+      "RelativePath": "css/all.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\all.css"
     },
     {
       "Identity": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\css\\animation.css",

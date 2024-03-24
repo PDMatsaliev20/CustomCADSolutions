@@ -136,7 +136,7 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
         {
             if (!ModelState.IsValid)
             {
-                logger.LogError("Invalid Order");
+                logger.LogError("Invalid Order: {0}", string.Join(", ", ModelState.GetErrors()));
                 input.Categories = await categoryService.GetAllAsync();
                 return View(input);
             }

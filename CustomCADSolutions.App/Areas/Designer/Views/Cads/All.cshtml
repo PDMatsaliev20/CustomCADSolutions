@@ -1,12 +1,6 @@
 ﻿@model CadViewModel[]
 @inject IViewLocalizer Localizer
 @{
-    int designerModelsCount = ViewBag.UserModelsCount;
-    var designerDetails = designerModelsCount > 0 ? Localizer["Has", designerModelsCount] : Localizer["Hasn't"];
-    
-    int unvalidatedModelsCount = Model.Count(c => !c.Validated);
-    var unvalidatedDetails = unvalidatedModelsCount > 0 ? Localizer["Has", unvalidatedModelsCount] : Localizer["Hasn't"];
-
     ViewBag.Cols = 3;
     ViewBag.Buttons = Array.Empty<string>();
 }
@@ -16,11 +10,13 @@
 
 <div class="container">
     <div class="row d-flex justify-content-evenly">
-        <a class="col-sm-2 col-12 mb-sm-0 mb-3 btn btn-primary" asp-area="Designer" asp-controller="Cads" asp-action="Index">
-            @Localizer["UrCads", designerDetails]
+        <a asp-area="Designer" asp-controller="Cads" asp-action="Index"
+           class="col-sm-2 col-12 mb-sm-0 mb-3 btn btn-primary">
+            @Localizer["UrCads", ViewBag.DesignerDetails]
         </a>
-        <a class="col-sm-2 col-12 mb-sm-0 mb-3 btn btn-secondary" asp-area="Designer" asp-controller="Cads" asp-action="Submitted">
-            @Localizer["UnvCads", unvalidatedDetails]
+        <a asp-area="Designer" asp-controller="Cads" asp-action="Submitted"
+           class="col-sm-2 col-12 mb-sm-0 mb-3 btn btn-secondary">
+            @Localizer["UnvCads", ViewBag.UnvalidatedDetails]
         </a>
     </div>
     @if (Model.Any())

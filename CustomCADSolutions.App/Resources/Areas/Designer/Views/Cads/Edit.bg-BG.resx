@@ -138,6 +138,9 @@
   <data name="Furniture" xml:space="preserve">
     <value>Мебели</value>
   </data>
+  <data name="Name" xml:space="preserve">
+    <value>Име...</value>
+  </data>
   <data name="Nature" xml:space="preserve">
     <value>Природа</value>
   </data>

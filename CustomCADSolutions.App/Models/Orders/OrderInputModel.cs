@@ -9,7 +9,8 @@ namespace CustomCADSolutions.App.Models.Orders
     public class OrderInputModel
     {
         public int CadId { get; set; }
-        public string BuyerId { get; set; } = null!;
+        
+        public string? BuyerId { get; set; } 
 
         [Required(ErrorMessageResourceType = typeof(SharedResources),
             ErrorMessageResourceName = nameof(SharedResources.Required))]

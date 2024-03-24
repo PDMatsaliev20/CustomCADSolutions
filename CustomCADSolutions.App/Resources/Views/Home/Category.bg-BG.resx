@@ -123,41 +123,23 @@
   <data name="AllTitle" xml:space="preserve">
     <value>Всички 3D Модели</value>
   </data>
-  <data name="Animals" xml:space="preserve">
-    <value>Животни</value>
-  </data>
   <data name="AnimalsTitle" xml:space="preserve">
     <value>Всички Животни</value>
-  </data>
-  <data name="Characters" xml:space="preserve">
-    <value>Герои</value>
   </data>
   <data name="CharactersTitle" xml:space="preserve">
     <value>Всички Герои</value>
   </data>
-  <data name="Electronics" xml:space="preserve">
-    <value>Електроника</value>
-  </data>
   <data name="ElectronicsTitle" xml:space="preserve">
     <value>Всички Електроники</value>
   </data>
-  <data name="Fashion" xml:space="preserve">
-    <value>Мода</value>
-  </data>
   <data name="FashionTitle" xml:space="preserve">
     <value>Всички Модни</value>
-  </data>
-  <data name="Furniture" xml:space="preserve">
-    <value>Мебели</value>
   </data>
   <data name="FurnitureTitle" xml:space="preserve">
     <value>Всички Мебели</value>
   </data>
   <data name="Login" xml:space="preserve">
     <value>Влез в акаунта си</value>
-  </data>
-  <data name="Nature" xml:space="preserve">
-    <value>Природа</value>
   </data>
   <data name="NatureTitle" xml:space="preserve">
     <value>Всички Природни</value>
@@ -171,23 +153,14 @@
   <data name="Order" xml:space="preserve">
     <value>Поръчай</value>
   </data>
-  <data name="Others" xml:space="preserve">
-    <value>Други</value>
-  </data>
   <data name="OthersTitle" xml:space="preserve">
     <value>Всички Други</value>
   </data>
   <data name="Register" xml:space="preserve">
     <value>създай нов</value>
   </data>
-  <data name="Science" xml:space="preserve">
-    <value>Наука</value>
-  </data>
   <data name="ScienceTitle" xml:space="preserve">
     <value>Всички Научни</value>
-  </data>
-  <data name="Sports" xml:space="preserve">
-    <value>Спорт</value>
   </data>
   <data name="SportsTitle" xml:space="preserve">
     <value>Всички Спортни</value>
@@ -195,14 +168,8 @@
   <data name="ToOrder" xml:space="preserve">
     <value>за да поръчаш</value>
   </data>
-  <data name="Toys" xml:space="preserve">
-    <value>Играчки</value>
-  </data>
   <data name="ToysTitle" xml:space="preserve">
     <value>Всички Играчки</value>
-  </data>
-  <data name="Vehicles" xml:space="preserve">
-    <value>Коли</value>
   </data>
   <data name="VehiclesTitle" xml:space="preserve">
     <value>Всички Коли</value>

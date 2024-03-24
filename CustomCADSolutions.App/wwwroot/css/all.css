@@ -1,0 +1,23 @@
+﻿.custom-file-input::-webkit-file-upload-button {
+	visibility: hidden;
+}
+
+.custom-file-input::before {
+	content: var(--upload-text);
+	display: inline-block;
+	background: #6c757d;
+	color: #fff;
+	padding: 6px 12px;
+	outline: none;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+.custom-file-input:hover::before {
+	background: #6c757d;
+}
+
+.custom-file-input:active::before {
+	background: #6c757d;
+}

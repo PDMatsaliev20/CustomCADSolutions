@@ -949,3 +949,25 @@ C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\o
 C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Areas.Identity.Controllers.AccountController.en-US.resources
 C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared._CardCadPartial.bg-BG.resources
 C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared._CardCadPartial.en-US.resources
+C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Areas.Designer.Controllers.CadsController.bg-BG.resources
+C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Areas.Designer.Controllers.CadsController.en-US.resources
+C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Home.Categories - Copy.en-US.resources
+C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared.Components.CategoryCadComponent.Default.bg-BG.resources
+C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared.Components.CategoryCadComponent.Default.en-US.resources
+C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared._OrdersPartial.bg-BG.resources
+C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared.Components.OrdersComponent.Begun.bg-BG.resources
+C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared.Components.OrdersComponent.Finished.bg-BG.resources
+C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared.Components.OrdersComponent.Pending.bg-BG.resources
+C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared.Components.OrdersComponent.Begun.en-US.resources
+C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared.Components.OrdersComponent.Finished.en-US.resources
+C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared.Components.OrdersComponent.Pending.en-US.resources
+C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared._OrdersPartial.en-US.resources
+C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared.Components.AllOrdersComponent.Begun.bg-BG.resources
+C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared.Components.AllOrdersComponent.Begun.en-US.resources
+C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared.Components.AllOrdersComponent.Pending.bg-BG.resources
+C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared.Components.AllOrdersComponent.Pending.en-US.resources
+C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared._AllOrdersPartial.bg-BG.resources
+C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared.Components.AllOrdersComponent.Finished.bg-BG.resources
+C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared.Components.AllOrdersComponent.Finished.en-US.resources
+C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared._UsersPartial.bg-BG.resources
+C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared._UsersPartial.en-US.resources

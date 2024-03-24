@@ -135,12 +135,6 @@
   <data name="Furniture" xml:space="preserve">
     <value>Furniture</value>
   </data>
-  <data name="Has" xml:space="preserve">
-    <value>you have {0}</value>
-  </data>
-  <data name="Hasn't" xml:space="preserve">
-    <value>none</value>
-  </data>
   <data name="Nature" xml:space="preserve">
     <value>Nature</value>
   </data>

@@ -175,6 +175,7 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
 
             OrderModel[] orders = (await orderService.GetAllAsync()).Where(o => o.CadId == cad.Id).ToArray();
             orders.ToList().ForEach(o => o.Status = OrderStatus.Pending);
+            await orderService.EditRangeAsync(orders);
 
             await cadService.DeleteAsync(cad.Id);
             hostingEnvironment.DeleteCad(cad.Name, cad.Id);

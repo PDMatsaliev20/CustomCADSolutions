@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using CustomCADSolutions.App.Controllers;
+using Microsoft.Extensions.Localization;
 
 namespace CustomCADSolutions.App.Areas.Designer.Controllers
 {
@@ -19,6 +20,7 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
         private readonly ICategoryService categoryService;
         private readonly UserManager<IdentityUser> userManager;
         private readonly IWebHostEnvironment hostingEnvironment;
+        private readonly IStringLocalizer<CadsController> localizer;
 
         public CadsController(
             ICadService cadService,
@@ -26,7 +28,8 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
             ICategoryService categoryService,
             ILogger<CadModel> logger,
             UserManager<IdentityUser> userManager,
-            IWebHostEnvironment hostingEnvironment)
+            IWebHostEnvironment hostingEnvironment,
+            IStringLocalizer<CadsController> localizer)
         {
             this.cadService = cadService;
             this.orderService = orderService;
@@ -34,6 +37,7 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
             this.logger = logger;
             this.userManager = userManager;
             this.hostingEnvironment = hostingEnvironment;
+            this.localizer = localizer;
         }
 
         [HttpGet]
@@ -54,8 +58,12 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
                     Validated = c.Validated,
                 })
                 .ToArray();
-            
-            ViewBag.UserModelsCount = await cadService.GetUserModelsCountAsync(User.GetId());
+
+            int designerModelsCount = await cadService.GetUserModelsCountAsync(User.GetId());
+            ViewBag.DesignerDetails = designerModelsCount > 0 ? localizer["Has", designerModelsCount] : localizer["Hasn't"];
+
+            int unvalidatedModelsCount = views.Count(c => !c.Validated);
+            ViewBag.UnvalidatedDetails = unvalidatedModelsCount > 0 ? localizer["Has", unvalidatedModelsCount] : localizer["Hasn't"];
 
             return View(views);
         }
@@ -228,6 +236,7 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
 
             OrderModel[] orders = (await orderService.GetAllAsync()).Where(o => o.CadId == cad.Id).ToArray();
             orders.ToList().ForEach(o => o.Status = OrderStatus.Pending);
+            await orderService.EditRangeAsync(orders);
 
             await cadService.DeleteAsync(cad.Id);
             hostingEnvironment.DeleteCad(cad.Name, cad.Id);

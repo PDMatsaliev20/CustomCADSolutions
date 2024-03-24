@@ -54,12 +54,9 @@ namespace CustomCADSolutions.Core.Services
 
         public async Task EditAsync(OrderModel model)
         {
-            Order order = repository
-                .All<Order>()
-                .FirstOrDefault(order => order.CadId == model.CadId
-                                      && order.BuyerId == model.BuyerId)
+            Order order = await repository.All<Order>()
+                .FirstOrDefaultAsync(order => order.CadId == model.CadId && order.BuyerId == model.BuyerId)
                 ?? throw new KeyNotFoundException();
-
 
             order.Description = model.Description;
             order.Status = model.Status;
@@ -73,6 +70,27 @@ namespace CustomCADSolutions.Core.Services
             await repository.SaveChangesAsync();
         }
 
+
+        public async Task EditRangeAsync(params OrderModel[] models)
+        {
+            foreach (OrderModel model in models)
+            {
+                Order order = await repository.All<Order>()
+                    .FirstOrDefaultAsync(order => order.CadId == model.CadId && order.BuyerId == model.BuyerId)
+                    ?? throw new KeyNotFoundException();
+
+                order.Description = model.Description;
+                order.Status = model.Status;
+                order.ShouldShow = model.ShouldShow;
+                order.Cad.Name = model.Cad.Name;
+                order.Cad.Category = model.Cad.Category;
+                order.Cad.CreationDate = model.Cad.CreationDate;
+                order.Cad.CreatorId = model.Cad.CreatorId;
+                order.Cad.Validated = model.Cad.Validated;
+            }
+            await repository.SaveChangesAsync();
+        }
+
         public async Task DeleteAsync(int cadId, string buyerId)
         {
             Order order = repository
@@ -80,7 +98,7 @@ namespace CustomCADSolutions.Core.Services
                 .FirstOrDefault(order => order.CadId == cadId
                                       && order.BuyerId == buyerId)
                 ?? throw new KeyNotFoundException();
-            
+
             repository.Delete(order);
             Cad? cad = await repository.GetByIdAsync<Cad>(cadId);
             if (cad != null)
@@ -100,7 +118,7 @@ namespace CustomCADSolutions.Core.Services
             OrderModel model = converter.OrderToModel(order);
             return model;
         }
-        
+
         public async Task<IEnumerable<OrderModel>> GetAllAsync()
         {
             return await repository.All<Order>()

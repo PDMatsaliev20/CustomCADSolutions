@@ -117,12 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ChangeRole" xml:space="preserve">
-    <value>Change Role</value>
-  </data>
-  <data name="DeleteUser" xml:space="preserve">
-    <value>Delete User</value>
-  </data>
   <data name="Edit" xml:space="preserve">
     <value>Edit User</value>
   </data>
@@ -137,8 +131,5 @@
   </data>
   <data name="Title" xml:space="preserve">
     <value>User Management</value>
-  </data>
-  <data name="Warning" xml:space="preserve">
-    <value>Are you sure you want to remove this user:</value>
   </data>
 </root>

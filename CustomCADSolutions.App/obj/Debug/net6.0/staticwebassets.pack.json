@@ -1,6 +1,10 @@
 {
   "Files": [
     {
+      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\css\\all.css",
+      "PackagePath": "staticwebassets\\css\\all.css"
+    },
+    {
       "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\css\\animation.css",
       "PackagePath": "staticwebassets\\css\\animation.css"
     },

@@ -4,7 +4,6 @@
     int cols = 12 / ViewBag.Cols;
     string[] buttons = ViewBag.Buttons;
     string header = ViewBag.Header;
-    //ViewBag.Header = $"{cad.Name} ({Localizer[cad.Category].Value})";
 }
 
 <script type="module">
@@ -31,7 +30,7 @@
         </h4>
         <div class="card-body">
             <div id="model-@Model.Id"></div>
-            <div class="d-grid gap-2">
+            <div class="d-grid gap-2 mt-3">
                 @if (buttons.Contains("Edit"))
                 {
                     <a asp-controller="Cads" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary btn-warning mt-3">@Localizer["Details"]</a>
@@ -41,7 +40,7 @@
                     <form method="post" class="mt-2" asp-controller="Cads" asp-action="Delete" asp-route-id="@Model.Id">
                         <div class="d-grid gap-2">
                             <input type="submit" value="@Localizer["Delete"]" class="btn btn-danger mb-2"
-                                   onclick="return confirm('@Localizer["Warning"] @Model.Name?')" />
+                                   onclick="return confirm('@Localizer["DeleteWarning", Model.Name]?')" />
                         </div>
                     </form>
                 }
@@ -49,8 +48,8 @@
                 {
                     <form method="post" class="mt-2" asp-controller="Cad" asp-action="ValidateCad" asp-route-cadId="@Model.Id">
                         <div class="d-grid gap-2">
-                            <input type="submit" value="Validate" class="btn btn-primary mb-2"
-                                   onclick="return confirm('@Localizer["Warning"] @(Model.Name)?')" />
+                            <input type="submit" value="@Localizer["Validate"]" class="btn btn-primary mb-2"
+                                   onclick="return confirm('@Localizer["ValidateWarning", Model.Name]?')" />
                         </div>
                     </form>
                 }
@@ -60,7 +59,7 @@
                         <a asp-action="DownloadCad" asp-route-id="@Model.Id" class="btn btn-primary col-4">@Localizer["Download"]</a>
                         
                         <input id="pickColor" type="color" class="form-control form-control-color col-4" />
-                        <input id="submit" type="button" value="Apply" class="btn btn-secondary col-4" />
+                        <input id="submit" type="button" value="@Localizer["Apply"]" class="btn btn-secondary col-4" />
                     </div>
                 }
                 @if (buttons.Contains("Order"))

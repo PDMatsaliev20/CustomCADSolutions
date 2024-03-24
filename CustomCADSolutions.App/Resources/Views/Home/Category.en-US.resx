@@ -123,41 +123,23 @@
   <data name="AllTitle" xml:space="preserve">
     <value>All 3D Models</value>
   </data>
-  <data name="Animals" xml:space="preserve">
-    <value>Animals</value>
-  </data>
   <data name="AnimalsTitle" xml:space="preserve">
     <value>All Animals</value>
-  </data>
-  <data name="Characters" xml:space="preserve">
-    <value>Characters</value>
   </data>
   <data name="CharactersTitle" xml:space="preserve">
     <value>All Characters</value>
   </data>
-  <data name="Electronics" xml:space="preserve">
-    <value>Electronics</value>
-  </data>
   <data name="ElectronicsTitle" xml:space="preserve">
     <value>All Electronics</value>
   </data>
-  <data name="Fashion" xml:space="preserve">
-    <value>Fashion</value>
-  </data>
   <data name="FashionTitle" xml:space="preserve">
     <value>All Fashion</value>
-  </data>
-  <data name="Furniture" xml:space="preserve">
-    <value>Furniture</value>
   </data>
   <data name="FurnitureTitle" xml:space="preserve">
     <value>All Furniture</value>
   </data>
   <data name="Login" xml:space="preserve">
     <value>Log in your account</value>
-  </data>
-  <data name="Nature" xml:space="preserve">
-    <value>Nature</value>
   </data>
   <data name="NatureTitle" xml:space="preserve">
     <value>All Nature</value>
@@ -171,23 +153,14 @@
   <data name="Order" xml:space="preserve">
     <value>Order</value>
   </data>
-  <data name="Others" xml:space="preserve">
-    <value>Others</value>
-  </data>
   <data name="OthersTitle" xml:space="preserve">
     <value>All Others</value>
   </data>
   <data name="Register" xml:space="preserve">
     <value>create a new one</value>
   </data>
-  <data name="Science" xml:space="preserve">
-    <value>Science</value>
-  </data>
   <data name="ScienceTitle" xml:space="preserve">
     <value>All Science</value>
-  </data>
-  <data name="Sports" xml:space="preserve">
-    <value>Sport</value>
   </data>
   <data name="SportsTitle" xml:space="preserve">
     <value>All Sports</value>
@@ -195,14 +168,8 @@
   <data name="ToOrder" xml:space="preserve">
     <value>to order</value>
   </data>
-  <data name="Toys" xml:space="preserve">
-    <value>Toys</value>
-  </data>
   <data name="ToysTitle" xml:space="preserve">
     <value>All Toys</value>
-  </data>
-  <data name="Vehicles" xml:space="preserve">
-    <value>Cars</value>
   </data>
   <data name="VehiclesTitle" xml:space="preserve">
     <value>All Vehicles</value>

@@ -120,49 +120,25 @@
   <data name="All" xml:space="preserve">
     <value>Всички</value>
   </data>
-  <data name="Animals" xml:space="preserve">
-    <value>Животни</value>
-  </data>
-  <data name="Characters" xml:space="preserve">
-    <value>Герои</value>
+  <data name="Apply" xml:space="preserve">
+    <value>Приложи</value>
   </data>
   <data name="Delete" xml:space="preserve">
     <value>Изтрий</value>
   </data>
+  <data name="DeleteWarning" xml:space="preserve">
+    <value>Сигурни ли Сте, че искате да изтриете този модел: {0}</value>
+  </data>
   <data name="Details" xml:space="preserve">
     <value>Детайли</value>
   </data>
-  <data name="Electronics" xml:space="preserve">
-    <value>Електроника</value>
-  </data>
-  <data name="Fashion" xml:space="preserve">
-    <value>Мода</value>
-  </data>
-  <data name="Furniture" xml:space="preserve">
-    <value>Мебели</value>
-  </data>
-  <data name="Nature" xml:space="preserve">
-    <value>Природа</value>
-  </data>
-  <data name="Others" xml:space="preserve">
-    <value>Други</value>
-  </data>
-  <data name="Science" xml:space="preserve">
-    <value>Наука</value>
-  </data>
-  <data name="Sports" xml:space="preserve">
-    <value>Спорт</value>
-  </data>
-  <data name="Toys" xml:space="preserve">
-    <value>Играчки</value>
+  <data name="Download" xml:space="preserve">
+    <value>Изтегли</value>
   </data>
   <data name="Validate" xml:space="preserve">
-    <value>Валидирай</value>
+    <value>Одобри</value>
   </data>
-  <data name="Vehicles" xml:space="preserve">
-    <value>Коли</value>
-  </data>
-  <data name="Warning" xml:space="preserve">
-    <value>Сигурни ли Сте, че искате да изтриете този модел:</value>
+  <data name="ValidateWarning" xml:space="preserve">
+    <value>Сигурни ли Сте, че искате да одобрите този модел: {0}</value>
   </data>
 </root>

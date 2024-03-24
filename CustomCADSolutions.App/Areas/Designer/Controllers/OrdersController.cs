@@ -40,13 +40,12 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
         [HttpGet]
         public async Task<IActionResult> All()
         {
-            logger.LogInformation("Entered All Orders Page");
-
-            IEnumerable<OrderModel> models = await orderService.GetAllAsync();
             ViewBag.Statuses = typeof(OrderStatus).GetEnumNames();
-
+            
+            IEnumerable<OrderModel> models = await orderService.GetAllAsync();
             ViewBag.HiddenOrders = models.Count(m => !m.ShouldShow);
-            ViewBag.Orders = models
+
+            OrderViewModel[] orders = models
                 .Where(m => m.ShouldShow)
                 .OrderBy(m => m.OrderDate)
                 .Select(m => new OrderViewModel
@@ -59,9 +58,10 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
                     Description = m.Description,
                     Status = m.Status.ToString(),
                     OrderDate = m.OrderDate.ToString("dd/MM/yyyy"),
-                });
+                })
+                .ToArray();
 
-            return View(new CadInputModel());
+            return View(orders);
         }
 
         [HttpPost]

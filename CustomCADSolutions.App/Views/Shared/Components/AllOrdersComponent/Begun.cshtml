@@ -1,0 +1,21 @@
+﻿@model CadInputModel
+@inject IViewLocalizer Localizer
+@{
+    int cadId = ViewBag.CadId;
+    string buyerId = ViewBag.BuyerId;
+}
+
+<form asp-area="Designer" asp-controller="Orders" asp-action="Finish" method="post" enctype="multipart/form-data">
+    <div class="row d-flex justify-content-center">
+        <input asp-for="Id" value="@cadId" hidden />
+        <input asp-for="BuyerId" value="@buyerId" hidden />
+        <div class="col-4">
+            <input id="input" asp-for="CadFile" type="file" accept=".stl" class="custom-file-input w-100" />
+            <span asp-validation-for="CadFile" class="small text-danger"></span>
+        </div>
+        <div class="col-4">
+            <input type="submit" value="@Localizer["Finish"]" class="btn btn-danger w-100"
+                onclick="return confirm('@Localizer["FinishWarning", ViewBag.Name]')"/>
+        </div>
+    </div>
+</form>

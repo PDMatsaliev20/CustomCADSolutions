@@ -138,6 +138,9 @@
   <data name="Furniture" xml:space="preserve">
     <value>Furniture</value>
   </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name...</value>
+  </data>
   <data name="Nature" xml:space="preserve">
     <value>Nature</value>
   </data>

@@ -1,11 +1,12 @@
 ﻿@model OrderViewModel
 @inject IViewLocalizer Localizer
 
-<a asp-area="Contributer" asp-controller="Orders" asp-action="Edit" asp-route-cadId="@Model.CadId" class="col btn btn-warning">@Localizer["Edit"]</a>
-<form asp-area="Contributer" asp-controller="Orders" asp-action="Delete" class="col">
+<a asp-controller="Orders" asp-action="Edit" asp-route-cadId="@Model.CadId" class="col btn btn-warning">@Localizer["Edit"]</a>
+<form asp-controller="Orders" asp-action="Delete" class="col">
     <input name="cadId" value="@Model.CadId" hidden />
     <input name="buyerId" value="@Model.BuyerId" hidden />
-    <div class="d-grid gap-2" onclick="return confirm('@Localizer["DeleteWarning", Model.Name]">
-        <input type="submit" value="@Localizer["Delete"]" class="btn btn-danger" />
+    <div class="d-grid gap-2">
+        <input type="submit" value="@Localizer["Delete"]" class="btn btn-danger"
+               onclick="return confirm('@Localizer["DeleteWarning", Model.Name]')" />
     </div>
 </form>
