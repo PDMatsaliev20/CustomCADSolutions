@@ -607,4 +607,8 @@
     <ProjectReference Include="..\CustomCADSolutions.Core\CustomCADSolutions.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Attributes\" />
+  </ItemGroup>
+
 </Project>

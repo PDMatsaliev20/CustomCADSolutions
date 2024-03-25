@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using static CustomCADSolutions.App.Extensions.UtilityExtensions;
 using CustomCADSolutions.App.Extensions;
-using CustomCADSolutions.App.Attributes;
 
 namespace CustomCADSolutions.App.Areas.Client.Controllers
 {

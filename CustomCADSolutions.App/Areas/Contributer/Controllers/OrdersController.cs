@@ -6,9 +6,7 @@ using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using CustomCADSolutions.AppWithIdentity.Data.Migrations;
 using CustomCADSolutions.App.Extensions;
-using CustomCADSolutions.App.Attributes;
 
 namespace CustomCADSolutions.App.Areas.Contributer.Controllers
 {
