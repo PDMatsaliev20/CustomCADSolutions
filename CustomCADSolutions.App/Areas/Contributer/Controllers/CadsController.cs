@@ -88,7 +88,7 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
             logger.LogInformation("Submitted 3d Model");
             return RedirectToAction(nameof(Index));
         }
-
+        
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
@@ -146,7 +146,6 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
             model.SpinFactor = input.SpinFactor / 100d;
 
             await cadService.EditAsync(model);
-            logger.LogInformation("Saved Model Changes");
 
             return RedirectToAction(nameof(Index));
         }

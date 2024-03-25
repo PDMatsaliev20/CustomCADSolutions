@@ -14,7 +14,6 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
     [Authorize(Roles = "Designer")]
     public class CadsController : Controller
     {
-        private readonly ILogger logger;
         private readonly ICadService cadService;
         private readonly IOrderService orderService;
         private readonly ICategoryService categoryService;
@@ -26,7 +25,6 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
             ICadService cadService,
             IOrderService orderService,
             ICategoryService categoryService,
-            ILogger<CadModel> logger,
             UserManager<IdentityUser> userManager,
             IWebHostEnvironment hostingEnvironment,
             IStringLocalizer<CadsController> localizer)
@@ -34,7 +32,6 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
             this.cadService = cadService;
             this.orderService = orderService;
             this.categoryService = categoryService;
-            this.logger = logger;
             this.userManager = userManager;
             this.hostingEnvironment = hostingEnvironment;
             this.localizer = localizer;
@@ -102,8 +99,6 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
         [HttpGet]
         public async Task<IActionResult> Add()
         {
-            logger.LogInformation("Entered Submit Page");
-
             CadInputModel input = new() { Categories = await categoryService.GetAllAsync() };
             return View(input);
         }
@@ -113,7 +108,6 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
         {
             if (!ModelState.IsValid)
             {
-                logger.LogError("Invalid 3d Model");
                 input.Categories = await categoryService.GetAllAsync();
                 if (ModelState.ErrorCount > 1)
                 {
@@ -198,7 +192,6 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
             model.SpinFactor = input.SpinFactor / 100d;
 
             await cadService.EditAsync(model);
-            logger.LogInformation("Saved Model Changes");
 
             return RedirectToAction(nameof(Index));
         }

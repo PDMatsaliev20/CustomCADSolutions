@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using CustomCADSolutions.AppWithIdentity.Data.Migrations;
 using CustomCADSolutions.App.Extensions;
+using CustomCADSolutions.App.Attributes;
 
 namespace CustomCADSolutions.App.Areas.Contributer.Controllers
 {
@@ -73,8 +74,6 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            logger.LogInformation("Entered Orders Page");
-
             IEnumerable<OrderViewModel> orders = (await orderService.GetAllAsync())
                 .Where(o => o.BuyerId == User.GetId())
                 .OrderBy(o => (int)o.Status).ThenBy(o => o.OrderDate)
@@ -100,7 +99,6 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
             CadModel cad = await cadService.GetByIdAsync(id);
             if (!ModelState.IsValid)
             {
-                logger.LogError("Invalid Order");
                 return RedirectToAction("Categories", "Home", new { area = "" });
             }
 
@@ -116,15 +114,12 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
                 Buyer = await userManager.FindByIdAsync(User.GetId()),
             });
 
-            logger.LogInformation("Ordered 3d model");
             return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]
         public async Task<IActionResult> Add()
         {
-            logger.LogInformation("Entered Order Page");
-
             OrderInputModel input = new() { Categories = await categoryService.GetAllAsync() };
             return View(input);
         }
@@ -134,7 +129,6 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
         {
             if (!ModelState.IsValid)
             {
-                logger.LogError("Invalid Order");
                 input.Categories = await categoryService.GetAllAsync();
                 return View(input);
             }
@@ -154,15 +148,12 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
             };
             await orderService.CreateAsync(model);
 
-            logger.LogInformation("Ordered 3d model");
             return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]
         public async Task<IActionResult> Edit(int cadId)
         {
-            logger.LogInformation("Entered Edit Order Page");
-
             try
             {
                 OrderModel model = await orderService.GetByIdAsync(cadId, User.GetId());
@@ -195,11 +186,6 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(int cadId, string buyerId, OrderInputModel input)
         {
-            if (User.GetId() != buyerId)
-            {
-                return Unauthorized();
-            }
-
             if (!ModelState.IsValid)
             {
                 logger.LogError("Invalid Order");
@@ -207,7 +193,16 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
                 return View(input);
             }
 
-            OrderModel order = await orderService.GetByIdAsync(cadId, buyerId);
+            OrderModel order = new();
+            try
+            {
+                order = await orderService.GetByIdAsync(cadId, buyerId);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
             if (order.Status != OrderStatus.Pending)
             {
                 return RedirectToAction(nameof(Index));
@@ -220,17 +215,18 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
 
             return RedirectToAction(nameof(Index));
         }
-
+        
         [HttpPost]
         public async Task<IActionResult> Delete(int cadId, string buyerId)
         {
-            if (User.GetId() != buyerId)
+            try
             {
-                return Unauthorized();
+                await orderService.DeleteAsync(cadId, buyerId);
             }
-
-            await orderService.DeleteAsync(cadId, buyerId);
-
+            catch (KeyNotFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             return RedirectToAction(nameof(Index));
         }
 
