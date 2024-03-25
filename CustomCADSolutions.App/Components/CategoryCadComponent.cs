@@ -18,7 +18,7 @@ namespace CustomCADSolutions.App.Components
             this.orderService = orderService;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(CadViewModel cad, string userId)
+        public async Task<IViewComponentResult> InvokeAsync(CadViewModel cad, string userId, int cols)
         {
             try
             {
@@ -39,6 +39,7 @@ namespace CustomCADSolutions.App.Components
                 ViewBag.Area = "Client";
             }
 
+            ViewBag.Cols = cols;
             return await Task.FromResult<IViewComponentResult>(View(cad));
         }
     }

@@ -1,7 +1,6 @@
 ﻿@model CadQueryInputModel
 @inject IViewLocalizer Localizer
 @{
-    ViewBag.Cols = 4;
     ViewBag.Buttons = new string[] { "Edit", "Delete" };
 }
 
@@ -28,10 +27,11 @@ else
             @foreach (CadViewModel cad in Model.Cads)
             {
                 ViewBag.Header = $"{cad.Name} ({Localizer[cad.Category].Value})";
-                <partial name="_CardCadPartial" model="cad" view-data="ViewData" />
+                <partial name="_CardCadPartial" model="cad" view-data="ViewData" view-data-cols="Model.Cols" />
             }
         </div>
     </div>
+
 }
 
 <partial name="_PaginationPartial" model="Model" view-data="ViewData" />

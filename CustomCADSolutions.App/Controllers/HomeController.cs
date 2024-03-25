@@ -76,34 +76,14 @@ namespace CustomCADSolutions.App.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Category(CadQueryInputModel inputQuery, string category)
+        public async Task<IActionResult> Category([FromQuery] CadQueryInputModel inputQuery, string category)
         {
-            ViewBag.ModelsPerPage = 16;
-            CadQueryModel query = await cadService.GetAllAsync(
-                category: inputQuery.Category,
-                creatorName: inputQuery.Creator,
-                searchTerm: inputQuery.SearchTerm,
-                sorting: inputQuery.Sorting,
-                currentPage: inputQuery.CurrentPage,
-                modelsPerPage: ViewBag.ModelsPerPage);
-
-            inputQuery.TotalCadsCount = query.TotalCount;
+            inputQuery.Cols = 3;
+            inputQuery.CadsPerPage = inputQuery.CadsPerPage == 4 ? 3 : inputQuery.CadsPerPage;
+            inputQuery = await cadService.QueryCads(inputQuery, true, false);
             inputQuery.Categories = (await categoryService.GetAllAsync()).Select(c => c.Name);
-            inputQuery.Cads = query.CadModels
-                .Select(m => new CadViewModel
-                {
-                    Id = m.Id,
-                    Name = m.Name,
-                    Category = m.Category.Name,
-                    CreationDate = m.CreationDate!.Value.ToString("dd/MM/yyyy HH:mm:ss"),
-                    CreatorName = m.Creator!.UserName,
-                    Coords = m.Coords,
-                    SpinAxis = m.SpinAxis,
-                    SpinFactor = m.SpinFactor,
-                    IsValidated = m.IsValidated,
-                }).ToArray();
-
             ViewBag.Sortings = typeof(CadSorting).GetEnumNames();
+            
             ViewBag.Category = category;
             return View(inputQuery);
         }

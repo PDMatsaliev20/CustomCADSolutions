@@ -1,7 +1,6 @@
 ﻿@model CadViewModel
 @inject IViewLocalizer Localizer
 @{
-    ViewBag.Cols = 3;
     ViewBag.Buttons = new string[] { "Order" };
     ViewBag.Header = ViewBag.Header = $"{Model.Name} ({Localizer[Model.Category].Value})";
 }

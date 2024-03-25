@@ -6,7 +6,7 @@ using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using static CustomCADSolutions.App.Extensions.Utilities;
+using static CustomCADSolutions.App.Extensions.UtilityExtensions;
 
 namespace CustomCADSolutions.App.Areas.Admin.Controllers
 {
@@ -40,33 +40,10 @@ namespace CustomCADSolutions.App.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Index([FromQuery] CadQueryInputModel inputQuery)
         {
-            ViewBag.ModelsPerPage = 4;
-            CadQueryModel query = await cadService.GetAllAsync(
-                category: inputQuery.Category,
-                creatorName: inputQuery.Creator,
-                searchTerm: inputQuery.SearchTerm,
-                sorting: inputQuery.Sorting,
-                unvalidated: true,
-                currentPage: inputQuery.CurrentPage,
-                modelsPerPage: ViewBag.ModelsPerPage);
-
-            inputQuery.TotalCadsCount = query.TotalCount;
+            inputQuery = await cadService.QueryCads(inputQuery, true, true);
             inputQuery.Categories = (await categoryService.GetAllAsync()).Select(c => c.Name);
-            inputQuery.Cads = query.CadModels
-                .Select(m => new CadViewModel
-                {
-                    Id = m.Id,
-                    Name = m.Name,
-                    Category = m.Category.Name,
-                    CreationDate = m.CreationDate!.Value.ToString("dd/MM/yyyy HH:mm:ss"),
-                    CreatorName = m.Creator!.UserName,
-                    Coords = m.Coords,
-                    SpinAxis = m.SpinAxis,
-                    SpinFactor = m.SpinFactor,
-                    IsValidated = m.IsValidated,
-                }).ToArray();
-
             ViewBag.Sortings = typeof(CadSorting).GetEnumNames();
+
             return View(inputQuery);
         }
 

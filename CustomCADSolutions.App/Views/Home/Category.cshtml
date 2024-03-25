@@ -1,9 +1,10 @@
 ﻿@model CadQueryInputModel
 @inject IViewLocalizer Localizer
 @{
+    ViewBag.Cols = 3;
 }
 
-<h2 class="text-center">@Localizer[$"{ViewBag.Category}Title"]</h2>
+<h2 class="text-center">@Localizer["All"] @Localizer[ViewBag.Category ?? "Cads"]</h2>
 <hr />
 
 <partial name="_CadQueryPartial" model="Model" view-data="ViewData" />
@@ -19,7 +20,7 @@ else
             @foreach (CadViewModel cad in Model.Cads)
             {
                 string userId = User.GetId();
-                @await Component.InvokeAsync("CategoryCadComponent", new { cad, userId })
+                @await Component.InvokeAsync("CategoryCadComponent", new { cad, userId, cols = ViewBag.Cols })
             }
         </div>
     </div>

@@ -39,31 +39,9 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
         [HttpGet]
         public async Task<IActionResult> Index([FromQuery] CadQueryInputModel inputQuery)
         {
-            ViewBag.ModelsPerPage = 8;
-            CadQueryModel query = await cadService
-                .GetAllAsync(category: inputQuery.Category,
-                    creatorName: User.Identity!.Name, 
-                    sorting: CadSorting.Oldest,
-                    searchTerm: inputQuery.SearchTerm,
-                    currentPage: inputQuery.CurrentPage,
-                    modelsPerPage: ViewBag.ModelsPerPage);
-
+            inputQuery.Creator = User.Identity!.Name;
+            inputQuery = await cadService.QueryCads(inputQuery, true, true);
             inputQuery.Categories = (await categoryService.GetAllAsync()).Select(c => c.Name);
-            inputQuery.TotalCadsCount = query.TotalCount;
-            inputQuery.Cads = query.CadModels
-                .Select(model => new CadViewModel
-                {
-                    Id = model.Id,
-                    Name = model.Name,
-                    Category = model.Category.Name,
-                    CreationDate = model.CreationDate!.Value.ToString("dd/MM/yyyy HH:mm:ss"),
-                    CreatorName = model.Creator!.UserName,
-                    Coords = model.Coords,
-                    SpinAxis = model.SpinAxis,
-                    SpinFactor = model.SpinFactor,
-                    IsValidated = model.IsValidated,
-                })
-                .ToArray();
 
             return View(inputQuery);
         }

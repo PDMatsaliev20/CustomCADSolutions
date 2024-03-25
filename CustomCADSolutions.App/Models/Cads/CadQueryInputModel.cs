@@ -14,12 +14,21 @@ namespace CustomCADSolutions.App.Models.Cads
         
         public bool? Unvalidated { get; set; }
 
-        [Display(Name = "Name, Category or Creator")]
-        public string? SearchTerm { get; set; }
+        [Display(Name = "Search by Name")]
+        public string? SearchName { get; set; }
+        
+        [Display(Name = "Search by Creator")]
+        public string? SearchCreator { get; set; }
 
         public CadSorting Sorting { get; set; }
 
         public int CurrentPage { get; set; } = 1;
+
+        public int CadsPerPage { get; set; } = 4;
+        
+        public int Cols { get; set; } = 4;
+        
+        public int MaxCadsPerPage { get => Cols * (20 / Cols); } 
 
         public int TotalCadsCount { get; set; }
 

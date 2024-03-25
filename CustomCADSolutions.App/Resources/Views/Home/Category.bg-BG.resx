@@ -120,29 +120,29 @@
   <data name="All" xml:space="preserve">
     <value>Всички</value>
   </data>
-  <data name="AllTitle" xml:space="preserve">
-    <value>Всички 3D Модели</value>
-  </data>
-  <data name="AnimalsTitle" xml:space="preserve">
+  <data name="Animals" xml:space="preserve">
     <value>Всички Животни</value>
   </data>
-  <data name="CharactersTitle" xml:space="preserve">
-    <value>Всички Герои</value>
+  <data name="Cads" xml:space="preserve">
+    <value>3D Модели</value>
   </data>
-  <data name="ElectronicsTitle" xml:space="preserve">
-    <value>Всички Електроники</value>
+  <data name="Characters" xml:space="preserve">
+    <value>Герои</value>
   </data>
-  <data name="FashionTitle" xml:space="preserve">
-    <value>Всички Модни</value>
+  <data name="Electronics" xml:space="preserve">
+    <value>Електроники</value>
   </data>
-  <data name="FurnitureTitle" xml:space="preserve">
-    <value>Всички Мебели</value>
+  <data name="Fashion" xml:space="preserve">
+    <value>Модни</value>
+  </data>
+  <data name="Furniture" xml:space="preserve">
+    <value>Мебели</value>
   </data>
   <data name="Login" xml:space="preserve">
     <value>Влез в акаунта си</value>
   </data>
-  <data name="NatureTitle" xml:space="preserve">
-    <value>Всички Природни</value>
+  <data name="Nature" xml:space="preserve">
+    <value>Природни</value>
   </data>
   <data name="No models" xml:space="preserve">
     <value>Все още няма модели...</value>
@@ -153,25 +153,25 @@
   <data name="Order" xml:space="preserve">
     <value>Поръчай</value>
   </data>
-  <data name="OthersTitle" xml:space="preserve">
-    <value>Всички Други</value>
+  <data name="Others" xml:space="preserve">
+    <value>Други</value>
   </data>
   <data name="Register" xml:space="preserve">
     <value>създай нов</value>
   </data>
-  <data name="ScienceTitle" xml:space="preserve">
-    <value>Всички Научни</value>
+  <data name="Science" xml:space="preserve">
+    <value>Научни</value>
   </data>
-  <data name="SportsTitle" xml:space="preserve">
-    <value>Всички Спортни</value>
+  <data name="Sports" xml:space="preserve">
+    <value>Спортни</value>
   </data>
   <data name="ToOrder" xml:space="preserve">
     <value>за да поръчаш</value>
   </data>
-  <data name="ToysTitle" xml:space="preserve">
-    <value>Всички Играчки</value>
+  <data name="Toys" xml:space="preserve">
+    <value>Играчки</value>
   </data>
-  <data name="VehiclesTitle" xml:space="preserve">
-    <value>Всички Коли</value>
+  <data name="Vehicles" xml:space="preserve">
+    <value>Коли</value>
   </data>
 </root>

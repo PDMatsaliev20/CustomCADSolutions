@@ -13,8 +13,7 @@ namespace CustomCADSolutions.Core.Services
         private readonly IConverter converter;
         private readonly IOrderService orderService;
 
-        public CadService(IRepository repository, IConverter converter,
-            IOrderService orderService)
+        public CadService(IRepository repository, IConverter converter, IOrderService orderService)
         {
             this.repository = repository;
             this.orderService = orderService;
@@ -139,12 +138,12 @@ namespace CustomCADSolutions.Core.Services
 
         public async Task<CadQueryModel> GetAllAsync(
             string? category = null, string? creator = null,
-            string? searchTerm = null, CadSorting sorting = CadSorting.Newest,
-            int currentPage = 1, int housesPerPage = 1,
+            string? searchName = null, string? searchCreator = null,
+            CadSorting sorting = CadSorting.Newest,
+            int currentPage = 1, int cadsPerPage = 1,
             bool validated = true, bool unvalidated = false)
         {
-            IQueryable<Cad> cads = repository.All<Cad>()
-                .Where(c => c.CreatorId != null);
+            IQueryable<Cad> cads = repository.All<Cad>().Where(c => c.CreatorId != null);
 
             if (category != null)
             {
@@ -169,13 +168,14 @@ namespace CustomCADSolutions.Core.Services
                 }
 
             }
-            if (searchTerm != null)
+
+            if (searchName != null)
             {
-                cads = cads
-                    .Where(c => c.Name.Contains(searchTerm) ||
-                        c.Category.Name.Contains(searchTerm) ||
-                        c.Creator!.UserName.Contains(searchTerm) ||
-                        c.Creator!.Email.Contains(searchTerm));
+                cads = cads.Where(c => c.Name.Contains(searchName));
+            }
+            if (searchCreator != null)
+            {
+                cads = cads.Where(c => c.Creator!.UserName.Contains(searchCreator));
             }
 
             cads = sorting switch
@@ -189,14 +189,14 @@ namespace CustomCADSolutions.Core.Services
             };
 
 
-            if (housesPerPage > 16)
+            if (cadsPerPage > 16)
             {
-                housesPerPage = 16;
+                cadsPerPage = 16;
             }
 
             CadModel[] models = await cads
-                .Skip((currentPage - 1) * housesPerPage)
-                .Take(housesPerPage)
+                .Skip((currentPage - 1) * cadsPerPage)
+                .Take(cadsPerPage)
                 .Select(cad => converter.CadToModel(cad, true))
                 .ToArrayAsync();
 
