@@ -4,6 +4,7 @@ using CustomCADSolutions.Infrastructure.Data.Common;
 using CustomCADSolutions.Infrastructure.Data.Models;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace CustomCADSolutions.Core.Services
 {
@@ -29,10 +30,10 @@ namespace CustomCADSolutions.Core.Services
                 await orderService.CreateRangeAsync(model.Orders.ToArray());
             }
 
-            await repository.AddAsync<Cad>(cad);
+            EntityEntry<Cad> entry = await repository.AddAsync<Cad>(cad);
             await repository.SaveChangesAsync();
 
-            return cad.Id;
+            return entry.Entity.Id;
         }
 
         public async Task CreateRangeAsync(params CadModel[] models)

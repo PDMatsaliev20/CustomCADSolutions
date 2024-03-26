@@ -4,7 +4,7 @@ namespace CustomCADSolutions.Core.Contracts
 {
     public interface IOrderService
     {
-        Task CreateAsync(OrderModel entity);
+        Task<(string, int)> CreateAsync(OrderModel entity);
         
         Task CreateRangeAsync(params OrderModel[] models);
 

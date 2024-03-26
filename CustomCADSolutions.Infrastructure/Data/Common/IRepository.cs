@@ -1,4 +1,5 @@
 ﻿using CustomCADSolutions.Infrastructure.Data.Models;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace CustomCADSolutions.Infrastructure.Data.Common
         
         Task AddRangeAsync<T>(params T[] entity) where T : class;
         
-        public Task AddAsync<T>(T entity) where T : class;
+        public Task<EntityEntry<T>> AddAsync<T>(T entity) where T : class;
         
         public void Delete<T>(T entity) where T : class;
         

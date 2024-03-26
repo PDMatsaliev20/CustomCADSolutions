@@ -3,6 +3,7 @@ using CustomCADSolutions.Core.Models;
 using CustomCADSolutions.Infrastructure.Data.Common;
 using CustomCADSolutions.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace CustomCADSolutions.Core.Services
 {
@@ -17,7 +18,7 @@ namespace CustomCADSolutions.Core.Services
             this.converter = converter;
         }
 
-        public async Task CreateAsync(OrderModel model)
+        public async Task<(string, int)> CreateAsync(OrderModel model)
         {
             if ((model.Cad == null && model.CadId == 0) || (model.Buyer == null && model.BuyerId == null))
             {
@@ -32,8 +33,10 @@ namespace CustomCADSolutions.Core.Services
             }
             else order.Cad = converter.ModelToCad(model.Cad!);
 
-            await repository.AddAsync<Order>(order);
+            EntityEntry<Order> entry = await repository.AddAsync<Order>(order);
             await repository.SaveChangesAsync();
+
+            return (entry.Entity.BuyerId, entry.Entity.CadId);
         }
 
         public async Task CreateRangeAsync(params OrderModel[] models)

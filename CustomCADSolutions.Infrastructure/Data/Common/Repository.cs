@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace CustomCADSolutions.Infrastructure.Data.Common
 {
@@ -11,9 +12,9 @@ namespace CustomCADSolutions.Infrastructure.Data.Common
             this.context = context;
         }
 
-        public async Task AddAsync<T>(T entity) where T : class
+        public async Task<EntityEntry<T>> AddAsync<T>(T entity) where T : class
         {
-            await context.Set<T>().AddAsync(entity);
+            return await context.Set<T>().AddAsync(entity);
         }
 
         public async Task AddRangeAsync<T>(params T[] entity) where T : class
