@@ -10,6 +10,8 @@ namespace CustomCADSolutions.Core.Models
         [Key]
         public int Id { get; set; }
 
+        public byte[]? Bytes { get; set; }
+
         [Required(ErrorMessage = RequiredErrorMessage)]
         [StringLength(CadConstants.NameMaxLength, MinimumLength = CadConstants.NameMinLength, ErrorMessage = LengthErrorMessage)]
         public string Name { get; set; } = null!;

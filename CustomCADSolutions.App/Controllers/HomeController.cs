@@ -53,7 +53,7 @@ namespace CustomCADSolutions.App.Controllers
 
             ViewBag.Chair = new CadViewModel()
             {
-                Id = -2,
+                Id = 1,
                 Name = "Chair",
                 Coords = (750, 300, 0),
                 SpinAxis = 'y',
@@ -86,6 +86,15 @@ namespace CustomCADSolutions.App.Controllers
             
             ViewBag.Category = category;
             return View(inputQuery);
+        }
+
+        [HttpGet]
+        public async Task<FileResult> DownloadCad(int id)
+        {
+            CadModel model = (await cadService.GetByIdAsync(id));
+            byte[] bytes = model.Bytes ?? throw new NullReferenceException("3d model hasn't been created yet.");
+
+            return File(bytes, "application/octet-stream", $"{model.Name}.stl");
         }
 
         public IActionResult SetLanguage(string culture, string returnUrl)

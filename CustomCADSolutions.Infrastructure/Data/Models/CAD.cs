@@ -12,6 +12,9 @@ namespace CustomCADSolutions.Infrastructure.Data.Models
         [Comment("Identification of 3D Model")]
         public int Id { get; set; }
 
+        [Comment("Bytes of 3D Model")]
+        public byte[]? Bytes { get; set; }
+
         [Required]
         [MaxLength(DataConstants.CadConstants.NameMaxLength)]
         [Comment("Name of 3D Model")]

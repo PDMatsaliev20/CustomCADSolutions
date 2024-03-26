@@ -1,23 +1,32 @@
 ﻿using CustomCADSolutions.App.Models.Cads;
 using CustomCADSolutions.Core.Contracts;
 using CustomCADSolutions.Core.Models;
-using CustomCADSolutions.Core.Services;
-using CustomCADSolutions.Infrastructure.Data.Models.Enums;
-using CustomCADSolutions.Infrastructure.Data.Models;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Security.Claims;
+using Stripe;
 
 namespace CustomCADSolutions.App.Extensions
 {
     public static class UtilityExtensions
     {
+        public static bool ProcessPayment(this StripeSettings stripeSettings, string stripeToken)
+        {
+            StripeConfiguration.ApiKey = stripeSettings.SecretKey;
+            ChargeCreateOptions options = new()
+            {
+                Amount = 1,
+                Currency = "bgn",
+                Source = stripeToken,
+                Description = "Example Charge",
+            };
+            Charge charge = new ChargeService().Create(options);
+
+            return charge.Status == "succeeded";
+        }
+
         public static IEnumerable<string> GetErrors(this ModelStateDictionary model) => model.Values.Select(v => v.Errors).SelectMany(ec => ec.Select(e => e.ErrorMessage));
 
         public static string GetId(this ClaimsPrincipal user) => user.FindFirstValue(ClaimTypes.NameIdentifier);
-
-        public static string GetCadPath(this IWebHostEnvironment hostingEnvironment, string name, int id, string extension = ".stl")
-            => Path.Combine(hostingEnvironment.WebRootPath, "others", "cads", $"{name}{id}{extension}");
 
         public static async Task<CadQueryInputModel> QueryCads(this ICadService cadService, CadQueryInputModel inputQuery, bool validated = true, bool unvalidated = false)
         {
@@ -38,9 +47,11 @@ namespace CustomCADSolutions.App.Extensions
 
             inputQuery.TotalCadsCount = query.TotalCount;
             inputQuery.Cads = query.CadModels
+                .Where(m => m.Bytes != null)
                 .Select(m => new CadViewModel
                 {
                     Id = m.Id,
+                    Cad = m.Bytes!,
                     Name = m.Name,
                     Category = m.Category.Name,
                     CreationDate = m.CreationDate!.Value.ToString("dd/MM/yyyy HH:mm:ss"),
@@ -54,27 +65,12 @@ namespace CustomCADSolutions.App.Extensions
             return inputQuery;
         }
 
-        public static async Task UploadCadAsync(this IWebHostEnvironment hostingEnvironment, IFormFile cad, int id, string name, string extension = ".stl")
+        public static async Task<byte[]> GetBytesFromCadAsync(IFormFile cad)
         {
-            string filePath = hostingEnvironment.GetCadPath(name, id, extension);
-            using FileStream fileStream = new(filePath, FileMode.Create);
-            await cad.CopyToAsync(fileStream);
-        }
-
-        public static void EditCad(this IWebHostEnvironment hostingEnvironment, int id, string oldName, string newName)
-        {
-            string source = hostingEnvironment.GetCadPath(oldName, id);
-            string destination = hostingEnvironment.GetCadPath(newName, id);
-            File.Move(source, destination);
-        }
-
-        public static void DeleteCad(this IWebHostEnvironment hostingEnvironment, string name, int id)
-        {
-            string filePath = hostingEnvironment.GetCadPath(name, id);
-            if (File.Exists(filePath))
-            {
-                File.Delete(filePath);
-            }
+            using MemoryStream memoryStream = new();
+            await cad.CopyToAsync(memoryStream);
+            byte[] fileBytes = memoryStream.ToArray();
+            return fileBytes;
         }
     }
 }

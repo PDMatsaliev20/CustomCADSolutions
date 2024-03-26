@@ -9,6 +9,7 @@ namespace CustomCADSolutions.Core.Services
             => new()
             {
                 Id = cad.Id,
+                Bytes = cad.Bytes,
                 Name = cad.Name,
                 IsValidated = cad.IsValidated,
                 CreationDate = cad.CreationDate,
@@ -51,6 +52,7 @@ namespace CustomCADSolutions.Core.Services
         public Cad ModelToCad(CadModel model, bool firstTime = true)
             => new()
             {
+                Bytes = model.Bytes,
                 Name = model.Name,
                 CategoryId = model.CategoryId,
                 IsValidated = model.IsValidated,

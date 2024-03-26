@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using CustomCADSolutions.App.Extensions;
+using static CustomCADSolutions.App.Extensions.UtilityExtensions;
 
 namespace CustomCADSolutions.App.Areas.Contributer.Controllers
 {
@@ -73,17 +74,23 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
                 return BadRequest("Invalid 3d model");
             }
 
+            using MemoryStream memoryStream = new();
+            await input.CadFile.CopyToAsync(memoryStream);
+            byte[] fileBytes = memoryStream.ToArray();
+            
+            byte[] bytes = await GetBytesFromCadAsync(input.CadFile);
+            
             CadModel model = new()
             {
+                Bytes = bytes,
                 Name = input.Name,
                 CategoryId = input.CategoryId,
                 IsValidated = User.IsInRole("Designer"),
                 CreationDate = DateTime.Now,
                 CreatorId = User.GetId()
             };
-
             int cadId = await cadService.CreateAsync(model);
-            await hostingEnvironment.UploadCadAsync(input.CadFile, cadId, model.Name);
+
 
             logger.LogInformation("Submitted 3d Model");
             return RedirectToAction(nameof(Index));
@@ -124,7 +131,7 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
         {
             CadModel model = await cadService.GetByIdAsync(id);
 
-            if (model.Creator == null)
+            if (model.Bytes == null)
             {
                 return BadRequest();
             }
@@ -134,12 +141,7 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
                 return Unauthorized();
             }
 
-            if (input.Name != model.Name)
-            {
-                hostingEnvironment.EditCad(id, model.Name, input.Name);
-                model.Name = input.Name;
-            }
-
+            model.Name = input.Name;
             model.CategoryId = input.CategoryId;
             model.Coords = (input.X, input.Y, input.Z);
             model.SpinAxis = input.SpinAxis;
@@ -154,7 +156,6 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             CadModel cad = await cadService.GetByIdAsync(id);
-            hostingEnvironment.DeleteCad(cad.Name, cad.Id);
 
             OrderModel[] orders = (await orderService.GetAllAsync()).Where(o => o.CadId == cad.Id).ToArray();
             foreach (OrderModel order in orders)

@@ -144,7 +144,7 @@ namespace CustomCADSolutions.Core.Services
             int currentPage = 1, int cadsPerPage = 1,
             bool validated = true, bool unvalidated = false)
         {
-            IQueryable<Cad> cads = repository.All<Cad>().Where(c => c.CreatorId != null);
+            IQueryable<Cad> cads = repository.All<Cad>().Where(c => c.Bytes != null);
 
             if (category != null)
             {

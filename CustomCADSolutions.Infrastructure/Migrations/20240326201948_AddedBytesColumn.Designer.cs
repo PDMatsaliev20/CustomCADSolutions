@@ -4,6 +4,7 @@ using CustomCADSolutions.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CustomCADSolutions.AppWithIdentity.Data.Migrations
 {
     [DbContext(typeof(CADContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240326201948_AddedBytesColumn")]
+    partial class AddedBytesColumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -84,21 +86,6 @@ namespace CustomCADSolutions.AppWithIdentity.Data.Migrations
                     b.HasIndex("CreatorId");
 
                     b.ToTable("Cads");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CategoryId = 5,
-                            IsValidated = false,
-                            Name = "Chair",
-                            SpinAxis = "y",
-                            SpinFactor = -0.01,
-                            X = (short)750,
-                            Y = (short)300,
-                            Z = (short)0,
-                            Bytes = File.ReadAllBytes("../../CustomCADSolutions/CustomCADSolutions.Infrastructure/Chair.STL")
-                        });
                 });
 
             modelBuilder.Entity("CustomCADSolutions.Infrastructure.Data.Models.Category", b =>

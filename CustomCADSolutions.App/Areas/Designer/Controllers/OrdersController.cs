@@ -20,22 +20,19 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
         private readonly ICategoryService categoryService;
         private readonly ILogger logger;
         private readonly UserManager<IdentityUser> userManager;
-        private readonly IWebHostEnvironment hostingEnvironment;
 
         public OrdersController(
             ICadService cadService,
             IOrderService orderService,
             ICategoryService categoryService,
             ILogger<CadModel> logger,
-            UserManager<IdentityUser> userManager,
-            IWebHostEnvironment hostingEnvironment)
+            UserManager<IdentityUser> userManager)
         {
             this.cadService = cadService;
             this.orderService = orderService;
             this.categoryService = categoryService;
             this.logger = logger;
             this.userManager = userManager;
-            this.hostingEnvironment = hostingEnvironment;
         }
 
         [HttpGet]
@@ -90,12 +87,12 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
                 return BadRequest();
             }
 
-            await hostingEnvironment.UploadCadAsync(input.CadFile, input.Id, model.Cad.Name);
+            byte[] bytes = await GetBytesFromCadAsync(input.CadFile);
 
+            model.Cad.Bytes = bytes;
             model.Cad.CreatorId = User.GetId();
             model.Cad.CreationDate = DateTime.Now;
             model.Cad.IsValidated = true;
-
             model.Status = OrderStatus.Finished;
             await orderService.EditAsync(model);
 

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using Microsoft.Extensions.Localization;
 using CustomCADSolutions.App.Extensions;
+using static CustomCADSolutions.App.Extensions.UtilityExtensions;
 
 namespace CustomCADSolutions.App.Areas.Designer.Controllers
 {
@@ -120,8 +121,10 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
                 return BadRequest("Invalid 3d model");
             }
 
+            byte[] bytes = await GetBytesFromCadAsync(input.CadFile);
             CadModel model = new()
             {
+                Bytes = bytes,
                 Name = input.Name,
                 CategoryId = input.CategoryId,
                 IsValidated = User.IsInRole("Designer"),
@@ -130,7 +133,6 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
             };
 
             int cadId = await cadService.CreateAsync(model);
-            await hostingEnvironment.UploadCadAsync(input.CadFile, cadId, input.Name);
             
             return RedirectToAction(nameof(Index));
         }
@@ -180,12 +182,7 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
                 return Unauthorized();
             }
 
-            if (input.Name != model.Name)
-            {
-                hostingEnvironment.EditCad(id, model.Name, input.Name);
-                model.Name = input.Name;
-            }
-
+            model.Name = input.Name;
             model.CategoryId = input.CategoryId;
             model.Coords = (input.X, input.Y, input.Z);
             model.SpinAxis = input.SpinAxis;
@@ -205,8 +202,6 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
             {
                 return Unauthorized();
             }
-
-            hostingEnvironment.DeleteCad(cad.Name, cad.Id);
 
             OrderModel[] orders = (await orderService.GetAllAsync()).Where(o => o.CadId == cad.Id).ToArray();
             foreach (OrderModel order in orders)

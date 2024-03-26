@@ -51,7 +51,6 @@ namespace CustomCADSolutions.App.Areas.Admin.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             CadModel cad = await cadService.GetByIdAsync(id);
-            hostingEnvironment.DeleteCad(cad.Name, cad.Id);
 
             OrderModel[] orders = (await orderService.GetAllAsync()).Where(o => o.CadId == cad.Id).ToArray();
             foreach (OrderModel order in orders)

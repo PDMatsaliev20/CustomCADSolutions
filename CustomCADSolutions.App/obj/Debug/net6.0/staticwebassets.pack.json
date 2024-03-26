@@ -265,70 +265,6 @@
       "PackagePath": "staticwebassets\\logo.png"
     },
     {
-      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\cads\\Airpod141.stl",
-      "PackagePath": "staticwebassets\\others\\cads\\Airpod141.stl"
-    },
-    {
-      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\cads\\Autism144.stl",
-      "PackagePath": "staticwebassets\\others\\cads\\Autism144.stl"
-    },
-    {
-      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\cads\\Car145.stl",
-      "PackagePath": "staticwebassets\\others\\cads\\Car145.stl"
-    },
-    {
-      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\cads\\Cat146.stl",
-      "PackagePath": "staticwebassets\\others\\cads\\Cat146.stl"
-    },
-    {
-      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\cads\\Chair-2.stl",
-      "PackagePath": "staticwebassets\\others\\cads\\Chair-2.stl"
-    },
-    {
-      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\cads\\Chair147.stl",
-      "PackagePath": "staticwebassets\\others\\cads\\Chair147.stl"
-    },
-    {
-      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\cads\\Hair Dryer148.stl",
-      "PackagePath": "staticwebassets\\others\\cads\\Hair Dryer148.stl"
-    },
-    {
-      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\cads\\Pacman149.stl",
-      "PackagePath": "staticwebassets\\others\\cads\\Pacman149.stl"
-    },
-    {
-      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\cads\\Pill150.stl",
-      "PackagePath": "staticwebassets\\others\\cads\\Pill150.stl"
-    },
-    {
-      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\cads\\Racket-1.stl",
-      "PackagePath": "staticwebassets\\others\\cads\\Racket-1.stl"
-    },
-    {
-      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\cads\\Racket152.stl",
-      "PackagePath": "staticwebassets\\others\\cads\\Racket152.stl"
-    },
-    {
-      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\cads\\Ring151.stl",
-      "PackagePath": "staticwebassets\\others\\cads\\Ring151.stl"
-    },
-    {
-      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\cads\\Tennis Racket269.stl",
-      "PackagePath": "staticwebassets\\others\\cads\\Tennis Racket269.stl"
-    },
-    {
-      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\cads\\Tennis racket290.stl",
-      "PackagePath": "staticwebassets\\others\\cads\\Tennis racket290.stl"
-    },
-    {
-      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\cads\\Watch0.stl",
-      "PackagePath": "staticwebassets\\others\\cads\\Watch0.stl"
-    },
-    {
-      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\cads\\Watch143.stl",
-      "PackagePath": "staticwebassets\\others\\cads\\Watch143.stl"
-    },
-    {
       "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\categories\\All.png",
       "PackagePath": "staticwebassets\\others\\categories\\All.png"
     },
@@ -2555,38 +2491,6 @@
     {
       "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\recycle.png",
       "PackagePath": "staticwebassets\\others\\images\\recycle.png"
-    },
-    {
-      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\textures\\texture.jpg",
-      "PackagePath": "staticwebassets\\textures\\texture.jpg"
-    },
-    {
-      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\textures\\texture2.jpg",
-      "PackagePath": "staticwebassets\\textures\\texture2.jpg"
-    },
-    {
-      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\textures\\texture3.jpg",
-      "PackagePath": "staticwebassets\\textures\\texture3.jpg"
-    },
-    {
-      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\textures\\texture4.jpg",
-      "PackagePath": "staticwebassets\\textures\\texture4.jpg"
-    },
-    {
-      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\textures\\texture5.jpg",
-      "PackagePath": "staticwebassets\\textures\\texture5.jpg"
-    },
-    {
-      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\textures\\texture6.jpg",
-      "PackagePath": "staticwebassets\\textures\\texture6.jpg"
-    },
-    {
-      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\textures\\texture7.jpg",
-      "PackagePath": "staticwebassets\\textures\\texture7.jpg"
-    },
-    {
-      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\textures\\texture8.jpg",
-      "PackagePath": "staticwebassets\\textures\\texture8.jpg"
     },
     {
       "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.CustomCADSolutions.App.Microsoft.AspNetCore.StaticWebAssets.props",

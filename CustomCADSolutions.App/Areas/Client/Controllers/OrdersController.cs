@@ -126,7 +126,7 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
                 return RedirectToAction("Categories", "Home", new { area = "" });
             }
 
-            bool succeeded = ProcessPayment(stripeToken);
+            bool succeeded = stripeSettings.ProcessPayment(stripeToken);
             if (!succeeded)
             {
                 TempData["ErrorMessage"] = "Payment failed. Please try again.";
@@ -146,28 +146,6 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
             });
 
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool ProcessPayment(string stripeToken)
-        {
-            StripeConfiguration.ApiKey = stripeSettings.SecretKey;
-            ChargeCreateOptions options = new()
-            {
-                Amount = 1,
-                Currency = "bgn",
-                Source = stripeToken, 
-                Description = "Example Charge",
-            };
-            Charge charge = new ChargeService().Create(options);
-
-            if (charge.Status == "succeeded")
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
         }
 
         [HttpGet]
@@ -304,9 +282,10 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
         [HttpGet]
         public async Task<FileResult> DownloadCad(int id)
         {
-            string name = (await cadService.GetByIdAsync(id)).Name;
-            string filePath = hostingEnvironment.GetCadPath(name, id);
-            return PhysicalFile(filePath, "application/sla", name + ".stl");
+            byte[] bytes = (await cadService.GetByIdAsync(id)).Bytes
+                ?? throw new NullReferenceException("3d model hasn't been created yet.");
+
+            return File(bytes, "application/sla");
         }
     }
 }

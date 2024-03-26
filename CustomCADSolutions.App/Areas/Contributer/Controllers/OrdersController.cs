@@ -50,7 +50,7 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
                 return BadRequest(ex.Message);
             }
             
-            if (model.Creator == null || !model.CreationDate.HasValue)
+            if (model.Bytes == null || model.Creator == null || !model.CreationDate.HasValue)
             {
                 return BadRequest("Model not created yet");
             }
@@ -58,6 +58,7 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
             CadViewModel view = new()
             {
                 Id = model.Id,
+                Cad = model.Bytes,
                 Name = model.Name,
                 Category = model.Category.Name,
                 CreatorName = model.Creator.UserName,
@@ -89,7 +90,6 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
 
             return View(orders);
         }
-
 
         [HttpPost]
         public async Task<IActionResult> Order(int id)
@@ -231,9 +231,9 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
         [HttpGet]
         public async Task<FileResult> DownloadCad(int id)
         {
-            string name = (await cadService.GetByIdAsync(id)).Name;
-            string filePath = hostingEnvironment.GetCadPath(name, id);
-            return PhysicalFile(filePath, "application/sla", name + ".stl");
+            byte[] bytes = (await cadService.GetByIdAsync(id)).Bytes
+                ?? throw new NullReferenceException("3d model hasn't been created yet.");
+            return File(bytes, "application/sla");
         }
     }
 }
