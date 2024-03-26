@@ -1,0 +1,62 @@
+﻿@model CadViewModel
+@{
+}
+
+<div class="container">
+    <form id="payment-form" method="post" autocomplete="off">
+        <div class="row justify-content-center text-center mb-3">
+            <div class="col-2 justify-content-center">
+                <label for="card-element" class="form-label mb-4">Credit or debit card</label>
+                <div id="card-element" class="mb-3"></div>
+                <div id="card-errors" role="alert" class="small text-danger"></div>
+            </div>
+        </div>
+
+        <div class="row justify-content-center mb-4">
+            <div class="col-2 d-flex justify-content-center">
+                <button id="submit-button" class="btn btn-primary">Submit Payment</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>
+        var stripe = Stripe('@ViewBag.StripeKey');
+        var elements = stripe.elements();
+
+        var card = elements.create('card');
+        card.mount('#card-element');
+
+        var form = document.getElementById('payment-form');
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            stripe.createToken(card).then(function (result) {
+                if (result.error) {
+                    var errorElement = document.getElementById('card-errors');
+                    errorElement.textContent = result.error.message;
+                } else {
+                    // Send the token to your server.
+                    stripeTokenHandler(result.token);
+                }
+            });
+        });
+
+        // Submit the form with the token ID.
+        function stripeTokenHandler(token) {
+            // Insert the token ID into the form so it gets submitted to the server
+            var form = document.getElementById('payment-form');
+            var hiddenInput = document.createElement('input');
+            hiddenInput.setAttribute('type', 'hidden');
+            hiddenInput.setAttribute('name', 'stripeToken');
+            hiddenInput.setAttribute('value', token.id);
+            hiddenInput.setAttribute('class', 'form-control');
+            form.appendChild(hiddenInput);
+
+            // Submit the form
+            form.submit();
+        }
+    </script>
+}

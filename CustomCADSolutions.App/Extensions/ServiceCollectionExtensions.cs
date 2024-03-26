@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
+using Stripe;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -86,5 +87,18 @@ namespace Microsoft.Extensions.DependencyInjection
 
             return services;
         }
+
+        public static IServiceCollection AddStripe(this IServiceCollection services, IConfiguration config)
+        {
+            IConfigurationSection stripeSection = config.GetSection("Stripe");
+            services.Configure<StripeSettings>(stripeSection);
+            return services;
+        }
+    }
+
+    public class StripeSettings
+    {
+        public string SecretKey { get; set; } = null!;
+        public string PublishableKey { get; set; } = null!;
     }
 }

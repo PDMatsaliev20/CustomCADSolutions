@@ -66,9 +66,8 @@
                 {
                     @if (!ViewBag.AlreadyOrdered)
                     {
-                        <form asp-area="@ViewBag.Area" asp-controller="Orders" asp-action="Order" asp-route-id="@Model.Id">
-                            <input type="submit" value="@Localizer["Order"]" class="btn btn-secondary text-decoration-none" />
-                        </form>
+                        <a asp-area="@ViewBag.Area" asp-controller="Orders" asp-action="Order" asp-route-id="@Model.Id"
+                           class="btn btn-secondary text-decoration-none">@Localizer["Order"]</a>
                     }
                 }
             </div>

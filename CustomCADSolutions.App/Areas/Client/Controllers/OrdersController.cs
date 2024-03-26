@@ -2,14 +2,14 @@
 using CustomCADSolutions.App.Models.Cads;
 using CustomCADSolutions.Core.Contracts;
 using CustomCADSolutions.Core.Models;
-using CustomCADSolutions.Infrastructure.Data.Models;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 using static CustomCADSolutions.App.Extensions.UtilityExtensions;
 using CustomCADSolutions.App.Extensions;
+using Microsoft.Extensions.Options;
+using Stripe;
 
 namespace CustomCADSolutions.App.Areas.Client.Controllers
 {
@@ -23,6 +23,7 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
         private readonly ILogger logger;
         private readonly UserManager<IdentityUser> userManager;
         private readonly IWebHostEnvironment hostingEnvironment;
+        private readonly StripeSettings stripeSettings;
 
         public OrdersController(
             ILogger<OrdersController> logger,
@@ -30,7 +31,8 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
             ICadService cadService,
             ICategoryService categoryService,
             UserManager<IdentityUser> userManager,
-            IWebHostEnvironment hostingEnvironment)
+            IWebHostEnvironment hostingEnvironment,
+            IOptions<StripeSettings> stripeSettings)
         {
             this.orderService = orderService;
             this.cadService = cadService;
@@ -38,6 +40,7 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
             this.userManager = userManager;
             this.categoryService = categoryService;
             this.hostingEnvironment = hostingEnvironment;
+            this.stripeSettings = stripeSettings.Value;
         }
 
         [HttpGet]
@@ -96,29 +99,75 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
             return View(orders);
         }
 
-
-        [HttpPost]
+        [HttpGet]
         public async Task<IActionResult> Order(int id)
         {
-            CadModel cad = await cadService.GetByIdAsync(id);
+            CadModel model = await cadService.GetByIdAsync(id);
+            CadViewModel view = new()
+            {
+                Id = model.Id,
+                Name = model.Name,
+                Category = model.Category.Name,
+                CreatorName = model.Creator!.UserName,
+                CreationDate = model.CreationDate!.Value.ToString("dd/MM/yyyy HH:mm:ss"),
+                Coords = model.Coords,
+                SpinAxis = model.SpinAxis,
+                SpinFactor = model.SpinFactor
+            };
+            ViewBag.StripeKey = stripeSettings.PublishableKey;
+            return View(view);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Order(CadModel model, string stripeToken)
+        {
             if (!ModelState.IsValid)
             {
                 return RedirectToAction("Categories", "Home", new { area = "" });
             }
 
+            bool succeeded = ProcessPayment(stripeToken);
+            if (!succeeded)
+            {
+                TempData["ErrorMessage"] = "Payment failed. Please try again.";
+                return RedirectToAction("Index", "Home", new { area = "" });
+            }
+
             await orderService.CreateAsync(new()
             {
-                Description = $"3D Model from the gallery with id: {cad.Id}",
+                Description = $"3D Model from the gallery with id: {model.Id}",
                 OrderDate = DateTime.Now,
                 Status = OrderStatus.Finished,
                 ShouldShow = false,
-                CadId = id,
+                CadId = model.Id,
                 BuyerId = User.GetId(),
-                Cad = cad,
+                Cad = model,
                 Buyer = await userManager.FindByIdAsync(User.GetId()),
             });
 
             return RedirectToAction(nameof(Index));
+        }
+
+        private bool ProcessPayment(string stripeToken)
+        {
+            StripeConfiguration.ApiKey = stripeSettings.SecretKey;
+            ChargeCreateOptions options = new()
+            {
+                Amount = 1,
+                Currency = "bgn",
+                Source = stripeToken, 
+                Description = "Example Charge",
+            };
+            Charge charge = new ChargeService().Create(options);
+
+            if (charge.Status == "succeeded")
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         [HttpGet]

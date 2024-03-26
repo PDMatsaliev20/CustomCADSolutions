@@ -9,9 +9,10 @@ builder.Services.AddControllersWithViews().AddViewLocalizer();
 System.Globalization.CultureInfo[] cultures = { new("en-US"), new("bg-BG") };
 builder.Services.AddLocalizer(cultures);
 
-// Roles
+// Roles and Stripe
 string[] roles = { "Administrator", "Designer", "Contributer", "Client" };
 builder.Services.AddRoles(roles);
+builder.Services.AddStripe(builder.Configuration);
 
 // Abstractions and App Cookie
 builder.Services.AddAbstractions();
