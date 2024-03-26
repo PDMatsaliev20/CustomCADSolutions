@@ -971,3 +971,5 @@ C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\o
 C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared.Components.AllOrdersComponent.Finished.en-US.resources
 C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared._UsersPartial.bg-BG.resources
 C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared._UsersPartial.en-US.resources
+C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\bin\Debug\net6.0\AutoMapper.dll
+C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\bin\Debug\net6.0\Stripe.net.dll

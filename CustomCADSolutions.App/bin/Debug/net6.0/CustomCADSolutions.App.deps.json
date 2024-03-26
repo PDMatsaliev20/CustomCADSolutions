@@ -17,7 +17,8 @@
           "Microsoft.EntityFrameworkCore.SqlServer": "6.0.28",
           "Microsoft.EntityFrameworkCore.Sqlite": "6.0.28",
           "Microsoft.EntityFrameworkCore.Tools": "6.0.28",
-          "Microsoft.VisualStudio.Web.CodeGeneration.Design": "6.0.16"
+          "Microsoft.VisualStudio.Web.CodeGeneration.Design": "6.0.16",
+          "Stripe.net": "43.20.0"
         },
         "runtime": {
           "CustomCADSolutions.App.dll": {}
@@ -61,6 +62,17 @@
             "rid": "win-x86",
             "assetType": "native",
             "fileVersion": "0.0.0.0"
+          }
+        }
+      },
+      "AutoMapper/13.0.1": {
+        "dependencies": {
+          "Microsoft.Extensions.Options": "6.0.0"
+        },
+        "runtime": {
+          "lib/net6.0/AutoMapper.dll": {
+            "assemblyVersion": "13.0.0.0",
+            "fileVersion": "13.0.1.0"
           }
         }
       },
@@ -2282,6 +2294,18 @@
           }
         }
       },
+      "Stripe.net/43.20.0": {
+        "dependencies": {
+          "Newtonsoft.Json": "13.0.1",
+          "System.Configuration.ConfigurationManager": "6.0.0"
+        },
+        "runtime": {
+          "lib/net6.0/Stripe.net.dll": {
+            "assemblyVersion": "43.20.0.0",
+            "fileVersion": "43.20.0.0"
+          }
+        }
+      },
       "System.AppContext/4.3.0": {
         "dependencies": {
           "System.Runtime": "4.3.0"
@@ -3089,6 +3113,7 @@
       },
       "CustomCADSolutions.Core/1.0.0": {
         "dependencies": {
+          "AutoMapper": "13.0.1",
           "CustomCADSolutions.Infrastructure": "1.0.0"
         },
         "runtime": {
@@ -3119,6 +3144,13 @@
       "sha512": "sha512-z/4Tmf3Q2r1+vN6o/szArEZvPsdYNRYiS0L/yArybQd7n7KCiS9L4lRZhwwlHJb/edECM+Jky0XisVspr5aQWQ==",
       "path": "assimpnet/4.1.0",
       "hashPath": "assimpnet.4.1.0.nupkg.sha512"
+    },
+    "AutoMapper/13.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-/Fx1SbJ16qS7dU4i604Sle+U9VLX+WSNVJggk6MupKVkYvvBm4XqYaeFuf67diHefHKHs50uQIS2YEDFhPCakQ==",
+      "path": "automapper/13.0.1",
+      "hashPath": "automapper.13.0.1.nupkg.sha512"
     },
     "Humanizer/2.14.1": {
       "type": "package",
@@ -4456,6 +4488,13 @@
       "sha512": "sha512-lxCZarZdvAsMl2zw9bXHrXK6RxVhB4b23iTFhCOdHFhxfbsxLxWf+ocvswJwR/9Wh/E//ddMi+wJGqUKV7VwoA==",
       "path": "sqlitepclraw.provider.e_sqlite3/2.1.2",
       "hashPath": "sqlitepclraw.provider.e_sqlite3.2.1.2.nupkg.sha512"
+    },
+    "Stripe.net/43.20.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ct3jKGFUfrz5+f68B8bwHPZItybIZuRhu1JHVM+VThRy/cB6OaJbANSwoV52rUYB0cDZ+yQ9rmXgBv4/LddOHA==",
+      "path": "stripe.net/43.20.0",
+      "hashPath": "stripe.net.43.20.0.nupkg.sha512"
     },
     "System.AppContext/4.3.0": {
       "type": "package",
