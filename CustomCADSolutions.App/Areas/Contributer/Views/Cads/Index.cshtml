@@ -1,7 +1,7 @@
 ﻿@model CadQueryInputModel
 @inject IViewLocalizer Localizer
 @{
-    ViewBag.Buttons = new string[] { "Edit", "Delete" };
+    ViewBag.Buttons = new string[] { "Download", "Colorize", "Edit", "Delete" };
 }
 
 <h2 class="text-center">@Localizer["Title", User.Identity!.Name!]</h2>

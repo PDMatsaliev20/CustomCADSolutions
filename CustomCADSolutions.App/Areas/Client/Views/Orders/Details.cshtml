@@ -2,8 +2,8 @@
 @inject IViewLocalizer Localizer
 @{
     ViewBag.Cols = 2;
-    ViewBag.Buttons = new string[] { "Details" };
-    ViewBag.Header = $"{Localizer["Camera"].Value} - X:{Model.Coords.Item1} Y:{Model.Coords.Item2} Z:{Model.Coords.Item3}";
+    ViewBag.Buttons = new string[] { "Download", "Colorize" };
+    ViewBag.Header = $"{Model.Name} ({Localizer[Model.Category].ToString()})";
 }
 
 <h1 class="text-center">@Localizer["Title", Model.Name]</h1>

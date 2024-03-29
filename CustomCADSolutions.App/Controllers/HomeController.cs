@@ -7,8 +7,8 @@ using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Diagnostics;
+using static CustomCADSolutions.App.Extensions.UtilityExtensions;
 
 namespace CustomCADSolutions.App.Controllers
 {
@@ -60,6 +60,7 @@ namespace CustomCADSolutions.App.Controllers
                 Coords = model.Coords,
                 SpinAxis = model.SpinAxis,
                 Category = model.Category.Name,
+                RGB = new(100, 150, 200),
             };
 
             return View();
@@ -68,23 +69,21 @@ namespace CustomCADSolutions.App.Controllers
         [HttpGet]
         public async Task<IActionResult> Categories()
         {
-            return View(new CadQueryInputModel() 
+            return View(new CadQueryInputModel()
             {
                 Categories = (await categoryService
                     .GetAllAsync())
-                    .Select(c => c.Name) 
+                    .Select(c => c.Name)
             });
         }
 
         [HttpGet]
         public async Task<IActionResult> Category([FromQuery] CadQueryInputModel inputQuery, string category)
         {
-            inputQuery.Cols = 3;
-            inputQuery.CadsPerPage = inputQuery.CadsPerPage == 4 ? 3 : inputQuery.CadsPerPage;
             inputQuery = await cadService.QueryCads(inputQuery, true, false);
             inputQuery.Categories = (await categoryService.GetAllAsync()).Select(c => c.Name);
             ViewBag.Sortings = typeof(CadSorting).GetEnumNames();
-            
+
             ViewBag.Category = category;
             return View(inputQuery);
         }
@@ -92,8 +91,8 @@ namespace CustomCADSolutions.App.Controllers
         [HttpGet]
         public async Task<FileResult> DownloadCad(int id)
         {
-            CadModel model = (await cadService.GetByIdAsync(id));
-            byte[] bytes = model.Bytes ?? throw new NullReferenceException("3d model hasn't been created yet.");
+            CadModel model = await cadService.GetByIdAsync(id);
+            byte[] bytes = CombineBytes(model.Bytes!, model.Color);
 
             return File(bytes, "application/octet-stream", $"{model.Name}.stl");
         }
@@ -124,7 +123,7 @@ namespace CustomCADSolutions.App.Controllers
             await signInManager.SignOutAsync();
             await signInManager.SignInAsync(user, false);
 
-            return RedirectToAction("Index", "Cad", new { area = "Contributer" });
+            return RedirectToAction("Index", "Cads", new { area = "Contributer" });
         }
 
         public IActionResult Privacy()

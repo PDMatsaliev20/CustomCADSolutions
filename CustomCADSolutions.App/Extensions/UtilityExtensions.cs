@@ -4,6 +4,7 @@ using CustomCADSolutions.Core.Models;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Security.Claims;
 using Stripe;
+using System.Drawing;
 
 namespace CustomCADSolutions.App.Extensions
 {
@@ -14,7 +15,7 @@ namespace CustomCADSolutions.App.Extensions
             StripeConfiguration.ApiKey = stripeSettings.SecretKey;
             ChargeCreateOptions options = new()
             {
-                Amount = 1,
+                Amount = 100,
                 Currency = "bgn",
                 Source = stripeToken,
                 Description = "Example Charge",
@@ -59,6 +60,9 @@ namespace CustomCADSolutions.App.Extensions
                     Coords = m.Coords,
                     SpinAxis = m.SpinAxis,
                     IsValidated = m.IsValidated,
+                    RGB = (GetColorBytes(m.Color)[0], 
+                           GetColorBytes(m.Color)[1], 
+                           GetColorBytes(m.Color)[2]),
                 }).ToArray();
 
             return inputQuery;
@@ -69,7 +73,44 @@ namespace CustomCADSolutions.App.Extensions
             using MemoryStream memoryStream = new();
             await cad.CopyToAsync(memoryStream);
             byte[] fileBytes = memoryStream.ToArray();
+
             return fileBytes;
+        }
+
+        public static byte[] GetColorBytes(Color color)
+        {
+            byte r = color.R;
+            byte g = color.G;
+            byte b = color.B;
+            byte a = color.A;
+
+            return new byte[] { r, g, b, a };
+        }
+
+        public static byte[] CombineBytes(byte[] bytes1, byte[] bytes2)
+        {
+            byte[] combinedBytes = new byte[bytes1.Length + bytes2.Length];
+            Buffer.BlockCopy(bytes1, 0, combinedBytes, 0, bytes1.Length);
+            Buffer.BlockCopy(bytes2, 0, combinedBytes, bytes1.Length, bytes2.Length);
+            return combinedBytes;
+        }
+
+        public static byte[] CombineBytes(byte[] bytes1, Color color)
+        {
+            byte[] bytes2 = GetColorBytes(color);
+            byte[] combinedBytes = new byte[bytes1.Length + bytes2.Length];
+            Buffer.BlockCopy(bytes1, 0, combinedBytes, 0, bytes1.Length);
+            Buffer.BlockCopy(bytes2, 0, combinedBytes, bytes1.Length, bytes2.Length);
+            return combinedBytes;
+        }
+
+        public static byte[] GenerateObjWithColor(byte[] bytes1, Color color)
+        {
+            byte[] bytes2 = GetColorBytes(color);
+            byte[] combinedBytes = new byte[bytes1.Length + bytes2.Length];
+            Buffer.BlockCopy(bytes1, 0, combinedBytes, 0, bytes1.Length);
+            Buffer.BlockCopy(bytes2, 0, combinedBytes, bytes1.Length, bytes2.Length);
+            return combinedBytes;
         }
     }
 }

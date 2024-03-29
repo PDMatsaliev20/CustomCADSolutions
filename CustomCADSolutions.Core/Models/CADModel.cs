@@ -2,6 +2,7 @@
 using static CustomCADSolutions.Infrastructure.Data.DataConstants;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
+using System.Drawing;
 
 namespace CustomCADSolutions.Core.Models
 {
@@ -11,6 +12,8 @@ namespace CustomCADSolutions.Core.Models
         public int Id { get; set; }
 
         public byte[]? Bytes { get; set; }
+
+        public Color Color { get; set; } = Color.FromArgb(0, 255, 255, 255);
 
         [Required(ErrorMessage = RequiredErrorMessage)]
         [StringLength(CadConstants.NameMaxLength, MinimumLength = CadConstants.NameMinLength, ErrorMessage = LengthErrorMessage)]

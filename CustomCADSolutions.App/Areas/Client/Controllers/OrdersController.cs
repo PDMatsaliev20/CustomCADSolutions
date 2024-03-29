@@ -10,6 +10,7 @@ using static CustomCADSolutions.App.Extensions.UtilityExtensions;
 using CustomCADSolutions.App.Extensions;
 using Microsoft.Extensions.Options;
 using Stripe;
+using System.Drawing;
 
 namespace CustomCADSolutions.App.Areas.Client.Controllers
 {
@@ -101,27 +102,34 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
         [HttpGet]
         public async Task<IActionResult> Order(int id)
         {
+            if (!await cadService.ExistsByIdAsync(id))
+            {
+                return BadRequest("Model not found");
+            }
+
             CadModel model = await cadService.GetByIdAsync(id);
             CadViewModel view = new()
             {
                 Id = model.Id,
                 Name = model.Name,
                 Category = model.Category.Name,
-                CreatorName = model.Creator!.UserName,
-                CreationDate = model.CreationDate!.Value.ToString("dd/MM/yyyy HH:mm:ss"),
+                CreatorName = model.Creator?.UserName!,
+                CreationDate = model.CreationDate?.ToString("dd/MM/yyyy HH:mm:ss"),
                 Coords = model.Coords,
-                SpinAxis = model.SpinAxis
+                SpinAxis = model.SpinAxis,
+                RGB = (model.Color.R, model.Color.B, model.Color.G) 
             };
             ViewBag.StripeKey = stripeSettings.PublishableKey;
             return View(view);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Order(CadModel model, string stripeToken)
+        public async Task<IActionResult> Order(CadViewModel model, string stripeToken)
         {
             if (!ModelState.IsValid)
             {
-                return RedirectToAction("Categories", "Home", new { area = "" });
+                logger.LogError($"Erros: {string.Join(", ", ModelState.GetErrors())}");
+                //return RedirectToAction("Categories", "Home", new { area = "" });
             }
 
             bool succeeded = stripeSettings.ProcessPayment(stripeToken);
@@ -139,8 +147,6 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
                 ShouldShow = false,
                 CadId = model.Id,
                 BuyerId = User.GetId(),
-                Cad = model,
-                Buyer = await userManager.FindByIdAsync(User.GetId()),
             });
 
             return RedirectToAction(nameof(Index));
@@ -277,13 +283,14 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpGet]
-        public async Task<FileResult> DownloadCad(int id)
+        [HttpPost]
+        public async Task<IActionResult> ChangeColor(int id, string color)
         {
-            byte[] bytes = (await cadService.GetByIdAsync(id)).Bytes
-                ?? throw new NullReferenceException("3d model hasn't been created yet.");
+            CadModel model = await cadService.GetByIdAsync(id);
+            model.Color = ColorTranslator.FromHtml(color);
+            await cadService.EditAsync(model);
 
-            return File(bytes, "application/sla");
+            return RedirectToAction(nameof(Index), "Cads");
         }
     }
 }

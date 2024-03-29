@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using CustomCADSolutions.App.Extensions;
+using System.Drawing;
 
 namespace CustomCADSolutions.App.Areas.Contributer.Controllers
 {
@@ -227,12 +228,14 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpGet]
-        public async Task<FileResult> DownloadCad(int id)
+        [HttpPost]
+        public async Task<IActionResult> ChangeColor(int id, string color)
         {
-            byte[] bytes = (await cadService.GetByIdAsync(id)).Bytes
-                ?? throw new NullReferenceException("3d model hasn't been created yet.");
-            return File(bytes, "application/sla");
+            CadModel model = await cadService.GetByIdAsync(id);
+            model.Color = ColorTranslator.FromHtml(color);
+            await cadService.EditAsync(model);
+
+            return RedirectToAction(nameof(Index), "Cads");
         }
     }
 }

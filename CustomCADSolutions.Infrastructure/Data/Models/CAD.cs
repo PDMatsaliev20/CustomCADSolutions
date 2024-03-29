@@ -39,6 +39,15 @@ namespace CustomCADSolutions.Infrastructure.Data.Models
         [Comment("Z coordinate of 3D Model")]
         public short Z { get; set; }
 
+        [Comment("Rgb value of 3D Model")]
+        public int R { get; set; }
+
+        [Comment("rGb value of 3D Model")]
+        public int G { get; set; }
+
+        [Comment("rgB value of 3D Model")]
+        public int B { get; set; }
+
         [RegularExpression(CadConstants.SpinAxisRegEx)]
         [Comment("Spin axis of 3D Model")]
         public char? SpinAxis { get; set; }

@@ -31,9 +31,9 @@ namespace CustomCADSolutions.App.Models.Cads
 
         public int CurrentPage { get; set; } = 1;
 
-        public int CadsPerPage { get; set; } = 4;
+        public int CadsPerPage { get; set; } = 3;
         
-        public int Cols { get; set; } = 4;
+        public int Cols { get; set; } = 3;
         
         public int MaxCadsPerPage { get => Cols * (20 / Cols); } 
 

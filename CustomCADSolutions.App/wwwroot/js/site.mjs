@@ -12,7 +12,7 @@ function updateRendererSize(renderer, camera, cadId) {
     camera.updateProjectionMatrix();
 }
 
-function loadModel({ id, x, y, z, axis, fov }, path = `/Home/DownloadCad/${id}`) {
+function loadModel({ id, x, y, z, axis, fov, rgb: { r, g, b } }, path = `/Home/DownloadCad/${id}`) {
     // Scene
     const scene = new THREE.Scene();
     scene.background = null;
@@ -45,25 +45,49 @@ function loadModel({ id, x, y, z, axis, fov }, path = `/Home/DownloadCad/${id}`)
     // Loading
     const loader = new STLLoader();
     loader.load(path, function (stl) {
-        console.log(`got here for ${stl}`);
         const material = new THREE.MeshStandardMaterial();
         material.roughness = 0.5;
         material.metalness = 0.5;
         material.emissiveIntensity = 1;
+        material.color.setRGB(r, g, b);
 
-        const submitButton = document.getElementById('submit');
-        if (submitButton != null) {
-            console.log('submit exists');
-            submitButton.addEventListener('click', function () {
-                const color = document.getElementById('pickColor');
-                console.log('color exists');
-                if (color != null) {
-                    const hexInt = parseInt(color.value.replace('#', ''), 16);
-                    const r = ((hexInt >> 16) & 255) / 255;
-                    const g = ((hexInt >> 8) & 255) / 255;
-                    const b = (hexInt & 255) / 255
+        var form = document.getElementById('color-form');
+        if (form != null) {
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
 
-                    material.color.setRGB(r, g, b);
+                const submitButton = document.getElementById(`submit-${id}`);
+                if (submitButton != null) {
+                    submitButton.addEventListener('click', function () {
+
+                        const color = document.getElementById(`pickColor-${id}`);
+                        if (color != null) {
+                            console.log('got here');
+                            const hexInt = parseInt(color.value.replace('#', ''), 16);
+                            r = ((hexInt >> 16) & 255) / 255;
+                            g = ((hexInt >> 8) & 255) / 255;
+                            b = (hexInt & 255) / 255;
+                            console.log(`${r}, ${g}, ${b}`);
+                            material.color.setRGB(r, g, b);
+
+                            console.log('got here');
+                            var hiddenColorInput = document.createElement('input');
+                            hiddenColorInput.setAttribute('type', 'hidden');
+                            hiddenColorInput.setAttribute('name', 'color');
+                            hiddenColorInput.setAttribute('value', String(color.value));
+                            form.appendChild(hiddenColorInput);
+
+                            console.log('got here');
+                            var hiddenIdInput = document.createElement('input');
+                            hiddenIdInput.setAttribute('type', 'hidden');
+                            hiddenIdInput.setAttribute('name', 'id');
+                            hiddenIdInput.setAttribute('value', id);
+                            form.appendChild(hiddenIdInput);
+
+                            console.log('got here');
+                            form.submit();
+                        }
+                    });
                 }
             });
         }

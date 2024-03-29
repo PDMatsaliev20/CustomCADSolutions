@@ -1,5 +1,6 @@
 ﻿using CustomCADSolutions.Core.Models;
 using CustomCADSolutions.Infrastructure.Data.Models;
+using System.Drawing;
 
 namespace CustomCADSolutions.Core.Services
 {
@@ -14,6 +15,7 @@ namespace CustomCADSolutions.Core.Services
                 IsValidated = cad.IsValidated,
                 CreationDate = cad.CreationDate,
                 Coords = (cad.X, cad.Y, cad.Z),
+                Color = Color.FromArgb(1, cad.R, cad.G, cad.B),
                 SpinAxis = cad.SpinAxis,
                 CategoryId = cad.CategoryId,
                 CreatorId = cad.CreatorId,
@@ -60,6 +62,9 @@ namespace CustomCADSolutions.Core.Services
                 X = model.Coords.Item1,
                 Y = model.Coords.Item2,
                 Z = model.Coords.Item3,
+                R = model.Color.R, 
+                G = model.Color.G, 
+                B = model.Color.B,
                 SpinAxis = model.SpinAxis,
                 Orders = firstTime && model.Orders.Any() ?
                     model.Orders.Select(o => ModelToOrder(o, false)).ToList()

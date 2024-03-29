@@ -41,8 +41,6 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
         [HttpGet]
         public async Task<IActionResult> All([FromQuery] CadQueryInputModel inputQuery)
         {
-            inputQuery.Cols = 3;
-            inputQuery.CadsPerPage = inputQuery.CadsPerPage == 4 ? 3 : inputQuery.CadsPerPage;
             inputQuery = await cadService.QueryCads(inputQuery, true, true);
             inputQuery.Categories = (await categoryService.GetAllAsync()).Select(c => c.Name);
             ViewBag.Sortings = typeof(CadSorting).GetEnumNames();

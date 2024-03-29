@@ -5,6 +5,7 @@ using CustomCADSolutions.Infrastructure.Data.Models;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System.Drawing;
 
 namespace CustomCADSolutions.Core.Services
 {
@@ -60,8 +61,15 @@ namespace CustomCADSolutions.Core.Services
                 .FirstOrDefaultAsync(cad => cad.Id == model.Id)
                 ?? throw new ArgumentException("Model doesn't exist!");
 
-            cad.CategoryId = model.CategoryId;
+            if (model.Color != Color.Empty)
+            {
+                cad.R = model.Color.R;
+                cad.G = model.Color.G;
+                cad.B = model.Color.B;
+            }
+
             cad.Name = model.Name;
+            cad.CategoryId = model.CategoryId;
             cad.IsValidated = model.IsValidated;
             cad.X = model.Coords.Item1;
             cad.Y = model.Coords.Item2;
@@ -84,16 +92,21 @@ namespace CustomCADSolutions.Core.Services
             {
                 Cad cad = await repository.All<Cad>()
                 .FirstOrDefaultAsync(cad => cad.Id == model.Id)
-                ?? throw new ArgumentException("Model doesn't exist!");
+                ?? throw new KeyNotFoundException("Model doesn't exist!");
 
                 cad.CategoryId = model.CategoryId;
                 cad.Name = model.Name;
                 cad.IsValidated = model.IsValidated;
+                cad.CreationDate = model.CreationDate;
+                cad.SpinAxis = model.SpinAxis;
+
+                cad.R = model.Color.R;
+                cad.G = model.Color.G;
+                cad.B = model.Color.B;
                 cad.X = model.Coords.Item1;
                 cad.Y = model.Coords.Item2;
                 cad.Z = model.Coords.Item3;
-                cad.CreationDate = model.CreationDate;
-                cad.SpinAxis = model.SpinAxis;
+
                 cad.CreatorId = model.CreatorId;
                 cad.Creator = model.Creator;
                 cad.Orders = model.Orders
@@ -126,9 +139,12 @@ namespace CustomCADSolutions.Core.Services
             await repository.SaveChangesAsync();
         }
 
+        public async Task<bool> ExistsByIdAsync(int id)
+            => await repository.GetByIdAsync<Cad>(id) != null;
+
         public async Task<CadModel> GetByIdAsync(int id)
         {
-            Cad? cad = await repository.GetByIdAsync<Cad>(id)
+            Cad cad = await repository.GetByIdAsync<Cad>(id)
                 ?? throw new KeyNotFoundException($"Model with id: {id} doesn't exist");
 
             CadModel model = converter.CadToModel(cad);
@@ -160,7 +176,7 @@ namespace CustomCADSolutions.Core.Services
                 {
                     cads = cads.Where(c => c.IsValidated);
                 }
-                
+
                 if (unvalidated)
                 {
                     cads = cads.Where(c => !c.IsValidated);
