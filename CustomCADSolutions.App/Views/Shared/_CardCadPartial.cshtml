@@ -11,13 +11,10 @@
 
     const Model = {
         id: @Model.Id,
-        name: '@Model.Name',
-        texture: '@Model.TexturePath', // !
         x: @Model.Coords.Item1,
         y: @Model.Coords.Item2,
         z: @Model.Coords.Item3,
         axis: '@Model.SpinAxis',
-        speed: @Model.SpinFactor.ToString(new CultureInfo("en-US")),
         fov: @Model.Fov,
     };
 

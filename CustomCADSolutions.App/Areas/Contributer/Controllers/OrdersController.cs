@@ -64,8 +64,7 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
                 CreatorName = model.Creator.UserName,
                 CreationDate = model.CreationDate.Value.ToString("dd/MM/yyyy HH:mm:ss"),
                 Coords = model.Coords,
-                SpinAxis = model.SpinAxis,
-                SpinFactor = model.SpinFactor
+                SpinAxis = model.SpinAxis
             };
             return View(view);
         }

@@ -22,10 +22,7 @@ namespace CustomCADSolutions.Core.Models
         
         public (short, short, short) Coords { get; set; }
 
-        [Range(CadConstants.SpinFactorMin, CadConstants.SpinFactorMax)]
-        public double SpinFactor { get; set; }
-
-        [RegularExpression("[xyz]", ErrorMessage = CadConstants.SpinAxisErrorMessage)]
+        [RegularExpression(CadConstants.SpinAxisRegEx, ErrorMessage = CadConstants.SpinAxisErrorMessage)]
         public char? SpinAxis { get; set; }
 
         [Required(ErrorMessage = RequiredErrorMessage)]

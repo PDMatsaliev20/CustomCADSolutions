@@ -15,7 +15,6 @@ namespace CustomCADSolutions.Core.Services
                 CreationDate = cad.CreationDate,
                 Coords = (cad.X, cad.Y, cad.Z),
                 SpinAxis = cad.SpinAxis,
-                SpinFactor = cad.SpinFactor,
                 CategoryId = cad.CategoryId,
                 CreatorId = cad.CreatorId,
                 Creator = cad.Creator,
@@ -62,7 +61,6 @@ namespace CustomCADSolutions.Core.Services
                 Y = model.Coords.Item2,
                 Z = model.Coords.Item3,
                 SpinAxis = model.SpinAxis,
-                SpinFactor = model.SpinFactor,
                 Orders = firstTime && model.Orders.Any() ?
                     model.Orders.Select(o => ModelToOrder(o, false)).ToList()
                     : new List<Order>()

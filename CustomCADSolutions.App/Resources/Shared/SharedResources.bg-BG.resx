@@ -118,10 +118,16 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Axis" xml:space="preserve">
-    <value>Ос на Въртежa</value>
+    <value>Ос</value>
+  </data>
+  <data name="ByCreator" xml:space="preserve">
+    <value>Търси по Създател</value>
+  </data>
+  <data name="ByName" xml:space="preserve">
+    <value>Търси по Име</value>
   </data>
   <data name="Category" xml:space="preserve">
-    <value>Категория на 3D Модела</value>
+    <value>Категория</value>
   </data>
   <data name="Confirm" xml:space="preserve">
     <value>Повтори паролата</value>
@@ -135,6 +141,9 @@
   <data name="File" xml:space="preserve">
     <value>Файл с 3D Модела</value>
   </data>
+  <data name="InvalidAxis" xml:space="preserve">
+    <value>Оста трябва да бъде х, у или z</value>
+  </data>
   <data name="InvalidEmail" xml:space="preserve">
     <value>Полето {0} не е валиден имейл адрес</value>
   </data>
@@ -142,7 +151,7 @@
     <value>Дължината на полето {0} трябва да бъде между {2} и {1} символа</value>
   </data>
   <data name="Name" xml:space="preserve">
-    <value>Име на 3D Моделa</value>
+    <value>Име</value>
   </data>
   <data name="Password" xml:space="preserve">
     <value>Парола</value>
@@ -156,8 +165,8 @@
   <data name="Required" xml:space="preserve">
     <value>Полето {0} е задължително!</value>
   </data>
-  <data name="Speed" xml:space="preserve">
-    <value>Скорост на Въртежa</value>
+  <data name="Sorting" xml:space="preserve">
+    <value>Сортирай</value>
   </data>
   <data name="Username" xml:space="preserve">
     <value>Потребителско име</value>

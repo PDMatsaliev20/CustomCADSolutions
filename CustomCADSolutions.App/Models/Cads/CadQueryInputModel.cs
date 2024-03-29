@@ -1,4 +1,5 @@
-﻿using CustomCADSolutions.Core.Models;
+﻿using CustomCADSolutions.App.Resources.Shared;
+using CustomCADSolutions.Core.Models;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using System.ComponentModel.DataAnnotations;
 
@@ -6,20 +7,26 @@ namespace CustomCADSolutions.App.Models.Cads
 {
     public class CadQueryInputModel
     {
+        [Display(Name = nameof(SharedResources.Category),
+            ResourceType = typeof(SharedResources))]
         public string? Category { get; set; }
-        
+
         public string? Creator { get; set; }
         
         public bool? Validated { get; set; }
         
         public bool? Unvalidated { get; set; }
 
-        [Display(Name = "Search by Name")]
+        [Display(Name = nameof(SharedResources.ByName),
+            ResourceType = typeof(SharedResources))]
         public string? SearchName { get; set; }
-        
-        [Display(Name = "Search by Creator")]
+
+        [Display(Name = nameof(SharedResources.ByCreator),
+            ResourceType = typeof(SharedResources))]
         public string? SearchCreator { get; set; }
 
+        [Display(Name = nameof(SharedResources.Sorting),
+            ResourceType = typeof(SharedResources))]
         public CadSorting Sorting { get; set; }
 
         public int CurrentPage { get; set; } = 1;

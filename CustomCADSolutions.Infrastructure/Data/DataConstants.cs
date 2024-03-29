@@ -27,9 +27,7 @@
             public const int ZMax = 1000;
 
             public const string SpinAxisErrorMessage = "{0} must be either x, y or z";
-
-            public const double SpinFactorMin = 0.01;
-            public const double SpinFactorMax = 1;
+            public const string SpinAxisRegEx = "[xyz]?";
         }
 
         public class OrderConstants

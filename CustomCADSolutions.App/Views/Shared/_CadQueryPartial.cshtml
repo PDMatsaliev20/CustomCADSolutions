@@ -1,4 +1,5 @@
 ﻿@model CadQueryInputModel
+@inject IViewLocalizer Localizer
 @{
     string[] sorts = ViewBag.Sortings;
 }
@@ -11,10 +12,10 @@
                 <div class="form-group">
                     <label asp-for="Category" class="form-label"></label>
                     <select asp-for="Category" class="form-control">
-                        <option value="">All</option>
+                        <option value="">@Localizer["All"]</option>
                         @foreach (string category in Model.Categories)
                         {
-                            <option value="@category">@category</option>
+                            <option value="@category">@Localizer[category]</option>
                         }
                     </select>
                 </div>
@@ -23,14 +24,14 @@
             <div class="col-md d-flex justify-content-center">
                 <div class="form-group">
                     <label asp-for="SearchName" class="form-label"></label>
-                    <input asp-for="SearchName" class="form-control" placeholder="Search" autocomplete="off">
+                    <input asp-for="SearchName" class="form-control" placeholder="@Localizer["Search"]" autocomplete="off">
                 </div>
             </div>
             
             <div class="col-md d-flex justify-content-center">
                 <div class="form-group">
                     <label asp-for="SearchCreator" class="form-label"></label>
-                    <input asp-for="SearchCreator" class="form-control" placeholder="Search" autocomplete="off">
+                    <input asp-for="SearchCreator" class="form-control" placeholder="@Localizer["Search"]" autocomplete="off">
                 </div>
             </div>
 
@@ -40,7 +41,7 @@
                     <select asp-for="Sorting" class="form-control">
                         @for (int i = 0; i < sorts.Length; i++)
                         {
-                            <option value=@i>@sorts[i]</option>
+                            <option value=@i>@Localizer[sorts[i]]</option>
                         }
                     </select>
                 </div>
@@ -48,7 +49,7 @@
 
             <div class="col-md d-flex justify-content-center">
                 <div class="form-group mt-4 p-2">
-                    <input type="submit" value="Search" class="btn btn-primary" />
+                    <input type="submit" value="@Localizer["Search"]" class="btn btn-primary" />
                 </div>
             </div>
         </div>

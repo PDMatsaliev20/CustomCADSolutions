@@ -1,8 +1,8 @@
-﻿using CustomCADSolutions.Infrastructure.Data.Models.Enums;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
+using static CustomCADSolutions.Infrastructure.Data.DataConstants;
 
 namespace CustomCADSolutions.Infrastructure.Data.Models
 {
@@ -16,16 +16,9 @@ namespace CustomCADSolutions.Infrastructure.Data.Models
         public byte[]? Bytes { get; set; }
 
         [Required]
-        [MaxLength(DataConstants.CadConstants.NameMaxLength)]
+        [MaxLength(CadConstants.NameMaxLength)]
         [Comment("Name of 3D Model")]
         public string Name { get; set; } = null!;
-
-        [Required]
-        [Comment("Category of 3D Model")]
-        public int CategoryId { get; set; }
-
-        [ForeignKey(nameof(CategoryId))]
-        public Category Category { get; set; } = null!;
 
         [Required]
         [Comment("Is 3D Model validated")]
@@ -34,23 +27,31 @@ namespace CustomCADSolutions.Infrastructure.Data.Models
         [Comment("CreationDate of 3D Model")]
         public DateTime? CreationDate { get; set; }
 
+        [MaxLength(CadConstants.XMax)]
         [Comment("X coordinate of 3D Model")]
         public short X { get; set; }
         
+        [MaxLength(CadConstants.YMax)]
         [Comment("Y coordinate of 3D Model")]
         public short Y { get; set; }
-        
+
+        [MaxLength(CadConstants.ZMax)]
         [Comment("Z coordinate of 3D Model")]
         public short Z { get; set; }
 
+        [RegularExpression(CadConstants.SpinAxisRegEx)]
         [Comment("Spin axis of 3D Model")]
         public char? SpinAxis { get; set; }
-        
-        [Comment("Spinning constant of 3D Model")]
-        public double SpinFactor { get; set; }
 
         [Comment("Identification of the creator of the 3D Model")]
         public string? CreatorId { get; set; }
+
+        [Required]
+        [Comment("Category of 3D Model")]
+        public int CategoryId { get; set; }
+
+        [ForeignKey(nameof(CategoryId))]
+        public Category Category { get; set; } = null!;
 
         [ForeignKey(nameof(CreatorId))]
         public IdentityUser? Creator { get; set; }

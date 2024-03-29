@@ -59,17 +59,14 @@
 
         const cad = {
             id: @cad.Id,
-            name: '@cad.Name',
             x: @cad.Coords.Item1,
             y: @cad.Coords.Item2,
             z: @cad.Coords.Item3,
             axis: '@cad.SpinAxis',
-            speed: @cad.SpinFactor.ToString(new CultureInfo("en-US")),
-            texture: '@cad.TexturePath', // !
             fov: @cad.Fov,
         };
 
-        loadModel(cad);
+        loadModel(cad, '/Chair.STL');
     </script>
 
 

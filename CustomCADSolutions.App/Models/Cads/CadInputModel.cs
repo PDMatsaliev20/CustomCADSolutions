@@ -44,12 +44,9 @@ namespace CustomCADSolutions.App.Models.Cads
             ErrorMessageResourceName = nameof(SharedResources.Range))]
         public short Z { get; set; }
 
-        [Range(0, CadConstants.SpinFactorMax * 100,
+        [RegularExpression(CadConstants.SpinAxisRegEx,
             ErrorMessageResourceType = typeof(SharedResources),
-            ErrorMessageResourceName = nameof(SharedResources.Range))]
-        [Display(Name = "Speed", ResourceType = typeof(SharedResources))]
-        public int SpinFactor { get; set; }
-
+            ErrorMessageResourceName = nameof(SharedResources.InvalidAxis))]
         [Display(Name = "Axis", ResourceType = typeof(SharedResources))]
         public char? SpinAxis { get; set; }
 

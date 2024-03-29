@@ -1,7 +1,6 @@
 ﻿@model CadInputModel
 @inject IViewLocalizer Localizer
 @{
-    bool isBg = CultureInfo.CurrentCulture.Name == "bg-BG";
     ViewData["Title"] = Localizer["Title", Model.Name];
 }
 
@@ -12,12 +11,12 @@
         <input asp-for="Id" hidden />
 
         <div class="row justify-content-center mb-3">
-            <div class="col-4">
+            <div class="col-2 text-center">
                 <label asp-for="Name" class="form-label"></label>
                 <input asp-for="Name" class="form-control" placeholder="@Localizer["Name"]" />
                 <span asp-validation-for="@Model.Name" class="small text-danger"></span>
             </div>
-            <div class="col-3">
+            <div class="col-2 text-center">
                 <label asp-for="CategoryId" class="form-label"></label>
                 <select asp-for="CategoryId" class="form-control">
                     <option value="@null" selected>None</option>
@@ -31,22 +30,17 @@
         </div>
 
         <div class="row justify-content-center mb-3">            
-            <div class="col-2">
+            <div class="col-1 text-center">
                 <label asp-for="SpinAxis" class="form-label"></label>
                 <select asp-for="SpinAxis" class="form-control">
-                    <option selected>@Localizer["NoSpin"]</option>
+                    <option value="@null" selected>@Localizer["NoSpin"]</option>
                     <option value="x">Ox</option>
                     <option value="y">Oy</option>
                     <option value="z">Oz</option>
                 </select>
                 <span asp-validation-for="@Model.SpinAxis" class="small text-danger"></span>
             </div>
-            <div class="col-2">
-                <label asp-for="SpinFactor" class="form-label"></label>
-                <input asp-for="SpinFactor" class="form-control" />
-                <span asp-validation-for="@Model.SpinFactor" class="small text-danger"></span>
-            </div>
-
+            
             <div class="col-1 text-center">
                 <label asp-for="X" class="form-label"></label>
                 <input asp-for="X" class="form-control" />

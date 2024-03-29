@@ -117,49 +117,58 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="All" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="Alphabetical" xml:space="preserve">
+    <value>A-Z</value>
+  </data>
   <data name="Animals" xml:space="preserve">
-    <value>Животни</value>
+    <value>Animals</value>
+  </data>
+  <data name="Category" xml:space="preserve">
+    <value>Category</value>
   </data>
   <data name="Characters" xml:space="preserve">
-    <value>Герои</value>
-  </data>
-  <data name="Edit" xml:space="preserve">
-    <value>Редактирай</value>
+    <value>Characters</value>
   </data>
   <data name="Electronics" xml:space="preserve">
-    <value>Електроника</value>
+    <value>Electronics</value>
   </data>
   <data name="Fashion" xml:space="preserve">
-    <value>Мода</value>
+    <value>Fashion</value>
   </data>
   <data name="Furniture" xml:space="preserve">
-    <value>Мебели</value>
-  </data>
-  <data name="Name" xml:space="preserve">
-    <value>Име...</value>
+    <value>Furniture</value>
   </data>
   <data name="Nature" xml:space="preserve">
-    <value>Природа</value>
+    <value>Nature</value>
   </data>
-  <data name="NoSpin" xml:space="preserve">
-    <value>Без</value>
+  <data name="Newest" xml:space="preserve">
+    <value>Newest</value>
+  </data>
+  <data name="Oldest" xml:space="preserve">
+    <value>Oldest</value>
   </data>
   <data name="Others" xml:space="preserve">
-    <value>Други</value>
+    <value>Others</value>
   </data>
   <data name="Science" xml:space="preserve">
-    <value>Наука</value>
+    <value>Science</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Search</value>
   </data>
   <data name="Sports" xml:space="preserve">
-    <value>Спорт</value>
-  </data>
-  <data name="Title" xml:space="preserve">
-    <value>Редактирай {0}</value>
+    <value>Sports</value>
   </data>
   <data name="Toys" xml:space="preserve">
-    <value>Играчки</value>
+    <value>Toys</value>
+  </data>
+  <data name="Unalphabetical" xml:space="preserve">
+    <value>Z-A</value>
   </data>
   <data name="Vehicles" xml:space="preserve">
-    <value>Коли</value>
+    <value>Vehicles</value>
   </data>
 </root>

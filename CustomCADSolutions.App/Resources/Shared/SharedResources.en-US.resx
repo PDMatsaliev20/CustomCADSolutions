@@ -118,10 +118,16 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Axis" xml:space="preserve">
-    <value>Axis of Spinning</value>
+    <value>Axis</value>
+  </data>
+  <data name="ByCreator" xml:space="preserve">
+    <value>Search By Creator</value>
+  </data>
+  <data name="ByName" xml:space="preserve">
+    <value>Search By Name</value>
   </data>
   <data name="Category" xml:space="preserve">
-    <value>Category of 3D Model</value>
+    <value>Category</value>
   </data>
   <data name="Confirm" xml:space="preserve">
     <value>Confirm Password</value>
@@ -135,6 +141,9 @@
   <data name="File" xml:space="preserve">
     <value>3D Model File</value>
   </data>
+  <data name="InvalidAxis" xml:space="preserve">
+    <value>The Axis must be either x, y or z</value>
+  </data>
   <data name="InvalidEmail" xml:space="preserve">
     <value>The {0} field is not a valid e-mail address.</value>
   </data>
@@ -142,7 +151,7 @@
     <value>Length of field {0} must be between {2} and {1} characters</value>
   </data>
   <data name="Name" xml:space="preserve">
-    <value>Name of 3D Model</value>
+    <value>Name</value>
   </data>
   <data name="Password" xml:space="preserve">
     <value>Password</value>
@@ -156,8 +165,8 @@
   <data name="Required" xml:space="preserve">
     <value>Field {0} is required!</value>
   </data>
-  <data name="Speed" xml:space="preserve">
-    <value>Speed of Spinning</value>
+  <data name="Sorting" xml:space="preserve">
+    <value>Sorting</value>
   </data>
   <data name="Username" xml:space="preserve">
     <value>Username</value>

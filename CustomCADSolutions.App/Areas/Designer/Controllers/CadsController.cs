@@ -127,7 +127,7 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
                 Bytes = bytes,
                 Name = input.Name,
                 CategoryId = input.CategoryId,
-                IsValidated = User.IsInRole("Designer"),
+                IsValidated = true,
                 CreationDate = DateTime.Now,
                 CreatorId = User.GetId()
             };
@@ -161,7 +161,6 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
                 Y = model.Coords.Item2,
                 Z = model.Coords.Item3,
                 SpinAxis = model.SpinAxis,
-                SpinFactor = (int)(model.SpinFactor * 100),
             };
 
             return View(input);
@@ -186,7 +185,6 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
             model.CategoryId = input.CategoryId;
             model.Coords = (input.X, input.Y, input.Z);
             model.SpinAxis = input.SpinAxis;
-            model.SpinFactor = input.SpinFactor / 100d;
 
             await cadService.EditAsync(model);
 

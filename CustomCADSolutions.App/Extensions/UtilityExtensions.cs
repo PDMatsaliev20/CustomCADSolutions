@@ -58,7 +58,6 @@ namespace CustomCADSolutions.App.Extensions
                     CreatorName = m.Creator!.UserName,
                     Coords = m.Coords,
                     SpinAxis = m.SpinAxis,
-                    SpinFactor = m.SpinFactor,
                     IsValidated = m.IsValidated,
                 }).ToArray();
 

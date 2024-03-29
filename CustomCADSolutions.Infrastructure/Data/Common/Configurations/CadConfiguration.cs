@@ -24,7 +24,6 @@ namespace CustomCADSolutions.Infrastructure.Data.Common.Configurations
                 Y = 300,
                 Z = 0,
                 SpinAxis = 'y',
-                SpinFactor = -0.01,
             });
         }
     }

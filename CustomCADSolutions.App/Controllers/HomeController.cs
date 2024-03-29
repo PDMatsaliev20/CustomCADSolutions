@@ -7,6 +7,7 @@ using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Diagnostics;
 
 namespace CustomCADSolutions.App.Controllers
@@ -51,14 +52,14 @@ namespace CustomCADSolutions.App.Controllers
 
             logger.LogInformation("Entered Home Page");
 
+            CadModel model = await cadService.GetByIdAsync(1);
             ViewBag.Chair = new CadViewModel()
             {
-                Id = 1,
-                Name = "Chair",
-                Coords = (750, 300, 0),
-                SpinAxis = 'y',
-                SpinFactor = -0.01,
-                TexturePath = "/textures/texture3.jpg",
+                Id = model.Id,
+                Name = model.Name,
+                Coords = model.Coords,
+                SpinAxis = model.SpinAxis,
+                Category = model.Category.Name,
             };
 
             return View();

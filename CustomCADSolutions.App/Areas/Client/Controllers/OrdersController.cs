@@ -69,8 +69,7 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
                 CreatorName = model.Creator.UserName,
                 CreationDate = model.CreationDate.Value.ToString("dd/MM/yyyy HH:mm:ss"),
                 Coords = model.Coords,
-                SpinAxis = model.SpinAxis,
-                SpinFactor = model.SpinFactor
+                SpinAxis = model.SpinAxis
             };
             return View(view);
         }
@@ -111,8 +110,7 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
                 CreatorName = model.Creator!.UserName,
                 CreationDate = model.CreationDate!.Value.ToString("dd/MM/yyyy HH:mm:ss"),
                 Coords = model.Coords,
-                SpinAxis = model.SpinAxis,
-                SpinFactor = model.SpinFactor
+                SpinAxis = model.SpinAxis
             };
             ViewBag.StripeKey = stripeSettings.PublishableKey;
             return View(view);

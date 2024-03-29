@@ -68,7 +68,6 @@ namespace CustomCADSolutions.Core.Services
             cad.Z = model.Coords.Item3;
             cad.CreationDate = model.CreationDate;
             cad.SpinAxis = model.SpinAxis;
-            cad.SpinFactor = model.SpinFactor;
             cad.CreatorId = model.CreatorId;
             cad.Creator = model.Creator;
             cad.Orders = model.Orders
@@ -95,7 +94,6 @@ namespace CustomCADSolutions.Core.Services
                 cad.Z = model.Coords.Item3;
                 cad.CreationDate = model.CreationDate;
                 cad.SpinAxis = model.SpinAxis;
-                cad.SpinFactor = model.SpinFactor;
                 cad.CreatorId = model.CreatorId;
                 cad.Creator = model.Creator;
                 cad.Orders = model.Orders

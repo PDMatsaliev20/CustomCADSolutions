@@ -10,9 +10,8 @@
         public bool IsValidated { get; internal set; }
         public string? CreationDate { get; set; }
         public (short, short, short) Coords { get; set; }
-        public double SpinFactor { get; set; }
         public char? SpinAxis { get; set; }
-        public short? Fov { get; set; } = 90;
+        public short Fov { get; set; } = 90;
         public string? TexturePath { get; set; } = "/textures/texture5.jpg";
     }
 }

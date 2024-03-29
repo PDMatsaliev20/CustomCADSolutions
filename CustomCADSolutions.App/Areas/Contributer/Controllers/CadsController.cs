@@ -57,16 +57,20 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
         }
 
         [HttpPost]
+        [DisableRequestSizeLimit]
         public async Task<IActionResult> Add(CadInputModel input)
         {
+            int maxFileSize = 10_000_000;
+            if (input.CadFile.Length > maxFileSize)
+            {
+                ModelState.AddModelError(nameof(input.CadFile), 
+                    $"3d model cannot be over {maxFileSize / 1_000_000}MB");
+            }
             if (!ModelState.IsValid)
             {
-                logger.LogError("Invalid 3d Model");
+                logger.LogError("Invalid 3d Model: {0}", string.Join(", ", ModelState.GetErrors()));
                 input.Categories = await categoryService.GetAllAsync();
-                if (ModelState.ErrorCount > 1)
-                {
-                    return View(input);
-                }
+                return View(input);
             }
 
             if (input.CadFile == null || input.CadFile.Length <= 0)
@@ -74,10 +78,6 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
                 return BadRequest("Invalid 3d model");
             }
 
-            using MemoryStream memoryStream = new();
-            await input.CadFile.CopyToAsync(memoryStream);
-            byte[] fileBytes = memoryStream.ToArray();
-            
             byte[] bytes = await GetBytesFromCadAsync(input.CadFile);
             
             CadModel model = new()
@@ -85,7 +85,7 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
                 Bytes = bytes,
                 Name = input.Name,
                 CategoryId = input.CategoryId,
-                IsValidated = User.IsInRole("Designer"),
+                IsValidated = false,
                 CreationDate = DateTime.Now,
                 CreatorId = User.GetId()
             };
@@ -120,7 +120,6 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
                 Y = model.Coords.Item2,
                 Z = model.Coords.Item3,
                 SpinAxis = model.SpinAxis,
-                SpinFactor = (int)(model.SpinFactor * 100),
             };
 
             return View(input);
@@ -145,7 +144,6 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
             model.CategoryId = input.CategoryId;
             model.Coords = (input.X, input.Y, input.Z);
             model.SpinAxis = input.SpinAxis;
-            model.SpinFactor = input.SpinFactor / 100d;
 
             await cadService.EditAsync(model);
 

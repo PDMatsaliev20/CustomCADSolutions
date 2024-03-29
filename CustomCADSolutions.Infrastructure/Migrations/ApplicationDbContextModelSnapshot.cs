@@ -83,21 +83,20 @@ namespace CustomCADSolutions.AppWithIdentity.Data.Migrations
 
                     b.HasIndex("CreatorId");
 
-                    b.ToTable("Cads");
+                    b.ToTable("Cads", (string)null);
 
                     b.HasData(
                         new
                         {
                             Id = 1,
-                            CategoryId = 5,
+                            CategoryId = 0,
                             IsValidated = false,
                             Name = "Chair",
                             SpinAxis = "y",
                             SpinFactor = -0.01,
                             X = (short)750,
                             Y = (short)300,
-                            Z = (short)0,
-                            Bytes = File.ReadAllBytes("../../CustomCADSolutions/CustomCADSolutions.Infrastructure/Chair.STL")
+                            Z = (short)0
                         });
                 });
 
@@ -115,7 +114,7 @@ namespace CustomCADSolutions.AppWithIdentity.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
 
                     b.HasData(
                         new
@@ -207,7 +206,7 @@ namespace CustomCADSolutions.AppWithIdentity.Data.Migrations
 
                     b.HasIndex("BuyerId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

@@ -12,7 +12,7 @@ function updateRendererSize(renderer, camera, cadId) {
     camera.updateProjectionMatrix();
 }
 
-function loadModel({ id, name, x, y, z, axis, speed, fov }) {
+function loadModel({ id, x, y, z, axis, fov }, path = `/Home/DownloadCad/${id}`) {
     // Scene
     const scene = new THREE.Scene();
     scene.background = null;
@@ -44,41 +44,7 @@ function loadModel({ id, name, x, y, z, axis, speed, fov }) {
 
     // Loading
     const loader = new STLLoader();
-    //fetch(`/Home/DownloadCad/${id}`)
-    //    .then(response => response.arrayBuffer())
-    //    .then(buffer => {
-    //        console.log(buffer.byteLength);
-    //        const stl = loader.parse(buffer);
-
-    //        const material = new THREE.MeshStandardMaterial();
-    //        material.roughness = 0.5;
-    //        material.metalness = 0.5;
-    //        material.emissiveIntensity = 1;
-
-    //        const submitButton = document.getElementById('submit');
-    //        if (submitButton != null) {
-    //            console.log('submit exists');
-    //            submitButton.addEventListener('click', function () {
-    //                const color = document.getElementById('pickColor');
-    //                console.log('color exists');
-    //                if (color != null) {
-    //                    const hexInt = parseInt(color.value.replace('#', ''), 16);
-    //                    const r = ((hexInt >> 16) & 255) / 255;
-    //                    const g = ((hexInt >> 8) & 255) / 255;
-    //                    const b = (hexInt & 255) / 255
-
-    //                    material.color.setRGB(r, g, b);
-    //                }
-    //            });
-    //        }
-
-    //        const mesh = new THREE.Mesh(stl, material);
-    //        scene.add(mesh);
-    //        stl.center();
-    //    })
-    //    .catch(error => console.error(error));
-
-    loader.load(`/Home/DownloadCad/${id}`, function (stl) {
+    loader.load(path, function (stl) {
         console.log(`got here for ${stl}`);
         const material = new THREE.MeshStandardMaterial();
         material.roughness = 0.5;
@@ -134,9 +100,9 @@ function loadModel({ id, name, x, y, z, axis, speed, fov }) {
             scene.traverse(function (object) {
                 if (object instanceof THREE.Mesh) {
                     switch (axis) {
-                        case 'x': object.rotation.x += speed; break;
-                        case 'y': object.rotation.y += speed; break;
-                        case 'z': object.rotation.z += speed; break;
+                        case 'x': object.rotation.x += 0.01; break;
+                        case 'y': object.rotation.y += 0.01; break;
+                        case 'z': object.rotation.z += 0.01; break;
                     }
                 }
             });

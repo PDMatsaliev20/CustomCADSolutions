@@ -117,14 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="All" xml:space="preserve">
+    <value>Всички</value>
+  </data>
+  <data name="Alphabetical" xml:space="preserve">
+    <value>А-Я</value>
+  </data>
   <data name="Animals" xml:space="preserve">
     <value>Животни</value>
   </data>
+  <data name="Category" xml:space="preserve">
+    <value>По категория</value>
+  </data>
   <data name="Characters" xml:space="preserve">
     <value>Герои</value>
-  </data>
-  <data name="Edit" xml:space="preserve">
-    <value>Редактирай</value>
   </data>
   <data name="Electronics" xml:space="preserve">
     <value>Електроника</value>
@@ -135,14 +141,14 @@
   <data name="Furniture" xml:space="preserve">
     <value>Мебели</value>
   </data>
-  <data name="Name" xml:space="preserve">
-    <value>Име...</value>
-  </data>
   <data name="Nature" xml:space="preserve">
     <value>Природа</value>
   </data>
-  <data name="NoSpin" xml:space="preserve">
-    <value>Без</value>
+  <data name="Newest" xml:space="preserve">
+    <value>Най-нов</value>
+  </data>
+  <data name="Oldest" xml:space="preserve">
+    <value>Най-стар</value>
   </data>
   <data name="Others" xml:space="preserve">
     <value>Други</value>
@@ -150,14 +156,17 @@
   <data name="Science" xml:space="preserve">
     <value>Наука</value>
   </data>
+  <data name="Search" xml:space="preserve">
+    <value>Търси</value>
+  </data>
   <data name="Sports" xml:space="preserve">
     <value>Спорт</value>
   </data>
-  <data name="Title" xml:space="preserve">
-    <value>Редактирай {0}</value>
-  </data>
   <data name="Toys" xml:space="preserve">
     <value>Играчки</value>
+  </data>
+  <data name="Unalphabetical" xml:space="preserve">
+    <value>Я-А</value>
   </data>
   <data name="Vehicles" xml:space="preserve">
     <value>Коли</value>
