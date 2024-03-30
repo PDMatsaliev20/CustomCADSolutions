@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
-using Stripe;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -49,6 +49,13 @@ namespace Microsoft.Extensions.DependencyInjection
             });
 
             return builder;
+        }
+
+        public static IServiceCollection AddApi(this IServiceCollection services)
+        {
+            services.AddEndpointsApiExplorer();
+            services.AddSwaggerGen();
+            return services;
         }
 
         public static IServiceCollection AddLocalizer(this IServiceCollection services, CultureInfo[] cultures)

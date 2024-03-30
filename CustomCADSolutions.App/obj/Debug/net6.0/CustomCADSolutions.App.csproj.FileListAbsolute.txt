@@ -977,3 +977,7 @@ C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\o
 C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared._CadQueryPartial.en-US.resources
 C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Areas.Client.Views.Orders.Order.bg-BG.resources
 C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Areas.Client.Views.Orders.Order.en-US.resources
+C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\bin\Debug\net6.0\Microsoft.OpenApi.dll
+C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll

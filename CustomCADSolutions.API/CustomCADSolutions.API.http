@@ -1,0 +1,6 @@
+@CustomCADSolutions.API_HostAddress = http://localhost:5151
+
+GET {{CustomCADSolutions.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -4,6 +4,7 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 builder.Services.AddApplicationDbContext(builder.Configuration);
 builder.Services.AddApplicationIdentity();
 builder.Services.AddControllersWithViews().AddViewLocalizer();
+builder.Services.AddApi();
 
 // Localizer
 System.Globalization.CultureInfo[] cultures = { new("en-US"), new("bg-BG") };
@@ -30,6 +31,11 @@ if (app.Environment.IsProduction())
     app.UseHsts();
     app.UseExceptionHandler("/Home/StatusCodeHandler");
     app.UseStatusCodePagesWithReExecute("/Home/StatusCodeHandler", "?statusCode={0}");
+}
+else if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
