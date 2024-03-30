@@ -48,7 +48,6 @@ namespace CustomCADSolutions.App.Extensions
 
             inputQuery.TotalCadsCount = query.TotalCount;
             inputQuery.Cads = query.CadModels
-                .Where(m => m.Bytes != null)
                 .Select(m => new CadViewModel
                 {
                     Id = m.Id,

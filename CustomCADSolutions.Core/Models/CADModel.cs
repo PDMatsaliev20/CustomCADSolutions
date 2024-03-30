@@ -13,7 +13,7 @@ namespace CustomCADSolutions.Core.Models
 
         public byte[]? Bytes { get; set; }
 
-        public Color Color { get; set; } = Color.FromArgb(0, 255, 255, 255);
+        public Color Color { get; set; } = Color.FromArgb(0, CadConstants.R, CadConstants.G, CadConstants.B);
 
         [Required(ErrorMessage = RequiredErrorMessage)]
         [StringLength(CadConstants.NameMaxLength, MinimumLength = CadConstants.NameMinLength, ErrorMessage = LengthErrorMessage)]

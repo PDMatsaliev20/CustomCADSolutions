@@ -102,7 +102,7 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
         [HttpGet]
         public async Task<IActionResult> Order(int id)
         {
-            if (!await cadService.ExistsByIdAsync(id))
+            if (!await cadService.ExistsByIdAsync(id) || id == 1)
             {
                 return BadRequest("Model not found");
             }

@@ -20,7 +20,7 @@
         </div>
     </form>
     <div class="col-sm-4 col-12 mt-0 mb-3">
-            <div id="model-@Model.Id" class="bg-transparent"></div>
+        <div id="model-@Model.Id" class="bg-transparent"></div>
     </div>
 </div>
 
@@ -38,12 +38,12 @@
             fov: @Model.Fov,
             rgb: {
                 r: @Model.RGB.Item1 / 255,
-                b: @Model.RGB.Item2 / 255,
-                g: @Model.RGB.Item3 / 255,
+                        b: @Model.RGB.Item2 / 255,
+                        g: @Model.RGB.Item3 / 255,
             }
         };
 
-        loadModel(cad, '/Chair.STL');
+        loadModel(cad);
     </script>
 
 

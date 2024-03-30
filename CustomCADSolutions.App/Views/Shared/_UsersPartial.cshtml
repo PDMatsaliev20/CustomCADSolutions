@@ -19,7 +19,7 @@
         </td>
         <td>
             <div class="d-flex justify-content-center mb-1">
-                <form asp-controller="User" asp-action="EditUserRole"
+                <form asp-controller="Users" asp-action="EditUserRole"
                     asp-route-username="@user.Username" class="d-flex">
                     <select class="me-2" name="selectedRole">
                         @foreach (string roleOption in ViewBag.Roles)
@@ -37,7 +37,7 @@
                     <input type="submit" value="@Localizer["ChangeRole"]"
                            class="btn btn-warning @(isSelf ? "disabled" : string.Empty)" />
                 </form>
-                <form asp-controller="User" asp-action="DeleteUser"
+                <form asp-controller="Users" asp-action="DeleteUser"
                       asp-route-username="@user.Username" class="ms-2 d-flex">
                     @if (User.Identity!.Name == user.Username)
                     {

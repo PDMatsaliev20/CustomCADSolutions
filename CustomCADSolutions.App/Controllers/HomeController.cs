@@ -60,7 +60,7 @@ namespace CustomCADSolutions.App.Controllers
                 Coords = model.Coords,
                 SpinAxis = model.SpinAxis,
                 Category = model.Category.Name,
-                RGB = new(100, 150, 200),
+                RGB = new(143, 124, 239),
             };
 
             return View();

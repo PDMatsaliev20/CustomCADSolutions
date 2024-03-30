@@ -25,6 +25,10 @@
 
             public const int ZMin = -1000;
             public const int ZMax = 1000;
+            
+            public const int R = 255;
+            public const int G = 255;
+            public const int B = 255;
 
             public const string SpinAxisErrorMessage = "{0} must be either x, y or z";
             public const string SpinAxisRegEx = "[xyz]?";
