@@ -62,29 +62,24 @@ function loadModel({ id, x, y, z, axis, fov, rgb: { r, g, b } }, path = `/Home/D
 
                         const color = document.getElementById(`pickColor-${id}`);
                         if (color != null) {
-                            console.log('got here');
                             const hexInt = parseInt(color.value.replace('#', ''), 16);
                             r = ((hexInt >> 16) & 255) / 255;
                             g = ((hexInt >> 8) & 255) / 255;
                             b = (hexInt & 255) / 255;
-                            console.log(`${r}, ${g}, ${b}`);
                             material.color.setRGB(r, g, b);
 
-                            console.log('got here');
                             var hiddenColorInput = document.createElement('input');
                             hiddenColorInput.setAttribute('type', 'hidden');
                             hiddenColorInput.setAttribute('name', 'color');
                             hiddenColorInput.setAttribute('value', String(color.value));
                             form.appendChild(hiddenColorInput);
 
-                            console.log('got here');
                             var hiddenIdInput = document.createElement('input');
                             hiddenIdInput.setAttribute('type', 'hidden');
                             hiddenIdInput.setAttribute('name', 'id');
                             hiddenIdInput.setAttribute('value', id);
                             form.appendChild(hiddenIdInput);
 
-                            console.log('got here');
                             form.submit();
                         }
                     });

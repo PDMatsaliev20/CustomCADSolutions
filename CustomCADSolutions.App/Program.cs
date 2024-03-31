@@ -4,15 +4,17 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 builder.Services.AddApplicationDbContext(builder.Configuration);
 builder.Services.AddApplicationIdentity();
 builder.Services.AddInbuiltServices();
+builder.Services.AddAPI();
 
 // Localizer
 System.Globalization.CultureInfo[] cultures = { new("en-US"), new("bg-BG") };
 builder.Services.AddLocalizer(cultures);
 
-// Roles and Stripe
+// Roles, Stripe and Swagger
 string[] roles = { "Administrator", "Designer", "Contributer", "Client" };
 builder.Services.AddRoles(roles);
 builder.Services.AddStripe(builder.Configuration);
+builder.Services.AddSwaggerGen();
 
 // Abstractions and App Cookie
 builder.Services.AddAbstractions();

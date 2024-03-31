@@ -5,6 +5,7 @@ using CustomCADSolutions.Infrastructure.Data.Models;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Query;
 using System.Drawing;
 
 namespace CustomCADSolutions.Core.Services
@@ -26,11 +27,6 @@ namespace CustomCADSolutions.Core.Services
         {
             Cad cad = converter.ModelToCad(model);
 
-            if (model.Orders.Any())
-            {
-                await orderService.CreateRangeAsync(model.Orders.ToArray());
-            }
-
             EntityEntry<Cad> entry = await repository.AddAsync<Cad>(cad);
             await repository.SaveChangesAsync();
 
@@ -39,19 +35,8 @@ namespace CustomCADSolutions.Core.Services
 
         public async Task CreateRangeAsync(params CadModel[] models)
         {
-            List<Cad> cads = new();
-            foreach (CadModel model in models)
-            {
-                Cad cad = converter.ModelToCad(model);
-
-                if (model.Orders.Any())
-                {
-                    await orderService.CreateRangeAsync(model.Orders.ToArray());
-                }
-
-                cads.Add(cad);
-            }
-            await repository.AddRangeAsync<Cad>(cads.ToArray());
+            Cad[] cads = models.Select(m => converter.ModelToCad(m)).ToArray();
+            await repository.AddRangeAsync(cads);
             await repository.SaveChangesAsync();
         }
 
@@ -119,6 +104,12 @@ namespace CustomCADSolutions.Core.Services
 
         public async Task DeleteAsync(int id)
         {
+            List<OrderModel> orders = (await orderService.GetAllAsync())
+                .Where(o => o.CadId == id).ToList();
+
+            orders.ForEach(o => o.Status = OrderStatus.Pending);
+            await orderService.EditRangeAsync(orders.ToArray());
+
             Cad cad = await repository.GetByIdAsync<Cad>(id)
                 ?? throw new KeyNotFoundException();
 
@@ -128,12 +119,15 @@ namespace CustomCADSolutions.Core.Services
 
         public async Task DeleteRangeAsync(params int[] ids)
         {
-            Cad[] cads = new Cad[ids.Length];
-            for (int i = 0; i < ids.Length; i++)
-            {
-                cads[i] = await repository.GetByIdAsync<Cad>(ids[i])
-                    ?? throw new KeyNotFoundException();
-            }
+            List<OrderModel> orders = (await orderService.GetAllAsync())
+                    .Where(o => ids.Contains(o.CadId)).ToList();
+
+            orders.ForEach(o => o.Status = OrderStatus.Pending);
+            await orderService.EditRangeAsync(orders.ToArray());
+
+            Cad[] cads = await repository.All<Cad>()
+                .Where(c => ids.Contains(c.Id))
+                .ToArrayAsync();
 
             repository.DeleteRange(cads);
             await repository.SaveChangesAsync();

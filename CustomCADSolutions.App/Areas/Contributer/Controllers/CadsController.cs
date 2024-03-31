@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Identity;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using CustomCADSolutions.App.Extensions;
 using static CustomCADSolutions.App.Extensions.UtilityExtensions;
+using System.Text.Json;
+using System.Net;
 
 namespace CustomCADSolutions.App.Areas.Contributer.Controllers
 {
@@ -20,6 +22,7 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
         private readonly ILogger logger;
         private readonly UserManager<IdentityUser> userManager;
         private readonly IWebHostEnvironment hostingEnvironment;
+        private readonly HttpClient httpClient;
 
         public CadsController(
             ICadService cadService,
@@ -27,7 +30,8 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
             ICategoryService categoryService,
             ILogger<CadModel> logger,
             UserManager<IdentityUser> userManager,
-            IWebHostEnvironment hostingEnvironment)
+            IWebHostEnvironment hostingEnvironment,
+            HttpClient httpClient)
         {
             this.cadService = cadService;
             this.orderService = orderService;
@@ -35,6 +39,8 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
             this.logger = logger;
             this.userManager = userManager;
             this.hostingEnvironment = hostingEnvironment;
+            this.httpClient = httpClient;
+            this.httpClient.BaseAddress = new Uri("https://localhost:7119/API/Cads/");
         }
 
         [HttpGet]
@@ -78,7 +84,7 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
                 return BadRequest("Invalid 3d model");
             }
 
-            byte[] bytes = await GetBytesFromCadAsync(input.CadFile);
+            byte[] bytes = await input.CadFile.GetBytesAsync();
             
             CadModel model = new()
             {

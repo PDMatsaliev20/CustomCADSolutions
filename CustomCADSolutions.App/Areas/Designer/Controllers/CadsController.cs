@@ -119,7 +119,7 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
                 return BadRequest("Invalid 3d model");
             }
 
-            byte[] bytes = await GetBytesFromCadAsync(input.CadFile);
+            byte[] bytes = await input.CadFile.GetBytesAsync();
             CadModel model = new()
             {
                 Bytes = bytes,

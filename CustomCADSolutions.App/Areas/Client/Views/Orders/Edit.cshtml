@@ -7,7 +7,10 @@
 <hr />
 
 <div class="container">
-    <form method="post" autocomplete="off" asp-route-cadId="@Model.CadId" asp-route-buyerId="@Model.BuyerId">
+    <form asp-area="Client" asp-controller="Orders" asp-action="Edit" method="post" autocomplete="off">
+        <input asp-for="CadId" value="Model.CadId" hidden />
+        <input asp-for="BuyerId" value="Model.BuyerId" hidden />
+
         <div class="row justify-content-center">
             <div class="col-4 mb-3">
                 <label asp-for="Name" class="form-label"></label>

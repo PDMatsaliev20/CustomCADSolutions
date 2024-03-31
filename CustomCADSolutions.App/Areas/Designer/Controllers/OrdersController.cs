@@ -87,7 +87,7 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
                 return BadRequest();
             }
 
-            byte[] bytes = await GetBytesFromCadAsync(input.CadFile);
+            byte[] bytes = await input.CadFile.GetBytesAsync();
 
             model.Cad.Bytes = bytes;
             model.Cad.CreatorId = User.GetId();

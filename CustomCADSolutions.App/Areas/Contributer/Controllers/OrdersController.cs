@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using CustomCADSolutions.App.Extensions;
 using System.Drawing;
+using System.Net;
+using System.Text.Json;
 
 namespace CustomCADSolutions.App.Areas.Contributer.Controllers
 {
@@ -21,6 +23,13 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
         private readonly ILogger logger;
         private readonly UserManager<IdentityUser> userManager;
         private readonly IWebHostEnvironment hostingEnvironment;
+        private readonly HttpClient httpClient;
+
+        private const string AllPath = "All";
+        private const string ByIdPath = "Single?cadId={0}&buyerId={1}";
+        private const string CreatePath = "Create";
+        private const string EditPath = "Edit";
+        private const string DeletePath = "Delete?cadId={0}&buyerId={1}";
 
         public OrdersController(
             ILogger<OrdersController> logger,
@@ -28,7 +37,8 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
             ICadService cadService,
             ICategoryService categoryService,
             UserManager<IdentityUser> userManager,
-            IWebHostEnvironment hostingEnvironment)
+            IWebHostEnvironment hostingEnvironment,
+            HttpClient httpClient)
         {
             this.orderService = orderService;
             this.cadService = cadService;
@@ -36,11 +46,30 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
             this.userManager = userManager;
             this.categoryService = categoryService;
             this.hostingEnvironment = hostingEnvironment;
+            this.httpClient = httpClient;
+            this.httpClient.BaseAddress = new Uri("https://localhost:7119/API/Orders/");
         }
 
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
+            var response = await httpClient.GetAsync($"Single?cadId={id}&buyerId={User.GetId()}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                Stream body = await response.Content.ReadAsStreamAsync();
+
+                CadViewModel? result = await JsonSerializer
+                    .DeserializeAsync<CadViewModel>(body);
+
+                return result == null ? BadRequest() : View(result);
+            }
+            else if (response.StatusCode == HttpStatusCode.NotFound)
+            {
+                return NotFound();
+            }
+            else return BadRequest();
+            /*
             CadModel model;
             try
             {
@@ -68,27 +97,17 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
                 SpinAxis = model.SpinAxis
             };
             return View(view);
+            */
         }
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            IEnumerable<OrderViewModel> orders = (await orderService.GetAllAsync())
-                .Where(o => o.BuyerId == User.GetId())
-                .OrderBy(o => (int)o.Status).ThenBy(o => o.OrderDate)
-                .Select(m => new OrderViewModel
-                {
-                    BuyerId = m.BuyerId,
-                    BuyerName = m.Buyer.UserName,
-                    CadId = m.CadId,
-                    Category = m.Cad.Category.Name,
-                    Name = m.Cad.Name,
-                    Description = m.Description,
-                    Status = m.Status.ToString(),
-                    OrderDate = m.OrderDate.ToString("dd/MM/yyyy HH:mm:ss"),
-                });
-
-            return View(orders);
+            OrderViewModel[] views;
+            bool success = httpClient.TryGet(AllPath, out views!);
+            return success ? 
+                View(views.Where(v => v.BuyerId == User.GetId()).ToArray()) :
+                BadRequest();
         }
 
         [HttpPost]
@@ -118,8 +137,10 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
         [HttpGet]
         public async Task<IActionResult> Add()
         {
-            OrderInputModel input = new() { Categories = await categoryService.GetAllAsync() };
-            return View(input);
+            return View(new OrderInputModel()
+            {
+                Categories = await categoryService.GetAllAsync()
+            });
         }
 
         [HttpPost]
@@ -131,22 +152,12 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
                 return View(input);
             }
 
-            OrderModel model = new()
-            {
-                Description = input.Description,
-                OrderDate = DateTime.Now,
-                Status = input.Status,
-                ShouldShow = true,
-                Buyer = await userManager.FindByIdAsync(User.GetId()),
-                Cad = new CadModel()
-                {
-                    Name = input.Name,
-                    CategoryId = input.CategoryId,
-                }
-            };
-            await orderService.CreateAsync(model);
-
-            return RedirectToAction(nameof(Index));
+            OrderModel order;
+            bool success = httpClient.TryPost(CreatePath, input, out order!);
+            
+            return success ? RedirectToAction(nameof(Details),
+                    new { cadId = order.CadId, buyerId = order.BuyerId }) 
+                : BadRequest();
         }
 
         [HttpGet]
@@ -163,14 +174,12 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
 
                 OrderInputModel input = new()
                 {
-                    Categories = await categoryService.GetAllAsync(),
-                    Status = model.Status,
                     CadId = model.CadId,
                     BuyerId = model.BuyerId,
                     Name = model.Cad.Name,
-                    CategoryId = model.Cad.CategoryId,
                     Description = model.Description,
-                    OrderDate = model.OrderDate,
+                    CategoryId = model.Cad.CategoryId,
+                    Categories = await categoryService.GetAllAsync(),
                 };
 
                 return View(input);
@@ -182,11 +191,11 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(int cadId, string buyerId, OrderInputModel input)
+        public async Task<IActionResult> Edit(OrderInputModel input)
         {
             if (!ModelState.IsValid)
             {
-                logger.LogError("Invalid Order");
+                logger.LogError($"Invalid Order {string.Join(", ", ModelState.GetErrors())}");
                 input.Categories = await categoryService.GetAllAsync();
                 return View(input);
             }
@@ -194,7 +203,7 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
             OrderModel order = new();
             try
             {
-                order = await orderService.GetByIdAsync(cadId, buyerId);
+                order = await orderService.GetByIdAsync(input.CadId, input.BuyerId);
             }
             catch (KeyNotFoundException ex)
             {

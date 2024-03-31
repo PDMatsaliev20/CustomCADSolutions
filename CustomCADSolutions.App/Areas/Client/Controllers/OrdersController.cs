@@ -203,13 +203,11 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
                 OrderInputModel input = new()
                 {
                     Categories = await categoryService.GetAllAsync(),
-                    Status = model.Status,
                     CadId = model.CadId,
                     BuyerId = model.BuyerId,
                     Name = model.Cad.Name,
                     CategoryId = model.Cad.CategoryId,
                     Description = model.Description,
-                    OrderDate = model.OrderDate,
                 };
 
                 return View(input);

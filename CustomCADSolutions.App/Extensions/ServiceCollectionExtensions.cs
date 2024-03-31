@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -45,7 +46,13 @@ namespace Microsoft.Extensions.DependencyInjection
 
             return services
                 .AddControllersWithViews(opt => opt.Filters.Add(antiForgeryToken))
-                .AddViewLocalizer(extensionFormat, typeof(SharedResources));
+                .AddViewLocalizer(extensionFormat, typeof(SharedResources))
+                .ConfigureApiBehaviorOptions(opt =>
+                {
+                    opt.SuppressModelStateInvalidFilter = true;
+                    opt.SuppressMapClientErrors = true;
+                    opt.SuppressConsumesConstraintForFormFileParameters = true;
+                });
         }
 
         private static IMvcBuilder AddViewLocalizer(this IMvcBuilder builder, LanguageViewLocationExpanderFormat format, Type resource)
@@ -58,8 +65,9 @@ namespace Microsoft.Extensions.DependencyInjection
             return builder;
         }
 
-        public static IServiceCollection AddApi(this IServiceCollection services)
+        public static IServiceCollection AddAPI(this IServiceCollection services)
         {
+            services.AddHttpClient();
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
             return services;

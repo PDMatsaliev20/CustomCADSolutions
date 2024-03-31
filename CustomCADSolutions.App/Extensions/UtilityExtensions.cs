@@ -5,6 +5,11 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Security.Claims;
 using Stripe;
 using System.Drawing;
+using Microsoft.AspNetCore.Mvc;
+using CustomCADSolutions.App.Models.Orders;
+using System.Net.Http;
+using System.Text.Json;
+using System.Text;
 
 namespace CustomCADSolutions.App.Extensions
 {
@@ -59,15 +64,13 @@ namespace CustomCADSolutions.App.Extensions
                     Coords = m.Coords,
                     SpinAxis = m.SpinAxis,
                     IsValidated = m.IsValidated,
-                    RGB = (GetColorBytes(m.Color)[0], 
-                           GetColorBytes(m.Color)[1], 
-                           GetColorBytes(m.Color)[2]),
+                    RGB = m.Color.GetColorBytes(),
                 }).ToArray();
 
             return inputQuery;
         }
 
-        public static async Task<byte[]> GetBytesFromCadAsync(IFormFile cad)
+        public static async Task<byte[]> GetBytesAsync(this IFormFile cad)
         {
             using MemoryStream memoryStream = new();
             await cad.CopyToAsync(memoryStream);
@@ -76,40 +79,43 @@ namespace CustomCADSolutions.App.Extensions
             return fileBytes;
         }
 
-        public static byte[] GetColorBytes(Color color)
-        {
-            byte r = color.R;
-            byte g = color.G;
-            byte b = color.B;
-            byte a = color.A;
+        public static (byte, byte, byte) GetColorBytes(this Color color)
+            => (color.R, color.G, color.B );
 
-            return new byte[] { r, g, b, a };
+        public static bool TryGet<T>(this HttpClient httpClient, string path, out T? result) 
+        {
+            var response = httpClient.GetAsync(path).Result;
+            if (response.IsSuccessStatusCode)
+            {
+                Stream stream = response.Content.ReadAsStream();
+                result = JsonSerializer.Deserialize<T>(stream);
+                return result != null;
+            }
+            else
+            {
+                result = default;
+                return false;
+            }
         }
 
-        public static byte[] CombineBytes(byte[] bytes1, byte[] bytes2)
+        public static bool TryPost<TInput, T>(this HttpClient httpClient, string path, TInput input, out T? result)
         {
-            byte[] combinedBytes = new byte[bytes1.Length + bytes2.Length];
-            Buffer.BlockCopy(bytes1, 0, combinedBytes, 0, bytes1.Length);
-            Buffer.BlockCopy(bytes2, 0, combinedBytes, bytes1.Length, bytes2.Length);
-            return combinedBytes;
-        }
+            string json = JsonSerializer.Serialize(input);
+            HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
 
-        public static byte[] CombineBytes(byte[] bytes1, Color color)
-        {
-            byte[] bytes2 = GetColorBytes(color);
-            byte[] combinedBytes = new byte[bytes1.Length + bytes2.Length];
-            Buffer.BlockCopy(bytes1, 0, combinedBytes, 0, bytes1.Length);
-            Buffer.BlockCopy(bytes2, 0, combinedBytes, bytes1.Length, bytes2.Length);
-            return combinedBytes;
-        }
+            var response = httpClient.PostAsync(path, content).GetAwaiter().GetResult();
 
-        public static byte[] GenerateObjWithColor(byte[] bytes1, Color color)
-        {
-            byte[] bytes2 = GetColorBytes(color);
-            byte[] combinedBytes = new byte[bytes1.Length + bytes2.Length];
-            Buffer.BlockCopy(bytes1, 0, combinedBytes, 0, bytes1.Length);
-            Buffer.BlockCopy(bytes2, 0, combinedBytes, bytes1.Length, bytes2.Length);
-            return combinedBytes;
+            if (response.IsSuccessStatusCode)
+            {
+                Stream stream = response.Content.ReadAsStream();
+                result = JsonSerializer.Deserialize<T>(stream);
+                return result != null;
+            }
+            else
+            {
+                result = default;
+                return false;
+            }
         }
     }
 }

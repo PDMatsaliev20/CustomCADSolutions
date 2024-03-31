@@ -1,7 +1,7 @@
 ﻿@model OrderViewModel
 @inject IViewLocalizer Localizer
 
-<a asp-controller="Orders" asp-action="Details" 
+<a asp-area="" asp-controller="Home" asp-action="CadDetails" 
    asp-route-id="@Model.CadId" class="col btn btn-secondary">
     @Localizer["Details"]
 </a>

@@ -8,7 +8,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Net;
 using static CustomCADSolutions.App.Extensions.UtilityExtensions;
+using System.Text.Json;
 
 namespace CustomCADSolutions.App.Controllers
 {
@@ -20,6 +22,7 @@ namespace CustomCADSolutions.App.Controllers
         private readonly ICategoryService categoryService;
         private readonly UserManager<IdentityUser> userManager;
         private readonly SignInManager<IdentityUser> signInManager;
+        private readonly HttpClient httpClient;
 
         public HomeController(
             ICadService cadService,
@@ -27,7 +30,8 @@ namespace CustomCADSolutions.App.Controllers
             ICategoryService categoryService,
             ILogger<HomeController> logger,
             UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager)
+            SignInManager<IdentityUser> signInManager,
+            HttpClient httpClient)
         {
             this.logger = logger;
             this.cadService = cadService;
@@ -35,6 +39,7 @@ namespace CustomCADSolutions.App.Controllers
             this.categoryService = categoryService;
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.httpClient = httpClient;
         }
 
         [HttpGet]
@@ -92,9 +97,30 @@ namespace CustomCADSolutions.App.Controllers
         public async Task<FileResult> DownloadCad(int id)
         {
             CadModel model = await cadService.GetByIdAsync(id);
-            byte[] bytes = CombineBytes(model.Bytes!, model.Color);
+            byte[] bytes = model.Bytes!;
 
             return File(bytes, "application/octet-stream", $"{model.Name}.stl");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> CadDetails(int id)
+        {
+            var response = await httpClient.GetAsync($"Single?cadId={id}&buyerId={User.GetId()}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                Stream body = await response.Content.ReadAsStreamAsync();
+
+                CadViewModel? result = await JsonSerializer
+                    .DeserializeAsync<CadViewModel>(body);
+
+                return result == null ? BadRequest() : View(result);
+            }
+            else if (response.StatusCode == HttpStatusCode.NotFound)
+            {
+                return NotFound();
+            }
+            else return BadRequest();
         }
 
         public IActionResult SetLanguage(string culture, string returnUrl)

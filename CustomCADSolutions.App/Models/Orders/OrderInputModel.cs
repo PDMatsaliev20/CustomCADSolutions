@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using CustomCADSolutions.Infrastructure.Data.Models;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using CustomCADSolutions.App.Resources.Shared;
+using System.Text.Json.Serialization;
 
 namespace CustomCADSolutions.App.Models.Orders
 {
@@ -35,8 +36,6 @@ namespace CustomCADSolutions.App.Models.Orders
         [Display(Name = "Description", ResourceType = typeof(SharedResources))]
         public string Description { get; set; } = null!;
 
-        public DateTime OrderDate { get; set; }
-        
         public OrderStatus Status { get; set; }
 
         public IEnumerable<Category>? Categories { get; set; }
