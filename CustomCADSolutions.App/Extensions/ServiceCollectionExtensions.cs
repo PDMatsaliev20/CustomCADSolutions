@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -38,15 +38,22 @@ namespace Microsoft.Extensions.DependencyInjection
             return services;
         }
 
-        public static IMvcBuilder AddViewLocalizer(this IMvcBuilder builder)
+        public static IMvcBuilder AddInbuiltServices(this IServiceCollection services)
         {
-            builder.AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix);
+            AutoValidateAntiforgeryTokenAttribute antiForgeryToken = new();
+            var extensionFormat = LanguageViewLocationExpanderFormat.Suffix;
 
+            return services
+                .AddControllersWithViews(opt => opt.Filters.Add(antiForgeryToken))
+                .AddViewLocalizer(extensionFormat, typeof(SharedResources));
+        }
+
+        private static IMvcBuilder AddViewLocalizer(this IMvcBuilder builder, LanguageViewLocationExpanderFormat format, Type resource)
+        {
+            builder.AddViewLocalization(format);
             builder.AddDataAnnotationsLocalization(options =>
-            {
-                options.DataAnnotationLocalizerProvider = (type, factory) =>
-                    factory.Create(typeof(SharedResources));
-            });
+                options.DataAnnotationLocalizerProvider = (type, factory) 
+                    => factory.Create(resource));
 
             return builder;
         }

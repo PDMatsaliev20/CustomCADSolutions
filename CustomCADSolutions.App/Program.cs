@@ -1,10 +1,9 @@
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-// Db, Identity, Mvc and ViewLocalizer
+// Database, Identity, MVC, API and CORS
 builder.Services.AddApplicationDbContext(builder.Configuration);
 builder.Services.AddApplicationIdentity();
-builder.Services.AddControllersWithViews().AddViewLocalizer();
-builder.Services.AddApi();
+builder.Services.AddInbuiltServices();
 
 // Localizer
 System.Globalization.CultureInfo[] cultures = { new("en-US"), new("bg-BG") };

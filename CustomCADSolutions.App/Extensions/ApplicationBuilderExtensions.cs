@@ -18,6 +18,12 @@ namespace Microsoft.AspNetCore.Builder
             return app;
         }
 
+        public static IApplicationBuilder UseCorsOrigins(this IApplicationBuilder app, params string[] origins)
+        {
+            app.UseCors(opt => opt.WithOrigins(origins));
+            return app;
+        }
+
         public static async Task<IServiceProvider> UseRolesAsync(this IServiceProvider service, string[] roles)
         {
             using IServiceScope scope = service.CreateScope();
