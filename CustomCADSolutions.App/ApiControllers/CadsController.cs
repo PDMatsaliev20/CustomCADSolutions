@@ -13,12 +13,10 @@ namespace CustomCADSolutions.App.ApiControllers
     public class CadsController : ControllerBase
     {
         private readonly ICadService cadService;
-        private readonly IOrderService orderService;
 
-        public CadsController(ICadService cadService, IOrderService orderService)
+        public CadsController(ICadService cadService)
         {
             this.cadService = cadService;
-            this.orderService = orderService;
         }
 
         [HttpGet("All")]

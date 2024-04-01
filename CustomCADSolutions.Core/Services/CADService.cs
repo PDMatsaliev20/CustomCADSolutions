@@ -5,28 +5,34 @@ using CustomCADSolutions.Infrastructure.Data.Models;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Microsoft.EntityFrameworkCore.Query;
 using System.Drawing;
+using AutoMapper;
+using CustomCADSolutions.Core.Mappings;
+
 
 namespace CustomCADSolutions.Core.Services
 {
     public class CadService : ICadService
     {
         private readonly IRepository repository;
-        private readonly IConverter converter;
         private readonly IOrderService orderService;
+        private readonly MapperConfiguration config = new(cfg =>
+        {
+            cfg.AddProfile<CadProfile>();
+            cfg.AddProfile<OrderProfile>();
+        });
 
-        public CadService(IRepository repository, IConverter converter, IOrderService orderService)
+        public CadService(IRepository repository, IOrderService orderService)
         {
             this.repository = repository;
             this.orderService = orderService;
-            this.converter = converter;
         }
+
+        private IMapper Mapper { get => config.CreateMapper(); }
 
         public async Task<int> CreateAsync(CadModel model)
         {
-            Cad cad = converter.ModelToCad(model);
-
+            Cad cad = Mapper.Map<Cad>(model);
             EntityEntry<Cad> entry = await repository.AddAsync<Cad>(cad);
             await repository.SaveChangesAsync();
 
@@ -35,7 +41,7 @@ namespace CustomCADSolutions.Core.Services
 
         public async Task CreateRangeAsync(params CadModel[] models)
         {
-            Cad[] cads = models.Select(m => converter.ModelToCad(m)).ToArray();
+            Cad[] cads = Mapper.Map<Cad[]>(models);
             await repository.AddRangeAsync(cads);
             await repository.SaveChangesAsync();
         }
@@ -46,26 +52,23 @@ namespace CustomCADSolutions.Core.Services
                 .FirstOrDefaultAsync(cad => cad.Id == model.Id)
                 ?? throw new ArgumentException("Model doesn't exist!");
 
-            if (model.Color != Color.Empty)
-            {
-                cad.R = model.Color.R;
-                cad.G = model.Color.G;
-                cad.B = model.Color.B;
-            }
-
             cad.Name = model.Name;
-            cad.CategoryId = model.CategoryId;
             cad.IsValidated = model.IsValidated;
+            cad.CreationDate = model.CreationDate;
+            cad.SpinAxis = model.SpinAxis;
+            
             cad.X = model.Coords.Item1;
             cad.Y = model.Coords.Item2;
             cad.Z = model.Coords.Item3;
-            cad.CreationDate = model.CreationDate;
-            cad.SpinAxis = model.SpinAxis;
+            cad.R = model.Color.R;
+            cad.G = model.Color.G;
+            cad.B = model.Color.B;
+            
+            cad.CategoryId = model.CategoryId;
             cad.CreatorId = model.CreatorId;
+            cad.Category = model.Category;
             cad.Creator = model.Creator;
-            cad.Orders = model.Orders
-                .Select(o => converter.ModelToOrder(o, false))
-                .ToList();
+            cad.Orders = Mapper.Map<Order[]>(model.Orders);
 
             await repository.SaveChangesAsync();
         }
@@ -79,24 +82,23 @@ namespace CustomCADSolutions.Core.Services
                 .FirstOrDefaultAsync(cad => cad.Id == model.Id)
                 ?? throw new KeyNotFoundException("Model doesn't exist!");
 
-                cad.CategoryId = model.CategoryId;
                 cad.Name = model.Name;
                 cad.IsValidated = model.IsValidated;
                 cad.CreationDate = model.CreationDate;
                 cad.SpinAxis = model.SpinAxis;
 
-                cad.R = model.Color.R;
-                cad.G = model.Color.G;
-                cad.B = model.Color.B;
                 cad.X = model.Coords.Item1;
                 cad.Y = model.Coords.Item2;
                 cad.Z = model.Coords.Item3;
+                cad.R = model.Color.R;
+                cad.G = model.Color.G;
+                cad.B = model.Color.B;
 
+                cad.CategoryId = model.CategoryId;
                 cad.CreatorId = model.CreatorId;
+                cad.Category = model.Category;
                 cad.Creator = model.Creator;
-                cad.Orders = model.Orders
-                    .Select(o => converter.ModelToOrder(o, false))
-                    .ToList();
+                cad.Orders = Mapper.Map<Order[]>(model.Orders);
             }
 
             await repository.SaveChangesAsync();
@@ -141,7 +143,7 @@ namespace CustomCADSolutions.Core.Services
             Cad cad = await repository.GetByIdAsync<Cad>(id)
                 ?? throw new KeyNotFoundException($"Model with id: {id} doesn't exist");
 
-            CadModel model = converter.CadToModel(cad);
+            CadModel model = Mapper.Map<CadModel>(cad);
             return model;
         }
 
@@ -152,50 +154,50 @@ namespace CustomCADSolutions.Core.Services
             int currentPage = 1, int cadsPerPage = 1,
             bool validated = true, bool unvalidated = false)
         {
-            IQueryable<Cad> cads = repository.All<Cad>()
+            IQueryable<Cad> allCads = repository.All<Cad>()
                 .Where(c => c.Bytes != null && c.CreatorId != null);
 
             if (category != null)
             {
-                cads = cads.Where(c => c.Category.Name == category);
+                allCads = allCads.Where(c => c.Category.Name == category);
             }
 
             if (creator != null)
             {
-                cads = cads.Where(c => c.Creator!.UserName == creator);
+                allCads = allCads.Where(c => c.Creator!.UserName == creator);
             }
 
             if (validated ^ unvalidated)
             {
                 if (validated)
                 {
-                    cads = cads.Where(c => c.IsValidated);
+                    allCads = allCads.Where(c => c.IsValidated);
                 }
 
                 if (unvalidated)
                 {
-                    cads = cads.Where(c => !c.IsValidated);
+                    allCads = allCads.Where(c => !c.IsValidated);
                 }
 
             }
 
             if (searchName != null)
             {
-                cads = cads.Where(c => c.Name.Contains(searchName));
+                allCads = allCads.Where(c => c.Name.Contains(searchName));
             }
             if (searchCreator != null)
             {
-                cads = cads.Where(c => c.Creator!.UserName.Contains(searchCreator));
+                allCads = allCads.Where(c => c.Creator!.UserName.Contains(searchCreator));
             }
 
-            cads = sorting switch
+            allCads = sorting switch
             {
-                CadSorting.Newest => cads.OrderBy(c => c.CreationDate),
-                CadSorting.Oldest => cads.OrderByDescending(c => c.CreationDate),
-                CadSorting.Alphabetical => cads.OrderBy(c => c.Name),
-                CadSorting.Unalphabetical => cads.OrderByDescending(c => c.Name),
-                CadSorting.Category => cads.OrderBy(m => m.Category.Name),
-                _ => cads.OrderBy(c => c.Id),
+                CadSorting.Newest => allCads.OrderBy(c => c.CreationDate),
+                CadSorting.Oldest => allCads.OrderByDescending(c => c.CreationDate),
+                CadSorting.Alphabetical => allCads.OrderBy(c => c.Name),
+                CadSorting.Unalphabetical => allCads.OrderByDescending(c => c.Name),
+                CadSorting.Category => allCads.OrderBy(m => m.Category.Name),
+                _ => allCads.OrderBy(c => c.Id),
             };
 
 
@@ -204,16 +206,17 @@ namespace CustomCADSolutions.Core.Services
                 cadsPerPage = 16;
             }
 
-            CadModel[] models = await cads
+            Cad[] pageCads = await allCads
                 .Skip((currentPage - 1) * cadsPerPage)
                 .Take(cadsPerPage)
-                .Select(cad => converter.CadToModel(cad, true))
                 .ToArrayAsync();
 
+
+            CadModel[] models = Mapper.Map<CadModel[]>(pageCads);
             return new()
             {
-                TotalCount = cads.Count(),
-                CadModels = models
+                TotalCount = allCads.Count(),
+                CadModels = models,
             };
         }
     }

@@ -1,4 +1,6 @@
-﻿using CustomCADSolutions.Core.Contracts;
+﻿using AutoMapper;
+using CustomCADSolutions.Core.Contracts;
+using CustomCADSolutions.Core.Mappings;
 using CustomCADSolutions.Core.Models;
 using CustomCADSolutions.Infrastructure.Data.Common;
 using CustomCADSolutions.Infrastructure.Data.Models;
@@ -10,12 +12,16 @@ namespace CustomCADSolutions.Core.Services
     public class OrderService : IOrderService
     {
         private readonly IRepository repository;
-        private readonly IConverter converter;
+        private readonly MapperConfiguration config = new(cfg =>
+        {
+            cfg.AddProfile<CadProfile>();
+            cfg.AddProfile<OrderProfile>();
+        });
+        private IMapper Mapper { get => config.CreateMapper(); }
 
-        public OrderService(IRepository repository, IConverter converter)
+        public OrderService(IRepository repository)
         {
             this.repository = repository;
-            this.converter = converter;
         }
 
         public async Task<(string, int)> CreateAsync(OrderModel model)
@@ -25,13 +31,13 @@ namespace CustomCADSolutions.Core.Services
                 throw new NullReferenceException();
             }
 
-            Order order = converter.ModelToOrder(model, false);
+            Order order = Mapper.Map<Order>(model);
             Cad? cad = await repository.GetByIdAsync<Cad>(model.CadId);
             if (cad != null)
             {
                 order.Cad = cad;
             }
-            else order.Cad = converter.ModelToCad(model.Cad!);
+            else order.Cad = Mapper.Map<Cad>(model.Cad);
 
             EntityEntry<Order> entry = await repository.AddAsync<Order>(order);
             await repository.SaveChangesAsync();
@@ -48,7 +54,7 @@ namespace CustomCADSolutions.Core.Services
                 {
                     throw new NullReferenceException();
                 }
-                Order order = converter.ModelToOrder(model);
+                Order order = Mapper.Map<Order>(model);
                 orders.Add(order);
             }
             await repository.AddRangeAsync<Order>(orders.ToArray());
@@ -72,7 +78,6 @@ namespace CustomCADSolutions.Core.Services
 
             await repository.SaveChangesAsync();
         }
-
 
         public async Task EditRangeAsync(params OrderModel[] models)
         {
@@ -118,15 +123,13 @@ namespace CustomCADSolutions.Core.Services
                 .GetByIdAsync<Order>(cadId, buyerId)
                 ?? throw new KeyNotFoundException();
 
-            OrderModel model = converter.OrderToModel(order);
+            OrderModel model = Mapper.Map<OrderModel>(order);
             return model;
         }
 
         public async Task<IEnumerable<OrderModel>> GetAllAsync()
         {
-            return await repository.All<Order>()
-                .Select(o => converter.OrderToModel(o, true))
-                .ToArrayAsync();
+            return Mapper.Map<OrderModel[]>(await repository.All<Order>().ToArrayAsync());
         }
     }
 }
