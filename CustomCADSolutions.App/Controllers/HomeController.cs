@@ -105,14 +105,18 @@ namespace CustomCADSolutions.App.Controllers
         [HttpGet]
         public async Task<IActionResult> CadDetails(int id)
         {
-            var response = await httpClient.GetAsync($"Single?cadId={id}&buyerId={User.GetId()}");
+            var response = await httpClient.GetAsync($"https://localhost:7119/API/Orders/Single?cadId={id}&buyerId={User.GetId()}");
 
             if (response.IsSuccessStatusCode)
             {
                 Stream body = await response.Content.ReadAsStreamAsync();
 
                 CadViewModel? result = await JsonSerializer
-                    .DeserializeAsync<CadViewModel>(body);
+                    .DeserializeAsync<CadViewModel>(body, 
+                        new JsonSerializerOptions() 
+                        {
+                            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                        });
 
                 return result == null ? BadRequest() : View(result);
             }

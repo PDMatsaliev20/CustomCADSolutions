@@ -20,7 +20,7 @@ namespace CustomCADSolutions.App.ApiControllers
 
         [HttpGet("All")]
         [Produces("application/json")]
-        [ProducesResponseType(200)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<OrderViewModel[]>> Get()
         {
             IEnumerable<OrderModel> orders = await orderService.GetAllAsync();
@@ -43,8 +43,8 @@ namespace CustomCADSolutions.App.ApiControllers
 
         [HttpGet("Single")]
         [Produces("application/json")]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(StatusCodes.Status200OK)] 
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<OrderViewModel>> Get(int cadId, string buyerId)
         {
             try
@@ -66,7 +66,7 @@ namespace CustomCADSolutions.App.ApiControllers
             }
             catch (KeyNotFoundException)
             {
-                return NotFound();
+                return BadRequest();
             }
         }
 

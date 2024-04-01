@@ -1,7 +1,10 @@
-﻿namespace CustomCADSolutions.App.Models.Cads
+﻿using System.Text.Json.Serialization;
+
+namespace CustomCADSolutions.App.Models.Cads
 {
     public class CadViewModel
     {
+        [JsonPropertyName("cadId")]
         public int Id { get; set; }
         public string Name { get; set; } = null!;
         public string CreatorName { get; set; } = null!;

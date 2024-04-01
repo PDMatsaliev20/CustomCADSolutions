@@ -85,7 +85,7 @@
                         case "Order":
                             @if (!ViewBag.AlreadyOrdered)
                             {
-                                <a asp-area="ViewBag.Area" asp-controller="Orders" asp-action="Order" asp-route-id="@Model.Id"
+                                <a asp-area="@ViewBag.Area" asp-controller="Orders" asp-action="Order" asp-route-id="@Model.Id"
                                         class="btn btn-secondary text-decoration-none">
                                     @Localizer["Order"]
                                 </a>

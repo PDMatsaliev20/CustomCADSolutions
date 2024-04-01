@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using CustomCADSolutions.App.Models;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -116,11 +117,5 @@ namespace Microsoft.Extensions.DependencyInjection
             services.Configure<StripeSettings>(stripeSection);
             return services;
         }
-    }
-
-    public class StripeSettings
-    {
-        public string SecretKey { get; set; } = null!;
-        public string PublishableKey { get; set; } = null!;
     }
 }

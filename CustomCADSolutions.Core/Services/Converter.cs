@@ -42,6 +42,8 @@ namespace CustomCADSolutions.Core.Services
         public Order ModelToOrder(OrderModel model, bool fisrTime = true)
             => new()
             {
+                CadId = model.CadId,
+                BuyerId = model.BuyerId,
                 Description = model.Description,
                 OrderDate = model.OrderDate,
                 Status = model.Status,

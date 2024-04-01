@@ -10,6 +10,7 @@ using CustomCADSolutions.App.Models.Orders;
 using System.Net.Http;
 using System.Text.Json;
 using System.Text;
+using CustomCADSolutions.App.Models;
 
 namespace CustomCADSolutions.App.Extensions
 {
@@ -17,7 +18,7 @@ namespace CustomCADSolutions.App.Extensions
     {
         public static bool ProcessPayment(this StripeSettings stripeSettings, string stripeToken)
         {
-            StripeConfiguration.ApiKey = stripeSettings.SecretKey;
+            StripeConfiguration.ApiKey = stripeSettings.TestSecretKey;
             ChargeCreateOptions options = new()
             {
                 Amount = 100,

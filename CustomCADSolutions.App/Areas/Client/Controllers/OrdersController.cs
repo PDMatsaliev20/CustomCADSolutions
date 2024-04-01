@@ -11,6 +11,7 @@ using CustomCADSolutions.App.Extensions;
 using Microsoft.Extensions.Options;
 using Stripe;
 using System.Drawing;
+using CustomCADSolutions.App.Models;
 
 namespace CustomCADSolutions.App.Areas.Client.Controllers
 {
@@ -25,6 +26,7 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
         private readonly UserManager<IdentityUser> userManager;
         private readonly IWebHostEnvironment hostingEnvironment;
         private readonly StripeSettings stripeSettings;
+        private readonly HttpClient httpClient;
 
         public OrdersController(
             ILogger<OrdersController> logger,
@@ -33,7 +35,8 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
             ICategoryService categoryService,
             UserManager<IdentityUser> userManager,
             IWebHostEnvironment hostingEnvironment,
-            IOptions<StripeSettings> stripeSettings)
+            IOptions<StripeSettings> stripeSettings,
+            HttpClient httpClient)
         {
             this.orderService = orderService;
             this.cadService = cadService;
@@ -42,37 +45,38 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
             this.categoryService = categoryService;
             this.hostingEnvironment = hostingEnvironment;
             this.stripeSettings = stripeSettings.Value;
+            this.httpClient = httpClient;
+            httpClient.BaseAddress = new Uri("https://localhost:7119/API/Orders/");
         }
 
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            CadModel model;
             try
             {
-                model = await cadService.GetByIdAsync(id);
+                CadModel model = await cadService.GetByIdAsync(id);
 
                 if (model.Creator == null || !model.CreationDate.HasValue)
                 {
                     throw new Exception("Model not created yet");
                 }
+
+                CadViewModel view = new()
+                {
+                    Id = model.Id,
+                    Name = model.Name,
+                    Category = model.Category.Name,
+                    CreatorName = model.Creator.UserName,
+                    CreationDate = model.CreationDate.Value.ToString("dd/MM/yyyy HH:mm:ss"),
+                    Coords = model.Coords,
+                    SpinAxis = model.SpinAxis
+                };
+                return View(view);
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
-
-            CadViewModel view = new()
-            {
-                Id = model.Id,
-                Name = model.Name,
-                Category = model.Category.Name,
-                CreatorName = model.Creator.UserName,
-                CreationDate = model.CreationDate.Value.ToString("dd/MM/yyyy HH:mm:ss"),
-                Coords = model.Coords,
-                SpinAxis = model.SpinAxis
-            };
-            return View(view);
         }
 
         [HttpGet]
@@ -119,7 +123,7 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
                 SpinAxis = model.SpinAxis,
                 RGB = (model.Color.R, model.Color.B, model.Color.G) 
             };
-            ViewBag.StripeKey = stripeSettings.PublishableKey;
+            ViewBag.StripeKey = stripeSettings.TestPublishableKey;
             return View(view);
         }
 
@@ -141,12 +145,12 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
 
             await orderService.CreateAsync(new()
             {
+                CadId = model.Id,
+                BuyerId = User.GetId(),
                 Description = $"3D Model from the gallery with id: {model.Id}",
                 OrderDate = DateTime.Now,
                 Status = OrderStatus.Finished,
                 ShouldShow = false,
-                CadId = model.Id,
-                BuyerId = User.GetId(),
             });
 
             return RedirectToAction(nameof(Index));
