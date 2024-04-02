@@ -5,8 +5,9 @@ namespace CustomCADSolutions.App.Components
 {
     public class OrdersComponent : ViewComponent
     {
-        public async Task<IViewComponentResult> InvokeAsync(OrderViewModel order) 
+        public async Task<IViewComponentResult> InvokeAsync(OrderViewModel order, string area) 
         {
+            ViewBag.Area = area;
             return await Task.FromResult<IViewComponentResult>(View(order.Status, order));
         }
     }

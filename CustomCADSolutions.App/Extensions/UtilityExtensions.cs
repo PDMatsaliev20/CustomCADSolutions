@@ -5,9 +5,6 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Security.Claims;
 using Stripe;
 using System.Drawing;
-using Microsoft.AspNetCore.Mvc;
-using CustomCADSolutions.App.Models.Orders;
-using System.Net.Http;
 using System.Text.Json;
 using System.Text;
 using CustomCADSolutions.App.Models;
@@ -81,42 +78,9 @@ namespace CustomCADSolutions.App.Extensions
         }
 
         public static (byte, byte, byte) GetColorBytes(this Color color)
-            => (color.R, color.G, color.B );
+            => (color.R, color.G, color.B);
 
-        public static bool TryGet<T>(this HttpClient httpClient, string path, out T? result) 
-        {
-            var response = httpClient.GetAsync(path).Result;
-            if (response.IsSuccessStatusCode)
-            {
-                Stream stream = response.Content.ReadAsStream();
-                result = JsonSerializer.Deserialize<T>(stream);
-                return result != null;
-            }
-            else
-            {
-                result = default;
-                return false;
-            }
-        }
-
-        public static bool TryPost<TInput, T>(this HttpClient httpClient, string path, TInput input, out T? result)
-        {
-            string json = JsonSerializer.Serialize(input);
-            HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            var response = httpClient.PostAsync(path, content).GetAwaiter().GetResult();
-
-            if (response.IsSuccessStatusCode)
-            {
-                Stream stream = response.Content.ReadAsStream();
-                result = JsonSerializer.Deserialize<T>(stream);
-                return result != null;
-            }
-            else
-            {
-                result = default;
-                return false;
-            }
-        }
+        public static async Task<T?> TryGetFromJsonAsync<T>(this HttpClient httpClient, string path) where T : class
+            => await httpClient.GetFromJsonAsync(path, typeof(T)) as T;
     }
 }

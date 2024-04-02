@@ -7,7 +7,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using static CustomCADSolutions.App.Extensions.UtilityExtensions;
+using static CustomCADSolutions.App.Constants.Paths;
 using CustomCADSolutions.App.Extensions;
+using CustomCADSolutions.App.Mappings.DTOs;
+using AutoMapper;
+using CustomCADSolutions.App.Mappings;
+using System.Text.Json;
 
 namespace CustomCADSolutions.App.Areas.Designer.Controllers
 {
@@ -20,46 +25,42 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
         private readonly ICategoryService categoryService;
         private readonly ILogger logger;
         private readonly UserManager<IdentityUser> userManager;
+        private readonly HttpClient httpClient;
+        private readonly IMapper mapper;
 
         public OrdersController(
             ICadService cadService,
             IOrderService orderService,
             ICategoryService categoryService,
             ILogger<CadModel> logger,
-            UserManager<IdentityUser> userManager)
+            UserManager<IdentityUser> userManager,
+            HttpClient httpClient)
         {
+            // Services
             this.cadService = cadService;
             this.orderService = orderService;
             this.categoryService = categoryService;
+            
+            // Helpers
             this.logger = logger;
             this.userManager = userManager;
+            this.httpClient = httpClient;
+            
+            // Addons
+            MapperConfiguration config = new(cfg => cfg.AddProfile<OrderDTOProfile>());
+            this.mapper = config.CreateMapper();
         }
 
         [HttpGet]
         public async Task<IActionResult> All()
         {
             ViewBag.Statuses = typeof(OrderStatus).GetEnumNames();
-            
-            IEnumerable<OrderModel> models = await orderService.GetAllAsync();
-            ViewBag.HiddenOrders = models.Count(m => !m.ShouldShow);
 
-            OrderViewModel[] orders = models
-                .Where(m => m.ShouldShow)
-                .OrderBy(m => m.OrderDate)
-                .Select(m => new OrderViewModel
-                {
-                    BuyerId = m.BuyerId,
-                    BuyerName = m.Buyer.UserName,
-                    CadId = m.CadId,
-                    Category = m.Cad.Category.Name,
-                    Name = m.Cad.Name,
-                    Description = m.Description,
-                    Status = m.Status.ToString(),
-                    OrderDate = m.OrderDate.ToString("dd/MM/yyyy"),
-                })
-                .ToArray();
+            var dtos = await httpClient.TryGetFromJsonAsync<OrderExportDTO[]>(OrdersPath)
+                ?? throw new JsonException("parsing error");
 
-            return View(orders);
+            ViewBag.HiddenOrders = dtos.Count(m => !m.ShouldShow);
+            return View(mapper.Map<OrderViewModel[]>(dtos.Where(v => v.ShouldShow)));
         }
 
         [HttpPost]

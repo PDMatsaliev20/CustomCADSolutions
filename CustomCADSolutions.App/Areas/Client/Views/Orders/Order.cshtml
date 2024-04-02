@@ -5,6 +5,7 @@
 
 <div class="container d-flex flex-column align-items-center">
     <form id="payment-form" class="col-6" method="post" autocomplete="off">
+        <input name="id" value="@Model.Id" hidden />
         <div class="row text-center mb-3">
             <div class="col-6">
                 <label for="card-element" class="form-label mb-4">Credit or debit card</label>
@@ -38,14 +39,13 @@
             fov: @Model.Fov,
             rgb: {
                 r: @Model.RGB.Item1 / 255,
-                        b: @Model.RGB.Item2 / 255,
-                        g: @Model.RGB.Item3 / 255,
+                g: @Model.RGB.Item2 / 255,
+                b: @Model.RGB.Item3 / 255,
             }
         };
 
         loadModel(cad);
     </script>
-
 
     <script>
         const divElement = document.getElementById('model-@Model.Id');
@@ -53,6 +53,7 @@
     </script>
 
     <script src="https://js.stripe.com/v3/"></script>
+
     <script>
         var stripe = Stripe('@ViewBag.StripeKey');
         var elements = stripe.elements();

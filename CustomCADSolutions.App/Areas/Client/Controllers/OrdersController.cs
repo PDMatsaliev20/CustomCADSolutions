@@ -9,9 +9,14 @@ using Microsoft.AspNetCore.Mvc;
 using static CustomCADSolutions.App.Extensions.UtilityExtensions;
 using CustomCADSolutions.App.Extensions;
 using Microsoft.Extensions.Options;
-using Stripe;
 using System.Drawing;
 using CustomCADSolutions.App.Models;
+using AutoMapper;
+using CustomCADSolutions.App.Mappings;
+using System.Text.Json;
+using static CustomCADSolutions.App.Constants.Paths;
+using CustomCADSolutions.App.Mappings.DTOs;
+using CustomCADSolutions.App.Mappings.CadDTOs;
 
 namespace CustomCADSolutions.App.Areas.Client.Controllers
 {
@@ -21,57 +26,50 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
     {
         private readonly IOrderService orderService;
         private readonly ICadService cadService;
-        private readonly ICategoryService categoryService;
         private readonly ILogger logger;
-        private readonly UserManager<IdentityUser> userManager;
-        private readonly IWebHostEnvironment hostingEnvironment;
+        private readonly ICategoryService categoryService;
         private readonly StripeSettings stripeSettings;
         private readonly HttpClient httpClient;
+        private readonly IMapper mapper;
 
         public OrdersController(
             ILogger<OrdersController> logger,
             IOrderService orderService,
             ICadService cadService,
             ICategoryService categoryService,
-            UserManager<IdentityUser> userManager,
-            IWebHostEnvironment hostingEnvironment,
             IOptions<StripeSettings> stripeSettings,
             HttpClient httpClient)
         {
+            // Services
             this.orderService = orderService;
             this.cadService = cadService;
-            this.logger = logger;
-            this.userManager = userManager;
             this.categoryService = categoryService;
-            this.hostingEnvironment = hostingEnvironment;
-            this.stripeSettings = stripeSettings.Value;
+            
+            // Helpers
+            this.logger = logger;
             this.httpClient = httpClient;
-            httpClient.BaseAddress = new Uri("https://localhost:7119/API/Orders/");
+            
+            // Addons
+            this.stripeSettings = stripeSettings.Value;
+            MapperConfiguration config = new(cfg => cfg.AddProfile<OrderDTOProfile>());
+            this.mapper = config.CreateMapper();
         }
 
         [HttpGet]
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Index()
         {
             try
             {
-                CadModel model = await cadService.GetByIdAsync(id);
-
-                if (model.Creator == null || !model.CreationDate.HasValue)
+                var dtos = await httpClient.TryGetFromJsonAsync<IEnumerable<OrderExportDTO>>(OrdersPath);
+                if (dtos != null)
                 {
-                    throw new Exception("Model not created yet");
+                    dtos = dtos.Where(v => v.BuyerName == User.Identity!.Name);
+
+                    ViewBag.Area = "Client";
+                    return View(mapper.Map<OrderViewModel[]>(dtos));
                 }
+                else throw new JsonException("Json parsing error");
 
-                CadViewModel view = new()
-                {
-                    Id = model.Id,
-                    Name = model.Name,
-                    Category = model.Category.Name,
-                    CreatorName = model.Creator.UserName,
-                    CreationDate = model.CreationDate.Value.ToString("dd/MM/yyyy HH:mm:ss"),
-                    Coords = model.Coords,
-                    SpinAxis = model.SpinAxis
-                };
-                return View(view);
             }
             catch (Exception ex)
             {
@@ -80,27 +78,22 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Details(int id)
         {
-            logger.LogInformation("Entered Orders Page");
+            if (!await orderService.ExistsByIdAsync(id, User.GetId()))
+            {
+                logger.LogWarning($"User {User.Identity!.Name} doesn't have an order with id: {id}");
+                return Unauthorized();
+            }
 
-            IEnumerable<OrderViewModel> orders = (await orderService.GetAllAsync())
-                .Where(o => o.BuyerId == User.GetId())
-                .OrderBy(o => (int)o.Status).ThenBy(o => o.OrderDate)
-                .Select(m => new OrderViewModel
-                {
-                    BuyerId = m.BuyerId,
-                    BuyerName = m.Buyer.UserName,
-                    CadId = m.CadId,
-                    Category = m.Cad.Category.Name,
-                    Name = m.Cad.Name,
-                    Description = m.Description,
-                    Status = m.Status.ToString(),
-                    OrderDate = m.OrderDate.ToString("dd/MM/yyyy HH:mm:ss"),
-                });
+            string path = string.Format(OrderByIdPath, id, User.GetId());
+            OrderImportDTO? dto = await httpClient.TryGetFromJsonAsync<OrderImportDTO>(path);
 
-            ViewBag.Orders = orders;
-            return View(orders);
+            if (dto != null)
+            {
+                return View(mapper.Map<OrderViewModel>(dto));
+            }
+            else return BadRequest("Json parsing error");
         }
 
         [HttpGet]
@@ -111,29 +104,24 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
                 return BadRequest("Model not found");
             }
 
-            CadModel model = await cadService.GetByIdAsync(id);
-            CadViewModel view = new()
+            string path = string.Format(CadByIdPath, id);
+            CadExportDTO? dto = await httpClient.TryGetFromJsonAsync<CadExportDTO>(path);
+
+            if (dto != null)
             {
-                Id = model.Id,
-                Name = model.Name,
-                Category = model.Category.Name,
-                CreatorName = model.Creator?.UserName!,
-                CreationDate = model.CreationDate?.ToString("dd/MM/yyyy HH:mm:ss"),
-                Coords = model.Coords,
-                SpinAxis = model.SpinAxis,
-                RGB = (model.Color.R, model.Color.B, model.Color.G) 
-            };
-            ViewBag.StripeKey = stripeSettings.TestPublishableKey;
-            return View(view);
+                CadViewModel view = mapper.Map<CadViewModel>(dto);
+                ViewBag.StripeKey = stripeSettings.TestPublishableKey;
+                return View(view);
+            }
+            else return BadRequest("Json parsing error");
         }
 
         [HttpPost]
-        public async Task<IActionResult> Order(CadViewModel model, string stripeToken)
+        public async Task<IActionResult> Order(int id, string stripeToken)
         {
-            if (!ModelState.IsValid)
+            if (await orderService.ExistsByIdAsync(id, User.GetId()))
             {
-                logger.LogError($"Erros: {string.Join(", ", ModelState.GetErrors())}");
-                //return RedirectToAction("Categories", "Home", new { area = "" });
+                return RedirectToAction(nameof(Details), new { id });
             }
 
             bool succeeded = stripeSettings.ProcessPayment(stripeToken);
@@ -143,15 +131,14 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
                 return RedirectToAction("Index", "Home", new { area = "" });
             }
 
-            await orderService.CreateAsync(new()
+            OrderImportDTO dto = new()
             {
-                CadId = model.Id,
+                CadId = id,
                 BuyerId = User.GetId(),
-                Description = $"3D Model from the gallery with id: {model.Id}",
-                OrderDate = DateTime.Now,
-                Status = OrderStatus.Finished,
-                ShouldShow = false,
-            });
+                Description = $"3D Model from the gallery with id: {id}",
+                Status = OrderStatus.Finished.ToString(),
+            };
+            await httpClient.PostAsJsonAsync(CreateOrderPath, dto);
 
             return RedirectToAction(nameof(Index));
         }
@@ -159,8 +146,10 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
         [HttpGet]
         public async Task<IActionResult> Add()
         {
-            OrderInputModel input = new() { Categories = await categoryService.GetAllAsync() };
-            return View(input);
+            return View(new OrderInputModel()
+            {
+                Categories = await categoryService.GetAllAsync()
+            });
         }
 
         [HttpPost]
@@ -168,28 +157,23 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
         {
             if (!ModelState.IsValid)
             {
-                logger.LogError("Invalid Order: {0}", string.Join(", ", ModelState.GetErrors()));
                 input.Categories = await categoryService.GetAllAsync();
                 return View(input);
             }
 
-            OrderModel model = new()
+            try
             {
-                Description = input.Description,
-                OrderDate = DateTime.Now,
-                Status = input.Status,
-                ShouldShow = true,
-                Buyer = await userManager.FindByIdAsync(User.GetId()),
-                Cad = new CadModel()
-                {
-                    Name = input.Name,
-                    CategoryId = input.CategoryId,
-                }
-            };
-            await orderService.CreateAsync(model);
-
-            logger.LogInformation("Ordered 3d model");
-            return RedirectToAction(nameof(Index));
+                input.BuyerId = User.GetId();
+                var dto = mapper.Map<OrderImportDTO>(input);
+                var response = await httpClient.PostAsJsonAsync(CreateOrderPath, dto);
+                response.EnsureSuccessStatusCode();
+                
+                return RedirectToAction(nameof(Index));
+            }
+            catch (HttpRequestException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet]
@@ -227,7 +211,8 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
         {
             if (!ModelState.IsValid)
             {
-                logger.LogError("Invalid Order");
+                logger.LogError($"Invalid Order - {string.Join(", ", ModelState.GetErrors())}");
+                input.Categories = await categoryService.GetAllAsync();
                 return View(input);
             }
 
@@ -256,43 +241,15 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete(int cadId, string buyerId)
+        public async Task<IActionResult> Delete(string buyerId, int id)
         {
-            try
+            string path = string.Format(DeleteOrderPath, buyerId, id);
+            var response = await httpClient.DeleteAsync(path);
+            if (response.IsSuccessStatusCode)
             {
-                await orderService.DeleteAsync(cadId, buyerId);
+                return RedirectToAction(nameof(Index));
             }
-            catch (KeyNotFoundException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            return RedirectToAction(nameof(Index));
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Hide(CadInputModel input)
-        {
-            OrderModel? model = await orderService.GetByIdAsync(input.Id, input.BuyerId!);
-
-            if (model == null)
-            {
-                return BadRequest();
-            }
-
-            model.ShouldShow = false;
-            await orderService.EditAsync(model);
-
-            return RedirectToAction(nameof(Index));
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> ChangeColor(int id, string color)
-        {
-            CadModel model = await cadService.GetByIdAsync(id);
-            model.Color = ColorTranslator.FromHtml(color);
-            await cadService.EditAsync(model);
-
-            return RedirectToAction(nameof(Index), "Cads");
+            else return StatusCode((int)response.StatusCode);
         }
     }
 }

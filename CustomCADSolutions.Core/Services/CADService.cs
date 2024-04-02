@@ -16,23 +16,23 @@ namespace CustomCADSolutions.Core.Services
     {
         private readonly IRepository repository;
         private readonly IOrderService orderService;
-        private readonly MapperConfiguration config = new(cfg =>
-        {
-            cfg.AddProfile<CadProfile>();
-            cfg.AddProfile<OrderProfile>();
-        });
+        private readonly IMapper mapper;
 
         public CadService(IRepository repository, IOrderService orderService)
         {
             this.repository = repository;
             this.orderService = orderService;
+            mapper = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<CadProfile>();
+                cfg.AddProfile<OrderProfile>();
+            }).CreateMapper();
         }
 
-        private IMapper Mapper { get => config.CreateMapper(); }
 
         public async Task<int> CreateAsync(CadModel model)
         {
-            Cad cad = Mapper.Map<Cad>(model);
+            Cad cad = mapper.Map<Cad>(model);
             EntityEntry<Cad> entry = await repository.AddAsync<Cad>(cad);
             await repository.SaveChangesAsync();
 
@@ -41,7 +41,7 @@ namespace CustomCADSolutions.Core.Services
 
         public async Task CreateRangeAsync(params CadModel[] models)
         {
-            Cad[] cads = Mapper.Map<Cad[]>(models);
+            Cad[] cads = mapper.Map<Cad[]>(models);
             await repository.AddRangeAsync(cads);
             await repository.SaveChangesAsync();
         }
@@ -68,7 +68,7 @@ namespace CustomCADSolutions.Core.Services
             cad.CreatorId = model.CreatorId;
             cad.Category = model.Category;
             cad.Creator = model.Creator;
-            cad.Orders = Mapper.Map<Order[]>(model.Orders);
+            cad.Orders = mapper.Map<Order[]>(model.Orders);
 
             await repository.SaveChangesAsync();
         }
@@ -98,7 +98,7 @@ namespace CustomCADSolutions.Core.Services
                 cad.CreatorId = model.CreatorId;
                 cad.Category = model.Category;
                 cad.Creator = model.Creator;
-                cad.Orders = Mapper.Map<Order[]>(model.Orders);
+                cad.Orders = mapper.Map<Order[]>(model.Orders);
             }
 
             await repository.SaveChangesAsync();
@@ -143,7 +143,7 @@ namespace CustomCADSolutions.Core.Services
             Cad cad = await repository.GetByIdAsync<Cad>(id)
                 ?? throw new KeyNotFoundException($"Model with id: {id} doesn't exist");
 
-            CadModel model = Mapper.Map<CadModel>(cad);
+            CadModel model = mapper.Map<CadModel>(cad);
             return model;
         }
 
@@ -212,7 +212,7 @@ namespace CustomCADSolutions.Core.Services
                 .ToArrayAsync();
 
 
-            CadModel[] models = Mapper.Map<CadModel[]>(pageCads);
+            CadModel[] models = mapper.Map<CadModel[]>(pageCads);
             return new()
             {
                 TotalCount = allCads.Count(),

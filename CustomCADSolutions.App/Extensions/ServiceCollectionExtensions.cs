@@ -9,8 +9,8 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using CustomCADSolutions.App.Models;
+using Microsoft.AspNetCore.Authentication.Certificate;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -103,7 +103,6 @@ namespace Microsoft.Extensions.DependencyInjection
 
         public static IServiceCollection AddAbstractions(this IServiceCollection services)
         {
-            services.AddScoped<IConverter, Converter>();
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<ICadService, CadService>();
             services.AddScoped<ICategoryService, CategoryService>();

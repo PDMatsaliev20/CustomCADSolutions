@@ -27,16 +27,14 @@ builder.Services.ConfigureApplicationCookie(options =>
 WebApplication app = builder.Build();
 
 app.UseLocalizion("en-US", cultures);
+
 if (app.Environment.IsProduction())
 {
-    app.UseHsts();
-    app.UseExceptionHandler("/Home/StatusCodeHandler");
-    app.UseStatusCodePagesWithReExecute("/Home/StatusCodeHandler", "?statusCode={0}");
+    app.UseProductionMiddlewares();
 }
 else if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseDevelopmentMiddlewares();
 }
 
 app.UseHttpsRedirection();

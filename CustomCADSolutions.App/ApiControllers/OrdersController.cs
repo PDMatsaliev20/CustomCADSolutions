@@ -1,68 +1,60 @@
-﻿using CustomCADSolutions.App.Extensions;
+﻿using AutoMapper;
+using CustomCADSolutions.App.Extensions;
+using CustomCADSolutions.App.Mappings;
+using CustomCADSolutions.App.Mappings.DTOs;
 using CustomCADSolutions.App.Models.Orders;
 using CustomCADSolutions.Core.Contracts;
 using CustomCADSolutions.Core.Models;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using static Microsoft.AspNetCore.Http.StatusCodes;
 
-namespace CustomCADSolutions.App.ApiControllers
+namespace CustomCADSolutions.App.APIControllers
 {
     [ApiController]
     [Route("API/[controller]")]
     public class OrdersController : ControllerBase
     {
         private readonly IOrderService orderService;
+        private readonly IMapper mapper;
 
         public OrdersController(IOrderService orderService)
         {
             this.orderService = orderService;
+            mapper = new MapperConfiguration(cfg => cfg.AddProfile<OrderModelProfile>()).CreateMapper();
         }
 
-        [HttpGet("All")]
+        [HttpGet]
         [Produces("application/json")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<OrderViewModel[]>> Get()
-        {
-            IEnumerable<OrderModel> orders = await orderService.GetAllAsync();
-            OrderViewModel[] views = orders
-                .Select(o => new OrderViewModel
-                {
-                    BuyerId = o.BuyerId,
-                    BuyerName = o.Buyer.UserName,
-                    CadId = o.CadId,
-                    Category = o.Cad.Category.Name,
-                    Name = o.Cad.Name,
-                    Description = o.Description,
-                    Status = o.Status.ToString(),
-                    OrderDate = o.OrderDate.ToString("dd/MM/yyyy HH:mm:ss"),
-                })
-                .ToArray();
-
-            return views;
-        }
-
-        [HttpGet("Single")]
-        [Produces("application/json")]
-        [ProducesResponseType(StatusCodes.Status200OK)] 
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<OrderViewModel>> Get(int cadId, string buyerId)
+        [ProducesResponseType(Status200OK)]
+        [ProducesResponseType(Status400BadRequest)]
+        public async Task<ActionResult<OrderExportDTO[]>> GetAsync()
         {
             try
             {
-                OrderModel order = await orderService.GetByIdAsync(cadId, buyerId);
-                OrderViewModel view = new()
-                {
-                    BuyerId = order.BuyerId,
-                    BuyerName = order.Buyer.UserName,
-                    CadId = order.CadId,
-                    Category = order.Cad.Category.Name,
-                    Name = order.Cad.Name,
-                    Description = order.Description,
-                    Status = order.Status.ToString(),
-                    OrderDate = order.OrderDate.ToString("dd/MM/yyyy HH:mm:ss"),
-                };
+                IEnumerable<OrderModel> orders = (await orderService.GetAllAsync())
+                    .OrderBy(o => (int)o.Status).ThenBy(o => o.OrderDate);
 
-                return view;
+                return mapper.Map<OrderExportDTO[]>(orders);
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpGet("{buyerId}/{id}")]
+        [Produces("application/json")]
+        [ProducesResponseType(Status200OK)]
+        [ProducesResponseType(Status400BadRequest)]
+        public async Task<ActionResult<OrderExportDTO>> GetAsync(int id, string buyerId)
+        {
+            try
+            {
+                OrderModel order = await orderService.GetByIdAsync(id, buyerId);
+                return mapper.Map<OrderExportDTO>(order);
             }
             catch (KeyNotFoundException)
             {
@@ -72,75 +64,73 @@ namespace CustomCADSolutions.App.ApiControllers
 
         [HttpPost("Create")]
         [Consumes("application/json")]
-        [Produces("application/json")]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<OrderModel>> Post(OrderInputModel input)
+        [ProducesResponseType(Status201Created)]
+        [ProducesResponseType(Status400BadRequest)]
+        [IgnoreAntiforgeryToken]
+        public async Task<ActionResult<OrderExportDTO>> PostAsync(OrderImportDTO dto)
         {
-            OrderModel order = new()
-            {
-                Description = input.Description,
-                OrderDate = DateTime.Now,
-                Status = input.Status,
-                ShouldShow = true,
-                BuyerId = User.GetId(),
-                Cad = new CadModel()
-                {
-                    Name = input.Name,
-                    CategoryId = input.CategoryId,
-                }
-            };
-            (string, int) ids = await orderService.CreateAsync(order);
+            OrderModel model = mapper.Map<OrderModel>(dto);
+            model.OrderDate = DateTime.Now;
 
-            var values = new { buyerId = ids.Item1, cadId = ids.Item2};
-            return CreatedAtAction("Single", values, order);
-        }
-
-        [HttpPut("Edit")]
-        [Consumes("application/json")]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(403)]
-        [ProducesResponseType(404)]
-        public async Task<ActionResult> Put(OrderInputModel input)
-        {
-            OrderModel order;
             try
             {
-                order = await orderService.GetByIdAsync(input.CadId, input.BuyerId!);
-            }
-            catch (KeyNotFoundException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+                (string, int) ids = await orderService.CreateAsync(model);
 
-            if (order.Status != OrderStatus.Pending)
-            {
-                return Forbid();
-            }
-
-            order.Cad.Name = input.Name;
-            order.Description = input.Description;
-            order.Cad.CategoryId = input.CategoryId;
-            await orderService.EditAsync(order);
-
-            return NoContent();
-        }
-
-        [HttpDelete("Delete")]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> Delete(int cadId, string buyerId)
-        {
-            try
-            {
-                await orderService.DeleteAsync(cadId, buyerId);
+                return CreatedAtAction(nameof(GetAsync),
+                    new { buyerId = ids.Item1, id = ids.Item2 },
+                    mapper.Map<OrderExportDTO>(model));
             }
             catch
             {
                 return BadRequest();
             }
-
-            return NoContent();
         }
+
+        [HttpPut("Edit")]
+        [Consumes("application/json")]
+        [ProducesResponseType(Status204NoContent)]
+        [ProducesResponseType(Status403Forbidden)]
+        [ProducesResponseType(Status404NotFound)]
+        public async Task<ActionResult> PutAsync(OrderImportDTO dto)
+        {
+            try
+            {
+                OrderModel order = await orderService.GetByIdAsync(dto.CadId, dto.BuyerId);
+                if (order.Status != OrderStatus.Pending)
+                {
+                    return Forbid();
+                }
+
+                order.Cad.Name = dto.Cad.Name;
+                order.Description = dto.Description;
+                order.Cad.CategoryId = dto.Cad.CategoryId;
+                await orderService.EditAsync(order);
+
+                return NoContent();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpDelete("{buyerId}/{id}")]
+        [IgnoreAntiforgeryToken]
+        public async Task<ActionResult<OrderModel>> DeleteAsync(int id, string buyerId)
+        {
+            if (await orderService.ExistsByIdAsync(id, buyerId))
+            {
+                await orderService.DeleteAsync(id, buyerId);
+                return NoContent();
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpDelete("Delete2")]
+        [IgnoreAntiforgeryToken]
+        public IActionResult SecondDelete() => NoContent();
     }
 }

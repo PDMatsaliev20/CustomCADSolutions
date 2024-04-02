@@ -8,7 +8,10 @@ namespace CustomCADSolutions.App.Models.Cads
     public class CadInputModel
     {
         public int Id { get; set; }
+
         public string? BuyerId { get; set; }
+
+        public bool IsValidated { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(SharedResources), 
             ErrorMessageResourceName = nameof(SharedResources.Required))]
@@ -32,17 +35,17 @@ namespace CustomCADSolutions.App.Models.Cads
         [Range(CadConstants.XMin, CadConstants.XMax,
             ErrorMessageResourceType = typeof(SharedResources),
             ErrorMessageResourceName = nameof(SharedResources.Range))]
-        public short X { get; set; }
+        public int X { get; set; }
         
         [Range(CadConstants.YMin, CadConstants.YMax, 
             ErrorMessageResourceType = typeof(SharedResources),
             ErrorMessageResourceName = nameof(SharedResources.Range))]
-        public short Y { get; set; }
+        public int Y { get; set; }
 
         [Range(CadConstants.ZMin, CadConstants.ZMax, 
             ErrorMessageResourceType = typeof(SharedResources),
             ErrorMessageResourceName = nameof(SharedResources.Range))]
-        public short Z { get; set; }
+        public int Z { get; set; }
 
         [RegularExpression(CadConstants.SpinAxisRegEx,
             ErrorMessageResourceType = typeof(SharedResources),

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "baYMqprONUXJ503DuCrt8t1m66iqefAgUwOT8jxM/HLJROVi4KOiXsqE/AkencHin3SD39oJuX/xP2ndbfZCpA==",
+  "dgSpecHash": "VpTW5TWGzRfcoovAtEhQc4jhtajr/ommabsUdlrhMoyOaZbFmf7a+yIC4bgjj0l9/mFXdysTtMXnCGK+Om5f8g==",
   "success": true,
   "projectFilePath": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\CustomCADSolutions.App.csproj",
   "expectedPackageFiles": [
@@ -61,6 +61,7 @@
     "C:\\Users\\35988\\.nuget\\packages\\messagepackanalyzer\\2.1.152\\messagepackanalyzer.2.1.152.nupkg.sha512",
     "C:\\Users\\35988\\.nuget\\packages\\microsoft.aspnetcore.antiforgery\\2.2.0\\microsoft.aspnetcore.antiforgery.2.2.0.nupkg.sha512",
     "C:\\Users\\35988\\.nuget\\packages\\microsoft.aspnetcore.authentication.abstractions\\2.2.0\\microsoft.aspnetcore.authentication.abstractions.2.2.0.nupkg.sha512",
+    "C:\\Users\\35988\\.nuget\\packages\\microsoft.aspnetcore.authentication.certificate\\6.0.28\\microsoft.aspnetcore.authentication.certificate.6.0.28.nupkg.sha512",
     "C:\\Users\\35988\\.nuget\\packages\\microsoft.aspnetcore.authentication.core\\2.2.0\\microsoft.aspnetcore.authentication.core.2.2.0.nupkg.sha512",
     "C:\\Users\\35988\\.nuget\\packages\\microsoft.aspnetcore.authorization\\2.2.0\\microsoft.aspnetcore.authorization.2.2.0.nupkg.sha512",
     "C:\\Users\\35988\\.nuget\\packages\\microsoft.aspnetcore.authorization.policy\\2.2.0\\microsoft.aspnetcore.authorization.policy.2.2.0.nupkg.sha512",

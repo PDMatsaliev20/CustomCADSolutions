@@ -18,7 +18,6 @@ namespace CustomCADSolutions.App.Controllers
     {
         private readonly ILogger<HomeController> logger;
         private readonly ICadService cadService;
-        private readonly IOrderService orderService;
         private readonly ICategoryService categoryService;
         private readonly UserManager<IdentityUser> userManager;
         private readonly SignInManager<IdentityUser> signInManager;
@@ -26,7 +25,6 @@ namespace CustomCADSolutions.App.Controllers
 
         public HomeController(
             ICadService cadService,
-            IOrderService orderService,
             ICategoryService categoryService,
             ILogger<HomeController> logger,
             UserManager<IdentityUser> userManager,
@@ -35,7 +33,6 @@ namespace CustomCADSolutions.App.Controllers
         {
             this.logger = logger;
             this.cadService = cadService;
-            this.orderService = orderService;
             this.categoryService = categoryService;
             this.userManager = userManager;
             this.signInManager = signInManager;

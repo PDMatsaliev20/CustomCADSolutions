@@ -1,28 +1,34 @@
-﻿using CustomCADSolutions.App.Extensions;
+﻿using AutoMapper;
+using CustomCADSolutions.App.Extensions;
+using CustomCADSolutions.App.Mappings;
+using CustomCADSolutions.App.Mappings.CadDTOs;
+using CustomCADSolutions.App.Mappings.DTOs;
 using CustomCADSolutions.App.Models.Cads;
 using CustomCADSolutions.Core.Contracts;
 using CustomCADSolutions.Core.Models;
-using CustomCADSolutions.Infrastructure.Data.Models;
-using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using Microsoft.AspNetCore.Mvc;
+using static Microsoft.AspNetCore.Http.StatusCodes;
 
-namespace CustomCADSolutions.App.ApiControllers
+namespace CustomCADSolutions.App.APIControllers
 {
     [ApiController]
     [Route("API/[controller]")]
     public class CadsController : ControllerBase
     {
         private readonly ICadService cadService;
+        private readonly IMapper mapper;
 
         public CadsController(ICadService cadService)
         {
             this.cadService = cadService;
+            MapperConfiguration config = new(cfg => cfg.AddProfile<CadModelProfile>());
+            mapper = config.CreateMapper();
         }
 
-        [HttpGet("All")]
+        [HttpGet]
         [Produces("application/json")]
-        [ProducesResponseType(200)]
-        public async Task<ActionResult<CadQueryInputModel>> Get(CadQueryInputModel inputQuery, bool validated = true, bool unvalidated = false)
+        [ProducesResponseType(Status200OK)]
+        public async Task<ActionResult<CadQueryInputModel>> GetAsync(CadQueryInputModel inputQuery, bool validated = true, bool unvalidated = false)
         {
             if (inputQuery.CadsPerPage % inputQuery.Cols != 0)
             {
@@ -40,91 +46,78 @@ namespace CustomCADSolutions.App.ApiControllers
                 modelsPerPage: inputQuery.CadsPerPage);
 
             inputQuery.TotalCadsCount = query.TotalCount;
-            inputQuery.Cads = query.CadModels
-                .Select(m => new CadViewModel
-                {
-                    Id = m.Id,
-                    Cad = m.Bytes!,
-                    Name = m.Name,
-                    Category = m.Category.Name,
-                    CreationDate = m.CreationDate!.Value.ToString("dd/MM/yyyy HH:mm:ss"),
-                    CreatorName = m.Creator!.UserName,
-                    Coords = m.Coords,
-                    SpinAxis = m.SpinAxis,
-                    IsValidated = m.IsValidated,
-                    RGB = m.Color.GetColorBytes(),
-                }).ToArray();
+            inputQuery.Cads = mapper.Map<CadViewModel[]>(query.CadModels);
 
             return inputQuery;
         }
 
-        [HttpGet("Single")]
+        [HttpGet("{id}")]
         [Produces("application/json")]
-        [ProducesResponseType(200)]
-        public async Task<ActionResult<CadViewModel>> Get(int id)
+        [ProducesResponseType(Status200OK)]
+        [ProducesResponseType(Status404NotFound)]
+        [ProducesResponseType(Status400BadRequest)]
+        public async Task<ActionResult<CadExportDTO>> GetAsync(int id)
         {
-            CadModel cad = await cadService.GetByIdAsync(id);
-            CadViewModel view = new()
+            try
             {
-                Id = cad.Id,
-                Cad = cad.Bytes!,
-                Name = cad.Name,
-                Category = cad.Category.Name,
-                CreationDate = cad.CreationDate!.Value.ToString("dd/MM/yyyy HH:mm:ss"),
-                CreatorName = cad.Creator!.UserName,
-                Coords = cad.Coords,
-                SpinAxis = cad.SpinAxis,
-                IsValidated = cad.IsValidated,
-                RGB = cad.Color.GetColorBytes(),
-            };
-
-            return view;
+                CadModel model = await cadService.GetByIdAsync(id);
+                return mapper.Map<CadExportDTO>(model);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+            catch
+            {
+                return BadRequest();
+            }
         }
 
         [HttpPost("Create")]
         [Consumes("application/json")]
         [Produces("application/json")]
-        [ProducesResponseType(201)]
-        public async Task<ActionResult> Post(CadInputModel input)
+        [ProducesResponseType(Status201Created)]
+        public async Task<ActionResult> PostAsync(CadImportDTO import)
         {
-            byte[] bytes = await input.CadFile.GetBytesAsync();
-            CadModel cad = new() 
-            {
-                Bytes = bytes,
-                Name = input.Name,
-                CategoryId = input.CategoryId,
-                IsValidated = false,
-                CreationDate = DateTime.Now,
-                CreatorId = User.GetId()
-            };
-            await cadService.CreateAsync(cad);
+            CadModel cad = mapper.Map<CadModel>(import);
+            cad.Bytes = import.Bytes;
+            cad.CreationDate = DateTime.Now;
+            cad.CreatorId = User.GetId();
 
-            return CreatedAtAction("Get", new { id = cad.Id }, cad);
+            int id = await cadService.CreateAsync(cad);
+            
+            CadExportDTO export = mapper.Map<CadExportDTO>(cad);
+            return CreatedAtAction(nameof(GetAsync), new { id }, export);
         }
 
         [HttpPut("Edit")]
         [Consumes("application/json")]
-        [ProducesResponseType(204)]
-        public async Task<ActionResult> Put(CadInputModel input)
+        [ProducesResponseType(Status204NoContent)]
+        public async Task<ActionResult> PutAsync(CadImportDTO dto)
         {
-            CadModel cad = await cadService.GetByIdAsync(input.Id);
+            CadModel cad = await cadService.GetByIdAsync(dto.Id);
             
-            cad.Name = input.Name;
-            cad.CategoryId = input.CategoryId;
+            cad.Name = dto.Name;
+            cad.CategoryId = dto.CategoryId;
             cad.IsValidated = false;
-            cad.Coords = (input.X, input.Y, input.Z);
-            cad.SpinAxis = input.SpinAxis;
+            cad.Coords = (dto.Coords[0], dto.Coords[1], dto.Coords[2]);
+            cad.SpinAxis = dto.SpinAxis;
             await cadService.EditAsync(cad);
             
             return NoContent();
         }
 
-        [HttpDelete("Delete")]
-        [ProducesResponseType(204)]
-        public async Task<ActionResult> Delete(int id)
+        [HttpDelete("{id}")]
+        [ProducesResponseType(Status204NoContent)]
+        [ProducesResponseType(Status404NotFound)]
+        public async Task<ActionResult> DeleteAsync(int id)
         {
-            await cadService.DeleteAsync(id);
-            return NoContent();
+            if (await cadService.ExistsByIdAsync(id))
+            {
+                await cadService.DeleteAsync(id);
+                return NoContent();
+            }
+            else return NotFound();
         }
     }
 }

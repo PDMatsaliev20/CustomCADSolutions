@@ -45,7 +45,7 @@
                             break;
 
                         case "Delete":
-                            <form asp-controller="Cads" asp-action="Delete" asp-route-id="@Model.Id"
+                            <form asp-area="@ViewBag.Area" asp-controller="Cads" asp-action="Delete" asp-route-id="@Model.Id"
                                     class="mt-2" method="post">
                                 <div class="d-grid gap-2">
                                     <input type="submit" value="@Localizer["Delete"]" class="btn btn-danger mb-2"

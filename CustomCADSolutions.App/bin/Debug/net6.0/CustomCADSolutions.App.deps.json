@@ -10,6 +10,7 @@
         "dependencies": {
           "AssimpNet": "4.1.0",
           "CustomCADSolutions.Core": "1.0.0",
+          "Microsoft.AspNetCore.Authentication.Certificate": "6.0.28",
           "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": "6.0.24",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "6.0.28",
           "Microsoft.AspNetCore.Identity.UI": "6.0.28",
@@ -657,6 +658,17 @@
           "Microsoft.AspNetCore.Http.Abstractions": "2.2.0",
           "Microsoft.Extensions.Logging.Abstractions": "6.0.0",
           "Microsoft.Extensions.Options": "6.0.0"
+        }
+      },
+      "Microsoft.AspNetCore.Authentication.Certificate/6.0.28": {
+        "dependencies": {
+          "Microsoft.Extensions.Caching.Memory": "6.0.1"
+        },
+        "runtime": {
+          "lib/net6.0/Microsoft.AspNetCore.Authentication.Certificate.dll": {
+            "assemblyVersion": "6.0.28.0",
+            "fileVersion": "6.0.2824.12005"
+          }
         }
       },
       "Microsoft.AspNetCore.Authentication.Core/2.2.0": {
@@ -3584,6 +3596,13 @@
       "sha512": "sha512-VloMLDJMf3n/9ic5lCBOa42IBYJgyB1JhzLsL68Zqg+2bEPWfGBj/xCJy/LrKTArN0coOcZp3wyVTZlx0y9pHQ==",
       "path": "microsoft.aspnetcore.authentication.abstractions/2.2.0",
       "hashPath": "microsoft.aspnetcore.authentication.abstractions.2.2.0.nupkg.sha512"
+    },
+    "Microsoft.AspNetCore.Authentication.Certificate/6.0.28": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-qxwChpst2g4VEAC4+thM/3FL+QSLjprtfOwf2XjYL+HKVIQpQ0Cg2bKiUz4vt5ZzHC1pdTm7m22ZUjOSeosFxw==",
+      "path": "microsoft.aspnetcore.authentication.certificate/6.0.28",
+      "hashPath": "microsoft.aspnetcore.authentication.certificate.6.0.28.nupkg.sha512"
     },
     "Microsoft.AspNetCore.Authentication.Core/2.2.0": {
       "type": "package",

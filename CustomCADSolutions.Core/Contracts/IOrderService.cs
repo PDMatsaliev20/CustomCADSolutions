@@ -17,5 +17,6 @@ namespace CustomCADSolutions.Core.Contracts
         Task<OrderModel> GetByIdAsync(int cadId, string buyerId);
 
         Task<IEnumerable<OrderModel>> GetAllAsync();
+        Task<bool> ExistsByIdAsync(int cadId, string buyerId);
     }
 }

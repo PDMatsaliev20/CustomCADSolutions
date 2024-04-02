@@ -29,15 +29,15 @@ namespace CustomCADSolutions.Infrastructure.Data.Models
 
         [MaxLength(CadConstants.XMax)]
         [Comment("X coordinate of 3D Model")]
-        public short X { get; set; }
+        public int X { get; set; }
         
         [MaxLength(CadConstants.YMax)]
         [Comment("Y coordinate of 3D Model")]
-        public short Y { get; set; }
+        public int Y { get; set; }
 
         [MaxLength(CadConstants.ZMax)]
         [Comment("Z coordinate of 3D Model")]
-        public short Z { get; set; }
+        public int Z { get; set; }
 
         [Comment("Rgb value of 3D Model")]
         public int R { get; set; }

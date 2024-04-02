@@ -20,7 +20,7 @@ else
         <div class="row">
             @foreach (OrderViewModel order in Model)
             {
-                <partial name="_OrdersPartial" model="order" />
+                <partial name="_OrdersPartial" model="order" view-data="ViewData" />
             }
         </div>
     </div>

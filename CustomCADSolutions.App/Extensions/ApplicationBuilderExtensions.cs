@@ -24,6 +24,23 @@ namespace Microsoft.AspNetCore.Builder
             return app;
         }
 
+        public static IApplicationBuilder UseProductionMiddlewares(this IApplicationBuilder app)
+        {
+            string exceptionPath = "/Home/StatusCodeHandler";
+
+            app.UseHsts();
+            app.UseExceptionHandler(exceptionPath);
+            app.UseStatusCodePagesWithReExecute(exceptionPath, "?statusCode={0}");
+            return app;
+        }
+
+        public static IApplicationBuilder UseDevelopmentMiddlewares(this IApplicationBuilder app)
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI();
+            return app;
+        }
+
         public static async Task<IServiceProvider> UseRolesAsync(this IServiceProvider service, string[] roles)
         {
             using IServiceScope scope = service.CreateScope();

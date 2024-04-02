@@ -23,7 +23,7 @@ namespace CustomCADSolutions.Core.Models
 
         public DateTime? CreationDate { get; set; }
         
-        public (short, short, short) Coords { get; set; }
+        public (int, int, int) Coords { get; set; }
 
         [RegularExpression(CadConstants.SpinAxisRegEx, ErrorMessage = CadConstants.SpinAxisErrorMessage)]
         public char? SpinAxis { get; set; }

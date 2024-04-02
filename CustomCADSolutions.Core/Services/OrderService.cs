@@ -12,32 +12,23 @@ namespace CustomCADSolutions.Core.Services
     public class OrderService : IOrderService
     {
         private readonly IRepository repository;
-        private readonly MapperConfiguration config = new(cfg =>
-        {
-            cfg.AddProfile<CadProfile>();
-            cfg.AddProfile<OrderProfile>();
-        });
-        private IMapper Mapper { get => config.CreateMapper(); }
+        private readonly IMapper mapper;
 
         public OrderService(IRepository repository)
         {
             this.repository = repository;
+            mapper = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<CadProfile>();
+                cfg.AddProfile<OrderProfile>();
+            }).CreateMapper();
         }
 
         public async Task<(string, int)> CreateAsync(OrderModel model)
         {
-            if ((model.Cad == null && model.CadId == 0) || (model.Buyer == null && model.BuyerId == null))
-            {
-                throw new NullReferenceException();
-            }
-
-            Order order = Mapper.Map<Order>(model);
-            Cad? cad = await repository.GetByIdAsync<Cad>(model.CadId);
-            if (cad != null)
-            {
-                order.Cad = cad;
-            }
-            else order.Cad = Mapper.Map<Cad>(model.Cad);
+            Order order = mapper.Map<Order>(model);
+            order.Cad = await repository.GetByIdAsync<Cad>(model.CadId)
+                ?? mapper.Map<Cad>(model.Cad);
 
             EntityEntry<Order> entry = await repository.AddAsync<Order>(order);
             await repository.SaveChangesAsync();
@@ -54,7 +45,7 @@ namespace CustomCADSolutions.Core.Services
                 {
                     throw new NullReferenceException();
                 }
-                Order order = Mapper.Map<Order>(model);
+                Order order = mapper.Map<Order>(model);
                 orders.Add(order);
             }
             await repository.AddRangeAsync<Order>(orders.ToArray());
@@ -103,16 +94,11 @@ namespace CustomCADSolutions.Core.Services
         {
             Order order = repository
                 .All<Order>()
-                .FirstOrDefault(order => order.CadId == cadId
-                                      && order.BuyerId == buyerId)
+                .FirstOrDefault(order 
+                    => order.CadId == cadId && order.BuyerId == buyerId)
                 ?? throw new KeyNotFoundException();
 
             repository.Delete(order);
-            Cad? cad = await repository.GetByIdAsync<Cad>(cadId);
-            if (cad != null)
-            {
-                repository.Delete<Cad>(cad);
-            }
 
             await repository.SaveChangesAsync();
         }
@@ -123,13 +109,17 @@ namespace CustomCADSolutions.Core.Services
                 .GetByIdAsync<Order>(cadId, buyerId)
                 ?? throw new KeyNotFoundException();
 
-            OrderModel model = Mapper.Map<OrderModel>(order);
+            OrderModel model = mapper.Map<OrderModel>(order);
             return model;
         }
 
         public async Task<IEnumerable<OrderModel>> GetAllAsync()
         {
-            return Mapper.Map<OrderModel[]>(await repository.All<Order>().ToArrayAsync());
+            return mapper.Map<OrderModel[]>(await repository.All<Order>().ToArrayAsync());
         }
+
+        public async Task<bool> ExistsByIdAsync(int cadId, string buyerId)
+            => await repository.GetByIdAsync<Order>(cadId, buyerId) != null;
+        
     }
 }

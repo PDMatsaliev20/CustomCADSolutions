@@ -14,7 +14,7 @@
             <p class="card-text fs-5">@Model.Description</p>
             <div class="d-grid gap-2">
                 <div class="d-flex justify-content-evenly mb-3 gap-2">
-                    @await Component.InvokeAsync("OrdersComponent", new { order = Model })
+                    @await Component.InvokeAsync("OrdersComponent", new { order = Model, area = ViewBag.Area })
                 </div>
             </div>
         </div>

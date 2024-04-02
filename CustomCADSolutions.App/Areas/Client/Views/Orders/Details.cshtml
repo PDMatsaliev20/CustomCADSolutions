@@ -1,4 +1,4 @@
-﻿@model CadViewModel
+﻿@model OrderViewModel
 @inject IViewLocalizer Localizer
 @{
     ViewBag.Cols = 2;
@@ -9,11 +9,4 @@
 <h1 class="text-center">@Localizer["Title", Model.Name]</h1>
 <hr />
 
-<partial name="_CardCadPartial" model="Model" view-data="ViewData" />
-
-@section Scripts {
-    <script>
-        const divElement = document.getElementById('model-@Model.Id');
-        divElement.setAttribute('style', 'height: 50vh; width: 100%;');
-    </script>
-}
+<partial name="_OrdersPartial" model="Model" view-data="ViewData" />
