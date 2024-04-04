@@ -1,14 +1,9 @@
 ﻿using CustomCADSolutions.App.Models.Orders;
-using CustomCADSolutions.App.Models.Cads;
 using CustomCADSolutions.Core.Contracts;
-using CustomCADSolutions.Core.Models;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using CustomCADSolutions.App.Extensions;
-using System.Drawing;
-using System.Net;
 using System.Text.Json;
 using AutoMapper;
 using CustomCADSolutions.App.Mappings;
@@ -21,33 +16,20 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
     [Authorize(Roles = "Contributer")]
     public class OrdersController : Controller
     {
-        private readonly IOrderService orderService;
-        private readonly ICadService cadService;
         private readonly ICategoryService categoryService;
-        private readonly ILogger logger;
-        private readonly UserManager<IdentityUser> userManager;
-        private readonly IWebHostEnvironment hostingEnvironment;
         private readonly HttpClient httpClient;
         private readonly IMapper mapper;
+        private readonly ILogger logger;
 
         public OrdersController(
-            ILogger<OrdersController> logger,
-            IOrderService orderService,
-            ICadService cadService,
             ICategoryService categoryService,
-            UserManager<IdentityUser> userManager,
-            IWebHostEnvironment hostingEnvironment,
+            ILogger<OrdersController> logger,
             HttpClient httpClient)
         {
-            this.orderService = orderService;
-            this.cadService = cadService;
             this.logger = logger;
-            this.userManager = userManager;
             this.categoryService = categoryService;
-            this.hostingEnvironment = hostingEnvironment;
             this.httpClient = httpClient;
-            this.httpClient.BaseAddress = new Uri("https://localhost:7119/API/Orders/");
-            mapper = new MapperConfiguration(cfg => cfg.AddProfile<OrderModelProfile>()).CreateMapper();
+            mapper = new MapperConfiguration(cfg => cfg.AddProfile<OrderDTOProfile>()).CreateMapper();
         }
 
         [HttpGet]
@@ -55,10 +37,10 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
         {
             try
             {
-                var dtos = await httpClient.TryGetFromJsonAsync<IEnumerable<OrderExportDTO>>(OrdersPath);
+                var dtos = await httpClient.TryGetFromJsonAsync<OrderExportDTO[]>(OrdersAPIPath);
                 if (dtos != null)
                 {
-                    dtos = dtos.Where(v => v.BuyerName == User.Identity!.Name);
+                    dtos = dtos.Where(v => v.BuyerName == User.Identity!.Name).ToArray();
 
                     ViewBag.Area = "Contributer";
                     return View(mapper.Map<OrderViewModel[]>(dtos));
@@ -66,7 +48,7 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
                 else throw new JsonException("Json parsing error");
 
             }
-            catch (Exception ex)
+            catch (HttpRequestException ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -75,44 +57,14 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            if (!await orderService.ExistsByIdAsync(id, User.GetId()))
-            {
-                logger.LogWarning($"User {User.Identity!.Name} doesn't have an order with id: {id}");
-                return Unauthorized();
-            }
-
-            string path = string.Format(OrderByIdPath, id, User.GetId());
-            OrderImportDTO? dto = await httpClient.TryGetFromJsonAsync<OrderImportDTO>(path);
+            string path = $"{OrdersAPIPath}/{User.GetId()}/{id}";
+            OrderExportDTO? dto = await httpClient.TryGetFromJsonAsync<OrderExportDTO>(path);
 
             if (dto != null)
             {
                 return View(mapper.Map<OrderViewModel>(dto));
             }
             else return BadRequest("Json parsing error");
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Order(int id)
-        {
-            CadModel cad = await cadService.GetByIdAsync(id);
-            if (!ModelState.IsValid)
-            {
-                return RedirectToAction("Categories", "Home", new { area = "" });
-            }
-
-            await orderService.CreateAsync(new()
-            {
-                Description = $"3D Model from the gallery with id: {cad.Id}",
-                OrderDate = DateTime.Now,
-                Status = OrderStatus.Finished,
-                ShouldShow = false,
-                CadId = id,
-                BuyerId = User.GetId(),
-                Cad = cad,
-                Buyer = await userManager.FindByIdAsync(User.GetId()),
-            });
-
-            return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]
@@ -137,7 +89,7 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
             {
                 input.BuyerId = User.GetId();
                 var dto = mapper.Map<OrderImportDTO>(input);
-                var response = await httpClient.PostAsJsonAsync(CreateOrderPath, dto);
+                var response = await httpClient.PostAsJsonAsync($"{OrdersAPIPath}/Create", dto);
                 response.EnsureSuccessStatusCode();
                 
                 return RedirectToAction(nameof(Index));
@@ -151,31 +103,28 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int cadId)
         {
-            try
+            string path = $"{OrdersAPIPath}/{User.GetId()}/{cadId}";
+            var dto = await httpClient.TryGetFromJsonAsync<OrderExportDTO>(path);
+            if (dto != null)
             {
-                OrderModel model = await orderService.GetByIdAsync(cadId, User.GetId());
-
-                if (model.Status != OrderStatus.Pending)
+                if (dto.Status != OrderStatus.Pending.ToString())
                 {
                     return RedirectToAction(nameof(Index));
                 }
 
                 OrderInputModel input = new()
                 {
+                    CadId = dto.CadId,
+                    BuyerId = dto.BuyerId,
+                    Name = dto.Cad.Name,
+                    Description = dto.Description,
+                    CategoryId = (await categoryService.GetByNameAsync(dto.Cad.CategoryName)).Id,
                     Categories = await categoryService.GetAllAsync(),
-                    CadId = model.CadId,
-                    BuyerId = model.BuyerId,
-                    Name = model.Cad.Name,
-                    CategoryId = model.Cad.CategoryId,
-                    Description = model.Description,
                 };
 
                 return View(input);
             }
-            catch (KeyNotFoundException)
-            {
-                return BadRequest();
-            }
+            else return BadRequest();
         }
 
         [HttpPost]
@@ -188,34 +137,35 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
                 return View(input);
             }
 
-            OrderModel order = new();
-            try
+            if (User.GetId() != buyerId)
             {
-                order = await orderService.GetByIdAsync(cadId, buyerId);
-            }
-            catch (KeyNotFoundException ex)
-            {
-                return BadRequest(ex.Message);
+                return Forbid();
             }
 
-            if (order.Status != OrderStatus.Pending)
+            string path = $"{OrdersAPIPath}/{buyerId}/{cadId}";
+            var dto = mapper.Map<OrderImportDTO>(input);
+            if (dto != null)
             {
+                if (dto.Status != OrderStatus.Pending.ToString())
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+
+                var response = await httpClient.PutAsJsonAsync($"{OrdersAPIPath}/Edit", dto);
+                response.EnsureSuccessStatusCode();
+
                 return RedirectToAction(nameof(Index));
             }
-
-            order.Cad.Name = input.Name;
-            order.Description = input.Description;
-            order.Cad.CategoryId = input.CategoryId;
-            await orderService.EditAsync(order);
-
-            logger.LogInformation("Edited Order");
-            return RedirectToAction(nameof(Index));
+            else
+            {
+                return BadRequest();
+            }
         }
         
         [HttpPost]
         public async Task<IActionResult> Delete(int id, string buyerId)
         {
-            string path = string.Format(DeleteOrderPath, buyerId, id);
+            string path = string.Format($"{OrdersAPIPath}/{buyerId}/{id}");
             var response = await httpClient.DeleteAsync(path);
             if (response.IsSuccessStatusCode)
             {

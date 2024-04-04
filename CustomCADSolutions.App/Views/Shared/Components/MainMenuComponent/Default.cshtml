@@ -13,7 +13,7 @@
         if (User.IsInRole("Client"))
         {
             <li class="nav-item">
-                <a asp-area="" asp-controller="Home" asp-action="Categories"
+                <a asp-area="" asp-controller="Home" asp-action="Category"
                    class="nav-link text-dark text-end" role="button">
                     @ViewData["Explore"]
                 </a>
@@ -28,7 +28,7 @@
         else if (User.IsInRole("Contributer"))
         {
             <li class="nav-item">
-                <a asp-area="" asp-controller="Home" asp-action="Categories"
+                <a asp-area="" asp-controller="Home" asp-action="Category"
                    class="nav-link text-dark text-end" role="button">
                     @ViewData["Explore"]
                 </a>
@@ -80,7 +80,7 @@
     else
     {
         <li class="nav-item">
-            <a asp-area="" asp-controller="Home" asp-action="Categories"
+            <a asp-area="" asp-controller="Home" asp-action="Category"
                class="nav-link text-dark text-end" role="button">
                 @ViewData["Explore"]
             </a>

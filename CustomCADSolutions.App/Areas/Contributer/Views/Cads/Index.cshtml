@@ -2,6 +2,7 @@
 @inject IViewLocalizer Localizer
 @{
     ViewBag.Buttons = new string[] { "Download", "Colorize", "Edit", "Delete" };
+    ViewBag.Area = "Contributer";
 }
 
 <h2 class="text-center">@Localizer["Title", User.Identity!.Name!]</h2>

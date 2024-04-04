@@ -19,11 +19,6 @@ namespace CustomCADSolutions.Core.Contracts
 
         Task<CadModel> GetByIdAsync(int id);
 
-        Task<CadQueryModel> GetAllAsync(
-            string? category = null,string? creatorName = null,
-            string? searchName = null, string? searchCreator = null,
-            CadSorting sorting = CadSorting.Newest,
-            int currentPage = 1,int modelsPerPage = 1,
-            bool validated = true, bool unvalidated = false);
+        Task<CadQueryModel> GetAllAsync(CadQueryModel query);
     }
 }

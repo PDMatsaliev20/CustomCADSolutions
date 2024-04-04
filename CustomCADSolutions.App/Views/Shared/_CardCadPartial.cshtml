@@ -11,15 +11,15 @@
 
     const Model = {
         id: @Model.Id,
-        x: @Model.Coords.Item1,
-        y: @Model.Coords.Item2,
-        z: @Model.Coords.Item3,
+        x: @Model.Coords[0],
+        y: @Model.Coords[1],
+        z: @Model.Coords[2],
         axis: '@Model.SpinAxis',
         fov: @Model.Fov,
         rgb: {
-            r: @Model.RGB.Item1 / 225,
-            g: @Model.RGB.Item2 / 225,
-            b: @Model.RGB.Item3 / 225,
+            r: @Model.RGB[0] / 225,
+            g: @Model.RGB[1] / 225,
+            b: @Model.RGB[2] / 225,
         }
     };
 
@@ -71,7 +71,7 @@
                             break;
 
                         case "Colorize":
-                            <form id="color-form" asp-controller="Orders" asp-action="ChangeColor" 
+                            <form id="color-form" asp-controller="Home" asp-action="ChangeColor" 
                                     class="d-flex justify-content-around" method="post">
                                 <div class="d-grid gap-2">
                                     <input id="pickColor-@Model.Id" type="color" class="form-control form-control-color col-4" />

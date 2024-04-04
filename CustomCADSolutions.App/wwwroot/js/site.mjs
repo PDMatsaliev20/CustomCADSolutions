@@ -18,7 +18,7 @@ function loadModel({ id, x, y, z, axis, fov, rgb: { r, g, b } }, path = `/Home/D
     scene.background = null;
 
     // Camera
-    const camera = new THREE.PerspectiveCamera(fov, window.innerWidth / window.innerHeight, 0.01, 10000);
+    const camera = new THREE.PerspectiveCamera(fov, window.innerWidth / window.innerHeight, 0.0001, 1000000);
     camera.position.set(x, y, z);
     camera.lookAt(0, 0, 0);
 
@@ -58,31 +58,28 @@ function loadModel({ id, x, y, z, axis, fov, rgb: { r, g, b } }, path = `/Home/D
 
                 const submitButton = document.getElementById(`submit-${id}`);
                 if (submitButton != null) {
-                    submitButton.addEventListener('click', function () {
+                    const color = document.getElementById(`pickColor-${id}`);
+                    if (color != null) {
+                        const hexInt = parseInt(color.value.replace('#', ''), 16);
+                        r = ((hexInt >> 16) & 255) / 255;
+                        g = ((hexInt >> 8) & 255) / 255;
+                        b = (hexInt & 255) / 255;
 
-                        const color = document.getElementById(`pickColor-${id}`);
-                        if (color != null) {
-                            const hexInt = parseInt(color.value.replace('#', ''), 16);
-                            r = ((hexInt >> 16) & 255) / 255;
-                            g = ((hexInt >> 8) & 255) / 255;
-                            b = (hexInt & 255) / 255;
-                            material.color.setRGB(r, g, b);
+                        var hiddenColorInput = document.createElement('input');
+                        hiddenColorInput.setAttribute('type', 'hidden');
+                        hiddenColorInput.setAttribute('name', 'colorParam');
+                        hiddenColorInput.setAttribute('value', String(color.value));
+                        form.appendChild(hiddenColorInput);
 
-                            var hiddenColorInput = document.createElement('input');
-                            hiddenColorInput.setAttribute('type', 'hidden');
-                            hiddenColorInput.setAttribute('name', 'color');
-                            hiddenColorInput.setAttribute('value', String(color.value));
-                            form.appendChild(hiddenColorInput);
+                        var hiddenIdInput = document.createElement('input');
+                        hiddenIdInput.setAttribute('type', 'hidden');
+                        hiddenIdInput.setAttribute('name', 'id');
+                        hiddenIdInput.setAttribute('value', id);
+                        form.appendChild(hiddenIdInput);
 
-                            var hiddenIdInput = document.createElement('input');
-                            hiddenIdInput.setAttribute('type', 'hidden');
-                            hiddenIdInput.setAttribute('name', 'id');
-                            hiddenIdInput.setAttribute('value', id);
-                            form.appendChild(hiddenIdInput);
+                        form.submit();
 
-                            form.submit();
-                        }
-                    });
+                    };
                 }
             });
         }

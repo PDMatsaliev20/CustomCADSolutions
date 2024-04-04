@@ -59,15 +59,15 @@
 
         const cad = {
             id: @cad.Id,
-            x: @cad.Coords.Item1,
-            y: @cad.Coords.Item2,
-            z: @cad.Coords.Item3,
+            x: @cad.Coords[0],
+            y: @cad.Coords[1],
+            z: @cad.Coords[2],
             axis: '@cad.SpinAxis',
             fov: @cad.Fov,
             rgb: {
-                r: @cad.RGB.Item1 / 255,
-                g: @cad.RGB.Item2 / 255,
-                b: @cad.RGB.Item3 / 255,
+                r: @cad.RGB[0] / 255,
+                g: @cad.RGB[1] / 255,
+                b: @cad.RGB[2] / 255,
             }
         };
 

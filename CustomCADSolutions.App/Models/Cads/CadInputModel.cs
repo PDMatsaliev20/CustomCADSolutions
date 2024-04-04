@@ -11,8 +11,6 @@ namespace CustomCADSolutions.App.Models.Cads
 
         public string? BuyerId { get; set; }
 
-        public bool IsValidated { get; set; }
-
         [Required(ErrorMessageResourceType = typeof(SharedResources), 
             ErrorMessageResourceName = nameof(SharedResources.Required))]
         [StringLength(CadConstants.NameMaxLength, 

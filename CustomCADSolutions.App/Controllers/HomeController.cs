@@ -10,7 +10,18 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Net;
 using static CustomCADSolutions.App.Extensions.UtilityExtensions;
+using static CustomCADSolutions.App.Constants.Paths;
 using System.Text.Json;
+using CustomCADSolutions.App.Mappings.CadDTOs;
+using AutoMapper;
+using CustomCADSolutions.App.Mappings;
+using Microsoft.Extensions.Primitives;
+using Microsoft.AspNetCore.Http;
+using System.Drawing;
+using CustomCADSolutions.Infrastructure.Data.Models;
+using Humanizer;
+using Microsoft.Extensions.Options;
+using Newtonsoft.Json.Linq;
 
 namespace CustomCADSolutions.App.Controllers
 {
@@ -22,6 +33,7 @@ namespace CustomCADSolutions.App.Controllers
         private readonly UserManager<IdentityUser> userManager;
         private readonly SignInManager<IdentityUser> signInManager;
         private readonly HttpClient httpClient;
+        private readonly IMapper mapper;
 
         public HomeController(
             ICadService cadService,
@@ -37,6 +49,8 @@ namespace CustomCADSolutions.App.Controllers
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.httpClient = httpClient;
+            MapperConfiguration config = new(cfg => cfg.AddProfile<CadDTOProfile>());
+            mapper = config.CreateMapper();
         }
 
         [HttpGet]
@@ -45,11 +59,6 @@ namespace CustomCADSolutions.App.Controllers
             if (User.IsInRole("Administrator"))
             {
                 return Redirect("/Admin");
-            }
-
-            if (User.IsInRole("Designer"))
-            {
-                return Redirect("/Home/Categories");
             }
 
             logger.LogInformation("Entered Home Page");
@@ -62,32 +71,33 @@ namespace CustomCADSolutions.App.Controllers
                 Coords = model.Coords,
                 SpinAxis = model.SpinAxis,
                 Category = model.Category.Name,
-                RGB = new(143, 124, 239),
+                RGB = new byte[] { 143, 124, 239 },
             };
 
             return View();
         }
 
         [HttpGet]
-        public async Task<IActionResult> Categories()
+        public async Task<IActionResult> Category([FromQuery] CadQueryInputModel inputQuery)
         {
-            return View(new CadQueryInputModel()
+            Dictionary<string, string> parameters = new()
             {
-                Categories = (await categoryService
-                    .GetAllAsync())
-                    .Select(c => c.Name)
-            });
-        }
+                ["validated"] = "true",
+            };
 
-        [HttpGet]
-        public async Task<IActionResult> Category([FromQuery] CadQueryInputModel inputQuery, string category)
-        {
-            inputQuery = await cadService.QueryCads(inputQuery, true, false);
-            inputQuery.Categories = (await categoryService.GetAllAsync()).Select(c => c.Name);
-            ViewBag.Sortings = typeof(CadSorting).GetEnumNames();
+            string path = CadsAPIPath + HttpContext.SecureQuery(parameters.ToArray());
+            var query = await httpClient.TryGetFromJsonAsync<CadQueryDTO>(path);
+            if (query != null)
+            {
+                inputQuery.TotalCount = query.TotalCount;
+                inputQuery.Categories = (await categoryService.GetAllAsync()).Select(c => c.Name);
+                inputQuery.Cads = mapper.Map<CadViewModel[]>(query.Cads);
 
-            ViewBag.Category = category;
-            return View(inputQuery);
+                ViewBag.Sortings = typeof(CadSorting).GetEnumNames();
+                ViewBag.Category = inputQuery.Category;
+                return View(inputQuery);
+            }
+            else return BadRequest();
         }
 
         [HttpGet]
@@ -102,26 +112,47 @@ namespace CustomCADSolutions.App.Controllers
         [HttpGet]
         public async Task<IActionResult> CadDetails(int id)
         {
-            var response = await httpClient.GetAsync($"https://localhost:7119/API/Orders/Single?cadId={id}&buyerId={User.GetId()}");
+            var dto = await httpClient.GetFromJsonAsync<CadExportDTO>($"{CadsAPIPath}/{id}");
 
-            if (response.IsSuccessStatusCode)
+            if (dto != null)
             {
-                Stream body = await response.Content.ReadAsStreamAsync();
-
-                CadViewModel? result = await JsonSerializer
-                    .DeserializeAsync<CadViewModel>(body, 
-                        new JsonSerializerOptions() 
-                        {
-                            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                        });
-
-                return result == null ? BadRequest() : View(result);
-            }
-            else if (response.StatusCode == HttpStatusCode.NotFound)
-            {
-                return NotFound();
+                return View(mapper.Map<CadViewModel>(dto));
             }
             else return BadRequest();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangeColor(int id, string colorParam, string area)  
+        {
+            logger.LogWarning(colorParam);
+            string path = $"{CadsAPIPath}/{id}";
+            var export = await httpClient.TryGetFromJsonAsync<CadExportDTO>(path);
+            if (export != null)
+            {
+                Color color = ColorTranslator.FromHtml(colorParam);
+                CadImportDTO import = new() 
+                {
+                    Id = export.Id,
+                    CreatorId = export.CreatorId,
+                    Name = export.Name,
+                    Coords = export.Coords,
+                    SpinAxis = export.SpinAxis,
+                    RGB = new byte[] { color.R, color.B, color.G } ,
+                    CategoryId = (await categoryService.GetByNameAsync(export.CategoryName)).Id,
+                };
+
+                var response = await httpClient.PutAsJsonAsync($"{CadsAPIPath}/Edit", import);
+                try
+                {
+                    response.EnsureSuccessStatusCode();
+                    return RedirectToAction("CadDetails", new { area = area, id = export.Id });
+                }
+                catch 
+                {
+                    return BadRequest(response.StatusCode);
+                }
+            }
+            else return NotFound();
         }
 
         public IActionResult SetLanguage(string culture, string returnUrl)

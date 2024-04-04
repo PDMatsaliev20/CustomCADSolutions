@@ -32,15 +32,15 @@
 
         const cad = {
             id: @Model.Id,
-            x: @Model.Coords.Item1,
-            y: @Model.Coords.Item2,
-            z: @Model.Coords.Item3,
+            x: @Model.Coords[0],
+            y: @Model.Coords[1],
+            z: @Model.Coords[2],
             axis: '@Model.SpinAxis',
             fov: @Model.Fov,
             rgb: {
-                r: @Model.RGB.Item1 / 255,
-                g: @Model.RGB.Item2 / 255,
-                b: @Model.RGB.Item3 / 255,
+                r: @Model.RGB[0] / 255,
+                g: @Model.RGB[1] / 255,
+                b: @Model.RGB[2] / 255,
             }
         };
 

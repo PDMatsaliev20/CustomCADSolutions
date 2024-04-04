@@ -29,8 +29,7 @@ namespace CustomCADSolutions.App.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            UserViewModel[] views = (await userManager.Users
-                .ToArrayAsync())
+            UserViewModel[] views = (await userManager.Users.ToArrayAsync())
                 .Select(async u => new UserViewModel()
                 {
                     Id = u.Id,
@@ -63,8 +62,8 @@ namespace CustomCADSolutions.App.Areas.Admin.Controllers
         {
             IdentityUser user = await userManager.FindByNameAsync(username);
             
-            CadQueryModel query = await cadService.GetAllAsync(creatorName: username);
-            foreach (CadModel model in query.CadModels)
+            CadQueryModel query = await cadService.GetAllAsync(new CadQueryModel { Creator = username });
+            foreach (CadModel model in query.Cads)
             {
                 RedirectToAction(nameof(CadsController.Delete),
                         nameof(CadsController).Replace("Controller", string.Empty),

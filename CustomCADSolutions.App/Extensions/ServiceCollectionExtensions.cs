@@ -11,6 +11,7 @@ using System.Globalization;
 using Microsoft.AspNetCore.Mvc;
 using CustomCADSolutions.App.Models;
 using Microsoft.AspNetCore.Authentication.Certificate;
+using CustomCADSolutions.App.Extensions;
 
 namespace Microsoft.Extensions.DependencyInjection
 {

@@ -29,7 +29,6 @@ namespace CustomCADSolutions.Core.Services
             }).CreateMapper();
         }
 
-
         public async Task<int> CreateAsync(CadModel model)
         {
             Cad cad = mapper.Map<Cad>(model);
@@ -56,19 +55,19 @@ namespace CustomCADSolutions.Core.Services
             cad.IsValidated = model.IsValidated;
             cad.CreationDate = model.CreationDate;
             cad.SpinAxis = model.SpinAxis;
-            
-            cad.X = model.Coords.Item1;
-            cad.Y = model.Coords.Item2;
-            cad.Z = model.Coords.Item3;
+
+            cad.X = model.Coords[0];
+            cad.Y = model.Coords[1];
+            cad.Z = model.Coords[2];
             cad.R = model.Color.R;
             cad.G = model.Color.G;
             cad.B = model.Color.B;
-            
+
             cad.CategoryId = model.CategoryId;
             cad.CreatorId = model.CreatorId;
             cad.Category = model.Category;
             cad.Creator = model.Creator;
-            cad.Orders = mapper.Map<Order[]>(model.Orders);
+            cad.Orders = mapper.Map<List<Order>>(model.Orders);
 
             await repository.SaveChangesAsync();
         }
@@ -87,9 +86,9 @@ namespace CustomCADSolutions.Core.Services
                 cad.CreationDate = model.CreationDate;
                 cad.SpinAxis = model.SpinAxis;
 
-                cad.X = model.Coords.Item1;
-                cad.Y = model.Coords.Item2;
-                cad.Z = model.Coords.Item3;
+                cad.X = model.Coords[0];
+                cad.Y = model.Coords[1];
+                cad.Z = model.Coords[2];
                 cad.R = model.Color.R;
                 cad.G = model.Color.G;
                 cad.B = model.Color.B;
@@ -106,32 +105,42 @@ namespace CustomCADSolutions.Core.Services
 
         public async Task DeleteAsync(int id)
         {
-            List<OrderModel> orders = (await orderService.GetAllAsync())
-                .Where(o => o.CadId == id).ToList();
-
-            orders.ForEach(o => o.Status = OrderStatus.Pending);
-            await orderService.EditRangeAsync(orders.ToArray());
+            (await repository.All<Order>().Where(o => o.CadId == id).ToListAsync())
+                .ForEach(o => o.Status = OrderStatus.Pending);
 
             Cad cad = await repository.GetByIdAsync<Cad>(id)
                 ?? throw new KeyNotFoundException();
 
-            repository.Delete(cad);
+            cad.IsValidated = false;
+            cad.CreatorId = null;
+            cad.Creator = null;
+            cad.CreationDate = null;
+            cad.Bytes = null;
+            cad.SpinAxis = null;
+            cad.X = cad.Y = cad.Z = 0;
+            cad.R = cad.G = cad.B = 0;
+
             await repository.SaveChangesAsync();
         }
 
         public async Task DeleteRangeAsync(params int[] ids)
         {
-            List<OrderModel> orders = (await orderService.GetAllAsync())
-                    .Where(o => ids.Contains(o.CadId)).ToList();
+            (await repository.All<Order>().Where(o => ids.Contains(o.CadId)).ToListAsync())
+                .ForEach(o => o.Status = OrderStatus.Pending);
 
-            orders.ForEach(o => o.Status = OrderStatus.Pending);
-            await orderService.EditRangeAsync(orders.ToArray());
+            (await repository.All<Cad>().Where(c => ids.Contains(c.Id)).ToListAsync())
+                .ForEach(cad =>
+                {
+                    cad.IsValidated = false;
+                    cad.CreatorId = null;
+                    cad.Creator = null;
+                    cad.CreationDate = null;
+                    cad.Bytes = null;
+                    cad.SpinAxis = null;
+                    cad.X = cad.Y = cad.Z = 0;
+                    cad.R = cad.G = cad.B = 0;
+                });
 
-            Cad[] cads = await repository.All<Cad>()
-                .Where(c => ids.Contains(c.Id))
-                .ToArrayAsync();
-
-            repository.DeleteRange(cads);
             await repository.SaveChangesAsync();
         }
 
@@ -147,50 +156,44 @@ namespace CustomCADSolutions.Core.Services
             return model;
         }
 
-        public async Task<CadQueryModel> GetAllAsync(
-            string? category = null, string? creator = null,
-            string? searchName = null, string? searchCreator = null,
-            CadSorting sorting = CadSorting.Newest,
-            int currentPage = 1, int cadsPerPage = 1,
-            bool validated = true, bool unvalidated = false)
+        public async Task<CadQueryModel> GetAllAsync(CadQueryModel query)
         {
-            IQueryable<Cad> allCads = repository.All<Cad>()
-                .Where(c => c.Bytes != null && c.CreatorId != null);
+            IQueryable<Cad> allCads = repository.All<Cad>().Where(c => c.Bytes != null);
 
-            if (category != null)
+            if (query.Category != null)
             {
-                allCads = allCads.Where(c => c.Category.Name == category);
+                allCads = allCads.Where(c => c.Category.Name == query.Category);
             }
 
-            if (creator != null)
+            if (query.Creator != null)
             {
-                allCads = allCads.Where(c => c.Creator!.UserName == creator);
+                allCads = allCads.Where(c => c.Creator!.UserName == query.Creator);
             }
 
-            if (validated ^ unvalidated)
+            if (query.Validated ^ query.Unvalidated)
             {
-                if (validated)
+                if (query.Validated)
                 {
                     allCads = allCads.Where(c => c.IsValidated);
                 }
 
-                if (unvalidated)
+                if (query.Unvalidated)
                 {
                     allCads = allCads.Where(c => !c.IsValidated);
                 }
 
             }
 
-            if (searchName != null)
+            if (query.LikeName != null)
             {
-                allCads = allCads.Where(c => c.Name.Contains(searchName));
+                allCads = allCads.Where(c => c.Name.Contains(query.LikeName));
             }
-            if (searchCreator != null)
+            if (query.LikeCreator != null)
             {
-                allCads = allCads.Where(c => c.Creator!.UserName.Contains(searchCreator));
+                allCads = allCads.Where(c => c.Creator!.UserName.Contains(query.LikeCreator));
             }
 
-            allCads = sorting switch
+            allCads = query.Sorting switch
             {
                 CadSorting.Newest => allCads.OrderBy(c => c.CreationDate),
                 CadSorting.Oldest => allCads.OrderByDescending(c => c.CreationDate),
@@ -201,22 +204,21 @@ namespace CustomCADSolutions.Core.Services
             };
 
 
-            if (cadsPerPage > 16)
+            if (query.CadsPerPage > 16)
             {
-                cadsPerPage = 16;
+                query.CadsPerPage = 16;
             }
 
-            Cad[] pageCads = await allCads
-                .Skip((currentPage - 1) * cadsPerPage)
-                .Take(cadsPerPage)
+            Cad[] cads = await allCads
+                .Skip((query.CurrentPage - 1) * query.CadsPerPage)
+                .Take(query.CadsPerPage)
                 .ToArrayAsync();
 
-
-            CadModel[] models = mapper.Map<CadModel[]>(pageCads);
+            CadModel[] models = mapper.Map<CadModel[]>(cads);
             return new()
             {
                 TotalCount = allCads.Count(),
-                CadModels = models,
+                Cads = models,
             };
         }
     }

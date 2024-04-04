@@ -1,5 +1,4 @@
-﻿using CustomCADSolutions.Infrastructure.Data.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using static CustomCADSolutions.Infrastructure.Data.DataConstants;
 
@@ -22,14 +21,20 @@ namespace CustomCADSolutions.App.Mappings.CadDTOs
         [RegularExpression(CadConstants.SpinAxisRegEx, ErrorMessage = CadConstants.SpinAxisErrorMessage)]
         public char? SpinAxis { get; set; }
 
-        [JsonPropertyName("bytes")]
-        public byte[]? Bytes { get; set; }
+        [JsonPropertyName("categoryId")]
+        [Required(ErrorMessage = RequiredErrorMessage)]
+        public int CategoryId { get; set; }
+
+        [JsonPropertyName("creatorId")]
+        public string? CreatorId { get; set; }
 
         [JsonPropertyName("coords")]
         public int[] Coords { get; set; } = new int[3];
 
-        [JsonPropertyName("categoryId")]
-        [Required(ErrorMessage = RequiredErrorMessage)]
-        public int CategoryId { get; set; }
+        [JsonPropertyName("rgb")]
+        public byte[] RGB { get; set; } = new byte[3] { 255, 255, 255 };
+
+        [JsonPropertyName("bytes")]
+        public byte[]? Bytes { get; set; }
     }
 }

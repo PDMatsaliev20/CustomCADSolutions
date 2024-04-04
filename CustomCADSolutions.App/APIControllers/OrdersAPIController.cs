@@ -1,29 +1,25 @@
 ﻿using AutoMapper;
-using CustomCADSolutions.App.Extensions;
 using CustomCADSolutions.App.Mappings;
 using CustomCADSolutions.App.Mappings.DTOs;
-using CustomCADSolutions.App.Models.Orders;
 using CustomCADSolutions.Core.Contracts;
 using CustomCADSolutions.Core.Models;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using static Microsoft.AspNetCore.Http.StatusCodes;
 
 namespace CustomCADSolutions.App.APIControllers
 {
     [ApiController]
-    [Route("API/[controller]")]
-    public class OrdersController : ControllerBase
+    [Route("[controller]")]
+    public class OrdersAPIController : ControllerBase
     {
         private readonly IOrderService orderService;
         private readonly IMapper mapper;
 
-        public OrdersController(IOrderService orderService)
+        public OrdersAPIController(IOrderService orderService)
         {
             this.orderService = orderService;
-            mapper = new MapperConfiguration(cfg => cfg.AddProfile<OrderModelProfile>()).CreateMapper();
+            mapper = new MapperConfiguration(cfg => cfg.AddProfile<OrderDTOProfile>()).CreateMapper();
         }
 
         [HttpGet]
@@ -49,7 +45,7 @@ namespace CustomCADSolutions.App.APIControllers
         [Produces("application/json")]
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status400BadRequest)]
-        public async Task<ActionResult<OrderExportDTO>> GetAsync(int id, string buyerId)
+        public async Task<ActionResult<OrderExportDTO>> GetAsync(string buyerId, int id)
         {
             try
             {
@@ -91,6 +87,7 @@ namespace CustomCADSolutions.App.APIControllers
         [ProducesResponseType(Status204NoContent)]
         [ProducesResponseType(Status403Forbidden)]
         [ProducesResponseType(Status404NotFound)]
+        [IgnoreAntiforgeryToken]
         public async Task<ActionResult> PutAsync(OrderImportDTO dto)
         {
             try
@@ -110,7 +107,7 @@ namespace CustomCADSolutions.App.APIControllers
             }
             catch (KeyNotFoundException ex)
             {
-                return BadRequest(ex.Message);
+                return NotFound(ex.Message);
             }
         }
 
@@ -128,9 +125,5 @@ namespace CustomCADSolutions.App.APIControllers
                 return NotFound();
             }
         }
-
-        [HttpDelete("Delete2")]
-        [IgnoreAntiforgeryToken]
-        public IActionResult SecondDelete() => NoContent();
     }
 }

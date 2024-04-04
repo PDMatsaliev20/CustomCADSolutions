@@ -22,8 +22,8 @@ namespace CustomCADSolutions.Core.Models
         public bool IsValidated { get; set; }
 
         public DateTime? CreationDate { get; set; }
-        
-        public (int, int, int) Coords { get; set; }
+
+        public int[] Coords { get; set; } = new int[3];
 
         [RegularExpression(CadConstants.SpinAxisRegEx, ErrorMessage = CadConstants.SpinAxisErrorMessage)]
         public char? SpinAxis { get; set; }

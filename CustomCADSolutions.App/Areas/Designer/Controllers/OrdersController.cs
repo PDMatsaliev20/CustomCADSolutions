@@ -4,7 +4,6 @@ using CustomCADSolutions.Core.Contracts;
 using CustomCADSolutions.Core.Models;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using static CustomCADSolutions.App.Extensions.UtilityExtensions;
 using static CustomCADSolutions.App.Constants.Paths;
@@ -20,33 +19,22 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
     [Authorize(Roles = "Designer")]
     public class OrdersController : Controller
     {
-        private readonly ICadService cadService;
         private readonly IOrderService orderService;
         private readonly ICategoryService categoryService;
-        private readonly ILogger logger;
-        private readonly UserManager<IdentityUser> userManager;
         private readonly HttpClient httpClient;
         private readonly IMapper mapper;
+        private readonly ILogger logger;
 
         public OrdersController(
-            ICadService cadService,
-            IOrderService orderService,
             ICategoryService categoryService,
+            IOrderService orderService,
             ILogger<CadModel> logger,
-            UserManager<IdentityUser> userManager,
             HttpClient httpClient)
         {
-            // Services
-            this.cadService = cadService;
             this.orderService = orderService;
             this.categoryService = categoryService;
-            
-            // Helpers
             this.logger = logger;
-            this.userManager = userManager;
             this.httpClient = httpClient;
-            
-            // Addons
             MapperConfiguration config = new(cfg => cfg.AddProfile<OrderDTOProfile>());
             this.mapper = config.CreateMapper();
         }
@@ -56,7 +44,7 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
         {
             ViewBag.Statuses = typeof(OrderStatus).GetEnumNames();
 
-            var dtos = await httpClient.TryGetFromJsonAsync<OrderExportDTO[]>(OrdersPath)
+            var dtos = await httpClient.TryGetFromJsonAsync<OrderExportDTO[]>(OrdersAPIPath)
                 ?? throw new JsonException("parsing error");
 
             ViewBag.HiddenOrders = dtos.Count(m => !m.ShouldShow);

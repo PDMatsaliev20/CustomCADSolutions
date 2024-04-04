@@ -1,24 +1,24 @@
 ﻿using AutoMapper;
 using CustomCADSolutions.App.Extensions;
 using CustomCADSolutions.App.Mappings.CadDTOs;
-using CustomCADSolutions.App.Mappings.DTOs;
 using CustomCADSolutions.App.Models.Cads;
-using CustomCADSolutions.Core.Mappings;
 using CustomCADSolutions.Core.Models;
+using System.Drawing;
 
 namespace CustomCADSolutions.App.Mappings
 {
     /// <summary>
     /// Covers InputModel-ImportDTO, ImportDTO-Model, Model-ExportDTO and ExportDTO-ViewModel
     /// </summary>
-    public class CadModelProfile : Profile
+    public class CadDTOProfile : Profile
     {
-        public CadModelProfile()
+        public CadDTOProfile()
         {
             InputToDTO();
             DTOToModel();
             ModelToDTO();
             DTOToView();
+            QueryToDTO();
         }
 
         /// <summary>
@@ -28,9 +28,9 @@ namespace CustomCADSolutions.App.Mappings
         public IMappingExpression<CadInputModel, CadImportDTO> InputToDTO() => CreateMap<CadInputModel, CadImportDTO>()
             .ForMember(dto => dto.Id, opt => opt.MapFrom(input => input.Id))
             .ForMember(dto => dto.Name, opt => opt.MapFrom(input => input.Name))
-            .ForMember(dto => dto.Coords, opt => opt.MapFrom(input => new Coords(input.X, input.Y, input.Z)))
-            .ForMember(dto => dto.SpinAxis, opt => opt.MapFrom(input => input.SpinAxis))
-            .ForMember(dto => dto.IsValidated, opt => opt.MapFrom(input => input.IsValidated));
+            .ForMember(dto => dto.CategoryId, opt => opt.MapFrom(input => input.CategoryId))
+            .ForMember(dto => dto.Coords, opt => opt.MapFrom(input => new int[] { input.X, input.Y, input.Z }))
+            .ForMember(dto => dto.SpinAxis, opt => opt.MapFrom(input => input.SpinAxis));
 
         /// <summary>
         /// Converts JSON Import to Service Model
@@ -41,8 +41,19 @@ namespace CustomCADSolutions.App.Mappings
             .ForMember(cad => cad.Name, opt => opt.MapFrom(dto => dto.Name))
             .ForMember(cad => cad.CategoryId, opt => opt.MapFrom(dto => dto.CategoryId))
             .ForMember(cad => cad.Coords, opt => opt.MapFrom(dto => dto.Coords))
-            .ForMember(cad => cad.SpinAxis, opt => opt.MapFrom(dto => dto.SpinAxis))
-            .ForMember(cad => cad.IsValidated, opt => opt.MapFrom(dto => dto.IsValidated));
+            .ForMember(cad => cad.Color, opt => opt.MapFrom(dto => Color.FromArgb(1, dto.RGB[0], dto.RGB[1], dto.RGB[2])))
+            .ForMember(cad => cad.IsValidated, opt => opt.MapFrom(dto => dto.IsValidated))
+            .ForMember(cad => cad.CreatorId, opt => opt.MapFrom(dto => dto.CreatorId))
+            .ForMember(cad => cad.Bytes, opt =>
+            {
+                opt.AllowNull();
+                opt.MapFrom(dto => dto.Bytes);
+            })
+            .ForMember(cad => cad.SpinAxis, opt => 
+            {
+                opt.AllowNull();
+                opt.MapFrom(dto => dto.SpinAxis);
+            });
 
         /// <summary>
         /// Converts Service Model to JSON Export
@@ -61,10 +72,20 @@ namespace CustomCADSolutions.App.Mappings
                 opt.AllowNull();
                 opt.MapFrom(model => model.Creator != null ? model.Creator.UserName : null);
             })
+            .ForMember(dto => dto.CreatorId, opt =>
+            {
+                opt.AllowNull();
+                opt.MapFrom(model => model.CreatorId);
+            })
             .ForMember(dto => dto.CreationDate, opt =>
             {
                 opt.AllowNull();
                 opt.MapFrom(model => model.CreationDate != null ? model.CreationDate.Value.ToString("dd/MM/yyyy HH:mm:ss") : null);
+            })
+            .ForMember(dto => dto.Bytes, opt =>
+            {
+                opt.AllowNull();
+                opt.MapFrom(model => model.Bytes);
             });
 
         /// <summary>
@@ -78,9 +99,7 @@ namespace CustomCADSolutions.App.Mappings
             .ForMember(view => view.Coords, opt => opt.MapFrom(dto => dto.Coords))
             .ForMember(view => view.SpinAxis, opt => opt.MapFrom(dto => dto.SpinAxis))
             .ForMember(view => view.IsValidated, opt => opt.MapFrom(dto => dto.IsValidated))
-            .ForMember(view => view.R, opt => opt.MapFrom(dto => dto.RGB[0]))
-            .ForMember(view => view.G, opt => opt.MapFrom(dto => dto.RGB[1]))
-            .ForMember(view => view.B, opt => opt.MapFrom(dto => dto.RGB[2]))
+            .ForMember(view => view.RGB, opt => opt.MapFrom(dto => dto.RGB))
             .ForMember(view => view.CreatorName, opt =>
             {
                 opt.AllowNull();
@@ -91,5 +110,14 @@ namespace CustomCADSolutions.App.Mappings
                 opt.AllowNull();
                 opt.MapFrom(dto => dto.CreationDate);
             });
+
+        public IMappingExpression<CadQueryModel, CadQueryDTO> QueryToDTO() => CreateMap<CadQueryModel, CadQueryDTO>()
+            .ForMember(dto => dto.TotalCount, opt => opt.MapFrom(query => query.TotalCount))
+            .ForMember(dto => dto.Cads, opt => opt.MapFrom(query => query.Cads))
+            ;
+
+        public IMappingExpression<CadQueryDTO, CadQueryModel> DTOToQuery() => CreateMap<CadQueryDTO, CadQueryModel>()
+            .ForMember(dto => dto.TotalCount, opt => opt.MapFrom(query => query.TotalCount))
+            .ForMember(dto => dto.Cads, opt => opt.MapFrom(query => query.Cads));
     }
 }

@@ -3,7 +3,7 @@
     int previousPage = Model.CurrentPage - 1;
     previousPage = previousPage < 1 ? 1 : previousPage;
 
-    int pagesCount = (int)Math.Ceiling((double)Model.TotalCadsCount / Model.CadsPerPage);
+    int pagesCount = (int)Math.Ceiling((double)Model.TotalCount / Model.CadsPerPage);
     bool shouldButtonBeDisabled = Model.CurrentPage == pagesCount || !Model.Cads.Any();
 }
 
@@ -14,10 +14,10 @@
             {
                 int firstCadInPageIndex = (Model.CurrentPage - 1) * Model.CadsPerPage + 1; 
                 int nextPage = (int)Math.Ceiling((double)firstCadInPageIndex / i); 
-                int nextMaxPage = (int)Math.Ceiling((double)Model.TotalCadsCount / i);
+                int nextMaxPage = (int)Math.Ceiling((double)Model.TotalCount / i);
                 
                 <a class="btn btn-outline-dark bg-white text-black 
-                        @(Model.TotalCadsCount + Model.Cols < i ? "disabled" : string.Empty)
+                        @(Model.TotalCount + Model.Cols < i ? "disabled" : string.Empty)
                         @(Model.CadsPerPage == i ? "border-3" : string.Empty)"
                    asp-route-currentPage="@nextPage"
                    asp-route-cadsPerPage=@i
