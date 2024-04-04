@@ -27,8 +27,6 @@ namespace CustomCADSolutions.Core.Services
         public async Task<(string, int)> CreateAsync(OrderModel model)
         {
             Order order = mapper.Map<Order>(model);
-            order.Cad = await repository.GetByIdAsync<Cad>(model.CadId)
-                ?? mapper.Map<Cad>(model.Cad);
 
             EntityEntry<Order> entry = await repository.AddAsync<Order>(order);
             await repository.SaveChangesAsync();

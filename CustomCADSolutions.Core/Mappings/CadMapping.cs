@@ -30,7 +30,11 @@ namespace CustomCADSolutions.Core.Mappings
 
         public IMappingExpression<CadModel, Cad> EntityToModel() => CreateMap<CadModel, Cad>()
                 .ForMember(c => c.Id, opt => opt.MapFrom(m => m.Id))
-                .ForMember(c => c.Bytes, opt => opt.MapFrom(m => m.Bytes))
+                .ForMember(c => c.Bytes, opt =>
+                {
+                    opt.AllowNull();
+                    opt.MapFrom(m => m.Bytes);
+                })
                 .ForMember(c => c.Name, opt => opt.MapFrom(m => m.Name))
                 .ForMember(c => c.IsValidated, opt => opt.MapFrom(m => m.IsValidated))
                 .ForMember(c => c.CreationDate, opt => opt.MapFrom(m => m.CreationDate))

@@ -49,7 +49,7 @@ function loadModel({ id, x, y, z, axis, fov, rgb: { r, g, b } }, path = `/Home/D
         material.roughness = 0.5;
         material.metalness = 0.5;
         material.emissiveIntensity = 1;
-        material.color.setRGB(r, g, b);
+        material.color = new THREE.Color(r, g, b);
 
         var form = document.getElementById('color-form');
         if (form != null) {
