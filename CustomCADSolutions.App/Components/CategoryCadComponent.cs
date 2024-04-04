@@ -30,9 +30,9 @@ namespace CustomCADSolutions.App.Components
                 ViewBag.AlreadyOrdered = false;
             }
 
-            if (User.IsInRole("Contributer") && User.Identity!.Name != cad.CreatorName!)
+            if (User.IsInRole("Contributor") && User.Identity!.Name != cad.CreatorName!)
             {
-                ViewBag.Area = "Contributer";
+                ViewBag.Area = "Contributor";
             }
             else 
             {

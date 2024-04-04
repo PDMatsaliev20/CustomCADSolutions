@@ -165,7 +165,7 @@ namespace CustomCADSolutions.App.Controllers
             return LocalRedirect(returnUrl);
         }
 
-        public async Task<IActionResult> MakeContributer()
+        public async Task<IActionResult> MakeContributor()
         {
             if (!User.Identity!.IsAuthenticated)
             {
@@ -176,12 +176,12 @@ namespace CustomCADSolutions.App.Controllers
             IEnumerable<string> roles = await userManager.GetRolesAsync(user);
 
             await userManager.RemoveFromRoleAsync(user, roles.Single());
-            await userManager.AddToRoleAsync(user, "Contributer");
+            await userManager.AddToRoleAsync(user, "Contributor");
 
             await signInManager.SignOutAsync();
             await signInManager.SignInAsync(user, false);
 
-            return RedirectToAction("Index", "Cads", new { area = "Contributer" });
+            return RedirectToAction("Index", "Cads", new { area = "Contributor" });
         }
 
         public IActionResult Privacy()

@@ -10,10 +10,10 @@ using CustomCADSolutions.App.Mappings.CadDTOs;
 using AutoMapper;
 using CustomCADSolutions.App.Mappings;
 
-namespace CustomCADSolutions.App.Areas.Contributer.Controllers
+namespace CustomCADSolutions.App.Areas.Contributor.Controllers
 {
-    [Area("Contributer")]
-    [Authorize(Roles = "Contributer")]
+    [Area("Contributor")]
+    [Authorize(Roles = "Contributor")]
     public class CadsController : Controller
     {
         private readonly ICategoryService categoryService;

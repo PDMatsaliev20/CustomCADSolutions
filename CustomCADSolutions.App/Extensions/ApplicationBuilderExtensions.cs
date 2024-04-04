@@ -69,9 +69,9 @@ namespace Microsoft.AspNetCore.Builder
                 pattern: "Designer/{controller}/{action=Index}/{id?}");
 
             app.MapAreaControllerRoute(
-                name: "ContributerArea",
-                areaName: "Contributer",
-                pattern: "Contributer/{controller=Home}/{action=Index}/{id?}");
+                name: "ContributorArea",
+                areaName: "Contributor",
+                pattern: "Contributor/{controller=Home}/{action=Index}/{id?}");
 
             app.MapAreaControllerRoute(
                 name: "ClientArea",

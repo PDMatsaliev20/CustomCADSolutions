@@ -41,7 +41,7 @@ namespace CustomCADSolutions.App.Areas.Admin.Controllers
                 .Select(t => t.Result)
                 .ToArray();
             
-            ViewBag.Roles = new string[] { "Administrator", "Designer", "Contributer", "Client" };
+            ViewBag.Roles = new string[] { "Administrator", "Designer", "Contributor", "Client" };
             return View(views);
         }
 

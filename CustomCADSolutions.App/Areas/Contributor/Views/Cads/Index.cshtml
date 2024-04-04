@@ -2,14 +2,14 @@
 @inject IViewLocalizer Localizer
 @{
     ViewBag.Buttons = new string[] { "Download", "Colorize", "Edit", "Delete" };
-    ViewBag.Area = "Contributer";
+    ViewBag.Area = "Contributor";
 }
 
 <h2 class="text-center">@Localizer["Title", User.Identity!.Name!]</h2>
 <hr />
 
 <div class="d-flex justify-content-center mb-2">
-    <a class="btn btn-primary" asp-area="Contributer" asp-controller="Cads" asp-action="Add">@Localizer["Add"]</a>
+    <a class="btn btn-primary" asp-area="Contributor" asp-controller="Cads" asp-action="Add">@Localizer["Add"]</a>
 </div>
 
 

@@ -10,10 +10,10 @@ using CustomCADSolutions.App.Mappings;
 using CustomCADSolutions.App.Mappings.DTOs;
 using static CustomCADSolutions.App.Constants.Paths;
 
-namespace CustomCADSolutions.App.Areas.Contributer.Controllers
+namespace CustomCADSolutions.App.Areas.Contributor.Controllers
 {
-    [Area("Contributer")]
-    [Authorize(Roles = "Contributer")]
+    [Area("Contributor")]
+    [Authorize(Roles = "Contributor")]
     public class OrdersController : Controller
     {
         private readonly ICategoryService categoryService;
@@ -42,7 +42,7 @@ namespace CustomCADSolutions.App.Areas.Contributer.Controllers
                 {
                     dtos = dtos.Where(v => v.BuyerName == User.Identity!.Name).ToArray();
 
-                    ViewBag.Area = "Contributer";
+                    ViewBag.Area = "Contributor";
                     return View(mapper.Map<OrderViewModel[]>(dtos));
                 }
                 else throw new JsonException("Json parsing error");

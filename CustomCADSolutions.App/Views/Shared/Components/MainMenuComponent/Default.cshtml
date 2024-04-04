@@ -25,7 +25,7 @@
                 </a>
             </li>
         }
-        else if (User.IsInRole("Contributer"))
+        else if (User.IsInRole("Contributor"))
         {
             <li class="nav-item">
                 <a asp-area="" asp-controller="Home" asp-action="Category"
@@ -34,13 +34,13 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a asp-area="Contributer" asp-controller="Orders" asp-action="Index" 
+                <a asp-area="Contributor" asp-controller="Orders" asp-action="Index" 
                     class="nav-link text-dark" role="button">
                     @ViewData["UrOrders"]
                 </a>
             </li>
             <li class="nav-item">
-                <a asp-area="Contributer" asp-controller="Cads" asp-action="Index" 
+                <a asp-area="Contributor" asp-controller="Cads" asp-action="Index" 
                     class="nav-link text-dark" role="button">
                     @ViewData["UrCads"]
                 </a>

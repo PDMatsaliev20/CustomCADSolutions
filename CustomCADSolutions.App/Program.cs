@@ -11,7 +11,7 @@ System.Globalization.CultureInfo[] cultures = { new("en-US"), new("bg-BG") };
 builder.Services.AddLocalizer(cultures);
 
 // Roles, Stripe and Swagger
-string[] roles = { "Administrator", "Designer", "Contributer", "Client" };
+string[] roles = { "Administrator", "Designer", "Contributor", "Client" };
 builder.Services.AddRoles(roles);
 builder.Services.AddStripe(builder.Configuration);
 builder.Services.AddSwaggerGen();

@@ -66,7 +66,7 @@ namespace CustomCADSolutions.App.Mappings
             .ForMember(dto => dto.Coords, opt => opt.MapFrom(model => model.Coords))
             .ForMember(dto => dto.SpinAxis, opt => opt.MapFrom(model => model.SpinAxis))
             .ForMember(dto => dto.IsValidated, opt => opt.MapFrom(model => model.IsValidated))
-            .ForMember(dto => dto.RGB, opt => opt.MapFrom(model => model.Color.GetColorBytes()))
+            .ForMember(dto => dto.RGB, opt => opt.MapFrom(model => new byte[] { model.Color.R, model.Color.G, model.Color.B }))
             .ForMember(dto => dto.CreatorName, opt =>
             {
                 opt.AllowNull();

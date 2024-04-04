@@ -1,10 +1,6 @@
-﻿using CustomCADSolutions.App.Models.Cads;
-using CustomCADSolutions.Core.Contracts;
-using CustomCADSolutions.Core.Models;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Security.Claims;
 using Stripe;
-using System.Drawing;
 
 namespace CustomCADSolutions.App.Extensions
 {
@@ -48,9 +44,6 @@ namespace CustomCADSolutions.App.Extensions
 
     return fileBytes;
 }
-        
-        public static byte[] GetColorBytes(this Color color)
-    => new byte[] { color.R, color.G, color.B };
         
         public static async Task<T?> TryGetFromJsonAsync<T>(this HttpClient httpClient, string path) where T : class
     => await httpClient.GetFromJsonAsync(path, typeof(T)) as T;
