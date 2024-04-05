@@ -11,9 +11,7 @@ using static CustomCADSolutions.App.Constants.Paths;
 using CustomCADSolutions.App.Mappings.CadDTOs;
 using AutoMapper;
 using CustomCADSolutions.App.Mappings;
-using MessagePack;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
-using System.IO;
+using CustomCADSolutions.Infrastructure.Data.Models;
 
 namespace CustomCADSolutions.App.Areas.Designer.Controllers
 {
@@ -23,18 +21,15 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
     {
         private readonly IStringLocalizer<CadsController> localizer;
         private readonly ICadService cadService;
-        private readonly ICategoryService categoryService;
         private readonly HttpClient httpClient;
         private readonly IMapper mapper;
 
         public CadsController(
             ICadService cadService,
-            ICategoryService categoryService,
             IStringLocalizer<CadsController> localizer,
             HttpClient httpClient)
         {
             this.cadService = cadService;
-            this.categoryService = categoryService;
             this.localizer = localizer;
             this.httpClient = httpClient;
             MapperConfiguration config = new(cfg => cfg.AddProfile<CadDTOProfile>());
@@ -50,12 +45,18 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
                 ["unvalidated"] = "true",
             };
             string path = CadsAPIPath + HttpContext.SecureQuery(parameters.ToArray());
-            var query = await httpClient.TryGetFromJsonAsync<CadQueryDTO>(path);
+            var query = await httpClient.GetFromJsonAsync<CadQueryDTO>(path);
             if (query != null)
             {
+                var categories = await httpClient.GetFromJsonAsync<Category[]>(CategoriesAPIPath);
+                if (categories == null)
+                {
+                    return NotFound();
+                }
+
+                inputQuery.Categories = categories.Select(c => c.Name);
                 inputQuery.TotalCount = query.TotalCount;
                 inputQuery.Cads = mapper.Map<CadViewModel[]>(query.Cads);
-                inputQuery.Categories = (await categoryService.GetAllAsync()).Select(c => c.Name);
                 ViewBag.Sortings = typeof(CadSorting).GetEnumNames();
 
 
@@ -78,12 +79,18 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
                 ["unvalidated"] = "true",
             };
             string path = CadsAPIPath + HttpContext.SecureQuery(parameters.ToArray());
-            var query = await httpClient.TryGetFromJsonAsync<CadQueryDTO>(path);
+            var query = await httpClient.GetFromJsonAsync<CadQueryDTO>(path);
             if (query != null)
             {
+                var categories = await httpClient.GetFromJsonAsync<Category[]>(CategoriesAPIPath);
+                if (categories == null)
+                {
+                    return NotFound();
+                }
+
+                inputQuery.Categories = categories.Select(c => c.Name);
                 inputQuery.TotalCount = query.TotalCount;
                 inputQuery.Cads = mapper.Map<CadViewModel[]>(query.Cads);
-                inputQuery.Categories = (await categoryService.GetAllAsync()).Select(c => c.Name);
 
                 ViewBag.Sortings = typeof(CadSorting).GetEnumNames();
                 return View(inputQuery);
@@ -112,12 +119,18 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
                 ["creator"] = User.Identity!.Name!,
             };
             string path = CadsAPIPath + HttpContext.SecureQuery(parameters.ToArray());
-            var query = await httpClient.TryGetFromJsonAsync<CadQueryDTO>(path);
+            var query = await httpClient.GetFromJsonAsync<CadQueryDTO>(path);
             if (query != null)
             {
+                var categories = await httpClient.GetFromJsonAsync<Category[]>(CategoriesAPIPath);
+                if (categories == null)
+                {
+                    return NotFound();
+                }
+
                 inputQuery.TotalCount = query.TotalCount;
                 inputQuery.Cads = mapper.Map<CadViewModel[]>(query.Cads);
-                inputQuery.Categories = (await categoryService.GetAllAsync()).Select(c => c.Name);
+                inputQuery.Categories = categories.Select(c => c.Name);
 
                 return View(inputQuery);
             }
@@ -129,7 +142,7 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
         {
             return View(new CadInputModel()
             {
-                Categories = await categoryService.GetAllAsync()
+                Categories = await httpClient.GetFromJsonAsync<Category[]>(CategoriesAPIPath)
             });
         }
 
@@ -138,7 +151,7 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
         {
             if (!ModelState.IsValid)
             {
-                input.Categories = await categoryService.GetAllAsync();
+                input.Categories = await httpClient.GetFromJsonAsync<Category[]>(CategoriesAPIPath);
                 if (ModelState.ErrorCount > 1)
                 {
                     return View(input);
@@ -164,12 +177,19 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var dto = await httpClient.TryGetFromJsonAsync<CadExportDTO>($"{CadsAPIPath}/{id}");
+            var dto = await httpClient.GetFromJsonAsync<CadExportDTO>($"{CadsAPIPath}/{id}");
             if (dto != null)
             {
                 if (dto.CreatorName != User.Identity!.Name!)
                 {
                     return Forbid();
+                }
+
+                string path = $"{CategoriesAPIPath}/{dto.CategoryName}";
+                var category = await httpClient.GetFromJsonAsync<Category>(path);
+                if (category == null)
+                {
+                    return NotFound();
                 }
 
                 CadInputModel input = new()
@@ -179,8 +199,8 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
                     Y = dto.Coords[1],
                     Z = dto.Coords[2],
                     SpinAxis = dto.SpinAxis,
-                    CategoryId = (await categoryService.GetByNameAsync(dto.CategoryName)).Id,
-                    Categories = await categoryService.GetAllAsync(),
+                    CategoryId = category.Id,
+                    Categories = await httpClient.GetFromJsonAsync<Category[]>(CategoriesAPIPath),
                 };
 
                 return View(input);
@@ -202,7 +222,7 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
-            var dto = await httpClient.TryGetFromJsonAsync<CadExportDTO>($"{CadsAPIPath}/{id}");
+            var dto = await httpClient.GetFromJsonAsync<CadExportDTO>($"{CadsAPIPath}/{id}");
             if (dto != null)
             {
                 if (dto.CreatorName != User.Identity!.Name)
@@ -219,7 +239,7 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
         private async Task<string> GetMessageAsync(params KeyValuePair<string, string>[] parameters)
         {
             string path = CadsAPIPath + HttpContext.SecureQuery(parameters);
-            var query = await httpClient.TryGetFromJsonAsync<CadQueryDTO>(path);
+            var query = await httpClient.GetFromJsonAsync<CadQueryDTO>(path);
 
             if (query != null && query.TotalCount > 0)
             {

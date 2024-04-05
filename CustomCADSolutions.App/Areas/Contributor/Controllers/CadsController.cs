@@ -9,6 +9,7 @@ using static CustomCADSolutions.App.Constants.Paths;
 using CustomCADSolutions.App.Mappings.CadDTOs;
 using AutoMapper;
 using CustomCADSolutions.App.Mappings;
+using CustomCADSolutions.Infrastructure.Data.Models;
 
 namespace CustomCADSolutions.App.Areas.Contributor.Controllers
 {
@@ -16,19 +17,14 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
     [Authorize(Roles = "Contributor")]
     public class CadsController : Controller
     {
-        private readonly ICategoryService categoryService;
         private readonly HttpClient httpClient;
         private readonly IMapper mapper;
         private readonly ILogger logger;
 
-        public CadsController(
-            ICategoryService categoryService,
-            ILogger<CadModel> logger,
-            HttpClient httpClient)
+        public CadsController(HttpClient httpClient, ILogger<CadModel> logger)
         {
-            this.categoryService = categoryService;
-            this.httpClient = httpClient;
             this.logger = logger;
+            this.httpClient = httpClient;
             MapperConfiguration config = new(cfg => cfg.AddProfile<CadDTOProfile>());
             this.mapper = config.CreateMapper();
         }
@@ -44,7 +40,7 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
             };
             
             string path = CadsAPIPath + HttpContext.SecureQuery(parameters.ToArray());
-            CadQueryDTO? query = await httpClient.TryGetFromJsonAsync<CadQueryDTO>(path);
+            CadQueryDTO? query = await httpClient.GetFromJsonAsync<CadQueryDTO>(path);
             if (query != null)
             {
                 inputQuery.TotalCount = query.TotalCount;
@@ -60,7 +56,7 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
         {
             return View(new CadInputModel()
             {
-                Categories = await categoryService.GetAllAsync()
+                Categories = await httpClient.GetFromJsonAsync<Category[]>(CategoriesAPIPath)
             });
         }
 
@@ -77,7 +73,7 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
             if (!ModelState.IsValid)
             {
                 logger.LogError("Invalid 3d Model: {0}", string.Join(", ", ModelState.GetErrors()));
-                input.Categories = await categoryService.GetAllAsync();
+                input.Categories = await httpClient.GetFromJsonAsync<Category[]>(CategoriesAPIPath);
                 return View(input);
             }
 
@@ -112,7 +108,7 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var dto = await httpClient.TryGetFromJsonAsync<CadExportDTO>($"{CadsAPIPath}/{id}");
+            var dto = await httpClient.GetFromJsonAsync<CadExportDTO>($"{CadsAPIPath}/{id}");
             if (dto != null)
             {
                 if (dto.CreatorName == null)
@@ -125,6 +121,13 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
                     return Forbid("You don't have access to this model");
                 }
 
+                string categoryPath = $"{CategoriesAPIPath}/{dto.CategoryName}";
+                var category = await httpClient.GetFromJsonAsync<Category>(categoryPath);
+                if (category == null)
+                {
+                    return NotFound();
+                }
+
                 CadInputModel input = new()
                 {
                     Name = dto.Name,
@@ -132,8 +135,8 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
                     Y = dto.Coords[1],
                     Z = dto.Coords[2],
                     SpinAxis = dto.SpinAxis,
-                    CategoryId = (await categoryService.GetByNameAsync(dto.CategoryName)).Id,
-                    Categories = await categoryService.GetAllAsync(),
+                    CategoryId = category.Id,
+                    Categories = await httpClient.GetFromJsonAsync<Category[]>(CategoriesAPIPath),
                 };
 
                 return View(input);

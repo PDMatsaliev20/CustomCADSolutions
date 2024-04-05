@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Contribute" xml:space="preserve">
-    <value>You have 3D models? Become a contributer and unleash your imagination with our 3D models. Provide models to our gallery and recieve initial payment + 75% of the model's profits.</value>
+    <value>You have 3D models? Become a contributor and unleash your imagination with our 3D models. Provide models to our gallery and recieve initial payment + 75% of the model's profits.</value>
   </data>
   <data name="ContributeBtn" xml:space="preserve">
     <value>Send a Request</value>
@@ -157,6 +157,6 @@
     <value>Where Your Imagination Comes to Life</value>
   </data>
   <data name="Warning" xml:space="preserve">
-    <value>Are you sure you want to become a contributer?</value>
+    <value>Are you sure you want to become a contributor?</value>
   </data>
 </root>

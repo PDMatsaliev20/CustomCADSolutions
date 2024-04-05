@@ -22,30 +22,25 @@ using CustomCADSolutions.Infrastructure.Data.Models;
 using Humanizer;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
+using CustomCADSolutions.Core.Services;
 
 namespace CustomCADSolutions.App.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> logger;
-        private readonly ICadService cadService;
-        private readonly ICategoryService categoryService;
         private readonly UserManager<IdentityUser> userManager;
         private readonly SignInManager<IdentityUser> signInManager;
         private readonly HttpClient httpClient;
         private readonly IMapper mapper;
 
         public HomeController(
-            ICadService cadService,
-            ICategoryService categoryService,
             ILogger<HomeController> logger,
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
             HttpClient httpClient)
         {
             this.logger = logger;
-            this.cadService = cadService;
-            this.categoryService = categoryService;
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.httpClient = httpClient;
@@ -63,14 +58,14 @@ namespace CustomCADSolutions.App.Controllers
 
             logger.LogInformation("Entered Home Page");
 
-            CadModel model = await cadService.GetByIdAsync(1);
+            var dto = await httpClient.GetFromJsonAsync<CadExportDTO>($"{CadsAPIPath}/{1}");
             ViewBag.Chair = new CadViewModel()
             {
-                Id = model.Id,
-                Name = model.Name,
-                Coords = model.Coords,
-                SpinAxis = model.SpinAxis,
-                Category = model.Category.Name,
+                Id = dto.Id,
+                Name = dto.Name,
+                Coords = dto.Coords,
+                SpinAxis = dto.SpinAxis,
+                Category = dto.CategoryName,
                 RGB = new byte[] { 143, 124, 239 },
             };
 
@@ -86,11 +81,12 @@ namespace CustomCADSolutions.App.Controllers
             };
 
             string path = CadsAPIPath + HttpContext.SecureQuery(parameters.ToArray());
-            var query = await httpClient.TryGetFromJsonAsync<CadQueryDTO>(path);
+            var query = await httpClient.GetFromJsonAsync<CadQueryDTO>(path);
             if (query != null)
             {
+                var categories = await httpClient.GetFromJsonAsync<Category[]>(CategoriesAPIPath);
+                inputQuery.Categories = categories!.Select(c => c.Name);
                 inputQuery.TotalCount = query.TotalCount;
-                inputQuery.Categories = (await categoryService.GetAllAsync()).Select(c => c.Name);
                 inputQuery.Cads = mapper.Map<CadViewModel[]>(query.Cads);
 
                 ViewBag.Sortings = typeof(CadSorting).GetEnumNames();
@@ -101,18 +97,22 @@ namespace CustomCADSolutions.App.Controllers
         }
 
         [HttpGet]
-        public async Task<FileResult> DownloadCad(int id)
+        public async Task<ActionResult> DownloadCad(int id)
         {
-            CadModel model = await cadService.GetByIdAsync(id);
-            byte[] bytes = model.Bytes!;
+            var model = await httpClient.GetFromJsonAsync<CadExportDTO>($"{CadsAPIPath}/{id}");
+            if (model != null)
+            {
+                byte[] bytes = model.Bytes!;
 
-            return File(bytes, "application/octet-stream", $"{model.Name}.stl");
+                return File(bytes, "application/octet-stream", $"{model.Name}.stl");
+            }
+            else return BadRequest();
         }
 
         [HttpGet]
         public async Task<IActionResult> CadDetails(int id)
         {
-            var dto = await httpClient.GetFromJsonAsync<CadExportDTO>($"{CadsAPIPath}/{id}");
+            var dto = await HttpClientJsonExtensions.GetFromJsonAsync<CadExportDTO>(httpClient, $"{CadsAPIPath}/{id}");
 
             if (dto != null)
             {
@@ -122,35 +122,39 @@ namespace CustomCADSolutions.App.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ChangeColor(int id, string colorParam, string area)  
+        public async Task<IActionResult> ChangeColor(int id, string colorParam, string area)
         {
-            logger.LogWarning(colorParam);
-            string path = $"{CadsAPIPath}/{id}";
-            var export = await httpClient.TryGetFromJsonAsync<CadExportDTO>(path);
+            var export = await httpClient.GetFromJsonAsync<CadExportDTO>($"{CadsAPIPath}/{id}");
             if (export != null)
             {
                 Color color = ColorTranslator.FromHtml(colorParam);
-                CadImportDTO import = new() 
+                string path = $"{CategoriesAPIPath}/{export.CategoryName}";
+                var category = await httpClient.GetFromJsonAsync<Category>(path);
+                if (category != null)
                 {
-                    Id = export.Id,
-                    CreatorId = export.CreatorId,
-                    Name = export.Name,
-                    Coords = export.Coords,
-                    SpinAxis = export.SpinAxis,
-                    RGB = new byte[] { color.R, color.B, color.G } ,
-                    CategoryId = (await categoryService.GetByNameAsync(export.CategoryName)).Id,
-                };
+                    CadImportDTO import = new()
+                    {
+                        Id = export.Id,
+                        CreatorId = export.CreatorId,
+                        Name = export.Name,
+                        Coords = export.Coords,
+                        SpinAxis = export.SpinAxis,
+                        RGB = new byte[] { color.R, color.B, color.G },
+                        CategoryId = category.Id,
+                    };
 
-                var response = await httpClient.PutAsJsonAsync($"{CadsAPIPath}/Edit", import);
-                try
-                {
-                    response.EnsureSuccessStatusCode();
-                    return RedirectToAction("CadDetails", new { area = area, id = export.Id });
+                    var response = await httpClient.PutAsJsonAsync($"{CadsAPIPath}/Edit", import);
+                    try
+                    {
+                        response.EnsureSuccessStatusCode();
+                        return RedirectToAction("CadDetails", new { area = area, id = export.Id });
+                    }
+                    catch
+                    {
+                        return BadRequest(response.StatusCode);
+                    }
                 }
-                catch 
-                {
-                    return BadRequest(response.StatusCode);
-                }
+                else return NotFound();
             }
             else return NotFound();
         }

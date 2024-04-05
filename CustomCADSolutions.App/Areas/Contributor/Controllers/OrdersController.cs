@@ -9,6 +9,7 @@ using AutoMapper;
 using CustomCADSolutions.App.Mappings;
 using CustomCADSolutions.App.Mappings.DTOs;
 using static CustomCADSolutions.App.Constants.Paths;
+using CustomCADSolutions.Infrastructure.Data.Models;
 
 namespace CustomCADSolutions.App.Areas.Contributor.Controllers
 {
@@ -16,20 +17,16 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
     [Authorize(Roles = "Contributor")]
     public class OrdersController : Controller
     {
-        private readonly ICategoryService categoryService;
         private readonly HttpClient httpClient;
         private readonly IMapper mapper;
         private readonly ILogger logger;
 
-        public OrdersController(
-            ICategoryService categoryService,
-            ILogger<OrdersController> logger,
-            HttpClient httpClient)
+        public OrdersController(HttpClient httpClient, ILogger<OrdersController> logger)
         {
             this.logger = logger;
-            this.categoryService = categoryService;
             this.httpClient = httpClient;
-            mapper = new MapperConfiguration(cfg => cfg.AddProfile<OrderDTOProfile>()).CreateMapper();
+            MapperConfiguration config = new(cfg => cfg.AddProfile<OrderDTOProfile>());
+            this.mapper = config.CreateMapper();
         }
 
         [HttpGet]
@@ -37,7 +34,7 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
         {
             try
             {
-                var dtos = await httpClient.TryGetFromJsonAsync<OrderExportDTO[]>(OrdersAPIPath);
+                var dtos = await httpClient.GetFromJsonAsync<OrderExportDTO[]>(OrdersAPIPath);
                 if (dtos != null)
                 {
                     dtos = dtos.Where(v => v.BuyerName == User.Identity!.Name).ToArray();
@@ -58,7 +55,7 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
         public async Task<IActionResult> Details(int id)
         {
             string path = $"{OrdersAPIPath}/{User.GetId()}/{id}";
-            OrderExportDTO? dto = await httpClient.TryGetFromJsonAsync<OrderExportDTO>(path);
+            OrderExportDTO? dto = await httpClient.GetFromJsonAsync<OrderExportDTO>(path);
 
             if (dto != null)
             {
@@ -72,7 +69,7 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
         {
             return View(new OrderInputModel()
             {
-                Categories = await categoryService.GetAllAsync()
+                Categories = await httpClient.GetFromJsonAsync<Category[]>(CategoriesAPIPath)
             });
         }
 
@@ -81,7 +78,7 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
         {
             if (!ModelState.IsValid)
             {
-                input.Categories = await categoryService.GetAllAsync();
+                input.Categories = await httpClient.GetFromJsonAsync<Category[]>(CategoriesAPIPath);
                 return View(input);
             }
 
@@ -103,14 +100,22 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int cadId)
         {
-            string path = $"{OrdersAPIPath}/{User.GetId()}/{cadId}";
-            var dto = await httpClient.TryGetFromJsonAsync<OrderExportDTO>(path);
+            string orderPath = $"{OrdersAPIPath}/{User.GetId()}/{cadId}";
+            var dto = await httpClient.GetFromJsonAsync<OrderExportDTO>(orderPath);
             if (dto != null)
             {
                 if (dto.Status != OrderStatus.Pending.ToString())
                 {
                     return RedirectToAction(nameof(Index));
                 }
+                
+                string categoryPath = $"{CategoriesAPIPath}/{dto.Cad.CategoryName}";
+                var category = await httpClient.GetFromJsonAsync<Category>(categoryPath);
+                if (category == null)
+                {
+                    return NotFound();
+                }
+
 
                 OrderInputModel input = new()
                 {
@@ -118,8 +123,8 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
                     BuyerId = dto.BuyerId,
                     Name = dto.Cad.Name,
                     Description = dto.Description,
-                    CategoryId = (await categoryService.GetByNameAsync(dto.Cad.CategoryName)).Id,
-                    Categories = await categoryService.GetAllAsync(),
+                    CategoryId = category.Id,
+                    Categories = await httpClient.GetFromJsonAsync<Category[]>(CategoriesAPIPath),
                 };
 
                 return View(input);
@@ -133,7 +138,7 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
             if (!ModelState.IsValid)
             {
                 logger.LogError($"Invalid Order - {string.Join(", ", ModelState.GetErrors())}");
-                input.Categories = await categoryService.GetAllAsync();
+                input.Categories = await httpClient.GetFromJsonAsync<Category[]>(CategoriesAPIPath);
                 return View(input);
             }
 

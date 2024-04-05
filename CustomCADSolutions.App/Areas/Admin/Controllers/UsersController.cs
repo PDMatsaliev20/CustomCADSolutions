@@ -1,10 +1,14 @@
-﻿using CustomCADSolutions.App.Models.Users;
-using CustomCADSolutions.Core.Contracts;
+﻿using CustomCADSolutions.App.Mappings.CadDTOs;
+using CustomCADSolutions.App.Models.Users;
+using static CustomCADSolutions.App.Constants.Paths;
 using CustomCADSolutions.Core.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using CustomCADSolutions.App.Extensions;
+using AutoMapper;
+using CustomCADSolutions.App.Mappings;
 
 namespace CustomCADSolutions.App.Areas.Admin.Controllers
 {
@@ -14,15 +18,15 @@ namespace CustomCADSolutions.App.Areas.Admin.Controllers
     {
         private readonly ILogger<UsersController> logger;
         private readonly UserManager<IdentityUser> userManager;
-        private readonly ICadService cadService;
+        private readonly HttpClient httpClient;
 
         public UsersController(
             UserManager<IdentityUser> userManager,
-            ICadService cadService,
+            HttpClient httpClient,
             ILogger<UsersController> logger)
         {
             this.userManager = userManager;
-            this.cadService = cadService;
+            this.httpClient = httpClient;
             this.logger = logger;
         }
 
@@ -61,15 +65,6 @@ namespace CustomCADSolutions.App.Areas.Admin.Controllers
         public async Task<IActionResult> DeleteUser(string username)
         {
             IdentityUser user = await userManager.FindByNameAsync(username);
-            
-            CadQueryModel query = await cadService.GetAllAsync(new CadQueryModel { Creator = username });
-            foreach (CadModel model in query.Cads)
-            {
-                RedirectToAction(nameof(CadsController.Delete),
-                        nameof(CadsController).Replace("Controller", string.Empty),
-                        new { id = model.Id });
-            }
-            
             await userManager.DeleteAsync(user);
             return RedirectToAction(nameof(Index));
         }

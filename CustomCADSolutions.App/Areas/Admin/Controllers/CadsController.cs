@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static CustomCADSolutions.App.Extensions.UtilityExtensions;
 using static CustomCADSolutions.App.Constants.Paths;
+using CustomCADSolutions.Infrastructure.Data.Models;
 
 namespace CustomCADSolutions.App.Areas.Admin.Controllers
 {
@@ -17,17 +18,12 @@ namespace CustomCADSolutions.App.Areas.Admin.Controllers
     [Authorize(Roles = "Administrator")]
     public class CadsController : Controller
     {
-        private readonly ICategoryService categoryService;
         private readonly HttpClient httpClient;
-        private readonly IMapper mapper;
         private readonly ILogger logger;
+        private readonly IMapper mapper;
 
-        public CadsController(
-            ICategoryService categoryService,
-            ILogger<CadModel> logger,
-            HttpClient httpClient)
+        public CadsController(ILogger<CadModel> logger, HttpClient httpClient)
         {
-            this.categoryService = categoryService;
             this.logger = logger;
             this.httpClient = httpClient;
             MapperConfiguration config = new(cfg => cfg.AddProfile<CadDTOProfile>());
@@ -43,17 +39,22 @@ namespace CustomCADSolutions.App.Areas.Admin.Controllers
                 ["unvalidated"] = "true",
             };
             string path = CadsAPIPath + HttpContext.SecureQuery(parameters.ToArray());
-            var query = await httpClient.TryGetFromJsonAsync<CadQueryDTO>(path);
+            var query = await httpClient.GetFromJsonAsync<CadQueryDTO>(path);
             if (query != null)
             {
-                inputQuery.TotalCount = query.TotalCount;
-                inputQuery.Cads = mapper.Map<CadViewModel[]>(query.Cads);
-                inputQuery.Categories = (await categoryService.GetAllAsync()).Select(c => c.Name);
+                var categories = await httpClient.GetFromJsonAsync<Category[]>(CategoriesAPIPath);
+                if (categories != null)
+                {
+                    inputQuery.Categories = categories.Select(c => c.Name);
+                    inputQuery.TotalCount = query.TotalCount;
+                    inputQuery.Cads = mapper.Map<CadViewModel[]>(query.Cads);
 
-                ViewBag.Sortings = typeof(CadSorting).GetEnumNames();
-                return View(inputQuery);
+                    ViewBag.Sortings = typeof(CadSorting).GetEnumNames();
+                    return View(inputQuery);
+                }
+                else return NotFound();
             }
-            else return BadRequest();
+            else return NotFound();
         }
 
         [HttpPost]

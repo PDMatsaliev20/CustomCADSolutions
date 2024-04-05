@@ -37,15 +37,12 @@ namespace CustomCADSolutions.App.Extensions
         public static string GetId(this ClaimsPrincipal user) => user.FindFirstValue(ClaimTypes.NameIdentifier);
 
         public static async Task<byte[]> GetBytesAsync(this IFormFile cad)
-{
-    using MemoryStream memoryStream = new();
-    await cad.CopyToAsync(memoryStream);
-    byte[] fileBytes = memoryStream.ToArray();
+        {
+            using MemoryStream memoryStream = new();
+            await cad.CopyToAsync(memoryStream);
+            byte[] fileBytes = memoryStream.ToArray();
 
-    return fileBytes;
-}
-        
-        public static async Task<T?> TryGetFromJsonAsync<T>(this HttpClient httpClient, string path) where T : class
-    => await httpClient.GetFromJsonAsync(path, typeof(T)) as T;
+            return fileBytes;
+        }
     }
 }

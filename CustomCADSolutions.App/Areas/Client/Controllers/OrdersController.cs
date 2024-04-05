@@ -13,6 +13,7 @@ using System.Text.Json;
 using static CustomCADSolutions.App.Constants.Paths;
 using CustomCADSolutions.App.Mappings.DTOs;
 using CustomCADSolutions.App.Mappings.CadDTOs;
+using CustomCADSolutions.Infrastructure.Data.Models;
 
 namespace CustomCADSolutions.App.Areas.Client.Controllers
 {
@@ -20,19 +21,16 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
     [Authorize(Roles = "Client")]
     public class OrdersController : Controller
     {
-        private readonly ICategoryService categoryService;
         private readonly StripeSettings stripeSettings;
         private readonly HttpClient httpClient;
         private readonly IMapper mapper;
         private readonly ILogger logger;
 
         public OrdersController(
-            ILogger<OrdersController> logger,
-            ICategoryService categoryService,
             IOptions<StripeSettings> stripeSettings,
-            HttpClient httpClient)
+            HttpClient httpClient,
+            ILogger logger)
         {
-            this.categoryService = categoryService;
             this.logger = logger;
             this.httpClient = httpClient;
             this.stripeSettings = stripeSettings.Value;
@@ -49,7 +47,7 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
         {
             try
             {
-                var dtos = await httpClient.TryGetFromJsonAsync<IEnumerable<OrderExportDTO>>(OrdersAPIPath);
+                var dtos = await httpClient.GetFromJsonAsync<IEnumerable<OrderExportDTO>>(OrdersAPIPath);
                 if (dtos != null)
                 {
                     dtos = dtos.Where(v => v.BuyerName == User.Identity!.Name);
@@ -70,7 +68,7 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
         public async Task<IActionResult> Details(int id)
         {
             string path = $"{OrdersAPIPath}/{User.GetId()}/{id}";
-            OrderExportDTO? dto = await httpClient.TryGetFromJsonAsync<OrderExportDTO>(path);
+            var dto = await httpClient.GetFromJsonAsync<OrderExportDTO>(path);
 
             if (dto != null)
             {
@@ -82,7 +80,7 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
         [HttpGet]
         public async Task<IActionResult> Order(int id)
         {
-            var dto = await httpClient.TryGetFromJsonAsync<CadExportDTO>($"{CadsAPIPath}/{id}");
+            var dto = await httpClient.GetFromJsonAsync<CadExportDTO>($"{CadsAPIPath}/{id}");
             if (dto != null && id != 1)
             {
                 CadViewModel view = mapper.Map<CadViewModel>(dto);
@@ -96,14 +94,14 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
         public async Task<IActionResult> Order(int id, string stripeToken)
         {
             string cadPath = $"{CadsAPIPath}/{id}";
-            var cadDto = await httpClient.TryGetFromJsonAsync<CadExportDTO>(cadPath);
+            var cadDto = await httpClient.GetFromJsonAsync<CadExportDTO>(cadPath);
 
             if (cadDto != null)
             {
                 string orderPath = $"{OrdersAPIPath}/{User.GetId()}/{id}";
                 try
                 {
-                    await httpClient.TryGetFromJsonAsync<OrderExportDTO>(orderPath);
+                    await httpClient.GetFromJsonAsync<OrderExportDTO>(orderPath);
                 }
                 catch
                 {
@@ -135,7 +133,7 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
         {
             return View(new OrderInputModel()
             {
-                Categories = await categoryService.GetAllAsync()
+                Categories = await httpClient.GetFromJsonAsync<Category[]>(CategoriesAPIPath)
             });
         }
 
@@ -144,7 +142,7 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
         {
             if (!ModelState.IsValid)
             {
-                input.Categories = await categoryService.GetAllAsync();
+                input.Categories = await httpClient.GetFromJsonAsync<Category[]>(CategoriesAPIPath);
                 return View(input);
             }
 
@@ -166,13 +164,20 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int cadId)
         {
-            string path = $"{OrdersAPIPath}/{User.GetId()}/{cadId}";
-            var dto = await httpClient.TryGetFromJsonAsync<OrderExportDTO>(path);
+            string orderPath = $"{OrdersAPIPath}/{User.GetId()}/{cadId}";
+            var dto = await httpClient.GetFromJsonAsync<OrderExportDTO>(orderPath);
             if (dto != null)
             {
                 if (dto.Status != OrderStatus.Pending.ToString())
                 {
                     return RedirectToAction(nameof(Index));
+                }
+
+                string categoryPath = $"{CategoriesAPIPath}/{dto.Cad.CategoryName}";
+                var category = await httpClient.GetFromJsonAsync<Category>(categoryPath);
+                if (category == null)
+                {
+                    return NotFound();
                 }
 
                 OrderInputModel input = new()
@@ -181,8 +186,8 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
                     BuyerId = dto.BuyerId,
                     Name = dto.Cad.Name,
                     Description = dto.Description,
-                    CategoryId = (await categoryService.GetByNameAsync(dto.Cad.CategoryName)).Id,
-                    Categories = await categoryService.GetAllAsync(),
+                    CategoryId = category.Id,
+                    Categories = await httpClient.GetFromJsonAsync<Category[]>(CategoriesAPIPath),
                 };
 
                 return View(input);
@@ -196,7 +201,7 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
             if (!ModelState.IsValid)
             {
                 logger.LogError($"Invalid Order - {string.Join(", ", ModelState.GetErrors())}");
-                input.Categories = await categoryService.GetAllAsync();
+                input.Categories = await httpClient.GetFromJsonAsync<Category[]>(CategoriesAPIPath);
                 return View(input);
             }
 

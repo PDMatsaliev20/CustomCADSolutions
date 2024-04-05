@@ -20,7 +20,6 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
     public class OrdersController : Controller
     {
         private readonly IOrderService orderService;
-        private readonly ICategoryService categoryService;
         private readonly HttpClient httpClient;
         private readonly IMapper mapper;
         private readonly ILogger logger;
@@ -32,7 +31,6 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
             HttpClient httpClient)
         {
             this.orderService = orderService;
-            this.categoryService = categoryService;
             this.logger = logger;
             this.httpClient = httpClient;
             MapperConfiguration config = new(cfg => cfg.AddProfile<OrderDTOProfile>());
@@ -44,7 +42,7 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
         {
             ViewBag.Statuses = typeof(OrderStatus).GetEnumNames();
 
-            var dtos = await httpClient.TryGetFromJsonAsync<OrderExportDTO[]>(OrdersAPIPath)
+            var dtos = await httpClient.GetFromJsonAsync<OrderExportDTO[]>(OrdersAPIPath)
                 ?? throw new JsonException("parsing error");
 
             ViewBag.HiddenOrders = dtos.Count(m => !m.ShouldShow);

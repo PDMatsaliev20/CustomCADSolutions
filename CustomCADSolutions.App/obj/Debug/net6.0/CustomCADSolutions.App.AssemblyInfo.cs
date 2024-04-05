@@ -16,7 +16,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CustomCADSolutions.App")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3a25e653dcf29db611282b16cd99a15870261eb7")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a5388753c3123bc7a4b644730d68ce631c8ec0e5")]
 [assembly: System.Reflection.AssemblyProductAttribute("CustomCADSolutions.App")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CustomCADSolutions.App")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
