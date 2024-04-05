@@ -1,0 +1,19 @@
+﻿@inject IViewLocalizer Localizer
+
+<div class="d-flex flex-sm-row flex-column align-items-center justify-content-evenly">
+    <p class="fw-bold">
+        <a class="text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">
+            @Localizer["Privacy"]
+        </a>
+    </p>
+    <p>&copy; 2023-@DateTime.Now.Year - CustomCADSolutions</p>
+    <p class="rounded-2">
+        <span>@Localizer["Contacts"]</span>
+        <a href="https://www.instagram.com/customcadsolutions/" class="text-black">
+            <i class="ms-1 fa fa-instagram"></i>
+        </a>
+        <a href="https://twitter.com/customcads/" class="text-black">
+            <i class="ms-1 fa fa-twitter"></i>
+        </a>
+    </p>
+</div>

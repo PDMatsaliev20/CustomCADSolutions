@@ -1,6 +1,6 @@
 ﻿@inject IViewLocalizer Localizer
 @{
-    string currentUrl = Context.Request.Path + Context.Request.QueryString;
+    ViewBag.ReturnUrl = Context.Request.Path + Context.Request.QueryString;
     ViewData["Title"] = "CustomCADSolutions";
 }
 
@@ -33,7 +33,7 @@
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand logo fade-in p-0 me-3" asp-area="" asp-controller="Home" asp-action="Index">
-                    <img class="mw-100 h-auto" src="~/logo.png">
+                    <img class="mw-100 h-auto" src="~/logo.png" />
                 </a>
                 <button class="navbar-toggler toggler fade-in" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon toggler-icon"></span>
@@ -41,11 +41,11 @@
 
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between fs-5">
                     <div class="fade-in d-flex flex-sm-row flex-column">
-                        @await Component.InvokeAsync("MainMenuComponent", new { home = Localizer["Home"].Value, explore = Localizer["Explore"].Value, urOrders = Localizer["UrOrders"].Value, urCads = Localizer["UrCads"].Value, allOrders = Localizer["AllOrders"].Value, allCads = Localizer["AllCads"].Value, allUsers = Localizer["AllUsers"].Value, })
+                        <partial name="_MainMenuPartial" />
                     </div>
                     <div>
                         <ul class="navbar-nav d-flex flex-row justify-content-around alignt-items-center fade-in">
-                            <partial name="_LanguageBtnPartial" model="@currentUrl" />
+                            <partial name="_LanguageBtnPartial" view-data="@ViewData" />
                             <partial name="_LoginPartial" />
                         </ul>
                     </div>
@@ -62,7 +62,7 @@
     <hr />
 
     <footer class="footer position-relative w-100">
-        @await Component.InvokeAsync("FooterComponent", new { privacy = Localizer["Privacy"].Value, contacts = Localizer["Contacts"].Value, })
+        <partial name="_FooterPartial" />
     </footer>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

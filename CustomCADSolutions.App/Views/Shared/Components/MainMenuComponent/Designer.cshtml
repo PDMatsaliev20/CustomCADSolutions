@@ -1,0 +1,14 @@
+﻿@inject IViewLocalizer Localizer
+
+<li class="nav-item">
+    <a asp-area="Designer" asp-controller="Orders" asp-action="All"
+       class="nav-link text-dark" role="button">
+        @Localizer["AllOrders"]
+    </a>
+</li>
+<li class="nav-item">
+    <a asp-area="Designer" asp-controller="Cads" asp-action="All"
+       class="nav-link text-dark" role="button">
+        @Localizer["AllCads"]
+    </a>
+</li>

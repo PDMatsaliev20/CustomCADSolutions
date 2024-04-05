@@ -4,24 +4,27 @@ namespace CustomCADSolutions.App.Components
 {
     public class MainMenuComponent : ViewComponent
     {
-        public async Task<IViewComponentResult> InvokeAsync(
-            string home,
-            string explore,
-            string urOrders,
-            string urCads,
-            string allOrders,
-            string allCads,
-            string allUsers)
+        public async Task<IViewComponentResult> InvokeAsync()
         {
-            ViewBag.Home = home;
-            ViewBag.Explore = explore;
-            ViewBag.UrOrders = urOrders;
-            ViewBag.UrCads = urCads;
-            ViewBag.AllOrders = allOrders;
-            ViewBag.AllCads = allCads;
-            ViewBag.AllUsers = allUsers;
+            string[] roles = { "Client", "Contributor", "Designer", "Admin" };
 
-            return await Task.FromResult<IViewComponentResult>(View());
+            string view = string.Empty;
+            if (User.Identity?.IsAuthenticated ?? false)
+            {
+                foreach (string role in roles)
+                {
+                    if (User.IsInRole(role))
+                    {
+                        view = role;
+                    }
+                }
+            }
+            else
+            {
+                view = "Unauthenticated";
+            }
+
+            return await Task.FromResult<IViewComponentResult>(View(view));
         }
     }
 }
