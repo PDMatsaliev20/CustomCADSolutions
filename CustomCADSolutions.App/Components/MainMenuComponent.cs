@@ -6,7 +6,7 @@ namespace CustomCADSolutions.App.Components
     {
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            string[] roles = { "Client", "Contributor", "Designer", "Admin" };
+            string[] roles = { "Client", "Contributor", "Designer", "Administrator" };
 
             string view = string.Empty;
             if (User.Identity?.IsAuthenticated ?? false)

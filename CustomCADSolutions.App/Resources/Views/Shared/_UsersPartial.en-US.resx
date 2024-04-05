@@ -126,8 +126,8 @@
   <data name="Client" xml:space="preserve">
     <value>Client</value>
   </data>
-  <data name="Contributer" xml:space="preserve">
-    <value>Contributer</value>
+  <data name="Contributor" xml:space="preserve">
+    <value>Contributor</value>
   </data>
   <data name="DeleteUser" xml:space="preserve">
     <value>Delete User</value>

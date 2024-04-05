@@ -6,11 +6,11 @@ namespace CustomCADSolutions.App.APIControllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class CategoryAPIController : ControllerBase
+    public class CategoriesAPIController : ControllerBase
     {
         private readonly ICategoryService categoryService;
 
-        public CategoryAPIController(ICategoryService categoryService)
+        public CategoriesAPIController(ICategoryService categoryService)
         {
             this.categoryService = categoryService;
         }

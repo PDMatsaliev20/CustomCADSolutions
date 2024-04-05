@@ -978,8 +978,6 @@ C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\o
 C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Areas.Contributor.Views.Orders.Edit.en-US.resources
 C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Areas.Contributor.Views.Orders.Index.bg-BG.resources
 C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Areas.Contributor.Views.Orders.Index.en-US.resources
-C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared.Components.MainMenuComponent.Admin.bg-BG.resources
-C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared.Components.MainMenuComponent.Admin.en-US.resources
 C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared.Components.MainMenuComponent.Client.bg-BG.resources
 C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared.Components.MainMenuComponent.Client.en-US.resources
 C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared.Components.MainMenuComponent.Contributor.bg-BG.resources
@@ -992,3 +990,5 @@ C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\o
 C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared._FooterPartial.en-US.resources
 C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared._MainMenuPartial.bg-BG.resources
 C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared._MainMenuPartial.en-US.resources
+C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared.Components.MainMenuComponent.Administrator.bg-BG.resources
+C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared.Components.MainMenuComponent.Administrator.en-US.resources
