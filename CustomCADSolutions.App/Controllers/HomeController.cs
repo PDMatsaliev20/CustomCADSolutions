@@ -1,43 +1,33 @@
 ﻿using CustomCADSolutions.App.Extensions;
 using CustomCADSolutions.App.Models;
 using CustomCADSolutions.App.Models.Cads;
-using CustomCADSolutions.Core.Contracts;
-using CustomCADSolutions.Core.Models;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using System.Net;
 using static CustomCADSolutions.App.Extensions.UtilityExtensions;
 using static CustomCADSolutions.App.Constants.Paths;
-using System.Text.Json;
 using CustomCADSolutions.App.Mappings.CadDTOs;
 using AutoMapper;
 using CustomCADSolutions.App.Mappings;
-using Microsoft.Extensions.Primitives;
-using Microsoft.AspNetCore.Http;
 using System.Drawing;
 using CustomCADSolutions.Infrastructure.Data.Models;
-using Humanizer;
-using Microsoft.Extensions.Options;
-using Newtonsoft.Json.Linq;
-using CustomCADSolutions.Core.Services;
 
 namespace CustomCADSolutions.App.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> logger;
-        private readonly UserManager<IdentityUser> userManager;
-        private readonly SignInManager<IdentityUser> signInManager;
+        private readonly UserManager<AppUser> userManager;
+        private readonly SignInManager<AppUser> signInManager;
         private readonly HttpClient httpClient;
         private readonly IMapper mapper;
 
         public HomeController(
             ILogger<HomeController> logger,
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
+            UserManager<AppUser> userManager,
+            SignInManager<AppUser> signInManager,
             HttpClient httpClient)
         {
             this.logger = logger;
@@ -176,7 +166,7 @@ namespace CustomCADSolutions.App.Controllers
                 return View();
             }
 
-            IdentityUser user = await userManager.FindByIdAsync(User.GetId());
+            AppUser user = await userManager.FindByIdAsync(User.GetId().ToString());
             IEnumerable<string> roles = await userManager.GetRolesAsync(user);
 
             await userManager.RemoveFromRoleAsync(user, roles.Single());

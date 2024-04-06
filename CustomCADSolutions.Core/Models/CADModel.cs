@@ -1,7 +1,6 @@
 ﻿using CustomCADSolutions.Infrastructure.Data.Models;
 using static CustomCADSolutions.Infrastructure.Data.DataConstants;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Identity;
 using System.Drawing;
 
 namespace CustomCADSolutions.Core.Models
@@ -35,7 +34,7 @@ namespace CustomCADSolutions.Core.Models
 
         public Category Category { get; set; } = null!;
 
-        public IdentityUser? Creator { get; set; }
+        public AppUser? Creator { get; set; }
         
         public ICollection<OrderModel> Orders { get; set; } = new List<OrderModel>();
     }

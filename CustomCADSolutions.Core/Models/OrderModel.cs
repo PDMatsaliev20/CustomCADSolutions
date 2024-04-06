@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using System.Text.Json.Serialization;
+using CustomCADSolutions.Infrastructure.Data.Models;
 
 namespace CustomCADSolutions.Core.Models
 {
@@ -39,6 +40,6 @@ namespace CustomCADSolutions.Core.Models
 
         [JsonPropertyName("buyer")]
         [ForeignKey(nameof(BuyerId))]
-        public IdentityUser Buyer { get; set; } = null!;
+        public AppUser Buyer { get; set; } = null!;
     }
 }

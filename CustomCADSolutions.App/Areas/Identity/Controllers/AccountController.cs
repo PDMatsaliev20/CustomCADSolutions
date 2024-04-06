@@ -3,28 +3,29 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication;
 using CustomCADSolutions.App.Models.Users;
 using Microsoft.Extensions.Localization;
+using CustomCADSolutions.Infrastructure.Data.Models;
 
 namespace CustomCADSolutions.App.Areas.Identity.Controllers
 {
     [Area("Identity")]
     public class AccountController : Controller
     {
-        private readonly SignInManager<IdentityUser> signInManager;
-        private readonly UserManager<IdentityUser> userManager;
-        private readonly IUserStore<IdentityUser> userStore;
-        private readonly IUserEmailStore<IdentityUser> emailStore;
+        private readonly SignInManager<AppUser> signInManager;
+        private readonly UserManager<AppUser> userManager;
+        private readonly IUserStore<AppUser> userStore;
+        private readonly IUserEmailStore<AppUser> emailStore;
         private readonly IStringLocalizer<AccountController> localizer;
 
         public AccountController(
-            UserManager<IdentityUser> userManager,
-            IUserStore<IdentityUser> userStore,
-            SignInManager<IdentityUser> signInManager,
+            UserManager<AppUser> userManager,
+            IUserStore<AppUser> userStore,
+            SignInManager<AppUser> signInManager,
             IStringLocalizer<AccountController> localizer)
         {
             this.userManager = userManager;
             this.userStore = userStore;
             this.signInManager = signInManager;
-            this.emailStore = (IUserEmailStore<IdentityUser>)this.userStore;
+            this.emailStore = (IUserEmailStore<AppUser>)this.userStore;
             this.localizer = localizer;
         }
 
@@ -50,7 +51,7 @@ namespace CustomCADSolutions.App.Areas.Identity.Controllers
                 return View(model);
             }
 
-            IdentityUser user = new();
+            AppUser user = new();
 
             await userStore.SetUserNameAsync(user, model.Username, CancellationToken.None);
             await emailStore.SetEmailAsync(user, model.Email, CancellationToken.None);

@@ -37,6 +37,6 @@ namespace CustomCADSolutions.Infrastructure.Data.Models
         public Cad Cad { get; set; } = null!;
 
         [ForeignKey(nameof(BuyerId))]
-        public IdentityUser Buyer { get; set; } = null!;
+        public AppUser Buyer { get; set; } = null!;
     }
 }

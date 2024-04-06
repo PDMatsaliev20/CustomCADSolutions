@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using CustomCADSolutions.Infrastructure.Data.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using System.Globalization;
 
@@ -44,13 +45,14 @@ namespace Microsoft.AspNetCore.Builder
         public static async Task<IServiceProvider> UseRolesAsync(this IServiceProvider service, string[] roles)
         {
             using IServiceScope scope = service.CreateScope();
-            var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<AppRole>>();
             foreach (string role in roles)
             {
                 if (!await roleManager.RoleExistsAsync(role))
                 {
-                    await roleManager.CreateAsync(new IdentityRole(role));
+                    await roleManager.CreateAsync(new AppRole(role));
                 }
+                //else await roleManager.DeleteAsync(roleManager.Roles.First(r => r.Name == role));
             }
 
             return service;

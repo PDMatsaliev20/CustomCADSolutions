@@ -24,6 +24,9 @@ namespace CustomCADSolutions.Infrastructure.Data.Common.Configurations
                 Y = 300,
                 Z = 0,
                 SpinAxis = 'y',
+                R = 255,
+                G = 255,
+                B = 255,
             });
         }
     }

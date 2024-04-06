@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using CustomCADSolutions.App.Models;
 using Microsoft.AspNetCore.Authentication.Certificate;
 using CustomCADSolutions.App.Extensions;
+using CustomCADSolutions.Infrastructure.Data.Models;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -27,16 +28,18 @@ namespace Microsoft.Extensions.DependencyInjection
 
         public static IServiceCollection AddApplicationIdentity(this IServiceCollection services)
         {
-            services.AddDefaultIdentity<IdentityUser>(options =>
+            services.AddDefaultIdentity<AppUser>(options =>
             {
                 options.SignIn.RequireConfirmedAccount = false;
                 options.Password.RequireDigit = false;
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireLowercase = false;
                 options.Password.RequireUppercase = false;
-            })
-                .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<CADContext>();
+            }).AddRoles<AppRole>()
+                .AddEntityFrameworkStores<CADContext>()
+                .AddUserManager<UserManager<AppUser>>()
+                .AddDefaultTokenProviders()
+                ;
 
             return services;
         }

@@ -1,5 +1,5 @@
-﻿@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
+﻿@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
 @inject IViewLocalizer Localizer
 
 @if (SignInManager.IsSignedIn(User))

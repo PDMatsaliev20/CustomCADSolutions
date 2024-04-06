@@ -1,14 +1,9 @@
-﻿using CustomCADSolutions.App.Mappings.CadDTOs;
-using CustomCADSolutions.App.Models.Users;
-using static CustomCADSolutions.App.Constants.Paths;
-using CustomCADSolutions.Core.Models;
+﻿using CustomCADSolutions.App.Models.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using CustomCADSolutions.App.Extensions;
-using AutoMapper;
-using CustomCADSolutions.App.Mappings;
+using CustomCADSolutions.Infrastructure.Data.Models;
 
 namespace CustomCADSolutions.App.Areas.Admin.Controllers
 {
@@ -17,11 +12,11 @@ namespace CustomCADSolutions.App.Areas.Admin.Controllers
     public class UsersController : Controller
     {
         private readonly ILogger<UsersController> logger;
-        private readonly UserManager<IdentityUser> userManager;
+        private readonly UserManager<AppUser> userManager;
         private readonly HttpClient httpClient;
 
         public UsersController(
-            UserManager<IdentityUser> userManager,
+            UserManager<AppUser> userManager,
             HttpClient httpClient,
             ILogger<UsersController> logger)
         {
@@ -52,7 +47,7 @@ namespace CustomCADSolutions.App.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> EditUserRole(string username, string selectedRole)
         {
-            IdentityUser user = await userManager.FindByNameAsync(username);
+            AppUser user = await userManager.FindByNameAsync(username);
             var roles = await userManager.GetRolesAsync(user);
 
             await userManager.RemoveFromRoleAsync(user, roles.Single());
@@ -64,7 +59,7 @@ namespace CustomCADSolutions.App.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteUser(string username)
         {
-            IdentityUser user = await userManager.FindByNameAsync(username);
+            AppUser user = await userManager.FindByNameAsync(username);
             await userManager.DeleteAsync(user);
             return RedirectToAction(nameof(Index));
         }

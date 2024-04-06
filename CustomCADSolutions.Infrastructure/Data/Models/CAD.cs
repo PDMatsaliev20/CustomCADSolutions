@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.AspNetCore.Identity;
 using static CustomCADSolutions.Infrastructure.Data.DataConstants;
 
 namespace CustomCADSolutions.Infrastructure.Data.Models
@@ -63,7 +62,7 @@ namespace CustomCADSolutions.Infrastructure.Data.Models
         public Category Category { get; set; } = null!;
 
         [ForeignKey(nameof(CreatorId))]
-        public IdentityUser? Creator { get; set; }
+        public AppUser? Creator { get; set; }
 
         public ICollection<Order> Orders { get; set; } = new List<Order>();
     }

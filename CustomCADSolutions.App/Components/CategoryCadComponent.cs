@@ -1,20 +1,15 @@
 ﻿using CustomCADSolutions.App.Models.Cads;
 using CustomCADSolutions.Core.Contracts;
 using CustomCADSolutions.Core.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CustomCADSolutions.App.Components
 {
     public class CategoryCadComponent : ViewComponent
     {
-        private readonly UserManager<IdentityUser> userManager;
         private readonly IOrderService orderService;
-        public CategoryCadComponent(
-            UserManager<IdentityUser> userManager, 
-            IOrderService orderService)
+        public CategoryCadComponent(IOrderService orderService)
         {
-            this.userManager = userManager;
             this.orderService = orderService;
         }
 
