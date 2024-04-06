@@ -126,32 +126,11 @@
   <data name="Delivery" xml:space="preserve">
     <value>3-5 Day Delivery</value>
   </data>
-  <data name="Explore" xml:space="preserve">
-    <value>Browse through our extensive categories and find the perfect 3D model.</value>
-  </data>
-  <data name="ExploreBtn" xml:space="preserve">
-    <value>Explore The Gallery</value>
-  </data>
-  <data name="Order" xml:space="preserve">
-    <value>Оrder to your address and recieve your desired 3D model printed in a box.</value>
-  </data>
-  <data name="OrderBtn" xml:space="preserve">
-    <value>Make an Order</value>
-  </data>
   <data name="Quality" xml:space="preserve">
     <value>High Quality</value>
   </data>
-  <data name="Question" xml:space="preserve">
-    <value />
-  </data>
   <data name="Recycle" xml:space="preserve">
     <value>100% Recyclable</value>
-  </data>
-  <data name="Start" xml:space="preserve">
-    <value>Start exploring our collection today and take your projects to new heights with our stunning 3D models!</value>
-  </data>
-  <data name="Subtitle" xml:space="preserve">
-    <value />
   </data>
   <data name="Title" xml:space="preserve">
     <value>Where Your Imagination Comes to Life</value>

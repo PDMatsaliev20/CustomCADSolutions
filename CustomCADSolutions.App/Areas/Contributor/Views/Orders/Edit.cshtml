@@ -1,49 +1,11 @@
 ﻿@model OrderInputModel
 @inject IViewLocalizer Localizer
 @{
+    ViewBag.Submit = "Edit";
 }
 
 <h2 class="text-center mb-3">@Localizer["Title", Model.Name]</h2>
 <hr />
-
 <div class="container">
-    <form method="post" autocomplete="off" asp-route-cadId="@Model.CadId" asp-route-buyerId="@Model.BuyerId">
-        <input asp-for="CadId" value="@Model.CadId" hidden />
-        <input asp-for="BuyerId" value="@Model.BuyerId" hidden />
-
-        <div class="row justify-content-center">
-            <div class="col-4 mb-3">
-                <label asp-for="Name" class="form-label"></label>
-                <input asp-for="Name" class="form-control" placeholder="@Localizer["Name"]" />
-                <span asp-validation-for="@Model.Name" class="small text-danger"></span>
-            </div>
-            <div class="col-4 mb-3">
-                <label asp-for="CategoryId" class="form-label"></label>
-                <select asp-for="CategoryId" class="form-control">
-                    @foreach (Category category in Model.Categories!)
-                    {
-                        <option value="@category.Id">@Localizer[category.Name]</option>
-                    }
-                </select>
-                <span asp-validation-for="@Model.CategoryId" class="small text-danger"></span>
-            </div>
-        </div>
-        <div class="row justify-content-center">
-            <div class="col-8 mb-3">
-                <label asp-for="Description" class="form-label"></label>
-                <textarea asp-for="Description" class="form-control" rows="5" placeholder="@Localizer["Description"]"></textarea>
-                <span asp-validation-for="@Model.Description" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="row justify-content-center">
-            <div class="col-1">
-                <input class="btn btn-primary mt-3" type="submit" value="@Localizer["Edit"]" />
-            </div>
-        </div>
-    </form>
+    <partial name="_OrderFormPartial" model="Model" view-data="ViewData" />
 </div>
-
-
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}

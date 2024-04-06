@@ -63,6 +63,7 @@ namespace CustomCADSolutions.App.Mappings
             .ForMember(dto => dto.Id, opt => opt.MapFrom(model => model.Id))
             .ForMember(dto => dto.Name, opt => opt.MapFrom(model => model.Name))
             .ForMember(dto => dto.CategoryName, opt => opt.MapFrom(model => model.Category.Name))
+            .ForMember(dto => dto.CategoryId, opt => opt.MapFrom(model => model.CategoryId))
             .ForMember(dto => dto.Coords, opt => opt.MapFrom(model => model.Coords))
             .ForMember(dto => dto.SpinAxis, opt => opt.MapFrom(model => model.SpinAxis))
             .ForMember(dto => dto.IsValidated, opt => opt.MapFrom(model => model.IsValidated))

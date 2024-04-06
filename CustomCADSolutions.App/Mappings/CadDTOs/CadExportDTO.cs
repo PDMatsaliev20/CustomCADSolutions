@@ -5,6 +5,7 @@
         public int Id { get; set; }
         public string Name { get; set; } = null!;
         public string CategoryName { get; set; } = null!;  
+        public int CategoryId { get; set; } 
         public string? CreatorId { get; set; }
         public string? CreatorName { get; set; } 
         public string? CreationDate { get; set; } 

@@ -2,7 +2,7 @@
 @inject IViewLocalizer Localizer
 
 <a asp-controller="Orders" asp-action="Edit" asp-route-cadId="@Model.CadId" class="col btn btn-warning">@Localizer["Edit"]</a>
-<form asp-area="@ViewBag.Area" asp-controller="Orders" asp-action="Delete" class="col">
+<form asp-controller="Orders" asp-action="Delete" class="col">
     <input name="id" value="@Model.CadId" hidden />
     <input name="buyerId" value="@Model.BuyerId" hidden />
 

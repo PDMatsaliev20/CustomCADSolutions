@@ -20,6 +20,7 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
     public class CadsController : Controller
     {
         private readonly IStringLocalizer<CadsController> localizer;
+        private readonly ILogger<CadsController> logger;
         private readonly ICadService cadService;
         private readonly HttpClient httpClient;
         private readonly IMapper mapper;
@@ -27,6 +28,7 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
         public CadsController(
             ICadService cadService,
             IStringLocalizer<CadsController> localizer,
+            ILogger<CadsController> logger,
             HttpClient httpClient)
         {
             this.cadService = cadService;
@@ -34,6 +36,7 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
             this.httpClient = httpClient;
             MapperConfiguration config = new(cfg => cfg.AddProfile<CadDTOProfile>());
             mapper = config.CreateMapper();
+            this.logger = logger;
         }
 
         [HttpGet]
@@ -185,7 +188,7 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
                     return Forbid();
                 }
 
-                string path = $"{CategoriesAPIPath}/{dto.CategoryName}";
+                string path = $"{CategoriesAPIPath}/{dto.CategoryId}";
                 var category = await httpClient.GetFromJsonAsync<Category>(path);
                 if (category == null)
                 {

@@ -58,7 +58,7 @@ namespace CustomCADSolutions.App.APIControllers
             }
         }
 
-        [HttpPost("Create")]
+        [HttpPost]
         [Consumes("application/json")]
         [ProducesResponseType(Status201Created)]
         [ProducesResponseType(Status400BadRequest)]
@@ -82,7 +82,7 @@ namespace CustomCADSolutions.App.APIControllers
             }
         }
 
-        [HttpPut("Edit")]
+        [HttpPut]
         [Consumes("application/json")]
         [ProducesResponseType(Status204NoContent)]
         [ProducesResponseType(Status403Forbidden)]

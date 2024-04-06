@@ -21,7 +21,7 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
         private readonly IMapper mapper;
         private readonly ILogger logger;
 
-        public CadsController(HttpClient httpClient, ILogger<CadModel> logger)
+        public CadsController(HttpClient httpClient, ILogger<CadsController> logger)
         {
             this.logger = logger;
             this.httpClient = httpClient;
@@ -38,7 +38,7 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
                 ["unvalidated"] = "true",
                 ["creator"] = User.Identity!.Name!,
             };
-            
+
             string path = CadsAPIPath + HttpContext.SecureQuery(parameters.ToArray());
             CadQueryDTO? query = await httpClient.GetFromJsonAsync<CadQueryDTO>(path);
             if (query != null)
@@ -70,9 +70,9 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
                 ModelState.AddModelError(nameof(input.CadFile),
                     $"3d model cannot be over {maxFileSize / 1_000_000}MB");
             }
+
             if (!ModelState.IsValid)
             {
-                logger.LogError("Invalid 3d Model: {0}", string.Join(", ", ModelState.GetErrors()));
                 input.Categories = await httpClient.GetFromJsonAsync<Category[]>(CategoriesAPIPath);
                 return View(input);
             }
@@ -88,7 +88,7 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
             dto.Bytes = bytes;
             dto.IsValidated = false;
             dto.CreatorId = User.GetId();
-            var response = await httpClient.PostAsJsonAsync($"{CadsAPIPath}/Create", dto);
+            var response = await httpClient.PostAsJsonAsync(CadsAPIPath, dto);
             response.EnsureSuccessStatusCode();
 
             //CadModel model = new()
@@ -108,24 +108,18 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var dto = await httpClient.GetFromJsonAsync<CadExportDTO>($"{CadsAPIPath}/{id}");
-            if (dto != null)
+            string _ = $"{CadsAPIPath}/{id}";
+            try
             {
-                if (dto.CreatorName == null)
+                var dto = (await httpClient.GetFromJsonAsync<CadExportDTO>(_))!;
+                if (dto.CreatorId == null)
                 {
                     return BadRequest("Model hasn't been created yet");
                 }
 
-                if (dto.CreatorName != User.Identity!.Name)
+                if (dto.CreatorId != User.GetId())
                 {
                     return Forbid("You don't have access to this model");
-                }
-
-                string categoryPath = $"{CategoriesAPIPath}/{dto.CategoryName}";
-                var category = await httpClient.GetFromJsonAsync<Category>(categoryPath);
-                if (category == null)
-                {
-                    return NotFound();
                 }
 
                 CadInputModel input = new()
@@ -135,13 +129,16 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
                     Y = dto.Coords[1],
                     Z = dto.Coords[2],
                     SpinAxis = dto.SpinAxis,
-                    CategoryId = category.Id,
+                    CategoryId = dto.CategoryId,
                     Categories = await httpClient.GetFromJsonAsync<Category[]>(CategoriesAPIPath),
                 };
 
                 return View(input);
             }
-            else return BadRequest();
+            catch
+            {
+                return BadRequest();
+            }
         }
 
         [HttpPost]
@@ -150,7 +147,7 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
             CadImportDTO dto = mapper.Map<CadImportDTO>(input);
             dto.CreatorId = User.GetId();
 
-            var response = await httpClient.PutAsJsonAsync($"{CadsAPIPath}/Edit", dto);
+            var response = await httpClient.PutAsJsonAsync(CadsAPIPath, dto);
             response.EnsureSuccessStatusCode();
 
             return RedirectToAction(nameof(Index));

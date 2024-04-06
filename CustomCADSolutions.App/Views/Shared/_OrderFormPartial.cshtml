@@ -1,0 +1,44 @@
+﻿@model OrderInputModel
+@inject IViewLocalizer Localizer
+
+<form method="post" autocomplete="off">
+    <div class="row justify-content-center mb-3">
+        <input asp-for="BuyerId" hidden />
+        <input asp-for="CadId" hidden />
+
+        <div class="col-4">
+            <label asp-for="Name" class="form-label"></label>
+            <input asp-for="Name" class="form-control" placeholder="@Localizer["Name"]" />
+            <span asp-validation-for="@Model.Name" class="small text-danger"></span>
+        </div>
+        <div class="col-4">
+            <label asp-for="CategoryId" class="form-label"></label>
+            <select asp-for="CategoryId" class="form-control">
+                <option value="@null" selected>@Localizer["None"]</option>
+                @foreach (Category category in Model.Categories!)
+                {
+                    <option value="@category.Id">@Localizer[category.Name]</option>
+                }
+            </select>
+            <span asp-validation-for="@Model.CategoryId" class="small text-danger"></span>
+        </div>
+    </div>
+
+    <div class="row justify-content-center mb-4">
+        <div class="col-8">
+            <label asp-for="Description" class="form-label"></label>
+            <textarea asp-for="Description" class="form-control" rows="5" placeholder="@Localizer["Description"]"></textarea>
+            <span asp-validation-for="@Model.Description" class="small text-danger"></span>
+        </div>
+    </div>
+
+    <div class="row justify-content-center mb-4">
+        <div class="col-1">
+            <input class="btn btn-primary" type="submit" value="@Localizer[ViewBag.Submit]" />
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

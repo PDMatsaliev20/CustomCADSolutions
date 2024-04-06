@@ -82,7 +82,7 @@ namespace CustomCADSolutions.App.APIControllers
             }
         }
 
-        [HttpPost("Create")]
+        [HttpPost]
         [Consumes("application/json")]
         [Produces("application/json")]
         [ProducesResponseType(Status201Created)]
@@ -99,7 +99,7 @@ namespace CustomCADSolutions.App.APIControllers
             return CreatedAtAction(nameof(GetAsync), new { export.Id }, export);
         }
 
-        [HttpPut("Edit")]
+        [HttpPut]
         [Consumes("application/json")]
         [ProducesResponseType(Status204NoContent)]
         [ProducesResponseType(Status403Forbidden)]

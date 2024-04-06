@@ -52,6 +52,7 @@ namespace CustomCADSolutions.App.Mappings
                 Id = model.CadId,
                 Name = model.Cad.Name,
                 CategoryName = model.Cad.Category.Name,
+                CategoryId = model.Cad.Category.Id,
             }))
             ;
 

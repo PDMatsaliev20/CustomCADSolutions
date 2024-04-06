@@ -32,14 +32,5 @@ namespace CustomCADSolutions.App.APIControllers
         {
             return await categoryService.GetByIdAsync(id);
         }
-
-        [HttpGet("{name}")]
-        [Produces("application/json")]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(404)]
-        public async Task<ActionResult<Category>> GetAsync(string name)
-        {
-            return await categoryService.GetByNameAsync(name);
-        }
     }
 }

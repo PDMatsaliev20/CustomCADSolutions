@@ -25,9 +25,8 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
         private readonly ILogger logger;
 
         public OrdersController(
-            ICategoryService categoryService,
             IOrderService orderService,
-            ILogger<CadModel> logger,
+            ILogger<OrdersController> logger,
             HttpClient httpClient)
         {
             this.orderService = orderService;

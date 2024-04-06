@@ -30,13 +30,15 @@ namespace CustomCADSolutions.App.Components
                 ViewBag.AlreadyOrdered = false;
             }
 
-            if (User.IsInRole("Contributor") && User.Identity!.Name != cad.CreatorName!)
-            {
-                ViewBag.Area = "Contributor";
-            }
-            else 
+            if (User.IsInRole("Client"))
             {
                 ViewBag.Area = "Client";
+            }
+            else if (User.IsInRole("Contributor"))
+            {
+                if (User.Identity!.Name != cad.CreatorName)
+                { ViewBag.Area = "Contributor"; }
+                else ViewBag.AlreadyOrdered = true;
             }
 
             ViewBag.Cols = cols;

@@ -136,4 +136,17 @@ function loadModel({ id, x, y, z, axis, fov, rgb: { r, g, b } }, path = `/Home/D
     });
 }
 
-export { loadModel };
+function stripeTokenHandler(token) {
+    var form = document.getElementById('payment-form');
+    var hiddenInput = document.createElement('input');
+    hiddenInput.setAttribute('type', 'hidden');
+    hiddenInput.setAttribute('name', 'stripeToken');
+    hiddenInput.setAttribute('value', token.id);
+    hiddenInput.setAttribute('class', 'form-control');
+    form.appendChild(hiddenInput);
+
+    form.submit();
+}
+
+
+export { loadModel, stripeTokenHandler };
