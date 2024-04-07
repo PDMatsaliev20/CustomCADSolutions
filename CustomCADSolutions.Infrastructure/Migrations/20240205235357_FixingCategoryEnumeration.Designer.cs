@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CustomCADSolutions.AppWithIdentity.Data.Migrations
 {
-    [DbContext(typeof(CADContext))]
+    [DbContext(typeof(CadContext))]
     [Migration("20240205235357_FixingCategoryEnumeration")]
     partial class FixingCategoryEnumeration
     {

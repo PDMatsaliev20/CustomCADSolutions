@@ -9,5 +9,11 @@
             public const string CadsAPIPath = $"{RootPath}/CadsAPI";
             public const string CategoriesAPIPath = $"{RootPath}/CategoriesAPI";
         }
+
+        public static class Roles
+        {
+            public const int NameMaxLength = 20;
+            public const int NameMinLength = 2;
+        }
     }
 }

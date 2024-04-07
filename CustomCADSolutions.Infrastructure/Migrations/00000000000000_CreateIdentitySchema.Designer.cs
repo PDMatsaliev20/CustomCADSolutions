@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CustomCADSolutions.AppWithIdentity.Data.Migrations
 {
-    [DbContext(typeof(CADContext))]
+    [DbContext(typeof(CadContext))]
     [Migration("00000000000000_CreateIdentitySchema")]
     partial class CreateIdentitySchema
     {

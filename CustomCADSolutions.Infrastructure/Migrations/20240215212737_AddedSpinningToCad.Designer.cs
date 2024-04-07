@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CustomCADSolutions.AppWithIdentity.Data.Migrations
 {
-    [DbContext(typeof(CADContext))]
+    [DbContext(typeof(CadContext))]
     [Migration("20240215212737_AddedSpinningToCad")]
     partial class AddedSpinningToCad
     {

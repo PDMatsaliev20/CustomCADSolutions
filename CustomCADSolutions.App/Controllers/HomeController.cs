@@ -41,13 +41,6 @@ namespace CustomCADSolutions.App.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            if (User.IsInRole("Administrator"))
-            {
-                return Redirect("/Admin");
-            }
-
-            logger.LogInformation("Entered Home Page");
-
             var dto = await httpClient.GetFromJsonAsync<CadExportDTO>($"{CadsAPIPath}/{1}");
             ViewBag.Chair = new CadViewModel()
             {

@@ -63,7 +63,7 @@ namespace Microsoft.AspNetCore.Builder
             app.MapAreaControllerRoute(
                 name: "AdminArea",
                 areaName: "Admin",
-                pattern: "Admin/{controller=Users}/{action=Index}/{id?}");
+                pattern: "Admin/{controller}/{action=Index}/{id?}");
 
             app.MapAreaControllerRoute(
                 name: "DesignerArea",

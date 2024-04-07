@@ -21,7 +21,7 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddApplicationDbContext(this IServiceCollection services, IConfiguration config)
         {
             string connectionString = config.GetConnectionString("RealConnection");
-            services.AddDbContext<CADContext>(options => options.UseSqlServer(connectionString));
+            services.AddDbContext<CadContext>(options => options.UseSqlServer(connectionString));
             services.AddScoped<IRepository, Repository>();
             return services;
         }
@@ -36,7 +36,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 options.Password.RequireLowercase = false;
                 options.Password.RequireUppercase = false;
             }).AddRoles<AppRole>()
-                .AddEntityFrameworkStores<CADContext>()
+                .AddEntityFrameworkStores<CadContext>()
                 .AddUserManager<UserManager<AppUser>>()
                 .AddDefaultTokenProviders()
                 ;

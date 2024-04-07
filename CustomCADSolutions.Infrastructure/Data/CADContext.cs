@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CustomCADSolutions.Infrastructure.Data
 {
-    public class CADContext : IdentityDbContext<AppUser, AppRole, string>
+    public class CadContext : IdentityDbContext<AppUser, AppRole, string>
     {
-        public CADContext(DbContextOptions<CADContext> options)
+        public CadContext(DbContextOptions<CadContext> options)
             : base(options)
         {
         }
