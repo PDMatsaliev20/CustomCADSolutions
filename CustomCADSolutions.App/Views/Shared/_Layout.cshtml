@@ -1,13 +1,15 @@
 ﻿@inject IViewLocalizer Localizer
 @{
     ViewBag.ReturnUrl = Context.Request.Path + Context.Request.QueryString;
-    ViewData["Title"] = "CustomCADSolutions";
+    string title = ViewData["Title"]?.ToString() == "CustomCADSolutions" ? 
+        "CustomCADSolutions" :
+        $"{ViewData["Title"]} - CustomCADSolutions";
 }
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>@ViewData["Title"]</title>
+    <title>@title</title>
 
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />

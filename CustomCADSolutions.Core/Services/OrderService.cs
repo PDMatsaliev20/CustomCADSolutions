@@ -64,6 +64,7 @@ namespace CustomCADSolutions.Core.Services
             order.Cad.CreationDate = model.Cad.CreationDate;
             order.Cad.CreatorId = model.Cad.CreatorId;
             order.Cad.IsValidated = model.Cad.IsValidated;
+            order.Cad.Bytes = model.Cad.Bytes;
 
             await repository.SaveChangesAsync();
         }

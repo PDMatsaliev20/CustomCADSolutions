@@ -1,16 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 namespace CustomCADSolutions.Infrastructure.Data.Models
 {
-    public class AppRole : IdentityRole<string>
+    public class AppRole : IdentityRole
     {
-        public AppRole()
-        {
-            Id = Guid.NewGuid().ToString();
-        }
-
-        public AppRole(string role) : this()
-        {
-            Name = role;
-        }
+        public AppRole() : base() { }
+        public AppRole(string roleName) : base(roleName) { }
     }
 }

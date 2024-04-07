@@ -1,5 +1,8 @@
 ﻿@model RoleDetailsViewModel
 @inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = "Role Details";
+}
 
 <h2 class="text-center">@Localizer["Title", Model.Name]</h2>
 <hr />

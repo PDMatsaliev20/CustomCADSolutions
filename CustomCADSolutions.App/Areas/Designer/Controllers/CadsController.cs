@@ -47,31 +47,31 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
                 ["validated"] = "true",
                 ["unvalidated"] = "true",
             };
-            string path = CadsAPIPath + HttpContext.SecureQuery(parameters.ToArray());
-            var query = await httpClient.GetFromJsonAsync<CadQueryDTO>(path);
-            if (query != null)
+            try
             {
-                var categories = await httpClient.GetFromJsonAsync<Category[]>(CategoriesAPIPath);
-                if (categories == null)
-                {
-                    return NotFound();
-                }
+                string _ = CadsAPIPath + HttpContext.SecureQuery(parameters.ToArray());
+                var query = (await httpClient.GetFromJsonAsync<CadQueryDTO>(_))!;
+                
+                _ = CategoriesAPIPath;
+                var categories = (await httpClient.GetFromJsonAsync<Category[]>(_))!;
 
                 inputQuery.Categories = categories.Select(c => c.Name);
                 inputQuery.TotalCount = query.TotalCount;
                 inputQuery.Cads = mapper.Map<CadViewModel[]>(query.Cads);
-                ViewBag.Sortings = typeof(CadSorting).GetEnumNames();
-
 
                 parameters["creator"] = User.Identity!.Name!;
                 ViewBag.DesignerDetails = await GetMessageAsync(parameters.ToArray());
-                
+
                 parameters = new() { ["unvalidated"] = "true", };
                 ViewBag.UnvalidatedDetails = await GetMessageAsync(parameters.ToArray());
-                
+
+                ViewBag.Sortings = typeof(CadSorting).GetEnumNames();
                 return View(inputQuery);
             }
-            return BadRequest();
+            catch (HttpRequestException)
+            {
+                return BadRequest();
+            }
         }
 
         [HttpGet]

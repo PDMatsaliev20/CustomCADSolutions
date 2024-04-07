@@ -1,6 +1,7 @@
 ﻿@model OrderViewModel
 @inject IViewLocalizer Localizer
 @{
+    ViewData["Title"] = "Order Details";
     ViewBag.Cols = 2;
     ViewBag.Buttons = new string[] { "Download", "Colorize" };
     ViewBag.Header = $"{Model.Name} ({Localizer[Model.Category].ToString()})";

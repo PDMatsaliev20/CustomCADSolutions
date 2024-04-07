@@ -120,6 +120,9 @@
   <data name="Cads" xml:space="preserve">
     <value>Всички 3D Модели</value>
   </data>
+  <data name="Orders" xml:space="preserve">
+    <value>Всички Поръчки</value>
+  </data>
   <data name="Roles" xml:space="preserve">
     <value>Всички Роли</value>
   </data>

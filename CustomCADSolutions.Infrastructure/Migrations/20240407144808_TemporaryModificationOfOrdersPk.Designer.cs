@@ -4,6 +4,7 @@ using CustomCADSolutions.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CustomCADSolutions.AppWithIdentity.Data.Migrations
 {
     [DbContext(typeof(CadContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240407144808_TemporaryModificationOfOrdersPk")]
+    partial class TemporaryModificationOfOrdersPk
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -294,6 +296,7 @@ namespace CustomCADSolutions.AppWithIdentity.Data.Migrations
                         .HasComment("Identification of 3D model");
 
                     b.Property<string>("BuyerId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)")
                         .HasComment("Identification of User");
 
@@ -315,7 +318,7 @@ namespace CustomCADSolutions.AppWithIdentity.Data.Migrations
                         .HasColumnType("int")
                         .HasComment("Status of Order");
 
-                    b.HasKey("CadId", "BuyerId");
+                    b.HasKey("CadId");
 
                     b.HasIndex("BuyerId");
 

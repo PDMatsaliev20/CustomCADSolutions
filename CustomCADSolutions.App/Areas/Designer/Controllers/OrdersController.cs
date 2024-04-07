@@ -41,11 +41,17 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
         {
             ViewBag.Statuses = typeof(OrderStatus).GetEnumNames();
 
-            var dtos = await httpClient.GetFromJsonAsync<OrderExportDTO[]>(OrdersAPIPath)
-                ?? throw new JsonException("parsing error");
+            try
+            {
+                var dtos = (await httpClient.GetFromJsonAsync<OrderExportDTO[]>(OrdersAPIPath))!;
 
-            ViewBag.HiddenOrders = dtos.Count(m => !m.ShouldShow);
-            return View(mapper.Map<OrderViewModel[]>(dtos.Where(v => v.ShouldShow)));
+                ViewBag.HiddenOrders = dtos.Count(m => !m.ShouldShow);
+                return View(mapper.Map<OrderViewModel[]>(dtos.Where(v => v.ShouldShow)));
+            }
+            catch
+            {
+                return BadRequest();
+            }
         }
 
         [HttpPost]

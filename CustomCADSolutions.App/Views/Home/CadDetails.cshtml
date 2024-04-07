@@ -1,6 +1,7 @@
 ﻿@model CadViewModel
 @inject IViewLocalizer Localizer
 @{
+    ViewData["Title"] = "Order Details";
     ViewBag.Cols = 2;
     ViewBag.Buttons = new string[] { "Download", "Colorize" };
     ViewBag.Header = $"{Localizer["Camera"].Value} - X:{Model.Coords[0]} Y:{Model.Coords[1]} Z:{Model.Coords[2]}";

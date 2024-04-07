@@ -76,7 +76,7 @@ namespace CustomCADSolutions.App.Areas.Admin.Controllers
 
             try
             {
-                await roleManager.CreateAsync(new() { Name = input.Name });
+                await roleManager.CreateAsync(new AppRole(input.Name));
                 return RedirectToAction(nameof(Index));
             }
             catch

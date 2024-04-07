@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<OrderViewModel>
 @inject IViewLocalizer Localizer
 @{
+    ViewData["Title"] = "Your Orders";
 }
 
 <h2 class="text-center mb-2">@Localizer["Title", User.Identity!.Name!]</h2>

@@ -1,0 +1,24 @@
+﻿@model OrderViewModel[]
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = "Manage Orders";
+}
+
+<h2 class="text-center">@Localizer["Title"]</h2>
+<hr />
+
+<div class="container">
+    @if (!Model.Any())
+    {
+        <p class="text-center">@Localizer["NoCads"]</p>
+    }
+    else
+    {
+        <div class="row d-flex">
+            @foreach (OrderViewModel order in Model)
+            {
+                <partial name="_OrdersPartial" model="order" view-data="ViewData" view-data-IsAdmin="true" />
+            }
+        </div>
+    }
+</div>

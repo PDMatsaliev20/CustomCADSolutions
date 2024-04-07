@@ -3,12 +3,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CustomCADSolutions.Infrastructure.Data.Models
 {
-    public class AppUser : IdentityUser<string>
+    public class AppUser : IdentityUser
     {
-        public AppUser()
-        {
-            Id = Guid.NewGuid().ToString();
-        }
+        public AppUser() : base() { }
+        public AppUser(string username) : base(username) { }
 
         [StringLength(50)]
         public string? FirstName { get; set; } = null!;

@@ -1,10 +1,11 @@
 ﻿@model CadQueryInputModel
 @inject IViewLocalizer Localizer
 @{
+    ViewData["Title"] = $"{Localizer["All"].Value} {Localizer[ViewBag.Category ?? "Cads"].Value}";
     ViewBag.Cols = 3;
 }
 
-<h2 class="text-center">@Localizer["All"] @Localizer[ViewBag.Category ?? "Cads"]</h2>
+<h2 class="text-center">@ViewData["Title"]</h2>
 <hr />
 
 <partial name="_CadQueryPartial" model="Model" view-data="ViewData" />

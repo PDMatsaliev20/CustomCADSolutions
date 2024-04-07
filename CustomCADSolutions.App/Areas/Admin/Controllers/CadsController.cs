@@ -22,7 +22,7 @@ namespace CustomCADSolutions.App.Areas.Admin.Controllers
         private readonly ILogger logger;
         private readonly IMapper mapper;
 
-        public CadsController(ILogger<CadModel> logger, HttpClient httpClient)
+        public CadsController(ILogger<CadsController> logger, HttpClient httpClient)
         {
             this.logger = logger;
             this.httpClient = httpClient;
@@ -38,32 +38,42 @@ namespace CustomCADSolutions.App.Areas.Admin.Controllers
                 ["validated"] = "true",
                 ["unvalidated"] = "true",
             };
-            string path = CadsAPIPath + HttpContext.SecureQuery(parameters.ToArray());
-            var query = await httpClient.GetFromJsonAsync<CadQueryDTO>(path);
-            if (query != null)
+            string _;
+            try
             {
-                var categories = await httpClient.GetFromJsonAsync<Category[]>(CategoriesAPIPath);
-                if (categories != null)
-                {
-                    inputQuery.Categories = categories.Select(c => c.Name);
-                    inputQuery.TotalCount = query.TotalCount;
-                    inputQuery.Cads = mapper.Map<CadViewModel[]>(query.Cads);
+                _ = CadsAPIPath + HttpContext.SecureQuery(parameters.ToArray());
+                var query = (await httpClient.GetFromJsonAsync<CadQueryDTO>(_))!;
 
-                    ViewBag.Sortings = typeof(CadSorting).GetEnumNames();
-                    return View(inputQuery);
-                }
-                else return NotFound();
+                _ = CategoriesAPIPath;
+                var categories = (await httpClient.GetFromJsonAsync<Category[]>(_))!;
+
+                inputQuery.Categories = categories.Select(c => c.Name);
+                inputQuery.TotalCount = query.TotalCount;
+                inputQuery.Cads = mapper.Map<CadViewModel[]>(query.Cads);
+
+                ViewBag.Sortings = typeof(CadSorting).GetEnumNames();
+                return View(inputQuery);
             }
-            else return NotFound();
+            catch (HttpRequestException)
+            {
+                return BadRequest();
+            }
         }
 
         [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
-            var response = await httpClient.DeleteAsync($"{CadsAPIPath}/{id}");
-            response.EnsureSuccessStatusCode();
-            
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                var response = await httpClient.DeleteAsync($"{CadsAPIPath}/{id}");
+                response.EnsureSuccessStatusCode();
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch (HttpRequestException)
+            {
+                return BadRequest();
+            }
         }
     }
 }

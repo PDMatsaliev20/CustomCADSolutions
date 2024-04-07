@@ -1,10 +1,10 @@
 ﻿@model OrderViewModel[]
 @inject IViewLocalizer Localizer
 @{
-    ViewData["Title"] = Localizer["Title", ViewBag.HiddenOrders];
+    ViewData["Title"] = "All Orders";
     string[] statuses = ViewBag.Statuses;
 }
-<h2 class="text-center">@ViewData["Title"]</h2>
+<h2 class="text-center">@Localizer["Title", ViewBag.HiddenOrders]</h2>
 <hr />
 
 @if (!Model.Any())

@@ -999,3 +999,7 @@ C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\o
 C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Areas.Admin.Views.Roles.Edit.en-US.resources
 C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Areas.Admin.Views.Roles.Index.bg-BG.resources
 C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Areas.Admin.Views.Roles.Index.en-US.resources
+C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared.Components.OrdersComponent.Admin.bg-BG.resources
+C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared.Components.OrdersComponent.Admin.en-US.resources
+C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Areas.Admin.Views.Orders.Index.bg-BG.resources
+C:\Users\35988\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Areas.Admin.Views.Orders.Index.en-US.resources

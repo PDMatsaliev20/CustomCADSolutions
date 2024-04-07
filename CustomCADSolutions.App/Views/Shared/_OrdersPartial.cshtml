@@ -1,5 +1,8 @@
 ﻿@model OrderViewModel
 @inject IViewLocalizer Localizer
+@{
+    bool? isAdmin = ViewBag.IsAdmin;
+}
 
 <div class="col-sm-4 col-12 mb-2">
     <div class="card">
@@ -12,7 +15,7 @@
             <p class="card-text fs-5">@Model.Description</p>
             <div class="d-grid gap-2">
                 <div class="d-flex justify-content-evenly mb-3 gap-2">
-                    @await Component.InvokeAsync("OrdersComponent", new { order = Model, area = ViewBag.Area })
+                    @await Component.InvokeAsync("OrdersComponent", new { order = Model, isAdmin = isAdmin ?? false })
                 </div>
             </div>
         </div>
