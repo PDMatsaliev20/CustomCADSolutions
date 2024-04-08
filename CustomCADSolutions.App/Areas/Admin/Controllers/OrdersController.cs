@@ -51,7 +51,7 @@ namespace CustomCADSolutions.App.Areas.Admin.Controllers
             string _;
             try
             {
-                _ = $"{OrdersAPIPath}/{buyerId}/{id}";
+                _ = $"{OrdersAPIPath}/{id}";
                 var response = await httpClient.DeleteAsync(_);
                 response.EnsureSuccessStatusCode();
 

@@ -14,6 +14,7 @@ namespace CustomCADSolutions.Core.Mappings
         }
 
         public IMappingExpression<Order, OrderModel> ModelToEntity() => CreateMap<Order, OrderModel>()
+                .ForMember(m => m.Id, opt => opt.MapFrom(o => o.Id))
                 .ForMember(m => m.CadId, opt => opt.MapFrom(o => o.CadId))
                 .ForMember(m => m.BuyerId, opt => opt.MapFrom(o => o.BuyerId))
                 .ForMember(m => m.Description, opt => opt.MapFrom(o => o.Description))
@@ -24,6 +25,7 @@ namespace CustomCADSolutions.Core.Mappings
                 .ForMember(m => m.Cad, opt => opt.MapFrom(o => o.Cad));
 
         public IMappingExpression<OrderModel, Order> EntityToModel() => CreateMap<OrderModel, Order>()
+                .ForMember(o => o.Id, opt => opt.MapFrom(m => m.Id))
                 .ForMember(o => o.CadId, opt => opt.MapFrom(m => m.CadId))
                 .ForMember(o => o.BuyerId, opt => opt.MapFrom(m => m.BuyerId))
                 .ForMember(o => o.Description, opt => opt.MapFrom(m => m.Description))

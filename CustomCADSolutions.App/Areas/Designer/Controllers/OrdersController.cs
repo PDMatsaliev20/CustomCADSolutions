@@ -57,7 +57,7 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
         [HttpPost]
         public async Task<IActionResult> Begin(CadInputModel input)
         {
-            OrderModel? model = await orderService.GetByIdAsync(input.Id, input.BuyerId!);
+            OrderModel? model = await orderService.GetByIdAsync(input.Id);
             if (model == null)
             {
                 return BadRequest();
@@ -72,7 +72,7 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
         [HttpPost]
         public async Task<IActionResult> Finish(CadInputModel input)
         {
-            OrderModel? model = await orderService.GetByIdAsync(input.Id, input.BuyerId!);
+            OrderModel? model = await orderService.GetByIdAsync(input.Id);
 
             if (model == null)
             {
@@ -94,7 +94,7 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
         [HttpPost]
         public async Task<IActionResult> Hide(CadInputModel input)
         {
-            OrderModel? model = await orderService.GetByIdAsync(input.Id, input.BuyerId!);
+            OrderModel? model = await orderService.GetByIdAsync(input.Id);
 
             if (model == null)
             {

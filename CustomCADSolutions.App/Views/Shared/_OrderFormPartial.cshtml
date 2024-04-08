@@ -1,10 +1,9 @@
 ﻿@model OrderInputModel
 @inject IViewLocalizer Localizer
 
-<form method="post" autocomplete="off">
+<form asp-route-id="@Model.Id" method="post" autocomplete="off">
+
     <div class="row justify-content-center mb-3">
-        <input asp-for="BuyerId" hidden />
-        <input asp-for="CadId" hidden />
 
         <div class="col-4">
             <label asp-for="Name" class="form-label"></label>

@@ -17,7 +17,7 @@ namespace CustomCADSolutions.App.Components
         {
             try
             {
-                OrderModel order = await orderService.GetByIdAsync(cad.Id, userId);
+                OrderModel order = await orderService.GetByIdAsync(cad.Id);
                 ViewBag.AlreadyOrdered = true;
             }
             catch

@@ -9,13 +9,9 @@ namespace CustomCADSolutions.Core.Models
 {
     public class OrderModel
     {
-        [JsonPropertyName("cadId")]
+        [JsonPropertyName("id")]
         [Required]
-        public int CadId { get; set; }
-
-        [JsonPropertyName("buyerId")]
-        [Required]
-        public string BuyerId { get; set; } = null!;
+        public int Id { get; set; }
 
         [JsonPropertyName("description")]
         [Required(ErrorMessage = "Order Description is required")]
@@ -33,6 +29,14 @@ namespace CustomCADSolutions.Core.Models
         [JsonPropertyName("shouldShow")]
         [Required]
         public bool ShouldShow { get; set; } = true;
+
+        [JsonPropertyName("cadId")]
+        [Required]
+        public int CadId { get; set; }
+
+        [JsonPropertyName("buyerId")]
+        [Required]
+        public string BuyerId { get; set; } = null!;
 
         [JsonPropertyName("cad")]
         [ForeignKey(nameof(CadId))]

@@ -6,6 +6,7 @@ using CustomCADSolutions.Infrastructure.Data.Common;
 using CustomCADSolutions.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Scaffolding;
 
 namespace CustomCADSolutions.Core.Services
 {
@@ -23,15 +24,32 @@ namespace CustomCADSolutions.Core.Services
                 cfg.AddProfile<OrderProfile>();
             }).CreateMapper();
         }
+        
+        public async Task<IEnumerable<OrderModel>> GetAllAsync()
+        {
+            return mapper.Map<OrderModel[]>(await repository.All<Order>().ToArrayAsync());
+        }
 
-        public async Task<(string, int)> CreateAsync(OrderModel model)
+        public async Task<OrderModel> GetByIdAsync(int id)
+        {
+            Order order = await repository.GetByIdAsync<Order>(id)
+                ?? throw new KeyNotFoundException();
+
+            OrderModel model = mapper.Map<OrderModel>(order);
+            return model;
+        }
+
+        public async Task<bool> ExistsByIdAsync(int id)
+            => await repository.GetByIdAsync<Order>(id) != null;
+
+        public async Task<int> CreateAsync(OrderModel model)
         {
             Order order = mapper.Map<Order>(model);
 
             EntityEntry<Order> entry = await repository.AddAsync<Order>(order);
             await repository.SaveChangesAsync();
 
-            return (entry.Entity.BuyerId, entry.Entity.CadId);
+            return entry.Entity.Id;
         }
 
         public async Task CreateRangeAsync(params OrderModel[] models)
@@ -39,9 +57,9 @@ namespace CustomCADSolutions.Core.Services
             List<Order> orders = new();
             foreach (OrderModel model in models)
             {
-                if (model.Cad == null || model.Buyer == null)
+                if (model.Buyer == null)
                 {
-                    throw new NullReferenceException();
+                    throw new ArgumentException();
                 }
                 Order order = mapper.Map<Order>(model);
                 orders.Add(order);
@@ -52,13 +70,13 @@ namespace CustomCADSolutions.Core.Services
 
         public async Task EditAsync(OrderModel model)
         {
-            Order order = await repository.All<Order>()
-                .FirstOrDefaultAsync(order => order.CadId == model.CadId && order.BuyerId == model.BuyerId)
+            Order order = await repository.GetByIdAsync<Order>(model.Id)
                 ?? throw new KeyNotFoundException();
 
             order.Description = model.Description;
             order.Status = model.Status;
             order.ShouldShow = model.ShouldShow;
+            order.CadId = model.CadId;
             order.Cad.Name = model.Cad.Name;
             order.Cad.Category = model.Cad.Category;
             order.Cad.CreationDate = model.Cad.CreationDate;
@@ -73,8 +91,7 @@ namespace CustomCADSolutions.Core.Services
         {
             foreach (OrderModel model in models)
             {
-                Order order = await repository.All<Order>()
-                    .FirstOrDefaultAsync(order => order.CadId == model.CadId && order.BuyerId == model.BuyerId)
+                Order order = await repository.GetByIdAsync<Order>(model.Id)
                     ?? throw new KeyNotFoundException();
 
                 order.Description = model.Description;
@@ -89,36 +106,13 @@ namespace CustomCADSolutions.Core.Services
             await repository.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(int cadId, string buyerId)
+        public async Task DeleteAsync(int id)
         {
-            Order order = repository
-                .All<Order>()
-                .FirstOrDefault(order 
-                    => order.CadId == cadId && order.BuyerId == buyerId)
+            Order order = await repository.GetByIdAsync<Order>(id)
                 ?? throw new KeyNotFoundException();
 
             repository.Delete(order);
-
             await repository.SaveChangesAsync();
-        }
-
-        public async Task<OrderModel> GetByIdAsync(int cadId, string buyerId)
-        {
-            Order order = await repository
-                .GetByIdAsync<Order>(cadId, buyerId)
-                ?? throw new KeyNotFoundException();
-
-            OrderModel model = mapper.Map<OrderModel>(order);
-            return model;
-        }
-
-        public async Task<IEnumerable<OrderModel>> GetAllAsync()
-        {
-            return mapper.Map<OrderModel[]>(await repository.All<Order>().ToArrayAsync());
-        }
-
-        public async Task<bool> ExistsByIdAsync(int cadId, string buyerId)
-            => await repository.GetByIdAsync<Order>(cadId, buyerId) != null;
-        
+        }        
     }
 }

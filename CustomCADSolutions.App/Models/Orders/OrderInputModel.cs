@@ -3,15 +3,12 @@ using System.ComponentModel.DataAnnotations;
 using CustomCADSolutions.Infrastructure.Data.Models;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using CustomCADSolutions.App.Resources.Shared;
-using System.Text.Json.Serialization;
 
 namespace CustomCADSolutions.App.Models.Orders
 {
     public class OrderInputModel
     {
-        public int CadId { get; set; }
-        
-        public string? BuyerId { get; set; } 
+        public int Id { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(SharedResources),
             ErrorMessageResourceName = nameof(SharedResources.Required))]
@@ -37,6 +34,10 @@ namespace CustomCADSolutions.App.Models.Orders
         public string Description { get; set; } = null!;
 
         public OrderStatus Status { get; set; }
+
+        public int CadId { get; set; }
+
+        public string? BuyerId { get; set; }
 
         public IEnumerable<Category>? Categories { get; set; }
     }

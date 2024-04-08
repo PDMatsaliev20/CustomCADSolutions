@@ -6,6 +6,10 @@ namespace CustomCADSolutions.App.Mappings.DTOs
 {
     public class OrderImportDTO
     {
+        [JsonPropertyName("id")]
+        [Required]
+        public int Id { get; set; }
+        
         [JsonPropertyName("cadId")]
         [Required]
         public int CadId { get; set; }

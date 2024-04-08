@@ -9,7 +9,6 @@ namespace CustomCADSolutions.Infrastructure.Data.Common.Configurations
         public void Configure(EntityTypeBuilder<Order> builder)
         {
             builder.HasOne(o => o.Buyer).WithMany().OnDelete(DeleteBehavior.NoAction);
-            builder.HasKey(o => new { o.CadId, o.BuyerId });
             builder.Navigation(o => o.Buyer).AutoInclude();
             builder.Navigation(o => o.Cad).AutoInclude();
         }

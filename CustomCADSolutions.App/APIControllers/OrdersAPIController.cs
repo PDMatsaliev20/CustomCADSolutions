@@ -41,15 +41,15 @@ namespace CustomCADSolutions.App.APIControllers
             }
         }
 
-        [HttpGet("{buyerId}/{id}")]
+        [HttpGet("{id}")]
         [Produces("application/json")]
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status400BadRequest)]
-        public async Task<ActionResult<OrderExportDTO>> GetAsync(string buyerId, int id)
+        public async Task<ActionResult<OrderExportDTO>> GetAsync(int id)
         {
             try
             {
-                OrderModel order = await orderService.GetByIdAsync(id, buyerId);
+                OrderModel order = await orderService.GetByIdAsync(id);
                 return mapper.Map<OrderExportDTO>(order);
             }
             catch (KeyNotFoundException)
@@ -70,11 +70,9 @@ namespace CustomCADSolutions.App.APIControllers
 
             try
             {
-                (string, int) ids = await orderService.CreateAsync(model);
-
-                return CreatedAtAction(nameof(GetAsync),
-                    new { buyerId = ids.Item1, id = ids.Item2 },
-                    mapper.Map<OrderExportDTO>(model));
+                int id = await orderService.CreateAsync(model);
+                OrderExportDTO export = mapper.Map<OrderExportDTO>(model);
+                return CreatedAtAction(nameof(GetAsync), new { id }, export);
             }
             catch
             {
@@ -82,17 +80,17 @@ namespace CustomCADSolutions.App.APIControllers
             }
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         [Consumes("application/json")]
         [ProducesResponseType(Status204NoContent)]
         [ProducesResponseType(Status403Forbidden)]
         [ProducesResponseType(Status404NotFound)]
         [IgnoreAntiforgeryToken]
-        public async Task<ActionResult> PutAsync(OrderImportDTO dto)
+        public async Task<ActionResult> PutAsync(int id, OrderImportDTO dto)
         {
             try
             {
-                OrderModel order = await orderService.GetByIdAsync(dto.CadId, dto.BuyerId);
+                OrderModel order = await orderService.GetByIdAsync(dto.Id);
                 if (order.Status != OrderStatus.Pending)
                 {
                     return Forbid();
@@ -111,13 +109,13 @@ namespace CustomCADSolutions.App.APIControllers
             }
         }
 
-        [HttpDelete("{buyerId}/{id}")]
+        [HttpDelete("{id}")]
         [IgnoreAntiforgeryToken]
-        public async Task<ActionResult<OrderModel>> DeleteAsync(int id, string buyerId)
+        public async Task<ActionResult<OrderModel>> DeleteAsync(int id)
         {
-            if (await orderService.ExistsByIdAsync(id, buyerId))
+            if (await orderService.ExistsByIdAsync(id))
             {
-                await orderService.DeleteAsync(id, buyerId);
+                await orderService.DeleteAsync(id);
                 return NoContent();
             }
             else

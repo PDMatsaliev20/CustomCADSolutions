@@ -4,12 +4,9 @@ namespace CustomCADSolutions.App.Models.Orders
 {
     public class OrderViewModel
     {
-        [JsonPropertyName("cadId")]
-        public int CadId { get; set; }
+        [JsonPropertyName("id")]
+        public int Id { get; set; }
 
-        [JsonPropertyName("buyerId")]
-        public string BuyerId { get; set; } = null!;
-        
         [JsonPropertyName("name")]
         public string Name { get; set; } = null!;
 
@@ -24,7 +21,13 @@ namespace CustomCADSolutions.App.Models.Orders
 
         [JsonPropertyName("status")]
         public string Status { get; set; } = null!;
-        
+
+        [JsonPropertyName("cadId")]
+        public int CadId { get; set; }
+
+        [JsonPropertyName("buyerId")]
+        public string BuyerId { get; set; } = null!;
+
         [JsonPropertyName("buyerName")]
         public string BuyerName { get; set; } = null!;
     }

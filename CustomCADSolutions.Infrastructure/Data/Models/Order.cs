@@ -8,13 +8,9 @@ namespace CustomCADSolutions.Infrastructure.Data.Models
 {
     public class Order
     {
-        [Required]
-        [Comment("Identification of 3D model")]
-        public int CadId { get; set; }
-
-        [Required]
-        [Comment("Identification of User")]
-        public string BuyerId { get; set; } = null!;
+        [Key]
+        [Comment("Identitfication of Order")]
+        public int Id { get; set; }
 
         [Required]
         [Comment("Description of Order")]
@@ -32,6 +28,14 @@ namespace CustomCADSolutions.Infrastructure.Data.Models
         [Required]
         [Comment("Should Order Be Visible After Completion")]
         public bool ShouldShow { get; set; }
+
+        [Required]
+        [Comment("Identification of 3D model")]
+        public int CadId { get; set; }
+
+        [Required]
+        [Comment("Identification of User")]
+        public string BuyerId { get; set; } = null!;
 
         [ForeignKey(nameof(CadId))]
         public Cad Cad { get; set; } = null!;

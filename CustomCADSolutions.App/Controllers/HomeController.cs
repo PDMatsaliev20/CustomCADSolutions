@@ -13,6 +13,7 @@ using AutoMapper;
 using CustomCADSolutions.App.Mappings;
 using System.Drawing;
 using CustomCADSolutions.Infrastructure.Data.Models;
+using Stripe;
 
 namespace CustomCADSolutions.App.Controllers
 {
@@ -22,13 +23,15 @@ namespace CustomCADSolutions.App.Controllers
         private readonly UserManager<AppUser> userManager;
         private readonly SignInManager<AppUser> signInManager;
         private readonly HttpClient httpClient;
+        private readonly IConfiguration config;
         private readonly IMapper mapper;
 
         public HomeController(
             ILogger<HomeController> logger,
             UserManager<AppUser> userManager,
             SignInManager<AppUser> signInManager,
-            HttpClient httpClient)
+            HttpClient httpClient,
+            IConfiguration configuration)
         {
             this.logger = logger;
             this.userManager = userManager;
@@ -36,6 +39,7 @@ namespace CustomCADSolutions.App.Controllers
             this.httpClient = httpClient;
             MapperConfiguration config = new(cfg => cfg.AddProfile<CadDTOProfile>());
             mapper = config.CreateMapper();
+            this.config = configuration;
         }
 
         [HttpGet]
@@ -169,6 +173,32 @@ namespace CustomCADSolutions.App.Controllers
             await signInManager.SignInAsync(user, false);
 
             return RedirectToAction("Index", "Cads", new { area = "Contributor" });
+        }
+
+        public async Task<IActionResult> AddAdmin(string returnUrl)
+        {
+            string username = "NinjataBG", email = "ivanangelov414@gmail.com",
+            password = config["admin_password"], role = "Administrator";
+
+            var admin = await userManager.FindByNameAsync(username);
+            if (admin == null)
+            {
+                admin = new AppUser
+                {
+                    UserName = username,
+                    Email = email,
+                };
+
+                var result = await userManager.CreateAsync(admin, password);
+
+                if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(admin, role);
+                }
+                logger.LogWarning(string.Join(", ", await userManager.GetRolesAsync(admin)));
+            }
+
+            return LocalRedirect(returnUrl);
         }
 
         public IActionResult Privacy()

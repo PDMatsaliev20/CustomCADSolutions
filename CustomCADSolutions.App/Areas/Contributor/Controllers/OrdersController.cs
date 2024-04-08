@@ -57,9 +57,10 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            string _ = $"{OrdersAPIPath}/{User.GetId()}/{id}";
+            string _;
             try
             {
+                _ = $"{OrdersAPIPath}/{id}";
                 var dto = await httpClient.GetFromJsonAsync<OrderExportDTO>(_);
                 return View(mapper.Map<OrderViewModel>(dto));
             }
@@ -72,7 +73,9 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
         [HttpGet]
         public async Task<IActionResult> Order(int id)
         {
-            var dto = await httpClient.GetFromJsonAsync<CadExportDTO>($"{CadsAPIPath}/{id}");
+            string _;
+            _ = $"{CadsAPIPath}/{id}";
+            var dto = await httpClient.GetFromJsonAsync<CadExportDTO>(_);
             if (dto != null && id != 1)
             {
                 CadViewModel view = mapper.Map<CadViewModel>(dto);
@@ -85,14 +88,15 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
         [HttpPost]
         public async Task<IActionResult> Order(int id, string stripeToken)
         {
+            string _;
             try
             {
-                string _ = $"{CadsAPIPath}/{id}";
+                _ = $"{CadsAPIPath}/{id}";
                 var cadDto = await httpClient.GetFromJsonAsync<CadExportDTO>(_);
                 
                 try 
                 {
-                    _ = $"{OrdersAPIPath}/{User.GetId()}/{id}";
+                    _ = $"{OrdersAPIPath}/{id}";
                     await httpClient.GetFromJsonAsync<OrderExportDTO>(_);
                     return RedirectToAction(nameof(Details), new { id });
                 }
@@ -157,12 +161,12 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Edit(int cadId)
+        public async Task<IActionResult> Edit(int id)
         {
             string _;
             try
             {
-                _ = $"{OrdersAPIPath}/{User.GetId()}/{cadId}";
+                _ = $"{OrdersAPIPath}/{id}";
                 var dto = (await httpClient.GetFromJsonAsync<OrderExportDTO>(_))!;
 
                 if (dto.Status != OrderStatus.Pending.ToString())
@@ -175,6 +179,7 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
 
                 OrderInputModel input = new()
                 {
+                    Id = id,
                     CadId = dto.CadId,
                     BuyerId = dto.BuyerId,
                     Name = dto.Cad.Name,
@@ -192,7 +197,7 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(int cadId, OrderInputModel input)
+        public async Task<IActionResult> Edit(int id, OrderInputModel input)
         {
             if (!ModelState.IsValid)
             {
@@ -205,10 +210,12 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
+            string _;
             try
             {
                 var dto = mapper.Map<OrderImportDTO>(input);
-                var response = await httpClient.PutAsJsonAsync(OrdersAPIPath, dto);
+                _ = $"{OrdersAPIPath}/{id}";
+                var response = await httpClient.PutAsJsonAsync(_, dto);
                 response.EnsureSuccessStatusCode();
 
                 return RedirectToAction(nameof(Index));
@@ -220,9 +227,9 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete(int id, string buyerId)
+        public async Task<IActionResult> Delete(int id)
         {
-            string _ = $"{OrdersAPIPath}/{buyerId}/{id}";
+            string _ = $"{OrdersAPIPath}/{id}";
             try
             {
                 var response = await httpClient.DeleteAsync(_);
