@@ -1,12 +1,23 @@
-﻿using System.ComponentModel.DataAnnotations;
-using static CustomCADSolutions.App.Constants.Roles;
+﻿using CustomCADSolutions.App.Resources.Shared;
+using System.ComponentModel.DataAnnotations;
+using static CustomCADSolutions.Infrastructure.Data.DataConstants.RoleConstants;
 
 namespace CustomCADSolutions.App.Models.Roles
 {
     public class AddRoleModel
     {
-        [Required]
-        [StringLength(NameMaxLength, MinimumLength = NameMinLength)]
-        public string Name { get; set; } = null!; 
+        [Required(ErrorMessageResourceType = typeof(SharedResources),
+           ErrorMessageResourceName = nameof(SharedResources.Required))]
+        [StringLength(NameMaxLength, MinimumLength = NameMinLength,
+           ErrorMessageResourceType = typeof(SharedResources),
+           ErrorMessageResourceName = nameof(SharedResources.Length))]
+        [Display(Name = nameof(SharedResources.RoleName), ResourceType = typeof(SharedResources))]
+        public string Name { get; set; } = null!;
+
+        [StringLength(DescriptionMaxLength, MinimumLength = DescriptionMinLength,
+            ErrorMessageResourceType = typeof(SharedResources),
+            ErrorMessageResourceName = nameof(SharedResources.Length))]
+        [Display(Name = nameof(SharedResources.RoleDesc), ResourceType = typeof(SharedResources))]
+        public string? Description { get; set; }
     }
 }

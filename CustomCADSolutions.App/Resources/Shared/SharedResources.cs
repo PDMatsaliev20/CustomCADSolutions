@@ -25,6 +25,8 @@ namespace CustomCADSolutions.App.Resources.Shared
         public static string ByName { get => GetString(nameof(ByName)); }
         public static string ByCreator { get => GetString(nameof(ByCreator)); }
         public static string Sorting { get => GetString(nameof(Sorting)); }
+        public static string RoleName { get => GetString(nameof(RoleName)); }
+        public static string RoleDesc { get => GetString(nameof(RoleDesc)); }
 
         private static string GetString(string key) => new ResourceManager(typeof(SharedResources)).GetString(key)!;
         

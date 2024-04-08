@@ -10,10 +10,18 @@
 <div class="container">
     <form method="post" autocomplete="off">
         <div class="row justify-content-center mb-3">
-            <div class="col-3">
+            <div class="col-6">
                 <label asp-for="Name" class="form-label"></label>
-                <input asp-for="Name" class="form-label" placeholder="Role..." />
+                <input asp-for="Name" class="form-control" placeholder="@Localizer["NamePlaceholder"]" />
                 <span asp-validation-for="Name" class="small text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row justify-content-center mb-3">
+            <div class="col-6">
+                <label asp-for="Description" class="form-label"></label>
+                <textarea asp-for="Description" class="form-control" placeholder="@Localizer["DescriptionPlaceholder"]"></textarea>
+                <span asp-validation-for="Description" class="small text-danger"></span>
             </div>
         </div>
 
@@ -24,3 +32,7 @@
         </div>
     </form>
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

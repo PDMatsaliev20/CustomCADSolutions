@@ -92,7 +92,7 @@ namespace Microsoft.Extensions.DependencyInjection
             return services;
         }
 
-        public static IServiceCollection AddRoles(this IServiceCollection services, string[] roles)
+        public static IServiceCollection AddRoles(this IServiceCollection services, IEnumerable<string> roles)
         {
             services.AddAuthorization(options =>
             {

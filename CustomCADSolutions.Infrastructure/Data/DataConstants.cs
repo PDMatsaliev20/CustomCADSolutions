@@ -53,5 +53,15 @@
             public const int PasswordMaxLength = 100;
             public const int PasswordMinLength = 6;
         }
+
+
+        public static class RoleConstants
+        {
+            public const int NameMinLength = 2;
+            public const int NameMaxLength = 20;
+
+            public const int DescriptionMinLength = 2;
+            public const int DescriptionMaxLength = 200;
+        }
     }
 }

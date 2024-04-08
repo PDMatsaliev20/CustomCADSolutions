@@ -46,6 +46,7 @@ namespace CustomCADSolutions.App.Areas.Admin.Controllers
             {
                 Id = role.Id,
                 Name = role.Name,
+                Description = role.Description,
                 Users = users.Select(u => new UserViewModel
                 {
                     Id = u.Id,
@@ -76,7 +77,9 @@ namespace CustomCADSolutions.App.Areas.Admin.Controllers
 
             try
             {
-                await roleManager.CreateAsync(new AppRole(input.Name));
+                AppRole role = new(input.Name, input.Description);
+                await roleManager.CreateAsync(role);
+
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -93,6 +96,7 @@ namespace CustomCADSolutions.App.Areas.Admin.Controllers
             {
                 Id = role.Id,
                 Name = role.Name,
+                Description = role.Description,
             };
 
             return View(input);
@@ -111,6 +115,7 @@ namespace CustomCADSolutions.App.Areas.Admin.Controllers
             {
                 AppRole role = await roleManager.FindByIdAsync(id);
                 role.Name = input.Name;
+                role.Description = input.Description;
                 await roleManager.UpdateAsync(role);
 
                 return RedirectToAction(nameof(Index));
@@ -129,12 +134,16 @@ namespace CustomCADSolutions.App.Areas.Admin.Controllers
             {
                 AppRole role = await roleManager.FindByIdAsync(id);
                 var response = await roleManager.DeleteAsync(role);
+                if (response.Succeeded)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                else throw new Exception("Couldn't find or delete role");
 
-                return RedirectToAction(nameof(Index));
             }
-            catch
+            catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
         }
     }

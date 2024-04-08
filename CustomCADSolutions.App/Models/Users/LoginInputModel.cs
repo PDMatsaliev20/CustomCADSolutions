@@ -12,8 +12,7 @@ namespace CustomCADSolutions.App.Models.Users
 
         [Required(ErrorMessageResourceType = typeof(SharedResources),
             ErrorMessageResourceName = nameof(SharedResources.Required))]
-        [StringLength(UserConstants.NameMaxLength,
-            MinimumLength = UserConstants.NameMinLength,
+        [StringLength(UserConstants.NameMaxLength, MinimumLength = UserConstants.NameMinLength,
             ErrorMessageResourceType = typeof(SharedResources),
             ErrorMessageResourceName = nameof(SharedResources.Length))]
         [Display(Name = "Username", ResourceType = typeof(SharedResources))]
@@ -21,8 +20,7 @@ namespace CustomCADSolutions.App.Models.Users
 
         [Required(ErrorMessageResourceType = typeof(SharedResources),
             ErrorMessageResourceName = nameof(SharedResources.Required))]
-        [StringLength(UserConstants.PasswordMaxLength,
-            MinimumLength = UserConstants.PasswordMinLength,
+        [StringLength(UserConstants.PasswordMaxLength, MinimumLength = UserConstants.PasswordMinLength,
             ErrorMessageResourceType = typeof(SharedResources),
             ErrorMessageResourceName = nameof(SharedResources.Length))]
         [DataType(DataType.Password)]

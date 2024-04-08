@@ -52,7 +52,6 @@ namespace Microsoft.AspNetCore.Builder
                 {
                     await roleManager.CreateAsync(new AppRole(role));
                 }
-                //else await roleManager.DeleteAsync(roleManager.Roles.First(r => r.Name == role));
             }
 
             return service;

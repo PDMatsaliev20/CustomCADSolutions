@@ -165,6 +165,12 @@
   <data name="Required" xml:space="preserve">
     <value>Полето {0} е задължително!</value>
   </data>
+  <data name="RoleDesc" xml:space="preserve">
+    <value>Описание</value>
+  </data>
+  <data name="RoleName" xml:space="preserve">
+    <value>Име</value>
+  </data>
   <data name="Sorting" xml:space="preserve">
     <value>Сортирай</value>
   </data>
