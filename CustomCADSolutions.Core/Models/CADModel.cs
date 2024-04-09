@@ -20,6 +20,10 @@ namespace CustomCADSolutions.Core.Models
 
         public bool IsValidated { get; set; }
 
+        [Required]
+        [Range(CadConstants.PriceMin, CadConstants.PriceMax)]
+        public decimal Price { get; set; }
+
         public DateTime? CreationDate { get; set; }
 
         public int[] Coords { get; set; } = new int[3];

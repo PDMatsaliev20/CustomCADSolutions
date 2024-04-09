@@ -87,7 +87,7 @@
                             {
                                 <a asp-area="@ViewBag.Area" asp-controller="Orders" asp-action="Order" asp-route-id="@Model.Id"
                                         class="btn btn-secondary text-decoration-none">
-                                    @Localizer["Order"]
+                                    @Localizer["Order", Model.Price]
                                 </a>
                             }
                             break;

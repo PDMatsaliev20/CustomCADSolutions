@@ -9,6 +9,7 @@ namespace CustomCADSolutions.App.Models.Cads
         public string CreatorName { get; set; } = null!;
         public string Category { get; set; } = null!;
         public bool IsValidated { get; set; }
+        public decimal Price { get; set; }
         public string? CreationDate { get; set; }
         public int[] Coords { get; set; } = new int[3];
         public byte[] RGB { get; set; } = new byte[3];

@@ -156,6 +156,9 @@
   <data name="Password" xml:space="preserve">
     <value>Парола</value>
   </data>
+  <data name="Price" xml:space="preserve">
+    <value>Цена</value>
+  </data>
   <data name="Range" xml:space="preserve">
     <value>Стойността на полето {0} трябва да бъде между {1} и {2}</value>
   </data>

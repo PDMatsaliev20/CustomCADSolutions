@@ -150,8 +150,16 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
         }
 
         [HttpPost]
+        [DisableRequestSizeLimit]
         public async Task<IActionResult> Add(CadInputModel input)
         {
+            int maxFileSize = 10_000_000;
+            if (input.CadFile.Length > maxFileSize)
+            {
+                ModelState.AddModelError(nameof(input.CadFile),
+                    $"3d model cannot be over {maxFileSize / 1_000_000}MB");
+            }
+
             if (!ModelState.IsValid)
             {
                 input.Categories = await httpClient.GetFromJsonAsync<Category[]>(CategoriesAPIPath);
@@ -171,7 +179,7 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
             dto.CreatorId = User.GetId();
             dto.IsValidated = true;
 
-            var response = await httpClient.PostAsJsonAsync($"{CadsAPIPath}/Create", dto);
+            var response = await httpClient.PostAsJsonAsync(CadsAPIPath, dto);
             response.EnsureSuccessStatusCode();
 
             return RedirectToAction(nameof(Index));
@@ -202,6 +210,7 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
                     Y = dto.Coords[1],
                     Z = dto.Coords[2],
                     SpinAxis = dto.SpinAxis,
+                    Price = dto.Price,
                     CategoryId = category.Id,
                     Categories = await httpClient.GetFromJsonAsync<Category[]>(CategoriesAPIPath),
                 };
@@ -216,7 +225,7 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
         {
             var dto = mapper.Map<CadImportDTO>(input);
             dto.CreatorId = User.GetId();
-            var response = await httpClient.PutAsJsonAsync($"{CadsAPIPath}/Edit", dto);
+            var response = await httpClient.PutAsJsonAsync(CadsAPIPath, dto);
 
             response.EnsureSuccessStatusCode();
             return RedirectToAction(nameof(Index));

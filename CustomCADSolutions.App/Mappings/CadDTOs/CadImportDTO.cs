@@ -24,6 +24,10 @@ namespace CustomCADSolutions.App.Mappings.CadDTOs
         [JsonPropertyName("categoryId")]
         [Required(ErrorMessage = RequiredErrorMessage)]
         public int CategoryId { get; set; }
+        
+        [JsonPropertyName("price")]
+        [Required(ErrorMessage = RequiredErrorMessage)]
+        public decimal Price { get; set; }
 
         [JsonPropertyName("creatorId")]
         public string? CreatorId { get; set; }

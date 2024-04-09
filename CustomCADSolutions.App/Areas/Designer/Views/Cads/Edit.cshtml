@@ -19,13 +19,18 @@
             <div class="col-2 text-center">
                 <label asp-for="CategoryId" class="form-label"></label>
                 <select asp-for="CategoryId" class="form-control">
-                    <option value="@null" selected>@Localizer["None"]</option>
+                    <option value="@null" selected>None</option>
                     @foreach (Category category in Model.Categories!)
                     {
                         <option value="@category.Id">@Localizer[category.Name]</option>
                     }
                 </select>
                 <span asp-validation-for="@Model.CategoryId" class="small text-danger"></span>
+            </div>
+            <div class="col-1 text-center">
+                <label asp-for="Price" class="form-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="@Model.Price" class="small text-danger"></span>
             </div>
         </div>
 

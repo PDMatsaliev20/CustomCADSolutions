@@ -24,6 +24,14 @@ namespace CustomCADSolutions.App.Models.Cads
             ErrorMessageResourceName = nameof(SharedResources.Required))]
         [Display(Name = "Category", ResourceType = typeof(SharedResources))]
         public int CategoryId { get; set; } 
+        
+        [Required(ErrorMessageResourceType = typeof(SharedResources),
+            ErrorMessageResourceName = nameof(SharedResources.Required))]
+        [Range(CadConstants.PriceMin, CadConstants.PriceMax,
+            ErrorMessageResourceType = typeof(SharedResources),
+            ErrorMessageResourceName = nameof(SharedResources.Range))]
+        [Display(Name = "Price", ResourceType = typeof(SharedResources))]
+        public decimal Price { get; set; } 
 
         [Required(ErrorMessageResourceType = typeof(SharedResources),
             ErrorMessageResourceName = nameof(SharedResources.Required))]

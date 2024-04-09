@@ -27,6 +27,11 @@
                 </select>
                 <span asp-validation-for="@Model.CategoryId" class="small text-danger"></span>
             </div>
+            <div class="col-1 text-center">
+                <label asp-for="Price" class="form-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="@Model.Price" class="small text-danger"></span>
+            </div>
         </div>
 
         <div class="row justify-content-center mb-3">            

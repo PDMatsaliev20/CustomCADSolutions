@@ -1,6 +1,5 @@
 ﻿using CustomCADSolutions.App.Models.Orders;
 using CustomCADSolutions.App.Models.Cads;
-using CustomCADSolutions.Core.Contracts;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +8,6 @@ using CustomCADSolutions.App.Extensions;
 using Microsoft.Extensions.Options;
 using AutoMapper;
 using CustomCADSolutions.App.Mappings;
-using System.Text.Json;
 using static CustomCADSolutions.App.Constants.Paths;
 using CustomCADSolutions.App.Mappings.DTOs;
 using CustomCADSolutions.App.Mappings.CadDTOs;

@@ -29,6 +29,7 @@ namespace CustomCADSolutions.App.Mappings
             .ForMember(dto => dto.Id, opt => opt.MapFrom(input => input.Id))
             .ForMember(dto => dto.Name, opt => opt.MapFrom(input => input.Name))
             .ForMember(dto => dto.CategoryId, opt => opt.MapFrom(input => input.CategoryId))
+            .ForMember(dto => dto.Price, opt => opt.MapFrom(input => input.Price))
             .ForMember(dto => dto.Coords, opt => opt.MapFrom(input => new int[] { input.X, input.Y, input.Z }))
             .ForMember(dto => dto.SpinAxis, opt => opt.MapFrom(input => input.SpinAxis));
 
@@ -43,6 +44,7 @@ namespace CustomCADSolutions.App.Mappings
             .ForMember(cad => cad.Coords, opt => opt.MapFrom(dto => dto.Coords))
             .ForMember(cad => cad.Color, opt => opt.MapFrom(dto => Color.FromArgb(1, dto.RGB[0], dto.RGB[1], dto.RGB[2])))
             .ForMember(cad => cad.IsValidated, opt => opt.MapFrom(dto => dto.IsValidated))
+            .ForMember(dto => dto.Price, opt => opt.MapFrom(input => input.Price))
             .ForMember(cad => cad.CreatorId, opt => opt.MapFrom(dto => dto.CreatorId))
             .ForMember(cad => cad.Bytes, opt =>
             {
@@ -67,6 +69,7 @@ namespace CustomCADSolutions.App.Mappings
             .ForMember(dto => dto.Coords, opt => opt.MapFrom(model => model.Coords))
             .ForMember(dto => dto.SpinAxis, opt => opt.MapFrom(model => model.SpinAxis))
             .ForMember(dto => dto.IsValidated, opt => opt.MapFrom(model => model.IsValidated))
+            .ForMember(dto => dto.Price, opt => opt.MapFrom(model => model.Price))
             .ForMember(dto => dto.RGB, opt => opt.MapFrom(model => new byte[] { model.Color.R, model.Color.G, model.Color.B }))
             .ForMember(dto => dto.CreatorName, opt =>
             {
@@ -100,6 +103,7 @@ namespace CustomCADSolutions.App.Mappings
             .ForMember(view => view.Coords, opt => opt.MapFrom(dto => dto.Coords))
             .ForMember(view => view.SpinAxis, opt => opt.MapFrom(dto => dto.SpinAxis))
             .ForMember(view => view.IsValidated, opt => opt.MapFrom(dto => dto.IsValidated))
+            .ForMember(view => view.Price, opt => opt.MapFrom(dto => dto.Price))
             .ForMember(view => view.RGB, opt => opt.MapFrom(dto => dto.RGB))
             .ForMember(view => view.CreatorName, opt =>
             {

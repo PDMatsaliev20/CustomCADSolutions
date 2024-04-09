@@ -135,6 +135,9 @@
   <data name="Download" xml:space="preserve">
     <value>Изтегли</value>
   </data>
+  <data name="Order" xml:space="preserve">
+    <value>Поръчай ({0}$)</value>
+  </data>
   <data name="Validate" xml:space="preserve">
     <value>Одобри</value>
   </data>

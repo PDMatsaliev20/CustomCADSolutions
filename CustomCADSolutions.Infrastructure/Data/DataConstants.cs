@@ -17,6 +17,9 @@
 
             public const string FileDisplay = "3D Model";
 
+            public const double PriceMin = 0.01;
+            public const double PriceMax = 1000;
+            
             public const int XMin = -1000;
             public const int XMax = 1000;
 

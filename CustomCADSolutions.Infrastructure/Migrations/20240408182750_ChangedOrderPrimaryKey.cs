@@ -45,7 +45,7 @@ namespace CustomCADSolutions.AppWithIdentity.Data.Migrations
                 column: "BuyerId",
                 principalTable: "AspNetUsers",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.NoAction);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Orders_Cads_CadId",
@@ -53,7 +53,7 @@ namespace CustomCADSolutions.AppWithIdentity.Data.Migrations
                 column: "CadId",
                 principalTable: "Cads",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.NoAction);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

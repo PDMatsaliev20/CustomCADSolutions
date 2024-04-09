@@ -23,6 +23,11 @@ namespace CustomCADSolutions.Infrastructure.Data.Models
         [Comment("Is 3D Model validated")]
         public bool IsValidated { get; set; }
 
+        [Required]
+        [Range(CadConstants.PriceMin, CadConstants.PriceMax)]
+        [Comment("Price of 3d model")]
+        public decimal Price { get; set; }
+
         [Comment("CreationDate of 3D Model")]
         public DateTime? CreationDate { get; set; }
 

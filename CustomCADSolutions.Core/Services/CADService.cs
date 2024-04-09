@@ -15,13 +15,11 @@ namespace CustomCADSolutions.Core.Services
     public class CadService : ICadService
     {
         private readonly IRepository repository;
-        private readonly IOrderService orderService;
         private readonly IMapper mapper;
 
-        public CadService(IRepository repository, IOrderService orderService)
+        public CadService(IRepository repository)
         {
             this.repository = repository;
-            this.orderService = orderService;
             mapper = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile<CadProfile>();
@@ -53,6 +51,7 @@ namespace CustomCADSolutions.Core.Services
 
             cad.Name = model.Name;
             cad.IsValidated = model.IsValidated;
+            cad.Price = model.Price;
             cad.CreationDate = model.CreationDate;
             cad.SpinAxis = model.SpinAxis;
 
@@ -83,6 +82,7 @@ namespace CustomCADSolutions.Core.Services
 
                 cad.Name = model.Name;
                 cad.IsValidated = model.IsValidated;
+                cad.Price = model.Price;
                 cad.CreationDate = model.CreationDate;
                 cad.SpinAxis = model.SpinAxis;
 

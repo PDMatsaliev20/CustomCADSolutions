@@ -80,25 +80,13 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
                 return BadRequest("Invalid 3d model");
             }
 
-            byte[] bytes = await input.CadFile.GetBytesAsync();
-
             CadImportDTO dto = mapper.Map<CadImportDTO>(input);
-            dto.Bytes = bytes;
-            dto.IsValidated = false;
+            dto.Bytes = await input.CadFile.GetBytesAsync();
             dto.CreatorId = User.GetId();
+            dto.IsValidated = false;
+
             var response = await httpClient.PostAsJsonAsync(CadsAPIPath, dto);
             response.EnsureSuccessStatusCode();
-
-            //CadModel model = new()
-            //{
-            //    Bytes = bytes,
-            //    Name = input.Name,
-            //    CategoryId = input.CategoryId,
-            //    IsValidated = false,
-            //    CreationDate = DateTime.Now,
-            //    CreatorId = User.GetId()
-            //};
-            //int cadId = await cadService.CreateAsync(model);
 
             return RedirectToAction(nameof(Index));
         }
@@ -127,6 +115,7 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
                     Y = dto.Coords[1],
                     Z = dto.Coords[2],
                     SpinAxis = dto.SpinAxis,
+                    Price = dto.Price,
                     CategoryId = dto.CategoryId,
                     Categories = await httpClient.GetFromJsonAsync<Category[]>(CategoriesAPIPath),
                 };
