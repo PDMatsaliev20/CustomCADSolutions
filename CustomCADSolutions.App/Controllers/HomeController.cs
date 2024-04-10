@@ -175,7 +175,57 @@ namespace CustomCADSolutions.App.Controllers
             return RedirectToAction("Index", "Cads", new { area = "Contributor" });
         }
 
-        public async Task<IActionResult> AddAdmin(string returnUrl)
+        public async Task<IActionResult> AddUsers(string returnUrl)
+        {
+            string role, email, password;
+
+            email = "ivanangelov414@gmail.com";
+            password = config["passwords:admin"];
+            role = "Administrator";
+            await userManager.AddUserAsync("NinjataBG", email, password, role);
+
+            email = "ivanangelov413@gmail.com"; 
+            password = config["passwords:designer"];
+            role = "Designer";
+            await userManager.AddUserAsync(role, email, password, role);
+
+            email = "ivanangelov412@gmail.com";
+            password = config["passwords:contributor"];
+            role = "Contributor";
+            await userManager.AddUserAsync(role, email, password, role);
+
+            email = "ivanangelov411@gmail.com";
+            password = config["passwords:Client"];
+            role = "Client";
+            await userManager.AddUserAsync(role, email, password, role);
+
+            return LocalRedirect(returnUrl);
+        }
+
+        private async Task AddAdminAsync()
+        {
+            string username = "NinjataBG", email = "ivanangelov414@gmail.com",
+            password = config["passwords:admin"], role = "Administrator";
+
+            var admin = await userManager.FindByNameAsync(username);
+            if (admin == null)
+            {
+                admin = new AppUser
+                {
+                    UserName = username,
+                    Email = email,
+                };
+
+                var result = await userManager.CreateAsync(admin, password);
+
+                if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(admin, role);
+                }
+            }
+        }
+
+        private async Task AddContributorAsync()
         {
             string username = "NinjataBG", email = "ivanangelov414@gmail.com",
             password = config["admin_password"], role = "Administrator";
@@ -195,10 +245,30 @@ namespace CustomCADSolutions.App.Controllers
                 {
                     await userManager.AddToRoleAsync(admin, role);
                 }
-                logger.LogWarning(string.Join(", ", await userManager.GetRolesAsync(admin)));
             }
+        }
 
-            return LocalRedirect(returnUrl);
+        private async Task AddClientAsync()
+        {
+            string username = "NinjataBG", email = "ivanangelov414@gmail.com",
+            password = config["admin_password"], role = "Administrator";
+
+            var admin = await userManager.FindByNameAsync(username);
+            if (admin == null)
+            {
+                admin = new AppUser
+                {
+                    UserName = username,
+                    Email = email,
+                };
+
+                var result = await userManager.CreateAsync(admin, password);
+
+                if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(admin, role);
+                }
+            }
         }
 
         public IActionResult Privacy()

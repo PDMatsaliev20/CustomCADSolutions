@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Security.Claims;
 using Stripe;
+using CustomCADSolutions.Infrastructure.Data.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace CustomCADSolutions.App.Extensions
 {
@@ -35,6 +37,28 @@ namespace CustomCADSolutions.App.Extensions
         }
 
         public static string GetId(this ClaimsPrincipal user) => user.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        public static async Task<bool> AddUserAsync(this UserManager<AppUser> userManager, string username, string email, string password, string role)
+        {
+            var user = await userManager.FindByNameAsync(username);
+            if (user == null)
+            {
+                user = new AppUser
+                {
+                    UserName = username,
+                    Email = email,
+                };
+
+                var result = await userManager.CreateAsync(user, password);
+                if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(user, role);
+                    return true;
+                }
+                return false;
+            }
+            return false;
+        }
 
         public static async Task<byte[]> GetBytesAsync(this IFormFile cad)
         {
