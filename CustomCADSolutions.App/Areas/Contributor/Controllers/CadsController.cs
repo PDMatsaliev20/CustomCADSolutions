@@ -52,7 +52,7 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
         [HttpGet]
         public async Task<IActionResult> Add()
         {
-            return View(new CadInputModel()
+            return View(new CadAddModel()
             {
                 Categories = await httpClient.GetFromJsonAsync<Category[]>(CategoriesAPIPath)
             });
@@ -60,7 +60,7 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
 
         [HttpPost]
         [DisableRequestSizeLimit]
-        public async Task<IActionResult> Add(CadInputModel input)
+        public async Task<IActionResult> Add(CadAddModel input)
         {
             int maxFileSize = 10_000_000;
             if (input.CadFile.Length > maxFileSize)
@@ -108,7 +108,7 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
                     return Forbid("You don't have access to this model");
                 }
 
-                CadInputModel input = new()
+                CadEditModel input = new()
                 {
                     Name = dto.Name,
                     X = dto.Coords[0],
@@ -129,7 +129,7 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(CadInputModel input, int id)
+        public async Task<IActionResult> Edit(int id, CadEditModel input)
         {
             CadImportDTO dto = mapper.Map<CadImportDTO>(input);
             dto.CreatorId = User.GetId();

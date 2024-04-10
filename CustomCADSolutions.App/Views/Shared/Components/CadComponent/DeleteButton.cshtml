@@ -1,0 +1,12 @@
+﻿@inject IViewLocalizer Localizer
+@{
+    int id = ViewBag.Id;
+    string name = ViewBag.Name;
+}
+
+<form asp-controller="Cads" asp-action="Delete" asp-route-id="@id" method="post">
+    <div class="d-grid gap-2">
+        <input type="submit" value="@Localizer["Delete"]" class="btn btn-danger mb-2"
+               onclick="return confirm('@Localizer["DeleteWarning", name]?')" />
+    </div>
+</form>

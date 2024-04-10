@@ -1,17 +1,14 @@
-﻿@model CadInputModel
-@inject IViewLocalizer Localizer
+﻿@inject IViewLocalizer Localizer
 @{
-    int cadId = ViewBag.CadId;
-    string buyerId = ViewBag.BuyerId;
+    int id = ViewBag.Id;
+    string name = ViewBag.Name;
 }
 
-<form asp-area="Designer" asp-controller="Orders" asp-action="Begin">
+<form asp-action="Begin" asp-route-id="@id">
     <div class="row justify-content-center">
-        <input asp-for="Id" value="@cadId" hidden />
-        <input asp-for="BuyerId" value="@buyerId" hidden />
         <div class="col-6">
             <input type="submit" value="@Localizer["Begin"]" class="btn btn-warning w-100"
-                   onclick="return confirm('@Localizer["BeginWarning", ViewBag.Name]')" />
+                   onclick="return confirm('@Localizer["BeginWarning", name]')" />
         </div>
     </div>
 </form>

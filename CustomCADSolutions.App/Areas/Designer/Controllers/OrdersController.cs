@@ -12,6 +12,8 @@ using CustomCADSolutions.App.Mappings.DTOs;
 using AutoMapper;
 using CustomCADSolutions.App.Mappings;
 using System.Text.Json;
+using CustomCADSolutions.Infrastructure.Data.Models;
+using CustomCADSolutions.App.Mappings.CadDTOs;
 
 namespace CustomCADSolutions.App.Areas.Designer.Controllers
 {
@@ -19,17 +21,12 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
     [Authorize(Roles = "Designer")]
     public class OrdersController : Controller
     {
-        private readonly IOrderService orderService;
         private readonly HttpClient httpClient;
-        private readonly IMapper mapper;
         private readonly ILogger logger;
+        private readonly IMapper mapper;
 
-        public OrdersController(
-            IOrderService orderService,
-            ILogger<OrdersController> logger,
-            HttpClient httpClient)
+        public OrdersController(ILogger<OrdersController> logger, HttpClient httpClient)
         {
-            this.orderService = orderService;
             this.logger = logger;
             this.httpClient = httpClient;
             MapperConfiguration config = new(cfg => cfg.AddProfile<OrderDTOProfile>());
@@ -44,9 +41,11 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
             try
             {
                 var dtos = (await httpClient.GetFromJsonAsync<OrderExportDTO[]>(OrdersAPIPath))!;
-
                 ViewBag.HiddenOrders = dtos.Count(m => !m.ShouldShow);
-                return View(mapper.Map<OrderViewModel[]>(dtos.Where(v => v.ShouldShow)));
+                var wantedOrders = dtos.Where(v => v.ShouldShow);
+
+                var orders = mapper.Map<OrderViewModel[]>(wantedOrders);
+                return View(orders);
             }
             catch
             {
@@ -55,56 +54,116 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Begin(CadInputModel input)
+        public async Task<IActionResult> Begin(int id)
         {
-            OrderModel? model = await orderService.GetByIdAsync(input.Id);
-            if (model == null)
+            string _;
+            try
+            {
+                _ = $"{OrdersAPIPath}/{id}";
+                var exportDTO = (await httpClient.GetFromJsonAsync<OrderExportDTO>(_))!;
+
+                OrderImportDTO importDTO = new()
+                {
+                    Id = exportDTO.Id,
+                    Status = OrderStatus.Begun.ToString(),
+                    Cad = new()
+                    {
+                        Name = exportDTO.Cad.Name,
+                        CategoryId = exportDTO.Cad.CategoryId,
+                    },
+                };
+                
+                _ = $"{OrdersAPIPath}/{id}";
+                var response = await httpClient.PutAsJsonAsync(_, importDTO);
+
+                return RedirectToAction(nameof(All));
+            }
+            catch
             {
                 return BadRequest();
             }
+        }
 
-            model.Status = OrderStatus.Begun;
-            await orderService.EditAsync(model);
+        [HttpGet]
+        public async Task<IActionResult> Finish(int id)
+        {
+            string _;
+            try
+            {
+                _ = $"{OrdersAPIPath}/{id}";
+                var dto = (await httpClient.GetFromJsonAsync<OrderExportDTO>(_))!;
 
-            return RedirectToAction(nameof(All));
+                CadFinishModel input = new()
+                {
+                    OrderId = id,
+                    Description = dto.Description,
+                    Categories = await httpClient.GetFromJsonAsync<Category[]>(CategoriesAPIPath)
+                };
+                return View(input);
+            }
+            catch (HttpRequestException)
+            {
+                return BadRequest();
+            }
         }
 
         [HttpPost]
-        public async Task<IActionResult> Finish(CadInputModel input)
+        public async Task<IActionResult> Finish(int id, CadFinishModel cad)
         {
-            OrderModel? model = await orderService.GetByIdAsync(input.Id);
+            string _;
+            try
+            {
+                CadImportDTO dto = new()
+                {
+                    Name = cad.Name,
+                    CategoryId = cad.CategoryId,
+                    Bytes = await cad.CadFile.GetBytesAsync(),
+                    CreatorId = User.GetId(),
+                    IsValidated = true,
+                };
 
-            if (model == null)
+                _ = $"{OrdersAPIPath}/Finish/{id}";
+                var response = await httpClient.PutAsJsonAsync(_, dto);
+                response.EnsureSuccessStatusCode();
+
+                return RedirectToAction(nameof(All));
+            }
+            catch
             {
                 return BadRequest();
             }
-
-            byte[] bytes = await input.CadFile.GetBytesAsync();
-
-            model.Cad.Bytes = bytes;
-            model.Cad.CreatorId = User.GetId();
-            model.Cad.CreationDate = DateTime.Now;
-            model.Cad.IsValidated = true;
-            model.Status = OrderStatus.Finished;
-            await orderService.EditAsync(model);
-
-            return RedirectToAction(nameof(All));
         }
 
         [HttpPost]
-        public async Task<IActionResult> Hide(CadInputModel input)
+        public async Task<IActionResult> Hide(int id)
         {
-            OrderModel? model = await orderService.GetByIdAsync(input.Id);
+            string _;
+            try
+            {
+                _ = $"{OrdersAPIPath}/{id}";
+                var exportDTO = (await httpClient.GetFromJsonAsync<OrderExportDTO>(_))!;
 
-            if (model == null)
+                OrderImportDTO importDTO = new()
+                {
+                    Id = exportDTO.Id,
+                    Status = exportDTO.Status,
+                    Cad = new()
+                    {
+                        Name = exportDTO.Cad.Name,
+                        CategoryId = exportDTO.Cad.CategoryId,
+                    },
+                    ShouldShow = exportDTO.ShouldShow,
+                };
+
+                _ = $"{OrdersAPIPath}/{id}";
+                var response = await httpClient.PutAsJsonAsync(_, importDTO);
+
+                return RedirectToAction(nameof(All));
+            }
+            catch
             {
                 return BadRequest();
             }
-
-            model.ShouldShow = false;
-            await orderService.EditAsync(model);
-
-            return RedirectToAction(nameof(All));
         }
     }
 }

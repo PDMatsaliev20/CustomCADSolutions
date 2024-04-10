@@ -58,16 +58,17 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> CadDetails(int id)
         {
-            string path = $"{OrdersAPIPath}/{id}";
-            var dto = await httpClient.GetFromJsonAsync<OrderExportDTO>(path);
-
-            if (dto != null)
+            try
             {
-                return View(mapper.Map<OrderViewModel>(dto));
+                var dto = await httpClient.GetFromJsonAsync<CadExportDTO>($"{CadsAPIPath}/{id}");
+                return View(mapper.Map<CadViewModel>(dto));
             }
-            else return BadRequest("Json parsing error");
+            catch (HttpRequestException)
+            {
+                return BadRequest();
+            }
         }
 
         [HttpGet]
@@ -116,7 +117,7 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
 
                     return RedirectToAction(nameof(Index));
                 }
-                return RedirectToAction(nameof(Details), new { id });
+                return RedirectToAction(nameof(Index), new { id });
             }
             else return BadRequest();
         }

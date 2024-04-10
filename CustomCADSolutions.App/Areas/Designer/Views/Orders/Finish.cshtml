@@ -1,13 +1,14 @@
-﻿@model CadAddModel
+﻿@model CadFinishModel
 @inject IViewLocalizer Localizer
 @{
-    ViewData["Title"] = "Submit 3D Model";
+    ViewData["Title"] = "Finish Order";
 }
+
 
 <h2 class="text-center mb-2">@Localizer["Title"]</h2>
 <hr />
 <div class="container">
-    <form method="post" autocomplete="off" enctype="multipart/form-data">        
+    <form asp-route-id="@Model.OrderId" method="post" autocomplete="off" enctype="multipart/form-data">
         <div class="row justify-content-center mb-3">
             <div class="col-3">
                 <label asp-for="Name" class="form-label"></label>
@@ -27,6 +28,12 @@
             </div>
         </div>
 
+        <div class="row justify-content-center mb-3">
+            <div class="col-6">
+                <label asp-for="CategoryId" class="form-label"></label>
+                <textarea asp-for="Description" class="form-control" disabled></textarea>
+            </div>
+        </div>
 
         <div class="row justify-content-center mb-3">
             <div class="col-3">
@@ -43,7 +50,8 @@
 
         <div class="row justify-content-center mt-3">
             <div class="col-1">
-                <input class="btn btn-primary" type="submit" value="Submit" />
+                <input type="submit" value="@Localizer["Finish"]" class="btn btn-danger w-100"
+                    onclick="return confirm('@Localizer["FinishWarning"]')" />
             </div>
         </div>
     </form>

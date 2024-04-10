@@ -26,6 +26,10 @@ namespace CustomCADSolutions.App.Mappings.DTOs
         [JsonPropertyName("status")]
         [Required]
         public string Status { get; set; } = null!;
+        
+        [JsonPropertyName("shouldShow")]
+        [Required]
+        public bool ShouldShow { get; set; } 
 
         [JsonPropertyName("cad")]
         public CadImportDTO Cad { get; set; } = null!;

@@ -4,6 +4,7 @@ using CustomCADSolutions.Core.Mappings;
 using CustomCADSolutions.Core.Models;
 using CustomCADSolutions.Infrastructure.Data.Common;
 using CustomCADSolutions.Infrastructure.Data.Models;
+using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Scaffolding;
@@ -86,6 +87,23 @@ namespace CustomCADSolutions.Core.Services
 
             await repository.SaveChangesAsync();
         }
+        
+        public async Task FinishOrderAsync(int id, CadModel model)
+        {
+            Order order = await repository.GetByIdAsync<Order>(id)
+                ?? throw new KeyNotFoundException();
+
+            order.Status = OrderStatus.Finished;
+            
+            order.Cad.Name = model.Name;
+            order.Cad.Bytes = model.Bytes;
+            order.Cad.IsValidated = model.IsValidated;
+            order.Cad.CreationDate = model.CreationDate;
+            order.Cad.CreatorId = model.CreatorId;
+            order.Cad.CategoryId = model.CategoryId;
+
+            await repository.SaveChangesAsync();
+        }
 
         public async Task EditRangeAsync(params OrderModel[] models)
         {
@@ -113,6 +131,6 @@ namespace CustomCADSolutions.Core.Services
 
             repository.Delete(order);
             await repository.SaveChangesAsync();
-        }        
+        }
     }
 }

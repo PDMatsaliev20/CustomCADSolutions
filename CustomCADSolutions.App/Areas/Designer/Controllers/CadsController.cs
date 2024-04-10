@@ -143,7 +143,7 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
         [HttpGet]
         public async Task<IActionResult> Add()
         {
-            return View(new CadInputModel()
+            return View(new CadAddModel()
             {
                 Categories = await httpClient.GetFromJsonAsync<Category[]>(CategoriesAPIPath)
             });
@@ -151,7 +151,7 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
 
         [HttpPost]
         [DisableRequestSizeLimit]
-        public async Task<IActionResult> Add(CadInputModel input)
+        public async Task<IActionResult> Add(CadAddModel input)
         {
             int maxFileSize = 10_000_000;
             if (input.CadFile.Length > maxFileSize)
@@ -203,7 +203,7 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
                     return NotFound();
                 }
 
-                CadInputModel input = new()
+                CadEditModel input = new()
                 {
                     Name = dto.Name,
                     X = dto.Coords[0],
@@ -221,7 +221,7 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(CadInputModel input, int id)
+        public async Task<IActionResult> Edit(int id, CadEditModel input)
         {
             var dto = mapper.Map<CadImportDTO>(input);
             dto.CreatorId = User.GetId();
@@ -248,7 +248,7 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
             else return BadRequest();
         }
 
-        private async Task<string> GetMessageAsync(params KeyValuePair<string, string>[] parameters)
+        private async Task<string> GetMessageAsync(KeyValuePair<string, string>[] parameters)
         {
             string path = CadsAPIPath + HttpContext.SecureQuery(parameters);
             var query = await httpClient.GetFromJsonAsync<CadQueryDTO>(path);

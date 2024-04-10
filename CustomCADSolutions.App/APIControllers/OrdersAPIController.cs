@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CustomCADSolutions.App.Mappings;
+using CustomCADSolutions.App.Mappings.CadDTOs;
 using CustomCADSolutions.App.Mappings.DTOs;
 using CustomCADSolutions.Core.Contracts;
 using CustomCADSolutions.Core.Models;
@@ -91,21 +92,19 @@ namespace CustomCADSolutions.App.APIControllers
             try
             {
                 OrderModel order = await orderService.GetByIdAsync(dto.Id);
-                if (order.Status != OrderStatus.Pending)
-                {
-                    return Forbid();
-                }
-
-                order.Cad.Name = dto.Cad.Name;
+                
                 order.Description = dto.Description;
+                order.Status = Enum.Parse<OrderStatus>(dto.Status);
+                order.ShouldShow = dto.ShouldShow;
+                order.Cad.Name = dto.Cad.Name;
                 order.Cad.CategoryId = dto.Cad.CategoryId;
                 await orderService.EditAsync(order);
 
                 return NoContent();
             }
-            catch (KeyNotFoundException ex)
+            catch (KeyNotFoundException)
             {
-                return NotFound(ex.Message);
+                return NotFound();
             }
         }
 
@@ -122,6 +121,31 @@ namespace CustomCADSolutions.App.APIControllers
             {
                 return NotFound();
             }
+        }
+
+        [HttpPut("Finish/{id}")]
+        [Consumes("application/json")]
+        [IgnoreAntiforgeryToken]
+        [ProducesResponseType(Status204NoContent)]
+        [ProducesResponseType(Status400BadRequest)]
+        public async Task<ActionResult> FinishAsync(int id, CadImportDTO dto)
+        {
+            if (!await orderService.ExistsByIdAsync(id))
+            {
+                return BadRequest();
+            }
+
+            CadModel model = (await orderService.GetByIdAsync(id))!.Cad;
+
+            model.Name = dto.Name;
+            model.Bytes = dto.Bytes;
+            model.IsValidated = dto.IsValidated;
+            model.CreatorId = dto.CreatorId;
+            model.CategoryId = dto.CategoryId;
+            model.CreationDate = DateTime.Now;
+            await orderService.FinishOrderAsync(id, model);
+
+            return NoContent();
         }
     }
 }

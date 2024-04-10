@@ -4,6 +4,7 @@
     int cols = 12 / ViewBag.Cols;
     string[] buttons = ViewBag.Buttons;
     string header = ViewBag.Header;
+    bool alreadyOrdered = ViewBag.AlreadyOrdered;
 }
 
 <script type="module">
@@ -16,11 +17,7 @@
         z: @Model.Coords[2],
         axis: '@Model.SpinAxis',
         fov: @Model.Fov,
-        rgb: {
-            r: @Model.RGB[0] / 225,
-            g: @Model.RGB[1] / 225,
-            b: @Model.RGB[2] / 225,
-        }
+        rgb: { r: @Model.RGB[0] / 225, g: @Model.RGB[1] / 225, b: @Model.RGB[2] / 225 }
     };
 
     loadModel(Model);
@@ -33,65 +30,9 @@
         <div class="card-body">
             <div id="model-@Model.Id"></div>
             <div class="d-grid gap-2 mt-3">
-                 @foreach (string button in buttons)
+                @foreach (string button in buttons)
                 {
-                    switch (button)
-                    {
-                        case "Edit":
-                            <a asp-controller="Cads" asp-action="Edit" asp-route-id="@Model.Id" 
-                                    class="btn btn-primary btn-warning mt-3">
-                                @Localizer["Details"]
-                            </a>
-                            break;
-
-                        case "Delete":
-                            <form asp-area="@ViewBag.Area" asp-controller="Cads" asp-action="Delete" asp-route-id="@Model.Id"
-                                    class="mt-2" method="post">
-                                <div class="d-grid gap-2">
-                                    <input type="submit" value="@Localizer["Delete"]" class="btn btn-danger mb-2"
-                                           onclick="return confirm('@Localizer["DeleteWarning", Model.Name]?')" />
-                                </div>
-                            </form>
-                            break;
-
-                        case "Validate":
-                            <form method="post" class="mt-2" asp-controller="Cads" asp-action="ValidateCad" asp-route-cadId="@Model.Id">
-                                <div class="d-grid gap-2">
-                                    <input type="submit" value="@Localizer["Validate"]" class="btn btn-primary mb-2"
-                                           onclick="return confirm('@Localizer["ValidateWarning", Model.Name]?')" />
-                                </div>
-                            </form>
-                            break;
-
-                        case "Download":
-                            <a asp-area="" asp-controller="Home" asp-action="DownloadCad" asp-route-id="@Model.Id" 
-                                    class="btn btn-primary col-4">
-                                @Localizer["Download"]
-                            </a>
-                            break;
-
-                        case "Colorize":
-                            <form id="color-form" asp-area="" asp-controller="Home" asp-action="ChangeColor" 
-                                    class="d-flex justify-content-around" method="post">
-                                <div class="d-grid gap-2">
-                                    <input id="pickColor-@Model.Id" type="color" class="form-control form-control-color col-4" />
-                                </div>
-                                <div class="d-grid gap-2">
-                                    <input id="submit-@Model.Id" type="submit" value="@Localizer["Apply"]" class="btn btn-secondary col-4" />
-                                </div>
-                            </form>
-                                break;
-
-                        case "Order":
-                            @if (!ViewBag.AlreadyOrdered)
-                            {
-                                <a asp-area="@ViewBag.Area" asp-controller="Orders" asp-action="Order" asp-route-id="@Model.Id"
-                                        class="btn btn-secondary text-decoration-none">
-                                    @Localizer["Order", Model.Price]
-                                </a>
-                            }
-                            break;
-                    }
+                    await Component.InvokeAsync("CadComponent", new { button, alreadyOrdered });
                 }
             </div>
         </div>

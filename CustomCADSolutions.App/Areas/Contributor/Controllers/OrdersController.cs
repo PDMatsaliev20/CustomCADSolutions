@@ -52,15 +52,15 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
             }
         }
 
+
         [HttpGet]
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> CadDetails(int id)
         {
-            string _;
             try
             {
-                _ = $"{OrdersAPIPath}/{id}";
-                var dto = await httpClient.GetFromJsonAsync<OrderExportDTO>(_);
-                return View(mapper.Map<OrderViewModel>(dto));
+                var dto = await httpClient.GetFromJsonAsync<CadExportDTO>($"{CadsAPIPath}/{id}");
+                return View(mapper.Map<CadViewModel>(dto));
+
             }
             catch (HttpRequestException)
             {
@@ -96,7 +96,7 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
                 {
                     _ = $"{OrdersAPIPath}/{id}";
                     await httpClient.GetFromJsonAsync<OrderExportDTO>(_);
-                    return RedirectToAction(nameof(Details), new { id });
+                    return RedirectToAction(nameof(Index), new { id });
                 }
                 catch
                 {

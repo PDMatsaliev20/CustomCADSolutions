@@ -1,4 +1,5 @@
 ﻿using CustomCADSolutions.Core.Models;
+using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 
 namespace CustomCADSolutions.Core.Contracts
 {
@@ -15,7 +16,9 @@ namespace CustomCADSolutions.Core.Contracts
         Task CreateRangeAsync(params OrderModel[] models);
 
         Task EditAsync(OrderModel entity);
-        
+
+        Task FinishOrderAsync(int id, CadModel model);
+
         Task EditRangeAsync(params OrderModel[] orders);
 
         Task DeleteAsync(int id);

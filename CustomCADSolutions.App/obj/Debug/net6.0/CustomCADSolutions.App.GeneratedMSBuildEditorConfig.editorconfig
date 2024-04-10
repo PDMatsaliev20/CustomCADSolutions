@@ -58,6 +58,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ2xpZW50XFZpZXdzXE9yZGVyc1xBZGQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/35988/source/repos/Web Apps/CustomCADSolutions/CustomCADSolutions.App/Areas/Client/Views/Orders/CadDetails.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ2xpZW50XFZpZXdzXE9yZGVyc1xDYWREZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/35988/source/repos/Web Apps/CustomCADSolutions/CustomCADSolutions.App/Areas/Client/Views/Orders/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ2xpZW50XFZpZXdzXE9yZGVyc1xEZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
@@ -96,6 +100,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/35988/source/repos/Web Apps/CustomCADSolutions/CustomCADSolutions.App/Areas/Contributor/Views/Orders/Add.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ29udHJpYnV0b3JcVmlld3NcT3JkZXJzXEFkZC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/35988/source/repos/Web Apps/CustomCADSolutions/CustomCADSolutions.App/Areas/Contributor/Views/Orders/CadDetails.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ29udHJpYnV0b3JcVmlld3NcT3JkZXJzXENhZERldGFpbHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/35988/source/repos/Web Apps/CustomCADSolutions/CustomCADSolutions.App/Areas/Contributor/Views/Orders/Details.cshtml]
@@ -144,6 +152,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/35988/source/repos/Web Apps/CustomCADSolutions/CustomCADSolutions.App/Areas/Designer/Views/Orders/All.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcRGVzaWduZXJcVmlld3NcT3JkZXJzXEFsbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/35988/source/repos/Web Apps/CustomCADSolutions/CustomCADSolutions.App/Areas/Designer/Views/Orders/Finish.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcRGVzaWduZXJcVmlld3NcT3JkZXJzXEZpbmlzaC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/35988/source/repos/Web Apps/CustomCADSolutions/CustomCADSolutions.App/Areas/Designer/Views/_ViewImports.cshtml]
@@ -212,6 +224,34 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/35988/source/repos/Web Apps/CustomCADSolutions/CustomCADSolutions.App/Views/Shared/Components/AllOrdersComponent/Pending.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXENvbXBvbmVudHNcQWxsT3JkZXJzQ29tcG9uZW50XFBlbmRpbmcuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/35988/source/repos/Web Apps/CustomCADSolutions/CustomCADSolutions.App/Views/Shared/Components/CadComponent/CannotOrderButton.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXENvbXBvbmVudHNcQ2FkQ29tcG9uZW50XENhbm5vdE9yZGVyQnV0dG9uLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/35988/source/repos/Web Apps/CustomCADSolutions/CustomCADSolutions.App/Views/Shared/Components/CadComponent/ColorizeButton.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXENvbXBvbmVudHNcQ2FkQ29tcG9uZW50XENvbG9yaXplQnV0dG9uLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/35988/source/repos/Web Apps/CustomCADSolutions/CustomCADSolutions.App/Views/Shared/Components/CadComponent/DeleteButton.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXENvbXBvbmVudHNcQ2FkQ29tcG9uZW50XERlbGV0ZUJ1dHRvbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/35988/source/repos/Web Apps/CustomCADSolutions/CustomCADSolutions.App/Views/Shared/Components/CadComponent/DownloadButton.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXENvbXBvbmVudHNcQ2FkQ29tcG9uZW50XERvd25sb2FkQnV0dG9uLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/35988/source/repos/Web Apps/CustomCADSolutions/CustomCADSolutions.App/Views/Shared/Components/CadComponent/EditButton.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXENvbXBvbmVudHNcQ2FkQ29tcG9uZW50XEVkaXRCdXR0b24uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/35988/source/repos/Web Apps/CustomCADSolutions/CustomCADSolutions.App/Views/Shared/Components/CadComponent/OrderButton.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXENvbXBvbmVudHNcQ2FkQ29tcG9uZW50XE9yZGVyQnV0dG9uLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/35988/source/repos/Web Apps/CustomCADSolutions/CustomCADSolutions.App/Views/Shared/Components/CadComponent/ValidateButton.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXENvbXBvbmVudHNcQ2FkQ29tcG9uZW50XFZhbGlkYXRlQnV0dG9uLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/35988/source/repos/Web Apps/CustomCADSolutions/CustomCADSolutions.App/Views/Shared/Components/CategoryCadComponent/Default.cshtml]

@@ -1,0 +1,11 @@
+﻿@inject IViewLocalizer Localizer
+@{
+    int id = ViewBag.Id;
+}
+
+<form asp-controller="Cads" asp-action="ValidateCad" asp-route-cadId="@id">
+    <div class="d-grid gap-2">
+        <input type="submit" value="@Localizer["Validate"]" class="btn btn-primary mb-2"
+               onclick="return confirm('@Localizer["ValidateWarning", Model.Name]?')" />
+    </div>
+</form>

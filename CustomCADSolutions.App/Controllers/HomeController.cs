@@ -96,21 +96,6 @@ namespace CustomCADSolutions.App.Controllers
             else return BadRequest();
         }
 
-        [HttpGet]
-        public async Task<IActionResult> CadDetails(int id)
-        {
-            try
-            {
-                var dto = await httpClient.GetFromJsonAsync<CadExportDTO>($"{CadsAPIPath}/{id}");
-                return View(mapper.Map<CadViewModel>(dto));
-
-            }
-            catch (HttpRequestException)
-            {
-                return BadRequest();
-            }
-        }
-
         [HttpPost]
         public async Task<IActionResult> ChangeColor(int id, string colorParam, string area)
         {
@@ -138,7 +123,7 @@ namespace CustomCADSolutions.App.Controllers
                 var response = await httpClient.PutAsJsonAsync(CadsAPIPath, import);
                 response.EnsureSuccessStatusCode();
 
-                return RedirectToAction("CadDetails", new { area, id = export.Id });
+                return RedirectToAction("Index", "Orders", new { area, id = export.Id });
             }
             catch (HttpRequestException)
             {
