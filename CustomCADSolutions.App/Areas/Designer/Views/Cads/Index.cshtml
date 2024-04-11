@@ -2,7 +2,7 @@
 @inject IViewLocalizer Localizer
 @{
     ViewData["Title"] = "Your 3D Models";
-    ViewBag.Buttons = new string[] { "Details", "Edit", "Delete" };
+    ViewBag.Buttons = new string[] { "Details" };
     ViewBag.Area = "Designer";
 }
 
@@ -29,7 +29,7 @@ else
             @foreach (CadViewModel cad in Model.Cads)
             {
                 ViewBag.Header = $"{cad.Name} ({Localizer[cad.Category].Value})";
-                <partial name="_CardCadPartial" model="cad" view-data="ViewData" view-data-cols="Model.Cols" />
+                <partial name="_CardCadPartial" model="cad" view-data="ViewData" />
             }
         </div>
     </div>

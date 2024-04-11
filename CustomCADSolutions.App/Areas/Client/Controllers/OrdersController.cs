@@ -1,5 +1,4 @@
 ﻿using CustomCADSolutions.App.Models.Orders;
-using CustomCADSolutions.App.Models.Cads;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +11,7 @@ using static CustomCADSolutions.App.Constants.Paths;
 using CustomCADSolutions.App.Mappings.DTOs;
 using CustomCADSolutions.App.Mappings.CadDTOs;
 using CustomCADSolutions.Infrastructure.Data.Models;
+using CustomCADSolutions.App.Models.Cads.View;
 
 namespace CustomCADSolutions.App.Areas.Client.Controllers
 {

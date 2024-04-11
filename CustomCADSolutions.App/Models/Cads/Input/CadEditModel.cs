@@ -3,7 +3,7 @@ using static CustomCADSolutions.Infrastructure.Data.DataConstants;
 using System.ComponentModel.DataAnnotations;
 using CustomCADSolutions.Infrastructure.Data.Models;
 
-namespace CustomCADSolutions.App.Models.Cads
+namespace CustomCADSolutions.App.Models.Cads.Input
 {
     public class CadEditModel
     {

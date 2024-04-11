@@ -2,7 +2,7 @@
 @inject IViewLocalizer Localizer
 @{
     ViewBag.Buttons = new string[] { "Order" };
-    ViewBag.Header = ViewBag.Header = $"{Model.Name} ({Localizer[Model.Category].Value})";
+    ViewBag.Header = $"{Model.Name} ({Localizer[Model.Category].Value})";
 }
 
-<partial name="_CardCadPartial" model="Model" view-data="ViewData" />
+<partial name="_CardCadPartial" model="Model" view-data="ViewData" />   

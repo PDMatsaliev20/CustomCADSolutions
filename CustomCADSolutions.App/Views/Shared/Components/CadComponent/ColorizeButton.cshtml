@@ -4,12 +4,8 @@
     string area = ViewBag.Area;
 }
 
-<form id="color-form" asp-area="" asp-controller="Home" asp-action="ChangeColor" asp-route-area="@area"
-      class="d-flex justify-content-around" method="post">
-    <div class="d-grid gap-2">
-        <input id="pickColor-@id" type="color" class="form-control form-control-color col-4" />
-    </div>
-    <div class="d-grid gap-2">
-        <input id="submit-@id" type="submit" value="@Localizer["Apply"]" class="btn btn-secondary col-4" />
-    </div>
+<form id="color-form" asp-action="ChangeColor"
+        class="d-flex justify-content-around" method="post">
+    <input id="pickColor-@id" type="color" class="form-control-color" />
+    <input id="submit-@id" type="submit" value="@Localizer["Apply"]" class="btn btn-secondary col-4" />
 </form>

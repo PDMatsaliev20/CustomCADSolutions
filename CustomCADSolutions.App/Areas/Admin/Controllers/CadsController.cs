@@ -1,16 +1,14 @@
 ﻿using AutoMapper;
 using CustomCADSolutions.App.Extensions;
 using CustomCADSolutions.App.Mappings.CadDTOs;
-using CustomCADSolutions.App.Models.Cads;
-using CustomCADSolutions.Core.Contracts;
 using CustomCADSolutions.App.Mappings;
-using CustomCADSolutions.Core.Models;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static CustomCADSolutions.App.Extensions.UtilityExtensions;
 using static CustomCADSolutions.App.Constants.Paths;
 using CustomCADSolutions.Infrastructure.Data.Models;
+using CustomCADSolutions.App.Models.Cads.View;
 
 namespace CustomCADSolutions.App.Areas.Admin.Controllers
 {

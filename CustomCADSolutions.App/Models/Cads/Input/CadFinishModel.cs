@@ -1,12 +1,14 @@
 ﻿using CustomCADSolutions.App.Resources.Shared;
+using CustomCADSolutions.Infrastructure.Data.Models;
 using static CustomCADSolutions.Infrastructure.Data.DataConstants;
 using System.ComponentModel.DataAnnotations;
-using CustomCADSolutions.Infrastructure.Data.Models;
 
-namespace CustomCADSolutions.App.Models.Cads
+namespace CustomCADSolutions.App.Models.Cads.Input
 {
-    public class CadAddModel
+    public class CadFinishModel
     {
+        public int Id { get; set; }
+
         [Required(ErrorMessageResourceType = typeof(SharedResources),
             ErrorMessageResourceName = nameof(SharedResources.Required))]
         [StringLength(CadConstants.NameMaxLength,
@@ -15,6 +17,9 @@ namespace CustomCADSolutions.App.Models.Cads
             ErrorMessageResourceName = nameof(SharedResources.Length))]
         [Display(Name = "Name", ResourceType = typeof(SharedResources))]
         public string Name { get; set; } = null!;
+
+        [Display(Name = "Description", ResourceType = typeof(SharedResources))]
+        public string Description { get; set; } = null!;
 
         [Required(ErrorMessageResourceType = typeof(SharedResources),
             ErrorMessageResourceName = nameof(SharedResources.Required))]
@@ -28,6 +33,8 @@ namespace CustomCADSolutions.App.Models.Cads
             ErrorMessageResourceName = nameof(SharedResources.Required))]
         [Display(Name = "File", ResourceType = typeof(SharedResources))]
         public IFormFile CadFile { get; set; } = null!;
+
+        public int OrderId { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(SharedResources),
             ErrorMessageResourceName = nameof(SharedResources.Required))]

@@ -9,8 +9,8 @@ using CustomCADSolutions.App.Mappings.DTOs;
 using static CustomCADSolutions.App.Constants.Paths;
 using CustomCADSolutions.Infrastructure.Data.Models;
 using CustomCADSolutions.App.Mappings.CadDTOs;
-using CustomCADSolutions.App.Models.Cads;
 using Microsoft.Extensions.Options;
+using CustomCADSolutions.App.Models.Cads.View;
 
 namespace CustomCADSolutions.App.Areas.Contributor.Controllers
 {

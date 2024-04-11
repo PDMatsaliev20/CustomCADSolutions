@@ -1,24 +1,28 @@
-﻿using CustomCADSolutions.App.Models.Cads;
-using CustomCADSolutions.App.Models.Orders;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace CustomCADSolutions.App.Components
 {
     public class CadComponent : ViewComponent
     {
-        public async Task<IViewComponentResult> InvokeAsync(string button, bool alreadyOrdered)
+        public IViewComponentResult Invoke(int id, string name, string area, string button)
         {
-            string view = string.Empty;
-            switch (button)
+            ViewBag.Id = id;
+            ViewBag.Name = name;
+            ViewBag.Area = area;
+
+            string view = button switch
             {
-                case "Edit": view = "EditButton"; break;
-                case "Delete": view = "DeleteButton"; break;
-                case "Colorize": view = "ColorizeButton"; break;
-                case "Download": view = "DownloadButton"; break;
-                case "Validate": view = "ValidateButton"; break;
-                case "Order": view = alreadyOrdered ? "CannottOrderButton" : "OrderButton"; break;
-            }
-            return await Task.FromResult<IViewComponentResult>(View(view));
+                "Details" => "DetailsButton",
+                "Edit" => "EditButton",
+                "Delete" => "DeleteButton",
+                "Colorize" => "ColorizeButton",
+                "Download" => "DownloadButton",
+                "Validate" => "ValidateButton",
+                "Order" => "OrderButton",
+                _ => "Default"
+            };
+
+            return View(view);
         }
     }
 }

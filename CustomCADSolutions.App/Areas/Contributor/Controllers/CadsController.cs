@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using CustomCADSolutions.App.Models.Cads;
 using Microsoft.AspNetCore.Authorization;
 using CustomCADSolutions.App.Extensions;
 using static CustomCADSolutions.App.Extensions.UtilityExtensions;
@@ -8,6 +7,8 @@ using CustomCADSolutions.App.Mappings.CadDTOs;
 using AutoMapper;
 using CustomCADSolutions.App.Mappings;
 using CustomCADSolutions.Infrastructure.Data.Models;
+using CustomCADSolutions.App.Models.Cads.Input;
+using CustomCADSolutions.App.Models.Cads.View;
 
 namespace CustomCADSolutions.App.Areas.Contributor.Controllers
 {

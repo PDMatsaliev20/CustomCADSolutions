@@ -1,10 +1,13 @@
 ﻿@model CadViewModel
 @inject IViewLocalizer Localizer
 @{
-    int cols = 12 / ViewBag.Cols;
     string[] buttons = ViewBag.Buttons;
     string header = ViewBag.Header;
-    bool alreadyOrdered = ViewBag.AlreadyOrdered;
+
+    int id = Model.Id;
+    string name = Model.Name;
+    string area = ViewBag.Area;
+    bool alreadyOrdered = ViewBag.AlreadyOrdered ?? false;
 }
 
 <script type="module">
@@ -22,7 +25,7 @@
 
     loadModel(Model);
 </script>
-<div class="container col-md-@cols col-12 mt-4">
+<div class="container col-md-4 col-12 mt-4">
     <div class="card">
         <h4 class="card-header text-center mb-1">
             <span>@header</span>
@@ -32,7 +35,7 @@
             <div class="d-grid gap-2 mt-3">
                 @foreach (string button in buttons)
                 {
-                    await Component.InvokeAsync("CadComponent", new { button, alreadyOrdered });
+                    @await Component.InvokeAsync("CadComponent", new { id, name, area, button });
                 }
             </div>
         </div>

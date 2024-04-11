@@ -1,4 +1,4 @@
-﻿using CustomCADSolutions.App.Models.Cads;
+﻿using CustomCADSolutions.App.Models.Cads.View;
 using CustomCADSolutions.Core.Contracts;
 using CustomCADSolutions.Core.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -13,7 +13,7 @@ namespace CustomCADSolutions.App.Components
             this.orderService = orderService;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(CadViewModel cad, string userId, int cols)
+        public async Task<IViewComponentResult> InvokeAsync(CadViewModel cad)
         {
             try
             {
@@ -24,7 +24,7 @@ namespace CustomCADSolutions.App.Components
             {
                 ViewBag.AlreadyOrdered = false;
             }
-
+            
             if (User.IsInRole("Client"))
             {
                 ViewBag.Area = "Client";
@@ -32,11 +32,12 @@ namespace CustomCADSolutions.App.Components
             else if (User.IsInRole("Contributor"))
             {
                 if (User.Identity!.Name != cad.CreatorName)
-                { ViewBag.Area = "Contributor"; }
+                { 
+                    ViewBag.Area = "Contributor"; 
+                }
                 else ViewBag.AlreadyOrdered = true;
             }
 
-            ViewBag.Cols = cols;
             return await Task.FromResult<IViewComponentResult>(View(cad));
         }
     }

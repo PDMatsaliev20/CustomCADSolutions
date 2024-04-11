@@ -1,7 +1,4 @@
 ﻿using CustomCADSolutions.App.Models.Orders;
-using CustomCADSolutions.App.Models.Cads;
-using CustomCADSolutions.Core.Contracts;
-using CustomCADSolutions.Core.Models;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,9 +8,9 @@ using CustomCADSolutions.App.Extensions;
 using CustomCADSolutions.App.Mappings.DTOs;
 using AutoMapper;
 using CustomCADSolutions.App.Mappings;
-using System.Text.Json;
 using CustomCADSolutions.Infrastructure.Data.Models;
 using CustomCADSolutions.App.Mappings.CadDTOs;
+using CustomCADSolutions.App.Models.Cads.Input;
 
 namespace CustomCADSolutions.App.Areas.Designer.Controllers
 {
@@ -37,14 +34,13 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
         public async Task<IActionResult> All()
         {
             ViewBag.Statuses = typeof(OrderStatus).GetEnumNames();
-
+            string _;
             try
             {
-                var dtos = (await httpClient.GetFromJsonAsync<OrderExportDTO[]>(OrdersAPIPath))!;
-                ViewBag.HiddenOrders = dtos.Count(m => !m.ShouldShow);
-                var wantedOrders = dtos.Where(v => v.ShouldShow);
+                _ = OrdersAPIPath;
+                var dtos = (await httpClient.GetFromJsonAsync<OrderExportDTO[]>(_))!;
 
-                var orders = mapper.Map<OrderViewModel[]>(wantedOrders);
+                var orders = mapper.Map<OrderViewModel[]>(dtos);
                 return View(orders);
             }
             catch
@@ -65,6 +61,7 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
                 OrderImportDTO importDTO = new()
                 {
                     Id = exportDTO.Id,
+                    Description = exportDTO.Description,
                     Status = OrderStatus.Begun.ToString(),
                     Cad = new()
                     {
@@ -75,6 +72,7 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
                 
                 _ = $"{OrdersAPIPath}/{id}";
                 var response = await httpClient.PutAsJsonAsync(_, importDTO);
+                response.EnsureSuccessStatusCode();
 
                 return RedirectToAction(nameof(All));
             }
@@ -116,6 +114,7 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
                 CadImportDTO dto = new()
                 {
                     Name = cad.Name,
+                    Price = cad.Price,
                     CategoryId = cad.CategoryId,
                     Bytes = await cad.CadFile.GetBytesAsync(),
                     CreatorId = User.GetId(),
@@ -151,8 +150,7 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
                     {
                         Name = exportDTO.Cad.Name,
                         CategoryId = exportDTO.Cad.CategoryId,
-                    },
-                    ShouldShow = exportDTO.ShouldShow,
+                    }
                 };
 
                 _ = $"{OrdersAPIPath}/{id}";

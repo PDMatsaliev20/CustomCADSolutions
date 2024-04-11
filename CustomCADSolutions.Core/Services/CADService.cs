@@ -66,7 +66,6 @@ namespace CustomCADSolutions.Core.Services
             cad.CreatorId = model.CreatorId;
             cad.Category = model.Category;
             cad.Creator = model.Creator;
-            cad.Orders = mapper.Map<List<Order>>(model.Orders);
 
             await repository.SaveChangesAsync();
         }

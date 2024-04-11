@@ -2,7 +2,6 @@
 @inject IViewLocalizer Localizer
 @{
     ViewData["Title"] = $"{Localizer["All"].Value} {Localizer[ViewBag.Category ?? "Cads"].Value}";
-    ViewBag.Cols = 3;
 }
 
 <h2 class="text-center">@ViewData["Title"]</h2>
@@ -20,8 +19,7 @@ else
         <div class="row">
             @foreach (CadViewModel cad in Model.Cads)
             {
-                string userId = User.GetId();
-                @await Component.InvokeAsync("CategoryCadComponent", new { cad, userId, cols = ViewBag.Cols })
+                @await Component.InvokeAsync("CategoryCadComponent", new { cad })
             }
         </div>
     </div>

@@ -1,7 +1,9 @@
 ﻿@inject IViewLocalizer Localizer
 @{
     int id = ViewBag.Id;
+    string area = ViewBag.Area;
 }
-<a asp-controller="Cads" asp-action="Edit" asp-route-id="@id" class="btn btn-primary btn-warning">
-    @Localizer["Details"]
+<a asp-area="@area" asp-controller="Cads" asp-action="Edit" asp-route-id="@id" 
+        class="btn btn-warning">
+    @Localizer["Edit"]
 </a>

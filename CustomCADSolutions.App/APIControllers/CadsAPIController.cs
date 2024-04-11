@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using CustomCADSolutions.App.Mappings;
 using CustomCADSolutions.App.Mappings.CadDTOs;
-using CustomCADSolutions.App.Models.Cads;
+using CustomCADSolutions.App.Models.Cads.View;
 using CustomCADSolutions.Core.Contracts;
 using CustomCADSolutions.Core.Models;
 using Microsoft.AspNetCore.Mvc;

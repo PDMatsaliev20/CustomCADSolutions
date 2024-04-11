@@ -4,4 +4,8 @@
     string name = ViewBag.Name;
 }
 
-<a asp-action="Finish" asp-route-id="@id" class="btn btn-danger">@Localizer["Finish", name]</a>
+<div class="row justify-content-center">
+    <a asp-action="Finish" asp-route-id="@id" class="col-8 btn btn-danger">
+        @Localizer["Finish", name]
+    </a>
+</div>

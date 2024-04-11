@@ -94,10 +94,15 @@ namespace CustomCADSolutions.Core.Services
                 ?? throw new KeyNotFoundException();
 
             order.Status = OrderStatus.Finished;
-            
+
             order.Cad.Name = model.Name;
             order.Cad.Bytes = model.Bytes;
             order.Cad.IsValidated = model.IsValidated;
+            
+            order.Cad.R = model.Color.R;
+            order.Cad.G = model.Color.G;
+            order.Cad.B = model.Color.B;
+            
             order.Cad.CreationDate = model.CreationDate;
             order.Cad.CreatorId = model.CreatorId;
             order.Cad.CategoryId = model.CategoryId;

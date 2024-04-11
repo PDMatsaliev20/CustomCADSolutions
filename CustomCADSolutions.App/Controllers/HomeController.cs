@@ -1,6 +1,5 @@
 ﻿using CustomCADSolutions.App.Extensions;
 using CustomCADSolutions.App.Models;
-using CustomCADSolutions.App.Models.Cads;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
@@ -14,6 +13,7 @@ using CustomCADSolutions.App.Mappings;
 using System.Drawing;
 using CustomCADSolutions.Infrastructure.Data.Models;
 using Stripe;
+using CustomCADSolutions.App.Models.Cads.View;
 
 namespace CustomCADSolutions.App.Controllers
 {
@@ -94,41 +94,6 @@ namespace CustomCADSolutions.App.Controllers
                 return File(bytes, "application/octet-stream", $"{model.Name}.stl");
             }
             else return BadRequest();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> ChangeColor(int id, string colorParam, string area)
-        {
-            string _;
-            try
-            {
-                _ = $"{CadsAPIPath}/{id}";
-                var export = (await httpClient.GetFromJsonAsync<CadExportDTO>(_))!;
-
-                _ = $"{CategoriesAPIPath}/{export.CategoryId}";
-                var category = (await httpClient.GetFromJsonAsync<Category>(_))!;
-
-                Color color = ColorTranslator.FromHtml(colorParam);
-                CadImportDTO import = new()
-                {
-                    Id = export.Id,
-                    CreatorId = export.CreatorId,
-                    Name = export.Name,
-                    Coords = export.Coords,
-                    SpinAxis = export.SpinAxis,
-                    RGB = new byte[] { color.R, color.G, color.B },
-                    CategoryId = category.Id,
-                };
-
-                var response = await httpClient.PutAsJsonAsync(CadsAPIPath, import);
-                response.EnsureSuccessStatusCode();
-
-                return RedirectToAction("Index", "Orders", new { area, id = export.Id });
-            }
-            catch (HttpRequestException)
-            {
-                return BadRequest();
-            }
         }
 
         public IActionResult SetLanguage(string culture, string returnUrl)

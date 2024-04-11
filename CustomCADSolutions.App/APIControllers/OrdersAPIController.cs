@@ -6,6 +6,7 @@ using CustomCADSolutions.Core.Contracts;
 using CustomCADSolutions.Core.Models;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using Microsoft.AspNetCore.Mvc;
+using System.Drawing;
 using static Microsoft.AspNetCore.Http.StatusCodes;
 
 namespace CustomCADSolutions.App.APIControllers
@@ -137,12 +138,13 @@ namespace CustomCADSolutions.App.APIControllers
 
             CadModel model = (await orderService.GetByIdAsync(id))!.Cad;
 
-            model.Name = dto.Name;
             model.Bytes = dto.Bytes;
             model.IsValidated = dto.IsValidated;
             model.CreatorId = dto.CreatorId;
             model.CategoryId = dto.CategoryId;
             model.CreationDate = DateTime.Now;
+            model.Name = dto.Name;
+            model.Color = Color.FromArgb(dto.RGB[0], dto.RGB[1], dto.RGB[2]);
             await orderService.FinishOrderAsync(id, model);
 
             return NoContent();

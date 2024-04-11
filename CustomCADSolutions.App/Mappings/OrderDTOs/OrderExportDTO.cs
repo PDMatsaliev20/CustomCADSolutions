@@ -14,9 +14,6 @@ namespace CustomCADSolutions.App.Mappings.DTOs
         [JsonPropertyName("description")]
         public string Description { get; set; } = null!;
 
-        [JsonPropertyName("shouldShow")]
-        public bool ShouldShow { get; set; } = true;
-
         [JsonPropertyName("status")]
         public string Status { get; set; } = null!;
         

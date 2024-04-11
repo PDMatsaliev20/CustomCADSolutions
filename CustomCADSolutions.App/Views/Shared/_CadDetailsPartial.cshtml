@@ -1,0 +1,36 @@
+﻿@model CadViewModel
+@inject IViewLocalizer Localizer
+@{
+    string[] buttons = ViewBag.Buttons;
+    string header = ViewBag.Header;
+
+    int id = Model.Id;
+    string name = Model.Name;
+    string area = ViewBag.Area;
+}
+
+<script type="module">
+    import { loadModel } from '../../../js/site.mjs';
+
+    const Model = {
+        id: @Model.Id,
+        x: @Model.Coords[0],
+        y: @Model.Coords[1],
+        z: @Model.Coords[2],
+        axis: '@Model.SpinAxis',
+        fov: @Model.Fov,
+        rgb: {
+            r: @Model.RGB[0] / 225, g: @Model.RGB[1] / 225, b: @Model.RGB[2] / 225 }
+        };
+
+        loadModel(Model);
+</script>
+<div class="container col-md-8 col-12 mt-4">
+    <div id="model-@Model.Id"></div>
+    <div class="d-grid gap-2 mt-3">
+        @foreach (string button in buttons)
+        {
+            @await Component.InvokeAsync("CadComponent", new { id, name, area, button })
+        }
+    </div>
+</div>

@@ -92,7 +92,7 @@ function loadModel({ id, x, y, z, axis, fov, rgb: { r, g, b } }, path = `/Home/D
     // Controls
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
-    controls.dampingFactor = 0.25;
+    controls.dampingFactor = 0.8;
 
     let isInteracting = false;
     let resumeTimeout;

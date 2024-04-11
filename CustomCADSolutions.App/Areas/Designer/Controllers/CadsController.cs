@@ -1,7 +1,6 @@
 ﻿using CustomCADSolutions.Core.Contracts;
 using CustomCADSolutions.Core.Models;
 using Microsoft.AspNetCore.Mvc;
-using CustomCADSolutions.App.Models.Cads;
 using Microsoft.AspNetCore.Authorization;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using Microsoft.Extensions.Localization;
@@ -12,6 +11,9 @@ using CustomCADSolutions.App.Mappings.CadDTOs;
 using AutoMapper;
 using CustomCADSolutions.App.Mappings;
 using CustomCADSolutions.Infrastructure.Data.Models;
+using CustomCADSolutions.App.Models.Cads.Input;
+using CustomCADSolutions.App.Models.Cads.View;
+using System.Drawing;
 
 namespace CustomCADSolutions.App.Areas.Designer.Controllers
 {
@@ -112,6 +114,42 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
             return RedirectToAction(nameof(Submitted));
         }
 
+
+        [HttpPost]
+        public async Task<IActionResult> ChangeColor(int id, string colorParam)
+        {
+            string _;
+            try
+            {
+                _ = $"{CadsAPIPath}/{id}";
+                var export = (await httpClient.GetFromJsonAsync<CadExportDTO>(_))!;
+
+                _ = $"{CategoriesAPIPath}/{export.CategoryId}";
+                var category = (await httpClient.GetFromJsonAsync<Category>(_))!;
+
+                Color color = ColorTranslator.FromHtml(colorParam);
+                CadImportDTO import = new()
+                {
+                    Id = export.Id,
+                    CreatorId = export.CreatorId,
+                    Name = export.Name,
+                    Coords = export.Coords,
+                    SpinAxis = export.SpinAxis,
+                    RGB = new byte[] { color.R, color.G, color.B },
+                    CategoryId = category.Id,
+                };
+
+                var response = await httpClient.PutAsJsonAsync(CadsAPIPath, import);
+                response.EnsureSuccessStatusCode();
+
+                return RedirectToAction(nameof(Details), new { id = export.Id });
+            }
+            catch (HttpRequestException)
+            {
+                return BadRequest();
+            }
+        }
+
         [HttpGet]
         public async Task<IActionResult> Index([FromQuery] CadQueryInputModel inputQuery)
         {
@@ -138,6 +176,22 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
                 return View(inputQuery);
             }
             else return BadRequest();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            string _;
+            try
+            {
+                _ = $"{CadsAPIPath}/{id}";
+                var dto = await httpClient.GetFromJsonAsync<CadExportDTO>(_);
+                return View(mapper.Map<CadViewModel>(dto));
+            }
+            catch (HttpRequestException)
+            {
+                return BadRequest();
+            }
         }
 
         [HttpGet]
@@ -228,7 +282,7 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
             var response = await httpClient.PutAsJsonAsync(CadsAPIPath, dto);
 
             response.EnsureSuccessStatusCode();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Details), new { id = id });
         }
 
         [HttpPost]

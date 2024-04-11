@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
 using CustomCADSolutions.App.Extensions;
 using CustomCADSolutions.App.Mappings.CadDTOs;
-using CustomCADSolutions.App.Models.Cads;
+using CustomCADSolutions.App.Models.Cads.Input;
+using CustomCADSolutions.App.Models.Cads.View;
 using CustomCADSolutions.Core.Models;
 using System.Drawing;
 
@@ -14,24 +15,18 @@ namespace CustomCADSolutions.App.Mappings
     {
         public CadDTOProfile()
         {
-            InputToDTO();
+            AddToDTO();
+            EditToDTO();
             DTOToModel();
             ModelToDTO();
             DTOToView();
             QueryToDTO();
         }
 
-        /// <summary>
-        /// Converts User Cad to JSON Import (set the bytes manually)
-        /// </summary>
-        /// <returns>IMappingExpression with Input source and DTO destination</returns>
-        public IMappingExpression<CadInputModel, CadImportDTO> InputToDTO() => CreateMap<CadInputModel, CadImportDTO>()
-            .ForMember(dto => dto.Id, opt => opt.MapFrom(input => input.Id))
-            .ForMember(dto => dto.Name, opt => opt.MapFrom(input => input.Name))
-            .ForMember(dto => dto.CategoryId, opt => opt.MapFrom(input => input.CategoryId))
-            .ForMember(dto => dto.Price, opt => opt.MapFrom(input => input.Price))
-            .ForMember(dto => dto.Coords, opt => opt.MapFrom(input => new int[] { input.X, input.Y, input.Z }))
-            .ForMember(dto => dto.SpinAxis, opt => opt.MapFrom(input => input.SpinAxis));
+        public void AddToDTO() => CreateMap<CadAddModel, CadImportDTO>();
+        
+        public void EditToDTO() => CreateMap<CadEditModel, CadImportDTO>()
+            .ForMember(dto => dto.Coords, opt => opt.MapFrom(edit => new int[] { edit.X, edit.Y, edit.Z }));
 
         /// <summary>
         /// Converts JSON Import to Service Model
@@ -102,8 +97,6 @@ namespace CustomCADSolutions.App.Mappings
             .ForMember(view => view.Category, opt => opt.MapFrom(dto => dto.CategoryName))
             .ForMember(view => view.Coords, opt => opt.MapFrom(dto => dto.Coords))
             .ForMember(view => view.SpinAxis, opt => opt.MapFrom(dto => dto.SpinAxis))
-            .ForMember(view => view.IsValidated, opt => opt.MapFrom(dto => dto.IsValidated))
-            .ForMember(view => view.Price, opt => opt.MapFrom(dto => dto.Price))
             .ForMember(view => view.RGB, opt => opt.MapFrom(dto => dto.RGB))
             .ForMember(view => view.CreatorName, opt =>
             {

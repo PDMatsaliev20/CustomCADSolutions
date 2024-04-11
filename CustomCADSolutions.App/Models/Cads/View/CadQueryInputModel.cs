@@ -3,7 +3,7 @@ using CustomCADSolutions.Core.Models;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using System.ComponentModel.DataAnnotations;
 
-namespace CustomCADSolutions.App.Models.Cads
+namespace CustomCADSolutions.App.Models.Cads.View
 {
     public class CadQueryInputModel
     {
@@ -28,10 +28,10 @@ namespace CustomCADSolutions.App.Models.Cads
         public int CurrentPage { get; set; } = 1;
 
         public int CadsPerPage { get; set; } = 3;
-        
+
         public int Cols { get; set; } = 3;
-        
-        public int MaxCadsPerPage { get => Cols * (20 / Cols); } 
+
+        public int MaxCadsPerPage { get => Cols * (20 / Cols); }
 
         public int TotalCount { get; set; }
 
