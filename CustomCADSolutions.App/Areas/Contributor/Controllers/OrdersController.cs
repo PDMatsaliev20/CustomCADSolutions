@@ -31,7 +31,12 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
             this.logger = logger;
             this.httpClient = httpClient;
             this.stripeSettings = stripeSettings.Value;
-            MapperConfiguration config = new(cfg => cfg.AddProfile<OrderDTOProfile>());
+            
+            MapperConfiguration config = new(cfg =>
+            {
+                cfg.AddProfile<CadDTOProfile>();
+                cfg.AddProfile<OrderDTOProfile>();
+            });
             this.mapper = config.CreateMapper();
         }
 
@@ -49,22 +54,6 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
             catch (HttpRequestException ex)
             {
                 return BadRequest(ex.Message);
-            }
-        }
-
-
-        [HttpGet]
-        public async Task<IActionResult> CadDetails(int id)
-        {
-            try
-            {
-                var dto = await httpClient.GetFromJsonAsync<CadExportDTO>($"{CadsAPIPath}/{id}");
-                return View(mapper.Map<CadViewModel>(dto));
-
-            }
-            catch (HttpRequestException)
-            {
-                return BadRequest();
             }
         }
 
@@ -114,7 +103,9 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
                     Description = $"3D Model from the gallery with id: {id}",
                     Status = OrderStatus.Finished.ToString(),
                 };
-                await httpClient.PostAsJsonAsync(OrdersAPIPath, orderDTO);
+
+                var response = await httpClient.PostAsJsonAsync(OrdersAPIPath, orderDTO);
+                response.EnsureSuccessStatusCode();
 
                 return RedirectToAction(nameof(Index));
             }

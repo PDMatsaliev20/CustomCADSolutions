@@ -9,6 +9,7 @@ using CustomCADSolutions.App.Mappings;
 using CustomCADSolutions.Infrastructure.Data.Models;
 using CustomCADSolutions.App.Models.Cads.Input;
 using CustomCADSolutions.App.Models.Cads.View;
+using System.Drawing;
 
 namespace CustomCADSolutions.App.Areas.Contributor.Controllers
 {
@@ -17,8 +18,8 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
     public class CadsController : Controller
     {
         private readonly HttpClient httpClient;
-        private readonly IMapper mapper;
         private readonly ILogger logger;
+        private readonly IMapper mapper;
 
         public CadsController(HttpClient httpClient, ILogger<CadsController> logger)
         {
@@ -26,6 +27,39 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
             this.httpClient = httpClient;
             MapperConfiguration config = new(cfg => cfg.AddProfile<CadDTOProfile>());
             this.mapper = config.CreateMapper();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangeColor(int id, string colorParam)
+        {
+            string _;
+            try
+            {
+                _ = $"{CadsAPIPath}/{id}";
+                var export = (await httpClient.GetFromJsonAsync<CadExportDTO>(_))!;
+
+                Color color = ColorTranslator.FromHtml(colorParam);
+                CadImportDTO import = new()
+                {
+                    Id = export.Id,
+                    CreatorId = export.CreatorId,
+                    Name = export.Name,
+                    Coords = export.Coords,
+                    SpinAxis = export.SpinAxis,
+                    RGB = new byte[] { color.R, color.G, color.B },
+                    CategoryId = export.CategoryId,
+                    Price = export.Price,
+                };
+
+                var response = await httpClient.PutAsJsonAsync(CadsAPIPath, import);
+                response.EnsureSuccessStatusCode();
+
+                return RedirectToAction(nameof(Details), new { id = export.Id });
+            }
+            catch (HttpRequestException)
+            {
+                return BadRequest();
+            }
         }
 
         [HttpGet]
@@ -48,6 +82,22 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
                 return View(inputQuery);
             }
             else return BadRequest();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            string _;
+            try
+            {
+                _ = $"{CadsAPIPath}/{id}";
+                var dto = await httpClient.GetFromJsonAsync<CadExportDTO>(_);
+                return View(mapper.Map<CadViewModel>(dto));
+            }
+            catch (HttpRequestException)
+            {
+                return BadRequest();
+            }
         }
 
         [HttpGet]
@@ -111,12 +161,13 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
 
                 CadEditModel input = new()
                 {
+                    Id = id,
                     Name = dto.Name,
+                    Price = dto.Price,
+                    SpinAxis = dto.SpinAxis,
                     X = dto.Coords[0],
                     Y = dto.Coords[1],
                     Z = dto.Coords[2],
-                    SpinAxis = dto.SpinAxis,
-                    Price = dto.Price,
                     CategoryId = dto.CategoryId,
                     Categories = await httpClient.GetFromJsonAsync<Category[]>(CategoriesAPIPath),
                 };
@@ -138,7 +189,7 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
             var response = await httpClient.PutAsJsonAsync(CadsAPIPath, dto);
             response.EnsureSuccessStatusCode();
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Details), new { id });
         }
 
         [HttpPost]

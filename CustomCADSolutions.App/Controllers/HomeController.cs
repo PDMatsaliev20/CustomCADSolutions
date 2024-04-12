@@ -10,10 +10,9 @@ using static CustomCADSolutions.App.Constants.Paths;
 using CustomCADSolutions.App.Mappings.CadDTOs;
 using AutoMapper;
 using CustomCADSolutions.App.Mappings;
-using System.Drawing;
 using CustomCADSolutions.Infrastructure.Data.Models;
-using Stripe;
 using CustomCADSolutions.App.Models.Cads.View;
+using CustomCADSolutions.Core.Models;
 
 namespace CustomCADSolutions.App.Controllers
 {
@@ -83,8 +82,9 @@ namespace CustomCADSolutions.App.Controllers
             try
             {
                 _ = $"{CadsAPIPath}/{id}";
-                var model = (await httpClient.GetFromJsonAsync<CadExportDTO>(_))!;
-                return File(model.Bytes, "application/octet-stream", $"{model.Name}.stl");
+                var export = (await httpClient.GetFromJsonAsync<CadExportDTO>(_))!;
+
+                return File(export.Bytes, "application/octet-stream", $"{export.Name}.stl");
             }
             catch
             {

@@ -1,17 +1,16 @@
 ﻿@model CadViewModel
 @inject IViewLocalizer Localizer
 @{
-    ViewData["Title"] = "Order Details";
+    ViewData["Title"] = "3D Model Details";
     ViewBag.Area = "Contributor";
-    ViewBag.Cols = 2;
-    ViewBag.Buttons = new string[] { "Download", "Colorize" };
+    ViewBag.Buttons = new string[] { "Colorize", "Edit", "Delete" };
     ViewBag.Header = $"{Localizer["Camera"].Value} - X:{Model.Coords[0]} Y:{Model.Coords[1]} Z:{Model.Coords[2]}";
 }
 
 <h1 class="text-center">@Localizer["Title", Model.Name]</h1>
 <hr />
 
-<partial name="_CardCadPartial" model="Model" view-data="ViewData" />
+<partial name="_CadDetailsPartial" model="Model" view-data="ViewData" />
 
 @section Scripts {
     <script>

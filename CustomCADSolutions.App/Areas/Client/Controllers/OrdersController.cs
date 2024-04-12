@@ -58,20 +58,6 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> CadDetails(int id)
-        {
-            try
-            {
-                var dto = await httpClient.GetFromJsonAsync<CadExportDTO>($"{CadsAPIPath}/{id}");
-                return View(mapper.Map<CadViewModel>(dto));
-            }
-            catch (HttpRequestException)
-            {
-                return BadRequest();
-            }
-        }
-
-        [HttpGet]
         public async Task<IActionResult> Order(int id)
         {
             string _;
@@ -113,6 +99,7 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
                 {
                     CadId = id,
                     BuyerId = User.GetId(),
+                    CategoryId = cadDTO.CategoryId,
                     Name = cadDTO.Name,
                     Description = $"3D Model from the gallery with id: {id}",
                     Status = OrderStatus.Finished.ToString(),
