@@ -5,7 +5,6 @@ using CustomCADSolutions.Infrastructure.Data.Models;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using System.Drawing;
 using AutoMapper;
 using CustomCADSolutions.Core.Mappings;
 
@@ -104,42 +103,20 @@ namespace CustomCADSolutions.Core.Services
 
         public async Task DeleteAsync(int id)
         {
-            (await repository.All<Order>().Where(o => o.CadId == id).ToListAsync())
-                .ForEach(o => o.Status = OrderStatus.Pending);
+            IEnumerable<Order> orders = repository.All<Order>()
+                .Where(o => o.CadId == id);
+
+            foreach (Order order in orders)
+            {
+                order.Status = OrderStatus.Pending;
+                order.CadId = null;
+                order.Cad = null;
+            }
 
             Cad cad = await repository.GetByIdAsync<Cad>(id)
                 ?? throw new KeyNotFoundException();
 
-            cad.IsValidated = false;
-            cad.CreatorId = null;
-            cad.Creator = null;
-            cad.CreationDate = null;
-            cad.Bytes = null;
-            cad.SpinAxis = null;
-            cad.X = cad.Y = cad.Z = 0;
-            cad.R = cad.G = cad.B = 0;
-
-            await repository.SaveChangesAsync();
-        }
-
-        public async Task DeleteRangeAsync(params int[] ids)
-        {
-            (await repository.All<Order>().Where(o => ids.Contains(o.CadId)).ToListAsync())
-                .ForEach(o => o.Status = OrderStatus.Pending);
-
-            (await repository.All<Cad>().Where(c => ids.Contains(c.Id)).ToListAsync())
-                .ForEach(cad =>
-                {
-                    cad.IsValidated = false;
-                    cad.CreatorId = null;
-                    cad.Creator = null;
-                    cad.CreationDate = null;
-                    cad.Bytes = null;
-                    cad.SpinAxis = null;
-                    cad.X = cad.Y = cad.Z = 0;
-                    cad.R = cad.G = cad.B = 0;
-                });
-
+            repository.Delete<Cad>(cad);
             await repository.SaveChangesAsync();
         }
 

@@ -53,7 +53,7 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
             {
                 string _ = CadsAPIPath + HttpContext.SecureQuery(parameters.ToArray());
                 var query = (await httpClient.GetFromJsonAsync<CadQueryDTO>(_))!;
-                
+
                 _ = CategoriesAPIPath;
                 var categories = (await httpClient.GetFromJsonAsync<Category[]>(_))!;
 
@@ -114,7 +114,6 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
             return RedirectToAction(nameof(Submitted));
         }
 
-
         [HttpPost]
         public async Task<IActionResult> ChangeColor(int id, string colorParam)
         {
@@ -123,9 +122,6 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
             {
                 _ = $"{CadsAPIPath}/{id}";
                 var export = (await httpClient.GetFromJsonAsync<CadExportDTO>(_))!;
-
-                _ = $"{CategoriesAPIPath}/{export.CategoryId}";
-                var category = (await httpClient.GetFromJsonAsync<Category>(_))!;
 
                 Color color = ColorTranslator.FromHtml(colorParam);
                 CadImportDTO import = new()
@@ -136,7 +132,8 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
                     Coords = export.Coords,
                     SpinAxis = export.SpinAxis,
                     RGB = new byte[] { color.R, color.G, color.B },
-                    CategoryId = category.Id,
+                    CategoryId = export.CategoryId,
+                    Price = export.Price,
                 };
 
                 var response = await httpClient.PutAsJsonAsync(CadsAPIPath, import);
@@ -242,19 +239,14 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var dto = await httpClient.GetFromJsonAsync<CadExportDTO>($"{CadsAPIPath}/{id}");
-            if (dto != null)
+            string _;
+            try
             {
+                _ = $"{CadsAPIPath}/{id}";
+                var dto = (await httpClient.GetFromJsonAsync<CadExportDTO>(_))!;
                 if (dto.CreatorName != User.Identity!.Name!)
                 {
                     return Forbid();
-                }
-
-                string path = $"{CategoriesAPIPath}/{dto.CategoryId}";
-                var category = await httpClient.GetFromJsonAsync<Category>(path);
-                if (category == null)
-                {
-                    return NotFound();
                 }
 
                 CadEditModel input = new()
@@ -265,41 +257,64 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
                     Z = dto.Coords[2],
                     SpinAxis = dto.SpinAxis,
                     Price = dto.Price,
-                    CategoryId = category.Id,
+                    CategoryId = dto.CategoryId,
                     Categories = await httpClient.GetFromJsonAsync<Category[]>(CategoriesAPIPath),
                 };
 
                 return View(input);
             }
-            else return BadRequest();
+            catch
+            {
+                return BadRequest();
+            }
         }
 
         [HttpPost]
         public async Task<IActionResult> Edit(int id, CadEditModel input)
         {
-            var dto = mapper.Map<CadImportDTO>(input);
-            dto.CreatorId = User.GetId();
-            var response = await httpClient.PutAsJsonAsync(CadsAPIPath, dto);
+            string _;
+            try
+            {
+                var import = mapper.Map<CadImportDTO>(input);
+                import.CreatorId = User.GetId();
 
-            response.EnsureSuccessStatusCode();
-            return RedirectToAction(nameof(Details), new { id = id });
+                _ = $"{CadsAPIPath}/{id}";
+                var export = (await httpClient.GetFromJsonAsync<CadImportDTO>(_))!;
+
+                import.RGB = export.RGB;
+                var response = await httpClient.PutAsJsonAsync(CadsAPIPath, import);
+                response.EnsureSuccessStatusCode();
+
+                return RedirectToAction(nameof(Details), new { id });
+            }
+            catch (HttpRequestException)
+            {
+                return BadRequest();
+            }
         }
 
         [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
-            var dto = await httpClient.GetFromJsonAsync<CadExportDTO>($"{CadsAPIPath}/{id}");
-            if (dto != null)
+            string _;
+            try
             {
+                _ = $"{CadsAPIPath}/{id}";
+                var dto = (await httpClient.GetFromJsonAsync<CadExportDTO>(_))!;
                 if (dto.CreatorName != User.Identity!.Name)
                 {
                     return Forbid();
                 }
 
-                await httpClient.DeleteAsync($"{CadsAPIPath}/{id}");
+                var response = await httpClient.DeleteAsync($"{CadsAPIPath}/{id}");
+                response.EnsureSuccessStatusCode();
+
                 return RedirectToAction(nameof(Index));
             }
-            else return BadRequest();
+            catch
+            {
+                return BadRequest();
+            }
         }
 
         private async Task<string> GetMessageAsync(KeyValuePair<string, string>[] parameters)

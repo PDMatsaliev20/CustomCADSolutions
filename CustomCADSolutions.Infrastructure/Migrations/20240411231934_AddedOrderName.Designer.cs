@@ -4,6 +4,7 @@ using CustomCADSolutions.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CustomCADSolutions.AppWithIdentity.Data.Migrations
 {
     [DbContext(typeof(CadContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240411231934_AddedOrderName")]
+    partial class AddedOrderName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -140,7 +142,6 @@ namespace CustomCADSolutions.AppWithIdentity.Data.Migrations
                         .HasComment("rgB value of 3D Model");
 
                     b.Property<byte[]>("Bytes")
-                        .IsRequired()
                         .HasColumnType("varbinary(max)")
                         .HasComment("Bytes of 3D Model");
 
@@ -148,12 +149,11 @@ namespace CustomCADSolutions.AppWithIdentity.Data.Migrations
                         .HasColumnType("int")
                         .HasComment("Category of 3D Model");
 
-                    b.Property<DateTime>("CreationDate")
+                    b.Property<DateTime?>("CreationDate")
                         .HasColumnType("datetime2")
                         .HasComment("CreationDate of 3D Model");
 
                     b.Property<string>("CreatorId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)")
                         .HasComment("Identification of the creator of the 3D Model");
 
@@ -204,7 +204,24 @@ namespace CustomCADSolutions.AppWithIdentity.Data.Migrations
 
                     b.HasIndex("CreatorId");
 
-                    b.ToTable("Cads", (string)null);
+                    b.ToTable("Cads");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            B = 255,
+                            CategoryId = 5,
+                            G = 255,
+                            IsValidated = false,
+                            Name = "Chair",
+                            Price = 0m,
+                            R = 255,
+                            SpinAxis = "y",
+                            X = 750,
+                            Y = 300,
+                            Z = 0
+                        });
                 });
 
             modelBuilder.Entity("CustomCADSolutions.Infrastructure.Data.Models.Category", b =>
@@ -221,7 +238,7 @@ namespace CustomCADSolutions.AppWithIdentity.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
 
                     b.HasData(
                         new
@@ -295,13 +312,9 @@ namespace CustomCADSolutions.AppWithIdentity.Data.Migrations
                         .HasColumnType("nvarchar(450)")
                         .HasComment("Identification of User");
 
-                    b.Property<int?>("CadId")
+                    b.Property<int>("CadId")
                         .HasColumnType("int")
-                        .HasComment("Identification of Orders' 3D Model");
-
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int")
-                        .HasComment("Identification of Order's Category");
+                        .HasComment("Identification of 3D model");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -332,9 +345,7 @@ namespace CustomCADSolutions.AppWithIdentity.Data.Migrations
 
                     b.HasIndex("CadId");
 
-                    b.HasIndex("CategoryId");
-
-                    b.ToTable("Orders", (string)null);
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -458,8 +469,7 @@ namespace CustomCADSolutions.AppWithIdentity.Data.Migrations
                     b.HasOne("CustomCADSolutions.Infrastructure.Data.Models.AppUser", "Creator")
                         .WithMany()
                         .HasForeignKey("CreatorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Category");
 
@@ -477,19 +487,12 @@ namespace CustomCADSolutions.AppWithIdentity.Data.Migrations
                     b.HasOne("CustomCADSolutions.Infrastructure.Data.Models.Cad", "Cad")
                         .WithMany("Orders")
                         .HasForeignKey("CadId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.HasOne("CustomCADSolutions.Infrastructure.Data.Models.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Buyer");
 
                     b.Navigation("Cad");
-
-                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

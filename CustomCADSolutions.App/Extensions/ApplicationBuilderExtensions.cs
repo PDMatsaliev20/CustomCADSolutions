@@ -1,4 +1,5 @@
-﻿using CustomCADSolutions.Infrastructure.Data.Models;
+﻿using CustomCADSolutions.App.Extensions;
+using CustomCADSolutions.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using System.Globalization;
@@ -54,6 +55,24 @@ namespace Microsoft.AspNetCore.Builder
                 }
             }
 
+            return service;
+        }
+
+        public static async Task<IServiceProvider> UseAppUsers(this IServiceProvider service, IConfiguration config, Dictionary<string, string> users)
+        {
+            using IServiceScope scope = service.CreateScope();
+            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
+
+            int i = 1;
+            foreach (KeyValuePair<string, string> user in users)
+            {
+                string role = user.Key;
+                string username = user.Value;
+                string email = $"user{i++}@gmail.com";
+                string password = config[$"Passwords:{role}"];
+                await userManager.AddUserAsync(username, email, password, role);
+            }
+            
             return service;
         }
 

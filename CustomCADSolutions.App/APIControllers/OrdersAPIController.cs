@@ -73,7 +73,10 @@ namespace CustomCADSolutions.App.APIControllers
             try
             {
                 int id = await orderService.CreateAsync(model);
+                
+                model = await orderService.GetByIdAsync(id);
                 OrderExportDTO export = mapper.Map<OrderExportDTO>(model);
+
                 return CreatedAtAction(nameof(GetAsync), new { id }, export);
             }
             catch
@@ -94,11 +97,12 @@ namespace CustomCADSolutions.App.APIControllers
             {
                 OrderModel order = await orderService.GetByIdAsync(dto.Id);
                 
+                order.Name = dto.Name;
                 order.Description = dto.Description;
                 order.Status = Enum.Parse<OrderStatus>(dto.Status);
                 order.ShouldShow = dto.ShouldShow;
-                order.Cad.Name = dto.Cad.Name;
-                order.Cad.CategoryId = dto.Cad.CategoryId;
+                order.Name = dto.Name;
+                order.CategoryId = dto.CategoryId;
                 await orderService.EditAsync(order);
 
                 return NoContent();
@@ -135,17 +139,20 @@ namespace CustomCADSolutions.App.APIControllers
             {
                 return BadRequest();
             }
-
-            CadModel model = (await orderService.GetByIdAsync(id))!.Cad;
-
-            model.Bytes = dto.Bytes;
-            model.IsValidated = dto.IsValidated;
-            model.CreatorId = dto.CreatorId;
-            model.CategoryId = dto.CategoryId;
-            model.CreationDate = DateTime.Now;
-            model.Name = dto.Name;
-            model.Color = Color.FromArgb(dto.RGB[0], dto.RGB[1], dto.RGB[2]);
-            await orderService.FinishOrderAsync(id, model);
+            OrderModel order = (await orderService.GetByIdAsync(id))!;
+            
+            order.Cad = new()
+            {
+                Name = dto.Name,
+                Bytes = dto.Bytes,
+                IsValidated = dto.IsValidated,
+                Price = dto.Price,
+                CreationDate = DateTime.Now,
+                CreatorId = dto.CreatorId,
+                CategoryId = dto.CategoryId,
+                Color = Color.FromArgb(dto.RGB[0], dto.RGB[1], dto.RGB[2]),
+            };
+            await orderService.FinishOrderAsync(id, order);
 
             return NoContent();
         }

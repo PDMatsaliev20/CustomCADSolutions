@@ -1,6 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using MessagePack.Formatters;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using static CustomCADSolutions.Infrastructure.Data.DataConstants;
+using static CustomCADSolutions.Infrastructure.Data.DataConstants.CadConstants;
 
 namespace CustomCADSolutions.App.Mappings.CadDTOs
 {
@@ -11,14 +13,15 @@ namespace CustomCADSolutions.App.Mappings.CadDTOs
 
         [JsonPropertyName("name")]
         [Required(ErrorMessage = RequiredErrorMessage)]
-        [StringLength(CadConstants.NameMaxLength, MinimumLength = CadConstants.NameMinLength, ErrorMessage = LengthErrorMessage)]
+        [StringLength(NameMaxLength, MinimumLength = NameMinLength, 
+            ErrorMessage = LengthErrorMessage)]
         public string Name { get; set; } = null!;
 
         [JsonPropertyName("isValidated")]
         public bool IsValidated { get; set; }
 
         [JsonPropertyName("spinAxis")]
-        [RegularExpression(CadConstants.SpinAxisRegEx, ErrorMessage = CadConstants.SpinAxisErrorMessage)]
+        [RegularExpression(SpinAxisRegEx, ErrorMessage = SpinAxisErrorMessage)]
         public char? SpinAxis { get; set; }
 
         [JsonPropertyName("categoryId")]
@@ -30,7 +33,7 @@ namespace CustomCADSolutions.App.Mappings.CadDTOs
         public decimal Price { get; set; }
 
         [JsonPropertyName("creatorId")]
-        public string? CreatorId { get; set; }
+        public string CreatorId { get; set; } = null!;
 
         [JsonPropertyName("coords")]
         public int[] Coords { get; set; } = new int[3];
@@ -39,6 +42,6 @@ namespace CustomCADSolutions.App.Mappings.CadDTOs
         public byte[] RGB { get; set; } = new byte[3] { 255, 255, 255 };
 
         [JsonPropertyName("bytes")]
-        public byte[]? Bytes { get; set; }
+        public byte[] Bytes { get; set; } = null!;
     }
 }

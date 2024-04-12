@@ -7,6 +7,9 @@ namespace CustomCADSolutions.App.Mappings.DTOs
     {
         [JsonPropertyName("id")]
         public int Id { get; set; }
+
+        [JsonPropertyName("name")]
+        public string Name { get; set; } = null!;
         
         [JsonPropertyName("buyerId")]
         public string BuyerId { get; set; } = null!;
@@ -21,12 +24,15 @@ namespace CustomCADSolutions.App.Mappings.DTOs
         public string OrderDate { get; set; } = null!;
 
         [JsonPropertyName("cadId")]
-        public int CadId { get; set; }
+        public int? CadId { get; set; }
+        
+        [JsonPropertyName("categoryId")]
+        public int CategoryId { get; set; }
+
+        [JsonPropertyName("categoryName")]
+        public string CategoryName { get; set; } = null!;
 
         [JsonPropertyName("buyerName")]
         public string BuyerName { get; set; } = null!;
-
-        [JsonPropertyName("cad")]
-        public CadExportDTO Cad { get; set; } = null!;
     }
 }

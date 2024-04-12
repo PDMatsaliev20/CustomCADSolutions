@@ -41,11 +41,7 @@ namespace CustomCADSolutions.App.Mappings
             .ForMember(cad => cad.IsValidated, opt => opt.MapFrom(dto => dto.IsValidated))
             .ForMember(dto => dto.Price, opt => opt.MapFrom(input => input.Price))
             .ForMember(cad => cad.CreatorId, opt => opt.MapFrom(dto => dto.CreatorId))
-            .ForMember(cad => cad.Bytes, opt =>
-            {
-                opt.AllowNull();
-                opt.MapFrom(dto => dto.Bytes);
-            })
+            .ForMember(cad => cad.Bytes, opt => opt.MapFrom(dto => dto.Bytes))
             .ForMember(cad => cad.SpinAxis, opt => 
             {
                 opt.AllowNull();
@@ -66,26 +62,10 @@ namespace CustomCADSolutions.App.Mappings
             .ForMember(dto => dto.IsValidated, opt => opt.MapFrom(model => model.IsValidated))
             .ForMember(dto => dto.Price, opt => opt.MapFrom(model => model.Price))
             .ForMember(dto => dto.RGB, opt => opt.MapFrom(model => new byte[] { model.Color.R, model.Color.G, model.Color.B }))
-            .ForMember(dto => dto.CreatorName, opt =>
-            {
-                opt.AllowNull();
-                opt.MapFrom(model => model.Creator != null ? model.Creator.UserName : null);
-            })
-            .ForMember(dto => dto.CreatorId, opt =>
-            {
-                opt.AllowNull();
-                opt.MapFrom(model => model.CreatorId);
-            })
-            .ForMember(dto => dto.CreationDate, opt =>
-            {
-                opt.AllowNull();
-                opt.MapFrom(model => model.CreationDate != null ? model.CreationDate.Value.ToString("dd/MM/yyyy HH:mm:ss") : null);
-            })
-            .ForMember(dto => dto.Bytes, opt =>
-            {
-                opt.AllowNull();
-                opt.MapFrom(model => model.Bytes);
-            });
+            .ForMember(dto => dto.CreatorName, opt => opt.MapFrom(model => model.Creator != null ? model.Creator.UserName : null))
+            .ForMember(dto => dto.CreatorId, opt => opt.MapFrom(model => model.CreatorId))
+            .ForMember(dto => dto.CreationDate, opt => opt.MapFrom(model => model.CreationDate.ToString("dd/MM/yyyy HH:mm:ss")))
+            .ForMember(dto => dto.Bytes, opt => opt.MapFrom(model => model.Bytes));
 
         /// <summary>
         /// Converts JSON Export to User View
@@ -98,16 +78,8 @@ namespace CustomCADSolutions.App.Mappings
             .ForMember(view => view.Coords, opt => opt.MapFrom(dto => dto.Coords))
             .ForMember(view => view.SpinAxis, opt => opt.MapFrom(dto => dto.SpinAxis))
             .ForMember(view => view.RGB, opt => opt.MapFrom(dto => dto.RGB))
-            .ForMember(view => view.CreatorName, opt =>
-            {
-                opt.AllowNull();
-                opt.MapFrom(dto => dto.CreatorName);
-            })
-            .ForMember(view => view.CreationDate, opt =>
-            {
-                opt.AllowNull();
-                opt.MapFrom(dto => dto.CreationDate);
-            });
+            .ForMember(view => view.CreatorName, opt => opt.MapFrom(dto => dto.CreatorName))
+            .ForMember(view => view.CreationDate, opt => opt.MapFrom(dto => dto.CreationDate));
 
         public IMappingExpression<CadQueryModel, CadQueryDTO> QueryToDTO() => CreateMap<CadQueryModel, CadQueryDTO>()
             .ForMember(dto => dto.TotalCount, opt => opt.MapFrom(query => query.TotalCount))

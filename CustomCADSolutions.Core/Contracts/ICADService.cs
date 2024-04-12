@@ -13,8 +13,6 @@ namespace CustomCADSolutions.Core.Contracts
         
         Task DeleteAsync(int id);
 
-        Task DeleteRangeAsync(params int[] ids);
-
         Task<bool> ExistsByIdAsync(int id);
 
         Task<CadModel> GetByIdAsync(int id);

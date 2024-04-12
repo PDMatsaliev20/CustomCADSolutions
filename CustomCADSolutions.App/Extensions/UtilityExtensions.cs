@@ -38,26 +38,25 @@ namespace CustomCADSolutions.App.Extensions
 
         public static string GetId(this ClaimsPrincipal user) => user.FindFirstValue(ClaimTypes.NameIdentifier);
 
-        public static async Task<bool> AddUserAsync(this UserManager<AppUser> userManager, string username, string email, string password, string role)
+        public static async Task AddUserAsync(this UserManager<AppUser> userManager, string username, string email, string password, string role)
         {
-            var user = await userManager.FindByNameAsync(username);
-            if (user == null)
+            if (await userManager.FindByNameAsync(username) == null)
             {
-                user = new AppUser
+                if (await userManager.FindByEmailAsync(email) == null)
                 {
-                    UserName = username,
-                    Email = email,
-                };
+                    AppUser user = new()
+                    {
+                        UserName = username,
+                        Email = email,
+                    };
 
-                var result = await userManager.CreateAsync(user, password);
-                if (result.Succeeded)
-                {
-                    await userManager.AddToRoleAsync(user, role);
-                    return true;
+                    var result = await userManager.CreateAsync(user, password);
+                    if (result.Succeeded)
+                    {
+                        await userManager.AddToRoleAsync(user, role);
+                    }
                 }
-                return false;
             }
-            return false;
         }
 
         public static async Task<byte[]> GetBytesAsync(this IFormFile cad)

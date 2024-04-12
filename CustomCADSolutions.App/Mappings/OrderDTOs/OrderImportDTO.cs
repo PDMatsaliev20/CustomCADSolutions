@@ -1,4 +1,6 @@
 ﻿using CustomCADSolutions.App.Mappings.CadDTOs;
+using static CustomCADSolutions.Infrastructure.Data.DataConstants;
+using static CustomCADSolutions.Infrastructure.Data.DataConstants.OrderConstants;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
@@ -9,19 +11,16 @@ namespace CustomCADSolutions.App.Mappings.DTOs
         [JsonPropertyName("id")]
         [Required]
         public int Id { get; set; }
-        
-        [JsonPropertyName("cadId")]
-        [Required]
-        public int CadId { get; set; }
-
-        [JsonPropertyName("buyerId")]
-        [Required]
-        public string BuyerId { get; set; } = null!;
 
         [JsonPropertyName("description")]
-        [Required(ErrorMessage = "Order Description is required")]
-        [StringLength(5000, MinimumLength = 10, ErrorMessage = "Order Name length must be between 10 and 5000 characters")]
+        [Required]
+        [StringLength(DescriptionMaxLength, MinimumLength = DescriptionMinLength)]
         public string Description { get; set; } = null!;
+        
+        [JsonPropertyName("name")]
+        [Required]
+        [StringLength(NameMaxLength, MinimumLength = NameMinLength)]
+        public string Name { get; set; } = null!;
 
         [JsonPropertyName("status")]
         [Required]
@@ -29,9 +28,19 @@ namespace CustomCADSolutions.App.Mappings.DTOs
         
         [JsonPropertyName("shouldShow")]
         [Required]
-        public bool ShouldShow { get; set; } 
+        public bool ShouldShow { get; set; }
+
+        [JsonPropertyName("cadId")]
+        public int? CadId { get; set; }
+        
+        [JsonPropertyName("categoryId")]
+        public int CategoryId { get; set; }
+
+        [JsonPropertyName("buyerId")]
+        [Required]
+        public string BuyerId { get; set; } = null!;
 
         [JsonPropertyName("cad")]
-        public CadImportDTO Cad { get; set; } = null!;
+        public CadImportDTO? Cad { get; set; } 
     }
 }

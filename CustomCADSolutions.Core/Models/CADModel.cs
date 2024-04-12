@@ -10,7 +10,8 @@ namespace CustomCADSolutions.Core.Models
         [Key]
         public int Id { get; set; }
 
-        public byte[]? Bytes { get; set; }
+        [Required(ErrorMessage = RequiredErrorMessage)]
+        public byte[] Bytes { get; set; } = null!;
 
         public Color Color { get; set; } = Color.FromArgb(0, CadConstants.R, CadConstants.G, CadConstants.B);
 
@@ -20,12 +21,14 @@ namespace CustomCADSolutions.Core.Models
 
         public bool IsValidated { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = RequiredErrorMessage)]
         [Range(CadConstants.PriceMin, CadConstants.PriceMax)]
         public decimal Price { get; set; }
 
-        public DateTime? CreationDate { get; set; }
+        [Required(ErrorMessage = RequiredErrorMessage)]
+        public DateTime CreationDate { get; set; }
 
+        [Required(ErrorMessage = RequiredErrorMessage)]
         public int[] Coords { get; set; } = new int[3];
 
         [RegularExpression(CadConstants.SpinAxisRegEx, ErrorMessage = CadConstants.SpinAxisErrorMessage)]
@@ -34,12 +37,13 @@ namespace CustomCADSolutions.Core.Models
         [Required(ErrorMessage = RequiredErrorMessage)]
         public int CategoryId { get; set; }
 
-        public string? CreatorId { get; set; }
+        [Required(ErrorMessage = RequiredErrorMessage)]
+        public string CreatorId { get; set; } = null!;
 
         public Category Category { get; set; } = null!;
 
-        public AppUser? Creator { get; set; }
-        
+        public AppUser Creator { get; set; } = null!;
+
         public ICollection<OrderModel> Orders { get; set; } = new List<OrderModel>();
     }
 }

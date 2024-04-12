@@ -6,10 +6,10 @@
         public string Name { get; set; } = null!;
         public string CategoryName { get; set; } = null!;  
         public int CategoryId { get; set; } 
-        public string? CreatorId { get; set; }
-        public string? CreatorName { get; set; } 
-        public string? CreationDate { get; set; } 
-        public byte[]? Bytes { get; set; } 
+        public string CreatorId { get; set; } = null!;
+        public string CreatorName { get; set; }  = null!;
+        public string CreationDate { get; set; } = null!;
+        public byte[] Bytes { get; set; } = null!;
         public bool IsValidated { get; set; }
         public decimal Price { get; set; }
         public int[] Coords { get; set; } = new int[3];

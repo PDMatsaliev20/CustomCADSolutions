@@ -61,15 +61,12 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
                 OrderImportDTO importDTO = new()
                 {
                     Id = exportDTO.Id,
+                    Name = exportDTO.Name,
                     Description = exportDTO.Description,
+                    CategoryId = exportDTO.CategoryId,
                     Status = OrderStatus.Begun.ToString(),
-                    Cad = new()
-                    {
-                        Name = exportDTO.Cad.Name,
-                        CategoryId = exportDTO.Cad.CategoryId,
-                    },
                 };
-                
+
                 _ = $"{OrdersAPIPath}/{id}";
                 var response = await httpClient.PutAsJsonAsync(_, importDTO);
                 response.EnsureSuccessStatusCode();
@@ -145,12 +142,9 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
                 OrderImportDTO importDTO = new()
                 {
                     Id = exportDTO.Id,
+                    Name = exportDTO.Name,
                     Status = exportDTO.Status,
-                    Cad = new()
-                    {
-                        Name = exportDTO.Cad.Name,
-                        CategoryId = exportDTO.Cad.CategoryId,
-                    }
+                    CategoryId = exportDTO.CategoryId,
                 };
 
                 _ = $"{OrdersAPIPath}/{id}";

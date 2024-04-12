@@ -6,7 +6,7 @@
         public string Name { get; set; } = null!;
         public string CreatorName { get; set; } = null!;
         public string Category { get; set; } = null!;
-        public string? CreationDate { get; set; }
+        public string CreationDate { get; set; } = null!;
         public decimal Price { get; set; }
         public int[] Coords { get; set; } = new int[3];
         public byte[] RGB { get; set; } = new byte[3];

@@ -11,8 +11,9 @@ namespace CustomCADSolutions.Infrastructure.Data.Models
         [Comment("Identification of 3D Model")]
         public int Id { get; set; }
 
+        [Required]
         [Comment("Bytes of 3D Model")]
-        public byte[]? Bytes { get; set; }
+        public byte[] Bytes { get; set; } = null!;
 
         [Required]
         [MaxLength(CadConstants.NameMaxLength)]
@@ -28,27 +29,34 @@ namespace CustomCADSolutions.Infrastructure.Data.Models
         [Comment("Price of 3d model")]
         public decimal Price { get; set; }
 
+        [Required]
         [Comment("CreationDate of 3D Model")]
-        public DateTime? CreationDate { get; set; }
+        public DateTime CreationDate { get; set; }
 
+        [Required]
         [MaxLength(CadConstants.XMax)]
         [Comment("X coordinate of 3D Model")]
         public int X { get; set; }
         
+        [Required]
         [MaxLength(CadConstants.YMax)]
         [Comment("Y coordinate of 3D Model")]
         public int Y { get; set; }
 
+        [Required]
         [MaxLength(CadConstants.ZMax)]
         [Comment("Z coordinate of 3D Model")]
         public int Z { get; set; }
 
+        [Required]
         [Comment("Rgb value of 3D Model")]
         public int R { get; set; }
 
+        [Required]
         [Comment("rGb value of 3D Model")]
         public int G { get; set; }
 
+        [Required]
         [Comment("rgB value of 3D Model")]
         public int B { get; set; }
 
@@ -56,8 +64,9 @@ namespace CustomCADSolutions.Infrastructure.Data.Models
         [Comment("Spin axis of 3D Model")]
         public char? SpinAxis { get; set; }
 
+        [Required]
         [Comment("Identification of the creator of the 3D Model")]
-        public string? CreatorId { get; set; }
+        public string CreatorId { get; set; } = null!;
 
         [Required]
         [Comment("Category of 3D Model")]
@@ -67,7 +76,7 @@ namespace CustomCADSolutions.Infrastructure.Data.Models
         public Category Category { get; set; } = null!;
 
         [ForeignKey(nameof(CreatorId))]
-        public AppUser? Creator { get; set; }
+        public AppUser Creator { get; set; } = null!;
 
         public ICollection<Order> Orders { get; set; } = new List<Order>();
     }

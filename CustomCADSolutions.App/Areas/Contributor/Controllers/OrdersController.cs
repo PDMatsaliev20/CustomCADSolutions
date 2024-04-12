@@ -72,15 +72,22 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
         public async Task<IActionResult> Order(int id)
         {
             string _;
-            _ = $"{CadsAPIPath}/{id}";
-            var dto = await httpClient.GetFromJsonAsync<CadExportDTO>(_);
-            if (dto != null && id != 1)
+            try
             {
-                CadViewModel view = mapper.Map<CadViewModel>(dto);
-                ViewBag.StripeKey = stripeSettings.TestPublishableKey;
-                return View(view);
+                _ = $"{CadsAPIPath}/{id}";
+                var dto = (await httpClient.GetFromJsonAsync<CadExportDTO>(_))!;
+                if (id != 1)
+                {
+                    CadViewModel view = mapper.Map<CadViewModel>(dto);
+                    ViewBag.StripeKey = stripeSettings.TestPublishableKey;
+                    return View(view);
+                }
+                else return NotFound();
             }
-            else return BadRequest("Model not found");
+            catch (HttpRequestException)
+            {
+                return BadRequest("Model not found");
+            }
         }
 
         [HttpPost]
@@ -90,34 +97,26 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
             try
             {
                 _ = $"{CadsAPIPath}/{id}";
-                var cadDto = await httpClient.GetFromJsonAsync<CadExportDTO>(_);
-                
-                try 
-                {
-                    _ = $"{OrdersAPIPath}/{id}";
-                    await httpClient.GetFromJsonAsync<OrderExportDTO>(_);
-                    return RedirectToAction(nameof(Index), new { id });
-                }
-                catch
-                {
-                    bool paymentSuccessful = stripeSettings.ProcessPayment(stripeToken);
-                    if (!paymentSuccessful)
-                    {
-                        TempData["ErrorMessage"] = "Payment failed. Please try again.";
-                        return RedirectToAction("Index", "Home", new { area = "" });
-                    }
+                var cadDTO = (await httpClient.GetFromJsonAsync<CadExportDTO>(_))!;
 
-                    OrderImportDTO dto = new()
-                    {
-                        CadId = id,
-                        BuyerId = User.GetId(),
-                        Description = $"3D Model from the gallery with id: {id}",
-                        Status = OrderStatus.Finished.ToString(),
-                    };
-                    await httpClient.PostAsJsonAsync(OrdersAPIPath, dto);
-
-                    return RedirectToAction(nameof(Index));
+                bool isPaymentSuccessful = stripeSettings.ProcessPayment(stripeToken);
+                if (!isPaymentSuccessful)
+                {
+                    TempData["ErrorMessage"] = "Payment failed. Please try again.";
+                    return RedirectToAction("Index", "Home", new { area = "" });
                 }
+
+                OrderImportDTO orderDTO = new()
+                {
+                    CadId = id,
+                    BuyerId = User.GetId(),
+                    Name = cadDTO.Name,
+                    Description = $"3D Model from the gallery with id: {id}",
+                    Status = OrderStatus.Finished.ToString(),
+                };
+                await httpClient.PostAsJsonAsync(OrdersAPIPath, orderDTO);
+
+                return RedirectToAction(nameof(Index));
             }
             catch (HttpRequestException)
             {
@@ -172,17 +171,14 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
                     return RedirectToAction(nameof(Index));
                 }
 
-                _ = $"{CategoriesAPIPath}/{dto.Cad.CategoryId}";
-                var category = (await httpClient.GetFromJsonAsync<Category>(_))!;
-
                 OrderInputModel input = new()
                 {
                     Id = id,
                     CadId = dto.CadId,
                     BuyerId = dto.BuyerId,
-                    Name = dto.Cad.Name,
+                    Name = dto.Name,
                     Description = dto.Description,
-                    CategoryId = category.Id,
+                    CategoryId = dto.CategoryId,
                     Categories = await httpClient.GetFromJsonAsync<Category[]>(CategoriesAPIPath),
                 };
 

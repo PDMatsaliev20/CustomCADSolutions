@@ -13,26 +13,13 @@ namespace CustomCADSolutions.Core.Mappings
             EntityToModel();
         }
 
-        public IMappingExpression<Order, OrderModel> ModelToEntity() => CreateMap<Order, OrderModel>()
-                .ForMember(m => m.Id, opt => opt.MapFrom(o => o.Id))
-                .ForMember(m => m.CadId, opt => opt.MapFrom(o => o.CadId))
-                .ForMember(m => m.BuyerId, opt => opt.MapFrom(o => o.BuyerId))
-                .ForMember(m => m.Description, opt => opt.MapFrom(o => o.Description))
-                .ForMember(m => m.OrderDate, opt => opt.MapFrom(o => o.OrderDate))
-                .ForMember(m => m.Status, opt => opt.MapFrom(o => o.Status))
-                .ForMember(m => m.ShouldShow, opt => opt.MapFrom(o => o.ShouldShow))
-                .ForMember(m => m.Buyer, opt => opt.MapFrom(o => o.Buyer))
-                .ForMember(m => m.Cad, opt => opt.MapFrom(o => o.Cad));
+        public IMappingExpression<Order, OrderModel> EntityToModel() => CreateMap<Order, OrderModel>()
+            .ForMember(model => model.CadId, opt => opt.AllowNull())
+            .ForMember(model => model.Cad, opt => opt.AllowNull())
+            .ForMember(model => model.Category, opt => opt.MapFrom(entity => entity.Category));
 
-        public IMappingExpression<OrderModel, Order> EntityToModel() => CreateMap<OrderModel, Order>()
-                .ForMember(o => o.Id, opt => opt.MapFrom(m => m.Id))
-                .ForMember(o => o.CadId, opt => opt.MapFrom(m => m.CadId))
-                .ForMember(o => o.BuyerId, opt => opt.MapFrom(m => m.BuyerId))
-                .ForMember(o => o.Description, opt => opt.MapFrom(m => m.Description))
-                .ForMember(o => o.OrderDate, opt => opt.MapFrom(m => m.OrderDate))
-                .ForMember(o => o.Status, opt => opt.MapFrom(m => m.Status))
-                .ForMember(o => o.ShouldShow, opt => opt.MapFrom(m => m.ShouldShow))
-                .ForMember(o => o.Buyer, opt => opt.MapFrom(m => m.Buyer))
-                .ForMember(o => o.Cad, opt => opt.MapFrom(m => m.Cad));
+        public IMappingExpression<OrderModel, Order> ModelToEntity() => CreateMap<OrderModel, Order>()
+            .ForMember(entity => entity.CadId, opt => opt.AllowNull())
+            .ForMember(entity => entity.Cad, opt => opt.AllowNull());
     }
 }

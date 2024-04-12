@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Identity;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using System.Text.Json.Serialization;
 using CustomCADSolutions.Infrastructure.Data.Models;
+using static CustomCADSolutions.Infrastructure.Data.DataConstants;
+using static CustomCADSolutions.Infrastructure.Data.DataConstants.OrderConstants;
 
 namespace CustomCADSolutions.Core.Models
 {
@@ -13,35 +14,50 @@ namespace CustomCADSolutions.Core.Models
         [Required]
         public int Id { get; set; }
 
+        [JsonPropertyName("name")]
+        [Required(ErrorMessage = RequiredErrorMessage)]
+        [StringLength(NameMaxLength, MinimumLength = NameMinLength,
+            ErrorMessage = LengthErrorMessage)]
+        public string Name { get; set; } = null!;
+
         [JsonPropertyName("description")]
-        [Required(ErrorMessage = "Order Description is required")]
-        [StringLength(5000, MinimumLength = 10, ErrorMessage = "Order Name length must be between 10 and 5000 characters")]
+        [Required(ErrorMessage = RequiredErrorMessage)]
+        [StringLength(DescriptionMaxLength, MinimumLength = DescriptionMinLength, 
+            ErrorMessage = LengthErrorMessage)]
         public string Description { get; set; } = null!;
 
         [JsonPropertyName("orderDate")]
-        [Required]
+        [Required(ErrorMessage = RequiredErrorMessage)]
         public DateTime OrderDate { get; set; }
 
         [JsonPropertyName("status")]
-        [Required]
+        [Required(ErrorMessage = RequiredErrorMessage)]
         public OrderStatus Status { get; set; }
 
         [JsonPropertyName("shouldShow")]
-        [Required]
+        [Required(ErrorMessage = RequiredErrorMessage)]
         public bool ShouldShow { get; set; } = true;
 
         [JsonPropertyName("cadId")]
-        [Required]
-        public int CadId { get; set; }
+        [Required(ErrorMessage = RequiredErrorMessage)]
+        public int? CadId { get; set; }
+        
+        [JsonPropertyName("categoryId")]
+        [Required(ErrorMessage = RequiredErrorMessage)]
+        public int CategoryId { get; set; }
 
         [JsonPropertyName("buyerId")]
-        [Required]
+        [Required(ErrorMessage = RequiredErrorMessage)]
         public string BuyerId { get; set; } = null!;
+
+        [JsonPropertyName("category")]
+        [ForeignKey(nameof(CategoryId))]
+        public Category Category { get; set; } = null!;
 
         [JsonPropertyName("cad")]
         [ForeignKey(nameof(CadId))]
-        public CadModel Cad { get; set; } = null!;
-
+        public CadModel? Cad { get; set; }
+            
         [JsonPropertyName("buyer")]
         [ForeignKey(nameof(BuyerId))]
         public AppUser Buyer { get; set; } = null!;

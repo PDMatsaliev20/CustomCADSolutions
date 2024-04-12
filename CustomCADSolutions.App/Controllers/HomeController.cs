@@ -23,15 +23,13 @@ namespace CustomCADSolutions.App.Controllers
         private readonly UserManager<AppUser> userManager;
         private readonly SignInManager<AppUser> signInManager;
         private readonly HttpClient httpClient;
-        private readonly IConfiguration config;
         private readonly IMapper mapper;
 
         public HomeController(
             ILogger<HomeController> logger,
             UserManager<AppUser> userManager,
             SignInManager<AppUser> signInManager,
-            HttpClient httpClient,
-            IConfiguration configuration)
+            HttpClient httpClient)
         {
             this.logger = logger;
             this.userManager = userManager;
@@ -39,24 +37,19 @@ namespace CustomCADSolutions.App.Controllers
             this.httpClient = httpClient;
             MapperConfiguration config = new(cfg => cfg.AddProfile<CadDTOProfile>());
             mapper = config.CreateMapper();
-            this.config = configuration;
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var dto = await httpClient.GetFromJsonAsync<CadExportDTO>($"{CadsAPIPath}/{1}");
-            ViewBag.Chair = new CadViewModel()
+            return View(new CadViewModel()
             {
-                Id = dto.Id,
-                Name = dto.Name,
-                Coords = dto.Coords,
-                SpinAxis = dto.SpinAxis,
-                Category = dto.CategoryName,
+                Id = 1,
+                Name = "Chair",
+                SpinAxis = 'y',
                 RGB = new byte[] { 143, 124, 239 },
-            };
-
-            return View();
+                Coords = new[] { 750, 300, 0 }
+            });
         }
 
         [HttpGet]
@@ -86,14 +79,17 @@ namespace CustomCADSolutions.App.Controllers
         [HttpGet]
         public async Task<ActionResult> DownloadCad(int id)
         {
-            var model = await httpClient.GetFromJsonAsync<CadExportDTO>($"{CadsAPIPath}/{id}");
-            if (model != null)
+            string _;
+            try
             {
-                byte[] bytes = model.Bytes!;
-
-                return File(bytes, "application/octet-stream", $"{model.Name}.stl");
+                _ = $"{CadsAPIPath}/{id}";
+                var model = (await httpClient.GetFromJsonAsync<CadExportDTO>(_))!;
+                return File(model.Bytes, "application/octet-stream", $"{model.Name}.stl");
             }
-            else return BadRequest();
+            catch
+            {
+                return BadRequest();
+            }
         }
 
         public IActionResult SetLanguage(string culture, string returnUrl)
@@ -125,102 +121,6 @@ namespace CustomCADSolutions.App.Controllers
             return RedirectToAction("Index", "Cads", new { area = "Contributor" });
         }
 
-        public async Task<IActionResult> AddUsers(string returnUrl)
-        {
-            string role, email, password;
-
-            email = "ivanangelov414@gmail.com";
-            password = config["passwords:admin"];
-            role = "Administrator";
-            await userManager.AddUserAsync("NinjataBG", email, password, role);
-
-            email = "ivanangelov413@gmail.com"; 
-            password = config["passwords:designer"];
-            role = "Designer";
-            await userManager.AddUserAsync(role, email, password, role);
-
-            email = "ivanangelov412@gmail.com";
-            password = config["passwords:contributor"];
-            role = "Contributor";
-            await userManager.AddUserAsync(role, email, password, role);
-
-            email = "ivanangelov411@gmail.com";
-            password = config["passwords:Client"];
-            role = "Client";
-            await userManager.AddUserAsync(role, email, password, role);
-
-            return LocalRedirect(returnUrl);
-        }
-
-        private async Task AddAdminAsync()
-        {
-            string username = "NinjataBG", email = "ivanangelov414@gmail.com",
-            password = config["passwords:admin"], role = "Administrator";
-
-            var admin = await userManager.FindByNameAsync(username);
-            if (admin == null)
-            {
-                admin = new AppUser
-                {
-                    UserName = username,
-                    Email = email,
-                };
-
-                var result = await userManager.CreateAsync(admin, password);
-
-                if (result.Succeeded)
-                {
-                    await userManager.AddToRoleAsync(admin, role);
-                }
-            }
-        }
-
-        private async Task AddContributorAsync()
-        {
-            string username = "NinjataBG", email = "ivanangelov414@gmail.com",
-            password = config["admin_password"], role = "Administrator";
-
-            var admin = await userManager.FindByNameAsync(username);
-            if (admin == null)
-            {
-                admin = new AppUser
-                {
-                    UserName = username,
-                    Email = email,
-                };
-
-                var result = await userManager.CreateAsync(admin, password);
-
-                if (result.Succeeded)
-                {
-                    await userManager.AddToRoleAsync(admin, role);
-                }
-            }
-        }
-
-        private async Task AddClientAsync()
-        {
-            string username = "NinjataBG", email = "ivanangelov414@gmail.com",
-            password = config["admin_password"], role = "Administrator";
-
-            var admin = await userManager.FindByNameAsync(username);
-            if (admin == null)
-            {
-                admin = new AppUser
-                {
-                    UserName = username,
-                    Email = email,
-                };
-
-                var result = await userManager.CreateAsync(admin, password);
-
-                if (result.Succeeded)
-                {
-                    await userManager.AddToRoleAsync(admin, role);
-                }
-            }
-        }
-
         public IActionResult Privacy()
         {
             logger.LogInformation("Entered Privacy Policy Page");
@@ -232,23 +132,25 @@ namespace CustomCADSolutions.App.Controllers
 
         public IActionResult StatusCodeHandler(int statusCode)
         {
+            IActionResult view;
             if (statusCode == 0)
             {
-                ViewBag.OriginalStatusCode = "An exception was thrown";
-                ViewBag.ErrorMessage = "I wonder what it could be...";
+                // ViewBag.OriginalStatusCode = "An exception was thrown";
+                // ViewBag.ErrorMessage = "I wonder what it could be...";
+                view = View("Exception");
             }
             else
             {
-                ViewBag.OriginalStatusCode = $"A {statusCode} error occured";
-                ViewBag.ErrorMessage = statusCode switch
+                // ViewBag.OriginalStatusCode = $"A {statusCode} error occured";
+                view = statusCode switch
                 {
-                    400 => "Your request could not be understood by the server due to malformed syntax or other client-side errors.",
-                    401 => "You do not have access to the resource you requested.",
-                    404 => "The resource you requested could not be found.",
-                    _ => "An error occurred.",
-                } + "Sowwy";
+                    400 => View("HttpError400"), // "Your request could not be understood by the server due to malformed syntax or other client-side errors.",
+                    401 => View("HttpError401"), // "You do not have access to the resource you requested.",
+                    404 => View("HttpError404"), // "The resource you requested could not be found.",
+                    _ => View("HttpError") // "An error occurred.",
+                };
             }
-            return View();
+            return view;
         }
 
         public new IActionResult Unauthorized() => base.Unauthorized();

@@ -43,8 +43,16 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
-
 await app.Services.UseRolesAsync(roles);
-app.MapRoutes();
 
+Dictionary<string, string> users = new()
+{
+    ["Administrator"] = "NinjataBG",
+    ["Designer"] = "Designer",
+    ["Contributor"] = "Contributor",
+    ["Client"] = "Client",
+};
+await app.Services.UseAppUsers(app.Configuration, users);
+
+app.MapRoutes();
 await app.RunAsync();

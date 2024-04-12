@@ -40,6 +40,9 @@
         public class OrderConstants
         {
             public const string NameDisplay = "Name of 3D Model";
+            
+            public const int NameMaxLength = 18;
+            public const int NameMinLength = 2;
 
             public const string CategoryDisplay = "Category of 3D Model";
 

@@ -1,7 +1,8 @@
-﻿@inject IViewLocalizer Localizer
+﻿@model CadViewModel
+@inject IViewLocalizer Localizer
 @{
     ViewData["Title"] = "CustomCADSolutions";
-    CadViewModel cad = ViewBag.Chair;
+    CadViewModel cad = Model;
 }
 
 <body class="fade-in">

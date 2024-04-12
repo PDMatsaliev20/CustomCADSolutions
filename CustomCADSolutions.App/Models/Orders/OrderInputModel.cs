@@ -35,7 +35,7 @@ namespace CustomCADSolutions.App.Models.Orders
 
         public OrderStatus Status { get; set; }
 
-        public int CadId { get; set; }
+        public int? CadId { get; set; }
 
         public string? BuyerId { get; set; }
 

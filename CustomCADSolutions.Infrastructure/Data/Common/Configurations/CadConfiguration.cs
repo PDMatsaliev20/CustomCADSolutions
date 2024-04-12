@@ -14,20 +14,6 @@ namespace CustomCADSolutions.Infrastructure.Data.Common.Configurations
             builder.Navigation(c => c.Creator).AutoInclude();
             builder.Navigation(c => c.Orders).AutoInclude();
             builder.Navigation(c => c.Category).AutoInclude();
-
-            builder.HasData(new Cad()
-            {
-                Id = 1,
-                Name = "Chair",
-                CategoryId = 5,
-                X = 750,
-                Y = 300,
-                Z = 0,
-                SpinAxis = 'y',
-                R = 255,
-                G = 255,
-                B = 255,
-            });
         }
     }
 }

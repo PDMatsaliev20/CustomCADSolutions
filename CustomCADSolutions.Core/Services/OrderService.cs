@@ -28,7 +28,8 @@ namespace CustomCADSolutions.Core.Services
         
         public async Task<IEnumerable<OrderModel>> GetAllAsync()
         {
-            return mapper.Map<OrderModel[]>(await repository.All<Order>().ToArrayAsync());
+            var orders = await repository.All<Order>().ToArrayAsync();
+            return mapper.Map<OrderModel[]>(orders);
         }
 
         public async Task<OrderModel> GetByIdAsync(int id)
@@ -53,79 +54,40 @@ namespace CustomCADSolutions.Core.Services
             return entry.Entity.Id;
         }
 
-        public async Task CreateRangeAsync(params OrderModel[] models)
-        {
-            List<Order> orders = new();
-            foreach (OrderModel model in models)
-            {
-                if (model.Buyer == null)
-                {
-                    throw new ArgumentException();
-                }
-                Order order = mapper.Map<Order>(model);
-                orders.Add(order);
-            }
-            await repository.AddRangeAsync<Order>(orders.ToArray());
-            await repository.SaveChangesAsync();
-        }
-
         public async Task EditAsync(OrderModel model)
         {
             Order order = await repository.GetByIdAsync<Order>(model.Id)
                 ?? throw new KeyNotFoundException();
 
+            order.Name = model.Name;
             order.Description = model.Description;
             order.Status = model.Status;
             order.ShouldShow = model.ShouldShow;
             order.CadId = model.CadId;
-            order.Cad.Name = model.Cad.Name;
-            order.Cad.Category = model.Cad.Category;
-            order.Cad.CreationDate = model.Cad.CreationDate;
-            order.Cad.CreatorId = model.Cad.CreatorId;
-            order.Cad.IsValidated = model.Cad.IsValidated;
-            order.Cad.Bytes = model.Cad.Bytes;
 
             await repository.SaveChangesAsync();
         }
         
-        public async Task FinishOrderAsync(int id, CadModel model)
+        public async Task FinishOrderAsync(int id, OrderModel model)
         {
             Order order = await repository.GetByIdAsync<Order>(id)
                 ?? throw new KeyNotFoundException();
-
             order.Status = OrderStatus.Finished;
 
-            order.Cad.Name = model.Name;
-            order.Cad.Bytes = model.Bytes;
-            order.Cad.IsValidated = model.IsValidated;
-            
-            order.Cad.R = model.Color.R;
-            order.Cad.G = model.Color.G;
-            order.Cad.B = model.Color.B;
-            
-            order.Cad.CreationDate = model.CreationDate;
-            order.Cad.CreatorId = model.CreatorId;
-            order.Cad.CategoryId = model.CategoryId;
-
-            await repository.SaveChangesAsync();
-        }
-
-        public async Task EditRangeAsync(params OrderModel[] models)
-        {
-            foreach (OrderModel model in models)
+            CadModel cad = model.Cad!;
+            order.Cad = new()
             {
-                Order order = await repository.GetByIdAsync<Order>(model.Id)
-                    ?? throw new KeyNotFoundException();
-
-                order.Description = model.Description;
-                order.Status = model.Status;
-                order.ShouldShow = model.ShouldShow;
-                order.Cad.Name = model.Cad.Name;
-                order.Cad.Category = model.Cad.Category;
-                order.Cad.CreationDate = model.Cad.CreationDate;
-                order.Cad.CreatorId = model.Cad.CreatorId;
-                order.Cad.IsValidated = model.Cad.IsValidated;
-            }
+                Name = cad.Name,
+                Bytes = cad.Bytes,
+                IsValidated = cad.IsValidated,
+                R = cad.Color.R,
+                G = cad.Color.G,
+                B = cad.Color.B,
+                Price = cad.Price,
+                CreationDate = cad.CreationDate,
+                CreatorId = cad.CreatorId,
+                CategoryId = cad.CategoryId,
+            };
             await repository.SaveChangesAsync();
         }
 
