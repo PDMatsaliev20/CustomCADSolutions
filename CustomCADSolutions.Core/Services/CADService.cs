@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using AutoMapper;
 using CustomCADSolutions.Core.Mappings;
+using System.Drawing;
 
 
 namespace CustomCADSolutions.Core.Services
@@ -24,112 +25,6 @@ namespace CustomCADSolutions.Core.Services
                 cfg.AddProfile<CadProfile>();
                 cfg.AddProfile<OrderProfile>();
             }).CreateMapper();
-        }
-
-        public async Task<int> CreateAsync(CadModel model)
-        {
-            Cad cad = mapper.Map<Cad>(model);
-            EntityEntry<Cad> entry = await repository.AddAsync<Cad>(cad);
-            await repository.SaveChangesAsync();
-
-            return entry.Entity.Id;
-        }
-
-        public async Task CreateRangeAsync(params CadModel[] models)
-        {
-            Cad[] cads = mapper.Map<Cad[]>(models);
-            await repository.AddRangeAsync(cads);
-            await repository.SaveChangesAsync();
-        }
-
-        public async Task EditAsync(CadModel model)
-        {
-            Cad cad = await repository.All<Cad>()
-                .FirstOrDefaultAsync(cad => cad.Id == model.Id)
-                ?? throw new ArgumentException("Model doesn't exist!");
-
-            cad.Name = model.Name;
-            cad.IsValidated = model.IsValidated;
-            cad.Price = model.Price;
-            cad.CreationDate = model.CreationDate;
-            cad.SpinAxis = model.SpinAxis;
-
-            cad.X = model.Coords[0];
-            cad.Y = model.Coords[1];
-            cad.Z = model.Coords[2];
-            cad.R = model.Color.R;
-            cad.G = model.Color.G;
-            cad.B = model.Color.B;
-
-            cad.CategoryId = model.CategoryId;
-            cad.CreatorId = model.CreatorId;
-            cad.Category = model.Category;
-            cad.Creator = model.Creator;
-
-            await repository.SaveChangesAsync();
-        }
-
-        public async Task EditRangeAsync(params CadModel[] models)
-        {
-            CadModel[] newModels = models;
-            foreach (CadModel model in models)
-            {
-                Cad cad = await repository.All<Cad>()
-                .FirstOrDefaultAsync(cad => cad.Id == model.Id)
-                ?? throw new KeyNotFoundException("Model doesn't exist!");
-
-                cad.Name = model.Name;
-                cad.IsValidated = model.IsValidated;
-                cad.Price = model.Price;
-                cad.CreationDate = model.CreationDate;
-                cad.SpinAxis = model.SpinAxis;
-
-                cad.X = model.Coords[0];
-                cad.Y = model.Coords[1];
-                cad.Z = model.Coords[2];
-                cad.R = model.Color.R;
-                cad.G = model.Color.G;
-                cad.B = model.Color.B;
-
-                cad.CategoryId = model.CategoryId;
-                cad.CreatorId = model.CreatorId;
-                cad.Category = model.Category;
-                cad.Creator = model.Creator;
-                cad.Orders = mapper.Map<Order[]>(model.Orders);
-            }
-
-            await repository.SaveChangesAsync();
-        }
-
-        public async Task DeleteAsync(int id)
-        {
-            IEnumerable<Order> orders = repository.All<Order>()
-                .Where(o => o.CadId == id);
-
-            foreach (Order order in orders)
-            {
-                order.Status = OrderStatus.Pending;
-                order.CadId = null;
-                order.Cad = null;
-            }
-
-            Cad cad = await repository.GetByIdAsync<Cad>(id)
-                ?? throw new KeyNotFoundException();
-
-            repository.Delete<Cad>(cad);
-            await repository.SaveChangesAsync();
-        }
-
-        public async Task<bool> ExistsByIdAsync(int id)
-            => await repository.GetByIdAsync<Cad>(id) != null;
-
-        public async Task<CadModel> GetByIdAsync(int id)
-        {
-            Cad cad = await repository.GetByIdAsync<Cad>(id)
-                ?? throw new KeyNotFoundException($"Model with id: {id} doesn't exist");
-
-            CadModel model = mapper.Map<CadModel>(cad);
-            return model;
         }
 
         public async Task<CadQueryModel> GetAllAsync(CadQueryModel query)
@@ -196,6 +91,84 @@ namespace CustomCADSolutions.Core.Services
                 TotalCount = allCads.Count(),
                 Cads = models,
             };
+        }
+        
+        public async Task<CadModel> GetByIdAsync(int id)
+        {
+            Cad cad = await repository.GetByIdAsync<Cad>(id)
+                ?? throw new KeyNotFoundException($"Model with id: {id} doesn't exist");
+
+            CadModel model = mapper.Map<CadModel>(cad);
+            return model;
+        }
+
+        public async Task<bool> ExistsByIdAsync(int id)
+            => await repository.GetByIdAsync<Cad>(id) != null;
+
+        public async Task ChangeColorAsync(int id, Color color)
+        {
+            Cad cad = await repository.GetByIdAsync<Cad>(id)
+                ?? throw new KeyNotFoundException("Model doesn't exist");
+
+            cad.R = color.R;
+            cad.G = color.G;
+            cad.B = color.B;
+
+            await repository.SaveChangesAsync();
+        }
+
+        public async Task<int> CreateAsync(CadModel model)
+        {
+            Cad cad = mapper.Map<Cad>(model);
+            EntityEntry<Cad> entry = await repository.AddAsync<Cad>(cad);
+            await repository.SaveChangesAsync();
+
+            return entry.Entity.Id;
+        }
+
+        public async Task CreateRangeAsync(params CadModel[] models)
+        {
+            Cad[] cads = mapper.Map<Cad[]>(models);
+            await repository.AddRangeAsync(cads);
+            await repository.SaveChangesAsync();
+        }
+
+        public async Task EditAsync(int id, CadModel model)
+        {
+            Cad cad = await repository.All<Cad>()
+                .FirstOrDefaultAsync(cad => cad.Id == model.Id)
+                ?? throw new ArgumentException("Model doesn't exist!");
+
+            cad.Name = model.Name;
+            cad.IsValidated = model.IsValidated;
+            cad.Price = model.Price;
+            cad.SpinAxis = model.SpinAxis;
+            cad.CategoryId = model.CategoryId;
+
+            cad.X = model.Coords[0];
+            cad.Y = model.Coords[1];
+            cad.Z = model.Coords[2];
+
+            await repository.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            IEnumerable<Order> orders = repository.All<Order>()
+                .Where(o => o.CadId == id);
+
+            foreach (Order order in orders)
+            {
+                order.Status = OrderStatus.Pending;
+                order.CadId = null;
+                order.Cad = null;
+            }
+
+            Cad cad = await repository.GetByIdAsync<Cad>(id)
+                ?? throw new KeyNotFoundException();
+
+            repository.Delete<Cad>(cad);
+            await repository.SaveChangesAsync();
         }
     }
 }

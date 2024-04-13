@@ -1,41 +1,50 @@
-﻿using CustomCADSolutions.App.Extensions;
+﻿using static CustomCADSolutions.App.Extensions.UtilityExtensions;
+using CustomCADSolutions.App.Extensions;
+using CustomCADSolutions.App.Mappings;
 using CustomCADSolutions.App.Models;
+using CustomCADSolutions.App.Models.Cads.View;
+using CustomCADSolutions.Core.Models;
+using CustomCADSolutions.Core.Contracts;
+using CustomCADSolutions.Infrastructure.Data.Models;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
+using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using static CustomCADSolutions.App.Extensions.UtilityExtensions;
-using static CustomCADSolutions.App.Constants.Paths;
-using CustomCADSolutions.App.Mappings.CadDTOs;
-using AutoMapper;
-using CustomCADSolutions.App.Mappings;
-using CustomCADSolutions.Infrastructure.Data.Models;
-using CustomCADSolutions.App.Models.Cads.View;
-using CustomCADSolutions.Core.Models;
 
 namespace CustomCADSolutions.App.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> logger;
+        // Services
+        private readonly ICadService cadService;
+        private readonly ICategoryService categoryService;
+        
+        // Managers
         private readonly UserManager<AppUser> userManager;
         private readonly SignInManager<AppUser> signInManager;
-        private readonly HttpClient httpClient;
+        
+        // Additional
         private readonly IMapper mapper;
+        private readonly ILogger<HomeController> logger;
 
         public HomeController(
             ILogger<HomeController> logger,
             UserManager<AppUser> userManager,
             SignInManager<AppUser> signInManager,
-            HttpClient httpClient)
+            ICadService cadService,
+            ICategoryService categoryService)
         {
-            this.logger = logger;
             this.userManager = userManager;
             this.signInManager = signInManager;
-            this.httpClient = httpClient;
+            
+            this.cadService = cadService;
+            this.categoryService = categoryService;
+            
             MapperConfiguration config = new(cfg => cfg.AddProfile<CadDTOProfile>());
             mapper = config.CreateMapper();
+            this.logger = logger;
         }
 
         [HttpGet]
@@ -54,50 +63,54 @@ namespace CustomCADSolutions.App.Controllers
         [HttpGet]
         public async Task<IActionResult> Category([FromQuery] CadQueryInputModel inputQuery)
         {
-            Dictionary<string, string> parameters = new()
-            {
-                ["validated"] = "true",
-            };
+            // Action-specific parameters
+            inputQuery.Validated = true;
 
-            string path = CadsAPIPath + HttpContext.SecureQuery(parameters.ToArray());
-            var query = await httpClient.GetFromJsonAsync<CadQueryDTO>(path);
-            if (query != null)
+            // Ensuring cads per page are divisible by the count of columns
+            if (inputQuery.CadsPerPage % inputQuery.Cols != 0)
             {
-                var categories = await httpClient.GetFromJsonAsync<Category[]>(CategoriesAPIPath);
-                inputQuery.Categories = categories!.Select(c => c.Name);
-                inputQuery.TotalCount = query.TotalCount;
-                inputQuery.Cads = mapper.Map<CadViewModel[]>(query.Cads);
-
-                ViewBag.Sortings = typeof(CadSorting).GetEnumNames();
-                ViewBag.Category = inputQuery.Category;
-                return View(inputQuery);
+                inputQuery.CadsPerPage = inputQuery.Cols * (inputQuery.CadsPerPage / inputQuery.Cols);
             }
-            else return BadRequest();
+
+            CadQueryModel query = new()
+            {
+                Category = inputQuery.Category,
+                Creator = inputQuery.Creator,
+                LikeName = inputQuery.SearchName,
+                LikeCreator = inputQuery.SearchCreator,
+                Sorting = inputQuery.Sorting,
+                CurrentPage = inputQuery.CurrentPage,
+                CadsPerPage = inputQuery.CadsPerPage,
+                Validated = inputQuery.Validated,
+                Unvalidated = inputQuery.Unvalidated,
+            };
+            query = await cadService.GetAllAsync(query);
+
+            inputQuery.Categories = await categoryService.GetAllNamesAsync();
+            inputQuery.TotalCount = query.TotalCount;
+            inputQuery.Cads = mapper.Map<CadViewModel[]>(query.Cads);
+
+            ViewBag.Sortings = typeof(CadSorting).GetEnumNames();
+            ViewBag.Category = inputQuery.Category;
+            return View(inputQuery);
         }
 
         [HttpGet]
         public async Task<ActionResult> DownloadCad(int id)
         {
-            string _;
-            try
-            {
-                _ = $"{CadsAPIPath}/{id}";
-                var export = (await httpClient.GetFromJsonAsync<CadExportDTO>(_))!;
-
-                return File(export.Bytes, "application/octet-stream", $"{export.Name}.stl");
-            }
-            catch
-            {
-                return BadRequest();
-            }
+            CadModel model = await cadService.GetByIdAsync(id);
+            return File(model.Bytes, "application/octet-stream", $"{model.Name}.stl");
         }
 
         public IActionResult SetLanguage(string culture, string returnUrl)
         {
-            Response.Cookies.Append(
-                CookieRequestCultureProvider.DefaultCookieName,
-                CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
-                new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) });
+            string key = CookieRequestCultureProvider.DefaultCookieName;
+            string value = CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture));
+            
+            Response.Cookies.Append(key, value, new CookieOptions 
+            {
+                Expires = DateTimeOffset.UtcNow.AddYears(1) 
+            });
 
             return LocalRedirect(returnUrl);
         }

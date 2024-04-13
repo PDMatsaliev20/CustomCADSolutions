@@ -54,7 +54,7 @@ namespace CustomCADSolutions.Core.Services
             return entry.Entity.Id;
         }
 
-        public async Task EditAsync(OrderModel model)
+        public async Task EditAsync(int id, OrderModel model)
         {
             Order order = await repository.GetByIdAsync<Order>(model.Id)
                 ?? throw new KeyNotFoundException();

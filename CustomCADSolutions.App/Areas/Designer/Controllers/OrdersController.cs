@@ -11,6 +11,9 @@ using CustomCADSolutions.App.Mappings;
 using CustomCADSolutions.Infrastructure.Data.Models;
 using CustomCADSolutions.App.Mappings.CadDTOs;
 using CustomCADSolutions.App.Models.Cads.Input;
+using CustomCADSolutions.Core.Contracts;
+using CustomCADSolutions.Core.Models;
+using CustomCADSolutions.Core.Services;
 
 namespace CustomCADSolutions.App.Areas.Designer.Controllers
 {
@@ -18,14 +21,23 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
     [Authorize(Roles = "Designer")]
     public class OrdersController : Controller
     {
-        private readonly HttpClient httpClient;
+        // Services
+        private readonly IOrderService orderService;
+        private readonly ICategoryService categoryService;
+
+        // Addons
         private readonly ILogger logger;
         private readonly IMapper mapper;
 
-        public OrdersController(ILogger<OrdersController> logger, HttpClient httpClient)
+        public OrdersController(
+            IOrderService orderService,
+            ICategoryService categoryService,
+            ILogger<OrdersController> logger)
         {
+            this.orderService = orderService;
+            this.categoryService = categoryService;
+
             this.logger = logger;
-            this.httpClient = httpClient;
             MapperConfiguration config = new(cfg => cfg.AddProfile<OrderDTOProfile>());
             this.mapper = config.CreateMapper();
         }
@@ -33,129 +45,63 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
         [HttpGet]
         public async Task<IActionResult> All()
         {
-            ViewBag.Statuses = typeof(OrderStatus).GetEnumNames();
-            string _;
-            try
-            {
-                _ = OrdersAPIPath;
-                var dtos = (await httpClient.GetFromJsonAsync<OrderExportDTO[]>(_))!;
+            IEnumerable<OrderModel> orders = await orderService.GetAllAsync();
+            var views = mapper.Map<OrderViewModel[]>(orders);
 
-                var orders = mapper.Map<OrderViewModel[]>(dtos);
-                return View(orders);
-            }
-            catch
-            {
-                return BadRequest();
-            }
+            ViewBag.Statuses = typeof(OrderStatus).GetEnumNames();
+            return View(views);
         }
 
         [HttpPost]
         public async Task<IActionResult> Begin(int id)
         {
-            string _;
-            try
-            {
-                _ = $"{OrdersAPIPath}/{id}";
-                var exportDTO = (await httpClient.GetFromJsonAsync<OrderExportDTO>(_))!;
+            OrderModel model = await orderService.GetByIdAsync(id);
+            model.Status = OrderStatus.Begun;
 
-                OrderImportDTO importDTO = new()
-                {
-                    Id = exportDTO.Id,
-                    Name = exportDTO.Name,
-                    Description = exportDTO.Description,
-                    CategoryId = exportDTO.CategoryId,
-                    Status = OrderStatus.Begun.ToString(),
-                };
-
-                _ = $"{OrdersAPIPath}/{id}";
-                var response = await httpClient.PutAsJsonAsync(_, importDTO);
-                response.EnsureSuccessStatusCode();
-
-                return RedirectToAction(nameof(All));
-            }
-            catch
-            {
-                return BadRequest();
-            }
+            await orderService.EditAsync(id, model);
+            return RedirectToAction(nameof(All));
         }
 
         [HttpGet]
         public async Task<IActionResult> Finish(int id)
         {
-            string _;
-            try
-            {
-                _ = $"{OrdersAPIPath}/{id}";
-                var dto = (await httpClient.GetFromJsonAsync<OrderExportDTO>(_))!;
+            OrderModel model = await orderService.GetByIdAsync(id);
 
-                CadFinishModel input = new()
-                {
-                    OrderId = id,
-                    Description = dto.Description,
-                    Categories = await httpClient.GetFromJsonAsync<Category[]>(CategoriesAPIPath)
-                };
-                return View(input);
-            }
-            catch (HttpRequestException)
+            CadFinishModel input = new()
             {
-                return BadRequest();
-            }
+                OrderId = id,
+                Description = model.Description,
+                Categories = await categoryService.GetAllAsync()
+            };
+            return View(input);
         }
 
         [HttpPost]
         public async Task<IActionResult> Finish(int id, CadFinishModel cad)
         {
-            string _;
-            try
+            OrderModel model = await orderService.GetByIdAsync(id);
+            model.Cad = new()
             {
-                CadImportDTO dto = new()
-                {
-                    Name = cad.Name,
-                    Price = cad.Price,
-                    CategoryId = cad.CategoryId,
-                    Bytes = await cad.CadFile.GetBytesAsync(),
-                    CreatorId = User.GetId(),
-                    IsValidated = true,
-                };
+                Name = cad.Name,
+                Price = cad.Price,
+                CategoryId = cad.CategoryId,
+                Bytes = await cad.CadFile.GetBytesAsync(),
+                CreatorId = User.GetId(),
+                IsValidated = true,
+            };
 
-                _ = $"{OrdersAPIPath}/Finish/{id}";
-                var response = await httpClient.PutAsJsonAsync(_, dto);
-                response.EnsureSuccessStatusCode();
-
-                return RedirectToAction(nameof(All));
-            }
-            catch
-            {
-                return BadRequest();
-            }
+            await orderService.FinishOrderAsync(id, model);
+            return RedirectToAction(nameof(All));
         }
 
         [HttpPost]
         public async Task<IActionResult> Hide(int id)
         {
-            string _;
-            try
-            {
-                _ = $"{OrdersAPIPath}/{id}";
-                var exportDTO = (await httpClient.GetFromJsonAsync<OrderExportDTO>(_))!;
+            OrderModel model = await orderService.GetByIdAsync(id);
+            model.ShouldShow = false;
 
-                OrderImportDTO importDTO = new()
-                {
-                    Id = exportDTO.Id,
-                    Name = exportDTO.Name,
-                    Status = exportDTO.Status,
-                    CategoryId = exportDTO.CategoryId,
-                };
-
-                _ = $"{OrdersAPIPath}/{id}";
-                var response = await httpClient.PutAsJsonAsync(_, importDTO);
-
-                return RedirectToAction(nameof(All));
-            }
-            catch
-            {
-                return BadRequest();
-            }
+            await orderService.EditAsync(id, model);
+            return RedirectToAction(nameof(All));
         }
     }
 }

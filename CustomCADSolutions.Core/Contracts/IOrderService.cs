@@ -13,7 +13,7 @@ namespace CustomCADSolutions.Core.Contracts
 
         Task<int> CreateAsync(OrderModel entity);
         
-        Task EditAsync(OrderModel entity);
+        Task EditAsync(int id, OrderModel entity);
 
         Task FinishOrderAsync(int id, OrderModel model);
 

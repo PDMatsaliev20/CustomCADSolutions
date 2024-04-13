@@ -121,7 +121,7 @@ namespace CustomCADSolutions.App.APIControllers
                 cad.SpinAxis = dto.SpinAxis;
                 cad.Price = dto.Price;
                 cad.Color = Color.FromArgb(1, dto.RGB[0], dto.RGB[1], dto.RGB[2]);
-                await cadService.EditAsync(cad);
+                await cadService.EditAsync(dto.Id, cad);
 
                 return NoContent();
             }

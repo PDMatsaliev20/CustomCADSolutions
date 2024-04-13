@@ -1,5 +1,4 @@
 ﻿using CustomCADSolutions.App.Resources.Shared;
-using CustomCADSolutions.Core.Models;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using System.ComponentModel.DataAnnotations;
 

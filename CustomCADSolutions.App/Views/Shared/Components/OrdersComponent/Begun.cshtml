@@ -4,6 +4,6 @@
 <form asp-controller="Orders" asp-action="Delete" asp-route-id="@Model.Id" class="col">
     <div class="d-grid gap-2">
         <input type="submit" value="@Localizer["Delete"]" class="btn btn-danger"
-               onclick="return confirm('@Localizer["DeleteWarning", Model.Name]')" />
+               onclick="return confirm('@Localizer["Warning", Model.Name]')" />
     </div>
 </form>

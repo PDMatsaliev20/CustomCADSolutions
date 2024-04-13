@@ -103,7 +103,7 @@ namespace CustomCADSolutions.App.APIControllers
                 order.ShouldShow = dto.ShouldShow;
                 order.Name = dto.Name;
                 order.CategoryId = dto.CategoryId;
-                await orderService.EditAsync(order);
+                await orderService.EditAsync(id, order);
 
                 return NoContent();
             }

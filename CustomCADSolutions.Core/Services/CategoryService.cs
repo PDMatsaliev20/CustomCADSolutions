@@ -28,6 +28,12 @@ namespace CustomCADSolutions.Core.Services
         {
             return await repository.All<Category>().ToArrayAsync();
         }
+
+        public async Task<IEnumerable<string>> GetAllNamesAsync()
+        {
+            return await repository.All<Category>().Select(c => c.Name).ToArrayAsync();
+        }
+
         public async Task<int> CreateAsync(Category entity)
         {
             await repository.AddAsync(entity);

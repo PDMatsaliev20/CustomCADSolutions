@@ -1,18 +1,15 @@
-﻿using CustomCADSolutions.Core.Contracts;
-using CustomCADSolutions.Core.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
-using CustomCADSolutions.Infrastructure.Data.Models.Enums;
-using Microsoft.Extensions.Localization;
+﻿using static CustomCADSolutions.App.Extensions.UtilityExtensions;
 using CustomCADSolutions.App.Extensions;
-using static CustomCADSolutions.App.Extensions.UtilityExtensions;
-using static CustomCADSolutions.App.Constants.Paths;
-using CustomCADSolutions.App.Mappings.CadDTOs;
-using AutoMapper;
 using CustomCADSolutions.App.Mappings;
-using CustomCADSolutions.Infrastructure.Data.Models;
 using CustomCADSolutions.App.Models.Cads.Input;
 using CustomCADSolutions.App.Models.Cads.View;
+using CustomCADSolutions.Core.Contracts;
+using CustomCADSolutions.Core.Models;
+using CustomCADSolutions.Infrastructure.Data.Models.Enums;
+using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Localization;
 using System.Drawing;
 
 namespace CustomCADSolutions.App.Areas.Designer.Controllers
@@ -21,21 +18,25 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
     [Authorize(Roles = "Designer")]
     public class CadsController : Controller
     {
+        // Services
+        private readonly ICadService cadService;
+        private readonly ICategoryService categoryService;
+
+        // Addons
         private readonly IStringLocalizer<CadsController> localizer;
         private readonly ILogger<CadsController> logger;
-        private readonly ICadService cadService;
-        private readonly HttpClient httpClient;
         private readonly IMapper mapper;
 
         public CadsController(
             ICadService cadService,
+            ICategoryService categoryService,
             IStringLocalizer<CadsController> localizer,
-            ILogger<CadsController> logger,
-            HttpClient httpClient)
+            ILogger<CadsController> logger)
         {
             this.cadService = cadService;
+            this.categoryService = categoryService;
+
             this.localizer = localizer;
-            this.httpClient = httpClient;
             MapperConfiguration config = new(cfg => cfg.AddProfile<CadDTOProfile>());
             mapper = config.CreateMapper();
             this.logger = logger;
@@ -44,63 +45,90 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
         [HttpGet]
         public async Task<IActionResult> All([FromQuery] CadQueryInputModel inputQuery)
         {
-            Dictionary<string, string> parameters = new()
+            // Action-specific parameters
+            inputQuery.Validated = true;
+            inputQuery.Unvalidated = true;
+
+            // Ensuring cads per page are divisible by the count of columns
+            if (inputQuery.CadsPerPage % inputQuery.Cols != 0)
             {
-                ["validated"] = "true",
-                ["unvalidated"] = "true",
+                inputQuery.CadsPerPage = inputQuery.Cols * (inputQuery.CadsPerPage / inputQuery.Cols);
+            }
+
+            CadQueryModel query = new()
+            {
+                Category = inputQuery.Category,
+                Creator = inputQuery.Creator,
+                LikeName = inputQuery.SearchName,
+                LikeCreator = inputQuery.SearchCreator,
+                Sorting = inputQuery.Sorting,
+                CurrentPage = inputQuery.CurrentPage,
+                CadsPerPage = inputQuery.CadsPerPage,
+                Validated = inputQuery.Validated,
+                Unvalidated = inputQuery.Unvalidated,
             };
-            try
+            query = await cadService.GetAllAsync(query);
+
+            inputQuery.Categories = await categoryService.GetAllNamesAsync();
+            inputQuery.TotalCount = query.TotalCount;
+            inputQuery.Cads = mapper.Map<CadViewModel[]>(query.Cads);
+
+            // Count of Creator's Cads
+            query.Creator = User.Identity!.Name;
+            query = await cadService.GetAllAsync(query);
+
+            if (query.TotalCount > 0)
             {
-                string _ = CadsAPIPath + HttpContext.SecureQuery(parameters.ToArray());
-                var query = (await httpClient.GetFromJsonAsync<CadQueryDTO>(_))!;
-
-                _ = CategoriesAPIPath;
-                var categories = (await httpClient.GetFromJsonAsync<Category[]>(_))!;
-
-                inputQuery.Categories = categories.Select(c => c.Name);
-                inputQuery.TotalCount = query.TotalCount;
-                inputQuery.Cads = mapper.Map<CadViewModel[]>(query.Cads);
-
-                parameters["creator"] = User.Identity!.Name!;
-                ViewBag.DesignerDetails = await GetMessageAsync(parameters.ToArray());
-
-                parameters = new() { ["unvalidated"] = "true", };
-                ViewBag.UnvalidatedDetails = await GetMessageAsync(parameters.ToArray());
-
-                ViewBag.Sortings = typeof(CadSorting).GetEnumNames();
-                return View(inputQuery);
+                ViewBag.DesignerDetails = localizer["Has", query.TotalCount];
             }
-            catch (HttpRequestException)
+            else ViewBag.DesignerDetails = localizer["Hasn't"];
+
+            // Count of Unvalidated Cads
+            query.Unvalidated = true;
+            query = await cadService.GetAllAsync(query);
+
+            if (query.TotalCount > 0)
             {
-                return BadRequest();
+                ViewBag.UnvalidatedDetails = localizer["Has", query.TotalCount];
             }
+            else ViewBag.UnvalidatedDetails = localizer["Hasn't"];
+
+            ViewBag.Sortings = typeof(CadSorting).GetEnumNames();
+            return View(inputQuery);
         }
 
         [HttpGet]
         public async Task<IActionResult> Submitted([FromQuery] CadQueryInputModel inputQuery)
         {
-            Dictionary<string, string> parameters = new()
-            {
-                ["unvalidated"] = "true",
-            };
-            string path = CadsAPIPath + HttpContext.SecureQuery(parameters.ToArray());
-            var query = await httpClient.GetFromJsonAsync<CadQueryDTO>(path);
-            if (query != null)
-            {
-                var categories = await httpClient.GetFromJsonAsync<Category[]>(CategoriesAPIPath);
-                if (categories == null)
-                {
-                    return NotFound();
-                }
+            // Action specific parameters
+            inputQuery.Unvalidated = true;
 
-                inputQuery.Categories = categories.Select(c => c.Name);
-                inputQuery.TotalCount = query.TotalCount;
-                inputQuery.Cads = mapper.Map<CadViewModel[]>(query.Cads);
-
-                ViewBag.Sortings = typeof(CadSorting).GetEnumNames();
-                return View(inputQuery);
+            // Ensuring cads per page are divisible by the count of columns
+            if (inputQuery.CadsPerPage % inputQuery.Cols != 0)
+            {
+                inputQuery.CadsPerPage = inputQuery.Cols * (inputQuery.CadsPerPage / inputQuery.Cols);
             }
-            else return BadRequest();
+
+            CadQueryModel query = new()
+            {
+                Category = inputQuery.Category,
+                Creator = inputQuery.Creator,
+                LikeName = inputQuery.SearchName,
+                LikeCreator = inputQuery.SearchCreator,
+                Sorting = inputQuery.Sorting,
+                CurrentPage = inputQuery.CurrentPage,
+                CadsPerPage = inputQuery.CadsPerPage,
+                Validated = inputQuery.Validated,
+                Unvalidated = inputQuery.Unvalidated,
+            };
+            query = await cadService.GetAllAsync(query);
+
+            inputQuery.TotalCount = query.TotalCount;
+            inputQuery.Cads = mapper.Map<CadViewModel[]>(query.Cads);
+            inputQuery.Categories = await categoryService.GetAllNamesAsync();
+
+            ViewBag.Sortings = typeof(CadSorting).GetEnumNames();
+            return View(inputQuery);
         }
 
         [HttpPost]
@@ -109,7 +137,7 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
             CadModel model = await cadService.GetByIdAsync(cadId);
 
             model.IsValidated = true;
-            await cadService.EditAsync(model);
+            await cadService.EditAsync(cadId, model);
 
             return RedirectToAction(nameof(Submitted));
         }
@@ -117,78 +145,52 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
         [HttpPost]
         public async Task<IActionResult> ChangeColor(int id, string colorParam)
         {
-            string _;
-            try
-            {
-                _ = $"{CadsAPIPath}/{id}";
-                var export = (await httpClient.GetFromJsonAsync<CadExportDTO>(_))!;
-
-                Color color = ColorTranslator.FromHtml(colorParam);
-                CadImportDTO import = new()
-                {
-                    Id = export.Id,
-                    CreatorId = export.CreatorId,
-                    Name = export.Name,
-                    Coords = export.Coords,
-                    SpinAxis = export.SpinAxis,
-                    RGB = new byte[] { color.R, color.G, color.B },
-                    CategoryId = export.CategoryId,
-                    Price = export.Price,
-                };
-
-                var response = await httpClient.PutAsJsonAsync(CadsAPIPath, import);
-                response.EnsureSuccessStatusCode();
-
-                return RedirectToAction(nameof(Details), new { id = export.Id });
-            }
-            catch (HttpRequestException)
-            {
-                return BadRequest();
-            }
+            await cadService.ChangeColorAsync(id, ColorTranslator.FromHtml(colorParam));
+            return RedirectToAction(nameof(Details), new { id });
         }
 
         [HttpGet]
         public async Task<IActionResult> Index([FromQuery] CadQueryInputModel inputQuery)
         {
-            Dictionary<string, string> parameters = new()
-            {
-                ["validated"] = "true",
-                ["unvalidated"] = "true",
-                ["creator"] = User.Identity!.Name!,
-            };
-            string path = CadsAPIPath + HttpContext.SecureQuery(parameters.ToArray());
-            var query = await httpClient.GetFromJsonAsync<CadQueryDTO>(path);
-            if (query != null)
-            {
-                var categories = await httpClient.GetFromJsonAsync<Category[]>(CategoriesAPIPath);
-                if (categories == null)
-                {
-                    return NotFound();
-                }
+            // Action-specific parameters
+            inputQuery.Validated = true;
+            inputQuery.Unvalidated = true;
+            inputQuery.Creator = User.Identity!.Name;
 
-                inputQuery.TotalCount = query.TotalCount;
-                inputQuery.Cads = mapper.Map<CadViewModel[]>(query.Cads);
-                inputQuery.Categories = categories.Select(c => c.Name);
-
-                return View(inputQuery);
+            // Ensuring cads per page are divisible by the count of columns
+            if (inputQuery.CadsPerPage % inputQuery.Cols != 0)
+            {
+                inputQuery.CadsPerPage = inputQuery.Cols * (inputQuery.CadsPerPage / inputQuery.Cols);
             }
-            else return BadRequest();
+
+            CadQueryModel query = new()
+            {
+                Category = inputQuery.Category,
+                Creator = inputQuery.Creator,
+                LikeName = inputQuery.SearchName,
+                LikeCreator = inputQuery.SearchCreator,
+                Sorting = inputQuery.Sorting,
+                CurrentPage = inputQuery.CurrentPage,
+                CadsPerPage = inputQuery.CadsPerPage,
+                Validated = inputQuery.Validated,
+                Unvalidated = inputQuery.Unvalidated,
+            };
+            query = await cadService.GetAllAsync(query);
+
+            inputQuery.Categories = await categoryService.GetAllNamesAsync();
+            inputQuery.TotalCount = query.TotalCount;
+            inputQuery.Cads = mapper.Map<CadViewModel[]>(query.Cads);
+
+            ViewBag.Sortings = typeof(CadSorting).GetEnumNames();
+            ViewBag.Category = inputQuery.Category;
+            return View(inputQuery);
         }
 
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            string _;
-            try
-            {
-                _ = $"{CadsAPIPath}/{id}";
-                var dto = await httpClient.GetFromJsonAsync<CadExportDTO>(_);
-                return View(mapper.Map<CadViewModel>(dto));
-            }
-            catch (HttpRequestException)
-            {
-                return BadRequest();
-            }
+            CadModel model = await cadService.GetByIdAsync(id);
+            return View(mapper.Map<CadViewModel>(model));
         }
 
         [HttpGet]
@@ -196,7 +198,7 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
         {
             return View(new CadAddModel()
             {
-                Categories = await httpClient.GetFromJsonAsync<Category[]>(CategoriesAPIPath)
+                Categories = await categoryService.GetAllAsync()
             });
         }
 
@@ -213,11 +215,8 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
 
             if (!ModelState.IsValid)
             {
-                input.Categories = await httpClient.GetFromJsonAsync<Category[]>(CategoriesAPIPath);
-                if (ModelState.ErrorCount > 1)
-                {
-                    return View(input);
-                }
+                input.Categories = await categoryService.GetAllAsync();
+                return View(input);
             }
 
             if (input.CadFile == null || input.CadFile.Length <= 0)
@@ -225,109 +224,46 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
                 return BadRequest("Invalid 3d model");
             }
 
-            CadImportDTO dto = mapper.Map<CadImportDTO>(input);
-            dto.Bytes = await input.CadFile.GetBytesAsync();
-            dto.CreatorId = User.GetId();
-            dto.IsValidated = true;
+            CadModel model = mapper.Map<CadModel>(input);
+            model.Bytes = await input.CadFile.GetBytesAsync();
+            model.CreatorId = User.GetId();
+            model.IsValidated = false;
+            model.CreationDate = DateTime.Now;
 
-            var response = await httpClient.PostAsJsonAsync(CadsAPIPath, dto);
-            response.EnsureSuccessStatusCode();
-
+            await cadService.CreateAsync(model);
             return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            string _;
-            try
+            CadModel model = await cadService.GetByIdAsync(id);
+            if (model.CreatorId != User.GetId())
             {
-                _ = $"{CadsAPIPath}/{id}";
-                var dto = (await httpClient.GetFromJsonAsync<CadExportDTO>(_))!;
-                if (dto.CreatorName != User.Identity!.Name!)
-                {
-                    return Forbid();
-                }
-
-                CadEditModel input = new()
-                {
-                    Name = dto.Name,
-                    X = dto.Coords[0],
-                    Y = dto.Coords[1],
-                    Z = dto.Coords[2],
-                    SpinAxis = dto.SpinAxis,
-                    Price = dto.Price,
-                    CategoryId = dto.CategoryId,
-                    Categories = await httpClient.GetFromJsonAsync<Category[]>(CategoriesAPIPath),
-                };
-
-                return View(input);
+                return Forbid("You don't have access to this model");
             }
-            catch
-            {
-                return BadRequest();
-            }
+
+            CadEditModel input = mapper.Map<CadEditModel>(model);
+            input.Categories = await categoryService.GetAllAsync();
+
+            return View(input);
         }
 
         [HttpPost]
         public async Task<IActionResult> Edit(int id, CadEditModel input)
         {
-            string _;
-            try
-            {
-                var import = mapper.Map<CadImportDTO>(input);
-                import.CreatorId = User.GetId();
+            CadModel model = mapper.Map<CadModel>(input);
+            model.CreatorId = User.GetId();
 
-                _ = $"{CadsAPIPath}/{id}";
-                var export = (await httpClient.GetFromJsonAsync<CadImportDTO>(_))!;
-
-                import.RGB = export.RGB;
-                var response = await httpClient.PutAsJsonAsync(CadsAPIPath, import);
-                response.EnsureSuccessStatusCode();
-
-                return RedirectToAction(nameof(Details), new { id });
-            }
-            catch (HttpRequestException)
-            {
-                return BadRequest();
-            }
+            await cadService.EditAsync(id, model);
+            return RedirectToAction(nameof(Details), new { id });
         }
 
         [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
-            string _;
-            try
-            {
-                _ = $"{CadsAPIPath}/{id}";
-                var dto = (await httpClient.GetFromJsonAsync<CadExportDTO>(_))!;
-                if (dto.CreatorName != User.Identity!.Name)
-                {
-                    return Forbid();
-                }
-
-                var response = await httpClient.DeleteAsync($"{CadsAPIPath}/{id}");
-                response.EnsureSuccessStatusCode();
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return BadRequest();
-            }
-        }
-
-        private async Task<string> GetMessageAsync(KeyValuePair<string, string>[] parameters)
-        {
-            string path = CadsAPIPath + HttpContext.SecureQuery(parameters);
-            var query = await httpClient.GetFromJsonAsync<CadQueryDTO>(path);
-
-            if (query != null && query.TotalCount > 0)
-            {
-                return localizer["Has", query.TotalCount];
-            }
-            else return localizer["Hasn't"];
-
+            await cadService.DeleteAsync(id);
+            return RedirectToAction(nameof(Index));
         }
 
     }

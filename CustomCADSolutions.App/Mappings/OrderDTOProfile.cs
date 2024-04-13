@@ -14,6 +14,9 @@ namespace CustomCADSolutions.App.Mappings
             DTOToModel();
             ModelToDTO();
             DTOToView();
+            InputToModel();
+            ModelToView();
+            ModelToInput();
         }
 
         public IMappingExpression<OrderInputModel, OrderImportDTO> InputToDTO() => CreateMap<OrderInputModel, OrderImportDTO>()
@@ -39,5 +42,14 @@ namespace CustomCADSolutions.App.Mappings
             .ForMember(view => view.Name, opt => opt.MapFrom(dto => dto.Name))
             .ForMember(view => view.Category, opt => opt.MapFrom(dto => dto.CategoryName))
             ;
+
+        public void ModelToView() => CreateMap<OrderModel, OrderViewModel>()
+            .ForMember(view => view.Status, opt => opt.MapFrom(model => model.Status.ToString()))
+            .ForMember(view => view.OrderDate, opt => opt.MapFrom(model => model.OrderDate.ToString("dd/MM/yyyy HH:mm:ss")))
+            .ForMember(view => view.Category, opt => opt.MapFrom(model => model.Category.Name));
+
+        public void InputToModel() => CreateMap<OrderInputModel, OrderModel>();
+        
+        public void ModelToInput() => CreateMap<OrderModel, OrderInputModel>();
     }
 }

@@ -6,6 +6,8 @@ using static CustomCADSolutions.App.Constants.Paths;
 using CustomCADSolutions.App.Mappings.DTOs;
 using CustomCADSolutions.App.Models.Orders;
 using Microsoft.AspNetCore.Authorization;
+using CustomCADSolutions.Core.Contracts;
+using CustomCADSolutions.Core.Models;
 
 namespace CustomCADSolutions.App.Areas.Admin.Controllers
 {
@@ -13,14 +15,23 @@ namespace CustomCADSolutions.App.Areas.Admin.Controllers
     [Authorize("Administrator")]
     public class OrdersController : Controller
     {
-        private readonly HttpClient httpClient;
+        // Services
+        private readonly IOrderService orderService;
+        private readonly ICategoryService categoryService;
+
+        //Addons
         private readonly ILogger logger;
         private readonly IMapper mapper;
 
-        public OrdersController(ILogger<OrdersController> logger, HttpClient httpClient)
+        public OrdersController(
+            IOrderService orderService,
+            ICategoryService categoryService,
+            ILogger<OrdersController> logger)
         {
+            this.orderService = orderService;
+            this.categoryService = categoryService;
+
             this.logger = logger;
-            this.httpClient = httpClient;
             MapperConfiguration config = new(cfg => cfg.AddProfile<OrderDTOProfile>());
             this.mapper = config.CreateMapper();
         }
@@ -28,39 +39,18 @@ namespace CustomCADSolutions.App.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            string _;
-            try
-            {
-                _ = CategoriesAPIPath;
-                ViewBag.Categories = (await httpClient.GetFromJsonAsync<Category[]>(_))!;
+            IEnumerable<OrderModel> orders = await orderService.GetAllAsync();
+            var views = mapper.Map<OrderViewModel[]>(orders);
 
-                _ = OrdersAPIPath;
-                var orders = (await httpClient.GetFromJsonAsync<OrderExportDTO[]>(_))!;
-
-                return View(mapper.Map<OrderViewModel[]>(orders));
-            }
-            catch
-            {
-                return BadRequest();
-            }
+            ViewBag.Categories = await categoryService.GetAllAsync();
+            return View(views);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete(int id, string buyerId)
+        public async Task<IActionResult> Delete(int id)
         {
-            string _;
-            try
-            {
-                _ = $"{OrdersAPIPath}/{id}";
-                var response = await httpClient.DeleteAsync(_);
-                response.EnsureSuccessStatusCode();
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch (HttpRequestException)
-            {
-                return BadRequest();
-            }
+            await orderService.DeleteAsync(id);
+            return RedirectToAction(nameof(Index));
         }
     }
 }

@@ -11,6 +11,9 @@ using CustomCADSolutions.Infrastructure.Data.Models;
 using CustomCADSolutions.App.Mappings.CadDTOs;
 using Microsoft.Extensions.Options;
 using CustomCADSolutions.App.Models.Cads.View;
+using CustomCADSolutions.Core.Contracts;
+using CustomCADSolutions.Core.Models;
+using CustomCADSolutions.Core.Services;
 
 namespace CustomCADSolutions.App.Areas.Contributor.Controllers
 {
@@ -18,24 +21,33 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
     [Authorize(Roles = "Contributor")]
     public class OrdersController : Controller
     {
+        // Services
+        private readonly IOrderService orderService;
+        private readonly ICategoryService categoryService;
+        private readonly ICadService cadService;
+
+        // Addons
         private readonly StripeSettings stripeSettings;
-        private readonly HttpClient httpClient;
         private readonly IMapper mapper;
         private readonly ILogger logger;
 
         public OrdersController(
+            IOrderService orderService,
+            ICadService cadService,
+            ICategoryService categoryService,
             IOptions<StripeSettings> stripeSettings,
-            ILogger<OrdersController> logger,
-            HttpClient httpClient)
+            ILogger<OrdersController> logger)
         {
+            this.orderService = orderService;
+            this.categoryService = categoryService;
+            this.cadService = cadService;
+
             this.logger = logger;
-            this.httpClient = httpClient;
             this.stripeSettings = stripeSettings.Value;
-            
             MapperConfiguration config = new(cfg =>
             {
-                cfg.AddProfile<CadDTOProfile>();
                 cfg.AddProfile<OrderDTOProfile>();
+                cfg.AddProfile<CadDTOProfile>();
             });
             this.mapper = config.CreateMapper();
         }
@@ -43,76 +55,48 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            try
-            {
-                var dtos = (await httpClient.GetFromJsonAsync<OrderExportDTO[]>(OrdersAPIPath))!
-                    .Where(v => v.BuyerName == User.Identity!.Name).ToArray();
+            IEnumerable<OrderModel> orders = await orderService.GetAllAsync();
+            var buyerOrders = orders.Where(o => o.Buyer.UserName == User.Identity!.Name);
 
-                ViewBag.Area = "Contributor";
-                return View(mapper.Map<OrderViewModel[]>(dtos));
-            }
-            catch (HttpRequestException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var views = mapper.Map<OrderViewModel[]>(buyerOrders);
+            return View(views);
         }
 
         [HttpGet]
         public async Task<IActionResult> Order(int id)
         {
-            string _;
-            try
-            {
-                _ = $"{CadsAPIPath}/{id}";
-                var dto = (await httpClient.GetFromJsonAsync<CadExportDTO>(_))!;
-                if (id != 1)
-                {
-                    CadViewModel view = mapper.Map<CadViewModel>(dto);
-                    ViewBag.StripeKey = stripeSettings.TestPublishableKey;
-                    return View(view);
-                }
-                else return NotFound();
-            }
-            catch (HttpRequestException)
-            {
-                return BadRequest("Model not found");
-            }
+            CadModel model = await cadService.GetByIdAsync(id);
+            CadViewModel view = mapper.Map<CadViewModel>(model);
+            
+            ViewBag.StripeKey = stripeSettings.TestPublishableKey;
+            return View(view);
         }
 
         [HttpPost]
         public async Task<IActionResult> Order(int id, string stripeToken)
         {
-            string _;
-            try
+            CadModel cadModel = await cadService.GetByIdAsync(id);
+            
+            bool isPaymentSuccessful = stripeSettings.ProcessPayment(stripeToken);
+            if (!isPaymentSuccessful)
             {
-                _ = $"{CadsAPIPath}/{id}";
-                var cadDTO = (await httpClient.GetFromJsonAsync<CadExportDTO>(_))!;
-
-                bool isPaymentSuccessful = stripeSettings.ProcessPayment(stripeToken);
-                if (!isPaymentSuccessful)
-                {
-                    TempData["ErrorMessage"] = "Payment failed. Please try again.";
-                    return RedirectToAction("Index", "Home", new { area = "" });
-                }
-
-                OrderImportDTO orderDTO = new()
-                {
-                    CadId = id,
-                    BuyerId = User.GetId(),
-                    Name = cadDTO.Name,
-                    Description = $"3D Model from the gallery with id: {id}",
-                    Status = OrderStatus.Finished.ToString(),
-                };
-
-                var response = await httpClient.PostAsJsonAsync(OrdersAPIPath, orderDTO);
-                response.EnsureSuccessStatusCode();
-
-                return RedirectToAction(nameof(Index));
+                TempData["ErrorMessage"] = "Payment failed. Please try again.";
+                return RedirectToAction("Index", "Home", new { area = "" });
             }
-            catch (HttpRequestException)
+
+            OrderModel model = new()
             {
-                return BadRequest();
-            }
+                Name = cadModel.Name,
+                Description = $"3D Model from the gallery with id: {id}",
+                Status = OrderStatus.Finished,
+                CategoryId = cadModel.CategoryId,
+                OrderDate = DateTime.Now,
+                CadId = id,
+                BuyerId = User.GetId(),
+            };
+            await orderService.CreateAsync(model);
+
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]
@@ -120,111 +104,67 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
         {
             return View(new OrderInputModel()
             {
-                Categories = await httpClient.GetFromJsonAsync<Category[]>(CategoriesAPIPath)
+                Categories = await categoryService.GetAllAsync()
             });
         }
 
         [HttpPost]
         public async Task<IActionResult> Add(OrderInputModel input)
         {
-            try
+            if (!ModelState.IsValid)
             {
-                if (!ModelState.IsValid)
-                {
-                    input.Categories = await httpClient.GetFromJsonAsync<Category[]>(CategoriesAPIPath);
-                    return View(input);
-                }
-
-                input.BuyerId = User.GetId();
-                var dto = mapper.Map<OrderImportDTO>(input);
-                var response = await httpClient.PostAsJsonAsync(OrdersAPIPath, dto);
-                response.EnsureSuccessStatusCode();
-
-                return RedirectToAction(nameof(Index));
+                input.Categories = await categoryService.GetAllAsync();
+                return View(input);
             }
-            catch (HttpRequestException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+
+            OrderModel model = mapper.Map<OrderModel>(input);
+            model.BuyerId = User.GetId();
+            model.OrderDate = DateTime.Now;
+
+            await orderService.CreateAsync(model);
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            string _;
-            try
+            OrderModel model = await orderService.GetByIdAsync(id);
+            if (model.Status != OrderStatus.Pending)
             {
-                _ = $"{OrdersAPIPath}/{id}";
-                var dto = (await httpClient.GetFromJsonAsync<OrderExportDTO>(_))!;
-
-                if (dto.Status != OrderStatus.Pending.ToString())
-                {
-                    return RedirectToAction(nameof(Index));
-                }
-
-                OrderInputModel input = new()
-                {
-                    Id = id,
-                    CadId = dto.CadId,
-                    BuyerId = dto.BuyerId,
-                    Name = dto.Name,
-                    Description = dto.Description,
-                    CategoryId = dto.CategoryId,
-                    Categories = await httpClient.GetFromJsonAsync<Category[]>(CategoriesAPIPath),
-                };
-
-                return View(input);
+                return RedirectToAction(nameof(Index));
             }
-            catch
-            {
-                return BadRequest();
-            }
+
+            OrderInputModel input = mapper.Map<OrderInputModel>(model);
+            input.Categories = await categoryService.GetAllAsync();
+
+            return View(input);
         }
 
         [HttpPost]
         public async Task<IActionResult> Edit(int id, OrderInputModel input)
         {
-            if (!ModelState.IsValid)
-            {
-                input.Categories = await httpClient.GetFromJsonAsync<Category[]>(CategoriesAPIPath);
-                return View(input);
-            }
-
             if (input.Status != OrderStatus.Pending)
             {
                 return RedirectToAction(nameof(Index));
             }
 
-            string _;
-            try
+            if (!ModelState.IsValid)
             {
-                var dto = mapper.Map<OrderImportDTO>(input);
-                _ = $"{OrdersAPIPath}/{id}";
-                var response = await httpClient.PutAsJsonAsync(_, dto);
-                response.EnsureSuccessStatusCode();
+                input.Categories = await categoryService.GetAllAsync();
+                return View(input);
+            }
 
-                return RedirectToAction(nameof(Index));
-            }
-            catch (HttpRequestException)
-            {
-                return BadRequest();
-            }
+            OrderModel model = mapper.Map<OrderModel>(input);
+            await orderService.EditAsync(id, model);
+
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
-            string _ = $"{OrdersAPIPath}/{id}";
-            try
-            {
-                var response = await httpClient.DeleteAsync(_);
-                response.EnsureSuccessStatusCode();
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return BadRequest();
-            }
+            await orderService.DeleteAsync(id);
+            return RedirectToAction(nameof(Index));
         }
     }
 }
