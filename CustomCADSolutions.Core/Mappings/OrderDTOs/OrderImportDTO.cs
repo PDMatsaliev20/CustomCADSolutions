@@ -1,10 +1,9 @@
-﻿using CustomCADSolutions.App.Mappings.CadDTOs;
-using static CustomCADSolutions.Infrastructure.Data.DataConstants;
-using static CustomCADSolutions.Infrastructure.Data.DataConstants.OrderConstants;
+﻿using static CustomCADSolutions.Infrastructure.Data.DataConstants.OrderConstants;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
+using CustomCADSolutions.Core.Mappings.CadDTOs;
 
-namespace CustomCADSolutions.App.Mappings.DTOs
+namespace CustomCADSolutions.Core.Mappings.DTOs
 {
     public class OrderImportDTO
     {
@@ -37,7 +36,6 @@ namespace CustomCADSolutions.App.Mappings.DTOs
         public int CategoryId { get; set; }
 
         [JsonPropertyName("buyerId")]
-        [Required]
         public string BuyerId { get; set; } = null!;
 
         [JsonPropertyName("cad")]

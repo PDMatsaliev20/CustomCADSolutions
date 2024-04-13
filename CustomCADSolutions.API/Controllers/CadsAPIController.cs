@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
-using CustomCADSolutions.App.Mappings;
-using CustomCADSolutions.App.Mappings.CadDTOs;
-using CustomCADSolutions.App.Models.Cads.View;
+using CustomCADSolutions.Core.Mappings;
+using CustomCADSolutions.Core.Mappings.CadDTOs;
 using CustomCADSolutions.Core.Contracts;
 using CustomCADSolutions.Core.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -15,8 +14,6 @@ namespace CustomCADSolutions.App.APIControllers
     public class CadsAPIController : ControllerBase
     {
         private readonly ICadService cadService;
-        private readonly ICategoryService categoryService;
-        private readonly IOrderService orderService;
         private readonly IMapper mapper;
 
         public CadsAPIController(ICadService cadService, 
@@ -26,7 +23,7 @@ namespace CustomCADSolutions.App.APIControllers
             this.cadService = cadService;
             this.categoryService = categoryService;
             this.orderService = orderService;
-            MapperConfiguration config = new(cfg => cfg.AddProfile<CadDTOProfile>());
+            MapperConfiguration config = new(cfg => cfg.AddProfile<CadProfile>());
             mapper = config.CreateMapper();
         }
 
@@ -34,20 +31,19 @@ namespace CustomCADSolutions.App.APIControllers
         [Consumes("application/json")]
         [Produces("application/json")]
         [ProducesResponseType(Status200OK)]
-        public async Task<ActionResult<CadQueryDTO>> GetAsync([FromQuery] CadQueryInputModel inputQuery)
+        public async Task<ActionResult<CadQueryDTO>> GetAsync([FromQuery] CadQueryModel inputQuery)
         {
-            inputQuery.Categories = (await categoryService.GetAllAsync()).Select(c => c.Name);
-            if (inputQuery.CadsPerPage % inputQuery.Cols != 0)
+            if (inputQuery.CadsPerPage % 3 != 0)
             {
-                inputQuery.CadsPerPage = inputQuery.Cols * (inputQuery.CadsPerPage / inputQuery.Cols);
+                inputQuery.CadsPerPage = 3 * (inputQuery.CadsPerPage / 3);
             }
 
             CadQueryModel query = new()
             {
                 Category = inputQuery.Category,
                 Creator = inputQuery.Creator,
-                LikeName = inputQuery.SearchName,
-                LikeCreator = inputQuery.SearchCreator,
+                LikeName = inputQuery.LikeName,
+                LikeCreator = inputQuery.LikeCreator,
                 Sorting = inputQuery.Sorting,
                 CurrentPage = inputQuery.CurrentPage,
                 CadsPerPage = inputQuery.CadsPerPage,
@@ -85,7 +81,6 @@ namespace CustomCADSolutions.App.APIControllers
         [Consumes("application/json")]
         [Produces("application/json")]
         [ProducesResponseType(Status201Created)]
-        [IgnoreAntiforgeryToken]
         public async Task<ActionResult> PostAsync(CadImportDTO import)
         {
             CadModel cad = mapper.Map<CadModel>(import);
@@ -95,7 +90,7 @@ namespace CustomCADSolutions.App.APIControllers
             cad = await cadService.GetByIdAsync(cad.Id);
 
             CadExportDTO export = mapper.Map<CadExportDTO>(cad);
-            return CreatedAtAction(nameof(GetAsync), new { export.Id }, export);
+            return CreatedAtAction(null, new { export.Id }, export);
         }
 
         [HttpPut]
@@ -103,7 +98,6 @@ namespace CustomCADSolutions.App.APIControllers
         [ProducesResponseType(Status204NoContent)]
         [ProducesResponseType(Status403Forbidden)]
         [ProducesResponseType(Status404NotFound)]
-        [IgnoreAntiforgeryToken]
         public async Task<ActionResult> PutAsync(CadImportDTO dto)
         {
             try
@@ -165,7 +159,6 @@ namespace CustomCADSolutions.App.APIControllers
         [ProducesResponseType(Status204NoContent)]
         [ProducesResponseType(Status404NotFound)]
         [ProducesResponseType(Status400BadRequest)]
-        [IgnoreAntiforgeryToken]
         public async Task<ActionResult> DeleteAsync(int id)
         {
             try

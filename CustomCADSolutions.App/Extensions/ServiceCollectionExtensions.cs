@@ -9,8 +9,6 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 using Microsoft.AspNetCore.Mvc;
-using CustomCADSolutions.App.Models;
-using Microsoft.AspNetCore.Authentication.Certificate;
 using CustomCADSolutions.App.Extensions;
 using CustomCADSolutions.Infrastructure.Data.Models;
 

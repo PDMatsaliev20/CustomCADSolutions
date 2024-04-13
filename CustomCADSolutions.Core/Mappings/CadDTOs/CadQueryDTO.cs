@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace CustomCADSolutions.App.Mappings.CadDTOs
+namespace CustomCADSolutions.Core.Mappings.CadDTOs
 {
     public class CadQueryDTO
     {

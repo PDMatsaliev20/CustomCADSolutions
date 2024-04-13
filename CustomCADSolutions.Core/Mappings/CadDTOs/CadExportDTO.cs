@@ -1,4 +1,4 @@
-﻿namespace CustomCADSolutions.App.Mappings.CadDTOs
+﻿namespace CustomCADSolutions.Core.Mappings.CadDTOs
 {
     public class CadExportDTO
     {
@@ -9,7 +9,6 @@
         public string CreatorId { get; set; } = null!;
         public string CreatorName { get; set; }  = null!;
         public string CreationDate { get; set; } = null!;
-        public byte[] Bytes { get; set; } = null!;
         public bool IsValidated { get; set; }
         public decimal Price { get; set; }
         public int[] Coords { get; set; } = new int[3];

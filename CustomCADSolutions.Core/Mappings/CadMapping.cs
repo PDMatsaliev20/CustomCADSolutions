@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CustomCADSolutions.Core.Mappings.CadDTOs;
 using CustomCADSolutions.Core.Models;
 using CustomCADSolutions.Infrastructure.Data.Models;
 using System.Drawing;
@@ -9,9 +10,61 @@ namespace CustomCADSolutions.Core.Mappings
     {
         public CadProfile()
         {
+            DTOToModel();
+            ModelToDTO();
+            
+            QueryToDTO();
+            DTOToQuery();
+
             ModelToEntity();
             EntityToModel();
         }
+
+        /// <summary>
+        /// Converts JSON Import to Service Model
+        /// </summary>
+        /// <returns>IMappingExpression with DTO source and Model destination</returns>
+        public IMappingExpression<CadImportDTO, CadModel> DTOToModel() => CreateMap<CadImportDTO, CadModel>()
+            .ForMember(cad => cad.Id, opt => opt.MapFrom(dto => dto.Id))
+            .ForMember(cad => cad.Name, opt => opt.MapFrom(dto => dto.Name))
+            .ForMember(cad => cad.CategoryId, opt => opt.MapFrom(dto => dto.CategoryId))
+            .ForMember(cad => cad.Coords, opt => opt.MapFrom(dto => dto.Coords))
+            .ForMember(cad => cad.Color, opt => opt.MapFrom(dto => Color.FromArgb(1, dto.RGB[0], dto.RGB[1], dto.RGB[2])))
+            .ForMember(cad => cad.IsValidated, opt => opt.MapFrom(dto => dto.IsValidated))
+            .ForMember(dto => dto.Price, opt => opt.MapFrom(input => input.Price))
+            .ForMember(cad => cad.CreatorId, opt => opt.MapFrom(dto => dto.CreatorId))
+            .ForMember(cad => cad.SpinAxis, opt =>
+            {
+                opt.AllowNull();
+                opt.MapFrom(dto => dto.SpinAxis);
+            });
+
+        /// <summary>
+        /// Converts Service Model to JSON Export
+        /// </summary>
+        /// <returns>IMappingExpression with Model source and DTO destination</returns>
+        public IMappingExpression<CadModel, CadExportDTO> ModelToDTO() => CreateMap<CadModel, CadExportDTO>()
+            .ForMember(dto => dto.Id, opt => opt.MapFrom(model => model.Id))
+            .ForMember(dto => dto.Name, opt => opt.MapFrom(model => model.Name))
+            .ForMember(dto => dto.CategoryName, opt => opt.MapFrom(model => model.Category.Name))
+            .ForMember(dto => dto.CategoryId, opt => opt.MapFrom(model => model.CategoryId))
+            .ForMember(dto => dto.Coords, opt => opt.MapFrom(model => model.Coords))
+            .ForMember(dto => dto.SpinAxis, opt => opt.MapFrom(model => model.SpinAxis))
+            .ForMember(dto => dto.IsValidated, opt => opt.MapFrom(model => model.IsValidated))
+            .ForMember(dto => dto.Price, opt => opt.MapFrom(model => model.Price))
+            .ForMember(dto => dto.RGB, opt => opt.MapFrom(model => new byte[] { model.Color.R, model.Color.G, model.Color.B }))
+            .ForMember(dto => dto.CreatorName, opt => opt.MapFrom(model => model.Creator != null ? model.Creator.UserName : null))
+            .ForMember(dto => dto.CreatorId, opt => opt.MapFrom(model => model.CreatorId))
+            .ForMember(dto => dto.CreationDate, opt => opt.MapFrom(model => model.CreationDate.ToString("dd/MM/yyyy HH:mm:ss")));
+
+        public IMappingExpression<CadQueryModel, CadQueryDTO> QueryToDTO() => CreateMap<CadQueryModel, CadQueryDTO>()
+            .ForMember(dto => dto.TotalCount, opt => opt.MapFrom(query => query.TotalCount))
+            .ForMember(dto => dto.Cads, opt => opt.MapFrom(query => query.Cads))
+            ;
+
+        public IMappingExpression<CadQueryDTO, CadQueryModel> DTOToQuery() => CreateMap<CadQueryDTO, CadQueryModel>()
+            .ForMember(dto => dto.TotalCount, opt => opt.MapFrom(query => query.TotalCount))
+            .ForMember(dto => dto.Cads, opt => opt.MapFrom(query => query.Cads));
 
         public IMappingExpression<Cad, CadModel> ModelToEntity() => CreateMap<Cad, CadModel>()
                 .ForMember(m => m.Id, opt => opt.MapFrom(c => c.Id))

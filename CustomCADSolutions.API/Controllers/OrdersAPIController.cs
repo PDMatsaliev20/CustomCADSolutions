@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using CustomCADSolutions.App.Mappings;
-using CustomCADSolutions.App.Mappings.CadDTOs;
-using CustomCADSolutions.App.Mappings.DTOs;
+using CustomCADSolutions.Core.Mappings;
+using CustomCADSolutions.Core.Mappings.CadDTOs;
+using CustomCADSolutions.Core.Mappings.DTOs;
 using CustomCADSolutions.Core.Contracts;
 using CustomCADSolutions.Core.Models;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
@@ -21,7 +21,12 @@ namespace CustomCADSolutions.App.APIControllers
         public OrdersAPIController(IOrderService orderService)
         {
             this.orderService = orderService;
-            mapper = new MapperConfiguration(cfg => cfg.AddProfile<OrderDTOProfile>()).CreateMapper();
+            MapperConfiguration config = new(cfg =>
+            {
+                cfg.AddProfile<OrderProfile>();
+                cfg.AddProfile<CadProfile>();
+            });
+            this.mapper = config.CreateMapper();
         }
 
         [HttpGet]
@@ -47,7 +52,7 @@ namespace CustomCADSolutions.App.APIControllers
         [Produces("application/json")]
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status400BadRequest)]
-        public async Task<ActionResult<OrderExportDTO>> GetAsync(int id)
+        public async Task<ActionResult<OrderExportDTO>> GetSingleAsync(int id)
         {
             try
             {
@@ -64,20 +69,18 @@ namespace CustomCADSolutions.App.APIControllers
         [Consumes("application/json")]
         [ProducesResponseType(Status201Created)]
         [ProducesResponseType(Status400BadRequest)]
-        [IgnoreAntiforgeryToken]
         public async Task<ActionResult<OrderExportDTO>> PostAsync(OrderImportDTO dto)
         {
             OrderModel model = mapper.Map<OrderModel>(dto);
             model.OrderDate = DateTime.Now;
-
             try
             {
                 int id = await orderService.CreateAsync(model);
-                
+
                 model = await orderService.GetByIdAsync(id);
                 OrderExportDTO export = mapper.Map<OrderExportDTO>(model);
 
-                return CreatedAtAction(nameof(GetAsync), new { id }, export);
+                return CreatedAtAction(null, new { id }, export);
             }
             catch
             {
@@ -90,13 +93,12 @@ namespace CustomCADSolutions.App.APIControllers
         [ProducesResponseType(Status204NoContent)]
         [ProducesResponseType(Status403Forbidden)]
         [ProducesResponseType(Status404NotFound)]
-        [IgnoreAntiforgeryToken]
         public async Task<ActionResult> PutAsync(int id, OrderImportDTO dto)
         {
             try
             {
-                OrderModel order = await orderService.GetByIdAsync(dto.Id);
-                
+                OrderModel order = await orderService.GetByIdAsync(id);
+
                 order.Name = dto.Name;
                 order.Description = dto.Description;
                 order.Status = Enum.Parse<OrderStatus>(dto.Status);
@@ -114,7 +116,6 @@ namespace CustomCADSolutions.App.APIControllers
         }
 
         [HttpDelete("{id}")]
-        [IgnoreAntiforgeryToken]
         public async Task<ActionResult<OrderModel>> DeleteAsync(int id)
         {
             if (await orderService.ExistsByIdAsync(id))
@@ -130,7 +131,6 @@ namespace CustomCADSolutions.App.APIControllers
 
         [HttpPut("Finish/{id}")]
         [Consumes("application/json")]
-        [IgnoreAntiforgeryToken]
         [ProducesResponseType(Status204NoContent)]
         [ProducesResponseType(Status400BadRequest)]
         public async Task<ActionResult> FinishAsync(int id, CadImportDTO dto)
@@ -140,11 +140,10 @@ namespace CustomCADSolutions.App.APIControllers
                 return BadRequest();
             }
             OrderModel order = (await orderService.GetByIdAsync(id))!;
-            
+
             order.Cad = new()
             {
                 Name = dto.Name,
-                Bytes = dto.Bytes,
                 IsValidated = dto.IsValidated,
                 Price = dto.Price,
                 CreationDate = DateTime.Now,

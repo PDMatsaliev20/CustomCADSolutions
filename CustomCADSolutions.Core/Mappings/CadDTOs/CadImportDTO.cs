@@ -1,10 +1,9 @@
-﻿using MessagePack.Formatters;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using static CustomCADSolutions.Infrastructure.Data.DataConstants;
 using static CustomCADSolutions.Infrastructure.Data.DataConstants.CadConstants;
 
-namespace CustomCADSolutions.App.Mappings.CadDTOs
+namespace CustomCADSolutions.Core.Mappings.CadDTOs
 {
     public class CadImportDTO
     {
@@ -39,9 +38,6 @@ namespace CustomCADSolutions.App.Mappings.CadDTOs
         public int[] Coords { get; set; } = new int[3];
 
         [JsonPropertyName("rgb")]
-        public byte[] RGB { get; set; } = new byte[3] { 255, 255, 255 };
-
-        [JsonPropertyName("bytes")]
-        public byte[] Bytes { get; set; } = null!;
+        public int[] RGB { get; set; } = new int[3] { 255, 255, 255 };
     }
 }

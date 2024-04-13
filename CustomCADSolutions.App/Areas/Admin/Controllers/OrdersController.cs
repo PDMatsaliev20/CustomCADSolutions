@@ -3,7 +3,7 @@ using CustomCADSolutions.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using CustomCADSolutions.App.Mappings;
 using static CustomCADSolutions.App.Constants.Paths;
-using CustomCADSolutions.App.Mappings.DTOs;
+using CustomCADSolutions.Core.Mappings.DTOs;
 using CustomCADSolutions.App.Models.Orders;
 using Microsoft.AspNetCore.Authorization;
 using CustomCADSolutions.Core.Contracts;
