@@ -3,13 +3,10 @@
     ViewData["Title"] = "Purchase 3D Model";
 }
 
-<div class="container d-flex flex-column align-items-center">
+<div class="container">
     <partial name="_PaymentFormPartial" model="Model" />
-    <div class="col-sm-4 col-12 mt-0 mb-3">
-        <div id="model-@Model.Id" class="bg-transparent"></div>
-    </div>
+    <div id="model-@Model.Id" style="height: 50vh" class="bg-transparent"></div>
 </div>
-
 
 @section Scripts {
     <script type="module">
@@ -30,9 +27,6 @@
         };
 
         loadModel(cad);
-
-        const divElement = document.getElementById('model-@Model.Id');
-        divElement.setAttribute('style', 'height: 20rem !important');
     </script>
 
     <script src="https://js.stripe.com/v3/"></script>

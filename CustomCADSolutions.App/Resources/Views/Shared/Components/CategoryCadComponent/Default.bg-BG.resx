@@ -117,9 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="All" xml:space="preserve">
-    <value>Всички</value>
-  </data>
   <data name="Animals" xml:space="preserve">
     <value>Животни</value>
   </data>
@@ -135,17 +132,29 @@
   <data name="Furniture" xml:space="preserve">
     <value>Мебели</value>
   </data>
+  <data name="Login" xml:space="preserve">
+    <value>Влез</value>
+  </data>
   <data name="Nature" xml:space="preserve">
     <value>Природа</value>
   </data>
+  <data name="Or" xml:space="preserve">
+    <value>или</value>
+  </data>
   <data name="Others" xml:space="preserve">
     <value>Други</value>
+  </data>
+  <data name="Register" xml:space="preserve">
+    <value>се регистрирай</value>
   </data>
   <data name="Science" xml:space="preserve">
     <value>Наука</value>
   </data>
   <data name="Sports" xml:space="preserve">
     <value>Спорт</value>
+  </data>
+  <data name="ToOrder" xml:space="preserve">
+    <value>за да поръчаш.</value>
   </data>
   <data name="Toys" xml:space="preserve">
     <value>Играчки</value>

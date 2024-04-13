@@ -1,8 +1,9 @@
 ﻿@model CadViewModel
 
-<form id="payment-form" class="col-6" method="post" autocomplete="off">
+<form id="payment-form" method="post" autocomplete="off">
     <input name="id" value="@Model.Id" hidden />
-    <div class="row text-center mb-3">
+
+    <div class="row justify-content-center mb-3">
         <div class="col-6">
             <label for="card-element" class="form-label mb-4">Credit or debit card</label>
             <div id="card-element" class="mb-3"></div>
@@ -10,9 +11,9 @@
         </div>
     </div>
 
-    <div class="row mb-4">
-        <div class="col-2">
-            <button id="submit-button" class="btn btn-primary">Submit Payment</button>
+    <div class="row justify-content-center mb-4">
+        <div class="col-1">
+            <button id="submit-button" class="btn btn-primary">Order</button>
         </div>
     </div>
 </form>

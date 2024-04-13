@@ -1,8 +1,57 @@
 ﻿@model CadViewModel
 @inject IViewLocalizer Localizer
 @{
-    ViewBag.Buttons = new string[] { "Order" };
-    ViewBag.Header = $"{Model.Name} ({Localizer[Model.Category].Value})";
+    string[] buttons = ViewBag.Buttons;
+    string area = ViewBag.Area;
+
+    int id = Model.Id;
+    string name = Model.Name;
 }
 
-<partial name="_CardCadPartial" model="Model" view-data="ViewData" />   
+<script type="module">
+    import { loadModel } from '../../../js/site.mjs';
+
+    const Model = {
+        id: @Model.Id,
+        x: @Model.Coords[0],
+        y: @Model.Coords[1],
+        z: @Model.Coords[2],
+        axis: '@Model.SpinAxis',
+        fov: @Model.Fov,
+        rgb: {
+            r: @Model.RGB[0] / 225, g: @Model.RGB[1] / 225, b: @Model.RGB[2] / 225 }
+        };
+
+        loadModel(Model);
+</script>
+<div class="container col-md-4 col-12 mt-4">
+    <div class="card">
+        <h4 class="card-header text-center mb-1">
+            <span>@Model.Name (@Localizer[Model.Category].Value)</span>
+        </h4>
+        <div class="card-body">
+            <div id="model-@id"></div>
+            <div class="d-grid gap-2 mt-3">
+                @if (!ViewBag.IsLoggedIn)
+                {
+                    <span>
+                        <a asp-area="Identity" asp-controller="Account" asp-action="Login"
+                           class="text-dark">@Localizer["Login"]</a>
+                        @Localizer["Or"]
+                        <a asp-area="Identity" asp-controller="Account" asp-action="Register"
+                           class="text-dark">@Localizer["Register"]</a>
+                        @Localizer["ToOrder"]
+                    </span>
+                }
+                else
+                {
+                    @await Component.InvokeAsync("CadComponent", new { id, name, area, button = "Order" })
+                }
+            </div>
+        </div>
+        <div class="card-footer d-flex justify-content-between fs-6">
+            <span>@Model.CreatorName</span>
+            <span>@Model.CreationDate</span>
+        </div>
+    </div>
+</div>

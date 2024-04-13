@@ -7,7 +7,6 @@
     int id = Model.Id;
     string name = Model.Name;
     string area = ViewBag.Area;
-    bool alreadyOrdered = ViewBag.AlreadyOrdered ?? false;
 }
 
 <script type="module">
@@ -31,7 +30,7 @@
             <span>@header</span>
         </h4>
         <div class="card-body">
-            <div id="model-@Model.Id"></div>
+            <div id="model-@id"></div>
             <div class="d-grid gap-2 mt-3">
                 @foreach (string button in buttons)
                 {

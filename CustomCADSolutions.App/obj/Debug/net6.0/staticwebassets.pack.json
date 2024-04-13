@@ -373,10 +373,6 @@
       "PackagePath": "staticwebassets\\others\\categories\\Vehicles.png"
     },
     {
-      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\delivery.png",
-      "PackagePath": "staticwebassets\\others\\images\\delivery.png"
-    },
-    {
       "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\flags\\1x1\\ad.svg",
       "PackagePath": "staticwebassets\\others\\images\\flags\\1x1\\ad.svg"
     },
@@ -2537,16 +2533,68 @@
       "PackagePath": "staticwebassets\\others\\images\\flags\\4x3\\zw.svg"
     },
     {
+      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\idk.jpg",
+      "PackagePath": "staticwebassets\\others\\images\\idk.jpg"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\idk2.jpg",
+      "PackagePath": "staticwebassets\\others\\images\\idk2.jpg"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\lies\\delivery.png",
+      "PackagePath": "staticwebassets\\others\\images\\lies\\delivery.png"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\lies\\quality.png",
+      "PackagePath": "staticwebassets\\others\\images\\lies\\quality.png"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\lies\\recycle.png",
+      "PackagePath": "staticwebassets\\others\\images\\lies\\recycle.png"
+    },
+    {
       "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\puppy.png",
       "PackagePath": "staticwebassets\\others\\images\\puppy.png"
     },
     {
-      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\quality.png",
-      "PackagePath": "staticwebassets\\others\\images\\quality.png"
+      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\team\\3Ddesigner.jpg",
+      "PackagePath": "staticwebassets\\others\\images\\team\\3Ddesigner.jpg"
     },
     {
-      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\recycle.png",
-      "PackagePath": "staticwebassets\\others\\images\\recycle.png"
+      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\team\\BackendDev.jpg",
+      "PackagePath": "staticwebassets\\others\\images\\team\\BackendDev.jpg"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\team\\DbAdmin.jpg",
+      "PackagePath": "staticwebassets\\others\\images\\team\\DbAdmin.jpg"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\team\\FrontendDev.jpg",
+      "PackagePath": "staticwebassets\\others\\images\\team\\FrontendDev.jpg"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\team\\WebDesigner.jpg",
+      "PackagePath": "staticwebassets\\others\\images\\team\\WebDesigner.jpg"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\teamfr\\3Ddesigner.jpg",
+      "PackagePath": "staticwebassets\\others\\images\\teamfr\\3Ddesigner.jpg"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\teamfr\\BackendDev.jpg",
+      "PackagePath": "staticwebassets\\others\\images\\teamfr\\BackendDev.jpg"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\teamfr\\DbAdmin.jpg",
+      "PackagePath": "staticwebassets\\others\\images\\teamfr\\DbAdmin.jpg"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\teamfr\\FrontendDev.jpg",
+      "PackagePath": "staticwebassets\\others\\images\\teamfr\\FrontendDev.jpg"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\teamfr\\WebDesigner.jpg",
+      "PackagePath": "staticwebassets\\others\\images\\teamfr\\WebDesigner.jpg"
     },
     {
       "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.CustomCADSolutions.App.Microsoft.AspNetCore.StaticWebAssets.props",
