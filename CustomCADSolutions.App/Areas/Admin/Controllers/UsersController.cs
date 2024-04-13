@@ -13,15 +13,12 @@ namespace CustomCADSolutions.App.Areas.Admin.Controllers
     {
         private readonly ILogger<UsersController> logger;
         private readonly UserManager<AppUser> userManager;
-        private readonly HttpClient httpClient;
 
         public UsersController(
             UserManager<AppUser> userManager,
-            HttpClient httpClient,
             ILogger<UsersController> logger)
         {
             this.userManager = userManager;
-            this.httpClient = httpClient;
             this.logger = logger;
         }
 

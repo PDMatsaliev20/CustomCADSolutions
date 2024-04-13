@@ -16,13 +16,9 @@ namespace CustomCADSolutions.App.APIControllers
         private readonly ICadService cadService;
         private readonly IMapper mapper;
 
-        public CadsAPIController(ICadService cadService, 
-            ICategoryService categoryService, 
-            IOrderService orderService)
+        public CadsAPIController(ICadService cadService)
         {
             this.cadService = cadService;
-            this.categoryService = categoryService;
-            this.orderService = orderService;
             MapperConfiguration config = new(cfg => cfg.AddProfile<CadProfile>());
             mapper = config.CreateMapper();
         }

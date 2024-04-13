@@ -20,12 +20,6 @@ namespace Microsoft.AspNetCore.Builder
             return app;
         }
 
-        public static IApplicationBuilder UseCorsOrigins(this IApplicationBuilder app, params string[] origins)
-        {
-            app.UseCors(opt => opt.WithOrigins(origins));
-            return app;
-        }
-
         public static IApplicationBuilder UseProductionMiddlewares(this IApplicationBuilder app)
         {
             string exceptionPath = "/Home/StatusCodeHandler";
@@ -33,13 +27,6 @@ namespace Microsoft.AspNetCore.Builder
             app.UseHsts();
             app.UseExceptionHandler(exceptionPath);
             app.UseStatusCodePagesWithReExecute(exceptionPath, "?statusCode={0}");
-            return app;
-        }
-
-        public static IApplicationBuilder UseDevelopmentMiddlewares(this IApplicationBuilder app)
-        {
-            app.UseSwagger();
-            app.UseSwaggerUI();
             return app;
         }
 
@@ -72,38 +59,46 @@ namespace Microsoft.AspNetCore.Builder
                 string password = config[$"Passwords:{role}"];
                 await userManager.AddUserAsync(username, email, password, role);
             }
-            
+
             return service;
         }
 
         public static IApplicationBuilder MapRoutes(this WebApplication app)
         {
-            app.MapAreaControllerRoute(
-                name: "AdminArea",
-                areaName: "Admin",
-                pattern: "Admin/{controller}/{action=Index}/{id?}");
+            app.UseEndpoints(endpoints =>
+            {
+                var defaults = new { Controller = "Home", Action = "Index" };
+                endpoints.MapAreaControllerRoute(
+                    name: "AdminArea",
+                    areaName: "Admin",
+                    pattern: "Admin/{controller}/{action}/{id?}",
+                    defaults: defaults);
 
-            app.MapAreaControllerRoute(
-                name: "DesignerArea",
-                areaName: "Designer",
-                pattern: "Designer/{controller}/{action=Index}/{id?}");
+                endpoints.MapAreaControllerRoute(
+                    name: "DesignerArea",
+                    areaName: "Designer",
+                    pattern: "Designer/{controller}/{action}/{id?}",
+                    defaults: defaults);
 
-            app.MapAreaControllerRoute(
-                name: "ContributorArea",
-                areaName: "Contributor",
-                pattern: "Contributor/{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapAreaControllerRoute(
+                    name: "ContributorArea",
+                    areaName: "Contributor",
+                    pattern: "Contributor/{controller}/{action}/{id?}",
+                    defaults: defaults);
 
-            app.MapAreaControllerRoute(
-                name: "ClientArea",
-                areaName: "Client",
-                pattern: "Client/{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapAreaControllerRoute(
+                    name: "ClientArea",
+                    areaName: "Client",
+                    pattern: "Client/{controller}/{action}/{id?}",
+                    defaults: defaults);
 
-            app.MapAreaControllerRoute(
-                name: "IdentityArea",
-                areaName: "Identity",
-                pattern: "Identity/{controller=Account}/{action=Register}");
+                endpoints.MapAreaControllerRoute(
+                    name: "IdentityArea",
+                    areaName: "Identity",
+                    pattern: "Identity/{controller}/{action}");
 
-            app.MapDefaultControllerRoute();
+                endpoints.MapDefaultControllerRoute();
+            });
 
             return app;
         }

@@ -4,7 +4,6 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 builder.Services.AddApplicationDbContext(builder.Configuration);
 builder.Services.AddApplicationIdentity();
 builder.Services.AddInbuiltServices();
-builder.Services.AddAPI();
 
 // Localizer
 System.Globalization.CultureInfo[] cultures = { new("en-US"), new("bg-BG") };
@@ -14,7 +13,6 @@ builder.Services.AddLocalizer(cultures);
 string[] roles = { "Administrator", "Designer", "Contributor", "Client" };
 builder.Services.AddRoles(roles);
 builder.Services.AddStripe(builder.Configuration);
-builder.Services.AddSwaggerGen();
 
 // Abstractions and App Cookie
 builder.Services.AddAbstractions();
@@ -31,10 +29,6 @@ app.UseLocalizion("en-US", cultures);
 if (app.Environment.IsProduction())
 {
     app.UseProductionMiddlewares();
-}
-else if (app.Environment.IsDevelopment())
-{
-    app.UseDevelopmentMiddlewares();
 }
 
 app.UseHttpsRedirection();

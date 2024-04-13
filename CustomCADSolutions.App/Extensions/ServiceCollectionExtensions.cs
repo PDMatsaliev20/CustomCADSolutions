@@ -33,11 +33,10 @@ namespace Microsoft.Extensions.DependencyInjection
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireLowercase = false;
                 options.Password.RequireUppercase = false;
-            }).AddRoles<AppRole>()
-                .AddEntityFrameworkStores<CadContext>()
-                .AddUserManager<UserManager<AppUser>>()
-                .AddDefaultTokenProviders()
-                ;
+            })
+            .AddRoles<AppRole>()
+            .AddEntityFrameworkStores<CadContext>()
+            .AddDefaultTokenProviders();
 
             return services;
         }
@@ -49,13 +48,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
             return services
                 .AddControllersWithViews(opt => opt.Filters.Add(antiForgeryToken))
-                .AddViewLocalizer(extensionFormat, typeof(SharedResources))
-                .ConfigureApiBehaviorOptions(opt =>
-                {
-                    opt.SuppressModelStateInvalidFilter = true;
-                    opt.SuppressMapClientErrors = true;
-                    opt.SuppressConsumesConstraintForFormFileParameters = true;
-                });
+                .AddViewLocalizer(extensionFormat, typeof(SharedResources));
         }
 
         private static IMvcBuilder AddViewLocalizer(this IMvcBuilder builder, LanguageViewLocationExpanderFormat format, Type resource)
@@ -66,14 +59,6 @@ namespace Microsoft.Extensions.DependencyInjection
                     => factory.Create(resource));
 
             return builder;
-        }
-
-        public static IServiceCollection AddAPI(this IServiceCollection services)
-        {
-            services.AddHttpClient();
-            services.AddEndpointsApiExplorer();
-            services.AddSwaggerGen();
-            return services;
         }
 
         public static IServiceCollection AddLocalizer(this IServiceCollection services, CultureInfo[] cultures)
