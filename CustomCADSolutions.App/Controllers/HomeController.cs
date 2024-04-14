@@ -99,6 +99,10 @@ namespace CustomCADSolutions.App.Controllers
         public async Task<ActionResult> DownloadCad(int id)
         {
             CadModel model = await cadService.GetByIdAsync(id);
+            //if (!model.Orders.Any(o => o.BuyerId == User.GetId()))
+            //{
+            //    return StatusCode(402);
+            //}
             return File(model.Bytes, "application/octet-stream", $"{model.Name}.stl");
         }
 
@@ -138,32 +142,6 @@ namespace CustomCADSolutions.App.Controllers
         {
             logger.LogInformation("Entered Privacy Policy Page");
             return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error() => View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-
-        public IActionResult StatusCodeHandler(int statusCode)
-        {
-            IActionResult view;
-            if (statusCode == 0)
-            {
-                // ViewBag.OriginalStatusCode = "An exception was thrown";
-                // ViewBag.ErrorMessage = "I wonder what it could be...";
-                view = View("Exception");
-            }
-            else
-            {
-                // ViewBag.OriginalStatusCode = $"A {statusCode} error occured";
-                view = statusCode switch
-                {
-                    400 => View("HttpError400"), // "Your request could not be understood by the server due to malformed syntax or other client-side errors.",
-                    401 => View("HttpError401"), // "You do not have access to the resource you requested.",
-                    404 => View("HttpError404"), // "The resource you requested could not be found.",
-                    _ => View("HttpError") // "An error occurred.",
-                };
-            }
-            return view;
         }
 
         public new IActionResult Unauthorized() => base.Unauthorized();

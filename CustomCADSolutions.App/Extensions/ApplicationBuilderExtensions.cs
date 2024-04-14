@@ -20,13 +20,11 @@ namespace Microsoft.AspNetCore.Builder
             return app;
         }
 
-        public static IApplicationBuilder UseProductionMiddlewares(this IApplicationBuilder app)
+        public static IApplicationBuilder UseAnimalErrors(this IApplicationBuilder app, string exceptionPath)
         {
-            string exceptionPath = "/Home/StatusCodeHandler";
-
-            app.UseHsts();
             app.UseExceptionHandler(exceptionPath);
             app.UseStatusCodePagesWithReExecute(exceptionPath, "?statusCode={0}");
+
             return app;
         }
 

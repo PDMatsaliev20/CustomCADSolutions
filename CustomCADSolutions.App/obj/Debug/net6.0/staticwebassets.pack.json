@@ -373,6 +373,30 @@
       "PackagePath": "staticwebassets\\others\\categories\\Vehicles.png"
     },
     {
+      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\errors\\capy.png",
+      "PackagePath": "staticwebassets\\others\\images\\errors\\capy.png"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\errors\\cow.png",
+      "PackagePath": "staticwebassets\\others\\images\\errors\\cow.png"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\errors\\doggo.png",
+      "PackagePath": "staticwebassets\\others\\images\\errors\\doggo.png"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\errors\\kitty.png",
+      "PackagePath": "staticwebassets\\others\\images\\errors\\kitty.png"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\errors\\mickey.png",
+      "PackagePath": "staticwebassets\\others\\images\\errors\\mickey.png"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\errors\\puppy.png",
+      "PackagePath": "staticwebassets\\others\\images\\errors\\puppy.png"
+    },
+    {
       "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\flags\\1x1\\ad.svg",
       "PackagePath": "staticwebassets\\others\\images\\flags\\1x1\\ad.svg"
     },
@@ -2553,10 +2577,6 @@
       "PackagePath": "staticwebassets\\others\\images\\lies\\recycle.png"
     },
     {
-      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\puppy.png",
-      "PackagePath": "staticwebassets\\others\\images\\puppy.png"
-    },
-    {
       "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\team\\3Ddesigner.jpg",
       "PackagePath": "staticwebassets\\others\\images\\team\\3Ddesigner.jpg"
     },
@@ -2595,6 +2615,10 @@
     {
       "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\images\\teamfr\\WebDesigner.jpg",
       "PackagePath": "staticwebassets\\others\\images\\teamfr\\WebDesigner.jpg"
+    },
+    {
+      "Id": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\others\\kitty.jpg",
+      "PackagePath": "staticwebassets\\others\\kitty.jpg"
     },
     {
       "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.CustomCADSolutions.App.Microsoft.AspNetCore.StaticWebAssets.props",

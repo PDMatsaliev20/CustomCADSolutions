@@ -25,11 +25,11 @@ builder.Services.ConfigureApplicationCookie(options =>
 WebApplication app = builder.Build();
 
 app.UseLocalizion("en-US", cultures);
-
 if (app.Environment.IsProduction())
 {
-    app.UseProductionMiddlewares();
+    app.UseHsts();
 }
+app.UseAnimalErrors("/Error/StatusCodeHandler");
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
