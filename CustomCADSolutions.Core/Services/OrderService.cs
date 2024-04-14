@@ -28,8 +28,10 @@ namespace CustomCADSolutions.Core.Services
         
         public async Task<IEnumerable<OrderModel>> GetAllAsync()
         {
-            var orders = await repository.All<Order>().ToArrayAsync();
-            return mapper.Map<OrderModel[]>(orders);
+            Order[] orders = await repository.All<Order>().ToArrayAsync();
+
+            OrderModel[] models = mapper.Map<OrderModel[]>(orders);
+            return models;
         }
 
         public async Task<OrderModel> GetByIdAsync(int id)
@@ -63,7 +65,6 @@ namespace CustomCADSolutions.Core.Services
             order.Description = model.Description;
             order.Status = model.Status;
             order.ShouldShow = model.ShouldShow;
-            order.CadId = model.CadId;
 
             await repository.SaveChangesAsync();
         }
@@ -72,11 +73,13 @@ namespace CustomCADSolutions.Core.Services
         {
             Order order = await repository.GetByIdAsync<Order>(id)
                 ?? throw new KeyNotFoundException();
+
             order.Status = OrderStatus.Finished;
 
             CadModel cad = model.Cad!;
             order.Cad = new()
             {
+                Id = cad.Id,
                 Name = cad.Name,
                 Bytes = cad.Bytes,
                 IsValidated = cad.IsValidated,

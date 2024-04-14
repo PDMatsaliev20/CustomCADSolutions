@@ -131,25 +131,17 @@ namespace CustomCADSolutions.Core.Services
             return entry.Entity.Id;
         }
 
-        public async Task CreateRangeAsync(params CadModel[] models)
-        {
-            Cad[] cads = mapper.Map<Cad[]>(models);
-            await repository.AddRangeAsync(cads);
-            await repository.SaveChangesAsync();
-        }
-
         public async Task EditAsync(int id, CadModel model)
         {
-            Cad cad = await repository.All<Cad>()
-                .FirstOrDefaultAsync(cad => cad.Id == model.Id)
-                ?? throw new ArgumentException("Model doesn't exist!");
+            Cad cad = await repository.GetByIdAsync<Cad>(id)
+                ?? throw new KeyNotFoundException("Model doesn't exist!");
 
             cad.Name = model.Name;
             cad.IsValidated = model.IsValidated;
             cad.Price = model.Price;
-            cad.SpinAxis = model.SpinAxis;
             cad.CategoryId = model.CategoryId;
 
+            cad.SpinAxis = model.SpinAxis;
             cad.X = model.Coords[0];
             cad.Y = model.Coords[1];
             cad.Z = model.Coords[2];
