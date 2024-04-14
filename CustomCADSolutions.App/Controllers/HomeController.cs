@@ -1,7 +1,6 @@
 ﻿using static CustomCADSolutions.App.Extensions.UtilityExtensions;
 using CustomCADSolutions.App.Extensions;
 using CustomCADSolutions.App.Mappings;
-using CustomCADSolutions.App.Models;
 using CustomCADSolutions.App.Models.Cads.View;
 using CustomCADSolutions.Core.Models;
 using CustomCADSolutions.Core.Contracts;
@@ -11,8 +10,6 @@ using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
-using CustomCADSolutions.App.Models.Cads;
 
 namespace CustomCADSolutions.App.Controllers
 {
@@ -31,17 +28,17 @@ namespace CustomCADSolutions.App.Controllers
         private readonly ILogger<HomeController> logger;
 
         public HomeController(
-            ILogger<HomeController> logger,
+            ICadService cadService,
+            ICategoryService categoryService,
             UserManager<AppUser> userManager,
             SignInManager<AppUser> signInManager,
-            ICadService cadService,
-            ICategoryService categoryService)
+            ILogger<HomeController> logger)
         {
-            this.userManager = userManager;
-            this.signInManager = signInManager;
-
             this.cadService = cadService;
             this.categoryService = categoryService;
+
+            this.userManager = userManager;
+            this.signInManager = signInManager;
 
             MapperConfiguration config = new(cfg => cfg.AddProfile<CadDTOProfile>());
             mapper = config.CreateMapper();
@@ -99,14 +96,18 @@ namespace CustomCADSolutions.App.Controllers
         [HttpGet]
         public async Task<ActionResult> DownloadCad(int id)
         {
-            CadModel model = await cadService.GetByIdAsync(id);
-            //if (!model.Orders.Any(o => o.BuyerId == User.GetId()))
-            //{
-            //    return StatusCode(402);
-            //}
-            return File(model.Bytes, "application/octet-stream", $"{model.Name}.stl");
+            try
+            {
+                CadModel model = await cadService.GetByIdAsync(id);
+                return File(model.Bytes, "application/octet-stream", $"{model.Name}.stl");
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
         }
 
+        [HttpGet]
         public IActionResult GetCadsCount()
         {
             int userCads = cadService.Count(c => c.CreatorId == User.GetId());
@@ -117,6 +118,26 @@ namespace CustomCADSolutions.App.Controllers
                 UserCadsCount = userCads,
                 UnvalidatedCadsCount = unvCads,
             });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> MakeContributor()
+        {
+            if (!User.Identity!.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account", new { area = "Identity" });
+            }
+
+            AppUser user = await userManager.FindByIdAsync(User.GetId());
+            IEnumerable<string> roles = await userManager.GetRolesAsync(user);
+
+            await userManager.RemoveFromRoleAsync(user, roles.Single());
+            await userManager.AddToRoleAsync(user, "Contributor");
+
+            await signInManager.SignOutAsync();
+            await signInManager.SignInAsync(user, false);
+
+            return RedirectToAction("Index", "Cads", new { area = "Contributor" });
         }
 
         public IActionResult SetLanguage(string culture, string returnUrl)
@@ -131,26 +152,6 @@ namespace CustomCADSolutions.App.Controllers
 
             return LocalRedirect(returnUrl);
         }
-
-        public async Task<IActionResult> MakeContributor()
-        {
-            if (!User.Identity!.IsAuthenticated)
-            {
-                return View();
-            }
-
-            AppUser user = await userManager.FindByIdAsync(User.GetId().ToString());
-            IEnumerable<string> roles = await userManager.GetRolesAsync(user);
-
-            await userManager.RemoveFromRoleAsync(user, roles.Single());
-            await userManager.AddToRoleAsync(user, "Contributor");
-
-            await signInManager.SignOutAsync();
-            await signInManager.SignInAsync(user, false);
-
-            return RedirectToAction("Index", "Cads", new { area = "Contributor" });
-        }
-
         public IActionResult Privacy()
         {
             logger.LogInformation("Entered Privacy Policy Page");

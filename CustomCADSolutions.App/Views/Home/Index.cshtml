@@ -11,42 +11,44 @@
 
     <div class="container d-flex flex-column justify-content-between mt-4">
         <div class="row flex-sm-row flex-column-reverse">
+
             <div class="col d-flex flex-column justify-content-evenly align-content-center">
                 <h3 class="col-12 text-center">@Localizer["Title"]</h3>
 
                 <div class="col-sm-12 mt-5 mt-sm-0 d-flex flex-column justify-items-center">
                     <p class="col text-center">@Localizer["Contribute"]</p>
-                    <p class="col-12 d-flex flex-columns justify-content-around" onclick="return confirm('@Localizer["Warning"]')">
-                        <a asp-area="" asp-controller="Home" asp-action="MakeContributor"
-                           class="col-6 btn custombtn">@Localizer["ContributeBtn"]</a>
-                    </p>
+                    <form asp-action="MakeContributor" class="col-12 d-flex justify-content-center">
+                        <input type="submit" value="@Localizer["ContributeBtn"]" class="btn custombtn"
+                               onclick="return confirm('@Localizer["Warning"]')" />
+                    </form>
                 </div>
             </div>
 
             <div class="col-sm-4 col-12 mt-0 mb-3">
                 <div id="model-@cad.Id" class="bg-transparent"></div>
             </div>
+
         </div>
     </div>
     <hr />
 
     <div class="container d-flex justify-content-evenly mt-5 mb-5">
         <div class="col-2">
-            <div style="background-color: #BBB9D9" class="card p-2">
-                <p class="mb-0  text-center">@Localizer["Recycle"]</p>
+            <div class="card p-2 custombtn">
+                <p class="mb-0 text-center">@Localizer["Recycle"]</p>
             </div>
             <img src="~/others/images/lies/recycle.png" class="mt-3 w-100 h-auto rounded-circle" />
         </div>
 
         <div class="col-2">
-            <div style="background-color: #BBB9D9" class="card p-2">
+            <div class="card p-2 custombtn">
                 <p class="mb-0 text-center">@Localizer["Delivery"]</p>
             </div>
             <img src="~/others/images/lies/delivery.png" class="mt-3 w-100 h-auto rounded-circle" />
         </div>
 
         <div class="col-2">
-            <div style="background-color: #BBB9D9" class="card p-2">
+            <div class="card p-2 custombtn">
                 <p class="mb-0 text-center">@Localizer["Quality"]</p>
             </div>
             <img src="~/others/images/lies/quality.png" class="mt-3 w-100 h-auto rounded-circle" />
@@ -85,8 +87,8 @@
             fov: @cad.Fov,
             rgb: {
                 r: @cad.RGB[0] / 255,
-                g: @cad.RGB[1] / 255,
-                b: @cad.RGB[2] / 255,
+                        g: @cad.RGB[1] / 255,
+                        b: @cad.RGB[2] / 255,
             }
         };
 
