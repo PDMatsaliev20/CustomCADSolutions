@@ -1,4 +1,5 @@
-﻿using static CustomCADSolutions.Infrastructure.Data.DataConstants.OrderConstants;
+﻿using static CustomCADSolutions.Infrastructure.Data.DataConstants;
+using static CustomCADSolutions.Infrastructure.Data.DataConstants.OrderConstants;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using CustomCADSolutions.Core.Mappings.CadDTOs;
@@ -7,38 +8,31 @@ namespace CustomCADSolutions.Core.Mappings.DTOs
 {
     public class OrderImportDTO
     {
-        [JsonPropertyName("id")]
-        [Required]
+        [Required(ErrorMessage = RequiredErrorMessage)]
         public int Id { get; set; }
 
-        [JsonPropertyName("description")]
-        [Required]
+        [Required(ErrorMessage = RequiredErrorMessage)]
         [StringLength(DescriptionMaxLength, MinimumLength = DescriptionMinLength)]
         public string Description { get; set; } = null!;
         
-        [JsonPropertyName("name")]
-        [Required]
+        [Required(ErrorMessage = RequiredErrorMessage)]
         [StringLength(NameMaxLength, MinimumLength = NameMinLength)]
         public string Name { get; set; } = null!;
 
-        [JsonPropertyName("status")]
-        [Required]
+        [Required(ErrorMessage = RequiredErrorMessage)]
         public string Status { get; set; } = null!;
         
-        [JsonPropertyName("shouldShow")]
-        [Required]
+        [Required(ErrorMessage = RequiredErrorMessage)]
         public bool ShouldShow { get; set; }
 
-        [JsonPropertyName("cadId")]
         public int? CadId { get; set; }
         
-        [JsonPropertyName("categoryId")]
+        [Required(ErrorMessage = RequiredErrorMessage)]
         public int CategoryId { get; set; }
 
-        [JsonPropertyName("buyerId")]
+        [Required(ErrorMessage = RequiredErrorMessage)]
         public string BuyerId { get; set; } = null!;
 
-        [JsonPropertyName("cad")]
         public CadImportDTO? Cad { get; set; } 
     }
 }

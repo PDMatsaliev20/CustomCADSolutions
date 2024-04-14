@@ -23,8 +23,8 @@ namespace CustomCADSolutions.App.APIControllers
             this.orderService = orderService;
             MapperConfiguration config = new(cfg =>
             {
-                cfg.AddProfile<OrderProfile>();
-                cfg.AddProfile<CadProfile>();
+                cfg.AddProfile<OrderCoreProfile>();
+                cfg.AddProfile<CadCoreProfile>();
             });
             this.mapper = config.CreateMapper();
         }

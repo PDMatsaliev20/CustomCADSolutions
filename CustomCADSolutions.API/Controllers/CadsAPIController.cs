@@ -19,7 +19,7 @@ namespace CustomCADSolutions.App.APIControllers
         public CadsAPIController(ICadService cadService)
         {
             this.cadService = cadService;
-            MapperConfiguration config = new(cfg => cfg.AddProfile<CadProfile>());
+            MapperConfiguration config = new(cfg => cfg.AddProfile<CadCoreProfile>());
             mapper = config.CreateMapper();
         }
 

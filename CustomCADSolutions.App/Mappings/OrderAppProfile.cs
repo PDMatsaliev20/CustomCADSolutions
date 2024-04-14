@@ -5,9 +5,9 @@ using CustomCADSolutions.Core.Models;
 
 namespace CustomCADSolutions.App.Mappings
 {
-    public class OrderDTOProfile : Profile
+    public class OrderAppProfile : Profile
     {
-        public OrderDTOProfile()
+        public OrderAppProfile()
         {         
             InputToModel();
             ModelToView();

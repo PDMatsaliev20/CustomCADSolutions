@@ -22,8 +22,8 @@ namespace CustomCADSolutions.Core.Services
             this.repository = repository;
             mapper = new MapperConfiguration(cfg =>
             {
-                cfg.AddProfile<CadProfile>();
-                cfg.AddProfile<OrderProfile>();
+                cfg.AddProfile<CadCoreProfile>();
+                cfg.AddProfile<OrderCoreProfile>();
             }).CreateMapper();
         }
 

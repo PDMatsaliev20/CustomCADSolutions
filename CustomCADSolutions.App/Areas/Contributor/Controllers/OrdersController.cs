@@ -46,7 +46,7 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
             this.stripeSettings = stripeSettings.Value;
             MapperConfiguration config = new(cfg =>
             {
-                cfg.AddProfile<OrderDTOProfile>();
+                cfg.AddProfile<OrderAppProfile>();
                 cfg.AddProfile<CadDTOProfile>();
             });
             this.mapper = config.CreateMapper();

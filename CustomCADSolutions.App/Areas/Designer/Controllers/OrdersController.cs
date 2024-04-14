@@ -38,7 +38,7 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
             this.categoryService = categoryService;
 
             this.logger = logger;
-            MapperConfiguration config = new(cfg => cfg.AddProfile<OrderDTOProfile>());
+            MapperConfiguration config = new(cfg => cfg.AddProfile<OrderAppProfile>());
             this.mapper = config.CreateMapper();
         }
 
