@@ -13,6 +13,8 @@ namespace CustomCADSolutions.Core.Contracts
 
         Task ChangeColorAsync(int id, Color color);
 
+        int Count(Func<CadModel, bool> predicate);
+
         Task<int> CreateAsync(CadModel model);
 
         Task CreateRangeAsync(params CadModel[] models);

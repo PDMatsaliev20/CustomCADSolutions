@@ -6,20 +6,64 @@
 }
 
 <div class="row d-flex justify-content-around">
-    <a asp-area="Designer" asp-controller="Cads" asp-action="Index"
-       class="col-sm-2 col-12 btn btn-primary">
-        @Localizer["UrCads", ViewBag.DesignerDetails]
+    <a id="user-cads-wrapper" asp-area="Designer" asp-controller="Cads" asp-action="Index"
+       class="col-sm-2 col-12 btn btn-primary d-none">
+        @Localizer["UrCads"] <span id="user-cads-count"></span>
     </a>
     <div class="col-3 d-flex align-items-end">
         <h2>@Localizer["Title"]</h2>
     </div>
-    <a asp-area="Designer" asp-controller="Cads" asp-action="Submitted"
-       class="col-sm-2 col-12 btn btn-secondary">
-        @Localizer["UnvCads", ViewBag.UnvalidatedDetails]
+    <a id="unvalidated-cads-wrapper" asp-area="Designer" asp-controller="Cads" asp-action="Submitted"
+       class="col-sm-2 col-12 btn btn-secondary d-none">
+       @Localizer["UnvCads"] <span id="unvalidated-cads-count"></span>
     </a>
 </div>
 <hr />
 
+<script>
+    $(document).ready(function () {
+        function updateProductCount() {
+            $.ajax({
+                url: '/Home/GetCadsCount',
+                method: 'GET',
+                success: function (response) {
+                    const hasMessage = '@Localizer["Has"]';
+                    const hasNotMessage =' @Localizer["Hasn't"]';
+
+                    const userCadsCount = response.userCadsCount;
+                    if (userCadsCount > 0) {
+
+                        $('#user-cads-count').text(`${hasMessage} ${userCadsCount}`);
+                    }
+                    else {
+                        $('#user-cads-count').text(hasNotMessage);
+                    }
+                    
+                    const unvCadsCount = response.unvalidatedCadsCount;
+                    if (unvCadsCount > 0) {
+
+                        $('#unvalidated-cads-count').text(`${hasMessage} ${unvCadsCount}`);
+                    }
+                    else {
+                        $('#unvalidated-cads-count').text(hasNotMessage);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error fetching product count:', error);
+                }
+            });
+        }
+        
+        updateProductCount();
+
+        setTimeout(function() {
+            $('#user-cads-wrapper').removeClass('d-none');
+            $('#unvalidated-cads-wrapper').removeClass('d-none');
+        }, 150);
+
+        setInterval(updateProductCount, 5000);
+    });
+</script>
 
 <partial name="_CadQueryPartial" model="Model" view-data="ViewData" />
 

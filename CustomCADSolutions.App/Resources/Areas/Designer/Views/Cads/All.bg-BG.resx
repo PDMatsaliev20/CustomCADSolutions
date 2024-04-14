@@ -132,6 +132,12 @@
   <data name="Furniture" xml:space="preserve">
     <value>Мебели</value>
   </data>
+  <data name="Has" xml:space="preserve">
+    <value>имате </value>
+  </data>
+  <data name="Hasn't" xml:space="preserve">
+    <value>нямате</value>
+  </data>
   <data name="Nature" xml:space="preserve">
     <value>Природа</value>
   </data>
@@ -154,10 +160,10 @@
     <value>Играчки</value>
   </data>
   <data name="UnvCads" xml:space="preserve">
-    <value>Невалидирани 3D Модели - {0}</value>
+    <value>Невалидирани 3D Модели - </value>
   </data>
   <data name="UrCads" xml:space="preserve">
-    <value>Качените От Вас 3D Модели - {0}</value>
+    <value>Качените От Вас 3D Модели - </value>
   </data>
   <data name="Vehicles" xml:space="preserve">
     <value>Коли</value>

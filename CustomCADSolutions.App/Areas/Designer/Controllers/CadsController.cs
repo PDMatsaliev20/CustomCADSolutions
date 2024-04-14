@@ -73,26 +73,6 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
             inputQuery.TotalCount = query.TotalCount;
             inputQuery.Cads = mapper.Map<CadViewModel[]>(query.Cads);
 
-            // Count of Creator's Cads
-            query.Creator = User.Identity!.Name;
-            query = await cadService.GetAllAsync(query);
-
-            if (query.TotalCount > 0)
-            {
-                ViewBag.DesignerDetails = localizer["Has", query.TotalCount];
-            }
-            else ViewBag.DesignerDetails = localizer["Hasn't"];
-
-            // Count of Unvalidated Cads
-            query.Unvalidated = true;
-            query = await cadService.GetAllAsync(query);
-
-            if (query.TotalCount > 0)
-            {
-                ViewBag.UnvalidatedDetails = localizer["Has", query.TotalCount];
-            }
-            else ViewBag.UnvalidatedDetails = localizer["Hasn't"];
-
             ViewBag.Sortings = typeof(CadSorting).GetEnumNames();
             return View(inputQuery);
         }

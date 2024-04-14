@@ -117,6 +117,11 @@ namespace CustomCADSolutions.Core.Services
             await repository.SaveChangesAsync();
         }
 
+        public int Count(Func<CadModel, bool> predicate)
+        {            
+            return repository.Count<Cad>(cad => predicate(mapper.Map<CadModel>(cad)));
+        }
+
         public async Task<int> CreateAsync(CadModel model)
         {
             Cad cad = mapper.Map<Cad>(model);

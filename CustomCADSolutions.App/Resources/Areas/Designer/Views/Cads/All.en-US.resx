@@ -135,6 +135,12 @@
   <data name="Furniture" xml:space="preserve">
     <value>Furniture</value>
   </data>
+  <data name="Has" xml:space="preserve">
+    <value>you have </value>
+  </data>
+  <data name="Hasn't" xml:space="preserve">
+    <value>none</value>
+  </data>
   <data name="Nature" xml:space="preserve">
     <value>Nature</value>
   </data>
@@ -157,10 +163,10 @@
     <value>Toys</value>
   </data>
   <data name="UnvCads" xml:space="preserve">
-    <value>3D Models Awaiting Validation - {0}</value>
+    <value>3D Models Awaiting Validation - </value>
   </data>
   <data name="UrCads" xml:space="preserve">
-    <value>Uploaded By You 3D Models - {0}</value>
+    <value>Uploaded By You 3D Models - </value>
   </data>
   <data name="Vehicles" xml:space="preserve">
     <value>Vehicles</value>

@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using CustomCADSolutions.App.Models.Cads;
 
 namespace CustomCADSolutions.App.Controllers
 {
@@ -20,11 +21,11 @@ namespace CustomCADSolutions.App.Controllers
         // Services
         private readonly ICadService cadService;
         private readonly ICategoryService categoryService;
-        
+
         // Managers
         private readonly UserManager<AppUser> userManager;
         private readonly SignInManager<AppUser> signInManager;
-        
+
         // Additional
         private readonly IMapper mapper;
         private readonly ILogger<HomeController> logger;
@@ -38,10 +39,10 @@ namespace CustomCADSolutions.App.Controllers
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
-            
+
             this.cadService = cadService;
             this.categoryService = categoryService;
-            
+
             MapperConfiguration config = new(cfg => cfg.AddProfile<CadDTOProfile>());
             mapper = config.CreateMapper();
             this.logger = logger;
@@ -106,14 +107,26 @@ namespace CustomCADSolutions.App.Controllers
             return File(model.Bytes, "application/octet-stream", $"{model.Name}.stl");
         }
 
+        public IActionResult GetCadsCount()
+        {
+            int userCads = cadService.Count(c => c.CreatorId == User.GetId());
+            int unvCads = cadService.Count(c => c.IsValidated == false);
+
+            return Ok(new CadsCountModel()
+            {
+                UserCadsCount = userCads,
+                UnvalidatedCadsCount = unvCads,
+            });
+        }
+
         public IActionResult SetLanguage(string culture, string returnUrl)
         {
             string key = CookieRequestCultureProvider.DefaultCookieName;
             string value = CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture));
-            
-            Response.Cookies.Append(key, value, new CookieOptions 
+
+            Response.Cookies.Append(key, value, new CookieOptions
             {
-                Expires = DateTimeOffset.UtcNow.AddYears(1) 
+                Expires = DateTimeOffset.UtcNow.AddYears(1)
             });
 
             return LocalRedirect(returnUrl);
