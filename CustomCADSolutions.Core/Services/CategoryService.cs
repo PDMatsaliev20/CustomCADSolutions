@@ -46,6 +46,7 @@ namespace CustomCADSolutions.Core.Services
                 ?? throw new KeyNotFoundException();
 
             entity.Name = model.Name;
+
             await repository.SaveChangesAsync();
         }
 

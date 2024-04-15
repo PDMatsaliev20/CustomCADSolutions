@@ -58,13 +58,14 @@ namespace CustomCADSolutions.Core.Services
 
         public async Task EditAsync(int id, OrderModel model)
         {
-            Order order = await repository.GetByIdAsync<Order>(model.Id)
+            Order order = await repository.GetByIdAsync<Order>(id)
                 ?? throw new KeyNotFoundException();
 
             order.Name = model.Name;
             order.Description = model.Description;
             order.Status = model.Status;
             order.ShouldShow = model.ShouldShow;
+            order.CategoryId = model.CategoryId;
 
             await repository.SaveChangesAsync();
         }
@@ -79,17 +80,13 @@ namespace CustomCADSolutions.Core.Services
             CadModel cad = model.Cad!;
             order.Cad = new()
             {
-                Id = cad.Id,
                 Name = cad.Name,
+                Price = cad.Price,
+                CategoryId = cad.CategoryId,
                 Bytes = cad.Bytes,
                 IsValidated = cad.IsValidated,
-                R = cad.Color.R,
-                G = cad.Color.G,
-                B = cad.Color.B,
-                Price = cad.Price,
-                CreationDate = cad.CreationDate,
                 CreatorId = cad.CreatorId,
-                CategoryId = cad.CategoryId,
+                CreationDate = cad.CreationDate,
             };
             await repository.SaveChangesAsync();
         }

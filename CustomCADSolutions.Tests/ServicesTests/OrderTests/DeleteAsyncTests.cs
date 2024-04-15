@@ -1,28 +1,28 @@
-﻿namespace CustomCADSolutions.Tests.ServiceTests.CategoryTests
+﻿namespace CustomCADSolutions.Tests.ServiceTests.OrderTests
 {
-    public class DeleteAsyncTests : BaseCategoriesTests
+    public class DeleteAsyncTests :  BaseOrdersTests
     {
         [TestCase(1)]
         [TestCase(4)]
-        public async Task Test_DeletesWhenCategoryExists(int id)
+        public async Task Test_DeletesWhenOrderExists(int id)
         {
             await service.DeleteAsync(id);
 
             Assert.ThrowsAsync<KeyNotFoundException>(async () =>
             {
                 await service.GetByIdAsync(id);
-            }, "Found deleted Category.");
+            }, "Found deleted Order.");
         }
-
+        
         [TestCase(-1)]
         [TestCase(0)]
         [TestCase(100)]
-        public void Test_ThrowsWhenCategoryDoesNotExist(int id)
+        public void Test_ThrowsWhenOrderDoesNotExists(int id)
         {
             Assert.ThrowsAsync<KeyNotFoundException>(async () =>
             {
                 await service.DeleteAsync(id);
-            }, "Deleted non-existent Category.");
+            }, "Deleted non-existent Order.");
         }
     }
 }

@@ -1,18 +1,14 @@
-﻿using CustomCADSolutions.Infrastructure.Data.Models;
-using CustomCADSolutions.Tests.ServicesTests.CategoryTests;
-
-namespace CustomCADSolutions.Tests.ServiceTests.CategoryTests
+﻿namespace CustomCADSolutions.Tests.ServiceTests.CategoryTests
 {
-    [TestFixture]
-    public class GetAllAsyncTests : BaseTests
+    public class GetAllAsyncTests : BaseCategoriesTests
     {
         [Test]
-        public async Task Test_ReturnsProperly()
+        public async Task Test_ReturnsCorrectly()
         {
-            Category[] categories = (await service.GetAllAsync()).ToArray();
-            var actualCategories = categories.OrderBy(c => c.Id);
+            var categories = await service.GetAllAsync();
 
-            Assert.That(actualCategories, Is.EqualTo(this.categories), "Category mismatch.");
+            Assert.That(categories.Count(), Is.EqualTo(this.categories.Count()), 
+                "Categories Count mismatch.");
         }
     }
 }

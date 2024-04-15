@@ -1,44 +1,32 @@
 ﻿using CustomCADSolutions.Infrastructure.Data.Models;
-using CustomCADSolutions.Tests.ServicesTests.CategoryTests;
 
 namespace CustomCADSolutions.Tests.ServiceTests.CategoryTests
 {
-    [TestFixture]
-    public class EditAsyncTests : BaseTests
+    public class EditAsyncTests : BaseCategoriesTests
     {
-        [Test]
         [TestCase(1)]
         [TestCase(4)]
-        public async Task Test_EditsProperly(int id)
+        public async Task Test_EditsDesiredProperties(int id)
         {
-            Category category = new()
-            {
-                Id = id,
-                Name = "EditedCategory",
-            };
+            Category expectedCategory = await service.GetByIdAsync(id);
+            expectedCategory.Name = "Edited Category";
 
-            await service.EditAsync(id, category);
-            Category editedCategory = await service.GetByIdAsync(1);
+            await service.EditAsync(id, expectedCategory);
+            Category actualCategory = await service.GetByIdAsync(id);
 
-            Assert.That(editedCategory.Name, Is.EqualTo(category.Name), "Edited Category doesn't get saved.");
+            Assert.That(actualCategory.Name, Is.EqualTo(expectedCategory.Name),
+                "Category's Name doesn't get saved.");
         }
 
-        [Test]
         [TestCase(-1)]
         [TestCase(0)]
         [TestCase(100)]
-        public void Test_ThrowsProperly(int id)
+        public void Test_ThrowsWhenCategoryDoesNotExist(int id)
         {
-            Category category = new()
-            {
-                Id = id,
-                Name = "EditedCategory",
-            };
-
             Assert.ThrowsAsync<KeyNotFoundException>(async () =>
             {
-                await service.EditAsync(id, category);
-            }, "Non-existent category gets edited");
+                await service.EditAsync(id, new());
+            }, "Non-existent Category edited.");
         }
     }
 }

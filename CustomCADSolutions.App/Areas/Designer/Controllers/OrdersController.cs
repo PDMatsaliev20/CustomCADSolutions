@@ -86,8 +86,9 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
                 Price = cad.Price,
                 CategoryId = cad.CategoryId,
                 Bytes = await cad.CadFile.GetBytesAsync(),
-                CreatorId = User.GetId(),
                 IsValidated = true,
+                CreatorId = User.GetId(),
+                CreationDate = DateTime.Now,
             };
 
             await orderService.FinishOrderAsync(id, model);
