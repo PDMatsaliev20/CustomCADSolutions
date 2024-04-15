@@ -20,14 +20,14 @@ namespace CustomCADSolutions.Tests.ServiceTests.CategoryTests
             await service.EditAsync(id, category);
             Category editedCategory = await service.GetByIdAsync(1);
 
-            Assert.That(editedCategory.Name, Is.EqualTo(category.Name), "Edit doesn't get saved.");
+            Assert.That(editedCategory.Name, Is.EqualTo(category.Name), "Edited Category doesn't get saved.");
         }
 
         [Test]
         [TestCase(-1)]
         [TestCase(0)]
         [TestCase(100)]
-        public async Task Test_ThrowsProperly(int id)
+        public void Test_ThrowsProperly(int id)
         {
             Category category = new()
             {
@@ -38,7 +38,7 @@ namespace CustomCADSolutions.Tests.ServiceTests.CategoryTests
             Assert.ThrowsAsync<KeyNotFoundException>(async () =>
             {
                 await service.EditAsync(id, category);
-            }, "Non-existent category edited");
+            }, "Non-existent category gets edited");
         }
     }
 }

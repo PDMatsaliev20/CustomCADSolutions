@@ -9,7 +9,7 @@ namespace CustomCADSolutions.Tests.ServicesTests.CategoryTests
 {
     public class BaseTests
     {
-        private CadContext context;
+        private IRepository repository;
         protected ICategoryService service;
         protected readonly Category[] categories = new Category[5]
         {
@@ -21,24 +21,24 @@ namespace CustomCADSolutions.Tests.ServicesTests.CategoryTests
         };
 
         [SetUp]
-        public void Setup()
+        public async Task Setup()
         {
             var options = new DbContextOptionsBuilder<CadContext>()
-                .UseInMemoryDatabase("CadSo%lutionsContext").Options;
+                .UseInMemoryDatabase("CadSolutionsContext").Options;
 
-            context = new(options);
-            context.Categories.AddRange(categories);
-            context.SaveChanges();
+            this.repository = new Repository(new(options));
+            await repository.AddRangeAsync(categories);
+            await repository.SaveChangesAsync();
 
-            IRepository repository = new Repository(context);
             service = new CategoryService(repository);
         }
 
         [TearDown]
-        public void TearDown()
+        public async Task TearDown()
         {
-            context.Categories.RemoveRange(context.Categories);
-            context.SaveChanges();
+            Category[] allCategories = await repository.All<Category>().ToArrayAsync();
+            repository.DeleteRange(allCategories);
+            await repository.SaveChangesAsync();
         }
     }
 }
