@@ -40,9 +40,9 @@ namespace CustomCADSolutions.Core.Services
             return category.Entity.Id;
         }
 
-        public async Task EditAsync(Category model)
+        public async Task EditAsync(int id, Category model)
         {
-            Category entity = await repository.GetByIdAsync<Category>(model.Id)
+            Category entity = await repository.GetByIdAsync<Category>(id)
                 ?? throw new KeyNotFoundException();
 
             entity.Name = model.Name;

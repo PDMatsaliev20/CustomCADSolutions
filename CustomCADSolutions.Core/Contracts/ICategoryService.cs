@@ -34,10 +34,11 @@ namespace CustomCADSolutions.Core.Contracts
         /// <summary>
         ///     Overwrites the Category's current properties with the new ones.
         /// </summary>
+        /// <param name="id"></param>
         /// <param name="model"></param>
         /// <returns>A Task object that represents the asynchronous Save Changes operation after the edit.</returns>
         /// <exception cref="KeyNotFoundException">if no Category with the given id exists.</exception>
-        Task EditAsync(Category entity);
+        Task EditAsync(int id, Category model);
 
         /// <summary>
         ///     Deletes the Category with the given id.
