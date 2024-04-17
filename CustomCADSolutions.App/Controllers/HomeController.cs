@@ -51,10 +51,10 @@ namespace CustomCADSolutions.App.Controllers
             return View(new CadViewModel()
             {
                 Id = 1,
-                Name = "Chair",
+                Name = "Watch",
                 SpinAxis = 'y',
                 RGB = new byte[] { 143, 124, 239 },
-                Coords = new[] { 750, 300, 0 }
+                Coords = new[] { 40, 33, 25 }
             });
         }
 
@@ -67,6 +67,7 @@ namespace CustomCADSolutions.App.Controllers
                 inputQuery.CadsPerPage = inputQuery.Cols * (inputQuery.CadsPerPage / inputQuery.Cols);
             }
 
+            
             CadQueryModel query = new()
             {
                 Category = inputQuery.Category,

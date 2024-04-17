@@ -41,7 +41,7 @@
                     <select asp-for="Sorting" class="form-control">
                         @for (int i = 0; i < sorts.Length; i++)
                         {
-                            <option value=@i>@Localizer[sorts[i]]</option>
+                            <option value=@(i+1)>@Localizer[sorts[i]]</option>
                         }
                     </select>
                 </div>

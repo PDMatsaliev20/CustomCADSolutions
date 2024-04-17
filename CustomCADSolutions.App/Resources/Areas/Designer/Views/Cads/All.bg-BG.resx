@@ -160,10 +160,10 @@
     <value>Играчки</value>
   </data>
   <data name="UnvCads" xml:space="preserve">
-    <value>Невалидирани 3D Модели - </value>
+    <value>Неодобрени 3D Модели - </value>
   </data>
   <data name="UrCads" xml:space="preserve">
-    <value>Качените От Вас 3D Модели - </value>
+    <value>Вашите 3D Модели - </value>
   </data>
   <data name="Vehicles" xml:space="preserve">
     <value>Коли</value>

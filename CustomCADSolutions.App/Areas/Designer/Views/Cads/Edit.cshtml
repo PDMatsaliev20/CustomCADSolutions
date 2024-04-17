@@ -7,10 +7,8 @@
 <h2 class="text-center mb-2">@Localizer["Title", Model.Name]</h2>
 <hr />
 <div class="container">
-    <input asp-for="IsValidated" hidden />
-
-    <form method="post" autocomplete="off" enctype="multipart/form-data">
-        <input asp-for="Id" hidden />
+    <form asp-route-id="@Model.Id" method="post" autocomplete="off" enctype="multipart/form-data">
+        <input asp-for="IsValidated" hidden />
 
         <div class="row justify-content-center mb-3">
             <div class="col-2 text-center">

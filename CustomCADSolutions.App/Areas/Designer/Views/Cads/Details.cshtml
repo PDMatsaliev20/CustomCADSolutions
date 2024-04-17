@@ -4,7 +4,6 @@
     ViewData["Title"] = "3D Model Details";
     ViewBag.Area = "Designer";
     ViewBag.Buttons = new string[] { "Colorize", "Edit", "Delete" };
-    ViewBag.Header = $"{Localizer["Camera"].Value} - X:{Model.Coords[0]} Y:{Model.Coords[1]} Z:{Model.Coords[2]}";
 }
 
 <h1 class="text-center">@Localizer["Title", Model.Name]</h1>

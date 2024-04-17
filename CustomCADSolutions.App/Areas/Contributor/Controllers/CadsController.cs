@@ -48,7 +48,6 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
         [HttpGet]
         public async Task<IActionResult> Index([FromQuery] CadQueryInputModel inputQuery)
         {
-
             // Ensuring cads per page are divisible by the count of columns
             if (inputQuery.CadsPerPage % inputQuery.Cols != 0)
             {
@@ -135,7 +134,6 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
             }
 
             CadEditModel input = mapper.Map<CadEditModel>(model);
-            logger.LogInformation(input.IsValidated.ToString());
             input.Categories = await categoryService.GetAllAsync();
 
             return View(input);

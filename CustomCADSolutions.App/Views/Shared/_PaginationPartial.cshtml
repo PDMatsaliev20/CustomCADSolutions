@@ -17,7 +17,7 @@
                 int nextMaxPage = (int)Math.Ceiling((double)Model.TotalCount / i);
                 
                 <a class="btn btn-outline-dark bg-white text-black 
-                        @(Model.TotalCount + Model.Cols < i ? "disabled" : string.Empty)
+                        @(Model.TotalCount + Model.Cols <= i ? "disabled" : string.Empty)
                         @(Model.CadsPerPage == i ? "border-3" : string.Empty)"
                    asp-route-currentPage="@nextPage"
                    asp-route-cadsPerPage=@i
