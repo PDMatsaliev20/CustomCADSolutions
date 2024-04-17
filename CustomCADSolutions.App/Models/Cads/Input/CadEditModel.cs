@@ -1,7 +1,7 @@
 ﻿using CustomCADSolutions.App.Resources.Shared;
 using static CustomCADSolutions.Infrastructure.Data.DataConstants;
 using System.ComponentModel.DataAnnotations;
-using CustomCADSolutions.Infrastructure.Data.Models;
+using CustomCADSolutions.Core.Models;
 
 namespace CustomCADSolutions.App.Models.Cads.Input
 {
@@ -54,6 +54,6 @@ namespace CustomCADSolutions.App.Models.Cads.Input
         [Display(Name = "Axis", ResourceType = typeof(SharedResources))]
         public char? SpinAxis { get; set; }
 
-        public IEnumerable<Category>? Categories { get; set; }
+        public IEnumerable<CategoryModel>? Categories { get; set; }
     }
 }

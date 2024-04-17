@@ -1,5 +1,5 @@
 ﻿using CustomCADSolutions.Core.Contracts;
-using CustomCADSolutions.Infrastructure.Data.Models;
+using CustomCADSolutions.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CustomCADSolutions.App.APIControllers
@@ -18,9 +18,9 @@ namespace CustomCADSolutions.App.APIControllers
         [HttpGet]
         [Produces("application/json")]
         [ProducesResponseType(200)]
-        public async Task<ActionResult<Category[]>> GetAsync()
+        public async Task<ActionResult<CategoryModel[]>> GetAsync()
         {
-            IEnumerable<Category> categories = await categoryService.GetAllAsync();
+            IEnumerable<CategoryModel> categories = await categoryService.GetAllAsync();
             return categories.ToArray();
         }
 
@@ -28,7 +28,7 @@ namespace CustomCADSolutions.App.APIControllers
         [Produces("application/json")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
-        public async Task<ActionResult<Category>> GetAsync(int id)
+        public async Task<ActionResult<CategoryModel>> GetAsync(int id)
         {
             return await categoryService.GetByIdAsync(id);
         }

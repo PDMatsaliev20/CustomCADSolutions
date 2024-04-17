@@ -19,7 +19,7 @@
                 <label asp-for="CategoryId" class="form-label"></label>
                 <select asp-for="CategoryId" class="form-control">
                     <option value="@null" selected>@Localizer["NoCategory"]</option>
-                    @foreach (Category category in Model.Categories!)
+                    @foreach (CategoryModel category in Model.Categories!)
                     {
                         <option value="@category.Id">@Localizer[category.Name]</option>
                     }

@@ -1,4 +1,4 @@
-﻿using CustomCADSolutions.Infrastructure.Data.Models;
+﻿using CustomCADSolutions.Core.Models;
 
 namespace CustomCADSolutions.Core.Contracts
 {
@@ -8,7 +8,7 @@ namespace CustomCADSolutions.Core.Contracts
         ///     Pulls all Categories from the database
         /// </summary>
         /// <returns>A Task object that represents the Categories</returns>
-        Task<IEnumerable<Category>> GetAllAsync();
+        Task<IEnumerable<CategoryModel>> GetAllAsync();
 
         /// <summary>
         ///     Pulls all Category names from the database
@@ -22,14 +22,14 @@ namespace CustomCADSolutions.Core.Contracts
         /// <param name="id"></param>
         /// <returns>A Task object that represents the Category</returns>
         /// <exception cref="KeyNotFoundException">if no Category with the given id exists.</exception>
-        Task<Category> GetByIdAsync(int id);
+        Task<CategoryModel> GetByIdAsync(int id);
 
         /// <summary>
         ///     Creates the specified Category in the Categories table
         /// </summary>
         /// <param name="entity"></param>
         /// <returns>A Task object that represents the id of the created Category</returns>
-        Task<int> CreateAsync(Category entity);
+        Task<int> CreateAsync(CategoryModel entity);
 
         /// <summary>
         ///     Overwrites the Category's current properties with the new ones.
@@ -38,7 +38,7 @@ namespace CustomCADSolutions.Core.Contracts
         /// <param name="model"></param>
         /// <returns>A Task object that represents the asynchronous Save Changes operation after the edit.</returns>
         /// <exception cref="KeyNotFoundException">if no Category with the given id exists.</exception>
-        Task EditAsync(int id, Category model);
+        Task EditAsync(int id, CategoryModel model);
 
         /// <summary>
         ///     Deletes the Category with the given id.

@@ -1,8 +1,8 @@
 ﻿using static CustomCADSolutions.Infrastructure.Data.DataConstants;
 using System.ComponentModel.DataAnnotations;
-using CustomCADSolutions.Infrastructure.Data.Models;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using CustomCADSolutions.App.Resources.Shared;
+using CustomCADSolutions.Core.Models;
 
 namespace CustomCADSolutions.App.Models.Orders
 {
@@ -39,6 +39,6 @@ namespace CustomCADSolutions.App.Models.Orders
 
         public string? BuyerId { get; set; }
 
-        public IEnumerable<Category>? Categories { get; set; }
+        public IEnumerable<CategoryModel>? Categories { get; set; }
     }
 }

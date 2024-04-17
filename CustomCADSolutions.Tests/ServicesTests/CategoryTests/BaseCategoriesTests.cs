@@ -4,15 +4,21 @@ using CustomCADSolutions.Infrastructure.Data;
 using CustomCADSolutions.Infrastructure.Data.Common;
 using Microsoft.EntityFrameworkCore;
 using CustomCADSolutions.Core.Services;
+using AutoMapper;
+using CustomCADSolutions.Core.Mappings;
+using CustomCADSolutions.Core.Models;
 
 namespace CustomCADSolutions.Tests.ServiceTests.CategoryTests
 {
     public class BaseCategoriesTests
     {
         private IRepository repository;
+        private IMapper mapper = new MapperConfiguration(cfg => 
+                cfg.AddProfile<CategoryCoreProfile>())
+            .CreateMapper();
 
         protected ICategoryService service;
-        protected readonly Category[] categories = new Category[5]
+        protected readonly CategoryModel[] categories = new CategoryModel[5]
         {
             new() { Id = 1, Name = "Category1" },
             new() { Id = 2, Name = "Category2" },
@@ -34,6 +40,7 @@ namespace CustomCADSolutions.Tests.ServiceTests.CategoryTests
         [SetUp]
         public async Task Setup()
         {
+            Category[] categories = mapper.Map<Category[]>(this.categories);
             await repository.AddRangeAsync(categories);
             await repository.SaveChangesAsync();
         }

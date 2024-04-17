@@ -1,4 +1,4 @@
-﻿using CustomCADSolutions.Infrastructure.Data.Models;
+﻿using CustomCADSolutions.Core.Models;
 using static CustomCADSolutions.Core.TestsErrorMessages;
 
 namespace CustomCADSolutions.Tests.ServiceTests.CategoryTests
@@ -19,8 +19,8 @@ namespace CustomCADSolutions.Tests.ServiceTests.CategoryTests
         [TestCase(4)]
         public async Task Test_ReturnsCorrectly(int id)
         {
-            Category expectedCategory = categories.First(c => c.Id == id);
-            Category actualCategory = await service.GetByIdAsync(id);
+            CategoryModel expectedCategory = categories.First(c => c.Id == id);
+            CategoryModel actualCategory = await service.GetByIdAsync(id);
 
             Assert.That(actualCategory.Name, Is.EqualTo(expectedCategory.Name), 
                 string.Format(ModelPropertyMismatch, "Name"));
