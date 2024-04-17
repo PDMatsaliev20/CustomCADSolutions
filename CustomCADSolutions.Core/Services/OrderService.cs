@@ -7,7 +7,6 @@ using CustomCADSolutions.Infrastructure.Data.Models;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Microsoft.EntityFrameworkCore.Scaffolding;
 
 namespace CustomCADSolutions.Core.Services
 {

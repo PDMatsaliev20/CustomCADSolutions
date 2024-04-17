@@ -7,15 +7,9 @@ using CustomCADSolutions.App.Extensions;
 using Microsoft.Extensions.Options;
 using AutoMapper;
 using CustomCADSolutions.App.Mappings;
-using static CustomCADSolutions.App.Constants.Paths;
-using CustomCADSolutions.Core.Mappings.DTOs;
-using CustomCADSolutions.Core.Mappings.CadDTOs;
-using CustomCADSolutions.Infrastructure.Data.Models;
 using CustomCADSolutions.App.Models.Cads.View;
 using CustomCADSolutions.Core.Contracts;
 using CustomCADSolutions.Core.Models;
-using Humanizer;
-using CustomCADSolutions.Core.Services;
 
 namespace CustomCADSolutions.App.Areas.Client.Controllers
 {
@@ -49,7 +43,7 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
             MapperConfiguration config = new(cfg =>
             {
                 cfg.AddProfile<OrderAppProfile>();
-                cfg.AddProfile<CadDTOProfile>();
+                cfg.AddProfile<CadAppProfile>();
             });
             this.mapper = config.CreateMapper();
         }
@@ -77,26 +71,28 @@ namespace CustomCADSolutions.App.Areas.Client.Controllers
         [HttpPost]
         public async Task<IActionResult> Order(int id, string stripeToken)
         {
-            CadModel cadModel = await cadService.GetByIdAsync(id);
+            CadModel cad = await cadService.GetByIdAsync(id);
 
-            bool isPaymentSuccessful = stripeSettings.ProcessPayment(stripeToken);
+            bool isPaymentSuccessful = stripeSettings
+                .ProcessPayment(stripeToken, cad.Name, cad.Price);
+
             if (!isPaymentSuccessful)
             {
                 TempData["ErrorMessage"] = "Payment failed. Please try again.";
                 return RedirectToAction("Index", "Home", new { area = "" });
             }
 
-            OrderModel model = new()
+            OrderModel order = new()
             {
-                Name = cadModel.Name,
+                Name = cad.Name,
                 Description = $"3D Model from the gallery with id: {id}",
                 Status = OrderStatus.Finished,
-                CategoryId = cadModel.CategoryId,
+                CategoryId = cad.CategoryId,
                 OrderDate = DateTime.Now,
                 CadId = id,
                 BuyerId = User.GetId(),
             };
-            await orderService.CreateAsync(model);
+            await orderService.CreateAsync(order);
 
             return RedirectToAction(nameof(Index));
         }

@@ -30,13 +30,12 @@ namespace CustomCADSolutions.App.Areas.Admin.Controllers
             this.logger = logger;
             this.cadService = cadService;
             this.categoryService = categoryService;
-            MapperConfiguration config = new(cfg => cfg.AddProfile<CadDTOProfile>());
+            MapperConfiguration config = new(cfg => cfg.AddProfile<CadAppProfile>());
             this.mapper = config.CreateMapper();
         }
         [HttpGet]
         public async Task<IActionResult> Index([FromQuery] CadQueryInputModel inputQuery)
         {
-            // Ensuring cads per page are divisible by the count of columns
             if (inputQuery.CadsPerPage % inputQuery.Cols != 0)
             {
                 inputQuery.CadsPerPage = inputQuery.Cols * (inputQuery.CadsPerPage / inputQuery.Cols);
@@ -49,7 +48,6 @@ namespace CustomCADSolutions.App.Areas.Admin.Controllers
                 Sorting = inputQuery.Sorting,
                 CurrentPage = inputQuery.CurrentPage,
                 CadsPerPage = inputQuery.CadsPerPage,
-                Creator = User.Identity!.Name,
                 Validated = true,
                 Unvalidated = true,
             };

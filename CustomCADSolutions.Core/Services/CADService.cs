@@ -21,7 +21,11 @@ namespace CustomCADSolutions.Core.Services
         public CadService(IRepository repository)
         {
             this.repository = repository;
-            MapperConfiguration config = new(cfg => cfg.AddProfile<CadCoreProfile>());
+            MapperConfiguration config = new(cfg =>
+            {
+                cfg.AddProfile<CadCoreProfile>();
+                cfg.AddProfile<OrderCoreProfile>();
+            });
             this.mapper = config.CreateMapper();
         }
 
@@ -96,7 +100,7 @@ namespace CustomCADSolutions.Core.Services
                 Cads = models,
             };
         }
-        
+
         public async Task<CadModel> GetByIdAsync(int id)
         {
             Cad cad = await repository.GetByIdAsync<Cad>(id)
@@ -122,7 +126,7 @@ namespace CustomCADSolutions.Core.Services
         }
 
         public int Count(Func<CadModel, bool> predicate)
-        {            
+        {
             return repository.Count<Cad>(cad => predicate(mapper.Map<CadModel>(cad)));
         }
 

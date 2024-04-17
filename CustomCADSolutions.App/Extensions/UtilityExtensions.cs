@@ -1,42 +1,26 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Security.Claims;
-using Stripe;
 using CustomCADSolutions.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Stripe;
 
 namespace CustomCADSolutions.App.Extensions
 {
     public static class UtilityExtensions
     {
-        public static bool ProcessPayment(this StripeSettings stripeSettings, string stripeToken)
-        {
-            StripeConfiguration.ApiKey = stripeSettings.TestSecretKey;
-            ChargeCreateOptions options = new()
-            {
-                Amount = 100,
-                Currency = "bgn",
-                Source = stripeToken,
-                Description = "Example Charge",
-            };
-            Charge charge = new ChargeService().Create(options);
-
-            return charge.Status == "succeeded";
-        }
+        public static string GetId(this ClaimsPrincipal user) => user.FindFirstValue(ClaimTypes.NameIdentifier);
 
         public static IEnumerable<string> GetErrors(this ModelStateDictionary model) => model.Values.Select(v => v.Errors).SelectMany(ec => ec.Select(e => e.ErrorMessage));
 
-        public static string SecureQuery(this HttpContext httpContext, params KeyValuePair<string, string>[] kvpairs)
+        public static async Task<byte[]> GetBytesAsync(this IFormFile cad)
         {
-            string? query = httpContext.Request.QueryString.Value;
-            query = string.IsNullOrWhiteSpace(query) ? "?" : query;
-            foreach (KeyValuePair<string, string> kvp in kvpairs)
-            {
-                query = query.Insert(1, $"{kvp.Key}={kvp.Value}&");
-            }
-            return query;
-        }
+            using MemoryStream memoryStream = new();
+            await cad.CopyToAsync(memoryStream);
+            byte[] fileBytes = memoryStream.ToArray();
 
-        public static string GetId(this ClaimsPrincipal user) => user.FindFirstValue(ClaimTypes.NameIdentifier);
+            return fileBytes;
+        }
 
         public static async Task AddUserAsync(this UserManager<AppUser> userManager, string username, string email, string password, string role)
         {
@@ -59,13 +43,19 @@ namespace CustomCADSolutions.App.Extensions
             }
         }
 
-        public static async Task<byte[]> GetBytesAsync(this IFormFile cad)
+        public static bool ProcessPayment(this StripeSettings stripeSettings, string stripeToken, string name, decimal price)
         {
-            using MemoryStream memoryStream = new();
-            await cad.CopyToAsync(memoryStream);
-            byte[] fileBytes = memoryStream.ToArray();
+            StripeConfiguration.ApiKey = stripeSettings.TestSecretKey;
+            ChargeCreateOptions options = new()
+            {
+                Amount = (long)(price * 100),
+                Currency = "bgn",
+                Source = stripeToken,
+                Description = $"Bought {name} for {price}.",
+            };
+            Charge charge = new ChargeService().Create(options);
 
-            return fileBytes;
+            return charge.Status == "succeeded";
         }
     }
 }

@@ -33,7 +33,7 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
             this.cadService = cadService;
             this.categoryService = categoryService;
 
-            MapperConfiguration config = new(cfg => cfg.AddProfile<CadDTOProfile>());
+            MapperConfiguration config = new(cfg => cfg.AddProfile<CadAppProfile>());
             this.mapper = config.CreateMapper();
             this.logger = logger;
         }
@@ -135,6 +135,7 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
             }
 
             CadEditModel input = mapper.Map<CadEditModel>(model);
+            logger.LogInformation(input.IsValidated.ToString());
             input.Categories = await categoryService.GetAllAsync();
 
             return View(input);
@@ -145,6 +146,7 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
         {
             CadModel model = mapper.Map<CadModel>(input);
             model.CreatorId = User.GetId();
+            logger.LogInformation(model.IsValidated.ToString());
 
             await cadService.EditAsync(id, model);
             return RedirectToAction(nameof(Details), new { id });

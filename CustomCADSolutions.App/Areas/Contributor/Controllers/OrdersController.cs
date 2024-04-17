@@ -5,15 +5,10 @@ using Microsoft.AspNetCore.Mvc;
 using CustomCADSolutions.App.Extensions;
 using AutoMapper;
 using CustomCADSolutions.App.Mappings;
-using CustomCADSolutions.Core.Mappings.DTOs;
-using static CustomCADSolutions.App.Constants.Paths;
-using CustomCADSolutions.Infrastructure.Data.Models;
-using CustomCADSolutions.Core.Mappings.CadDTOs;
 using Microsoft.Extensions.Options;
 using CustomCADSolutions.App.Models.Cads.View;
 using CustomCADSolutions.Core.Contracts;
 using CustomCADSolutions.Core.Models;
-using CustomCADSolutions.Core.Services;
 
 namespace CustomCADSolutions.App.Areas.Contributor.Controllers
 {
@@ -47,7 +42,7 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
             MapperConfiguration config = new(cfg =>
             {
                 cfg.AddProfile<OrderAppProfile>();
-                cfg.AddProfile<CadDTOProfile>();
+                cfg.AddProfile<CadAppProfile>();
             });
             this.mapper = config.CreateMapper();
         }
@@ -75,26 +70,26 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
         [HttpPost]
         public async Task<IActionResult> Order(int id, string stripeToken)
         {
-            CadModel cadModel = await cadService.GetByIdAsync(id);
+            CadModel cad = await cadService.GetByIdAsync(id);
             
-            bool isPaymentSuccessful = stripeSettings.ProcessPayment(stripeToken);
+            bool isPaymentSuccessful = stripeSettings.ProcessPayment(stripeToken, cad.Name, cad.Price);
             if (!isPaymentSuccessful)
             {
                 TempData["ErrorMessage"] = "Payment failed. Please try again.";
                 return RedirectToAction("Index", "Home", new { area = "" });
             }
 
-            OrderModel model = new()
+            OrderModel order = new()
             {
-                Name = cadModel.Name,
+                Name = cad.Name,
                 Description = $"3D Model from the gallery with id: {id}",
                 Status = OrderStatus.Finished,
-                CategoryId = cadModel.CategoryId,
+                CategoryId = cad.CategoryId,
                 OrderDate = DateTime.Now,
                 CadId = id,
                 BuyerId = User.GetId(),
             };
-            await orderService.CreateAsync(model);
+            await orderService.CreateAsync(order);
 
             return RedirectToAction(nameof(Index));
         }

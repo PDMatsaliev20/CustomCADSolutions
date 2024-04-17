@@ -37,7 +37,7 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
             this.categoryService = categoryService;
 
             this.localizer = localizer;
-            MapperConfiguration config = new(cfg => cfg.AddProfile<CadDTOProfile>());
+            MapperConfiguration config = new(cfg => cfg.AddProfile<CadAppProfile>());
             mapper = config.CreateMapper();
             this.logger = logger;
         }
@@ -194,7 +194,7 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
             CadModel model = mapper.Map<CadModel>(input);
             model.Bytes = await input.CadFile.GetBytesAsync();
             model.CreatorId = User.GetId();
-            model.IsValidated = false;
+            model.IsValidated = true;
             model.CreationDate = DateTime.Now;
 
             await cadService.CreateAsync(model);

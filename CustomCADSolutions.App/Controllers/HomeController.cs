@@ -40,7 +40,7 @@ namespace CustomCADSolutions.App.Controllers
             this.userManager = userManager;
             this.signInManager = signInManager;
 
-            MapperConfiguration config = new(cfg => cfg.AddProfile<CadDTOProfile>());
+            MapperConfiguration config = new(cfg => cfg.AddProfile<CadAppProfile>());
             mapper = config.CreateMapper();
             this.logger = logger;
         }
@@ -76,8 +76,8 @@ namespace CustomCADSolutions.App.Controllers
                 Sorting = inputQuery.Sorting,
                 CurrentPage = inputQuery.CurrentPage,
                 CadsPerPage = inputQuery.CadsPerPage,
-                Validated = inputQuery.Validated,
-                Unvalidated = inputQuery.Unvalidated,
+                Validated = true,
+                Unvalidated = false,
             };
             query = await cadService.GetAllAsync(query);
 
@@ -149,6 +149,7 @@ namespace CustomCADSolutions.App.Controllers
 
             return LocalRedirect(returnUrl);
         }
+        
         public IActionResult Privacy()
         {
             logger.LogInformation("Entered Privacy Policy Page");

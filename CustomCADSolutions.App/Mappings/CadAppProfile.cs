@@ -9,9 +9,9 @@ namespace CustomCADSolutions.App.Mappings
     /// <summary>
     /// Covers InputModel-ImportDTO, ImportDTO-Model, Model-ExportDTO and ExportDTO-ViewModel
     /// </summary>
-    public class CadDTOProfile : Profile
+    public class CadAppProfile : Profile
     {
-        public CadDTOProfile()
+        public CadAppProfile()
         {
             AddToModel();
             EditToModel();

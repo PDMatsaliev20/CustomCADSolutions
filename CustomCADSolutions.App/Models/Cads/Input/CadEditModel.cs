@@ -8,6 +8,8 @@ namespace CustomCADSolutions.App.Models.Cads.Input
     public class CadEditModel
     {
         public int Id { get; set; }
+        
+        public bool IsValidated { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(SharedResources),
             ErrorMessageResourceName = nameof(SharedResources.Required))]

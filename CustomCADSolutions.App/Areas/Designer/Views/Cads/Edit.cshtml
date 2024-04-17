@@ -7,6 +7,8 @@
 <h2 class="text-center mb-2">@Localizer["Title", Model.Name]</h2>
 <hr />
 <div class="container">
+    <input asp-for="IsValidated" hidden />
+
     <form method="post" autocomplete="off" enctype="multipart/form-data">
         <input asp-for="Id" hidden />
 

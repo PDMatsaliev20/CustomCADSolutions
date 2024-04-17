@@ -11,10 +11,6 @@ namespace CustomCADSolutions.App.Models.Cads.View
 
         public string? Creator { get; set; }
 
-        public bool Validated { get; set; } = false;
-
-        public bool Unvalidated { get; set; } = false;
-
         [Display(Name = nameof(SharedResources.ByName), ResourceType = typeof(SharedResources))]
         public string? SearchName { get; set; }
 
