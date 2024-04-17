@@ -1,4 +1,5 @@
 ﻿using CustomCADSolutions.Core.Models;
+using static CustomCADSolutions.Core.TestsErrorMessages;
 
 namespace CustomCADSolutions.Tests.ServiceTests.OrderTests
 {
@@ -11,44 +12,44 @@ namespace CustomCADSolutions.Tests.ServiceTests.OrderTests
             Assert.DoesNotThrowAsync(async () =>
             {
                 await service.GetByIdAsync(id);
-            }, "Couldn't find existing Order.");
+            }, string.Format(ExistsButCannotFind, "Order"));
         }
-        
+
         [TestCase(1)]
         [TestCase(4)]
         public async Task Test_ReturnsCorrectly(int id)
         {
             OrderModel expectedOrder = orders.First(o => o.Id == id);
             OrderModel actualOrder = await service.GetByIdAsync(id);
-            
+
             Assert.Multiple(() =>
             {
                 Assert.That(actualOrder.Id, Is.EqualTo(expectedOrder.Id),
-                    "Order Id mismatch.");
+                    string.Format(ModelPropertyMismatch, "Id"));
 
                 Assert.That(actualOrder.Name, Is.EqualTo(expectedOrder.Name),
-                    "Order Name mismatch.");
+                    string.Format(ModelPropertyMismatch, "Name"));
 
                 Assert.That(actualOrder.Description, Is.EqualTo(expectedOrder.Description),
-                    "Order Description mismatch.");
+                    string.Format(ModelPropertyMismatch, "Description"));
 
                 Assert.That(actualOrder.OrderDate, Is.EqualTo(expectedOrder.OrderDate),
-                    "Order OrderDate mismatch.");
+                    string.Format(ModelPropertyMismatch, "OrderDate"));
 
                 Assert.That(actualOrder.ShouldShow, Is.EqualTo(expectedOrder.ShouldShow),
-                    "Order ShouldShow mismatch.");
+                    string.Format(ModelPropertyMismatch, "ShouldShow"));
 
                 Assert.That(actualOrder.Status, Is.EqualTo(expectedOrder.Status),
-                    "Order Status mismatch.");
+                    string.Format(ModelPropertyMismatch, "Status"));
 
                 Assert.That(actualOrder.CategoryId, Is.EqualTo(expectedOrder.CategoryId),
-                    "Order CategoryId mismatch.");
+                    string.Format(ModelPropertyMismatch, "CategoryId"));
 
                 Assert.That(actualOrder.CadId, Is.EqualTo(expectedOrder.CadId),
-                    "Order CadId mismatch.");
+                    string.Format(ModelPropertyMismatch, "CadId"));
 
                 Assert.That(actualOrder.BuyerId, Is.EqualTo(expectedOrder.BuyerId),
-                    "Order BuyerId mismatch.");
+                    string.Format(ModelPropertyMismatch, "BuyerId"));
 
             });
         }
@@ -61,7 +62,7 @@ namespace CustomCADSolutions.Tests.ServiceTests.OrderTests
             Assert.ThrowsAsync<KeyNotFoundException>(async () =>
             {
                 await service.GetByIdAsync(id);
-            }, "Finds non-existent Order.");
+            }, string.Format(FindsButDoesNotExist, "Order"));
         }
     }
 }

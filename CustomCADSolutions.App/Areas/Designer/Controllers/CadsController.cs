@@ -45,10 +45,6 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
         [HttpGet]
         public async Task<IActionResult> All([FromQuery] CadQueryInputModel inputQuery)
         {
-            // Action-specific parameters
-            inputQuery.Validated = true;
-            inputQuery.Unvalidated = true;
-
             // Ensuring cads per page are divisible by the count of columns
             if (inputQuery.CadsPerPage % inputQuery.Cols != 0)
             {
@@ -64,8 +60,8 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
                 Sorting = inputQuery.Sorting,
                 CurrentPage = inputQuery.CurrentPage,
                 CadsPerPage = inputQuery.CadsPerPage,
-                Validated = inputQuery.Validated,
-                Unvalidated = inputQuery.Unvalidated,
+                Validated = true,
+                Unvalidated = true,
             };
             query = await cadService.GetAllAsync(query);
 
@@ -80,9 +76,6 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
         [HttpGet]
         public async Task<IActionResult> Submitted([FromQuery] CadQueryInputModel inputQuery)
         {
-            // Action specific parameters
-            inputQuery.Unvalidated = true;
-
             // Ensuring cads per page are divisible by the count of columns
             if (inputQuery.CadsPerPage % inputQuery.Cols != 0)
             {
@@ -98,8 +91,8 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
                 Sorting = inputQuery.Sorting,
                 CurrentPage = inputQuery.CurrentPage,
                 CadsPerPage = inputQuery.CadsPerPage,
-                Validated = inputQuery.Validated,
-                Unvalidated = inputQuery.Unvalidated,
+                Validated = false,
+                Unvalidated = true,
             };
             query = await cadService.GetAllAsync(query);
 
@@ -132,11 +125,6 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
         [HttpGet]
         public async Task<IActionResult> Index([FromQuery] CadQueryInputModel inputQuery)
         {
-            // Action-specific parameters
-            inputQuery.Validated = true;
-            inputQuery.Unvalidated = true;
-            inputQuery.Creator = User.Identity!.Name;
-
             // Ensuring cads per page are divisible by the count of columns
             if (inputQuery.CadsPerPage % inputQuery.Cols != 0)
             {
@@ -146,14 +134,13 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
             CadQueryModel query = new()
             {
                 Category = inputQuery.Category,
-                Creator = inputQuery.Creator,
                 LikeName = inputQuery.SearchName,
-                LikeCreator = inputQuery.SearchCreator,
                 Sorting = inputQuery.Sorting,
                 CurrentPage = inputQuery.CurrentPage,
                 CadsPerPage = inputQuery.CadsPerPage,
-                Validated = inputQuery.Validated,
-                Unvalidated = inputQuery.Unvalidated,
+                Creator = User.Identity!.Name,
+                Validated = true,
+                Unvalidated = true,
             };
             query = await cadService.GetAllAsync(query);
 

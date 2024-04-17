@@ -1,4 +1,5 @@
 ﻿using CustomCADSolutions.Infrastructure.Data.Models;
+using static CustomCADSolutions.Core.TestsErrorMessages;
 
 namespace CustomCADSolutions.Tests.ServiceTests.CategoryTests
 {
@@ -12,16 +13,17 @@ namespace CustomCADSolutions.Tests.ServiceTests.CategoryTests
             int id = await service.CreateAsync(expectedCategory);
             Category actualCategory = await service.GetByIdAsync(id);
 
-            Assert.That(expectedCategory.Name, Is.EqualTo(actualCategory.Name));
+            Assert.That(expectedCategory.Name, Is.EqualTo(actualCategory.Name),
+                string.Format(ModelPropertyMismatch, "Name"));
         }
 
         [Test]
-        public void Test_ThrowsProperlyWhenNullCategory()
+        public void Test_ThrowsWhenCategoryIsNull()
         {
             Assert.ThrowsAsync<ArgumentNullException>(async () =>
             {
                 await service.CreateAsync(null!);
-            }, "Added null Category.");
+            }, string.Format(AddedNull, "Category"));
         }
     }
 }

@@ -1,0 +1,123 @@
+﻿using AutoMapper;
+using CustomCADSolutions.Core.Contracts;
+using CustomCADSolutions.Core.Mappings;
+using CustomCADSolutions.Core.Models;
+using CustomCADSolutions.Core.Services;
+using CustomCADSolutions.Infrastructure.Data;
+using CustomCADSolutions.Infrastructure.Data.Common;
+using CustomCADSolutions.Infrastructure.Data.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Drawing;
+
+namespace CustomCADSolutions.Tests.ServicesTests.CadTests
+{
+    [TestFixture]
+    public class BaseCadsTests
+    {
+        private IRepository repository;
+        private readonly IMapper mapper = new MapperConfiguration(cfg =>
+                cfg.AddProfile<CadCoreProfile>())
+            .CreateMapper();
+
+        protected ICadService service;
+        private Category[] categories = new Category[8]
+        {
+            new() { Id = 1, Name = "Category1" },
+            new() { Id = 2, Name = "Category2" },
+            new() { Id = 3, Name = "Category3" },
+            new() { Id = 4, Name = "Category4" },
+            new() { Id = 5, Name = "Category5" },
+            new() { Id = 6, Name = "Category6" },
+            new() { Id = 7, Name = "Category7" },
+            new() { Id = 8, Name = "Category8" },
+        };
+        protected AppUser[] users = new AppUser[3]
+        {
+            new() { UserName = "Contributor" },
+            new() { UserName = "Designer" },
+            new() { UserName = "Hacker" },
+        };
+        protected CadModel[] cads = new CadModel[]
+        {
+            new() { Id = 1, Name = "Cad1", Bytes = new byte[1], CategoryId = 1, Price = 1m, IsValidated = false, CreationDate = DateTime.Now.AddDays(-1), Coords = new int[3], Color = Color.FromArgb(1, 1, 1), SpinAxis = 'x' },
+            new() { Id = 2, Name = "Cad2", Bytes = new byte[2], CategoryId = 2, Price = 2m, IsValidated = false, CreationDate = DateTime.Now.AddDays(-2), Coords = new int[3], Color = Color.FromArgb(2, 2, 2), SpinAxis = 'y' },
+            new() { Id = 3, Name = "Cad3", Bytes = new byte[3], CategoryId = 3, Price = 3m, IsValidated = false, CreationDate = DateTime.Now.AddDays(-3), Coords = new int[3], Color = Color.FromArgb(3, 3, 3), SpinAxis = 'z' },
+            new() { Id = 4, Name = "Cad4", Bytes = new byte[4], CategoryId = 4, Price = 4m, IsValidated = false, CreationDate = DateTime.Now.AddDays(-4), Coords = new int[3], Color = Color.FromArgb(4, 4, 4), SpinAxis = 'x' },
+            new() { Id = 5, Name = "Cad5", Bytes = new byte[5], CategoryId = 5, Price = 5m, IsValidated = false, CreationDate = DateTime.Now.AddDays(-5), Coords = new int[3], Color = Color.FromArgb(5, 5, 5), SpinAxis = 'y' },
+            new() { Id = 6, Name = "Cad6", Bytes = new byte[6], CategoryId = 6, Price = 6m, IsValidated = true, CreationDate = DateTime.Now.AddDays(-6), Coords = new int[3], Color = Color.FromArgb(6, 6, 6), SpinAxis = 'x' },
+            new() { Id = 7, Name = "Cad7", Bytes = new byte[7], CategoryId = 7, Price = 7m, IsValidated = true, CreationDate = DateTime.Now.AddDays(-7), Coords = new int[3], Color = Color.FromArgb(7, 7, 7), SpinAxis = 'y' },
+            new() { Id = 8, Name = "Cad8", Bytes = new byte[8], CategoryId = 8, Price = 8m, IsValidated = true, CreationDate = DateTime.Now.AddDays(-8), Coords = new int[3], Color = Color.FromArgb(8, 8, 8), SpinAxis = 'z' },
+        };
+
+        [OneTimeSetUp]
+        public async Task OneTimeSetup()
+        {
+            var options = new DbContextOptionsBuilder<CadContext>()
+                .UseInMemoryDatabase("CadCadsContext").Options;
+
+            this.repository = new Repository(new(options));
+
+            await repository.AddRangeAsync(users);
+            SeedCreators();
+
+            await repository.AddRangeAsync(categories);
+            SeedCategories();
+            
+            await repository.SaveChangesAsync();
+
+            this.service = new CadService(repository);
+        }
+
+        [SetUp]
+        public async Task Setup()
+        {
+            Cad[] allCads = mapper.Map<Cad[]>(cads);
+            await repository.AddRangeAsync<Cad>(allCads);
+            await repository.SaveChangesAsync();
+        }
+
+        [TearDown]
+        public async Task Teardown()
+        {
+            Cad[] cads = await repository.All<Cad>().ToArrayAsync();
+            repository.DeleteRange(cads);
+            await repository.SaveChangesAsync();
+        }
+
+        [OneTimeTearDown]
+        public async Task OneTimeTearDown()
+        {
+            AppUser[] users = await repository.All<AppUser>().ToArrayAsync();
+            repository.DeleteRange(users);
+            
+            Category[] categories = await repository.All<Category>().ToArrayAsync();
+            repository.DeleteRange(categories);
+            
+            await repository.SaveChangesAsync();
+        }
+
+        private void SeedCreators()
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                cads[i].CreatorId = users[0].Id;
+                cads[i].Creator = users[0];
+            }
+            
+            for (int i = 5; i < 8; i++)
+            {
+                cads[i].CreatorId = users[1].Id;
+                cads[i].Creator = users[1];
+            }
+        }
+        
+        private void SeedCategories()
+        {
+            for (int i = 0; i < cads.Length; i++)
+            {
+                cads[i].CategoryId = categories[i].Id;
+                cads[i].Category = categories[i];
+            }
+        }
+    }
+}

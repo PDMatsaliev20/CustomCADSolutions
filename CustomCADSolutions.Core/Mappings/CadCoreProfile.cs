@@ -23,13 +23,12 @@ namespace CustomCADSolutions.Core.Mappings
         /// <summary>
         ///     Converts Entity to Service Model
         /// </summary>
-        public void EntityToModel() => CreateMap<CadModel, Cad>()
-                .ForMember(entity => entity.X, opt => opt.MapFrom(model => model.Coords[0]))
-                .ForMember(entity => entity.Y, opt => opt.MapFrom(model => model.Coords[1]))
-                .ForMember(entity => entity.Z, opt => opt.MapFrom(model => model.Coords[2]))
-                .ForMember(entity => entity.R, opt => opt.MapFrom(model => model.Color.R))
-                .ForMember(entity => entity.G, opt => opt.MapFrom(model => model.Color.G))
-                .ForMember(entity => entity.B, opt => opt.MapFrom(model => model.Color.B));
+
+        public void EntityToModel() => CreateMap<Cad, CadModel>()
+                .ForMember(model => model.Coords, opt =>
+                    opt.MapFrom(entity => new int[] { entity.X, entity.Y, entity.Z }))
+                .ForMember(model => model.Color, opt =>
+                    opt.MapFrom(entity => Color.FromArgb(entity.R, entity.G, entity.B)));
 
         /// <summary>
         ///     Converts Service Model to DTO
@@ -62,10 +61,12 @@ namespace CustomCADSolutions.Core.Mappings
         /// <summary>
         ///     Converts Service Model to Entity
         /// </summary>
-        public void ModelToEntity() => CreateMap<Cad, CadModel>()
-                .ForMember(model => model.Coords, opt => 
-                    opt.MapFrom(entity => new int[] { entity.X, entity.Y, entity.Z }))
-                .ForMember(model => model.Color, opt => 
-                    opt.MapFrom(entity => Color.FromArgb(entity.R, entity.G, entity.B)));
+        public void ModelToEntity() => CreateMap<CadModel, Cad>()
+                .ForMember(entity => entity.X, opt => opt.MapFrom(model => model.Coords[0]))
+                .ForMember(entity => entity.Y, opt => opt.MapFrom(model => model.Coords[1]))
+                .ForMember(entity => entity.Z, opt => opt.MapFrom(model => model.Coords[2]))
+                .ForMember(entity => entity.R, opt => opt.MapFrom(model => model.Color.R))
+                .ForMember(entity => entity.G, opt => opt.MapFrom(model => model.Color.G))
+                .ForMember(entity => entity.B, opt => opt.MapFrom(model => model.Color.B));
     }
 }

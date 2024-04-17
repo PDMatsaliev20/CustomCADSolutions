@@ -1,4 +1,6 @@
-﻿namespace CustomCADSolutions.Tests.ServiceTests.CategoryTests
+﻿using static CustomCADSolutions.Core.TestsErrorMessages;
+
+namespace CustomCADSolutions.Tests.ServiceTests.CategoryTests
 {
     public class DeleteAsyncTests : BaseCategoriesTests
     {
@@ -11,7 +13,7 @@
             Assert.ThrowsAsync<KeyNotFoundException>(async () =>
             {
                 await service.GetByIdAsync(id);
-            }, "Found deleted Category.");
+            }, string.Format(DidNotDelete, "Category"));
         }
 
         [TestCase(-1)]
@@ -22,7 +24,7 @@
             Assert.ThrowsAsync<KeyNotFoundException>(async () =>
             {
                 await service.DeleteAsync(id);
-            }, "Deleted non-existent Category.");
+            }, string.Format(ShouldNotHaveDeleted, "Category"));
         }
     }
 }

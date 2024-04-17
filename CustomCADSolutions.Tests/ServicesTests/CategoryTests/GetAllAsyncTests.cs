@@ -1,4 +1,6 @@
-﻿namespace CustomCADSolutions.Tests.ServiceTests.CategoryTests
+﻿using static CustomCADSolutions.Core.TestsErrorMessages;
+
+namespace CustomCADSolutions.Tests.ServiceTests.CategoryTests
 {
     public class GetAllAsyncTests : BaseCategoriesTests
     {
@@ -7,8 +9,8 @@
         {
             var categories = await service.GetAllAsync();
 
-            Assert.That(categories.Count(), Is.EqualTo(this.categories.Count()), 
-                "Categories Count mismatch.");
+            Assert.That(categories.Count(), Is.EqualTo(this.categories.Count()),
+                string.Format(ModelsCountMismatch, "Categories"));
         }
     }
 }

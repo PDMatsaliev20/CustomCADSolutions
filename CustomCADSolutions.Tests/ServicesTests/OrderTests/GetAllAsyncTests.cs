@@ -1,4 +1,6 @@
-﻿namespace CustomCADSolutions.Tests.ServiceTests.OrderTests
+﻿using static CustomCADSolutions.Core.TestsErrorMessages;
+
+namespace CustomCADSolutions.Tests.ServiceTests.OrderTests
 {
     public class GetAllAsyncTests : BaseOrdersTests
     {
@@ -8,7 +10,7 @@
             var orders = await service.GetAllAsync();
 
             Assert.That(orders.Count(), Is.EqualTo(this.orders.Count()),
-                "Orders Count mismatch.");
+                string.Format(ModelsCountMismatch, "Orders"));
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using CustomCADSolutions.Core.Models;
+﻿using static CustomCADSolutions.Core.TestsErrorMessages;
+using CustomCADSolutions.Core.Models;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 
 namespace CustomCADSolutions.Tests.ServiceTests.OrderTests
@@ -21,27 +22,27 @@ namespace CustomCADSolutions.Tests.ServiceTests.OrderTests
 
             Assert.Multiple(() =>
             {
-                Assert.That(actualOrder.Name, Is.EqualTo(expectedOrder.Name), 
-                    "Order's Name doesn't get saved.");
+                Assert.That(actualOrder.Name, Is.EqualTo(expectedOrder.Name),
+                    string.Format(DoesNotEditEnough, "Name"));
 
-                Assert.That(actualOrder.Description, Is.EqualTo(expectedOrder.Description), 
-                    "Order's Description doesn't get saved.");
+                Assert.That(actualOrder.Description, Is.EqualTo(expectedOrder.Description),
+                    string.Format(DoesNotEditEnough, "Description"));
 
-                Assert.That(actualOrder.CategoryId, Is.EqualTo(expectedOrder.CategoryId), 
-                    "Order's CategoryId doesn't get saved.");
+                Assert.That(actualOrder.CategoryId, Is.EqualTo(expectedOrder.CategoryId),
+                    string.Format(DoesNotEditEnough, "CategoryId"));
 
-                Assert.That(actualOrder.Status, Is.EqualTo(expectedOrder.Status), 
-                    "Order's Status doesn't get saved.");
+                Assert.That(actualOrder.Status, Is.EqualTo(expectedOrder.Status),
+                    string.Format(DoesNotEditEnough, "Status"));
 
-                Assert.That(actualOrder.ShouldShow, Is.EqualTo(expectedOrder.ShouldShow), 
-                    "Order's ShouldShow doesn't get saved.");
+                Assert.That(actualOrder.ShouldShow, Is.EqualTo(expectedOrder.ShouldShow),
+                    string.Format(DoesNotEditEnough, "ShouldShow"));
 
             });
         }
         
         [TestCase(1)]
         [TestCase(4)]
-        public async Task Test_DoesNotEditsUndesiredProperties(int id)
+        public async Task Test_DoesNotEditUndesiredProperties(int id)
         {
             OrderModel expectedOrder = await service.GetByIdAsync(id);
             expectedOrder.Id = 1000;
@@ -53,9 +54,14 @@ namespace CustomCADSolutions.Tests.ServiceTests.OrderTests
 
             Assert.Multiple(() =>
             {
-                Assert.That(actualOrder.Id, Is.Not.EqualTo(expectedOrder.Id), "New Id gets saved.");
-                Assert.That(actualOrder.BuyerId, Is.Not.EqualTo(expectedOrder.BuyerId), "New BuyerId gets saved.");
-                Assert.That(actualOrder.OrderDate, Is.Not.EqualTo(expectedOrder.OrderDate), "New OrderDate gets saved.");
+                Assert.That(actualOrder.Id, Is.Not.EqualTo(expectedOrder.Id),
+                    string.Format(EditsTooMuch, "Id"));
+
+                Assert.That(actualOrder.BuyerId, Is.Not.EqualTo(expectedOrder.BuyerId),
+                    string.Format(EditsTooMuch, "BuyerId"));
+
+                Assert.That(actualOrder.OrderDate, Is.Not.EqualTo(expectedOrder.OrderDate),
+                    string.Format(EditsTooMuch, "OrderDate"));
             });
         }
 
@@ -67,7 +73,7 @@ namespace CustomCADSolutions.Tests.ServiceTests.OrderTests
             Assert.ThrowsAsync<KeyNotFoundException>(async () =>
             {
                 await service.EditAsync(id, new());
-            }, "Non-existent Order edited.");
+            }, string.Format(EditsNonExistent, "Order"));
         }
     }
 }

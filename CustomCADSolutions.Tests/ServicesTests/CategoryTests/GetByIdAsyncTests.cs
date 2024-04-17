@@ -1,4 +1,5 @@
 ﻿using CustomCADSolutions.Infrastructure.Data.Models;
+using static CustomCADSolutions.Core.TestsErrorMessages;
 
 namespace CustomCADSolutions.Tests.ServiceTests.CategoryTests
 {
@@ -11,7 +12,7 @@ namespace CustomCADSolutions.Tests.ServiceTests.CategoryTests
             Assert.DoesNotThrowAsync(async () =>
             {
                 await service.GetByIdAsync(id);
-            }, "Couldn't find existing Category.");
+            }, string.Format(ExistsButCannotFind, "Category"));
         }
         
         [TestCase(1)]
@@ -21,7 +22,8 @@ namespace CustomCADSolutions.Tests.ServiceTests.CategoryTests
             Category expectedCategory = categories.First(c => c.Id == id);
             Category actualCategory = await service.GetByIdAsync(id);
 
-            Assert.That(actualCategory.Name, Is.EqualTo(expectedCategory.Name), "Category Name mismatch.");
+            Assert.That(actualCategory.Name, Is.EqualTo(expectedCategory.Name), 
+                string.Format(ModelPropertyMismatch, "Name"));
         }
 
         [TestCase(-1)]
@@ -32,7 +34,7 @@ namespace CustomCADSolutions.Tests.ServiceTests.CategoryTests
             Assert.ThrowsAsync<KeyNotFoundException>(async () =>
             {
                 await service.GetByIdAsync(id);
-            }, "Finds non-existent Category.");
+            }, string.Format(FindsButDoesNotExist, "Category"));
         }
     }
 }

@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using AutoMapper;
 using CustomCADSolutions.Core.Mappings;
 using System.Drawing;
+using System.ComponentModel.DataAnnotations;
 
 
 namespace CustomCADSolutions.Core.Services
@@ -20,11 +21,8 @@ namespace CustomCADSolutions.Core.Services
         public CadService(IRepository repository)
         {
             this.repository = repository;
-            mapper = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile<CadCoreProfile>();
-                cfg.AddProfile<OrderCoreProfile>();
-            }).CreateMapper();
+            MapperConfiguration config = new(cfg => cfg.AddProfile<CadCoreProfile>());
+            this.mapper = config.CreateMapper();
         }
 
         public async Task<CadQueryModel> GetAllAsync(CadQueryModel query)
@@ -52,7 +50,13 @@ namespace CustomCADSolutions.Core.Services
                 {
                     allCads = allCads.Where(c => !c.IsValidated);
                 }
-
+            }
+            else
+            {
+                if (!(query.Validated && query.Unvalidated))
+                {
+                    allCads = allCads.Take(0);
+                }
             }
 
             if (query.LikeName != null)

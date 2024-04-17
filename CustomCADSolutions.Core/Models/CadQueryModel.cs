@@ -13,8 +13,8 @@ namespace CustomCADSolutions.Core.Models
         public string? LikeCreator { get; set; }
         public int CurrentPage { get; set; } = 1;
         public int CadsPerPage { get; set; } = 1;
-        public bool Validated { get; set; }
-        public bool Unvalidated { get; set; } 
+        public bool Validated { get; set; } = true;
+        public bool Unvalidated { get; set; } = true;
         public CadSorting Sorting { get; set; }
     }
 }

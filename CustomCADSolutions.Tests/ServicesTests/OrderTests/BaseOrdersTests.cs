@@ -6,7 +6,6 @@ using CustomCADSolutions.Core.Services;
 using CustomCADSolutions.Infrastructure.Data;
 using CustomCADSolutions.Infrastructure.Data.Common;
 using CustomCADSolutions.Infrastructure.Data.Models;
-using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace CustomCADSolutions.Tests.ServiceTests.OrderTests
@@ -42,10 +41,9 @@ namespace CustomCADSolutions.Tests.ServiceTests.OrderTests
                 .UseInMemoryDatabase("CadOrdersContext").Options;
             
             this.repository = new Repository(new(options));
-
+            SeedBuyers();
+            
             await repository.AddRangeAsync(users);
-            SeedBuyers(orders, users);
-
             await repository.AddRangeAsync(new Category[5]
             {
                 new() { Id = 1, Name = "Category1", },
@@ -56,7 +54,7 @@ namespace CustomCADSolutions.Tests.ServiceTests.OrderTests
             });
             await repository.SaveChangesAsync();
 
-            service = new OrderService(repository);
+            this.service = new OrderService(repository);
         }
 
         [SetUp]
@@ -87,13 +85,16 @@ namespace CustomCADSolutions.Tests.ServiceTests.OrderTests
             await repository.SaveChangesAsync();
         }
 
-        private static void SeedBuyers(OrderModel[] orders, AppUser[] users)
+        private void SeedBuyers()
         {
-            orders[0].BuyerId = users[0].Id;
-            orders[1].BuyerId = users[0].Id;
-            orders[2].BuyerId = users[0].Id;
-            orders[3].BuyerId = users[1].Id;
-            orders[4].BuyerId = users[1].Id;
+            for (int i = 0; i < 3; i++)
+            {
+                orders[i].BuyerId = users[0].Id;
+            }
+            for (int i = 3; i < 5; i++)
+            {
+                orders[i].BuyerId = users[1].Id;
+            }
         }
     }
 }

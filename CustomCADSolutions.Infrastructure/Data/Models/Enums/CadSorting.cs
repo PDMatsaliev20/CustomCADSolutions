@@ -2,7 +2,7 @@
 {
     public enum CadSorting
     {
-        Newest,
+        Newest = 1,
         Oldest,
         Alphabetical,
         Unalphabetical,

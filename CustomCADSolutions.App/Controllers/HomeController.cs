@@ -61,9 +61,6 @@ namespace CustomCADSolutions.App.Controllers
         [HttpGet]
         public async Task<IActionResult> Category([FromQuery] CadQueryInputModel inputQuery)
         {
-            // Action-specific parameters
-            inputQuery.Validated = true;
-
             // Ensuring cads per page are divisible by the count of columns
             if (inputQuery.CadsPerPage % inputQuery.Cols != 0)
             {
