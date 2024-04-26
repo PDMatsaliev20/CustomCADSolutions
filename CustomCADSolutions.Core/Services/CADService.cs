@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using AutoMapper;
 using CustomCADSolutions.Core.Mappings;
 using System.Drawing;
+using System.ComponentModel.DataAnnotations;
 
 
 namespace CustomCADSolutions.Core.Services
@@ -127,6 +128,19 @@ namespace CustomCADSolutions.Core.Services
         public int Count(Func<CadModel, bool> predicate)
         {
             return repository.Count<Cad>(cad => predicate(mapper.Map<CadModel>(cad)));
+        }
+
+        public IList<string> ValidateEntity(CadModel model)
+        {
+            var validationResults = new List<ValidationResult>();
+            var validationContext = new ValidationContext(model);
+
+            if (!Validator.TryValidateObject(model, validationContext, validationResults, true))
+            {
+                return validationResults.Select(result => result.ErrorMessage ?? string.Empty).ToList();
+            }
+
+            return new List<string>();
         }
 
         public async Task<int> CreateAsync(CadModel model)

@@ -7,6 +7,7 @@ using CustomCADSolutions.Infrastructure.Data.Models;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System.ComponentModel.DataAnnotations;
 
 namespace CustomCADSolutions.Core.Services
 {
@@ -44,6 +45,19 @@ namespace CustomCADSolutions.Core.Services
 
         public async Task<bool> ExistsByIdAsync(int id)
             => await repository.GetByIdAsync<Order>(id) != null;
+
+        public IList<string> ValidateEntity(OrderModel model)
+        {
+            var validationResults = new List<ValidationResult>();
+            var validationContext = new ValidationContext(model);
+
+            if (!Validator.TryValidateObject(model, validationContext, validationResults, true))
+            {
+                return validationResults.Select(result => result.ErrorMessage ?? string.Empty).ToList();
+            }
+
+            return new List<string>();
+        }
 
         public async Task<int> CreateAsync(OrderModel model)
         {

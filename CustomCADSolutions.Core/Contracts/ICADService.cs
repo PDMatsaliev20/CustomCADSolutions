@@ -51,8 +51,9 @@ namespace CustomCADSolutions.Core.Contracts
         Task<int> CreateAsync(CadModel model);
 
         /// <summary>
-        ///     Overwrites the Cad's current properties with the new ones.
+        ///     Overwrites all of the Cad's properties with the new ones.
         /// </summary>
+        /// <param name="id"></param>
         /// <param name="model"></param>
         /// <returns>A Task object that represents the asynchronous Save Changes operation after the edit.</returns>
         /// <exception cref="KeyNotFoundException">if no Cad with the given id exists.</exception>
@@ -65,5 +66,6 @@ namespace CustomCADSolutions.Core.Contracts
         /// <returns>A Task object that represents the asynchronous Save Changes operation after the deletion.</returns>
         /// <exception cref="KeyNotFoundException">if no Category with the given id exists.</exception>
         Task DeleteAsync(int id);
+        IList<string> ValidateEntity(CadModel entity);
     }
 }
