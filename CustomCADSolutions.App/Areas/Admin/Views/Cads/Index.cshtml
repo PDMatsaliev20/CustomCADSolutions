@@ -1,31 +1,49 @@
-﻿@model CadQueryInputModel
+﻿@model CadViewModel[]
 @inject IViewLocalizer Localizer
 @{
-    ViewData["Title"] = "Manage 3D Models";
-    ViewBag.Buttons = new string[] { "Delete" };
-    ViewBag.Area = "Admin";
+    ViewData["Title"] = "Manage Cads";
 }
 
 <h2 class="text-center">@Localizer["Title"]</h2>
 <hr />
 
-<partial name="_CadQueryPartial" model="Model" view-data="ViewData" />
-
 <div class="container">
-    @if (!Model.Cads.Any())
-    {
-        <p class="text-center">@Localizer["NoCads"]</p>
-    }
-    else
-    {
-        <div class="row d-flex">
-            @foreach (CadViewModel cad in Model.Cads)
-            {
-                ViewBag.Header = $"{cad.Name} ({Localizer[cad.Category].Value})";
-                <partial name="_CardCadPartial" model="cad" view-data="ViewData" view-data-cols="Model.Cols" />
-            }
-        </div>
-    }
-</div>
+    <table class="table-bordered w-100 bg-white table-responsive">
+        <thead class="text-center fs-5">
+            <tr>
+                <th class="col">@Localizer["Id"]</th>
+                <th class="col">@Localizer["Name"]</th>
+                <th class="col">@Localizer["Creator"]</th>
+                <th class="col">@Localizer["Price"]</th>
+                <th class="col">@Localizer["Category"]</th>
+                <th class="col">@Localizer["CreationDate"]</th>
+            </tr>
+        </thead>
 
-<partial name="_PaginationPartial" model="Model" view-data="ViewData" />
+        <tbody>
+            @foreach (CadViewModel cad in Model)
+            {
+                <tr>
+                    <td>
+                        <span class="d-flex justify-content-center text-center">@cad.Id</span>
+                    </td>
+                    <td>
+                        <span class="d-flex justify-content-center text-center">@cad.Name</span>
+                    </td>
+                    <td>
+                        <span class="d-flex justify-content-center text-center">@cad.CreatorName</span>
+                    </td>
+                    <td>
+                        <span class="d-flex justify-content-center text-center">@cad.Price</span>
+                    </td>
+                    <td>
+                        <span class="d-flex justify-content-center text-center">@Localizer[cad.Category]</span>
+                    </td>
+                    <td>
+                        <span class="d-flex justify-content-center text-center">@cad.CreationDate</span>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

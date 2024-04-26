@@ -120,14 +120,17 @@
   <data name="Animals" xml:space="preserve">
     <value>Животни</value>
   </data>
+  <data name="Category" xml:space="preserve">
+    <value>Категория</value>
+  </data>
   <data name="Characters" xml:space="preserve">
     <value>Герои</value>
   </data>
-  <data name="Delete" xml:space="preserve">
-    <value>Изтрий</value>
+  <data name="CreationDate" xml:space="preserve">
+    <value>Дата на създаване</value>
   </data>
-  <data name="DeleteWarning" xml:space="preserve">
-    <value>Сигурни ли Сте, че искате да изтриете този модел: {0}?</value>
+  <data name="Creator" xml:space="preserve">
+    <value>Име на Създател</value>
   </data>
   <data name="Electronics" xml:space="preserve">
     <value>Електроника</value>
@@ -138,8 +141,11 @@
   <data name="Furniture" xml:space="preserve">
     <value>Мебели</value>
   </data>
-  <data name="InGallery" xml:space="preserve">
-    <value>Видим</value>
+  <data name="Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Име на 3D Модел</value>
   </data>
   <data name="Nature" xml:space="preserve">
     <value>Природа</value>
@@ -147,11 +153,11 @@
   <data name="NoCads" xml:space="preserve">
     <value>Все още няма модели!</value>
   </data>
-  <data name="NotInGallery" xml:space="preserve">
-    <value>Невидим</value>
-  </data>
   <data name="Others" xml:space="preserve">
     <value>Други</value>
+  </data>
+  <data name="Price" xml:space="preserve">
+    <value>Цена</value>
   </data>
   <data name="Science" xml:space="preserve">
     <value>Наука</value>

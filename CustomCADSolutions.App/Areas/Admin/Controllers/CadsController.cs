@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using CustomCADSolutions.App.Mappings;
-using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using CustomCADSolutions.App.Models.Cads.View;
@@ -53,13 +52,7 @@ namespace CustomCADSolutions.App.Areas.Admin.Controllers
             };
             query = await cadService.GetAllAsync(query);
 
-            inputQuery.Categories = await categoryService.GetAllNamesAsync();
-            inputQuery.TotalCount = query.TotalCount;
-            inputQuery.Cads = mapper.Map<CadViewModel[]>(query.Cads);
-
-            ViewBag.Sortings = typeof(CadSorting).GetEnumNames();
-            ViewBag.Category = inputQuery.Category;
-            return View(inputQuery);
+            return View(mapper.Map<CadViewModel[]>(query.Cads));
         }
 
         [HttpPost]

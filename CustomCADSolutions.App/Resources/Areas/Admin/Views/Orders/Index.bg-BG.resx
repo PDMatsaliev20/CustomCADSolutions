@@ -117,10 +117,61 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Animals" xml:space="preserve">
+    <value>Животни</value>
+  </data>
+  <data name="Buyer" xml:space="preserve">
+    <value>Име на Купувач</value>
+  </data>
+  <data name="Category" xml:space="preserve">
+    <value>Категория</value>
+  </data>
+  <data name="Characters" xml:space="preserve">
+    <value>Герои</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Описание</value>
+  </data>
+  <data name="Electronics" xml:space="preserve">
+    <value>Електроника</value>
+  </data>
+  <data name="Fashion" xml:space="preserve">
+    <value>Мода</value>
+  </data>
+  <data name="Furniture" xml:space="preserve">
+    <value>Мебели</value>
+  </data>
+  <data name="Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Име на Поръчка</value>
+  </data>
+  <data name="Nature" xml:space="preserve">
+    <value>Природа</value>
+  </data>
   <data name="NoCads" xml:space="preserve">
     <value>Все още няма поръчки...</value>
   </data>
+  <data name="OrderDate" xml:space="preserve">
+    <value>Дата на Поръчване</value>
+  </data>
+  <data name="Others" xml:space="preserve">
+    <value>Други</value>
+  </data>
+  <data name="Science" xml:space="preserve">
+    <value>Наука</value>
+  </data>
+  <data name="Sports" xml:space="preserve">
+    <value>Спорт</value>
+  </data>
   <data name="Title" xml:space="preserve">
     <value>Управление на Поръчки</value>
+  </data>
+  <data name="Toys" xml:space="preserve">
+    <value>Играчки</value>
+  </data>
+  <data name="Vehicles" xml:space="preserve">
+    <value>Коли</value>
   </data>
 </root>
