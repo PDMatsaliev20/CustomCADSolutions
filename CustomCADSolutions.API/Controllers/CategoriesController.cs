@@ -4,13 +4,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CustomCADSolutions.App.APIControllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
-    public class CategoriesAPIController : ControllerBase
+    public class CategoriesController : ControllerBase
     {
         private readonly ICategoryService categoryService;
 
-        public CategoriesAPIController(ICategoryService categoryService)
+        public CategoriesController(ICategoryService categoryService)
         {
             this.categoryService = categoryService;
         }
@@ -30,7 +30,15 @@ namespace CustomCADSolutions.App.APIControllers
         [ProducesResponseType(404)]
         public async Task<ActionResult<CategoryModel>> GetAsync(int id)
         {
-            return await categoryService.GetByIdAsync(id);
+            try
+            {
+                CategoryModel category = await categoryService.GetByIdAsync(id);
+                return category;
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
         }
     }
 }

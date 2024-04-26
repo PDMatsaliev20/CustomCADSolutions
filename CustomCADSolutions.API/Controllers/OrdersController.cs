@@ -8,17 +8,21 @@ using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using Microsoft.AspNetCore.Mvc;
 using System.Drawing;
 using static Microsoft.AspNetCore.Http.StatusCodes;
+using CustomCADSolutions.Infrastructure.Data.Models;
+using CustomCADSolutions.Core.Services;
+using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.EntityFrameworkCore;
 
 namespace CustomCADSolutions.App.APIControllers
 {
     [ApiController]
-    [Route("[controller]")]
-    public class OrdersAPIController : ControllerBase
+    [Route("api/[controller]")]
+    public class OrdersController : ControllerBase
     {
         private readonly IOrderService orderService;
         private readonly IMapper mapper;
 
-        public OrdersAPIController(IOrderService orderService)
+        public OrdersController(IOrderService orderService)
         {
             this.orderService = orderService;
             MapperConfiguration config = new(cfg =>
@@ -51,7 +55,7 @@ namespace CustomCADSolutions.App.APIControllers
         [HttpGet("{id}")]
         [Produces("application/json")]
         [ProducesResponseType(Status200OK)]
-        [ProducesResponseType(Status400BadRequest)]
+        [ProducesResponseType(Status404NotFound)]
         public async Task<ActionResult<OrderExportDTO>> GetSingleAsync(int id)
         {
             try
@@ -61,18 +65,20 @@ namespace CustomCADSolutions.App.APIControllers
             }
             catch (KeyNotFoundException)
             {
-                return BadRequest();
+                return NotFound();
             }
         }
 
         [HttpPost]
         [Consumes("application/json")]
+        [Produces("application/json")]
         [ProducesResponseType(Status201Created)]
         [ProducesResponseType(Status400BadRequest)]
         public async Task<ActionResult<OrderExportDTO>> PostAsync(OrderImportDTO dto)
         {
             OrderModel model = mapper.Map<OrderModel>(dto);
             model.OrderDate = DateTime.Now;
+            
             try
             {
                 int id = await orderService.CreateAsync(model);
@@ -99,6 +105,11 @@ namespace CustomCADSolutions.App.APIControllers
             {
                 OrderModel order = await orderService.GetByIdAsync(id);
 
+                if (dto.BuyerId != order.BuyerId)
+                {
+                    return Forbid();
+                }
+
                 order.Name = dto.Name;
                 order.Description = dto.Description;
                 order.Status = Enum.Parse<OrderStatus>(dto.Status);
@@ -115,17 +126,63 @@ namespace CustomCADSolutions.App.APIControllers
             }
         }
 
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<OrderModel>> DeleteAsync(int id)
+        [HttpPatch("{id}")]
+        [Consumes("application/json")]
+        [ProducesResponseType(Status204NoContent)]
+        [ProducesResponseType(Status400BadRequest)]
+        [ProducesResponseType(Status404NotFound)]
+        public async Task<ActionResult> PatchAsync(int id, [FromBody] JsonPatchDocument<OrderModel> patchOrder)
         {
-            if (await orderService.ExistsByIdAsync(id))
+            try
             {
-                await orderService.DeleteAsync(id);
+                OrderModel model = await orderService.GetByIdAsync(id);
+                patchOrder.ApplyTo(model);
+
+                IList<string> errors = orderService.ValidateEntity(model);
+                if (errors.Any())
+                {
+                    return BadRequest(string.Join("; ", errors));
+                }
+
+                await orderService.EditAsync(id, model);
                 return NoContent();
             }
-            else
+            catch (KeyNotFoundException)
             {
                 return NotFound();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return Conflict();
+            }
+            catch (DbUpdateException)
+            {
+                return BadRequest();
+            }
+            catch
+            {
+                return StatusCode(Status500InternalServerError);
+            }
+        }
+
+        [HttpDelete("{id}")]
+        [ProducesResponseType(Status204NoContent)]
+        [ProducesResponseType(Status404NotFound)]
+        [ProducesResponseType(Status400BadRequest)]
+        public async Task<ActionResult<OrderModel>> DeleteAsync(int id)
+        {
+            try
+            {
+                if (await orderService.ExistsByIdAsync(id))
+                {
+                    await orderService.DeleteAsync(id);
+                    return NoContent();
+                }
+                else return NotFound();
+            }
+            catch
+            {
+                return BadRequest();
             }
         }
 

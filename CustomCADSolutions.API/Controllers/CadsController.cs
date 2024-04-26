@@ -6,17 +6,21 @@ using CustomCADSolutions.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Drawing;
 using static Microsoft.AspNetCore.Http.StatusCodes;
+using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.JsonPatch.Operations;
+using Newtonsoft.Json.Serialization;
 
 namespace CustomCADSolutions.App.APIControllers
 {
     [ApiController]
-    [Route("[controller]")]
-    public class CadsAPIController : ControllerBase
+    [Route("api/[controller]")]
+    public class CadsController : ControllerBase
     {
         private readonly ICadService cadService;
         private readonly IMapper mapper;
 
-        public CadsAPIController(ICadService cadService)
+        public CadsController(ICadService cadService)
         {
             this.cadService = cadService;
             MapperConfiguration config = new(cfg => cfg.AddProfile<CadCoreProfile>());
@@ -55,7 +59,6 @@ namespace CustomCADSolutions.App.APIControllers
         [Produces("application/json")]
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status404NotFound)]
-        [ProducesResponseType(Status400BadRequest)]
         public async Task<ActionResult<CadExportDTO>> GetAsync(int id)
         {
             try
@@ -67,51 +70,51 @@ namespace CustomCADSolutions.App.APIControllers
             {
                 return NotFound();
             }
-            catch
-            {
-                return BadRequest();
-            }
         }
 
         [HttpPost]
         [Consumes("application/json")]
         [Produces("application/json")]
         [ProducesResponseType(Status201Created)]
+        [ProducesResponseType(Status400BadRequest)]
         public async Task<ActionResult> PostAsync(CadImportDTO import)
         {
-            CadModel cad = mapper.Map<CadModel>(import);
+            CadModel model = mapper.Map<CadModel>(import);
+            model.CreationDate = DateTime.Now;
 
-            cad.CreationDate = DateTime.Now;
-            cad.Id = await cadService.CreateAsync(cad);
-            cad = await cadService.GetByIdAsync(cad.Id);
+            try
+            {
+                int id = await cadService.CreateAsync(model);
 
-            CadExportDTO export = mapper.Map<CadExportDTO>(cad);
-            return CreatedAtAction(null, new { export.Id }, export);
+                model = await cadService.GetByIdAsync(id);
+                CadExportDTO export = mapper.Map<CadExportDTO>(model);
+
+                return CreatedAtAction(null, new { id }, export);
+            }
+            catch
+            {
+                return BadRequest();
+            }
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         [Consumes("application/json")]
         [ProducesResponseType(Status204NoContent)]
         [ProducesResponseType(Status403Forbidden)]
         [ProducesResponseType(Status404NotFound)]
-        public async Task<ActionResult> PutAsync(CadImportDTO dto)
+        public async Task<ActionResult> PutAsync(int id, CadImportDTO dto)
         {
             try
             {
-                CadModel cad = await cadService.GetByIdAsync(dto.Id);
-
-                if (dto.CreatorId != cad.CreatorId)
-                {
-                    return Forbid();
-                }
-
+                CadModel cad = await cadService.GetByIdAsync(id);
+                
                 cad.Name = dto.Name;
                 cad.CategoryId = dto.CategoryId;
                 cad.Coords = dto.Coords;
                 cad.SpinAxis = dto.SpinAxis;
                 cad.Price = dto.Price;
                 cad.Color = Color.FromArgb(1, dto.RGB[0], dto.RGB[1], dto.RGB[2]);
-                await cadService.EditAsync(dto.Id, cad);
+                await cadService.EditAsync(id, cad);
 
                 return NoContent();
             }
@@ -121,35 +124,45 @@ namespace CustomCADSolutions.App.APIControllers
             }
         }
 
-        //[HttpPatch("{id}")]
-        //[Consumes("application/json")]
-        //[ProducesResponseType(204)]
-        //[ProducesResponseType(404)]
-        //[IgnoreAntiforgeryToken]
-        //public async Task<ActionResult> PatchAsync(int id, CadImportDTO dto)
-        //{
-        //    try
-        //    {
-        //        CadModel cad = await cadService.GetByIdAsync(dto.Id);
+        [HttpPatch("{id}")]
+        [Consumes("application/json")]
+        [ProducesResponseType(Status204NoContent)]
+        [ProducesResponseType(Status400BadRequest)]
+        [ProducesResponseType(Status404NotFound)]
+        public async Task<ActionResult> PatchAsync(int id, [FromBody] List<Operation<CadModel>> operations)
+        {
+            JsonPatchDocument<CadModel> patchCad = new(operations, new DefaultContractResolver());
+            try
+            {
+                CadModel model = await cadService.GetByIdAsync(id);
+                patchCad.ApplyTo(model);
 
-        //        if (dto.CreatorId != cad.CreatorId)
-        //        {
-        //            return Forbid();
-        //        }
+                IList<string> errors = cadService.ValidateEntity(model);
+                if (errors.Any())
+                {
+                    return BadRequest(string.Join("; ", errors));
+                }
 
-        //        cad.Name = dto.Name;
-        //        cad.CategoryId = dto.CategoryId;
-        //        cad.Coords = dto.Coords;
-        //        cad.SpinAxis = dto.SpinAxis;
-        //        await cadService.EditPartiallyAsync(cad);
-
-        //        return NoContent();
-        //    }
-        //    catch (KeyNotFoundException)
-        //    {
-        //        return NotFound();
-        //    }
-        //}
+                await cadService.EditAsync(id, model);
+                return NoContent();
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return Conflict();
+            }
+            catch (DbUpdateException)
+            {
+                return BadRequest();
+            }
+            catch
+            {
+                return StatusCode(Status500InternalServerError);
+            }
+        }
 
         [HttpDelete("{id}")]
         [ProducesResponseType(Status204NoContent)]
