@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\CustomCADSolutions.App.csproj": {}
+    "C:\\Users\\ivana\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\CustomCADSolutions.App.csproj": {}
   },
   "projects": {
-    "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\CustomCADSolutions.App.csproj": {
+    "C:\\Users\\ivana\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\CustomCADSolutions.App.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\CustomCADSolutions.App.csproj",
+        "projectUniqueName": "C:\\Users\\ivana\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\CustomCADSolutions.App.csproj",
         "projectName": "CustomCADSolutions.App",
-        "projectPath": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\CustomCADSolutions.App.csproj",
-        "packagesPath": "C:\\Users\\35988\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\obj\\",
+        "projectPath": "C:\\Users\\ivana\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\CustomCADSolutions.App.csproj",
+        "packagesPath": "C:\\Users\\ivana\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\ivana\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\35988\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\ivana\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -33,8 +33,8 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.Core\\CustomCADSolutions.Core.csproj": {
-                "projectPath": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.Core\\CustomCADSolutions.Core.csproj"
+              "C:\\Users\\ivana\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.Core\\CustomCADSolutions.Core.csproj": {
+                "projectPath": "C:\\Users\\ivana\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.Core\\CustomCADSolutions.Core.csproj"
               }
             }
           }
@@ -54,10 +54,6 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
-            "AssimpNet": {
-              "target": "Package",
-              "version": "[4.1.0, )"
-            },
             "Microsoft.AspNetCore.Authentication.Certificate": {
               "target": "Package",
               "version": "[6.0.28, )"
@@ -124,24 +120,24 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.200\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.Core\\CustomCADSolutions.Core.csproj": {
+    "C:\\Users\\ivana\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.Core\\CustomCADSolutions.Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.Core\\CustomCADSolutions.Core.csproj",
+        "projectUniqueName": "C:\\Users\\ivana\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.Core\\CustomCADSolutions.Core.csproj",
         "projectName": "CustomCADSolutions.Core",
-        "projectPath": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.Core\\CustomCADSolutions.Core.csproj",
-        "packagesPath": "C:\\Users\\35988\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.Core\\obj\\",
+        "projectPath": "C:\\Users\\ivana\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.Core\\CustomCADSolutions.Core.csproj",
+        "packagesPath": "C:\\Users\\ivana\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\ivana\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.Core\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\35988\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\ivana\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -157,8 +153,8 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.Infrastructure\\CustomCADSolutions.Infrastructure.csproj": {
-                "projectPath": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.Infrastructure\\CustomCADSolutions.Infrastructure.csproj"
+              "C:\\Users\\ivana\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.Infrastructure\\CustomCADSolutions.Infrastructure.csproj": {
+                "projectPath": "C:\\Users\\ivana\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.Infrastructure\\CustomCADSolutions.Infrastructure.csproj"
               }
             }
           }
@@ -181,6 +177,10 @@
             "AutoMapper": {
               "target": "Package",
               "version": "[13.0.1, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.1, )"
             }
           },
           "imports": [
@@ -199,24 +199,24 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.200\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.Infrastructure\\CustomCADSolutions.Infrastructure.csproj": {
+    "C:\\Users\\ivana\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.Infrastructure\\CustomCADSolutions.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.Infrastructure\\CustomCADSolutions.Infrastructure.csproj",
+        "projectUniqueName": "C:\\Users\\ivana\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.Infrastructure\\CustomCADSolutions.Infrastructure.csproj",
         "projectName": "CustomCADSolutions.Infrastructure",
-        "projectPath": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.Infrastructure\\CustomCADSolutions.Infrastructure.csproj",
-        "packagesPath": "C:\\Users\\35988\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.Infrastructure\\obj\\",
+        "projectPath": "C:\\Users\\ivana\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.Infrastructure\\CustomCADSolutions.Infrastructure.csproj",
+        "packagesPath": "C:\\Users\\ivana\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\ivana\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\35988\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\ivana\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -284,7 +284,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.200\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204\\RuntimeIdentifierGraph.json"
         }
       }
     }

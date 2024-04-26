@@ -39,7 +39,9 @@ namespace CustomCADSolutions.Core.Mappings
             .ForMember(export => export.CreationDate, opt => 
                 opt.MapFrom(model => model.CreationDate.ToString("dd/MM/yyyy HH:mm:ss")))
             .ForMember(export => export.CreatorName, opt => 
-                opt.MapFrom(model => model.Creator.UserName));
+                opt.MapFrom(model => model.Creator.UserName))
+            .ForMember(export => export.CategoryName, opt => 
+                opt.MapFrom(model => model.Category.Name));
 
         /// <summary>
         ///     Converts Query to DTO

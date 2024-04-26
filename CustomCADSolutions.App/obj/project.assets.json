@@ -2,43 +2,6 @@
   "version": 3,
   "targets": {
     "net6.0": {
-      "AssimpNet/4.1.0": {
-        "type": "package",
-        "dependencies": {
-          "NETStandard.Library": "1.6.1"
-        },
-        "compile": {
-          "lib/netstandard1.3/AssimpNet.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/netstandard1.3/AssimpNet.dll": {
-            "related": ".xml"
-          }
-        },
-        "build": {
-          "build/AssimpNet.targets": {}
-        },
-        "runtimeTargets": {
-          "runtimes/linux-x64/native/libassimp.so": {
-            "assetType": "native",
-            "rid": "linux-x64"
-          },
-          "runtimes/osx-x64/native/libassimp.dylib": {
-            "assetType": "native",
-            "rid": "osx-x64"
-          },
-          "runtimes/win-x64/native/assimp.dll": {
-            "assetType": "native",
-            "rid": "win-x64"
-          },
-          "runtimes/win-x86/native/assimp.dll": {
-            "assetType": "native",
-            "rid": "win-x86"
-          }
-        }
-      },
       "AutoMapper/13.0.1": {
         "type": "package",
         "dependencies": {
@@ -5001,7 +4964,8 @@
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
           "AutoMapper": "13.0.1",
-          "CustomCADSolutions.Infrastructure": "1.0.0"
+          "CustomCADSolutions.Infrastructure": "1.0.0",
+          "Newtonsoft.Json": "13.0.1"
         },
         "compile": {
           "bin/placeholder/CustomCADSolutions.Core.dll": {}
@@ -5028,31 +4992,6 @@
     }
   },
   "libraries": {
-    "AssimpNet/4.1.0": {
-      "sha512": "z/4Tmf3Q2r1+vN6o/szArEZvPsdYNRYiS0L/yArybQd7n7KCiS9L4lRZhwwlHJb/edECM+Jky0XisVspr5aQWQ==",
-      "type": "package",
-      "path": "assimpnet/4.1.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "AssimpNet Documentation (October 2018).chm",
-        "ChangeLog.txt",
-        "License.txt",
-        "assimpnet.4.1.0.nupkg.sha512",
-        "assimpnet.nuspec",
-        "build/AssimpNet.targets",
-        "lib/net35/AssimpNet.dll",
-        "lib/net35/AssimpNet.xml",
-        "lib/net40/AssimpNet.dll",
-        "lib/net40/AssimpNet.xml",
-        "lib/netstandard1.3/AssimpNet.dll",
-        "lib/netstandard1.3/AssimpNet.xml",
-        "runtimes/linux-x64/native/libassimp.so",
-        "runtimes/osx-x64/native/libassimp.dylib",
-        "runtimes/win-x64/native/assimp.dll",
-        "runtimes/win-x86/native/assimp.dll"
-      ]
-    },
     "AutoMapper/13.0.1": {
       "sha512": "/Fx1SbJ16qS7dU4i604Sle+U9VLX+WSNVJggk6MupKVkYvvBm4XqYaeFuf67diHefHKHs50uQIS2YEDFhPCakQ==",
       "type": "package",
@@ -13456,7 +13395,6 @@
   },
   "projectFileDependencyGroups": {
     "net6.0": [
-      "AssimpNet >= 4.1.0",
       "CustomCADSolutions.Core >= 1.0.0",
       "Microsoft.AspNetCore.Authentication.Certificate >= 6.0.28",
       "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore >= 6.0.24",
@@ -13472,23 +13410,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\35988\\.nuget\\packages\\": {},
+    "C:\\Users\\ivana\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\CustomCADSolutions.App.csproj",
+      "projectUniqueName": "C:\\Users\\ivana\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\CustomCADSolutions.App.csproj",
       "projectName": "CustomCADSolutions.App",
-      "projectPath": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\CustomCADSolutions.App.csproj",
-      "packagesPath": "C:\\Users\\35988\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\obj\\",
+      "projectPath": "C:\\Users\\ivana\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\CustomCADSolutions.App.csproj",
+      "packagesPath": "C:\\Users\\ivana\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\ivana\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\35988\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\ivana\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -13504,8 +13442,8 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.Core\\CustomCADSolutions.Core.csproj": {
-              "projectPath": "C:\\Users\\35988\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.Core\\CustomCADSolutions.Core.csproj"
+            "C:\\Users\\ivana\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.Core\\CustomCADSolutions.Core.csproj": {
+              "projectPath": "C:\\Users\\ivana\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.Core\\CustomCADSolutions.Core.csproj"
             }
           }
         }
@@ -13525,10 +13463,6 @@
       "net6.0": {
         "targetAlias": "net6.0",
         "dependencies": {
-          "AssimpNet": {
-            "target": "Package",
-            "version": "[4.1.0, )"
-          },
           "Microsoft.AspNetCore.Authentication.Certificate": {
             "target": "Package",
             "version": "[6.0.28, )"
@@ -13595,7 +13529,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.200\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204\\RuntimeIdentifierGraph.json"
       }
     }
   }
