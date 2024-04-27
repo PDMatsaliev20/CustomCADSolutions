@@ -2,12 +2,11 @@
 @inject IViewLocalizer Localizer
 @{
     ViewData["Title"] = "Edit Order";
-    ViewBag.Submit = "Edit";
 }
 
 <h2 class="text-center mb-3">@Localizer["Title", Model.Name]</h2>
 <hr />
 
 <div class="container">
-    <partial name="_OrderEditPartial" model="Model" view-data="ViewData" />
+    <partial name="_OrderEditPartial" model="Model" />
 </div>

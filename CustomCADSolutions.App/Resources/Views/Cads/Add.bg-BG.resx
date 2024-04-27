@@ -117,49 +117,49 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="All" xml:space="preserve">
-    <value>All</value>
-  </data>
   <data name="Animals" xml:space="preserve">
-    <value>Animals</value>
+    <value>Животни</value>
   </data>
   <data name="Characters" xml:space="preserve">
-    <value>Characters</value>
+    <value>Герои</value>
   </data>
   <data name="Electronics" xml:space="preserve">
-    <value>Electronics</value>
+    <value>Електроника</value>
   </data>
   <data name="Fashion" xml:space="preserve">
-    <value>Fashion</value>
+    <value>Мода</value>
   </data>
   <data name="Furniture" xml:space="preserve">
-    <value>Furniture</value>
+    <value>Мебели</value>
   </data>
   <data name="Name" xml:space="preserve">
-    <value>Name...</value>
+    <value>Име...</value>
   </data>
   <data name="Nature" xml:space="preserve">
-    <value>Nature</value>
+    <value>Природа</value>
   </data>
   <data name="NoCategory" xml:space="preserve">
-    <value>None</value>
+    <value>Никоя</value>
   </data>
   <data name="Others" xml:space="preserve">
-    <value>Others</value>
+    <value>Други</value>
   </data>
   <data name="Science" xml:space="preserve">
-    <value>Science</value>
+    <value>Наука</value>
   </data>
   <data name="Sports" xml:space="preserve">
-    <value>Sports</value>
+    <value>Спорт</value>
   </data>
   <data name="Title" xml:space="preserve">
-    <value>Add a 3D Model To Our Gallery</value>
+    <value>Добави 3D Модел Към Галерията</value>
   </data>
   <data name="Toys" xml:space="preserve">
-    <value>Toys</value>
+    <value>Играчки</value>
+  </data>
+  <data name="Upload" xml:space="preserve">
+    <value>Качи</value>
   </data>
   <data name="Vehicles" xml:space="preserve">
-    <value>Vehicles</value>
+    <value>Коли</value>
   </data>
 </root>

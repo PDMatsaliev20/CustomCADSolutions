@@ -10,10 +10,9 @@ using CustomCADSolutions.App.Models.Cads.View;
 using CustomCADSolutions.Core.Contracts;
 using CustomCADSolutions.Core.Models;
 
-namespace CustomCADSolutions.App.Areas.Contributor.Controllers
+namespace CustomCADSolutions.App.Controllers
 {
-    [Area("Contributor")]
-    [Authorize(Roles = "Contributor")]
+    [Authorize(Roles = "Client,Contributor")]
     public class OrdersController : Controller
     {
         // Services

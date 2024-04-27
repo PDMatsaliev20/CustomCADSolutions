@@ -66,6 +66,7 @@ namespace Microsoft.AspNetCore.Builder
             app.UseEndpoints(endpoints =>
             {
                 var defaults = new { Controller = "Home", Action = "Index" };
+
                 endpoints.MapAreaControllerRoute(
                     name: "AdminArea",
                     areaName: "Admin",
@@ -76,18 +77,6 @@ namespace Microsoft.AspNetCore.Builder
                     name: "DesignerArea",
                     areaName: "Designer",
                     pattern: "Designer/{controller}/{action}/{id?}",
-                    defaults: defaults);
-
-                endpoints.MapAreaControllerRoute(
-                    name: "ContributorArea",
-                    areaName: "Contributor",
-                    pattern: "Contributor/{controller}/{action}/{id?}",
-                    defaults: defaults);
-
-                endpoints.MapAreaControllerRoute(
-                    name: "ClientArea",
-                    areaName: "Client",
-                    pattern: "Client/{controller}/{action}/{id?}",
                     defaults: defaults);
 
                 endpoints.MapAreaControllerRoute(

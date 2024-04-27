@@ -159,6 +159,9 @@
   <data name="Toys" xml:space="preserve">
     <value>Toys</value>
   </data>
+  <data name="Upload" xml:space="preserve">
+    <value>Upload</value>
+  </data>
   <data name="Vehicles" xml:space="preserve">
     <value>Vehicles</value>
   </data>

@@ -4,11 +4,10 @@ namespace CustomCADSolutions.App.Components
 {
     public class CadComponent : ViewComponent
     {
-        public IViewComponentResult Invoke(int id, string name, string area, string button, string color = "#000000")
+        public IViewComponentResult Invoke(int id, string name, string button, string color = "#000000")
         {
             ViewBag.Id = id;
             ViewBag.Name = name;
-            ViewBag.Area = area;
             ViewBag.Color = color;
 
             string view = button switch

@@ -2,7 +2,6 @@
 @inject IViewLocalizer Localizer
 @{
     string[] buttons = ViewBag.Buttons;
-    string area = ViewBag.Area;
 
     int id = Model.Id;
     string name = Model.Name;
@@ -30,7 +29,7 @@
     <div class="d-grid gap-2 mt-3">
         @foreach (string button in buttons)
         {
-            @await Component.InvokeAsync("CadComponent", new { id, name, area, button, color })
+            @await Component.InvokeAsync("CadComponent", new { id, name, button, color })
         }
     </div>
 </div>

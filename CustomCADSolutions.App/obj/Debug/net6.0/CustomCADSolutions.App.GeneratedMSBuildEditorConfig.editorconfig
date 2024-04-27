@@ -54,96 +54,8 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/ivana/source/repos/CustomCADSolutions/CustomCADSolutions.App/Areas/Client/Views/Orders/Add.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ2xpZW50XFZpZXdzXE9yZGVyc1xBZGQuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/ivana/source/repos/CustomCADSolutions/CustomCADSolutions.App/Areas/Client/Views/Orders/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ2xpZW50XFZpZXdzXE9yZGVyc1xEZXRhaWxzLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/ivana/source/repos/CustomCADSolutions/CustomCADSolutions.App/Areas/Client/Views/Orders/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ2xpZW50XFZpZXdzXE9yZGVyc1xFZGl0LmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/ivana/source/repos/CustomCADSolutions/CustomCADSolutions.App/Areas/Client/Views/Orders/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ2xpZW50XFZpZXdzXE9yZGVyc1xJbmRleC5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/ivana/source/repos/CustomCADSolutions/CustomCADSolutions.App/Areas/Client/Views/Orders/Order.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ2xpZW50XFZpZXdzXE9yZGVyc1xPcmRlci5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/ivana/source/repos/CustomCADSolutions/CustomCADSolutions.App/Areas/Client/Views/_ViewImports.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ2xpZW50XFZpZXdzXF9WaWV3SW1wb3J0cy5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/ivana/source/repos/CustomCADSolutions/CustomCADSolutions.App/Areas/Client/Views/_ViewStart.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ2xpZW50XFZpZXdzXF9WaWV3U3RhcnQuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/ivana/source/repos/CustomCADSolutions/CustomCADSolutions.App/Areas/Contributor/Views/Cads/Add.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ29udHJpYnV0b3JcVmlld3NcQ2Fkc1xBZGQuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/ivana/source/repos/CustomCADSolutions/CustomCADSolutions.App/Areas/Contributor/Views/Cads/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ29udHJpYnV0b3JcVmlld3NcQ2Fkc1xEZXRhaWxzLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/ivana/source/repos/CustomCADSolutions/CustomCADSolutions.App/Areas/Contributor/Views/Cads/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ29udHJpYnV0b3JcVmlld3NcQ2Fkc1xFZGl0LmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/ivana/source/repos/CustomCADSolutions/CustomCADSolutions.App/Areas/Contributor/Views/Cads/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ29udHJpYnV0b3JcVmlld3NcQ2Fkc1xJbmRleC5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/ivana/source/repos/CustomCADSolutions/CustomCADSolutions.App/Areas/Contributor/Views/Orders/Add.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ29udHJpYnV0b3JcVmlld3NcT3JkZXJzXEFkZC5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/ivana/source/repos/CustomCADSolutions/CustomCADSolutions.App/Areas/Contributor/Views/Orders/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ29udHJpYnV0b3JcVmlld3NcT3JkZXJzXERldGFpbHMuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/ivana/source/repos/CustomCADSolutions/CustomCADSolutions.App/Areas/Contributor/Views/Orders/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ29udHJpYnV0b3JcVmlld3NcT3JkZXJzXEVkaXQuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/ivana/source/repos/CustomCADSolutions/CustomCADSolutions.App/Areas/Contributor/Views/Orders/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ29udHJpYnV0b3JcVmlld3NcT3JkZXJzXEluZGV4LmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/ivana/source/repos/CustomCADSolutions/CustomCADSolutions.App/Areas/Contributor/Views/Orders/Order.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ29udHJpYnV0b3JcVmlld3NcT3JkZXJzXE9yZGVyLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/ivana/source/repos/CustomCADSolutions/CustomCADSolutions.App/Areas/Contributor/Views/_ViewImports.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ29udHJpYnV0b3JcVmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/ivana/source/repos/CustomCADSolutions/CustomCADSolutions.App/Areas/Contributor/Views/_ViewStart.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ29udHJpYnV0b3JcVmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/ivana/source/repos/CustomCADSolutions/CustomCADSolutions.App/Areas/Designer/Views/Cads/Add.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcRGVzaWduZXJcVmlld3NcQ2Fkc1xBZGQuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
 [C:/Users/ivana/source/repos/CustomCADSolutions/CustomCADSolutions.App/Areas/Designer/Views/Cads/All.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcRGVzaWduZXJcVmlld3NcQ2Fkc1xBbGwuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/ivana/source/repos/CustomCADSolutions/CustomCADSolutions.App/Areas/Designer/Views/Cads/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcRGVzaWduZXJcVmlld3NcQ2Fkc1xEZXRhaWxzLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/ivana/source/repos/CustomCADSolutions/CustomCADSolutions.App/Areas/Designer/Views/Cads/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcRGVzaWduZXJcVmlld3NcQ2Fkc1xFZGl0LmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/ivana/source/repos/CustomCADSolutions/CustomCADSolutions.App/Areas/Designer/Views/Cads/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcRGVzaWduZXJcVmlld3NcQ2Fkc1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/ivana/source/repos/CustomCADSolutions/CustomCADSolutions.App/Areas/Designer/Views/Cads/Submitted.cshtml]
@@ -198,6 +110,22 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcVmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/ivana/source/repos/CustomCADSolutions/CustomCADSolutions.App/Views/Cads/Add.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2Fkc1xBZGQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ivana/source/repos/CustomCADSolutions/CustomCADSolutions.App/Views/Cads/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2Fkc1xEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ivana/source/repos/CustomCADSolutions/CustomCADSolutions.App/Views/Cads/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2Fkc1xFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ivana/source/repos/CustomCADSolutions/CustomCADSolutions.App/Views/Cads/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2Fkc1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/ivana/source/repos/CustomCADSolutions/CustomCADSolutions.App/Views/Error/Exception.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXJyb3JcRXhjZXB0aW9uLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
@@ -232,6 +160,26 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/ivana/source/repos/CustomCADSolutions/CustomCADSolutions.App/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ivana/source/repos/CustomCADSolutions/CustomCADSolutions.App/Views/Orders/Add.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JkZXJzXEFkZC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ivana/source/repos/CustomCADSolutions/CustomCADSolutions.App/Views/Orders/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JkZXJzXERldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ivana/source/repos/CustomCADSolutions/CustomCADSolutions.App/Views/Orders/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JkZXJzXEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ivana/source/repos/CustomCADSolutions/CustomCADSolutions.App/Views/Orders/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JkZXJzXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ivana/source/repos/CustomCADSolutions/CustomCADSolutions.App/Views/Orders/Order.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JkZXJzXE9yZGVyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/ivana/source/repos/CustomCADSolutions/CustomCADSolutions.App/Views/Shared/Components/AllOrdersComponent/Begun.cshtml]

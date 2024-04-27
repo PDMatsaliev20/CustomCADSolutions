@@ -6,7 +6,6 @@
 
     int id = Model.Id;
     string name = Model.Name;
-    string area = ViewBag.Area;
 }
 
 <script type="module">
@@ -34,7 +33,7 @@
             <div class="d-grid gap-2 mt-3">
                 @foreach (string button in buttons)
                 {
-                    @await Component.InvokeAsync("CadComponent", new { id, name, area, button });
+                    @await Component.InvokeAsync("CadComponent", new { id, name, button });
                 }
             </div>
         </div>

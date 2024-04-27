@@ -11,10 +11,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Drawing;
 
-namespace CustomCADSolutions.App.Areas.Contributor.Controllers
+namespace CustomCADSolutions.App.Controllers
 {
-    [Area("Contributor")]
-    [Authorize(Roles = "Contributor")]
+    [Authorize(Roles = "Contributor,Designer")]
     public class CadsController : Controller
     {
         // Services
@@ -117,7 +116,7 @@ namespace CustomCADSolutions.App.Areas.Contributor.Controllers
             CadModel model = mapper.Map<CadModel>(input);
             model.Bytes = await input.CadFile.GetBytesAsync();
             model.CreatorId = User.GetId();
-            model.IsValidated = false;
+            model.IsValidated = User.IsInRole("Designer");
             model.CreationDate = DateTime.Now;
 
             await cadService.CreateAsync(model);
