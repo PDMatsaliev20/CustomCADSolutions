@@ -5,28 +5,24 @@ using CustomCADSolutions.App.Models.Users;
 using Microsoft.Extensions.Localization;
 using CustomCADSolutions.Infrastructure.Data.Models;
 
-namespace CustomCADSolutions.App.Areas.Identity.Controllers
+namespace CustomCADSolutions.App.Controllers
 {
-    [Area("Identity")]
     public class AccountController : Controller
     {
         private readonly SignInManager<AppUser> signInManager;
         private readonly UserManager<AppUser> userManager;
         private readonly IUserStore<AppUser> userStore;
         private readonly IUserEmailStore<AppUser> emailStore;
-        private readonly IStringLocalizer<AccountController> localizer;
 
         public AccountController(
             UserManager<AppUser> userManager,
             IUserStore<AppUser> userStore,
-            SignInManager<AppUser> signInManager,
-            IStringLocalizer<AccountController> localizer)
+            SignInManager<AppUser> signInManager)
         {
             this.userManager = userManager;
             this.userStore = userStore;
             this.signInManager = signInManager;
             this.emailStore = (IUserEmailStore<AppUser>)this.userStore;
-            this.localizer = localizer;
         }
 
         [HttpGet]
@@ -40,11 +36,6 @@ namespace CustomCADSolutions.App.Areas.Identity.Controllers
         {
             returnUrl ??= Url.Content("~/");
             model.ReturnUrl = returnUrl;
-
-            if (await userManager.FindByEmailAsync(model.Email) != null)
-            {
-                ModelState.AddModelError(nameof(model.Email), localizer["EmailError", model.Email].Value);
-            }
 
             if (!ModelState.IsValid)
             {

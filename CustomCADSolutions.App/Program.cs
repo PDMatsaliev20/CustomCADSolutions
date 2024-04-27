@@ -18,7 +18,8 @@ builder.Services.AddStripe(builder.Configuration);
 builder.Services.AddAbstractions();
 builder.Services.ConfigureApplicationCookie(options =>
 {
-    options.LoginPath = "/Identity/Account/Login";
+    options.LoginPath = "/Account/Login";
+    options.LogoutPath = "/Account/Logout";
     options.AccessDeniedPath = "/Home/Unauthorized";
 });
 

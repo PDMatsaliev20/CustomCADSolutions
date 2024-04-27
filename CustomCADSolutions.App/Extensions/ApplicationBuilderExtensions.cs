@@ -53,7 +53,7 @@ namespace Microsoft.AspNetCore.Builder
             {
                 string role = user.Key;
                 string username = user.Value;
-                string email = $"user{i++}@gmail.com";
+                string email = $"user{i++}@mail.com";
                 string password = config[$"Passwords:{role}"];
                 await userManager.AddUserAsync(username, email, password, role);
             }
@@ -78,11 +78,6 @@ namespace Microsoft.AspNetCore.Builder
                     areaName: "Designer",
                     pattern: "Designer/{controller}/{action}/{id?}",
                     defaults: defaults);
-
-                endpoints.MapAreaControllerRoute(
-                    name: "IdentityArea",
-                    areaName: "Identity",
-                    pattern: "Identity/{controller}/{action}");
 
                 endpoints.MapDefaultControllerRoute();
             });
