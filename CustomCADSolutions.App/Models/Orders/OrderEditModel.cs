@@ -1,12 +1,11 @@
-﻿using static CustomCADSolutions.Infrastructure.Data.DataConstants;
+﻿using CustomCADSolutions.App.Resources.Shared;
+using static CustomCADSolutions.Infrastructure.Data.DataConstants;
 using System.ComponentModel.DataAnnotations;
-using CustomCADSolutions.Infrastructure.Data.Models.Enums;
-using CustomCADSolutions.App.Resources.Shared;
 using CustomCADSolutions.Core.Models;
 
 namespace CustomCADSolutions.App.Models.Orders
 {
-    public class OrderInputModel
+    public class OrderEditModel
     {
         public int Id { get; set; }
 
@@ -21,11 +20,6 @@ namespace CustomCADSolutions.App.Models.Orders
 
         [Required(ErrorMessageResourceType = typeof(SharedResources),
             ErrorMessageResourceName = nameof(SharedResources.Required))]
-        [Display(Name = "Category", ResourceType = typeof(SharedResources))]
-        public int CategoryId { get; set; }
-
-        [Required(ErrorMessageResourceType = typeof(SharedResources),
-            ErrorMessageResourceName = nameof(SharedResources.Required))]
         [StringLength(OrderConstants.DescriptionMaxLength,
             MinimumLength = OrderConstants.DescriptionMinLength,
             ErrorMessageResourceType = typeof(SharedResources),
@@ -33,11 +27,10 @@ namespace CustomCADSolutions.App.Models.Orders
         [Display(Name = "Description", ResourceType = typeof(SharedResources))]
         public string Description { get; set; } = null!;
 
-        public OrderStatus Status { get; set; }
-
-        public int? CadId { get; set; }
-
-        public string? BuyerId { get; set; }
+        [Required(ErrorMessageResourceType = typeof(SharedResources),
+            ErrorMessageResourceName = nameof(SharedResources.Required))]
+        [Display(Name = "Category", ResourceType = typeof(SharedResources))]
+        public int CategoryId { get; set; }
 
         public IEnumerable<CategoryModel>? Categories { get; set; }
     }

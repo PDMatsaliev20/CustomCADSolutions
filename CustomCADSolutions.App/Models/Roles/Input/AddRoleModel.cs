@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using static CustomCADSolutions.Infrastructure.Data.DataConstants.RoleConstants;
 
-namespace CustomCADSolutions.App.Models.Roles
+namespace CustomCADSolutions.App.Models.Roles.Input
 {
     public class AddRoleModel
     {

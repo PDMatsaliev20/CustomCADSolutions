@@ -1,4 +1,4 @@
-﻿namespace CustomCADSolutions.App.Models.Roles
+﻿namespace CustomCADSolutions.App.Models.Roles.View
 {
     public class RoleIndexViewModel
     {
