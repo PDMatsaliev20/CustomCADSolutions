@@ -96,14 +96,14 @@ namespace CustomCADSolutions.App.Controllers
         [HttpGet]
         public async Task<IActionResult> Add()
         {
-            return View(new OrderInputModel()
+            return View(new OrderAddModel()
             {
                 Categories = await categoryService.GetAllAsync()
             });
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(OrderInputModel input)
+        public async Task<IActionResult> Add(OrderAddModel input)
         {
             if (!ModelState.IsValid)
             {
@@ -128,20 +128,15 @@ namespace CustomCADSolutions.App.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            OrderInputModel input = mapper.Map<OrderInputModel>(model);
+            var input = mapper.Map<OrderEditModel>(model);
             input.Categories = await categoryService.GetAllAsync();
 
             return View(input);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(int id, OrderInputModel input)
+        public async Task<IActionResult> Edit(int id, OrderEditModel input)
         {
-            if (input.Status != OrderStatus.Pending)
-            {
-                return RedirectToAction(nameof(Index));
-            }
-
             if (!ModelState.IsValid)
             {
                 input.Categories = await categoryService.GetAllAsync();
@@ -149,6 +144,12 @@ namespace CustomCADSolutions.App.Controllers
             }
 
             OrderModel model = mapper.Map<OrderModel>(input);
+            
+            if (model.Status != OrderStatus.Pending)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
             await orderService.EditAsync(id, model);
 
             return RedirectToAction(nameof(Index));

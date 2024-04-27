@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using CustomCADSolutions.Core.Mappings.DTOs;
 using CustomCADSolutions.App.Models.Orders;
 using CustomCADSolutions.Core.Models;
 
@@ -9,9 +8,13 @@ namespace CustomCADSolutions.App.Mappings
     {
         public OrderAppProfile()
         {         
-            InputToModel();
             ModelToView();
-            ModelToInput();
+
+            AddToModel();
+            ModelToAdd();
+            
+            EditToModel();
+            ModelToEdit();
         }
         
         public void ModelToView() => CreateMap<OrderModel, OrderViewModel>()
@@ -20,8 +23,10 @@ namespace CustomCADSolutions.App.Mappings
             .ForMember(view => view.BuyerName, opt => opt.MapFrom(model => model.Buyer.UserName))
             .ForMember(view => view.Category, opt => opt.MapFrom(model => model.Category.Name));
 
-        public void InputToModel() => CreateMap<OrderInputModel, OrderModel>();
+        public void AddToModel() => CreateMap<OrderAddModel, OrderModel>();
+        public void ModelToAdd() => CreateMap<OrderModel, OrderAddModel>();
         
-        public void ModelToInput() => CreateMap<OrderModel, OrderInputModel>();
+        public void EditToModel() => CreateMap<OrderEditModel, OrderModel>();
+        public void ModelToEdit() => CreateMap<OrderModel, OrderEditModel>();
     }
 }

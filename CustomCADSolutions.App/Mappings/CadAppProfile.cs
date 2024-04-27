@@ -2,13 +2,9 @@
 using CustomCADSolutions.App.Models.Cads.Input;
 using CustomCADSolutions.App.Models.Cads.View;
 using CustomCADSolutions.Core.Models;
-using System.Drawing;
 
 namespace CustomCADSolutions.App.Mappings
 {
-    /// <summary>
-    /// Covers InputModel-ImportDTO, ImportDTO-Model, Model-ExportDTO and ExportDTO-ViewModel
-    /// </summary>
     public class CadAppProfile : Profile
     {
         public CadAppProfile()

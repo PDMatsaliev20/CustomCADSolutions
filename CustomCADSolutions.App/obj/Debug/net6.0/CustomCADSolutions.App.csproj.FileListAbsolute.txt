@@ -1319,10 +1319,6 @@ C:\Users\ivana\source\repos\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\
 C:\Users\ivana\source\repos\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Areas.Designer.Views.Orders.All.en-US.resources
 C:\Users\ivana\source\repos\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Areas.Identity.Controllers.AccountController.bg-BG.resources
 C:\Users\ivana\source\repos\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Areas.Identity.Controllers.AccountController.en-US.resources
-C:\Users\ivana\source\repos\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Areas.Identity.Views.Account.Login.bg-BG.resources
-C:\Users\ivana\source\repos\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Areas.Identity.Views.Account.Login.en-US.resources
-C:\Users\ivana\source\repos\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Areas.Identity.Views.Account.Register.bg-BG.resources
-C:\Users\ivana\source\repos\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Areas.Identity.Views.Account.Register.en-US.resources
 C:\Users\ivana\source\repos\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Shared.SharedResources.bg-BG.resources
 C:\Users\ivana\source\repos\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Shared.SharedResources.en-US.resources
 C:\Users\ivana\source\repos\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Home.CadDetails.bg-BG.resources
@@ -1432,3 +1428,7 @@ C:\Users\ivana\source\repos\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\
 C:\Users\ivana\source\repos\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Cads.Edit.en-US.resources
 C:\Users\ivana\source\repos\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Cads.Index.bg-BG.resources
 C:\Users\ivana\source\repos\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Cads.Index.en-US.resources
+C:\Users\ivana\source\repos\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Account.Login.bg-BG.resources
+C:\Users\ivana\source\repos\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Account.Login.en-US.resources
+C:\Users\ivana\source\repos\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Account.Register.bg-BG.resources
+C:\Users\ivana\source\repos\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Account.Register.en-US.resources
