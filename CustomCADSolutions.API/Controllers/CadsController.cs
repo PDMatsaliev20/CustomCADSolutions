@@ -4,7 +4,6 @@ using CustomCADSolutions.Core.Mappings.CadDTOs;
 using CustomCADSolutions.Core.Contracts;
 using CustomCADSolutions.Core.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Drawing;
 using static Microsoft.AspNetCore.Http.StatusCodes;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
@@ -111,9 +110,7 @@ namespace CustomCADSolutions.App.APIControllers
                 cad.Name = dto.Name;
                 cad.CategoryId = dto.CategoryId;
                 cad.Coords = dto.Coords;
-                cad.SpinAxis = dto.SpinAxis;
                 cad.Price = dto.Price;
-                cad.Color = Color.FromArgb(1, dto.RGB[0], dto.RGB[1], dto.RGB[2]);
                 await cadService.EditAsync(id, cad);
 
                 return NoContent();

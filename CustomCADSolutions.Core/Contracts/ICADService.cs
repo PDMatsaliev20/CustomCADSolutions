@@ -28,15 +28,6 @@ namespace CustomCADSolutions.Core.Contracts
         Task<bool> ExistsByIdAsync(int id);
 
         /// <summary>
-        ///     Changes the Color (RGB value) of the Cad with the given id.
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="color"></param>
-        /// <returns>A Task object that represents the Save Changes action after the edit.</returns>
-        /// <exception cref="KeyNotFoundException">if no Category with the given id exists.</exception>
-        Task ChangeColorAsync(int id, Color color);
-
-        /// <summary>
         ///     Counts the Cads filtered by the predicate.
         /// </summary>
         /// <param name="predicate"></param>

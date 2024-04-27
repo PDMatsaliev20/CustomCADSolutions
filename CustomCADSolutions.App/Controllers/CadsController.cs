@@ -37,12 +37,6 @@ namespace CustomCADSolutions.App.Controllers
             this.logger = logger;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> ChangeColor(int id, string colorParam)
-        {
-            await cadService.ChangeColorAsync(id, ColorTranslator.FromHtml(colorParam));
-            return RedirectToAction(nameof(Details), new { id });
-        }
 
         [HttpGet]
         public async Task<IActionResult> Index([FromQuery] CadQueryInputModel inputQuery)

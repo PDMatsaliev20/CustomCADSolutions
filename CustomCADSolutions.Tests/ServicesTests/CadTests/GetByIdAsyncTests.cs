@@ -44,14 +44,8 @@ namespace CustomCADSolutions.Tests.ServicesTests.CadTests
                 Assert.That(actualCad.Bytes, Is.EqualTo(expectedCad.Bytes),
                     string.Format(ModelPropertyMismatch, "Bytes"));
 
-                Assert.That(actualCad.SpinAxis, Is.EqualTo(expectedCad.SpinAxis),
-                    string.Format(ModelPropertyMismatch, "SpinAxis"));
-
                 Assert.That(actualCad.IsValidated, Is.EqualTo(expectedCad.IsValidated),
                     string.Format(ModelPropertyMismatch, "IsValidated"));
-
-                Assert.That(actualCad.Color, Is.EqualTo(expectedCad.Color),
-                    string.Format(ModelPropertyMismatch, "Color"));
 
                 Assert.That(actualCad.CategoryId, Is.EqualTo(expectedCad.CategoryId),
                     string.Format(ModelPropertyMismatch, "CategoryId"));

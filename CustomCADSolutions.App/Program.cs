@@ -33,7 +33,7 @@ if (app.Environment.IsProduction())
 app.UseAnimalErrors("/Error/StatusCodeHandler");
 
 app.UseHttpsRedirection();
-app.UseStaticFiles();
+app.UseStaticFilesWithGltf();
 app.UseRouting();
 
 app.UseAuthentication();

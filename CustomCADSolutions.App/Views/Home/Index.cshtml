@@ -83,16 +83,10 @@
             x: @cad.Coords[0],
             y: @cad.Coords[1],
             z: @cad.Coords[2],
-            axis: '@cad.SpinAxis',
             fov: @cad.Fov,
-            rgb: {
-                r: @cad.RGB[0] / 255,
-                        g: @cad.RGB[1] / 255,
-                        b: @cad.RGB[2] / 255,
-            }
         };
 
-        loadModel(cad, '/@(cad.Name).stl');
+        loadModel(cad, '/@cad.Name');
     </script>
 
 

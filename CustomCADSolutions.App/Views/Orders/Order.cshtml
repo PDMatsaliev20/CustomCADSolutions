@@ -17,13 +17,7 @@
             x: @Model.Coords[0],
             y: @Model.Coords[1],
             z: @Model.Coords[2],
-            axis: '@Model.SpinAxis',
             fov: @Model.Fov,
-            rgb: {
-                r: @Model.RGB[0] / 255,
-                g: @Model.RGB[1] / 255,
-                b: @Model.RGB[2] / 255,
-            }
         };
 
         loadModel(cad);
@@ -31,7 +25,7 @@
 
     <script src="https://js.stripe.com/v3/"></script>
     <script type="module">
-        import { stripeTokenHandler } from '../../../js/site.mjs';
+        import stripeTokenHandler from '../../../js/stripe.mjs';
 
         var stripe = Stripe('@ViewBag.StripeKey');
         var elements = stripe.elements();

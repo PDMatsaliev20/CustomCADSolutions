@@ -48,12 +48,6 @@ namespace CustomCADSolutions.App.Models.Cads.Input
             ErrorMessageResourceName = nameof(SharedResources.Range))]
         public int Z { get; set; }
 
-        [RegularExpression(CadConstants.SpinAxisRegEx,
-            ErrorMessageResourceType = typeof(SharedResources),
-            ErrorMessageResourceName = nameof(SharedResources.InvalidAxis))]
-        [Display(Name = "Axis", ResourceType = typeof(SharedResources))]
-        public char? SpinAxis { get; set; }
-
         public IEnumerable<CategoryModel>? Categories { get; set; }
     }
 }

@@ -13,8 +13,6 @@ namespace CustomCADSolutions.Core.Models
         [Required(ErrorMessage = RequiredErrorMessage)]
         public byte[] Bytes { get; set; } = null!;
 
-        public Color Color { get; set; } = Color.FromArgb(0, CadConstants.R, CadConstants.G, CadConstants.B);
-
         [Required(ErrorMessage = RequiredErrorMessage)]
         [StringLength(CadConstants.NameMaxLength, MinimumLength = CadConstants.NameMinLength, ErrorMessage = LengthErrorMessage)]
         public string Name { get; set; } = null!;
@@ -30,10 +28,7 @@ namespace CustomCADSolutions.Core.Models
 
         [Required(ErrorMessage = RequiredErrorMessage)]
         public int[] Coords { get; set; } = new int[3];
-
-        [RegularExpression(CadConstants.SpinAxisRegEx, ErrorMessage = CadConstants.SpinAxisErrorMessage)]
-        public char? SpinAxis { get; set; }
-
+        
         [Required(ErrorMessage = RequiredErrorMessage)]
         public int CategoryId { get; set; }
 

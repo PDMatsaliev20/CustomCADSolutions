@@ -39,14 +39,14 @@ namespace CustomCADSolutions.Tests.ServicesTests.CadTests
         };
         protected CadModel[] cads = new CadModel[]
         {
-            new() { Id = 1, Name = "Cad1", Bytes = new byte[1], CategoryId = 1, Price = 1m, IsValidated = false, CreationDate = DateTime.Now.AddDays(-1), Coords = new int[3], Color = Color.FromArgb(1, 1, 1), SpinAxis = 'x' },
-            new() { Id = 2, Name = "Cad2", Bytes = new byte[2], CategoryId = 2, Price = 2m, IsValidated = false, CreationDate = DateTime.Now.AddDays(-2), Coords = new int[3], Color = Color.FromArgb(2, 2, 2), SpinAxis = 'y' },
-            new() { Id = 3, Name = "Cad3", Bytes = new byte[3], CategoryId = 3, Price = 3m, IsValidated = false, CreationDate = DateTime.Now.AddDays(-3), Coords = new int[3], Color = Color.FromArgb(3, 3, 3), SpinAxis = 'z' },
-            new() { Id = 4, Name = "Cad4", Bytes = new byte[4], CategoryId = 4, Price = 4m, IsValidated = false, CreationDate = DateTime.Now.AddDays(-4), Coords = new int[3], Color = Color.FromArgb(4, 4, 4), SpinAxis = 'x' },
-            new() { Id = 5, Name = "Cad5", Bytes = new byte[5], CategoryId = 5, Price = 5m, IsValidated = false, CreationDate = DateTime.Now.AddDays(-5), Coords = new int[3], Color = Color.FromArgb(5, 5, 5), SpinAxis = 'y' },
-            new() { Id = 6, Name = "Cad6", Bytes = new byte[6], CategoryId = 6, Price = 6m, IsValidated = true, CreationDate = DateTime.Now.AddDays(-6), Coords = new int[3], Color = Color.FromArgb(6, 6, 6), SpinAxis = 'x' },
-            new() { Id = 7, Name = "Cad7", Bytes = new byte[7], CategoryId = 7, Price = 7m, IsValidated = true, CreationDate = DateTime.Now.AddDays(-7), Coords = new int[3], Color = Color.FromArgb(7, 7, 7), SpinAxis = 'y' },
-            new() { Id = 8, Name = "Cad8", Bytes = new byte[8], CategoryId = 8, Price = 8m, IsValidated = true, CreationDate = DateTime.Now.AddDays(-8), Coords = new int[3], Color = Color.FromArgb(8, 8, 8), SpinAxis = 'z' },
+            new() { Id = 1, Name = "Cad1", Bytes = new byte[1], CategoryId = 1, Price = 1m, IsValidated = false, CreationDate = DateTime.Now.AddDays(-1), Coords = new int[3], },
+            new() { Id = 2, Name = "Cad2", Bytes = new byte[2], CategoryId = 2, Price = 2m, IsValidated = false, CreationDate = DateTime.Now.AddDays(-2), Coords = new int[3], },
+            new() { Id = 3, Name = "Cad3", Bytes = new byte[3], CategoryId = 3, Price = 3m, IsValidated = false, CreationDate = DateTime.Now.AddDays(-3), Coords = new int[3], },
+            new() { Id = 4, Name = "Cad4", Bytes = new byte[4], CategoryId = 4, Price = 4m, IsValidated = false, CreationDate = DateTime.Now.AddDays(-4), Coords = new int[3], },
+            new() { Id = 5, Name = "Cad5", Bytes = new byte[5], CategoryId = 5, Price = 5m, IsValidated = false, CreationDate = DateTime.Now.AddDays(-5), Coords = new int[3], },
+            new() { Id = 6, Name = "Cad6", Bytes = new byte[6], CategoryId = 6, Price = 6m, IsValidated = true, CreationDate = DateTime.Now.AddDays(-6), Coords = new int[3], },
+            new() { Id = 7, Name = "Cad7", Bytes = new byte[7], CategoryId = 7, Price = 7m, IsValidated = true, CreationDate = DateTime.Now.AddDays(-7), Coords = new int[3], },
+            new() { Id = 8, Name = "Cad8", Bytes = new byte[8], CategoryId = 8, Price = 8m, IsValidated = true, CreationDate = DateTime.Now.AddDays(-8), Coords = new int[3], },
         };
 
         [OneTimeSetUp]

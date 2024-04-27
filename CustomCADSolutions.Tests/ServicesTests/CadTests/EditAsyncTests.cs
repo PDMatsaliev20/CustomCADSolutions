@@ -15,7 +15,6 @@ namespace CustomCADSolutions.Tests.ServicesTests.CadTests
             expectedCad.IsValidated = !expectedCad.IsValidated;
             expectedCad.Price++;
             expectedCad.CategoryId = 2;
-            expectedCad.SpinAxis = null;
             expectedCad.Coords = new int[3] { 100, 100, 100 };
 
             await service.EditAsync(id, expectedCad);
@@ -35,9 +34,6 @@ namespace CustomCADSolutions.Tests.ServicesTests.CadTests
                 Assert.That(actualCad.CategoryId, Is.EqualTo(expectedCad.CategoryId ),
                     string.Format(DoesNotEditEnough, "CategoryId"));
                 
-                Assert.That(actualCad.SpinAxis, Is.EqualTo(expectedCad.SpinAxis ),
-                    string.Format(DoesNotEditEnough, "SpinAxis"));
-                
                 Assert.That(actualCad.Coords, Is.EqualTo(expectedCad.Coords),
                     string.Format(DoesNotEditEnough, "Coords"));
             });
@@ -50,7 +46,6 @@ namespace CustomCADSolutions.Tests.ServicesTests.CadTests
             CadModel expectedCad = await service.GetByIdAsync(id);
             expectedCad.Id = 100;
             expectedCad.Bytes = new byte[100];
-            expectedCad.Color = Color.FromArgb(200, 200, 200);
             expectedCad.CreationDate = DateTime.Now.AddDays(1);
             expectedCad.CreatorId = users[2].Id;
 
@@ -64,9 +59,6 @@ namespace CustomCADSolutions.Tests.ServicesTests.CadTests
 
                 Assert.That(actualCad.Bytes, Is.Not.EqualTo(expectedCad.Bytes),
                     string.Format(EditsTooMuch, "Bytes"));
-
-                Assert.That(actualCad.Color, Is.Not.EqualTo(expectedCad.Color),
-                    string.Format(EditsTooMuch, "Color"));
 
                 Assert.That(actualCad.CreationDate, Is.Not.EqualTo(expectedCad.CreationDate),
                     string.Format(EditsTooMuch, "CreationDate"));

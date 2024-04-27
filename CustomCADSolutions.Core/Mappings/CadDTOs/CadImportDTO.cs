@@ -18,9 +18,6 @@ namespace CustomCADSolutions.Core.Mappings.CadDTOs
         [Required(ErrorMessage = RequiredErrorMessage)]
         public bool IsValidated { get; set; }
 
-        [RegularExpression(SpinAxisRegEx, ErrorMessage = SpinAxisErrorMessage)]
-        public char? SpinAxis { get; set; }
-
         [Required(ErrorMessage = RequiredErrorMessage)]
         public int CategoryId { get; set; }
         
@@ -32,8 +29,5 @@ namespace CustomCADSolutions.Core.Mappings.CadDTOs
 
         [Required(ErrorMessage = RequiredErrorMessage)]
         public int[] Coords { get; set; } = new int[3];
-
-        [Required(ErrorMessage = RequiredErrorMessage)]
-        public int[] RGB { get; set; } = new int[3] { 255, 255, 255 };
     }
 }

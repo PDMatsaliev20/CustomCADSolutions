@@ -50,11 +50,9 @@ namespace CustomCADSolutions.App.Controllers
         {
             return View(new CadViewModel()
             {
-                Id = 1,
-                Name = "Watch",
-                SpinAxis = 'y',
-                RGB = new byte[] { 143, 124, 239 },
-                Coords = new[] { 40, 33, 25 }
+                Id = 0,
+                Name = "Laptop.glb",
+                Coords = new[] { 23, 15, 20 }
             });
         }
 
@@ -97,7 +95,7 @@ namespace CustomCADSolutions.App.Controllers
             try
             {
                 CadModel model = await cadService.GetByIdAsync(id);
-                return File(model.Bytes, "application/octet-stream", $"{model.Name}.stl");
+                return File(model.Bytes, "application/octet-stream", $"{model.Name}.glb");
             }
             catch (KeyNotFoundException)
             {

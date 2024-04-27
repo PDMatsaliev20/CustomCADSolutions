@@ -2,6 +2,7 @@
 using CustomCADSolutions.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.StaticFiles;
 using System.Globalization;
 
 namespace Microsoft.AspNetCore.Builder
@@ -24,6 +25,23 @@ namespace Microsoft.AspNetCore.Builder
         {
             app.UseExceptionHandler(exceptionPath);
             app.UseStatusCodePagesWithReExecute(exceptionPath, "?statusCode={0}");
+
+            return app;
+        }
+
+        public static IApplicationBuilder UseStaticFilesWithGltf(this IApplicationBuilder app)
+        {
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                ContentTypeProvider = new FileExtensionContentTypeProvider()
+                {
+                    Mappings = 
+                    {
+                        [".gltf"] = "model/gltf+json",
+                        [".glb"] = "model/gltf-binary"
+                    }
+                }
+            });
 
             return app;
         }

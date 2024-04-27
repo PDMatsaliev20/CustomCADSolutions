@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "zzGipiHy4j6OWR3La+pLGRbWexS2/acZOYZ6K7eKnj8=",
+  "Hash": "ukQQ0ZEXyuFMKPveFK5jLBIAewbGzdB74E+uOYaQucw=",
   "Source": "CustomCADSolutions.App",
   "BasePath": "_content/CustomCADSolutions.App",
   "Mode": "Default",
@@ -1307,6 +1307,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\js\\site.mjs"
+    },
+    {
+      "Identity": "C:\\Users\\ivana\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\Laptop.glb",
+      "SourceId": "CustomCADSolutions.App",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\ivana\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\",
+      "BasePath": "_content/CustomCADSolutions.App",
+      "RelativePath": "Laptop.glb",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Laptop.glb"
     },
     {
       "Identity": "C:\\Users\\ivana\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css",

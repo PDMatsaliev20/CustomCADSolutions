@@ -21,7 +21,6 @@ namespace CustomCADSolutions.App.Mappings
             .ForMember(model => model.Coords, opt => opt.MapFrom(input => new[] { input.X, input.Y, input.Z }));
 
         public void ModelToView() => CreateMap<CadModel, CadViewModel>()
-            .ForMember(view => view.RGB, opt => opt.MapFrom(model => new[] { model.Color.R, model.Color.G, model.Color.B }))
             .ForMember(view => view.Category, opt => opt.MapFrom(model => model.Category.Name))
             .ForMember(view => view.CreatorName, opt => opt.MapFrom(model => model.Creator.UserName))
             .ForMember(view => view.CreationDate, opt => opt.MapFrom(model => model.CreationDate.ToString("dd/MM/yyyy HH:mm:ss")));

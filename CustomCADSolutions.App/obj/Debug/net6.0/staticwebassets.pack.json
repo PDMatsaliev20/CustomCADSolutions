@@ -1,6 +1,10 @@
 {
   "Files": [
     {
+      "Id": "C:\\Users\\ivana\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\Laptop.glb",
+      "PackagePath": "staticwebassets\\Laptop.glb"
+    },
+    {
       "Id": "C:\\Users\\ivana\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\Watch.stl",
       "PackagePath": "staticwebassets\\Watch.stl"
     },

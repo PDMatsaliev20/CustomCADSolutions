@@ -206,7 +206,6 @@ namespace CustomCADSolutions.App.APIControllers
                 CreationDate = DateTime.Now,
                 CreatorId = dto.CreatorId,
                 CategoryId = dto.CategoryId,
-                Color = Color.FromArgb(dto.RGB[0], dto.RGB[1], dto.RGB[2]),
             };
             await orderService.FinishOrderAsync(id, order);
 

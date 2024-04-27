@@ -49,22 +49,6 @@ namespace CustomCADSolutions.Infrastructure.Data.Models
         public int Z { get; set; }
 
         [Required]
-        [Comment("Rgb value of 3D Model")]
-        public int R { get; set; }
-
-        [Required]
-        [Comment("rGb value of 3D Model")]
-        public int G { get; set; }
-
-        [Required]
-        [Comment("rgB value of 3D Model")]
-        public int B { get; set; }
-
-        [RegularExpression(CadConstants.SpinAxisRegEx)]
-        [Comment("Spin axis of 3D Model")]
-        public char? SpinAxis { get; set; }
-
-        [Required]
         [Comment("Identification of the creator of the 3D Model")]
         public string CreatorId { get; set; } = null!;
 

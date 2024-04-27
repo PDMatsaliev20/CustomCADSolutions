@@ -113,18 +113,6 @@ namespace CustomCADSolutions.Core.Services
         public async Task<bool> ExistsByIdAsync(int id)
             => await repository.GetByIdAsync<Cad>(id) != null;
 
-        public async Task ChangeColorAsync(int id, Color color)
-        {
-            Cad cad = await repository.GetByIdAsync<Cad>(id)
-                ?? throw new KeyNotFoundException("Model doesn't exist");
-
-            cad.R = color.R;
-            cad.G = color.G;
-            cad.B = color.B;
-
-            await repository.SaveChangesAsync();
-        }
-
         public int Count(Func<CadModel, bool> predicate)
         {
             return repository.Count<Cad>(cad => predicate(mapper.Map<CadModel>(cad)));
@@ -162,7 +150,6 @@ namespace CustomCADSolutions.Core.Services
             cad.Price = model.Price;
             cad.CategoryId = model.CategoryId;
 
-            cad.SpinAxis = model.SpinAxis;
             cad.X = model.Coords[0];
             cad.Y = model.Coords[1];
             cad.Z = model.Coords[2];
