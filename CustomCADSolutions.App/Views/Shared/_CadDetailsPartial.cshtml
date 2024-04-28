@@ -10,7 +10,7 @@
 <script type="module">
     import { loadModel } from '../../../js/site.mjs';
 
-    const Model = {
+    const model = {
         id: @Model.Id,
         x: @Model.Coords[0],
         y: @Model.Coords[1],
@@ -18,10 +18,29 @@
         fov: @Model.Fov,
     };
 
-        loadModel(Model);
+    loadModel(model);
 </script>
 <div class="container col-md-8 col-12 mt-4">
     <div id="model-@Model.Id"></div>
+    <div>
+        <div class="row justify-content-center">
+            <div class="col-3 text-center">
+                <label class="form-label" asp-for="Coords[0]">X</label>
+                <input id="X" asp-for="Coords[0]" class="form-control">
+                <span asp-validation-for="Coords[0]" class="small text-danger"></span>
+            </div>
+            <div class="col-3 text-center">
+                <label class="form-label" asp-for="Coords[1]">Y</label>
+                <input id="Y" asp-for="Coords[1]" class="form-control">
+                <span asp-validation-for="Coords[0]" class="small text-danger"></span>
+            </div>
+            <div class="col-3 text-center">
+                <label class="form-label" asp-for="Coords[2]">Z</label>
+                <input id="Z" asp-for="Coords[2]" class="form-control">
+                <span asp-validation-for="Coords[0]" class="small text-danger"></span>
+            </div>
+        </div>
+    </div>
     <div class="d-grid gap-2 mt-3">
         @foreach (string button in buttons)
         {

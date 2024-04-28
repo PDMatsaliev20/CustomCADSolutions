@@ -8,7 +8,7 @@ function loadModel({ id, x, y, z, fov }, path = `/Home/DownloadCad/${id}`) {
     scene.background = null;
 
     // Camera
-    const camera = new THREE.PerspectiveCamera(fov, window.innerWidth / window.innerHeight, 0.0001, 1000000);
+    const camera = new THREE.PerspectiveCamera(fov, window.innerWidth / window.innerHeight, 0.001, 100);
     camera.position.set(x, y, z);
     camera.lookAt(0, 0, 0);
 
@@ -23,8 +23,8 @@ function loadModel({ id, x, y, z, fov }, path = `/Home/DownloadCad/${id}`) {
     renderer.setClearColor(0x000000, 0);
     parentContainer.appendChild(renderer.domElement);
 
-    function updateRendererSize(renderer, camera, cadId) {
-        const parentContainer = document.getElementById(`model-${cadId}`);
+    function updateRendererSize(renderer, camera, id) {
+        const parentContainer = document.getElementById(`model-${id}`);
         const width = parentContainer.clientWidth;
         const height = parentContainer.clientHeight;
 
@@ -44,23 +44,62 @@ function loadModel({ id, x, y, z, fov }, path = `/Home/DownloadCad/${id}`) {
 
     // GLTF Loading
     const loader = new GLTFLoader();
-    loader.load(path, (gltf) =>  scene.add(gltf.scene), undefined, (error) => console.error(error));
+    loader.load(path,
+        function (gltf) {
+            $('#X').on('input', function () {
+                x = parseFloat($('#X').val());
+                if (Math.round(camera.position.x) != x) {
+                    camera.position.x = x;
+                }
+            });
+
+            $('#Y').on('input', function () {
+                y = parseFloat($('#Y').val());
+                if (Math.round(camera.position.y) != y) {
+                    camera.position.y = y;
+                }
+            });
+
+            $('#Z').on('input', function () {
+                z = parseFloat($('#Z').val());
+                if (Math.round(camera.position.z) != z) {
+                    camera.position.z = z;
+                }
+            });
+
+            $('#X, #Y, #Z').on('input', () => $.ajax({
+                url: `/Cads/UpdateCoords/${id}?x=${x}&y=${y}&z=${z}`,
+                type: 'POST',
+                contentType: 'application/json',
+                success: function () {
+                    console.log('Success');
+                },
+                error: function (error) {
+                    console.error('Error:', error);
+                }
+            }));
+
+            scene.add(gltf.scene);
+        },
+        (xhr) => console.log((xhr.loaded / xhr.total * 100) + '% loaded'),
+        (error) => console.error(error)
+    );
 
     // Controls
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
-    controls.dampingFactor = 0.8;
+    controls.dampingFactor = 0.1;
 
     // Animation
     function animate() {
         requestAnimationFrame(animate);
-        renderer.render(scene, camera);
         controls.update();
+        renderer.render(scene, camera);
     }
     animate();
 
+    // Adapt to screen size
     window.addEventListener('resize', function () {
-        const parentContainer = document.getElementById(`model-${id}`);
         const width = parentContainer.clientWidth;
         const height = parentContainer.clientHeight;
         updateRendererSize(renderer, camera, id);

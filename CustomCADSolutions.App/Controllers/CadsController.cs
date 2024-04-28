@@ -9,7 +9,6 @@ using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Drawing;
 
 namespace CustomCADSolutions.App.Controllers
 {
@@ -37,6 +36,16 @@ namespace CustomCADSolutions.App.Controllers
             this.logger = logger;
         }
 
+        [HttpPost]
+        [IgnoreAntiforgeryToken]
+        public async Task<IActionResult> UpdateCoords(int id, int x, int y, int z)
+        {
+            CadModel model = await cadService.GetByIdAsync(id);
+            model.Coords = new[] { x, y, z };
+
+            await cadService.EditAsync(id, model);
+            return RedirectToAction(nameof(Details), new { id });
+        }
 
         [HttpGet]
         public async Task<IActionResult> Index([FromQuery] CadQueryInputModel inputQuery)

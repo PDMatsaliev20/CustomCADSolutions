@@ -33,21 +33,6 @@ namespace CustomCADSolutions.App.Models.Cads.Input
         [Display(Name = "Price", ResourceType = typeof(SharedResources))]
         public decimal Price { get; set; }
 
-        [Range(CadConstants.XMin, CadConstants.XMax,
-            ErrorMessageResourceType = typeof(SharedResources),
-            ErrorMessageResourceName = nameof(SharedResources.Range))]
-        public int X { get; set; }
-
-        [Range(CadConstants.YMin, CadConstants.YMax,
-            ErrorMessageResourceType = typeof(SharedResources),
-            ErrorMessageResourceName = nameof(SharedResources.Range))]
-        public int Y { get; set; }
-
-        [Range(CadConstants.ZMin, CadConstants.ZMax,
-            ErrorMessageResourceType = typeof(SharedResources),
-            ErrorMessageResourceName = nameof(SharedResources.Range))]
-        public int Z { get; set; }
-
         public IEnumerable<CategoryModel>? Categories { get; set; }
     }
 }
