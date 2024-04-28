@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "EbQoDoXZsqsO+jfqojNK362TuKSj8yMnWe25kX97XgDKx4HeMao2xKNwmh7eI8QHbHn7O9/jYwyIOovOLiGKrg==",
+  "dgSpecHash": "Dqgj7tABAxAZ5kBEQhZvdiJu396Auimd1E6xgyIBWtc22A78gzMU0DsUbGUjPRRoS2h7s5QOHlbjXHsZ6eQUpA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\ivana\\source\\repos\\CustomCADSolutions\\CustomCADSolutions.App\\CustomCADSolutions.App.csproj",
+  "projectFilePath": "C:\\Users\\ivana\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\CustomCADSolutions.App.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ivana\\.nuget\\packages\\automapper\\13.0.1\\automapper.13.0.1.nupkg.sha512",
     "C:\\Users\\ivana\\.nuget\\packages\\humanizer\\2.14.1\\humanizer.2.14.1.nupkg.sha512",

@@ -7,7 +7,6 @@ using CustomCADSolutions.Infrastructure.Data;
 using CustomCADSolutions.Infrastructure.Data.Common;
 using CustomCADSolutions.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Drawing;
 
 namespace CustomCADSolutions.Tests.ServicesTests.CadTests
 {

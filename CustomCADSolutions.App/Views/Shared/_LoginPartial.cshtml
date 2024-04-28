@@ -8,7 +8,7 @@
         <p class="nav-link text-dark text-end mb-0" title="Manage">@User.Identity?.Name</p>
     </li>
     <li class="nav-item">
-        <form  class="form-inline" asp-area="Identity" asp-controller="Account" asp-action="Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+        <form  class="form-inline" asp-controller="Account" asp-action="Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
             <button type="submit" class="nav-link btn btn-link text-dark text-end">@Localizer["Logout"]</button>
         </form>
     </li>
@@ -16,9 +16,9 @@
 else
 {
     <li class="nav-item">
-        <a class="nav-link text-dark text-end" asp-area="Identity" asp-controller="Account" asp-action="Login">@Localizer["Login"]</a>
+        <a class="nav-link text-dark text-end" asp-controller="Account" asp-action="Login">@Localizer["Login"]</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link text-dark text-end" asp-area="Identity" asp-controller="Account" asp-action="Register">@Localizer["Register"]</a>
+        <a class="nav-link text-dark text-end" asp-controller="Account" asp-action="Register">@Localizer["Register"]</a>
     </li>
 }
