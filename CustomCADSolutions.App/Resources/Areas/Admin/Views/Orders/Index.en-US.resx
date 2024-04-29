@@ -117,29 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Animals" xml:space="preserve">
-    <value>Animals</value>
-  </data>
   <data name="Buyer" xml:space="preserve">
     <value>Buyer Name</value>
   </data>
   <data name="Category" xml:space="preserve">
     <value>Category</value>
   </data>
-  <data name="Characters" xml:space="preserve">
-    <value>Characters</value>
-  </data>
   <data name="Description" xml:space="preserve">
     <value>Description</value>
-  </data>
-  <data name="Electronics" xml:space="preserve">
-    <value>Electronics</value>
-  </data>
-  <data name="Fashion" xml:space="preserve">
-    <value>Fashion</value>
-  </data>
-  <data name="Furniture" xml:space="preserve">
-    <value>Furniture</value>
   </data>
   <data name="Id" xml:space="preserve">
     <value>Id</value>
@@ -147,31 +132,13 @@
   <data name="Name" xml:space="preserve">
     <value>Order Name</value>
   </data>
-  <data name="Nature" xml:space="preserve">
-    <value>Nature</value>
-  </data>
   <data name="NoOrders" xml:space="preserve">
     <value>No Orders yet...</value>
   </data>
   <data name="OrderDate" xml:space="preserve">
     <value>Date of Order</value>
   </data>
-  <data name="Others" xml:space="preserve">
-    <value>Others</value>
-  </data>
-  <data name="Science" xml:space="preserve">
-    <value>Science</value>
-  </data>
-  <data name="Sports" xml:space="preserve">
-    <value>Sports</value>
-  </data>
   <data name="Title" xml:space="preserve">
     <value>Orders Management</value>
-  </data>
-  <data name="Toys" xml:space="preserve">
-    <value>Toys</value>
-  </data>
-  <data name="Vehicles" xml:space="preserve">
-    <value>Vehicles</value>
   </data>
 </root>

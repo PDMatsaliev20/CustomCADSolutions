@@ -1,5 +1,6 @@
 ﻿@model CadQueryInputModel
 @inject IViewLocalizer Localizer
+@inject IStringLocalizer<Shared.CategoryResources> CategoryLocalizer
 @{
     string[] sorts = ViewBag.Sortings;
 }
@@ -15,7 +16,7 @@
                         <option value="">@Localizer["All"]</option>
                         @foreach (string category in Model.Categories)
                         {
-                            <option value="@category">@Localizer[category]</option>
+                            <option value="@category">@CategoryLocalizer[category]</option>
                         }
                     </select>
                 </div>

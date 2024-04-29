@@ -1,10 +1,13 @@
 ﻿@model CadQueryInputModel
 @inject IViewLocalizer Localizer
+@inject IStringLocalizer<Shared.CategoryResources> CategoryLocalizer
 @{
-    ViewData["Title"] = $"{Localizer["All"].Value} {Localizer[ViewBag.Category ?? "Cads"].Value}";
+    ViewData["Title"] = "Gallery";
 }
 
-<h2 class="text-center">@ViewData["Title"]</h2>
+<h2 class="text-center">@Localizer["Title"] 
+    @(Model.Category == null ? null : $"({ CategoryLocalizer[Model.Category!]})")
+</h2>
 <hr />
 
 <partial name="_CadQueryPartial" model="Model" view-data="ViewData" />

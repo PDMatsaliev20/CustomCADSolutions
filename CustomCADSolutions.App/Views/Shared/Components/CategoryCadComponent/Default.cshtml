@@ -1,5 +1,6 @@
 ﻿@model CadViewModel
 @inject IViewLocalizer Localizer
+@inject IStringLocalizer<Shared.CategoryResources> CategoryLocalizer
 @{
     string[] buttons = ViewBag.Buttons;
     string area = ViewBag.Area;
@@ -24,7 +25,7 @@
 <div class="container col-md-4 col-12 mt-4">
     <div class="card">
         <h4 class="card-header text-center mb-1">
-            <span>@Model.Name (@Localizer[Model.Category].Value)</span>
+            <span>@Model.Name (@CategoryLocalizer[Model.Category])</span>
         </h4>
         <div class="card-body">
             <div id="model-@id"></div>

@@ -1,9 +1,7 @@
 ﻿@inject IViewLocalizer Localizer
 @{
     ViewBag.ReturnUrl = Context.Request.Path + Context.Request.QueryString;
-    string title = ViewData["Title"]?.ToString() == "CustomCADSolutions" ? 
-        "CustomCADSolutions" :
-        $"{ViewData["Title"]} - CustomCADSolutions";
+    string title = ViewData["Title"]?.ToString() == "CustomCADSolutions" ? "CustomCADSolutions" : $"{ViewData["Title"]} - CustomCADSolutions";
 }
 
 <!DOCTYPE html>
@@ -48,7 +46,7 @@
                     </div>
                     <div>
                         <ul class="navbar-nav d-flex flex-row justify-content-around alignt-items-center fade-in">
-                            <partial name="_LanguageBtnPartial" view-data="@ViewData" />
+                            <partial name="_LanguagePartial" view-data="@ViewData" />
                             <partial name="_LoginPartial" />
                         </ul>
                     </div>

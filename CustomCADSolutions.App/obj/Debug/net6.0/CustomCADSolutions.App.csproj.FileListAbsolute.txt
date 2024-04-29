@@ -1801,14 +1801,10 @@ C:\Users\ivana\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\o
 C:\Users\ivana\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared._CardCadPartial.en-US.resources
 C:\Users\ivana\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared._FooterPartial.bg-BG.resources
 C:\Users\ivana\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared._FooterPartial.en-US.resources
-C:\Users\ivana\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared._LanguageBtnPartial.bg-BG.resources
-C:\Users\ivana\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared._LanguageBtnPartial.en-US.resources
 C:\Users\ivana\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared._LoginPartial.bg-BG.resources
 C:\Users\ivana\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared._LoginPartial.en-US.resources
 C:\Users\ivana\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared._MainMenuPartial.bg-BG.resources
 C:\Users\ivana\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared._MainMenuPartial.en-US.resources
-C:\Users\ivana\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared._OrderFormPartial.bg-BG.resources
-C:\Users\ivana\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared._OrderFormpartial.en-US.resources
 C:\Users\ivana\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared._OrdersPartial.bg-BG.resources
 C:\Users\ivana\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared._OrdersPartial.en-US.resources
 C:\Users\ivana\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared._UsersPartial.bg-BG.resources
@@ -1843,3 +1839,11 @@ C:\Users\ivana\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\o
 C:\Users\ivana\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Shared.ErrorMessageResources.en-US.resources
 C:\Users\ivana\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Shared.DisplayResources.bg-BG.resources
 C:\Users\ivana\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Shared.DisplayResources.en-US.resources
+C:\Users\ivana\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Shared.CategoryResources.bg-BG.resources
+C:\Users\ivana\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Shared.CategoryResources.en-US.resources
+C:\Users\ivana\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared._OrderAddPartial.bg-BG.resources
+C:\Users\ivana\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared._OrderAddPartial.en-US.resources
+C:\Users\ivana\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared._OrderEditPartial.bg-BG.resources
+C:\Users\ivana\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared._OrderEditPartial.en-US.resources
+C:\Users\ivana\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared._LanguagePartial.bg-BG.resources
+C:\Users\ivana\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared._LanguagePartial.en-US.resources

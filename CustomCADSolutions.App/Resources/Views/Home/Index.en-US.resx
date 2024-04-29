@@ -120,9 +120,6 @@
   <data name="3dDes" xml:space="preserve">
     <value>Main 3D Designer</value>
   </data>
-  <data name="3dDesInfo" xml:space="preserve">
-    <value />
-  </data>
   <data name="About" xml:space="preserve">
     <value>About our Team:</value>
   </data>
@@ -149,8 +146,5 @@
   </data>
   <data name="WebDev" xml:space="preserve">
     <value>Main Web Developer</value>
-  </data>
-  <data name="WebDevInfo" xml:space="preserve">
-    <value />
   </data>
 </root>

@@ -1,5 +1,6 @@
 ﻿@model OrderEditModel
 @inject IViewLocalizer Localizer
+@inject IStringLocalizer<Shared.CategoryResources> CategoryLocalizer
 
 <form asp-route-id="@Model.Id" method="post" autocomplete="off">
 
@@ -12,10 +13,10 @@
         <div class="col-4">
             <label asp-for="CategoryId" class="form-label"></label>
             <select asp-for="CategoryId" class="form-control">
-                <option value="" selected>@Localizer["None"]</option>
+                <option value="" selected>@CategoryLocalizer["None"]</option>
                 @foreach (CategoryModel category in Model.Categories!)
                 {
-                    <option value="@category.Id">@Localizer[category.Name]</option>
+                    <option value="@category.Id">@CategoryLocalizer[category.Name]</option>
                 }
             </select>
             <span asp-validation-for="@Model.CategoryId" class="small text-danger"></span>

@@ -120,9 +120,6 @@
   <data name="3dDes" xml:space="preserve">
     <value>Главен 3Д Дизайнер</value>
   </data>
-  <data name="3dDesInfo" xml:space="preserve">
-    <value />
-  </data>
   <data name="About" xml:space="preserve">
     <value>За нашия Екип:</value>
   </data>
@@ -149,8 +146,5 @@
   </data>
   <data name="WebDev" xml:space="preserve">
     <value>Главен Уеб Разработчик</value>
-  </data>
-  <data name="WebDevInfo" xml:space="preserve">
-    <value />
   </data>
 </root>

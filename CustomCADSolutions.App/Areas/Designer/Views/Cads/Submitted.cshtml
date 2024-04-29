@@ -1,5 +1,6 @@
 ﻿@model CadQueryInputModel
 @inject IViewLocalizer Localizer
+@inject IStringLocalizer<Shared.CategoryResources> CategoryLocalizer
 @{
     ViewData["Title"] = "Submitted 3D Models";
     ViewBag.Buttons = new string[] { "Validate" };
@@ -21,7 +22,7 @@
             <div class="row">
                 @foreach (CadViewModel cad in Model.Cads)
                 {
-                    ViewBag.Header = $"{cad.Name} ({Localizer[cad.Category].Value})";
+                    ViewBag.Header = $"{cad.Name} ({CategoryLocalizer[cad.Category]})";
                     <partial name="_CardCadPartial" model="cad" view-data="ViewData" view-data-cols="Model.Cols" />
                 }
             </div>
