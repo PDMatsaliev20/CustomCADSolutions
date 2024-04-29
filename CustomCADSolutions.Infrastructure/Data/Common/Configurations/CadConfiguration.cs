@@ -14,6 +14,8 @@ namespace CustomCADSolutions.Infrastructure.Data.Common.Configurations
             builder.Navigation(c => c.Creator).AutoInclude();
             builder.Navigation(c => c.Orders).AutoInclude();
             builder.Navigation(c => c.Category).AutoInclude();
+
+            builder.Property(c => c.Price).HasPrecision(18, 2);
         }
     }
 }

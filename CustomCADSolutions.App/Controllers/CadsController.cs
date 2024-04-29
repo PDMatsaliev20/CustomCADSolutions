@@ -144,9 +144,10 @@ namespace CustomCADSolutions.App.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(int id, CadEditModel input)
         {
-            CadModel model = mapper.Map<CadModel>(input);
-            model.CreatorId = User.GetId();
-            logger.LogInformation(model.IsValidated.ToString());
+            CadModel model = await cadService.GetByIdAsync(id);
+            model.Name = input.Name;
+            model.CategoryId = input.CategoryId;
+            model.Price = input.Price;
 
             await cadService.EditAsync(id, model);
             return RedirectToAction(nameof(Details), new { id });

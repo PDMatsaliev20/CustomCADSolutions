@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "8+XMHrmpl8r7qRwLb3iMh8VaroMFZ4dEZLjb3FzoRm0=",
+  "Hash": "Wx79uXAmMSGJ5Xzpju6n0Utag4pTyORnzH1oBLj36Ng=",
   "Source": "CustomCADSolutions.App",
   "BasePath": "_content/CustomCADSolutions.App",
   "Mode": "Default",
@@ -1269,6 +1269,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\icon.ico"
+    },
+    {
+      "Identity": "C:\\Users\\ivana\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\js\\price-validation.js",
+      "SourceId": "CustomCADSolutions.App",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\ivana\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\",
+      "BasePath": "_content/CustomCADSolutions.App",
+      "RelativePath": "js/price-validation.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\price-validation.js"
     },
     {
       "Identity": "C:\\Users\\ivana\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\js\\site.js",

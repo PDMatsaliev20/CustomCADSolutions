@@ -33,6 +33,10 @@
       "PackagePath": "staticwebassets\\icon.ico"
     },
     {
+      "Id": "C:\\Users\\ivana\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\js\\price-validation.js",
+      "PackagePath": "staticwebassets\\js\\price-validation.js"
+    },
+    {
       "Id": "C:\\Users\\ivana\\source\\repos\\Web Apps\\CustomCADSolutions\\CustomCADSolutions.App\\wwwroot\\js\\site.js",
       "PackagePath": "staticwebassets\\js\\site.js"
     },
