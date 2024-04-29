@@ -10,23 +10,23 @@ namespace CustomCADSolutions.App.Models.Users
         [TempData]
         public string? ErrorMessage { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(SharedResources),
-            ErrorMessageResourceName = nameof(SharedResources.Required))]
+        [Required(ErrorMessageResourceType = typeof(ErrorMessageResources),
+            ErrorMessageResourceName = nameof(ErrorMessageResources.Required))]
         [StringLength(UserConstants.NameMaxLength, MinimumLength = UserConstants.NameMinLength,
-            ErrorMessageResourceType = typeof(SharedResources),
-            ErrorMessageResourceName = nameof(SharedResources.Length))]
-        [Display(Name = "Username", ResourceType = typeof(SharedResources))]
+            ErrorMessageResourceType = typeof(ErrorMessageResources),
+            ErrorMessageResourceName = nameof(ErrorMessageResources.Length))]
+        [Display(Name = nameof(DisplayResources.Username), ResourceType = typeof(DisplayResources))]
         public string Username { get; set; } = null!;
 
-        [Required(ErrorMessageResourceType = typeof(SharedResources),
-            ErrorMessageResourceName = nameof(SharedResources.Required))]
+        [Required(ErrorMessageResourceType = typeof(ErrorMessageResources),
+            ErrorMessageResourceName = nameof(ErrorMessageResources.Required))]
         [StringLength(UserConstants.PasswordMaxLength, MinimumLength = UserConstants.PasswordMinLength,
-            ErrorMessageResourceType = typeof(SharedResources),
-            ErrorMessageResourceName = nameof(SharedResources.Length))]
+            ErrorMessageResourceType = typeof(ErrorMessageResources),
+            ErrorMessageResourceName = nameof(ErrorMessageResources.Length))]
         [DataType(DataType.Password)]
         public string Password { get; set; } = null!;
 
-        [Display(Name = "Remember", ResourceType = typeof(SharedResources))]
+        [Display(Name = nameof(DisplayResources.Remember), ResourceType = typeof(DisplayResources))]
         public bool RememberMe { get; set; }
     }
 }

@@ -141,15 +141,6 @@
   <data name="File" xml:space="preserve">
     <value>Файл с 3D Модела</value>
   </data>
-  <data name="InvalidAxis" xml:space="preserve">
-    <value>Оста трябва да бъде х, у или z</value>
-  </data>
-  <data name="InvalidEmail" xml:space="preserve">
-    <value>Полето {0} не е валиден имейл адрес</value>
-  </data>
-  <data name="Length" xml:space="preserve">
-    <value>Дължината на полето {0} трябва да бъде между {2} и {1} символа</value>
-  </data>
   <data name="Name" xml:space="preserve">
     <value>Име</value>
   </data>
@@ -159,14 +150,8 @@
   <data name="Price" xml:space="preserve">
     <value>Цена</value>
   </data>
-  <data name="Range" xml:space="preserve">
-    <value>Стойността на полето {0} трябва да бъде между {1} и {2}</value>
-  </data>
   <data name="Remember" xml:space="preserve">
     <value>Запомни ме?</value>
-  </data>
-  <data name="Required" xml:space="preserve">
-    <value>Полето {0} е задължително!</value>
   </data>
   <data name="RoleDesc" xml:space="preserve">
     <value>Описание</value>

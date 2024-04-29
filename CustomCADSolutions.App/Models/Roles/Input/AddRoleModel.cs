@@ -6,18 +6,18 @@ namespace CustomCADSolutions.App.Models.Roles.Input
 {
     public class AddRoleModel
     {
-        [Required(ErrorMessageResourceType = typeof(SharedResources),
-           ErrorMessageResourceName = nameof(SharedResources.Required))]
+        [Required(ErrorMessageResourceType = typeof(ErrorMessageResources),
+           ErrorMessageResourceName = nameof(ErrorMessageResources.Required))]
         [StringLength(NameMaxLength, MinimumLength = NameMinLength,
-           ErrorMessageResourceType = typeof(SharedResources),
-           ErrorMessageResourceName = nameof(SharedResources.Length))]
-        [Display(Name = nameof(SharedResources.RoleName), ResourceType = typeof(SharedResources))]
+           ErrorMessageResourceType = typeof(ErrorMessageResources),
+           ErrorMessageResourceName = nameof(ErrorMessageResources.Length))]
+        [Display(Name = nameof(DisplayResources.RoleName), ResourceType = typeof(DisplayResources))]
         public string Name { get; set; } = null!;
 
         [StringLength(DescriptionMaxLength, MinimumLength = DescriptionMinLength,
-            ErrorMessageResourceType = typeof(SharedResources),
-            ErrorMessageResourceName = nameof(SharedResources.Length))]
-        [Display(Name = nameof(SharedResources.RoleDesc), ResourceType = typeof(SharedResources))]
+            ErrorMessageResourceType = typeof(ErrorMessageResources),
+            ErrorMessageResourceName = nameof(ErrorMessageResources.Length))]
+        [Display(Name = nameof(DisplayResources.RoleDesc), ResourceType = typeof(DisplayResources))]
         public string? Description { get; set; }
     }
 }

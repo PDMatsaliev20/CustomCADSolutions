@@ -6,18 +6,18 @@ namespace CustomCADSolutions.App.Models.Cads.View
 {
     public class CadQueryInputModel
     {
-        [Display(Name = nameof(SharedResources.Category), ResourceType = typeof(SharedResources))]
+        [Display(Name = nameof(DisplayResources.Category), ResourceType = typeof(DisplayResources))]
         public string? Category { get; set; }
 
         public string? Creator { get; set; }
 
-        [Display(Name = nameof(SharedResources.ByName), ResourceType = typeof(SharedResources))]
+        [Display(Name = nameof(DisplayResources.ByName), ResourceType = typeof(DisplayResources))]
         public string? SearchName { get; set; }
 
-        [Display(Name = nameof(SharedResources.ByCreator), ResourceType = typeof(SharedResources))]
+        [Display(Name = nameof(DisplayResources.ByCreator), ResourceType = typeof(DisplayResources))]
         public string? SearchCreator { get; set; }
 
-        [Display(Name = nameof(SharedResources.Sorting), ResourceType = typeof(SharedResources))]
+        [Display(Name = nameof(DisplayResources.Sorting), ResourceType = typeof(DisplayResources))]
         public CadSorting Sorting { get; set; }
 
         public int CurrentPage { get; set; } = 1;

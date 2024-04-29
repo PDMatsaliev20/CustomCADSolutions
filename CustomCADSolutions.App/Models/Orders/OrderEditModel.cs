@@ -9,27 +9,27 @@ namespace CustomCADSolutions.App.Models.Orders
     {
         public int Id { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(SharedResources),
-            ErrorMessageResourceName = nameof(SharedResources.Required))]
+        [Required(ErrorMessageResourceType = typeof(ErrorMessageResources),
+            ErrorMessageResourceName = nameof(ErrorMessageResources.Required))]
         [StringLength(CadConstants.NameMaxLength,
             MinimumLength = CadConstants.NameMinLength,
-            ErrorMessageResourceType = typeof(SharedResources),
-            ErrorMessageResourceName = nameof(SharedResources.Length))]
-        [Display(Name = "Name", ResourceType = typeof(SharedResources))]
+            ErrorMessageResourceType = typeof(ErrorMessageResources),
+            ErrorMessageResourceName = nameof(ErrorMessageResources.Length))]
+        [Display(Name = nameof(DisplayResources.Name), ResourceType = typeof(DisplayResources))]
         public string Name { get; set; } = null!;
 
-        [Required(ErrorMessageResourceType = typeof(SharedResources),
-            ErrorMessageResourceName = nameof(SharedResources.Required))]
+        [Required(ErrorMessageResourceType = typeof(ErrorMessageResources),
+            ErrorMessageResourceName = nameof(ErrorMessageResources.Required))]
         [StringLength(OrderConstants.DescriptionMaxLength,
             MinimumLength = OrderConstants.DescriptionMinLength,
-            ErrorMessageResourceType = typeof(SharedResources),
-            ErrorMessageResourceName = nameof(SharedResources.Length))]
-        [Display(Name = "Description", ResourceType = typeof(SharedResources))]
+            ErrorMessageResourceType = typeof(ErrorMessageResources),
+            ErrorMessageResourceName = nameof(ErrorMessageResources.Length))]
+        [Display(Name = nameof(DisplayResources.Description), ResourceType = typeof(DisplayResources))]
         public string Description { get; set; } = null!;
 
-        [Required(ErrorMessageResourceType = typeof(SharedResources),
-            ErrorMessageResourceName = nameof(SharedResources.Required))]
-        [Display(Name = "Category", ResourceType = typeof(SharedResources))]
+        [Required(ErrorMessageResourceType = typeof(ErrorMessageResources),
+            ErrorMessageResourceName = nameof(ErrorMessageResources.Required))]
+        [Display(Name = nameof(DisplayResources.Category), ResourceType = typeof(DisplayResources))]
         public int CategoryId { get; set; }
 
         public IEnumerable<CategoryModel>? Categories { get; set; }

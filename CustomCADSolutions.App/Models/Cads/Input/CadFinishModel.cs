@@ -9,36 +9,36 @@ namespace CustomCADSolutions.App.Models.Cads.Input
     {
         public int Id { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(SharedResources),
-            ErrorMessageResourceName = nameof(SharedResources.Required))]
+        [Required(ErrorMessageResourceType = typeof(ErrorMessageResources),
+            ErrorMessageResourceName = nameof(ErrorMessageResources.Required))]
         [StringLength(CadConstants.NameMaxLength,
             MinimumLength = CadConstants.NameMinLength,
-            ErrorMessageResourceType = typeof(SharedResources),
-            ErrorMessageResourceName = nameof(SharedResources.Length))]
-        [Display(Name = "Name", ResourceType = typeof(SharedResources))]
+            ErrorMessageResourceType = typeof(ErrorMessageResources),
+            ErrorMessageResourceName = nameof(ErrorMessageResources.Length))]
+        [Display(Name = nameof(DisplayResources.Name), ResourceType = typeof(DisplayResources))]
         public string Name { get; set; } = null!;
 
-        [Display(Name = "Description", ResourceType = typeof(SharedResources))]
+        [Display(Name = nameof(DisplayResources.Description), ResourceType = typeof(DisplayResources))]
         public string Description { get; set; } = null!;
 
-        [Required(ErrorMessageResourceType = typeof(SharedResources),
-            ErrorMessageResourceName = nameof(SharedResources.Required))]
+        [Required(ErrorMessageResourceType = typeof(ErrorMessageResources),
+            ErrorMessageResourceName = nameof(ErrorMessageResources.Required))]
         [Range(CadConstants.PriceMin, CadConstants.PriceMax,
-            ErrorMessageResourceType = typeof(SharedResources),
-            ErrorMessageResourceName = nameof(SharedResources.Range))]
-        [Display(Name = "Price", ResourceType = typeof(SharedResources))]
+            ErrorMessageResourceType = typeof(ErrorMessageResources),
+            ErrorMessageResourceName = nameof(ErrorMessageResources.Range))]
+        [Display(Name = nameof(DisplayResources.Price), ResourceType = typeof(DisplayResources))]
         public decimal Price { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(SharedResources),
-            ErrorMessageResourceName = nameof(SharedResources.Required))]
-        [Display(Name = "File", ResourceType = typeof(SharedResources))]
+        [Required(ErrorMessageResourceType = typeof(ErrorMessageResources),
+            ErrorMessageResourceName = nameof(ErrorMessageResources.Required))]
+        [Display(Name = nameof(DisplayResources.File), ResourceType = typeof(DisplayResources))]
         public IFormFile CadFile { get; set; } = null!;
 
         public int OrderId { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(SharedResources),
-            ErrorMessageResourceName = nameof(SharedResources.Required))]
-        [Display(Name = "Category", ResourceType = typeof(SharedResources))]
+        [Required(ErrorMessageResourceType = typeof(ErrorMessageResources),
+            ErrorMessageResourceName = nameof(ErrorMessageResources.Required))]
+        [Display(Name = nameof(DisplayResources.Category), ResourceType = typeof(DisplayResources))]
         public int CategoryId { get; set; }
 
         public IEnumerable<CategoryModel>? Categories { get; set; }

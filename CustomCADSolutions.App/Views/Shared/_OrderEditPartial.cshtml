@@ -4,7 +4,6 @@
 <form asp-route-id="@Model.Id" method="post" autocomplete="off">
 
     <div class="row justify-content-center mb-3">
-
         <div class="col-4">
             <label asp-for="Name" class="form-label"></label>
             <input asp-for="Name" class="form-control" placeholder="@Localizer["Name"]" />
@@ -13,7 +12,7 @@
         <div class="col-4">
             <label asp-for="CategoryId" class="form-label"></label>
             <select asp-for="CategoryId" class="form-control">
-                <option value="@null" selected>@Localizer["None"]</option>
+                <option value="" selected>@Localizer["None"]</option>
                 @foreach (CategoryModel category in Model.Categories!)
                 {
                     <option value="@category.Id">@Localizer[category.Name]</option>

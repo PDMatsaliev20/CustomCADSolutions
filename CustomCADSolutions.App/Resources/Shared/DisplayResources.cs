@@ -2,16 +2,8 @@
 
 namespace CustomCADSolutions.App.Resources.Shared
 {
-    public class SharedResources
+    public class DisplayResources
     {
-        // Error messages
-        public static string Required { get => GetString(nameof(Required)); }
-        public static string Length { get => GetString(nameof(Length)); }
-        public static string Range { get => GetString(nameof(Range)); }
-        public static string InvalidEmail { get => GetString(nameof(InvalidEmail)); }
-        public static string InvalidAxis { get => GetString(nameof(InvalidAxis)); }
-
-        // Displays
         public static string Name { get => GetString(nameof(Name)); }
         public static string Category { get => GetString(nameof(Category)); }
         public static string Description { get => GetString(nameof(Description)); }
@@ -29,7 +21,6 @@ namespace CustomCADSolutions.App.Resources.Shared
         public static string RoleDesc { get => GetString(nameof(RoleDesc)); }
         public static string Price { get => GetString(nameof(Price)); }
 
-        private static string GetString(string key) => new ResourceManager(typeof(SharedResources)).GetString(key)!;
-        
+        private static string GetString(string key) => new ResourceManager(typeof(DisplayResources)).GetString(key)!;
     }
 }

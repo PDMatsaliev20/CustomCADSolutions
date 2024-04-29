@@ -117,67 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Axis" xml:space="preserve">
-    <value>Axis</value>
-  </data>
-  <data name="ByCreator" xml:space="preserve">
-    <value>Search By Creator</value>
-  </data>
-  <data name="ByName" xml:space="preserve">
-    <value>Search By Name</value>
-  </data>
-  <data name="Category" xml:space="preserve">
-    <value>Category</value>
-  </data>
-  <data name="Confirm" xml:space="preserve">
-    <value>Confirm Password</value>
-  </data>
-  <data name="Description" xml:space="preserve">
-    <value>Description of 3D Model</value>
-  </data>
-  <data name="Email" xml:space="preserve">
-    <value>Email</value>
-  </data>
-  <data name="File" xml:space="preserve">
-    <value>3D Model File</value>
-  </data>
-  <data name="InvalidAxis" xml:space="preserve">
-    <value>The Axis must be either x, y or z</value>
-  </data>
   <data name="InvalidEmail" xml:space="preserve">
-    <value>The {0} field is not a valid e-mail address.</value>
+    <value>Полето {0} не е валиден имейл адрес!</value>
+  </data>
+  <data name="InvalidPassword" xml:space="preserve">
+    <value />
   </data>
   <data name="Length" xml:space="preserve">
-    <value>Length of field {0} must be between {2} and {1} characters</value>
+    <value>Дължината на полето {0} трябва да бъде между {2} и {1} символа!</value>
   </data>
-  <data name="Name" xml:space="preserve">
-    <value>Name</value>
-  </data>
-  <data name="Password" xml:space="preserve">
-    <value>Password</value>
-  </data>
-  <data name="Price" xml:space="preserve">
-    <value>Price</value>
+  <data name="PasswordMismatch" xml:space="preserve">
+    <value>Паролите не съвпадат!</value>
   </data>
   <data name="Range" xml:space="preserve">
-    <value>Value of field {0} must be between {1} and {2}</value>
-  </data>
-  <data name="Remember" xml:space="preserve">
-    <value>Remember me?</value>
+    <value>Стойността на полето {0} трябва да бъде между {1} и {2}!</value>
   </data>
   <data name="Required" xml:space="preserve">
-    <value>Field {0} is required!</value>
-  </data>
-  <data name="RoleDesc" xml:space="preserve">
-    <value>Description</value>
-  </data>
-  <data name="RoleName" xml:space="preserve">
-    <value>Name</value>
-  </data>
-  <data name="Sorting" xml:space="preserve">
-    <value>Sorting</value>
-  </data>
-  <data name="Username" xml:space="preserve">
-    <value>Username</value>
+    <value>Полето {0} е задължително!</value>
   </data>
 </root>

@@ -8,36 +8,38 @@ namespace CustomCADSolutions.App.Models.Users
     {
         public string? ReturnUrl { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(SharedResources),
-            ErrorMessageResourceName = nameof(SharedResources.Required))]
+        [Required(ErrorMessageResourceType = typeof(ErrorMessageResources),
+            ErrorMessageResourceName = nameof(ErrorMessageResources.Required))]
         [StringLength(UserConstants.NameMaxLength,
             MinimumLength = UserConstants.NameMinLength,
-            ErrorMessageResourceType = typeof(SharedResources),
-            ErrorMessageResourceName = nameof(SharedResources.Length))]
-        [Display(Name = "Username", ResourceType = typeof(SharedResources))]
+            ErrorMessageResourceType = typeof(ErrorMessageResources),
+            ErrorMessageResourceName = nameof(ErrorMessageResources.Length))]
+        [Display(Name = nameof(DisplayResources.Username), ResourceType = typeof(DisplayResources))]
         public string Username { get; set; } = null!;
 
-        [Required(ErrorMessageResourceType = typeof(SharedResources),
-            ErrorMessageResourceName = nameof(SharedResources.Required))]
-        [EmailAddress(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = nameof(SharedResources.InvalidEmail))]
-        [Display(Name = "Email", ResourceType = typeof(SharedResources))]
+        [Required(ErrorMessageResourceType = typeof(ErrorMessageResources),
+            ErrorMessageResourceName = nameof(ErrorMessageResources.Required))]
+        [EmailAddress(ErrorMessageResourceType = typeof(ErrorMessageResources), ErrorMessageResourceName = nameof(ErrorMessageResources.InvalidEmail))]
+        [Display(Name = nameof(DisplayResources.Email), ResourceType = typeof(DisplayResources))]
         public string Email { get; set; } = null!;
 
-        [Required(ErrorMessageResourceType = typeof(SharedResources),
-            ErrorMessageResourceName = nameof(SharedResources.Required))]
+        [Required(ErrorMessageResourceType = typeof(ErrorMessageResources),
+            ErrorMessageResourceName = nameof(ErrorMessageResources.Required))]
         [StringLength(UserConstants.PasswordMaxLength,
             MinimumLength = UserConstants.PasswordMinLength,
-            ErrorMessageResourceType = typeof(SharedResources),
-            ErrorMessageResourceName = nameof(SharedResources.Length))]
+            ErrorMessageResourceType = typeof(ErrorMessageResources),
+            ErrorMessageResourceName = nameof(ErrorMessageResources.Length))]
         [DataType(DataType.Password)]
-        [Display(Name = "Password", ResourceType = typeof(SharedResources))]
+        [Display(Name = nameof(DisplayResources.Password), ResourceType = typeof(DisplayResources))]
         public string Password { get; set; } = null!;
 
-        [Required(ErrorMessageResourceType = typeof(SharedResources),
-            ErrorMessageResourceName = nameof(SharedResources.Required))]
+        [Required(ErrorMessageResourceType = typeof(ErrorMessageResources),
+            ErrorMessageResourceName = nameof(ErrorMessageResources.Required))]
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm", ResourceType = typeof(SharedResources))]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [Display(Name = nameof(DisplayResources.Confirm), ResourceType = typeof(DisplayResources))]
+        [Compare(nameof(this.Password),
+            ErrorMessageResourceType = typeof(ErrorMessageResources),
+            ErrorMessageResourceName = nameof(ErrorMessageResources.PasswordMismatch))]
         public string ConfirmPassword { get; set; } = null!;
     }
 }

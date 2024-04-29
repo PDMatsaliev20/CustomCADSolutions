@@ -49,7 +49,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
             return services
                 .AddControllersWithViews(opt => opt.Filters.Add(antiForgeryToken))
-                .AddViewLocalizer(extensionFormat, typeof(SharedResources));
+                .AddViewLocalizer(extensionFormat, typeof(DisplayResources));
         }
 
         private static IMvcBuilder AddViewLocalizer(this IMvcBuilder builder, LanguageViewLocationExpanderFormat format, Type resource)
