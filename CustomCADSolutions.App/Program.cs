@@ -9,10 +9,11 @@ builder.Services.AddInbuiltServices();
 System.Globalization.CultureInfo[] cultures = { new("en-US"), new("bg-BG") };
 builder.Services.AddLocalizer(cultures);
 
-// Roles, Stripe and Swagger
+// Roles, Stripe and SignalR
 string[] roles = { "Administrator", "Designer", "Contributor", "Client" };
 builder.Services.AddRoles(roles);
 builder.Services.AddStripe(builder.Configuration);
+builder.Services.AddSignalRAndHubs();
 
 // Abstractions and App Cookie
 builder.Services.AddAbstractions();

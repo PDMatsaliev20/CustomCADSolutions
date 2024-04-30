@@ -17,6 +17,7 @@
           "Microsoft.EntityFrameworkCore.SqlServer": "6.0.28",
           "Microsoft.EntityFrameworkCore.Sqlite": "6.0.28",
           "Microsoft.EntityFrameworkCore.Tools": "6.0.28",
+          "Microsoft.TypeScript.MSBuild": "5.4.4",
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "6.0.16",
           "Stripe.net": "43.20.0",
           "Swashbuckle.AspNetCore": "6.4.0"
@@ -1785,6 +1786,7 @@
           }
         }
       },
+      "Microsoft.TypeScript.MSBuild/5.4.4": {},
       "Microsoft.VisualStudio.Debugger.Contracts/17.2.0": {
         "dependencies": {
           "MessagePack": "2.1.152",
@@ -4228,6 +4230,13 @@
       "sha512": "sha512-Nug3rO+7Kl5/SBAadzSMAVgqDlfGjJZ0GenQrLywJ84XGKO0uRqkunz5Wyl0SDwcR71bAATXvSdbdzPrYRYKGw==",
       "path": "microsoft.openapi/1.2.3",
       "hashPath": "microsoft.openapi.1.2.3.nupkg.sha512"
+    },
+    "Microsoft.TypeScript.MSBuild/5.4.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-v7rhit0iI/xf8PAuUlkJoBHRGV6dO3Sv/J9y3h6HFrCMOb90w0RYUp4Cb4xu2zFhDfrG9T62Ut5Lar39X/VrTA==",
+      "path": "microsoft.typescript.msbuild/5.4.4",
+      "hashPath": "microsoft.typescript.msbuild.5.4.4.nupkg.sha512"
     },
     "Microsoft.VisualStudio.Debugger.Contracts/17.2.0": {
       "type": "package",

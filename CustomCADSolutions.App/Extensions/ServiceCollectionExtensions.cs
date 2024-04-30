@@ -11,6 +11,8 @@ using System.Globalization;
 using Microsoft.AspNetCore.Mvc;
 using CustomCADSolutions.App.Extensions;
 using CustomCADSolutions.Infrastructure.Data.Models;
+using CustomCADSolutions.App.Hubs;
+using CustomCADSolutions.App.Controllers;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -94,6 +96,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<ICadService, CadService>();
             services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<StatisticsService>();
 
             return services;
         }
@@ -102,6 +105,13 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             IConfigurationSection stripeSection = config.GetSection("Stripe");
             services.Configure<StripeSettings>(stripeSection);
+            return services;
+        }
+        
+        public static IServiceCollection AddSignalRAndHubs(this IServiceCollection services)
+        {
+            services.AddSignalR();
+            services.AddTransient<CadsHub>();
             return services;
         }
     }

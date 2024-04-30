@@ -18,6 +18,7 @@ namespace CustomCADSolutions.App.Controllers
         // Services
         private readonly ICadService cadService;
         private readonly ICategoryService categoryService;
+        private readonly StatisticsService statisticsService;
         
         // Addons
         private readonly IMapper mapper;
@@ -26,10 +27,12 @@ namespace CustomCADSolutions.App.Controllers
         public CadsController(
             ICadService cadService,
             ICategoryService categoryService,
+            StatisticsService statisticsService,
             ILogger<CadsController> logger)
         {
             this.cadService = cadService;
             this.categoryService = categoryService;
+            this.statisticsService = statisticsService;
 
             MapperConfiguration config = new(cfg => cfg.AddProfile<CadAppProfile>());
             this.mapper = config.CreateMapper();
@@ -118,11 +121,13 @@ namespace CustomCADSolutions.App.Controllers
 
             CadModel model = mapper.Map<CadModel>(input);
             model.Bytes = await input.CadFile.GetBytesAsync();
-            model.CreatorId = User.GetId();
+            model.CreatorId = User.GetId(); 
             model.IsValidated = User.IsInRole("Designer");
             model.CreationDate = DateTime.Now;
 
             await cadService.CreateAsync(model);
+            await statisticsService.SendStatistics(User.GetId());
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -157,6 +162,8 @@ namespace CustomCADSolutions.App.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             await cadService.DeleteAsync(id);
+            await statisticsService.SendStatistics(User.GetId());
+
             return RedirectToAction(nameof(Index));
         }
     }

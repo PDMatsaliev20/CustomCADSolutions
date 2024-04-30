@@ -1847,3 +1847,4 @@ C:\Users\ivana\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\o
 C:\Users\ivana\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared._OrderEditPartial.en-US.resources
 C:\Users\ivana\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared._LanguagePartial.bg-BG.resources
 C:\Users\ivana\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\obj\Debug\net6.0\CustomCADSolutions.App.Resources.Views.Shared._LanguagePartial.en-US.resources
+C:\Users\ivana\source\repos\Web Apps\CustomCADSolutions\CustomCADSolutions.App\bin\Debug\net6.0\libman.json

@@ -21,52 +21,6 @@
 </div>
 <hr />
 
-<script>
-    $(document).ready(function () {
-        $('#user-cads-count').text('@Localizer["Calculating..."]');
-        $('#unvalidated-cads-count').text('@Localizer["Calculating..."]');
-
-        function updateProductCount() {
-            $.ajax({
-                url: '/Home/GetCadsCount',
-                method: 'GET',
-                success: function (response) {
-                    const hasMessage = '@Localizer["Has"]';
-                    const hasNotMessage =' @Localizer["Hasn't"]';
-
-                    const userCadsCount = response.userCadsCount;
-                    if (userCadsCount > 0) {
-
-                        $('#user-cads-count').text(`${hasMessage} ${userCadsCount}`);
-                    }
-                    else {
-                        $('#user-cads-count').text(hasNotMessage);
-                    }
-                    
-                    const unvCadsCount = response.unvalidatedCadsCount;
-                    if (unvCadsCount > 0) {
-
-                        $('#unvalidated-cads-count').text(`${hasMessage} ${unvCadsCount}`);
-                    }
-                    else {
-                        $('#unvalidated-cads-count').text(hasNotMessage);
-                    }
-
-                    $('#user-cads-wrapper').removeData.removeClass('d-none');
-                    $('#unvalidated-cads-wrapper').removeClass('d-none');
-                },
-                error: function (xhr, status, error) {
-                    console.error('Error fetching product count:', error);
-                }
-            });
-        }
-        
-        updateProductCount();
-
-        setInterval(updateProductCount, 5000);
-    });
-</script>
-
 <partial name="_CadQueryPartial" model="Model" view-data="ViewData" />
 
 <div class="container">
@@ -87,3 +41,11 @@
 </div>
 
 <partial name="_PaginationPartial" model="Model" view-data="ViewData" />
+
+@section Scripts {
+    <script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
+    <script type="module">
+        import loadStatistics from '/js/statistics.mjs';
+        loadStatistics(`@Localizer["Calculating"]`, `@Localizer["Has"]`, `@Localizer["Hasn't"]`);
+    </script>
+}

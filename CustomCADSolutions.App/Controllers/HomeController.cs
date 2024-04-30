@@ -103,19 +103,6 @@ namespace CustomCADSolutions.App.Controllers
             }
         }
 
-        [HttpGet]
-        public IActionResult GetCadsCount()
-        {
-            int userCads = cadService.Count(c => c.CreatorId == User.GetId());
-            int unvCads = cadService.Count(c => c.IsValidated == false);
-
-            return Ok(new CadsCountModel()
-            {
-                UserCadsCount = userCads,
-                UnvalidatedCadsCount = unvCads,
-            });
-        }
-
         [HttpPost]
         public async Task<IActionResult> MakeContributor()
         {

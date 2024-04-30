@@ -1,4 +1,5 @@
 ﻿using CustomCADSolutions.App.Extensions;
+using CustomCADSolutions.App.Hubs;
 using CustomCADSolutions.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
@@ -98,6 +99,7 @@ namespace Microsoft.AspNetCore.Builder
                     defaults: defaults);
 
                 endpoints.MapDefaultControllerRoute();
+                endpoints.MapHub<CadsHub>("/cadsHub");
             });
 
             return app;
