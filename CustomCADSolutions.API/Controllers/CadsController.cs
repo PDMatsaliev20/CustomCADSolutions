@@ -41,8 +41,8 @@ namespace CustomCADSolutions.App.APIControllers
             {
                 Category = inputQuery.Category,
                 Creator = inputQuery.Creator,
-                LikeName = inputQuery.LikeName,
-                LikeCreator = inputQuery.LikeCreator,
+                SearchName = inputQuery.SearchName,
+                SearchCreator = inputQuery.SearchCreator,
                 Sorting = inputQuery.Sorting,
                 CurrentPage = inputQuery.CurrentPage,
                 CadsPerPage = inputQuery.CadsPerPage,

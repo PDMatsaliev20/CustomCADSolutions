@@ -12,7 +12,6 @@ using Microsoft.AspNetCore.Mvc;
 using CustomCADSolutions.App.Extensions;
 using CustomCADSolutions.Infrastructure.Data.Models;
 using CustomCADSolutions.App.Hubs;
-using CustomCADSolutions.App.Controllers;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -96,7 +95,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<ICadService, CadService>();
             services.AddScoped<ICategoryService, CategoryService>();
-            services.AddScoped<StatisticsService>();
+            services.AddScoped<CadsHubHelper>();
 
             return services;
         }

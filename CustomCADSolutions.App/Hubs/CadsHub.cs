@@ -1,14 +1,12 @@
-﻿using CustomCADSolutions.App.Controllers;
-
-using Microsoft.AspNetCore.SignalR;
+﻿using Microsoft.AspNetCore.SignalR;
 
 namespace CustomCADSolutions.App.Hubs
 {
     public class CadsHub : Hub
     {
-        private readonly StatisticsService statisticsService;
+        private readonly CadsHubHelper statisticsService;
 
-        public CadsHub(StatisticsService statisticsService)
+        public CadsHub(CadsHubHelper statisticsService)
         {
             this.statisticsService = statisticsService;
         }

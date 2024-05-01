@@ -43,7 +43,7 @@ namespace CustomCADSolutions.App.Areas.Admin.Controllers
             CadQueryModel query = new()
             {
                 Category = inputQuery.Category,
-                LikeName = inputQuery.SearchName,
+                SearchName = inputQuery.SearchName,
                 Sorting = inputQuery.Sorting,
                 CurrentPage = inputQuery.CurrentPage,
                 CadsPerPage = inputQuery.CadsPerPage,

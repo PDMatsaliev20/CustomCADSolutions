@@ -52,7 +52,7 @@ namespace CustomCADSolutions.Tests.ServicesTests.CadTests
         public async Task Test_ReturnsCorrectlyWithLikeNameFilter(string likeName)
         {
             int expectedCount = this.cads.Count(c => c.Name.Contains(likeName));
-            CadQueryModel query = new() { LikeName = likeName };
+            CadQueryModel query = new() { SearchName = likeName };
 
             query = await service.GetAllAsync(query);
             int actualCount = query.TotalCount;
@@ -67,7 +67,7 @@ namespace CustomCADSolutions.Tests.ServicesTests.CadTests
         public async Task Test_ReturnsCorrectlyWithLikeCreatorFilter(string likeCreator)
         {
             int expectedCount = this.cads.Count(c => c.Creator.UserName.Contains(likeCreator));
-            CadQueryModel query = new() { LikeCreator = likeCreator };
+            CadQueryModel query = new() { SearchCreator = likeCreator };
 
             query = await service.GetAllAsync(query);
             int actualCount = query.TotalCount;

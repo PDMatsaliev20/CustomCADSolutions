@@ -47,8 +47,8 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
             {
                 Category = inputQuery.Category,
                 Creator = inputQuery.Creator,
-                LikeName = inputQuery.SearchName,
-                LikeCreator = inputQuery.SearchCreator,
+                SearchName = inputQuery.SearchName,
+                SearchCreator = inputQuery.SearchCreator,
                 Sorting = inputQuery.Sorting,
                 CurrentPage = inputQuery.CurrentPage,
                 CadsPerPage = inputQuery.CadsPerPage,
@@ -78,8 +78,8 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
             {
                 Category = inputQuery.Category,
                 Creator = inputQuery.Creator,
-                LikeName = inputQuery.SearchName,
-                LikeCreator = inputQuery.SearchCreator,
+                SearchName = inputQuery.SearchName,
+                SearchCreator = inputQuery.SearchCreator,
                 Sorting = inputQuery.Sorting,
                 CurrentPage = inputQuery.CurrentPage,
                 CadsPerPage = inputQuery.CadsPerPage,

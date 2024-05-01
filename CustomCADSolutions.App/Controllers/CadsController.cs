@@ -9,6 +9,7 @@ using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using CustomCADSolutions.App.Hubs;
 
 namespace CustomCADSolutions.App.Controllers
 {
@@ -18,7 +19,7 @@ namespace CustomCADSolutions.App.Controllers
         // Services
         private readonly ICadService cadService;
         private readonly ICategoryService categoryService;
-        private readonly StatisticsService statisticsService;
+        private readonly CadsHubHelper statisticsService;
         
         // Addons
         private readonly IMapper mapper;
@@ -27,7 +28,7 @@ namespace CustomCADSolutions.App.Controllers
         public CadsController(
             ICadService cadService,
             ICategoryService categoryService,
-            StatisticsService statisticsService,
+            CadsHubHelper statisticsService,
             ILogger<CadsController> logger)
         {
             this.cadService = cadService;
@@ -62,7 +63,7 @@ namespace CustomCADSolutions.App.Controllers
             CadQueryModel query = new()
             {
                 Category = inputQuery.Category,
-                LikeName = inputQuery.SearchName,
+                SearchName = inputQuery.SearchName,
                 Sorting = inputQuery.Sorting,
                 CurrentPage = inputQuery.CurrentPage,
                 CadsPerPage = inputQuery.CadsPerPage,

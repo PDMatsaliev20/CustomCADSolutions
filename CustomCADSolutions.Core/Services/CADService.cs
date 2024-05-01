@@ -63,13 +63,13 @@ namespace CustomCADSolutions.Core.Services
                 }
             }
 
-            if (query.LikeName != null)
+            if (query.SearchName != null)
             {
-                allCads = allCads.Where(c => c.Name.Contains(query.LikeName));
+                allCads = allCads.Where(c => c.Name.Contains(query.SearchName));
             }
-            if (query.LikeCreator != null)
+            if (query.SearchCreator != null)
             {
-                allCads = allCads.Where(c => c.Creator!.UserName.Contains(query.LikeCreator));
+                allCads = allCads.Where(c => c.Creator!.UserName.Contains(query.SearchCreator));
             }
 
             allCads = query.Sorting switch

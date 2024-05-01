@@ -9,8 +9,8 @@ namespace CustomCADSolutions.Core.Models
 
         public string? Category { get; set; }
         public string? Creator { get; set; }
-        public string? LikeName { get; set; }
-        public string? LikeCreator { get; set; }
+        public string? SearchName { get; set; }
+        public string? SearchCreator { get; set; }
         public int CurrentPage { get; set; } = 1;
         public int CadsPerPage { get; set; } = 1;
         public bool Validated { get; set; } = true;
