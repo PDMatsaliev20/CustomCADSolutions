@@ -1,8 +1,6 @@
-﻿using CustomCADSolutions.Core.Mappings.CadDTOs;
-using CustomCADSolutions.Core.Models;
+﻿using CustomCADSolutions.Core.Models;
 using CustomCADSolutions.Infrastructure.Data.Models;
 using AutoMapper;
-using System.Drawing;
 
 namespace CustomCADSolutions.Core.Mappings
 {
@@ -11,12 +9,6 @@ namespace CustomCADSolutions.Core.Mappings
         public CadCoreProfile()
         {
             EntityToModel();
-            ModelToExport();
-
-            QueryToDTO();
-            DTOToQuery();
-
-            ImportToModel();
             ModelToEntity();
         }
 
@@ -27,33 +19,7 @@ namespace CustomCADSolutions.Core.Mappings
         public void EntityToModel() => CreateMap<Cad, CadModel>()
                 .ForMember(model => model.Coords, opt =>
                     opt.MapFrom(entity => new int[] { entity.X, entity.Y, entity.Z }));
-
-        /// <summary>
-        ///     Converts Service Model to DTO
-        /// </summary>
-        public void ModelToExport() => CreateMap<CadModel, CadExportDTO>()
-            .ForMember(export => export.CreationDate, opt => 
-                opt.MapFrom(model => model.CreationDate.ToString("dd/MM/yyyy HH:mm:ss")))
-            .ForMember(export => export.CreatorName, opt => 
-                opt.MapFrom(model => model.Creator.UserName))
-            .ForMember(export => export.CategoryName, opt => 
-                opt.MapFrom(model => model.Category.Name));
-
-        /// <summary>
-        ///     Converts Query to DTO
-        /// </summary>
-        public void QueryToDTO() => CreateMap<CadQueryModel, CadQueryDTO>();
-
-        /// <summary>
-        ///     Converts DTO to Query
-        /// </summary>
-        public void DTOToQuery() => CreateMap<CadQueryDTO, CadQueryModel>();
-
-        /// <summary>
-        /// Converts DTO to Service Model
-        /// </summary>
-        public void ImportToModel() => CreateMap<CadImportDTO, CadModel>();
-
+        
         /// <summary>
         ///     Converts Service Model to Entity
         /// </summary>

@@ -1,6 +1,4 @@
 ﻿using AutoMapper;
-using CustomCADSolutions.Core.Mappings;
-using CustomCADSolutions.Core.Mappings.CadDTOs;
 using CustomCADSolutions.Core.Contracts;
 using CustomCADSolutions.Core.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +7,8 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.JsonPatch.Operations;
 using Newtonsoft.Json.Serialization;
+using CustomCADSolutions.API.Mappings;
+using CustomCADSolutions.API.Models.Cads;
 
 namespace CustomCADSolutions.App.APIControllers
 {
@@ -22,7 +22,7 @@ namespace CustomCADSolutions.App.APIControllers
         public CadsController(ICadService cadService)
         {
             this.cadService = cadService;
-            MapperConfiguration config = new(cfg => cfg.AddProfile<CadCoreProfile>());
+            MapperConfiguration config = new(cfg => cfg.AddProfile<CadApiProfile>());
             mapper = config.CreateMapper();
         }
 

@@ -1,4 +1,4 @@
-﻿namespace CustomCADSolutions.Core.Mappings.DTOs
+﻿namespace CustomCADSolutions.API.Models.Orders
 {
     public class OrderExportDTO
     {

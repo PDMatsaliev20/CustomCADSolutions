@@ -1,17 +1,14 @@
 ﻿using AutoMapper;
-using CustomCADSolutions.Core.Mappings;
-using CustomCADSolutions.Core.Mappings.CadDTOs;
-using CustomCADSolutions.Core.Mappings.DTOs;
 using CustomCADSolutions.Core.Contracts;
 using CustomCADSolutions.Core.Models;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using Microsoft.AspNetCore.Mvc;
-using System.Drawing;
 using static Microsoft.AspNetCore.Http.StatusCodes;
-using CustomCADSolutions.Infrastructure.Data.Models;
-using CustomCADSolutions.Core.Services;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
+using CustomCADSolutions.API.Mappings;
+using CustomCADSolutions.API.Models.Cads;
+using CustomCADSolutions.API.Models.Orders;
 
 namespace CustomCADSolutions.App.APIControllers
 {
@@ -27,8 +24,8 @@ namespace CustomCADSolutions.App.APIControllers
             this.orderService = orderService;
             MapperConfiguration config = new(cfg =>
             {
-                cfg.AddProfile<OrderCoreProfile>();
-                cfg.AddProfile<CadCoreProfile>();
+                cfg.AddProfile<OrderApiProfile>();
+                cfg.AddProfile<CadApiProfile>();
             });
             this.mapper = config.CreateMapper();
         }

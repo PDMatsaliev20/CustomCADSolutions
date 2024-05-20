@@ -1,9 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
 using static CustomCADSolutions.Infrastructure.Data.DataConstants;
 using static CustomCADSolutions.Infrastructure.Data.DataConstants.CadConstants;
 
-namespace CustomCADSolutions.Core.Mappings.CadDTOs
+namespace CustomCADSolutions.API.Models.Cads
 {
     public class CadImportDTO
     {
@@ -11,7 +10,7 @@ namespace CustomCADSolutions.Core.Mappings.CadDTOs
         public int Id { get; set; }
 
         [Required(ErrorMessage = RequiredErrorMessage)]
-        [StringLength(NameMaxLength, MinimumLength = NameMinLength, 
+        [StringLength(NameMaxLength, MinimumLength = NameMinLength,
             ErrorMessage = LengthErrorMessage)]
         public string Name { get; set; } = null!;
 
@@ -20,7 +19,7 @@ namespace CustomCADSolutions.Core.Mappings.CadDTOs
 
         [Required(ErrorMessage = RequiredErrorMessage)]
         public int CategoryId { get; set; }
-        
+
         [Required(ErrorMessage = RequiredErrorMessage)]
         public decimal Price { get; set; }
 
