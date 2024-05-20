@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "CustomCADSolutions": {
+    "CustomCADSolutions (MPA)": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
