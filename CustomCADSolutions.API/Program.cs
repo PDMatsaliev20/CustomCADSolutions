@@ -6,7 +6,8 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-string connectionString = builder.Configuration.GetConnectionString("RealConnection");
+string connectionString = builder.Configuration.GetConnectionString("RealConnection")
+        ?? throw new KeyNotFoundException("Could not find connection string 'RealConnection'.");
 builder.Services.AddDbContext<CadContext>(options => options.UseSqlServer(connectionString));
 builder.Services.AddScoped<IRepository, Repository>();
 

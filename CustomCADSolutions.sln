@@ -14,7 +14,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomCADSolutions.App", "C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomCADSolutions.API", "CustomCADSolutions.API\CustomCADSolutions.API.csproj", "{2E7298D5-E4D2-4844-83FD-0467955C6C8B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomCADSolutions.Tests", "CustomCADSolutions.Tests\CustomCADSolutions.Tests.csproj", "{7E65E744-A597-4042-A11F-9CC04B404E9D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomCADSolutions.Tests", "CustomCADSolutions.Tests\CustomCADSolutions.Tests.csproj", "{7E65E744-A597-4042-A11F-9CC04B404E9D}"
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "customcadsolutions", "customcadsolutions\customcadsolutions.esproj", "{8E90CB15-C504-4DB7-9AFC-F0DBBD09627E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,6 +44,12 @@ Global
 		{7E65E744-A597-4042-A11F-9CC04B404E9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7E65E744-A597-4042-A11F-9CC04B404E9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7E65E744-A597-4042-A11F-9CC04B404E9D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E90CB15-C504-4DB7-9AFC-F0DBBD09627E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E90CB15-C504-4DB7-9AFC-F0DBBD09627E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E90CB15-C504-4DB7-9AFC-F0DBBD09627E}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{8E90CB15-C504-4DB7-9AFC-F0DBBD09627E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E90CB15-C504-4DB7-9AFC-F0DBBD09627E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E90CB15-C504-4DB7-9AFC-F0DBBD09627E}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
