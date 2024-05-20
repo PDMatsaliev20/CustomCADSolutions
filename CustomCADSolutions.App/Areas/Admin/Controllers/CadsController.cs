@@ -5,11 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 using CustomCADSolutions.App.Models.Cads.View;
 using CustomCADSolutions.Core.Contracts;
 using CustomCADSolutions.Core.Models;
+using static CustomCADSolutions.Infrastructure.Data.DataConstants;
 
 namespace CustomCADSolutions.App.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = "Administrator")]
+    [Authorize(Roles = RoleConstants.Admin)]
     public class CadsController : Controller
     {
         // Services

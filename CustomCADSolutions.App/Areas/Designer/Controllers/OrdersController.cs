@@ -1,24 +1,20 @@
 ﻿using CustomCADSolutions.App.Models.Orders;
+using static CustomCADSolutions.Infrastructure.Data.DataConstants;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static CustomCADSolutions.App.Extensions.UtilityExtensions;
-using static CustomCADSolutions.App.Constants.Paths;
 using CustomCADSolutions.App.Extensions;
-using CustomCADSolutions.Core.Mappings.DTOs;
 using AutoMapper;
 using CustomCADSolutions.App.Mappings;
-using CustomCADSolutions.Infrastructure.Data.Models;
-using CustomCADSolutions.Core.Mappings.CadDTOs;
 using CustomCADSolutions.App.Models.Cads.Input;
 using CustomCADSolutions.Core.Contracts;
 using CustomCADSolutions.Core.Models;
-using CustomCADSolutions.Core.Services;
 
 namespace CustomCADSolutions.App.Areas.Designer.Controllers
 {
     [Area("Designer")]
-    [Authorize(Roles = "Designer")]
+    [Authorize(Roles = RoleConstants.Designer)]
     public class OrdersController : Controller
     {
         // Services

@@ -4,11 +4,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CustomCADSolutions.Infrastructure.Data.Models;
+using static CustomCADSolutions.Infrastructure.Data.DataConstants;
 
 namespace CustomCADSolutions.App.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = "Administrator")]
+    [Authorize(Roles = RoleConstants.Admin)]
     public class UsersController : Controller
     {
         private readonly ILogger<UsersController> logger;
@@ -29,28 +30,42 @@ namespace CustomCADSolutions.App.Areas.Admin.Controllers
                 .Select(async u => new UserViewModel()
                 {
                     Id = u.Id,
-                    Username = u.UserName,
+                    Username = u.UserName!,
                     Role = string.Join(", ", (await userManager.GetRolesAsync(u)).FirstOrDefault()!),
-                    Email = u.Email,
+                    Email = u.Email!,
                     Phone = u.PhoneNumber
                 })
                 .Select(t => t.Result)
                 .ToArray();
             
-            ViewBag.Roles = new string[] { "Administrator", "Designer", "Contributor", "Client" };
+            string[] roles = [
+                RoleConstants.Admin,
+                RoleConstants.Designer,
+                RoleConstants.Contributor,
+                RoleConstants.Client
+            ];
+            ViewBag.Roles = roles;
             return View(views);
         }
 
         [HttpPost]
         public async Task<IActionResult> EditUserRole(string username, string selectedRole)
         {
-            AppUser user = await userManager.FindByNameAsync(username);
-            var roles = await userManager.GetRolesAsync(user);
+            try
+            {
+                AppUser user = await userManager.FindByNameAsync(username)
+                ?? throw new KeyNotFoundException();
+                var roles = await userManager.GetRolesAsync(user);
 
-            await userManager.RemoveFromRoleAsync(user, roles.Single());
-            await userManager.AddToRoleAsync(user, selectedRole);
+                await userManager.RemoveFromRoleAsync(user, roles.Single());
+                await userManager.AddToRoleAsync(user, selectedRole);
 
-            return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index));
+            }
+            catch (KeyNotFoundException)
+            {
+                return Unauthorized();
+            }
         }
 
         [HttpPost]

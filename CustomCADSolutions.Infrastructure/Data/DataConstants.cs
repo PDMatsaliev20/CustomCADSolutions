@@ -56,9 +56,13 @@
             public const int PasswordMinLength = 6;
         }
 
-
         public static class RoleConstants
         {
+            public const string Admin = "Administrator";
+            public const string Designer = "Designer";
+            public const string Contributor = "Contributor";
+            public const string Client = "Client";
+
             public const int NameMinLength = 2;
             public const int NameMaxLength = 20;
 

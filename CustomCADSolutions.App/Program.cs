@@ -1,16 +1,18 @@
+using static CustomCADSolutions.Infrastructure.Data.DataConstants.RoleConstants;
+
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-// Database, Identity, MVC, API and CORS
+// Database, Identity and MVC
 builder.Services.AddApplicationDbContext(builder.Configuration);
 builder.Services.AddApplicationIdentity();
 builder.Services.AddInbuiltServices();
 
 // Localizer
-System.Globalization.CultureInfo[] cultures = { new("en-US"), new("bg-BG") };
+System.Globalization.CultureInfo[] cultures = [new("en-US"), new("bg-BG")];
 builder.Services.AddLocalizer(cultures);
 
 // Roles, Stripe and SignalR
-string[] roles = { "Administrator", "Designer", "Contributor", "Client" };
+string[] roles = [Admin, Designer, Contributor, Client];
 builder.Services.AddRoles(roles);
 builder.Services.AddStripe(builder.Configuration);
 builder.Services.AddSignalRAndHubs();

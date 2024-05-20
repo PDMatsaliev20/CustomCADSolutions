@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using static CustomCADSolutions.Infrastructure.Data.DataConstants.RoleConstants;
 
 namespace CustomCADSolutions.App.Components
 {
@@ -6,7 +7,7 @@ namespace CustomCADSolutions.App.Components
     {
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            string[] roles = { "Client", "Contributor", "Designer", "Administrator" };
+            string[] roles = [Client, Contributor, Designer, Admin];
 
             string view = string.Empty;
             if (User.Identity?.IsAuthenticated ?? false)

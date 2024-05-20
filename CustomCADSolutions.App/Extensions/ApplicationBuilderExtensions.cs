@@ -36,7 +36,7 @@ namespace Microsoft.AspNetCore.Builder
             {
                 ContentTypeProvider = new FileExtensionContentTypeProvider()
                 {
-                    Mappings = 
+                    Mappings =
                     {
                         [".gltf"] = "model/gltf+json",
                         [".glb"] = "model/gltf-binary"
@@ -82,26 +82,23 @@ namespace Microsoft.AspNetCore.Builder
 
         public static IApplicationBuilder MapRoutes(this WebApplication app)
         {
-            app.UseEndpoints(endpoints =>
-            {
-                var defaults = new { Controller = "Home", Action = "Index" };
+            var defaults = new { Controller = "Home", Action = "Index" };
 
-                endpoints.MapAreaControllerRoute(
-                    name: "AdminArea",
-                    areaName: "Admin",
-                    pattern: "Admin/{controller}/{action}/{id?}",
-                    defaults: defaults);
+            app.MapAreaControllerRoute(
+                name: "AdminArea",
+                areaName: "Admin",
+                pattern: "Admin/{controller}/{action}/{id?}",
+                defaults: defaults);
 
-                endpoints.MapAreaControllerRoute(
-                    name: "DesignerArea",
-                    areaName: "Designer",
-                    pattern: "Designer/{controller}/{action}/{id?}",
-                    defaults: defaults);
+            app.MapAreaControllerRoute(
+                name: "DesignerArea",
+                areaName: "Designer",
+                pattern: "Designer/{controller}/{action}/{id?}",
+                defaults: defaults);
 
-                endpoints.MapDefaultControllerRoute();
-                endpoints.MapHub<CadsHub>("/cadsHub");
-            });
-
+            app.MapDefaultControllerRoute();
+            app.MapHub<CadsHub>("/cadsHub");
+            
             return app;
         }
     }

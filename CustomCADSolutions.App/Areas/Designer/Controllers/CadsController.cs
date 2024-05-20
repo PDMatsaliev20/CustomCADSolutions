@@ -2,6 +2,7 @@
 using CustomCADSolutions.App.Models.Cads.View;
 using CustomCADSolutions.Core.Contracts;
 using CustomCADSolutions.Core.Models;
+using static CustomCADSolutions.Infrastructure.Data.DataConstants;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace CustomCADSolutions.App.Areas.Designer.Controllers
 {
     [Area("Designer")]
-    [Authorize(Roles = "Designer")]
+    [Authorize(Roles = RoleConstants.Designer)]
     public class CadsController : Controller
     {
         // Services

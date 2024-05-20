@@ -6,11 +6,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using static CustomCADSolutions.Infrastructure.Data.DataConstants;
 
 namespace CustomCADSolutions.App.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = "Administrator")]
+    [Authorize(Roles = RoleConstants.Admin)]
     public class RolesController : Controller
     {
         private readonly RoleManager<AppRole> roleManager;

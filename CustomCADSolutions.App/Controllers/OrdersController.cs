@@ -1,4 +1,5 @@
 ﻿using CustomCADSolutions.App.Models.Orders;
+using static CustomCADSolutions.Infrastructure.Data.DataConstants.RoleConstants;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,7 +13,7 @@ using CustomCADSolutions.Core.Models;
 
 namespace CustomCADSolutions.App.Controllers
 {
-    [Authorize(Roles = "Client,Contributor")]
+    [Authorize(Roles = $"{Client},{Contributor}")]
     public class OrdersController : Controller
     {
         // Services

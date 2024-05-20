@@ -6,6 +6,7 @@ using CustomCADSolutions.App.Models.Cads.View;
 using CustomCADSolutions.Core.Models;
 using CustomCADSolutions.Core.Contracts;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
+using static CustomCADSolutions.Infrastructure.Data.DataConstants.RoleConstants;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,7 +14,7 @@ using CustomCADSolutions.App.Hubs;
 
 namespace CustomCADSolutions.App.Controllers
 {
-    [Authorize(Roles = "Contributor,Designer")]
+    [Authorize(Roles = $"{Contributor},{Designer}")]
     public class CadsController : Controller
     {
         // Services
@@ -45,7 +46,7 @@ namespace CustomCADSolutions.App.Controllers
         public async Task<IActionResult> UpdateCoords(int id, int x, int y, int z)
         {
             CadModel model = await cadService.GetByIdAsync(id);
-            model.Coords = new[] { x, y, z };
+            model.Coords = [x, y, z];
 
             await cadService.EditAsync(id, model);
             return RedirectToAction(nameof(Details), new { id });
@@ -123,7 +124,7 @@ namespace CustomCADSolutions.App.Controllers
             CadModel model = mapper.Map<CadModel>(input);
             model.Bytes = await input.CadFile.GetBytesAsync();
             model.CreatorId = User.GetId(); 
-            model.IsValidated = User.IsInRole("Designer");
+            model.IsValidated = User.IsInRole(Designer);
             model.CreationDate = DateTime.Now;
 
             await cadService.CreateAsync(model);

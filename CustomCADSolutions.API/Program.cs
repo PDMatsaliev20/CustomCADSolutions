@@ -1,26 +1,21 @@
-using CustomCADSolutions.Core.Contracts;
-using CustomCADSolutions.Core.Services;
-using CustomCADSolutions.Infrastructure.Data.Common;
-using CustomCADSolutions.Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
+using static CustomCADSolutions.Infrastructure.Data.DataConstants.RoleConstants;
 
 var builder = WebApplication.CreateBuilder(args);
 
-string connectionString = builder.Configuration.GetConnectionString("RealConnection")
-        ?? throw new KeyNotFoundException("Could not find connection string 'RealConnection'.");
-builder.Services.AddDbContext<CadContext>(options => options.UseSqlServer(connectionString));
-builder.Services.AddScoped<IRepository, Repository>();
+builder.Services.AddCadContext(builder.Configuration);
+builder.Services.AddAppIdentity();
+builder.Services.AddAbstractions();
 
-builder.Services.AddScoped<IOrderService, OrderService>();
-builder.Services.AddScoped<ICadService, CadService>();
-builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddControllers().AddJsonAndXml();
+builder.Services.AddApiConfigurations();
 
-builder.Services.AddControllers().AddNewtonsoftJson();
+string[] roles = [Admin, Designer, Contributor, Client];
+builder.Services.AddAuthWithJwt(builder.Configuration).AddRoles(roles);
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+WebApplication app = builder.Build();
 
-var app = builder.Build();
+app.UseDefaultFiles();
+app.UseStaticFiles();
 
 if (app.Environment.IsDevelopment())
 {
@@ -29,9 +24,20 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors();
 
+app.UseAuthentication();
 app.UseAuthorization();
+await app.Services.UseRolesAsync(roles);
+
+Dictionary<string, string> users = new()
+{
+    ["Administrator"] = "NinjataBG",
+    ["Designer"] = "Designer",
+    ["Contributor"] = "Contributor",
+    ["Client"] = "Client",
+};
+await app.Services.UseAppUsers(app.Configuration, users);
 
 app.MapControllers();
-
-app.Run();
+await app.RunAsync();

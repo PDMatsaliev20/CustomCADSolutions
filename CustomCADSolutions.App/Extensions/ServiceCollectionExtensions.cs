@@ -57,7 +57,7 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             builder.AddViewLocalization(format);
             builder.AddDataAnnotationsLocalization(options =>
-                options.DataAnnotationLocalizerProvider = (type, factory) 
+                options.DataAnnotationLocalizerProvider = (type, factory)
                     => factory.Create(resource));
 
             return builder;
@@ -106,7 +106,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.Configure<StripeSettings>(stripeSection);
             return services;
         }
-        
+
         public static IServiceCollection AddSignalRAndHubs(this IServiceCollection services)
         {
             services.AddSignalR();

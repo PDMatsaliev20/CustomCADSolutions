@@ -4,6 +4,7 @@ using CustomCADSolutions.App.Mappings;
 using CustomCADSolutions.App.Models.Cads.View;
 using CustomCADSolutions.Core.Models;
 using CustomCADSolutions.Core.Contracts;
+using static CustomCADSolutions.Infrastructure.Data.DataConstants.RoleConstants;
 using CustomCADSolutions.Infrastructure.Data.Models;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using AutoMapper;
@@ -52,7 +53,7 @@ namespace CustomCADSolutions.App.Controllers
             {
                 Id = 0,
                 Name = "Laptop.glb",
-                Coords = new[] { 23, 15, 20 }
+                Coords = [23, 15, 20]
             });
         }
 
@@ -111,16 +112,24 @@ namespace CustomCADSolutions.App.Controllers
                 return RedirectToAction("Login", "Account", new { area = "Identity" });
             }
 
-            AppUser user = await userManager.FindByIdAsync(User.GetId());
-            IEnumerable<string> roles = await userManager.GetRolesAsync(user);
+            try
+            {
+                AppUser user = await userManager.FindByIdAsync(User.GetId())
+                ?? throw new KeyNotFoundException();
+                IEnumerable<string> roles = await userManager.GetRolesAsync(user);
 
-            await userManager.RemoveFromRoleAsync(user, roles.Single());
-            await userManager.AddToRoleAsync(user, "Contributor");
+                await userManager.RemoveFromRoleAsync(user, roles.Single());
+                await userManager.AddToRoleAsync(user, Contributor);
 
-            await signInManager.SignOutAsync();
-            await signInManager.SignInAsync(user, false);
+                await signInManager.SignOutAsync();
+                await signInManager.SignInAsync(user, false);
 
-            return RedirectToAction("Index", "Cads", new { area = "Contributor" });
+                return RedirectToAction("Index", "Cads", new { area = "Contributor" });
+            }
+            catch (KeyNotFoundException)
+            {
+                return Unauthorized();
+            }
         }
 
         public IActionResult SetLanguage(string culture, string returnUrl)
@@ -136,11 +145,7 @@ namespace CustomCADSolutions.App.Controllers
             return LocalRedirect(returnUrl);
         }
         
-        public IActionResult Privacy()
-        {
-            logger.LogInformation("Entered Privacy Policy Page");
-            return View();
-        }
+        public IActionResult Privacy() => View();
 
         public new IActionResult Unauthorized() => base.Unauthorized();
     }
