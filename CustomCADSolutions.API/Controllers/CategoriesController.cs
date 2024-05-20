@@ -2,19 +2,12 @@
 using CustomCADSolutions.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CustomCADSolutions.App.APIControllers
+namespace CustomCADSolutions.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CategoriesController : ControllerBase
+    public class CategoriesController(ICategoryService categoryService) : ControllerBase
     {
-        private readonly ICategoryService categoryService;
-
-        public CategoriesController(ICategoryService categoryService)
-        {
-            this.categoryService = categoryService;
-        }
-
         [HttpGet]
         [Produces("application/json")]
         [ProducesResponseType(200)]

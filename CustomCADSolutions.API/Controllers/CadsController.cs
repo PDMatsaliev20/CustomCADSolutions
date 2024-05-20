@@ -10,21 +10,15 @@ using Newtonsoft.Json.Serialization;
 using CustomCADSolutions.API.Mappings;
 using CustomCADSolutions.API.Models.Cads;
 
-namespace CustomCADSolutions.App.APIControllers
+namespace CustomCADSolutions.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class CadsController : ControllerBase
+    public class CadsController(ICadService cadService) : ControllerBase
     {
-        private readonly ICadService cadService;
-        private readonly IMapper mapper;
-
-        public CadsController(ICadService cadService)
-        {
-            this.cadService = cadService;
-            MapperConfiguration config = new(cfg => cfg.AddProfile<CadApiProfile>());
-            mapper = config.CreateMapper();
-        }
+        private readonly IMapper mapper = new MapperConfiguration(cfg 
+                => cfg.AddProfile<CadApiProfile>())
+            .CreateMapper();
 
         [HttpGet]
         [Consumes("application/json")]

@@ -10,25 +10,17 @@ using CustomCADSolutions.API.Mappings;
 using CustomCADSolutions.API.Models.Cads;
 using CustomCADSolutions.API.Models.Orders;
 
-namespace CustomCADSolutions.App.APIControllers
+namespace CustomCADSolutions.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class OrdersController : ControllerBase
+    public class OrdersController(IOrderService orderService) : ControllerBase
     {
-        private readonly IOrderService orderService;
-        private readonly IMapper mapper;
-
-        public OrdersController(IOrderService orderService)
+        private readonly IMapper mapper = new MapperConfiguration(cfg =>
         {
-            this.orderService = orderService;
-            MapperConfiguration config = new(cfg =>
-            {
-                cfg.AddProfile<OrderApiProfile>();
-                cfg.AddProfile<CadApiProfile>();
-            });
-            this.mapper = config.CreateMapper();
-        }
+            cfg.AddProfile<OrderApiProfile>();
+            cfg.AddProfile<CadApiProfile>();
+        }).CreateMapper();
 
         [HttpGet]
         [Produces("application/json")]
