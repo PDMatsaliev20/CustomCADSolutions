@@ -2,26 +2,24 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 import { AbortController } from "./AbortController";
 import { HttpError, TimeoutError } from "./Errors";
-import { HeaderNames } from "./HeaderNames";
 import { LogLevel } from "./ILogger";
 import { TransferFormat } from "./ITransport";
 import { Arg, getDataDetail, getUserAgentHeader, sendMessage } from "./Utils";
 // Not exported from 'index', this type is internal.
 /** @private */
 export class LongPollingTransport {
-    constructor(httpClient, accessTokenFactory, logger, options) {
+    // This is an internal type, not exported from 'index' so this is really just internal.
+    get pollAborted() {
+        return this._pollAbort.aborted;
+    }
+    constructor(httpClient, logger, options) {
         this._httpClient = httpClient;
-        this._accessTokenFactory = accessTokenFactory;
         this._logger = logger;
         this._pollAbort = new AbortController();
         this._options = options;
         this._running = false;
         this.onreceive = null;
         this.onclose = null;
-    }
-    // This is an internal type, not exported from 'index' so this is really just internal.
-    get pollAborted() {
-        return this._pollAbort.aborted;
     }
     async connect(url, transferFormat) {
         Arg.isRequired(url, "url");
@@ -45,8 +43,6 @@ export class LongPollingTransport {
         if (transferFormat === TransferFormat.Binary) {
             pollOptions.responseType = "arraybuffer";
         }
-        const token = await this._getAccessToken();
-        this._updateHeaderToken(pollOptions, token);
         // Make initial long polling request
         // Server uses first long polling request to finish initializing connection and it returns without data
         const pollUrl = `${url}&_=${Date.now()}`;
@@ -63,30 +59,9 @@ export class LongPollingTransport {
         }
         this._receiving = this._poll(this._url, pollOptions);
     }
-    async _getAccessToken() {
-        if (this._accessTokenFactory) {
-            return await this._accessTokenFactory();
-        }
-        return null;
-    }
-    _updateHeaderToken(request, token) {
-        if (!request.headers) {
-            request.headers = {};
-        }
-        if (token) {
-            request.headers[HeaderNames.Authorization] = `Bearer ${token}`;
-            return;
-        }
-        if (request.headers[HeaderNames.Authorization]) {
-            delete request.headers[HeaderNames.Authorization];
-        }
-    }
     async _poll(url, pollOptions) {
         try {
             while (this._running) {
-                // We have to get the access token on each poll, in case it changes
-                const token = await this._getAccessToken();
-                this._updateHeaderToken(pollOptions, token);
                 try {
                     const pollUrl = `${url}&_=${Date.now()}`;
                     this._logger.log(LogLevel.Trace, `(LongPolling transport) polling: ${pollUrl}.`);
@@ -147,7 +122,7 @@ export class LongPollingTransport {
         if (!this._running) {
             return Promise.reject(new Error("Cannot send until the transport is connected"));
         }
-        return sendMessage(this._logger, "LongPolling", this._httpClient, this._url, this._accessTokenFactory, data, this._options);
+        return sendMessage(this._logger, "LongPolling", this._httpClient, this._url, data, this._options);
     }
     async stop() {
         this._logger.log(LogLevel.Trace, "(LongPolling transport) Stopping polling.");
@@ -166,10 +141,26 @@ export class LongPollingTransport {
                 timeout: this._options.timeout,
                 withCredentials: this._options.withCredentials,
             };
-            const token = await this._getAccessToken();
-            this._updateHeaderToken(deleteOptions, token);
-            await this._httpClient.delete(this._url, deleteOptions);
-            this._logger.log(LogLevel.Trace, "(LongPolling transport) DELETE request sent.");
+            let error;
+            try {
+                await this._httpClient.delete(this._url, deleteOptions);
+            }
+            catch (err) {
+                error = err;
+            }
+            if (error) {
+                if (error instanceof HttpError) {
+                    if (error.statusCode === 404) {
+                        this._logger.log(LogLevel.Trace, "(LongPolling transport) A 404 response was returned from sending a DELETE request.");
+                    }
+                    else {
+                        this._logger.log(LogLevel.Trace, `(LongPolling transport) Error sending a DELETE request: ${error}`);
+                    }
+                }
+            }
+            else {
+                this._logger.log(LogLevel.Trace, "(LongPolling transport) DELETE request accepted.");
+            }
         }
         finally {
             this._logger.log(LogLevel.Trace, "(LongPolling transport) Stop finished.");

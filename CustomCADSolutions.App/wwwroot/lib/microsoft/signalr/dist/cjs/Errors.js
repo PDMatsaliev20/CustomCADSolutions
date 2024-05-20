@@ -56,7 +56,7 @@ class UnsupportedTransportError extends Error {
     /** Constructs a new instance of {@link @microsoft/signalr.UnsupportedTransportError}.
      *
      * @param {string} message A descriptive error message.
-     * @param {HttpTransportType} transport The {@link @microsoft/signalr.HttpTransportType} this error occured on.
+     * @param {HttpTransportType} transport The {@link @microsoft/signalr.HttpTransportType} this error occurred on.
      */
     constructor(message, transport) {
         const trueProto = new.target.prototype;
@@ -75,7 +75,7 @@ class DisabledTransportError extends Error {
     /** Constructs a new instance of {@link @microsoft/signalr.DisabledTransportError}.
      *
      * @param {string} message A descriptive error message.
-     * @param {HttpTransportType} transport The {@link @microsoft/signalr.HttpTransportType} this error occured on.
+     * @param {HttpTransportType} transport The {@link @microsoft/signalr.HttpTransportType} this error occurred on.
      */
     constructor(message, transport) {
         const trueProto = new.target.prototype;
@@ -94,7 +94,7 @@ class FailedToStartTransportError extends Error {
     /** Constructs a new instance of {@link @microsoft/signalr.FailedToStartTransportError}.
      *
      * @param {string} message A descriptive error message.
-     * @param {HttpTransportType} transport The {@link @microsoft/signalr.HttpTransportType} this error occured on.
+     * @param {HttpTransportType} transport The {@link @microsoft/signalr.HttpTransportType} this error occurred on.
      */
     constructor(message, transport) {
         const trueProto = new.target.prototype;
@@ -124,7 +124,7 @@ class FailedToNegotiateWithServerError extends Error {
     }
 }
 exports.FailedToNegotiateWithServerError = FailedToNegotiateWithServerError;
-/** Error thrown when multiple errors have occured. */
+/** Error thrown when multiple errors have occurred. */
 /** @private */
 class AggregateErrors extends Error {
     /** Constructs a new instance of {@link @microsoft/signalr.AggregateErrors}.

@@ -7,7 +7,7 @@ const ILogger_1 = require("./ILogger");
 const Loggers_1 = require("./Loggers");
 // Version token that will be replaced by the prepack command
 /** The version of the SignalR client. */
-exports.VERSION = "6.0.25";
+exports.VERSION = "8.0.0";
 /** @private */
 class Arg {
     static isRequired(val, name) {
@@ -32,20 +32,20 @@ exports.Arg = Arg;
 class Platform {
     // react-native has a window but no document so we should check both
     static get isBrowser() {
-        return typeof window === "object" && typeof window.document === "object";
+        return !Platform.isNode && typeof window === "object" && typeof window.document === "object";
     }
     // WebWorkers don't have a window object so the isBrowser check would fail
     static get isWebWorker() {
-        return typeof self === "object" && "importScripts" in self;
+        return !Platform.isNode && typeof self === "object" && "importScripts" in self;
     }
     // react-native has a window but no document
     static get isReactNative() {
-        return typeof window === "object" && typeof window.document === "undefined";
+        return !Platform.isNode && typeof window === "object" && typeof window.document === "undefined";
     }
     // Node apps shouldn't have a window object, but WebWorkers don't either
     // so we need to check for both WebWorker and window
     static get isNode() {
-        return !this.isBrowser && !this.isWebWorker && !this.isReactNative;
+        return typeof process !== "undefined" && process.release && process.release.name === "node";
     }
 }
 exports.Platform = Platform;
@@ -90,16 +90,8 @@ function isArrayBuffer(val) {
 }
 exports.isArrayBuffer = isArrayBuffer;
 /** @private */
-async function sendMessage(logger, transportName, httpClient, url, accessTokenFactory, content, options) {
-    let headers = {};
-    if (accessTokenFactory) {
-        const token = await accessTokenFactory();
-        if (token) {
-            headers = {
-                ["Authorization"]: `Bearer ${token}`,
-            };
-        }
-    }
+async function sendMessage(logger, transportName, httpClient, url, content, options) {
+    const headers = {};
     const [name, value] = getUserAgentHeader();
     headers[name] = value;
     logger.log(ILogger_1.LogLevel.Trace, `(${transportName} transport) sending data. ${getDataDetail(content, options.logMessageContent)}.`);

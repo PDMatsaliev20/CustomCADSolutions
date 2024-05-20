@@ -33,14 +33,14 @@ export declare class AbortError extends Error {
 /** @private */
 export declare class UnsupportedTransportError extends Error {
     private __proto__;
-    /** The {@link @microsoft/signalr.HttpTransportType} this error occured on. */
+    /** The {@link @microsoft/signalr.HttpTransportType} this error occurred on. */
     transport: HttpTransportType;
     /** The type name of this error. */
     errorType: string;
     /** Constructs a new instance of {@link @microsoft/signalr.UnsupportedTransportError}.
      *
      * @param {string} message A descriptive error message.
-     * @param {HttpTransportType} transport The {@link @microsoft/signalr.HttpTransportType} this error occured on.
+     * @param {HttpTransportType} transport The {@link @microsoft/signalr.HttpTransportType} this error occurred on.
      */
     constructor(message: string, transport: HttpTransportType);
 }
@@ -48,14 +48,14 @@ export declare class UnsupportedTransportError extends Error {
 /** @private */
 export declare class DisabledTransportError extends Error {
     private __proto__;
-    /** The {@link @microsoft/signalr.HttpTransportType} this error occured on. */
+    /** The {@link @microsoft/signalr.HttpTransportType} this error occurred on. */
     transport: HttpTransportType;
     /** The type name of this error. */
     errorType: string;
     /** Constructs a new instance of {@link @microsoft/signalr.DisabledTransportError}.
      *
      * @param {string} message A descriptive error message.
-     * @param {HttpTransportType} transport The {@link @microsoft/signalr.HttpTransportType} this error occured on.
+     * @param {HttpTransportType} transport The {@link @microsoft/signalr.HttpTransportType} this error occurred on.
      */
     constructor(message: string, transport: HttpTransportType);
 }
@@ -63,14 +63,14 @@ export declare class DisabledTransportError extends Error {
 /** @private */
 export declare class FailedToStartTransportError extends Error {
     private __proto__;
-    /** The {@link @microsoft/signalr.HttpTransportType} this error occured on. */
+    /** The {@link @microsoft/signalr.HttpTransportType} this error occurred on. */
     transport: HttpTransportType;
     /** The type name of this error. */
     errorType: string;
     /** Constructs a new instance of {@link @microsoft/signalr.FailedToStartTransportError}.
      *
      * @param {string} message A descriptive error message.
-     * @param {HttpTransportType} transport The {@link @microsoft/signalr.HttpTransportType} this error occured on.
+     * @param {HttpTransportType} transport The {@link @microsoft/signalr.HttpTransportType} this error occurred on.
      */
     constructor(message: string, transport: HttpTransportType);
 }
@@ -86,7 +86,7 @@ export declare class FailedToNegotiateWithServerError extends Error {
      */
     constructor(message: string);
 }
-/** Error thrown when multiple errors have occured. */
+/** Error thrown when multiple errors have occurred. */
 /** @private */
 export declare class AggregateErrors extends Error {
     private __proto__;

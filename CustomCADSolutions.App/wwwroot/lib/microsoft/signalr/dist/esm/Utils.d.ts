@@ -25,7 +25,7 @@ export declare function formatArrayBuffer(data: ArrayBuffer): string;
 /** @private */
 export declare function isArrayBuffer(val: any): val is ArrayBuffer;
 /** @private */
-export declare function sendMessage(logger: ILogger, transportName: string, httpClient: HttpClient, url: string, accessTokenFactory: (() => string | Promise<string>) | undefined, content: string | ArrayBuffer, options: IHttpConnectionOptions): Promise<void>;
+export declare function sendMessage(logger: ILogger, transportName: string, httpClient: HttpClient, url: string, content: string | ArrayBuffer, options: IHttpConnectionOptions): Promise<void>;
 /** @private */
 export declare function createLogger(logger?: ILogger | LogLevel): ILogger;
 /** @private */

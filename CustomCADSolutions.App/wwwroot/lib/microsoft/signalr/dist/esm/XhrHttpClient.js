@@ -3,6 +3,7 @@
 import { AbortError, HttpError, TimeoutError } from "./Errors";
 import { HttpClient, HttpResponse } from "./HttpClient";
 import { LogLevel } from "./ILogger";
+import { isArrayBuffer } from "./Utils";
 export class XhrHttpClient extends HttpClient {
     constructor(logger) {
         super();
@@ -25,8 +26,18 @@ export class XhrHttpClient extends HttpClient {
             xhr.open(request.method, request.url, true);
             xhr.withCredentials = request.withCredentials === undefined ? true : request.withCredentials;
             xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-            // Explicitly setting the Content-Type header for React Native on Android platform.
-            xhr.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
+            if (request.content === "") {
+                request.content = undefined;
+            }
+            if (request.content) {
+                // Explicitly setting the Content-Type header for React Native on Android platform.
+                if (isArrayBuffer(request.content)) {
+                    xhr.setRequestHeader("Content-Type", "application/octet-stream");
+                }
+                else {
+                    xhr.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
+                }
+            }
             const headers = request.headers;
             if (headers) {
                 Object.keys(headers)
@@ -65,7 +76,7 @@ export class XhrHttpClient extends HttpClient {
                 this._logger.log(LogLevel.Warning, `Timeout from HTTP request.`);
                 reject(new TimeoutError());
             };
-            xhr.send(request.content || "");
+            xhr.send(request.content);
         });
     }
 }

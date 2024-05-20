@@ -8,9 +8,9 @@ const ITransport_1 = require("./ITransport");
 const Utils_1 = require("./Utils");
 /** @private */
 class ServerSentEventsTransport {
-    constructor(httpClient, accessTokenFactory, logger, options) {
+    constructor(httpClient, accessToken, logger, options) {
         this._httpClient = httpClient;
-        this._accessTokenFactory = accessTokenFactory;
+        this._accessToken = accessToken;
         this._logger = logger;
         this._options = options;
         this.onreceive = null;
@@ -21,13 +21,10 @@ class ServerSentEventsTransport {
         Utils_1.Arg.isRequired(transferFormat, "transferFormat");
         Utils_1.Arg.isIn(transferFormat, ITransport_1.TransferFormat, "transferFormat");
         this._logger.log(ILogger_1.LogLevel.Trace, "(SSE transport) Connecting.");
-        // set url before accessTokenFactory because this.url is only for send and we set the auth header instead of the query string for send
+        // set url before accessTokenFactory because this._url is only for send and we set the auth header instead of the query string for send
         this._url = url;
-        if (this._accessTokenFactory) {
-            const token = await this._accessTokenFactory();
-            if (token) {
-                url += (url.indexOf("?") < 0 ? "?" : "&") + `access_token=${encodeURIComponent(token)}`;
-            }
+        if (this._accessToken) {
+            url += (url.indexOf("?") < 0 ? "?" : "&") + `access_token=${encodeURIComponent(this._accessToken)}`;
         }
         return new Promise((resolve, reject) => {
             let opened = false;
@@ -44,7 +41,7 @@ class ServerSentEventsTransport {
                 const cookies = this._httpClient.getCookieString(url);
                 const headers = {};
                 headers.Cookie = cookies;
-                const [name, value] = Utils_1.getUserAgentHeader();
+                const [name, value] = (0, Utils_1.getUserAgentHeader)();
                 headers[name] = value;
                 eventSource = new this._options.EventSource(url, { withCredentials: this._options.withCredentials, headers: { ...headers, ...this._options.headers } });
             }
@@ -52,7 +49,7 @@ class ServerSentEventsTransport {
                 eventSource.onmessage = (e) => {
                     if (this.onreceive) {
                         try {
-                            this._logger.log(ILogger_1.LogLevel.Trace, `(SSE transport) data received. ${Utils_1.getDataDetail(e.data, this._options.logMessageContent)}.`);
+                            this._logger.log(ILogger_1.LogLevel.Trace, `(SSE transport) data received. ${(0, Utils_1.getDataDetail)(e.data, this._options.logMessageContent)}.`);
                             this.onreceive(e.data);
                         }
                         catch (error) {
@@ -90,7 +87,7 @@ class ServerSentEventsTransport {
         if (!this._eventSource) {
             return Promise.reject(new Error("Cannot send until the transport is connected"));
         }
-        return Utils_1.sendMessage(this._logger, "SSE", this._httpClient, this._url, this._accessTokenFactory, data, this._options);
+        return (0, Utils_1.sendMessage)(this._logger, "SSE", this._httpClient, this._url, data, this._options);
     }
     stop() {
         this._close();

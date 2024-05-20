@@ -21,28 +21,34 @@ export class WebSocketTransport {
         Arg.isRequired(transferFormat, "transferFormat");
         Arg.isIn(transferFormat, TransferFormat, "transferFormat");
         this._logger.log(LogLevel.Trace, "(WebSockets transport) Connecting.");
+        let token;
         if (this._accessTokenFactory) {
-            const token = await this._accessTokenFactory();
-            if (token) {
-                url += (url.indexOf("?") < 0 ? "?" : "&") + `access_token=${encodeURIComponent(token)}`;
-            }
+            token = await this._accessTokenFactory();
         }
         return new Promise((resolve, reject) => {
             url = url.replace(/^http/, "ws");
             let webSocket;
             const cookies = this._httpClient.getCookieString(url);
             let opened = false;
-            if (Platform.isNode) {
+            if (Platform.isNode || Platform.isReactNative) {
                 const headers = {};
                 const [name, value] = getUserAgentHeader();
                 headers[name] = value;
+                if (token) {
+                    headers[HeaderNames.Authorization] = `Bearer ${token}`;
+                }
                 if (cookies) {
-                    headers[HeaderNames.Cookie] = `${cookies}`;
+                    headers[HeaderNames.Cookie] = cookies;
                 }
                 // Only pass headers when in non-browser environments
                 webSocket = new this._webSocketConstructor(url, undefined, {
                     headers: { ...headers, ...this._headers },
                 });
+            }
+            else {
+                if (token) {
+                    url += (url.indexOf("?") < 0 ? "?" : "&") + `access_token=${encodeURIComponent(token)}`;
+                }
             }
             if (!webSocket) {
                 // Chrome is not happy with passing 'undefined' as protocol

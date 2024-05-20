@@ -5,9 +5,9 @@ import { TransferFormat } from "./ITransport";
 import { Arg, getDataDetail, getUserAgentHeader, Platform, sendMessage } from "./Utils";
 /** @private */
 export class ServerSentEventsTransport {
-    constructor(httpClient, accessTokenFactory, logger, options) {
+    constructor(httpClient, accessToken, logger, options) {
         this._httpClient = httpClient;
-        this._accessTokenFactory = accessTokenFactory;
+        this._accessToken = accessToken;
         this._logger = logger;
         this._options = options;
         this.onreceive = null;
@@ -18,13 +18,10 @@ export class ServerSentEventsTransport {
         Arg.isRequired(transferFormat, "transferFormat");
         Arg.isIn(transferFormat, TransferFormat, "transferFormat");
         this._logger.log(LogLevel.Trace, "(SSE transport) Connecting.");
-        // set url before accessTokenFactory because this.url is only for send and we set the auth header instead of the query string for send
+        // set url before accessTokenFactory because this._url is only for send and we set the auth header instead of the query string for send
         this._url = url;
-        if (this._accessTokenFactory) {
-            const token = await this._accessTokenFactory();
-            if (token) {
-                url += (url.indexOf("?") < 0 ? "?" : "&") + `access_token=${encodeURIComponent(token)}`;
-            }
+        if (this._accessToken) {
+            url += (url.indexOf("?") < 0 ? "?" : "&") + `access_token=${encodeURIComponent(this._accessToken)}`;
         }
         return new Promise((resolve, reject) => {
             let opened = false;
@@ -87,7 +84,7 @@ export class ServerSentEventsTransport {
         if (!this._eventSource) {
             return Promise.reject(new Error("Cannot send until the transport is connected"));
         }
-        return sendMessage(this._logger, "SSE", this._httpClient, this._url, this._accessTokenFactory, data, this._options);
+        return sendMessage(this._logger, "SSE", this._httpClient, this._url, data, this._options);
     }
     stop() {
         this._close();

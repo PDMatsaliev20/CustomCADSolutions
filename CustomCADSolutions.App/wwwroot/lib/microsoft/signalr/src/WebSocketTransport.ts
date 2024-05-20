@@ -41,11 +41,9 @@ export class WebSocketTransport implements ITransport {
         Arg.isIn(transferFormat, TransferFormat, "transferFormat");
         this._logger.log(LogLevel.Trace, "(WebSockets transport) Connecting.");
 
+        let token: string;
         if (this._accessTokenFactory) {
-            const token = await this._accessTokenFactory();
-            if (token) {
-                url += (url.indexOf("?") < 0 ? "?" : "&") + `access_token=${encodeURIComponent(token)}`;
-            }
+            token = await this._accessTokenFactory();
         }
 
         return new Promise<void>((resolve, reject) => {
@@ -54,19 +52,28 @@ export class WebSocketTransport implements ITransport {
             const cookies = this._httpClient.getCookieString(url);
             let opened = false;
 
-            if (Platform.isNode) {
+            if (Platform.isNode || Platform.isReactNative) {
                 const headers: {[k: string]: string} = {};
                 const [name, value] = getUserAgentHeader();
                 headers[name] = value;
+                if (token) {
+                    headers[HeaderNames.Authorization] = `Bearer ${token}`;
+                }
 
                 if (cookies) {
-                    headers[HeaderNames.Cookie] = `${cookies}`;
+                    headers[HeaderNames.Cookie] = cookies;
                 }
 
                 // Only pass headers when in non-browser environments
                 webSocket = new this._webSocketConstructor(url, undefined, {
                     headers: { ...headers, ...this._headers },
                 });
+            }
+            else
+            {
+                if (token) {
+                    url += (url.indexOf("?") < 0 ? "?" : "&") + `access_token=${encodeURIComponent(token)}`;
+                }
             }
 
             if (!webSocket) {
@@ -152,7 +159,7 @@ export class WebSocketTransport implements ITransport {
         return Promise.resolve();
     }
 
-    private _close(event?: CloseEvent | Error): void {
+    private _close(event: CloseEvent | Error | unknown): void {
         // webSocket will be null if the transport did not start successfully
         if (this._webSocket) {
             // Clear websocket handlers because we are considering the socket closed now
@@ -164,6 +171,7 @@ export class WebSocketTransport implements ITransport {
         }
 
         this._logger.log(LogLevel.Trace, "(WebSockets transport) socket closed.");
+
         if (this.onclose) {
             if (this._isCloseEvent(event) && (event.wasClean === false || event.code !== 1000)) {
                 this.onclose(new Error(`WebSocket closed with status code: ${event.code} (${event.reason || "no reason given"}).`));

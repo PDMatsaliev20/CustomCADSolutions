@@ -6,6 +6,7 @@ exports.XhrHttpClient = void 0;
 const Errors_1 = require("./Errors");
 const HttpClient_1 = require("./HttpClient");
 const ILogger_1 = require("./ILogger");
+const Utils_1 = require("./Utils");
 class XhrHttpClient extends HttpClient_1.HttpClient {
     constructor(logger) {
         super();
@@ -28,8 +29,18 @@ class XhrHttpClient extends HttpClient_1.HttpClient {
             xhr.open(request.method, request.url, true);
             xhr.withCredentials = request.withCredentials === undefined ? true : request.withCredentials;
             xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-            // Explicitly setting the Content-Type header for React Native on Android platform.
-            xhr.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
+            if (request.content === "") {
+                request.content = undefined;
+            }
+            if (request.content) {
+                // Explicitly setting the Content-Type header for React Native on Android platform.
+                if ((0, Utils_1.isArrayBuffer)(request.content)) {
+                    xhr.setRequestHeader("Content-Type", "application/octet-stream");
+                }
+                else {
+                    xhr.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
+                }
+            }
             const headers = request.headers;
             if (headers) {
                 Object.keys(headers)
@@ -68,7 +79,7 @@ class XhrHttpClient extends HttpClient_1.HttpClient {
                 this._logger.log(ILogger_1.LogLevel.Warning, `Timeout from HTTP request.`);
                 reject(new Errors_1.TimeoutError());
             };
-            xhr.send(request.content || "");
+            xhr.send(request.content);
         });
     }
 }

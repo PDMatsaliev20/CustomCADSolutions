@@ -24,28 +24,34 @@ class WebSocketTransport {
         Utils_1.Arg.isRequired(transferFormat, "transferFormat");
         Utils_1.Arg.isIn(transferFormat, ITransport_1.TransferFormat, "transferFormat");
         this._logger.log(ILogger_1.LogLevel.Trace, "(WebSockets transport) Connecting.");
+        let token;
         if (this._accessTokenFactory) {
-            const token = await this._accessTokenFactory();
-            if (token) {
-                url += (url.indexOf("?") < 0 ? "?" : "&") + `access_token=${encodeURIComponent(token)}`;
-            }
+            token = await this._accessTokenFactory();
         }
         return new Promise((resolve, reject) => {
             url = url.replace(/^http/, "ws");
             let webSocket;
             const cookies = this._httpClient.getCookieString(url);
             let opened = false;
-            if (Utils_1.Platform.isNode) {
+            if (Utils_1.Platform.isNode || Utils_1.Platform.isReactNative) {
                 const headers = {};
-                const [name, value] = Utils_1.getUserAgentHeader();
+                const [name, value] = (0, Utils_1.getUserAgentHeader)();
                 headers[name] = value;
+                if (token) {
+                    headers[HeaderNames_1.HeaderNames.Authorization] = `Bearer ${token}`;
+                }
                 if (cookies) {
-                    headers[HeaderNames_1.HeaderNames.Cookie] = `${cookies}`;
+                    headers[HeaderNames_1.HeaderNames.Cookie] = cookies;
                 }
                 // Only pass headers when in non-browser environments
                 webSocket = new this._webSocketConstructor(url, undefined, {
                     headers: { ...headers, ...this._headers },
                 });
+            }
+            else {
+                if (token) {
+                    url += (url.indexOf("?") < 0 ? "?" : "&") + `access_token=${encodeURIComponent(token)}`;
+                }
             }
             if (!webSocket) {
                 // Chrome is not happy with passing 'undefined' as protocol
@@ -72,7 +78,7 @@ class WebSocketTransport {
                 this._logger.log(ILogger_1.LogLevel.Information, `(WebSockets transport) ${error}.`);
             };
             webSocket.onmessage = (message) => {
-                this._logger.log(ILogger_1.LogLevel.Trace, `(WebSockets transport) data received. ${Utils_1.getDataDetail(message.data, this._logMessageContent)}.`);
+                this._logger.log(ILogger_1.LogLevel.Trace, `(WebSockets transport) data received. ${(0, Utils_1.getDataDetail)(message.data, this._logMessageContent)}.`);
                 if (this.onreceive) {
                     try {
                         this.onreceive(message.data);
@@ -108,7 +114,7 @@ class WebSocketTransport {
     }
     send(data) {
         if (this._webSocket && this._webSocket.readyState === this._webSocketConstructor.OPEN) {
-            this._logger.log(ILogger_1.LogLevel.Trace, `(WebSockets transport) sending data. ${Utils_1.getDataDetail(data, this._logMessageContent)}.`);
+            this._logger.log(ILogger_1.LogLevel.Trace, `(WebSockets transport) sending data. ${(0, Utils_1.getDataDetail)(data, this._logMessageContent)}.`);
             this._webSocket.send(data);
             return Promise.resolve();
         }
