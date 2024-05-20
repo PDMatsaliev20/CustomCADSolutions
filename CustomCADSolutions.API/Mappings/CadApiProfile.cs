@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
-using CustomCADSolutions.API.Models.CadDTOs;
-using CustomCADSolutions.Core.Mappings.CadDTOs;
+using CustomCADSolutions.API.Models.Cads;
 using CustomCADSolutions.Core.Models;
 
 namespace CustomCADSolutions.API.Mappings

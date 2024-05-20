@@ -1,8 +1,7 @@
 ﻿using static CustomCADSolutions.Infrastructure.Data.DataConstants;
 using static CustomCADSolutions.Infrastructure.Data.DataConstants.OrderConstants;
 using System.ComponentModel.DataAnnotations;
-using CustomCADSolutions.Core.Mappings.CadDTOs;
-using CustomCADSolutions.API.Models.CadDTOs;
+using CustomCADSolutions.API.Models.Cads;
 
 namespace CustomCADSolutions.API.Models.Orders
 {

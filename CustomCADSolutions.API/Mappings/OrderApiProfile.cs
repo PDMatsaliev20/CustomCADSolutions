@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
-using CustomCADSolutions.API.Models.OrderDTOs;
-using CustomCADSolutions.Core.Mappings.DTOs;
+using CustomCADSolutions.API.Models.Orders;
 using CustomCADSolutions.Core.Models;
 
 namespace CustomCADSolutions.API.Mappings
