@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
-using System.Text.Json.Serialization;
 using CustomCADSolutions.Infrastructure.Data.Models;
 using static CustomCADSolutions.Infrastructure.Data.DataConstants;
 using static CustomCADSolutions.Infrastructure.Data.DataConstants.OrderConstants;

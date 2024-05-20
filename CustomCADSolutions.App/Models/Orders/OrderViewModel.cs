@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace CustomCADSolutions.App.Models.Orders
+﻿namespace CustomCADSolutions.App.Models.Orders
 {
     public class OrderViewModel
     {
