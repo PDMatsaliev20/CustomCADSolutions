@@ -2,9 +2,9 @@ import { Link } from 'react-router-dom'
 
 function Header() {
     return (
-        <header className="bg-gray-200 flex justify-between items-center border-b border-black py-1">
-            <Link to="/" className="ms-3 w-16">
-                <img src="../public/logo.png" className="mw-100 h-auto hover:opacity-60" />  
+        <header className="bg-indigo-200 flex justify-between items-center border-b border-black py-1">
+            <Link to="/" className="ms-3 w-60">
+                <img src="../src/assets/logo.png" className="mw-100 h-auto hover:opacity-60" />  
             </Link>
             <h1 className="text-2xl font-bold">CustomCADSolutions</h1>
             <div className="flex me-3">
