@@ -14,23 +14,26 @@ import SellCadPage from '../private/sell-cad'
 
 function Body() {
     return (
-        <Routes>
-            { /* Public part of CustomCADSolutions */ }
-            <Route path="/home" element={<HomePage />} />
-            <Route path="/gallery" element={<GalleryPage />} />
-            <Route path="/contributor" element={<BecomeContrPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/policy" element={<PrivacyPolicyPage />} />
+        <main className="mx-16 pb-20">
+            <Routes>
+                { /* Public part of CustomCADSolutions */}
+                <Route path="/" element={<HomePage />} />
+                <Route path="/home" element={<HomePage />} />
+                <Route path="/gallery" element={<GalleryPage />} />
+                <Route path="/contributor" element={<BecomeContrPage />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/register" element={<RegisterPage />} />
+                <Route path="/policy" element={<PrivacyPolicyPage />} />
 
-            { /* Private part of CustomCADSolutions */ }
-            <Route path="/orders" element={<OrdersPage />} />
-            <Route path="/orders/order" element={<CustomOrderPage />} />
-            <Route path="/gallery/order" element={<GalleryOrderPage />} />
-            <Route path="/cads" element={<CadsPage />} />
-            <Route path="/cads/upload" element={<UploadCadPage />} />
-            <Route path="/cads/sell" element={<SellCadPage />} />
-        </Routes>
+                { /* Private part of CustomCADSolutions */}
+                <Route path="/orders" element={<OrdersPage />} />
+                <Route path="/orders/order" element={<CustomOrderPage />} />
+                <Route path="/gallery/order" element={<GalleryOrderPage />} />
+                <Route path="/cads" element={<CadsPage />} />
+                <Route path="/cads/upload" element={<UploadCadPage />} />
+                <Route path="/cads/sell" element={<SellCadPage />} />
+            </Routes>
+        </main>
     );
 }
 

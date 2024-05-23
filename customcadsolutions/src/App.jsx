@@ -7,7 +7,7 @@ import { BrowserRouter } from 'react-router-dom'
 function App() {
 
     return (
-        <div className="relative min-h-screen">
+        <div className="relative min-h-screen bg-indigo-50">
             <BrowserRouter>
                 <Header />
                 <Navbar />

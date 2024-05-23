@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 
 function Footer() {
     return (
-        <footer className="bg-indigo-100 absolute bottom-0 right-0 left-0 w-full h-16 border-t-2 border-gray-400 rounded-t-lg">
+        <footer className="absolute bottom-0 w-full h-16 border-t-2 border-gray-400 rounded-t-lg bg-indigo-100 ">
             <div className="mt-6 flex justify-evenly text-sm">
                 <p className="font-bold">
                     <Link to="/policy">Privacy Policy</Link>
