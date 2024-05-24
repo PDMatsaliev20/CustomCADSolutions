@@ -1,7 +1,22 @@
 import { Link, useNavigate } from 'react-router-dom'
+import GuestMenu from '../components/guest-menu'
+import AccountMenu from '../components/account-menu'
+import axios from 'axios'
 
-function Header() {
+
+function Header({ isAuthenticated, setIsAuthenticated }) {
     const navigate = useNavigate();
+
+    const logout = async () => {
+        await axios.post('https://localhost:7127/API/Account/Logout');
+    
+        localStorage.removeItem('token');
+        localStorage.removeItem('username');
+        localStorage.removeItem('role');
+
+        setIsAuthenticated(false);
+    };
+
     return (
         <header className="bg-indigo-200 flex justify-between items-center border-b border-black py-1">
             <Link to="/" className="ms-3 w-60">
@@ -14,14 +29,7 @@ function Header() {
             </form>
             
             <div className="flex me-3">
-                <ul>
-                    <li className="float-left ms-5">
-                        <Link to="/login" className="text-lg">Log in</Link>
-                    </li>
-                    <li className="float-left ms-5">
-                        <Link to="/register" className="text-lg">Register</Link>
-                    </li>
-                </ul>
+                {isAuthenticated ? <AccountMenu handleLogout={logout} /> : <GuestMenu />}
             </div>
         </header>
     );

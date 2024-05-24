@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import Path from '../components/path'
-import BtnLink from '../components/btnlink'
+import BtnLink from '../components/btn-link'
 import Profile from '../components/profile'
 
 function HomePage() {
