@@ -8,6 +8,7 @@ builder.Services.AddAbstractions();
 
 builder.Services.AddControllers().AddJsonAndXml();
 builder.Services.AddApiConfigurations();
+builder.Services.AddCorsForReact();
 
 string[] roles = [Admin, Designer, Contributor, Client];
 builder.Services.AddAuthWithJwt(builder.Configuration).AddRoles(roles);

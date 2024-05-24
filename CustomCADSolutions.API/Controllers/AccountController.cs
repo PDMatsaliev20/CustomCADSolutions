@@ -13,9 +13,9 @@ namespace CustomCADSolutions.API.Controllers
     [ApiController]
     public class AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IConfiguration config) : ControllerBase
     {
-        [HttpPost("Register")]
+        [HttpPost("Register/{role}")]
         [Consumes("application/json")]
-        public async Task<ActionResult> Register(string role, [FromBody] UserRegisterModel model)
+        public async Task<ActionResult> Register([FromRoute] string role, [FromBody] UserRegisterModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -51,7 +51,7 @@ namespace CustomCADSolutions.API.Controllers
 
         [HttpPost("Login")]
         [Consumes("application/json")]
-        public async Task<ActionResult<string>> Login([FromBody] UserLoginModel model)
+        public async Task<ActionResult> Login([FromBody] UserLoginModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -79,7 +79,7 @@ namespace CustomCADSolutions.API.Controllers
             try
             {
                 await signInManager.SignOutAsync();
-                return Ok();
+                return Ok("Succeeded in logging out.");
             }
             catch
             {

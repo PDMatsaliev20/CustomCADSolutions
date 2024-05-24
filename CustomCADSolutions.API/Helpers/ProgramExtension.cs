@@ -10,6 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Security.Cryptography;
 using Microsoft.OpenApi.Models;
+using Microsoft.Extensions.Options;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -68,6 +69,19 @@ namespace Microsoft.Extensions.DependencyInjection
                     Description = "JWT Authorization header. \r\n\r\n Enter the token in the text input below.",
                 };
                 options.AddSecurityDefinition("Bearer", securityScheme);
+            });
+        }
+
+        public static void AddCorsForReact(this IServiceCollection services)
+        {
+            services.AddCors(opt =>
+            {
+                opt.AddDefaultPolicy(builder =>
+                {
+                    builder.WithOrigins("https://localhost:5173")
+                           .AllowAnyHeader()
+                           .AllowAnyMethod();
+                });
             });
         }
 
