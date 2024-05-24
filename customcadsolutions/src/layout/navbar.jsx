@@ -12,7 +12,7 @@ function Navbar() {
                         <Link to="/gallery">Gallery</Link>
                     </li>
                     <li className="float-left me-4">
-                        <Link to="/contributor">Become a Contributer!</Link>
+                        <Link to="/changerole">Change roles</Link>
                     </li>
                 </ul>
                 <ul>
@@ -20,10 +20,10 @@ function Navbar() {
                         <Link to="/orders">Your Orders</Link>
                     </li>
                     <li className="float-left me-4">
-                        <Link to="/orders/order">Order Custom 3D Model</Link>
+                        <Link to="/orders/custom">Order Custom 3D Model</Link>
                     </li>
                     <li className="float-left me-4">
-                        <Link to="/gallery/order">Order from Gallery</Link>
+                        <Link to="/orders/gallery">Order from Gallery</Link>
                     </li>
                 </ul>
                 <ul>

@@ -1,5 +1,3 @@
-.arrow-down {
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    border-top: 10px solid black;
+a:hover {
+    opacity: 80%;
 }

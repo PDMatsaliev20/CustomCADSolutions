@@ -1,4 +1,4 @@
-function RegisterPage() {
+function RegisterPage({role}) {
 
 }
 

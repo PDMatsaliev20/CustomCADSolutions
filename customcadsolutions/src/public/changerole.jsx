@@ -1,14 +1,14 @@
 import { useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
 
-function BecomeContrPage() {
+function ChangeRolePage() {
     const navigate = useNavigate();
 
     useEffect(() => {
         //use api to change roles
 
-        navigate("/home");
+        navigate("/");
     });
 }
 
-export default BecomeContrPage;
+export default ChangeRolePage;
