@@ -9,11 +9,13 @@ using Microsoft.AspNetCore.JsonPatch.Operations;
 using Newtonsoft.Json.Serialization;
 using CustomCADSolutions.API.Mappings;
 using CustomCADSolutions.API.Models.Cads;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CustomCADSolutions.API.Controllers
 {
+    [Authorize(Roles = "Contributor")]
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("API/[controller]")]
     public class CadsController(ICadService cadService) : ControllerBase
     {
         private readonly IMapper mapper = new MapperConfiguration(cfg 

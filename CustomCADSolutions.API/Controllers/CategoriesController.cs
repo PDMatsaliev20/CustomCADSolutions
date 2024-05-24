@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CustomCADSolutions.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("API/[controller]")]
     [ApiController]
     public class CategoriesController(ICategoryService categoryService) : ControllerBase
     {

@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Security.Cryptography;
+using Microsoft.OpenApi.Models;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -53,7 +54,21 @@ namespace Microsoft.Extensions.DependencyInjection
         public static void AddApiConfigurations(this IServiceCollection services)
         {
             services.AddEndpointsApiExplorer();
-            services.AddSwaggerGen();
+            services.AddSwaggerGen(options =>
+            {
+                options.OperationFilter<AddRequiredHeaderParameter>();
+
+                OpenApiSecurityScheme securityScheme = new()
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "JWT Authorization header. \r\n\r\n Enter the token in the text input below.",
+                };
+                options.AddSecurityDefinition("Bearer", securityScheme);
+            });
         }
 
         public static IServiceCollection AddAuthWithJwt(this IServiceCollection services, IConfiguration config)

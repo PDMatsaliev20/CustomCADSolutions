@@ -9,11 +9,13 @@ using Microsoft.EntityFrameworkCore;
 using CustomCADSolutions.API.Mappings;
 using CustomCADSolutions.API.Models.Cads;
 using CustomCADSolutions.API.Models.Orders;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CustomCADSolutions.API.Controllers
 {
+    [Authorize(Roles = "Client,Contributor")]
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("API/[controller]")]
     public class OrdersController(IOrderService orderService) : ControllerBase
     {
         private readonly IMapper mapper = new MapperConfiguration(cfg =>
