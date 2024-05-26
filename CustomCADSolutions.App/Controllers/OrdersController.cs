@@ -14,38 +14,21 @@ using CustomCADSolutions.Core.Models;
 namespace CustomCADSolutions.App.Controllers
 {
     [Authorize(Roles = $"{Client},{Contributor}")]
-    public class OrdersController : Controller
+    public class OrdersController(
+        IOrderService orderService,
+        ICadService cadService,
+        IProductService productService,
+        ICategoryService categoryService,
+        IOptions<StripeSettings> stripeOptions,
+        ILogger<OrdersController> logger) : Controller
     {
-        // Services
-        private readonly IOrderService orderService;
-        private readonly ICategoryService categoryService;
-        private readonly ICadService cadService;
-
         // Addons
-        private readonly StripeSettings stripeSettings;
-        private readonly IMapper mapper;
-        private readonly ILogger logger;
-
-        public OrdersController(
-            IOrderService orderService,
-            ICadService cadService,
-            ICategoryService categoryService,
-            IOptions<StripeSettings> stripeSettings,
-            ILogger<OrdersController> logger)
+        private readonly StripeSettings stripe = stripeOptions.Value;
+        private readonly IMapper mapper = new MapperConfiguration(cfg =>
         {
-            this.orderService = orderService;
-            this.categoryService = categoryService;
-            this.cadService = cadService;
-
-            this.logger = logger;
-            this.stripeSettings = stripeSettings.Value;
-            MapperConfiguration config = new(cfg =>
-            {
-                cfg.AddProfile<OrderAppProfile>();
-                cfg.AddProfile<CadAppProfile>();
-            });
-            this.mapper = config.CreateMapper();
-        }
+            cfg.AddProfile<OrderAppProfile>();
+            cfg.AddProfile<CadAppProfile>();
+        }).CreateMapper();
 
         [HttpGet]
         public async Task<IActionResult> Index()
@@ -63,16 +46,16 @@ namespace CustomCADSolutions.App.Controllers
             CadModel model = await cadService.GetByIdAsync(id);
             CadViewModel view = mapper.Map<CadViewModel>(model);
             
-            ViewBag.StripeKey = stripeSettings.TestPublishableKey;
+            ViewBag.StripeKey = stripe.TestPublishableKey;
             return View(view);
         }
 
         [HttpPost]
         public async Task<IActionResult> Order(int id, string stripeToken)
         {
-            CadModel cad = await cadService.GetByIdAsync(id);
+            ProductModel cad = await productService.GetByIdAsync(id);
             
-            bool isPaymentSuccessful = stripeSettings.ProcessPayment(stripeToken, cad.Name, cad.Price);
+            bool isPaymentSuccessful = stripe.ProcessPayment(stripeToken, cad.Name, cad.Price);
             if (!isPaymentSuccessful)
             {
                 TempData["ErrorMessage"] = "Payment failed. Please try again.";
@@ -86,7 +69,7 @@ namespace CustomCADSolutions.App.Controllers
                 Status = OrderStatus.Finished,
                 CategoryId = cad.CategoryId,
                 OrderDate = DateTime.Now,
-                CadId = id,
+                ProductId = id,
                 BuyerId = User.GetId(),
             };
             await orderService.CreateAsync(order);

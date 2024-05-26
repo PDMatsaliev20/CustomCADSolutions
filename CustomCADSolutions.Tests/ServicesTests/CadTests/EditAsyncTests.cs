@@ -11,10 +11,10 @@ namespace CustomCADSolutions.Tests.ServicesTests.CadTests
         public async Task Test_EditsDesiredProperties(int id)
         {
             CadModel expectedCad = await service.GetByIdAsync(id);
-            expectedCad.Name = "EditedCad";
-            expectedCad.IsValidated = !expectedCad.IsValidated;
-            expectedCad.Price++;
-            expectedCad.CategoryId = 2;
+            expectedCad.Product.Name = "EditedCad";
+            expectedCad.Product.IsValidated = !expectedCad.Product.IsValidated;
+            expectedCad.Product.Price++;
+            expectedCad.Product.CategoryId = 2;
             expectedCad.Coords = new int[3] { 100, 100, 100 };
 
             await service.EditAsync(id, expectedCad);
@@ -22,16 +22,16 @@ namespace CustomCADSolutions.Tests.ServicesTests.CadTests
 
             Assert.Multiple(() =>
             {
-                Assert.That(actualCad.Name, Is.EqualTo(expectedCad.Name ),
+                Assert.That(actualCad.Product.Name, Is.EqualTo(expectedCad.Product.Name ),
                     string.Format(DoesNotEditEnough, "Name"));
 
-                Assert.That(actualCad.IsValidated, Is.EqualTo(expectedCad.IsValidated ),
+                Assert.That(actualCad.Product.IsValidated, Is.EqualTo(expectedCad.Product.IsValidated ),
                     string.Format(DoesNotEditEnough, "IsValidated"));
                 
-                Assert.That(actualCad.Price, Is.EqualTo(expectedCad.Price),
+                Assert.That(actualCad.Product.Price, Is.EqualTo(expectedCad.Product.Price),
                     string.Format(DoesNotEditEnough, "Price"));
                 
-                Assert.That(actualCad.CategoryId, Is.EqualTo(expectedCad.CategoryId ),
+                Assert.That(actualCad.Product.CategoryId, Is.EqualTo(expectedCad.Product.CategoryId ),
                     string.Format(DoesNotEditEnough, "CategoryId"));
                 
                 Assert.That(actualCad.Coords, Is.EqualTo(expectedCad.Coords),

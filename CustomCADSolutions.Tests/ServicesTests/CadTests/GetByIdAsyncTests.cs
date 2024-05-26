@@ -38,16 +38,16 @@ namespace CustomCADSolutions.Tests.ServicesTests.CadTests
                 Assert.That(actualCad.Id, Is.EqualTo(expectedCad.Id),
                     string.Format(ModelPropertyMismatch, "Id"));
 
-                Assert.That(actualCad.Name, Is.EqualTo(expectedCad.Name),
+                Assert.That(actualCad.Product.Name, Is.EqualTo(expectedCad.Product.Name),
                     string.Format(ModelPropertyMismatch, "Name"));
 
                 Assert.That(actualCad.Bytes, Is.EqualTo(expectedCad.Bytes),
                     string.Format(ModelPropertyMismatch, "Bytes"));
 
-                Assert.That(actualCad.IsValidated, Is.EqualTo(expectedCad.IsValidated),
+                Assert.That(actualCad.Product.IsValidated, Is.EqualTo(expectedCad.Product.IsValidated),
                     string.Format(ModelPropertyMismatch, "IsValidated"));
 
-                Assert.That(actualCad.CategoryId, Is.EqualTo(expectedCad.CategoryId),
+                Assert.That(actualCad.Product.CategoryId, Is.EqualTo(expectedCad.Product.CategoryId),
                     string.Format(ModelPropertyMismatch, "CategoryId"));
 
                 Assert.That(actualCad.Coords, Is.EqualTo(expectedCad.Coords),
@@ -59,7 +59,7 @@ namespace CustomCADSolutions.Tests.ServicesTests.CadTests
                 Assert.That(actualCad.CreationDate, Is.EqualTo(expectedCad.CreationDate),
                     string.Format(ModelPropertyMismatch, "CreationDate"));
 
-                Assert.That(actualCad.Price, Is.EqualTo(expectedCad.Price),
+                Assert.That(actualCad.Product.Price, Is.EqualTo(expectedCad.Product.Price),
                     string.Format(ModelPropertyMismatch, "Price"));
             });
         }

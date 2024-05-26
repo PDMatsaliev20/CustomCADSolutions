@@ -6,6 +6,7 @@ using CustomCADSolutions.Core.Services;
 using CustomCADSolutions.Infrastructure.Data;
 using CustomCADSolutions.Infrastructure.Data.Common;
 using CustomCADSolutions.Infrastructure.Data.Models;
+using CustomCADSolutions.Infrastructure.Data.Models.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace CustomCADSolutions.Tests.ServicesTests.CadTests
@@ -15,12 +16,14 @@ namespace CustomCADSolutions.Tests.ServicesTests.CadTests
     {
         private IRepository repository;
         private readonly IMapper mapper = new MapperConfiguration(cfg =>
-                cfg.AddProfile<CadCoreProfile>())
-            .CreateMapper();
+        {
+            cfg.AddProfile<CadCoreProfile>();
+            cfg.AddProfile<CategoryCoreProfile>();
+        }).CreateMapper();
 
         protected ICadService service;
-        private Category[] categories = new Category[8]
-        {
+        private CategoryModel[] categories =
+        [
             new() { Id = 1, Name = "Category1" },
             new() { Id = 2, Name = "Category2" },
             new() { Id = 3, Name = "Category3" },
@@ -29,24 +32,24 @@ namespace CustomCADSolutions.Tests.ServicesTests.CadTests
             new() { Id = 6, Name = "Category6" },
             new() { Id = 7, Name = "Category7" },
             new() { Id = 8, Name = "Category8" },
-        };
-        protected AppUser[] users = new AppUser[3]
-        {
+        ];
+        protected AppUser[] users =
+        [
             new() { UserName = "Contributor" },
             new() { UserName = "Designer" },
             new() { UserName = "Hacker" },
-        };
-        protected CadModel[] cads = new CadModel[]
-        {
-            new() { Id = 1, Name = "Cad1", Bytes = new byte[1], CategoryId = 1, Price = 1m, IsValidated = false, CreationDate = DateTime.Now.AddDays(-1), Coords = new int[3], },
-            new() { Id = 2, Name = "Cad2", Bytes = new byte[2], CategoryId = 2, Price = 2m, IsValidated = false, CreationDate = DateTime.Now.AddDays(-2), Coords = new int[3], },
-            new() { Id = 3, Name = "Cad3", Bytes = new byte[3], CategoryId = 3, Price = 3m, IsValidated = false, CreationDate = DateTime.Now.AddDays(-3), Coords = new int[3], },
-            new() { Id = 4, Name = "Cad4", Bytes = new byte[4], CategoryId = 4, Price = 4m, IsValidated = false, CreationDate = DateTime.Now.AddDays(-4), Coords = new int[3], },
-            new() { Id = 5, Name = "Cad5", Bytes = new byte[5], CategoryId = 5, Price = 5m, IsValidated = false, CreationDate = DateTime.Now.AddDays(-5), Coords = new int[3], },
-            new() { Id = 6, Name = "Cad6", Bytes = new byte[6], CategoryId = 6, Price = 6m, IsValidated = true, CreationDate = DateTime.Now.AddDays(-6), Coords = new int[3], },
-            new() { Id = 7, Name = "Cad7", Bytes = new byte[7], CategoryId = 7, Price = 7m, IsValidated = true, CreationDate = DateTime.Now.AddDays(-7), Coords = new int[3], },
-            new() { Id = 8, Name = "Cad8", Bytes = new byte[8], CategoryId = 8, Price = 8m, IsValidated = true, CreationDate = DateTime.Now.AddDays(-8), Coords = new int[3], },
-        };
+        ];
+        protected CadModel[] cads =
+        [
+            new() { Id = 1, Bytes = new byte[1], CreationDate = DateTime.Now.AddDays(-1), Coords = new int[3], Product = new() { Name = "Cad1", CategoryId = 1, Price = 1m, IsValidated = false } },
+            new() { Id = 2, Bytes = new byte[2], CreationDate = DateTime.Now.AddDays(-2), Coords = new int[3], Product = new() { Name = "Cad2", CategoryId = 2, Price = 2m, IsValidated = false } },
+            new() { Id = 3, Bytes = new byte[3], CreationDate = DateTime.Now.AddDays(-3), Coords = new int[3], Product = new() { Name = "Cad3", CategoryId = 3, Price = 3m, IsValidated = false } },
+            new() { Id = 4, Bytes = new byte[4], CreationDate = DateTime.Now.AddDays(-4), Coords = new int[3], Product = new() { Name = "Cad4", CategoryId = 4, Price = 4m, IsValidated = false } },
+            new() { Id = 5, Bytes = new byte[5], CreationDate = DateTime.Now.AddDays(-5), Coords = new int[3], Product = new() { Name = "Cad5", CategoryId = 5, Price = 5m, IsValidated = false } },
+            new() { Id = 6, Bytes = new byte[6], CreationDate = DateTime.Now.AddDays(-6), Coords = new int[3], Product = new() { Name = "Cad6", CategoryId = 6, Price = 6m, IsValidated = true } },
+            new() { Id = 7, Bytes = new byte[7], CreationDate = DateTime.Now.AddDays(-7), Coords = new int[3], Product = new() { Name = "Cad7", CategoryId = 7, Price = 7m, IsValidated = true } },
+            new() { Id = 8, Bytes = new byte[8], CreationDate = DateTime.Now.AddDays(-8), Coords = new int[3], Product = new() { Name = "Cad8", CategoryId = 8, Price = 8m, IsValidated = true } },
+        ];
 
         [OneTimeSetUp]
         public async Task OneTimeSetup()
@@ -56,10 +59,11 @@ namespace CustomCADSolutions.Tests.ServicesTests.CadTests
 
             this.repository = new Repository(new(options));
 
-            await repository.AddRangeAsync(users);
+            await repository.AddRangeAsync<AppUser>(users);
             SeedCreators();
 
-            await repository.AddRangeAsync(categories);
+            var allCategories = mapper.Map<Category[]>(categories);
+            await repository.AddRangeAsync<Category>(allCategories);
             SeedCategories();
             
             await repository.SaveChangesAsync();
@@ -114,8 +118,8 @@ namespace CustomCADSolutions.Tests.ServicesTests.CadTests
         {
             for (int i = 0; i < cads.Length; i++)
             {
-                cads[i].CategoryId = categories[i].Id;
-                cads[i].Category = categories[i];
+                cads[i].Product.CategoryId = categories[i].Id;
+                cads[i].Product.Category = categories[i];
             }
         }
     }

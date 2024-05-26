@@ -2,8 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication;
 using CustomCADSolutions.App.Models.Users;
-using Microsoft.Extensions.Localization;
-using CustomCADSolutions.Infrastructure.Data.Models;
+using CustomCADSolutions.Infrastructure.Data.Models.Identity;
 
 namespace CustomCADSolutions.App.Controllers
 {

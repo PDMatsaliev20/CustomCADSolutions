@@ -6,6 +6,7 @@
     string area = ViewBag.Area;
 
     int id = Model.Id;
+    int productId = Model.ProductId;
     string name = Model.Name;
 }
 
@@ -43,7 +44,7 @@
                 }
                 else
                 {
-                    @await Component.InvokeAsync("CadComponent", new { id, name, area, button = "Order" })
+                    @await Component.InvokeAsync("CadComponent", new { id, productId, name, area, button = "Order" })
                 }
             </div>
         </div>

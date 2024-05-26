@@ -20,7 +20,7 @@ namespace CustomCADSolutions.App.Mappings
         public void EditToModel() => CreateMap<CadEditModel, CadModel>();
 
         public void ModelToView() => CreateMap<CadModel, CadViewModel>()
-            .ForMember(view => view.Category, opt => opt.MapFrom(model => model.Category.Name))
+            .ForMember(view => view.Category, opt => opt.MapFrom(model => model.Product.Category.Name))
             .ForMember(view => view.CreatorName, opt => opt.MapFrom(model => model.Creator.UserName))
             .ForMember(view => view.CreationDate, opt => opt.MapFrom(model => model.CreationDate.ToString("dd/MM/yyyy HH:mm:ss")));
 

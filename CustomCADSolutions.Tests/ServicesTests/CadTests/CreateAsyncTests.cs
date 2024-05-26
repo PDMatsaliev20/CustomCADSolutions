@@ -8,7 +8,7 @@ namespace CustomCADSolutions.Tests.ServicesTests.CadTests
         [Test]
         public async Task Test_AddsCorrectly()
         {
-            CadModel expectedCad = new() { Id = 10, Name = "NewCad", CreatorId = users[2].Id };
+            CadModel expectedCad = new() { Id = 10, CreatorId = users[2].Id, Product = new() { Name = "NewCad" } };
 
             int id = await service.CreateAsync(expectedCad);
             CadModel actualCad = await service.GetByIdAsync(id);
@@ -18,7 +18,7 @@ namespace CustomCADSolutions.Tests.ServicesTests.CadTests
                 Assert.That(actualCad.Id, Is.EqualTo(expectedCad.Id),
                     string.Format(ModelPropertyMismatch, "Id"));
 
-                Assert.That(actualCad.Name, Is.EqualTo(expectedCad.Name),
+                Assert.That(actualCad.Product.Name, Is.EqualTo(expectedCad.Product.Name),
                     string.Format(ModelPropertyMismatch, "Name"));
 
                 Assert.That(actualCad.CreatorId, Is.EqualTo(expectedCad.CreatorId),

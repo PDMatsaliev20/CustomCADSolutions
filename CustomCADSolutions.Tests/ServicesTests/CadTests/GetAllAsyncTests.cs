@@ -23,7 +23,7 @@ namespace CustomCADSolutions.Tests.ServicesTests.CadTests
         [TestCase("Category4")]
         public async Task Test_ReturnsCorrectlyWithCategoryFilter(string categoryName)
         {
-            int expectedCount = this.cads.Count(c => c.Category.Name == categoryName);
+            int expectedCount = this.cads.Count(c => c.Product.Category.Name == categoryName);
             CadQueryModel query = new() { Category = categoryName };
 
             query = await service.GetAllAsync(query);
@@ -51,7 +51,7 @@ namespace CustomCADSolutions.Tests.ServicesTests.CadTests
         [TestCase("3")]
         public async Task Test_ReturnsCorrectlyWithLikeNameFilter(string likeName)
         {
-            int expectedCount = this.cads.Count(c => c.Name.Contains(likeName));
+            int expectedCount = this.cads.Count(c => c.Product.Name.Contains(likeName));
             CadQueryModel query = new() { SearchName = likeName };
 
             query = await service.GetAllAsync(query);
@@ -66,7 +66,7 @@ namespace CustomCADSolutions.Tests.ServicesTests.CadTests
         [TestCase("ontr")]
         public async Task Test_ReturnsCorrectlyWithLikeCreatorFilter(string likeCreator)
         {
-            int expectedCount = this.cads.Count(c => c.Creator.UserName.Contains(likeCreator));
+            int expectedCount = this.cads.Count(c => c.Creator.UserName!.Contains(likeCreator));
             CadQueryModel query = new() { SearchCreator = likeCreator };
 
             query = await service.GetAllAsync(query);
@@ -87,12 +87,12 @@ namespace CustomCADSolutions.Tests.ServicesTests.CadTests
             {
                 if (validated)
                 {
-                    expectedCount = cads.Count(c => c.IsValidated);
+                    expectedCount = cads.Count(c => c.Product.IsValidated);
                 }
 
                 if (unvalidated)
                 {
-                    expectedCount = cads.Count(c => !c.IsValidated);
+                    expectedCount = cads.Count(c => !c.Product.IsValidated);
                 }
             }
             else if (validated && unvalidated)
@@ -141,9 +141,9 @@ namespace CustomCADSolutions.Tests.ServicesTests.CadTests
             {
                 CadSorting.Newest => cads.OrderBy(c => c.CreationDate),
                 CadSorting.Oldest => cads.OrderByDescending(c => c.CreationDate),
-                CadSorting.Alphabetical => cads.OrderBy(c => c.Name),
-                CadSorting.Unalphabetical => cads.OrderByDescending(c => c.Name),
-                CadSorting.Category => cads.OrderBy(m => m.Category.Name),
+                CadSorting.Alphabetical => cads.OrderBy(c => c.Product.Name),
+                CadSorting.Unalphabetical => cads.OrderByDescending(c => c.Product.Name),
+                CadSorting.Category => cads.OrderBy(c => c.Product.Category.Name),
                 _ => cads.OrderBy(c => c.Id),
             }).Select(c => c.Id);
             CadQueryModel query = new() { Sorting = sorting, CadsPerPage = 8 };

@@ -8,15 +8,15 @@ namespace CustomCADSolutions.Tests.ServicesTests.CadTests
         public void Test_CountsCorrectly()
         {
             int expectedNoneCount = 0;
-            int actualNoneCount = service.Count(c => string.IsNullOrEmpty(c.Name));
+            int actualNoneCount = service.Count(c => string.IsNullOrEmpty(c.Product.Name));
             
             int expectedAllCount = cads.Length;
-            int actualAllCount = service.Count(c => !string.IsNullOrEmpty(c.Name));
+            int actualAllCount = service.Count(c => !string.IsNullOrEmpty(c.Product.Name));
 
             Assert.Multiple(() =>
             {
                 Assert.That(actualNoneCount, Is.EqualTo(expectedNoneCount),
-                    (CountedWrong));
+                    CountedWrong);
 
                 Assert.That(actualAllCount, Is.EqualTo(expectedAllCount),
                     CountedWrong);

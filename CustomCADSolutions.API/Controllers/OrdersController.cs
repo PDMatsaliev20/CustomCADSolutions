@@ -189,14 +189,17 @@ namespace CustomCADSolutions.API.Controllers
             }
             OrderModel order = (await orderService.GetByIdAsync(id))!;
 
-            order.Cad = new()
+            order.Product = new()
             {
                 Name = dto.Name,
                 IsValidated = dto.IsValidated,
                 Price = dto.Price,
-                CreationDate = DateTime.Now,
-                CreatorId = dto.CreatorId,
                 CategoryId = dto.CategoryId,
+                Cad = new()
+                {
+                    CreationDate = DateTime.Now,
+                    CreatorId = dto.CreatorId,
+                }
             };
             await orderService.FinishOrderAsync(id, order);
 

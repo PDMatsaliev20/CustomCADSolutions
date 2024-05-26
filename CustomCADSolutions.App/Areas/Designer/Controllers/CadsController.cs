@@ -102,7 +102,7 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
         {
             CadModel model = await cadService.GetByIdAsync(cadId);
 
-            model.IsValidated = true;
+            model.Product.IsValidated = true;
             await cadService.EditAsync(cadId, model);
 
             return RedirectToAction(nameof(Submitted));

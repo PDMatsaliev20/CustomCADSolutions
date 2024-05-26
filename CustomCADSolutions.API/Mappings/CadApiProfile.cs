@@ -23,7 +23,7 @@ namespace CustomCADSolutions.API.Mappings
             .ForMember(export => export.CreatorName, opt =>
                 opt.MapFrom(model => model.Creator.UserName))
             .ForMember(export => export.CategoryName, opt =>
-                opt.MapFrom(model => model.Category.Name));
+                opt.MapFrom(model => model.Product.Category.Name));
 
         /// <summary>
         ///     Converts Query to DTO

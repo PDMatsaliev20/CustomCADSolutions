@@ -10,5 +10,6 @@
         public decimal Price { get; set; }
         public int[] Coords { get; set; } = new int[3];
         public short Fov { get; set; } = 90;
+        public int ProductId { get; set; }
     }
 }

@@ -9,13 +9,10 @@ namespace CustomCADSolutions.Infrastructure.Data.Common.Configurations
         public void Configure(EntityTypeBuilder<Cad> builder)
         {
             builder.HasOne(c => c.Creator).WithMany().OnDelete(DeleteBehavior.Cascade);
-            builder.HasMany(c => c.Orders).WithOne(o => o.Cad).OnDelete(DeleteBehavior.NoAction);
-         
-            builder.Navigation(c => c.Creator).AutoInclude();
-            builder.Navigation(c => c.Orders).AutoInclude();
-            builder.Navigation(c => c.Category).AutoInclude();
+            builder.HasOne(c => c.Product).WithOne(p => p.Cad).OnDelete(DeleteBehavior.Cascade);
 
-            builder.Property(c => c.Price).HasPrecision(18, 2);
+            builder.Navigation(c => c.Creator).AutoInclude();
+            builder.Navigation(c => c.Product).AutoInclude();
         }
     }
 }

@@ -45,7 +45,7 @@ namespace CustomCADSolutions.Tests.ServiceTests.OrderTests
                 Assert.That(actualOrder.CategoryId, Is.EqualTo(expectedOrder.CategoryId),
                     string.Format(ModelPropertyMismatch, "CategoryId"));
 
-                Assert.That(actualOrder.CadId, Is.EqualTo(expectedOrder.CadId),
+                Assert.That(actualOrder.ProductId, Is.EqualTo(expectedOrder.ProductId),
                     string.Format(ModelPropertyMismatch, "CadId"));
 
                 Assert.That(actualOrder.BuyerId, Is.EqualTo(expectedOrder.BuyerId),

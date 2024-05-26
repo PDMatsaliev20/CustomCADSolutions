@@ -1,7 +1,7 @@
 ﻿using CustomCADSolutions.App.Models.Roles.Input;
 using CustomCADSolutions.App.Models.Roles.View;
 using CustomCADSolutions.App.Models.Users;
-using CustomCADSolutions.Infrastructure.Data.Models;
+using CustomCADSolutions.Infrastructure.Data.Models.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

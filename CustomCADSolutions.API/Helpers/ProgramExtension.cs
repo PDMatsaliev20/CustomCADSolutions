@@ -3,14 +3,13 @@ using CustomCADSolutions.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using CustomCADSolutions.Core.Contracts;
 using CustomCADSolutions.Core.Services;
-using CustomCADSolutions.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Security.Cryptography;
 using Microsoft.OpenApi.Models;
-using Microsoft.Extensions.Options;
+using CustomCADSolutions.Infrastructure.Data.Models.Identity;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
