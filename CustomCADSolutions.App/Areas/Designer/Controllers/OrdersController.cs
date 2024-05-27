@@ -22,17 +22,20 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
         private readonly ICategoryService categoryService;
 
         // Addons
-        private readonly ILogger logger;
         private readonly IMapper mapper;
+        private readonly IWebHostEnvironment env;
+        private readonly ILogger logger;
 
         public OrdersController(
             IOrderService orderService,
             ICategoryService categoryService,
+            IWebHostEnvironment env,
             ILogger<OrdersController> logger)
         {
             this.orderService = orderService;
             this.categoryService = categoryService;
 
+            this.env = env;
             this.logger = logger;
             MapperConfiguration config = new(cfg => cfg.AddProfile<OrderAppProfile>());
             this.mapper = config.CreateMapper();
@@ -81,13 +84,15 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
                 Name = cad.Name,
                 Price = cad.Price,
                 CategoryId = cad.CategoryId,
-                Bytes = await cad.CadFile.GetBytesAsync(),
+                Extension = cad.CadFile.GetFileExtension(),
                 IsValidated = true,
                 CreatorId = User.GetId(),
                 CreationDate = DateTime.Now,
             };
 
-            await orderService.FinishOrderAsync(id, model);
+            int cadId = await orderService.FinishOrderAsync(id, model);
+            await env.UploadCadAsync(cad.CadFile, cadId, cad.Name);
+
             return RedirectToAction(nameof(All));
         }
 

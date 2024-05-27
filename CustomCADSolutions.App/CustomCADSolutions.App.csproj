@@ -631,4 +631,8 @@
     </EmbeddedResource>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\others\cads\" />
+  </ItemGroup>
+
 </Project>

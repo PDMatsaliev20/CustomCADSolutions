@@ -11,6 +11,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using CustomCADSolutions.App.Hubs;
+using Stripe;
 
 namespace CustomCADSolutions.App.Controllers
 {
@@ -23,13 +24,15 @@ namespace CustomCADSolutions.App.Controllers
         private readonly CadsHubHelper statisticsService;
         
         // Addons
-        private readonly IMapper mapper;
+        private readonly IWebHostEnvironment env;
         private readonly ILogger logger;
+        private readonly IMapper mapper;
 
         public CadsController(
             ICadService cadService,
             ICategoryService categoryService,
             CadsHubHelper statisticsService,
+            IWebHostEnvironment env,
             ILogger<CadsController> logger)
         {
             this.cadService = cadService;
@@ -38,6 +41,7 @@ namespace CustomCADSolutions.App.Controllers
 
             MapperConfiguration config = new(cfg => cfg.AddProfile<CadAppProfile>());
             this.mapper = config.CreateMapper();
+            this.env = env;
             this.logger = logger;
         }
 
@@ -116,18 +120,14 @@ namespace CustomCADSolutions.App.Controllers
                 return View(input);
             }
 
-            if (input.CadFile == null || input.CadFile.Length <= 0)
-            {
-                return BadRequest("Invalid 3d model");
-            }
-
             CadModel model = mapper.Map<CadModel>(input);
-            model.Bytes = await input.CadFile.GetBytesAsync();
             model.CreatorId = User.GetId(); 
             model.IsValidated = User.IsInRole(Designer);
             model.CreationDate = DateTime.Now;
+            model.Extension = input.CadFile.GetFileExtension();
 
-            await cadService.CreateAsync(model);
+            int cadId = await cadService.CreateAsync(model);
+            await env.UploadCadAsync(input.CadFile, cadId, input.Name);
             await statisticsService.SendStatistics(User.GetId());
 
             return RedirectToAction(nameof(Index));
@@ -163,6 +163,9 @@ namespace CustomCADSolutions.App.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
+            CadModel cad = await cadService.GetByIdAsync(id);
+
+            env.DeleteFile(cad.Name + cad.Id, cad.Extension);
             await cadService.DeleteAsync(id);
             await statisticsService.SendStatistics(User.GetId());
 

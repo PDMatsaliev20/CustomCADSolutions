@@ -12,13 +12,12 @@ namespace CustomCADSolutions.Infrastructure.Data.Models
         public int Id { get; set; }
 
         [Required]
-        [Comment("Bytes of 3D Model")]
-        public byte[] Bytes { get; set; } = null!;
-
-        [Required]
         [MaxLength(CadConstants.NameMaxLength)]
         [Comment("Name of 3D Model")]
         public string Name { get; set; } = null!;
+
+        [Required]
+        public string Extension { get; set; } = null!;
 
         [Required]
         [Comment("Is 3D Model validated")]

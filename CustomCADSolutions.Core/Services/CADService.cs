@@ -31,7 +31,7 @@ namespace CustomCADSolutions.Core.Services
 
         public async Task<CadQueryModel> GetAllAsync(CadQueryModel query)
         {
-            IQueryable<Cad> allCads = repository.All<Cad>().Where(c => c.Bytes != null);
+            IQueryable<Cad> allCads = repository.All<Cad>();
 
             if (query.Category != null)
             {

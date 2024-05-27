@@ -2,24 +2,39 @@
 using System.Security.Claims;
 using CustomCADSolutions.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Stripe;
+using CustomCADSolutions.Core.Contracts;
+using CustomCADSolutions.Core.Models;
 
 namespace CustomCADSolutions.App.Extensions
 {
     public static class UtilityExtensions
     {
-        public static string GetId(this ClaimsPrincipal user) => user.FindFirstValue(ClaimTypes.NameIdentifier);
+        public static string GetId(this ClaimsPrincipal user) => user.FindFirstValue(ClaimTypes.NameIdentifier)!;
 
         public static IEnumerable<string> GetErrors(this ModelStateDictionary model) => model.Values.Select(v => v.Errors).SelectMany(ec => ec.Select(e => e.ErrorMessage));
 
-        public static async Task<byte[]> GetBytesAsync(this IFormFile cad)
-        {
-            using MemoryStream memoryStream = new();
-            await cad.CopyToAsync(memoryStream);
-            byte[] fileBytes = memoryStream.ToArray();
+        public static string GetFilePath(this IWebHostEnvironment env, string name, string extension)
+            => Path.Combine(env.WebRootPath, "others", "cads", name + extension);
 
-            return fileBytes;
+        public static string GetFileExtension(this IFormFile cad) 
+            => Path.GetExtension(cad.FileName);
+
+        public static async Task<bool> UploadCadAsync(this IWebHostEnvironment env, IFormFile cad, int id, string name)
+        {
+            if (cad == null || cad.Length == 0) return false;
+
+            string path = env.GetFilePath($"{name}{id}", cad.GetFileExtension());
+            using FileStream stream = new(path, FileMode.Create);
+            await cad.CopyToAsync(stream);
+            
+            return true;
+        }
+
+        public static void DeleteFile(this IWebHostEnvironment env, string name, string extension)
+        {
+            string filePath = env.GetFilePath(name, extension);
+            System.IO.File.Delete(filePath);
         }
 
         public static async Task AddUserAsync(this UserManager<AppUser> userManager, string username, string email, string password, string role)

@@ -19,8 +19,10 @@ namespace CustomCADSolutions.App.Controllers
         // Services
         private readonly ICadService cadService;
         private readonly ICategoryService categoryService;
+        private readonly IOrderService orderService;
 
         // Managers
+        private readonly IWebHostEnvironment env;
         private readonly UserManager<AppUser> userManager;
         private readonly SignInManager<AppUser> signInManager;
 
@@ -31,13 +33,17 @@ namespace CustomCADSolutions.App.Controllers
         public HomeController(
             ICadService cadService,
             ICategoryService categoryService,
+            IOrderService orderService,
             UserManager<AppUser> userManager,
             SignInManager<AppUser> signInManager,
+            IWebHostEnvironment env,
             ILogger<HomeController> logger)
         {
             this.cadService = cadService;
             this.categoryService = categoryService;
+            this.orderService = orderService;
 
+            this.env = env;
             this.userManager = userManager;
             this.signInManager = signInManager;
 
@@ -52,7 +58,8 @@ namespace CustomCADSolutions.App.Controllers
             return View(new CadViewModel()
             {
                 Id = 0,
-                Name = "Laptop.glb",
+                Name = "Laptop",
+                Extension = "glb",
                 Coords = [23, 15, 20]
             });
         }
@@ -96,7 +103,20 @@ namespace CustomCADSolutions.App.Controllers
             try
             {
                 CadModel model = await cadService.GetByIdAsync(id);
-                return File(model.Bytes, "application/octet-stream", $"{model.Name}.glb");
+                IEnumerable<OrderModel> orders = await orderService.GetAllAsync();
+
+                bool hasPermission = 
+                    orders.Select(o => o.BuyerId).Contains(User.GetId())
+                    || model.CreatorId == User.GetId();
+
+                if (!hasPermission)
+                {
+                    return StatusCode(402);
+                }
+
+                string relativePath = Path.Combine("others", "cads", $"{model.Name}{model.Id}{model.Extension}");
+                string downloadName = $"{model.Name}{model.Extension}";
+                return File(relativePath, "application/octet-stream", downloadName);
             }
             catch (KeyNotFoundException)
             {

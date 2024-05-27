@@ -14,7 +14,7 @@ namespace CustomCADSolutions.Tests.ServiceTests.OrderTests
             order.Cad = new() 
             {
                 Name = "New Model",
-                Bytes = new byte[1],
+                Extension = "ijkl",
                 CreatorId = users[1].Id,
             };
 
@@ -33,7 +33,7 @@ namespace CustomCADSolutions.Tests.ServiceTests.OrderTests
             order.Cad = new() 
             {
                 Name = "New Model",
-                Bytes = new byte[1],
+                Extension = "mnop",
                 CreatorId = users[1].Id,
                 Price = 50M,
                 CategoryId = 3,
@@ -54,7 +54,7 @@ namespace CustomCADSolutions.Tests.ServiceTests.OrderTests
                 Assert.That(actualCad.Name, Is.EqualTo(expectedCad.Name),
                     string.Format(ShoultHaveBeenSaved, "Name"));
 
-                Assert.That(actualCad.Bytes, Is.EqualTo(expectedCad.Bytes),
+                Assert.That(actualCad.Extension, Is.EqualTo(expectedCad.Extension),
                     string.Format(ShoultHaveBeenSaved, "Bytes"));
 
                 Assert.That(actualCad.CreatorId, Is.EqualTo(expectedCad.CreatorId),

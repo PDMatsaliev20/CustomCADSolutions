@@ -1,7 +1,6 @@
 ﻿using CustomCADSolutions.Infrastructure.Data.Models;
 using static CustomCADSolutions.Infrastructure.Data.DataConstants;
 using System.ComponentModel.DataAnnotations;
-using System.Drawing;
 
 namespace CustomCADSolutions.Core.Models
 {
@@ -10,8 +9,7 @@ namespace CustomCADSolutions.Core.Models
         [Key]
         public int Id { get; set; }
 
-        [Required(ErrorMessage = RequiredErrorMessage)]
-        public byte[] Bytes { get; set; } = null!;
+        public string Extension { get; set; } = null!;
 
         [Required(ErrorMessage = RequiredErrorMessage)]
         [StringLength(CadConstants.NameMaxLength, MinimumLength = CadConstants.NameMinLength, ErrorMessage = LengthErrorMessage)]

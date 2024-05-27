@@ -44,9 +44,9 @@ namespace CustomCADSolutions.Core.Contracts
         /// </summary>
         /// <param name="id"></param>
         /// <param name="model"></param>
-        /// <returns>A Task object that represents the asynchronous Save Changes operation after the edit.</returns>
+        /// <returns>A Task object that represents the id of the finished Order.</returns>
         /// <exception cref="KeyNotFoundException">if no Order with the given id exists.</exception>
-        Task FinishOrderAsync(int id, OrderModel model);
+        Task<int> FinishOrderAsync(int id, OrderModel model);
 
         /// <summary>
         ///     Deletes the Order with the given id.

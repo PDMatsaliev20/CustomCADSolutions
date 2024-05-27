@@ -2,7 +2,7 @@
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-function loadModel({ id, x, y, z, fov }, path = `/Home/DownloadCad/${id}`) {
+function loadModel({ id, name, extension, x, y, z, fov }, path = `/others/cads/${name}${id}${extension}`) {
     // Scene
     const scene = new THREE.Scene();
     scene.background = null;

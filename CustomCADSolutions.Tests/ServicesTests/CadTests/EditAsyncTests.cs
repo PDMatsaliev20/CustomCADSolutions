@@ -45,7 +45,7 @@ namespace CustomCADSolutions.Tests.ServicesTests.CadTests
         {
             CadModel expectedCad = await service.GetByIdAsync(id);
             expectedCad.Id = 100;
-            expectedCad.Bytes = new byte[100];
+            expectedCad.Extension = "xyz";
             expectedCad.CreationDate = DateTime.Now.AddDays(1);
             expectedCad.CreatorId = users[2].Id;
 
@@ -57,7 +57,7 @@ namespace CustomCADSolutions.Tests.ServicesTests.CadTests
                 Assert.That(actualCad.Id, Is.Not.EqualTo(expectedCad.Id),
                     string.Format(EditsTooMuch, "Id"));
 
-                Assert.That(actualCad.Bytes, Is.Not.EqualTo(expectedCad.Bytes),
+                Assert.That(actualCad.Extension, Is.Not.EqualTo(expectedCad.Extension),
                     string.Format(EditsTooMuch, "Bytes"));
 
                 Assert.That(actualCad.CreationDate, Is.Not.EqualTo(expectedCad.CreationDate),
