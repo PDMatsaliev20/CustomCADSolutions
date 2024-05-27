@@ -16,7 +16,7 @@ namespace CustomCADSolutions.API.Controllers
     [Authorize(Roles = "Contributor")]
     [ApiController]
     [Route("API/[controller]")]
-    public class CadsController(ICadService cadService, IProductService productService) : ControllerBase
+    public class CadsController(ICadService cadService) : ControllerBase
     {
         private readonly IMapper mapper = new MapperConfiguration(cfg 
                 => cfg.AddProfile<CadApiProfile>())
@@ -102,14 +102,12 @@ namespace CustomCADSolutions.API.Controllers
             try
             {
                 CadModel cad = await cadService.GetByIdAsync(id);
+                
+                cad.Name = dto.Name;
+                cad.CategoryId = dto.CategoryId;
                 cad.Coords = dto.Coords;
+                cad.Price = dto.Price;
                 await cadService.EditAsync(id, cad);
-
-                ProductModel product = cad.Product;                
-                product.Name = dto.Name;
-                product.CategoryId = dto.CategoryId;
-                product.Price = dto.Price;
-                await productService.EditAsync(id, product);
 
                 return NoContent();
             }

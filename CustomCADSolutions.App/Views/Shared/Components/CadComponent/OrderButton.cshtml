@@ -1,9 +1,9 @@
 ﻿@inject IViewLocalizer Localizer
 @{
-    int productId = ViewBag.ProductId;
+    int id = ViewBag.Id;
 }
 
-<a asp-controller="Orders" asp-action="Order" asp-route-id="@productId" 
+<a asp-controller="Orders" asp-action="Order" asp-route-id="@id" 
         class="btn btn-secondary text-decoration-none">
     @Localizer["Order", Model.Price]
 </a>

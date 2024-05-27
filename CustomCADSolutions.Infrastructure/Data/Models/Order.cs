@@ -1,5 +1,4 @@
 ﻿using CustomCADSolutions.Infrastructure.Data.Models.Enums;
-using CustomCADSolutions.Infrastructure.Data.Models.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -37,7 +36,7 @@ namespace CustomCADSolutions.Infrastructure.Data.Models
         public int CategoryId { get; set; }
         
         [Comment("Identification of Orders' 3D Model")]
-        public int? ProductId { get; set; }
+        public int? CadId { get; set; }
 
         [Required]
         [Comment("Identification of User")]
@@ -46,8 +45,8 @@ namespace CustomCADSolutions.Infrastructure.Data.Models
         [ForeignKey(nameof(CategoryId))]
         public Category Category { get; set; } = null!;
 
-        [ForeignKey(nameof(ProductId))]
-        public Product? Product { get; set; } 
+        [ForeignKey(nameof(CadId))]
+        public Cad? Cad { get; set; } 
         
         [ForeignKey(nameof(BuyerId))]
         public AppUser Buyer { get; set; } = null!;

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 using Microsoft.AspNetCore.Mvc;
 using CustomCADSolutions.App.Extensions;
+using CustomCADSolutions.Infrastructure.Data.Models;
 using CustomCADSolutions.App.Hubs;
-using CustomCADSolutions.Infrastructure.Data.Models.Identity;
 
 namespace Microsoft.Extensions.DependencyInjection
 {

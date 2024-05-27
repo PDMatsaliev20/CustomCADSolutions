@@ -10,7 +10,6 @@ using CustomCADSolutions.App.Mappings;
 using CustomCADSolutions.App.Models.Cads.Input;
 using CustomCADSolutions.Core.Contracts;
 using CustomCADSolutions.Core.Models;
-using CustomCADSolutions.Infrastructure.Data.Models;
 
 namespace CustomCADSolutions.App.Areas.Designer.Controllers
 {
@@ -77,18 +76,15 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
         public async Task<IActionResult> Finish(int id, CadFinishModel cad)
         {
             OrderModel model = await orderService.GetByIdAsync(id);
-            model.Product = new()
+            model.Cad = new()
             {
                 Name = cad.Name,
                 Price = cad.Price,
                 CategoryId = cad.CategoryId,
+                Bytes = await cad.CadFile.GetBytesAsync(),
                 IsValidated = true,
-                Cad = new()
-                {
-                    Bytes = await cad.CadFile.GetBytesAsync(),
-                    CreationDate = DateTime.Now,
-                    CreatorId = User.GetId(),
-                }
+                CreatorId = User.GetId(),
+                CreationDate = DateTime.Now,
             };
 
             await orderService.FinishOrderAsync(id, model);

@@ -4,7 +4,6 @@ using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using CustomCADSolutions.Infrastructure.Data.Models;
 using static CustomCADSolutions.Infrastructure.Data.DataConstants;
 using static CustomCADSolutions.Infrastructure.Data.DataConstants.OrderConstants;
-using CustomCADSolutions.Infrastructure.Data.Models.Identity;
 
 namespace CustomCADSolutions.Core.Models
 {
@@ -32,15 +31,21 @@ namespace CustomCADSolutions.Core.Models
         [Required(ErrorMessage = RequiredErrorMessage)]
         public bool ShouldShow { get; set; } = true;
 
+        public int? CadId { get; set; }
+        
         [Required(ErrorMessage = RequiredErrorMessage)]
         public int CategoryId { get; set; }
-        public Category Category { get; set; } = null!;
-
-        public int? ProductId { get; set; }
-        public ProductModel? Product { get; set; }
 
         [Required(ErrorMessage = RequiredErrorMessage)]
-        public string BuyerId { get; set; } = null!;            
+        public string BuyerId { get; set; } = null!;
+
+        [ForeignKey(nameof(CategoryId))]
+        public Category Category { get; set; } = null!;
+
+        [ForeignKey(nameof(CadId))]
+        public CadModel? Cad { get; set; }
+            
+        [ForeignKey(nameof(BuyerId))]
         public AppUser Buyer { get; set; } = null!;
     }
 }

@@ -5,12 +5,12 @@ using CustomCADSolutions.App.Models.Cads.View;
 using CustomCADSolutions.Core.Models;
 using CustomCADSolutions.Core.Contracts;
 using static CustomCADSolutions.Infrastructure.Data.DataConstants.RoleConstants;
+using CustomCADSolutions.Infrastructure.Data.Models;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
-using CustomCADSolutions.Infrastructure.Data.Models.Identity;
 
 namespace CustomCADSolutions.App.Controllers
 {
@@ -96,7 +96,7 @@ namespace CustomCADSolutions.App.Controllers
             try
             {
                 CadModel model = await cadService.GetByIdAsync(id);
-                return File(model.Bytes, "application/octet-stream", $"{model.Product.Name}.glb");
+                return File(model.Bytes, "application/octet-stream", $"{model.Name}.glb");
             }
             catch (KeyNotFoundException)
             {
@@ -115,7 +115,7 @@ namespace CustomCADSolutions.App.Controllers
             try
             {
                 AppUser user = await userManager.FindByIdAsync(User.GetId())
-                    ?? throw new KeyNotFoundException();
+                ?? throw new KeyNotFoundException();
                 IEnumerable<string> roles = await userManager.GetRolesAsync(user);
 
                 await userManager.RemoveFromRoleAsync(user, roles.Single());

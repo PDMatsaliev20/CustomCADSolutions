@@ -1,4 +1,5 @@
 ﻿using CustomCADSolutions.Core.Models;
+using System.Drawing;
 
 namespace CustomCADSolutions.Core.Contracts
 {
@@ -31,7 +32,7 @@ namespace CustomCADSolutions.Core.Contracts
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns>An integer holding the result.</returns>
-        int Count(Predicate<CadModel> predicate);
+        int Count(Func<CadModel, bool> predicate);
 
         /// <summary>
         ///     Creates the specified Cad in the Cads table.
@@ -41,7 +42,7 @@ namespace CustomCADSolutions.Core.Contracts
         Task<int> CreateAsync(CadModel model);
 
         /// <summary>
-        ///     Overwrites Cad's coordinate properties with the new ones.
+        ///     Overwrites all of the Cad's properties with the new ones.
         /// </summary>
         /// <param name="id"></param>
         /// <param name="model"></param>
@@ -50,11 +51,11 @@ namespace CustomCADSolutions.Core.Contracts
         Task EditAsync(int id, CadModel model);
 
         /// <summary>
-        ///     Deletes the Cad with the given id.
+        ///     Reverts all related Orders to Pending, sets their CadId to null and and deletes the Cad with the given id.
         /// </summary>
         /// <param name="id"></param>
         /// <returns>A Task object that represents the asynchronous Save Changes operation after the deletion.</returns>
-        /// <exception cref="KeyNotFoundException">if no Cad with the given id exists.</exception>
+        /// <exception cref="KeyNotFoundException">if no Category with the given id exists.</exception>
         Task DeleteAsync(int id);
         IList<string> ValidateEntity(CadModel entity);
     }

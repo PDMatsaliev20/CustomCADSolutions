@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
 using static CustomCADSolutions.Infrastructure.Data.DataConstants;
-using CustomCADSolutions.Infrastructure.Data.Models.Identity;
 
 namespace CustomCADSolutions.Infrastructure.Data.Models
 {
@@ -15,6 +14,24 @@ namespace CustomCADSolutions.Infrastructure.Data.Models
         [Required]
         [Comment("Bytes of 3D Model")]
         public byte[] Bytes { get; set; } = null!;
+
+        [Required]
+        [MaxLength(CadConstants.NameMaxLength)]
+        [Comment("Name of 3D Model")]
+        public string Name { get; set; } = null!;
+
+        [Required]
+        [Comment("Is 3D Model validated")]
+        public bool IsValidated { get; set; }
+
+        [Required]
+        [Range(CadConstants.PriceMin, CadConstants.PriceMax)]
+        [Comment("Price of 3d model")]
+        public decimal Price { get; set; }
+
+        [Required]
+        [Comment("CreationDate of 3D Model")]
+        public DateTime CreationDate { get; set; }
 
         [Required]
         [MaxLength(CadConstants.XMax)]
@@ -32,19 +49,19 @@ namespace CustomCADSolutions.Infrastructure.Data.Models
         public int Z { get; set; }
 
         [Required]
-        [Comment("CreationDate of 3D Model")]
-        public DateTime CreationDate { get; set; }
-
-        [Required]
         [Comment("Identification of the creator of the 3D Model")]
         public string CreatorId { get; set; } = null!;
 
-        public int ProductId { get; set; }
+        [Required]
+        [Comment("Category of 3D Model")]
+        public int CategoryId { get; set; }
 
-        [ForeignKey(nameof(ProductId))]
-        public Product Product { get; set; } = null!;
+        [ForeignKey(nameof(CategoryId))]
+        public Category Category { get; set; } = null!;
 
         [ForeignKey(nameof(CreatorId))]
         public AppUser Creator { get; set; } = null!;
+
+        public ICollection<Order> Orders { get; set; } = new List<Order>();
     }
 }

@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using CustomCADSolutions.Infrastructure.Data.Models;
 using static CustomCADSolutions.Infrastructure.Data.DataConstants;
-using CustomCADSolutions.Infrastructure.Data.Models.Identity;
 
 namespace CustomCADSolutions.App.Areas.Admin.Controllers
 {

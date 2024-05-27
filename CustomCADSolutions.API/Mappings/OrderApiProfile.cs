@@ -21,14 +21,14 @@ namespace CustomCADSolutions.API.Mappings
             .ForMember(dto => dto.Status, opt => opt.MapFrom(model => model.Status.ToString()))
             .ForMember(dto => dto.OrderDate, opt => opt.MapFrom(model => model.OrderDate.ToString("dd/MM/yyyy HH:mm:ss")))
             .ForMember(dto => dto.CategoryName, opt => opt.MapFrom(model => model.Category.Name))
-            .ForMember(dto => dto.CadId, opt => opt.MapFrom(model => model.Product.CadId))
+            .ForMember(dto => dto.CadId, opt => opt.MapFrom(model => model.CadId))
             ;
 
         /// <summary>
         ///     Converts Import DTO to Service Model
         /// </summary>
         public void ImportToModel() => CreateMap<OrderImportDTO, OrderModel>()
-            .ForMember(model => model.ProductId, opt => opt.AllowNull())
-            .ForMember(model => model.Product, opt => opt.AllowNull());
+            .ForMember(model => model.CadId, opt => opt.AllowNull())
+            .ForMember(model => model.Cad, opt => opt.AllowNull());
     }
 }

@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using CustomCADSolutions.Infrastructure.Data.Models;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using CustomCADSolutions.API.Models.Users;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
-using CustomCADSolutions.Infrastructure.Data.Models.Identity;
 
 namespace CustomCADSolutions.API.Controllers
 {

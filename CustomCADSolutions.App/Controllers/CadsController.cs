@@ -15,16 +15,31 @@ using CustomCADSolutions.App.Hubs;
 namespace CustomCADSolutions.App.Controllers
 {
     [Authorize(Roles = $"{Contributor},{Designer}")]
-    public class CadsController(
-        ICadService cadService,
-        IProductService productService,
-        ICategoryService categoryService,
-        CadsHubHelper statisticsService,
-        ILogger<CadsController> logger) : Controller
-    {        
-        private readonly IMapper mapper = new MapperConfiguration(cfg =>
-                    cfg.AddProfile<CadAppProfile>())
-                .CreateMapper();
+    public class CadsController : Controller
+    {
+        // Services
+        private readonly ICadService cadService;
+        private readonly ICategoryService categoryService;
+        private readonly CadsHubHelper statisticsService;
+        
+        // Addons
+        private readonly IMapper mapper;
+        private readonly ILogger logger;
+
+        public CadsController(
+            ICadService cadService,
+            ICategoryService categoryService,
+            CadsHubHelper statisticsService,
+            ILogger<CadsController> logger)
+        {
+            this.cadService = cadService;
+            this.categoryService = categoryService;
+            this.statisticsService = statisticsService;
+
+            MapperConfiguration config = new(cfg => cfg.AddProfile<CadAppProfile>());
+            this.mapper = config.CreateMapper();
+            this.logger = logger;
+        }
 
         [HttpPost]
         [IgnoreAntiforgeryToken]
@@ -109,20 +124,11 @@ namespace CustomCADSolutions.App.Controllers
             CadModel model = mapper.Map<CadModel>(input);
             model.Bytes = await input.CadFile.GetBytesAsync();
             model.CreatorId = User.GetId(); 
+            model.IsValidated = User.IsInRole(Designer);
             model.CreationDate = DateTime.Now;
 
-            int id = await cadService.CreateAsync(model);
+            await cadService.CreateAsync(model);
             await statisticsService.SendStatistics(User.GetId());
-
-            ProductModel product = new()
-            {
-                CadId = id,
-                Name = input.Name,
-                Price = input.Price,
-                IsValidated = User.IsInRole(Designer),
-                CategoryId = input.CategoryId,
-            };
-            await productService.CreateAsync(product);
 
             return RedirectToAction(nameof(Index));
         }
@@ -146,13 +152,11 @@ namespace CustomCADSolutions.App.Controllers
         public async Task<IActionResult> Edit(int id, CadEditModel input)
         {
             CadModel model = await cadService.GetByIdAsync(id);
-            
-            ProductModel product = model.Product;
-            product.Name = input.Name;
-            product.CategoryId = input.CategoryId;
-            product.Price = input.Price;
-            await productService.EditAsync(id, product);
+            model.Name = input.Name;
+            model.CategoryId = input.CategoryId;
+            model.Price = input.Price;
 
+            await cadService.EditAsync(id, model);
             return RedirectToAction(nameof(Details), new { id });
         }
 

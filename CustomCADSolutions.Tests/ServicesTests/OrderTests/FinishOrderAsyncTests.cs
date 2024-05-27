@@ -11,14 +11,11 @@ namespace CustomCADSolutions.Tests.ServiceTests.OrderTests
         public async Task Test_OrderStatusIsFinished(int id)
         {
             OrderModel order = await service.GetByIdAsync(id);
-            order.Product = new()
+            order.Cad = new() 
             {
                 Name = "New Model",
-                Cad = new()
-                {
-                    Bytes = new byte[1],
-                    CreatorId = users[1].Id,
-                }
+                Bytes = new byte[1],
+                CreatorId = users[1].Id,
             };
 
             await service.FinishOrderAsync(id, order);
@@ -27,37 +24,34 @@ namespace CustomCADSolutions.Tests.ServiceTests.OrderTests
             Assert.That(finishedOrder.Status, Is.EqualTo(OrderStatus.Finished),
                 OrderNotFinished);
         }
-
+        
         [TestCase(1)]
         [TestCase(4)]
         public async Task Test_CadInfoIsNotLost(int id)
         {
             OrderModel order = await service.GetByIdAsync(id);
-            order.Product = new()
+            order.Cad = new() 
             {
                 Name = "New Model",
+                Bytes = new byte[1],
+                CreatorId = users[1].Id,
                 Price = 50M,
                 CategoryId = 3,
                 IsValidated = true,
-                Cad = new()
-                {
-                    Bytes = new byte[1],
-                    CreatorId = users[1].Id,
-                    CreationDate = DateTime.Now,
-                }
+                CreationDate = DateTime.Now,
             };
 
             await service.FinishOrderAsync(id, order);
             OrderModel finishedOrder = await service.GetByIdAsync(id);
 
-            CadModel expectedCad = order.Product.Cad;
+            CadModel expectedCad = order.Cad;
+            CadModel? actualCad = finishedOrder.Cad;
 
-            CadModel? actualCad = finishedOrder.Product?.Cad;
             Assert.That(actualCad, Is.Not.Null);
 
             Assert.Multiple(() =>
             {
-                Assert.That(actualCad.Product.Name, Is.EqualTo(expectedCad.Product.Name),
+                Assert.That(actualCad.Name, Is.EqualTo(expectedCad.Name),
                     string.Format(ShoultHaveBeenSaved, "Name"));
 
                 Assert.That(actualCad.Bytes, Is.EqualTo(expectedCad.Bytes),
@@ -66,13 +60,13 @@ namespace CustomCADSolutions.Tests.ServiceTests.OrderTests
                 Assert.That(actualCad.CreatorId, Is.EqualTo(expectedCad.CreatorId),
                     string.Format(ShoultHaveBeenSaved, "CreatorId"));
 
-                Assert.That(actualCad.Product.Price, Is.EqualTo(expectedCad.Product.Price),
+                Assert.That(actualCad.Price, Is.EqualTo(expectedCad.Price),
                     string.Format(ShoultHaveBeenSaved, "Price"));
 
-                Assert.That(actualCad.Product.CategoryId, Is.EqualTo(expectedCad.Product.CategoryId),
+                Assert.That(actualCad.CategoryId, Is.EqualTo(expectedCad.CategoryId),
                     string.Format(ShoultHaveBeenSaved, "CategoryId"));
 
-                Assert.That(actualCad.Product.IsValidated, Is.EqualTo(expectedCad.Product.IsValidated),
+                Assert.That(actualCad.IsValidated, Is.EqualTo(expectedCad.IsValidated),
                     string.Format(ShoultHaveBeenSaved, "IsValidated"));
 
                 Assert.That(actualCad.CreationDate, Is.EqualTo(expectedCad.CreationDate),

@@ -6,7 +6,6 @@ using CustomCADSolutions.Core.Services;
 using CustomCADSolutions.Infrastructure.Data;
 using CustomCADSolutions.Infrastructure.Data.Common;
 using CustomCADSolutions.Infrastructure.Data.Models;
-using CustomCADSolutions.Infrastructure.Data.Models.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace CustomCADSolutions.Tests.ServiceTests.OrderTests
@@ -20,20 +19,20 @@ namespace CustomCADSolutions.Tests.ServiceTests.OrderTests
             .CreateMapper();
 
         protected IOrderService service;
-        protected AppUser[] users =
-        [
+        protected AppUser[] users = new AppUser[3]
+        {
             new() { UserName = "Client" },
             new() { UserName = "Contributor" },
             new() { UserName = "Hacker" },
-        ];
-        protected OrderModel[] orders =
-        [
+        };
+        protected OrderModel[] orders = new OrderModel[5]
+        {
             new() { Id = 1, Name = "Order1", Description = "ClientOrder1", CategoryId = 1 },
             new() { Id = 2, Name = "Order2", Description = "ClientOrder2", CategoryId = 2 },
             new() { Id = 3, Name = "Order3", Description = "ClientOrder3", CategoryId = 3 },
             new() { Id = 4, Name = "Order4", Description = "ContributorOrder1", CategoryId = 4 },
             new() { Id = 5, Name = "Order5", Description = "ContributorOrder2", CategoryId = 5 },
-        ];
+        };
 
         [OneTimeSetUp]
         public async Task OneTimeSetup()

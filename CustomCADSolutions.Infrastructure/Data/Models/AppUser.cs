@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 
-namespace CustomCADSolutions.Infrastructure.Data.Models.Identity
+namespace CustomCADSolutions.Infrastructure.Data.Models
 {
     public class AppUser : IdentityUser
     {

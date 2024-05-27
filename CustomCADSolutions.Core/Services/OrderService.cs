@@ -11,14 +11,21 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CustomCADSolutions.Core.Services
 {
-    public class OrderService(IRepository repository) : IOrderService
+    public class OrderService : IOrderService
     {
-        private readonly IMapper mapper = new MapperConfiguration(cfg =>
+        private readonly IRepository repository;
+        private readonly IMapper mapper;
+
+        public OrderService(IRepository repository)
+        {
+            this.repository = repository;
+            mapper = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile<CadCoreProfile>();
                 cfg.AddProfile<OrderCoreProfile>();
             }).CreateMapper();
-
+        }
+        
         public async Task<IEnumerable<OrderModel>> GetAllAsync()
         {
             Order[] orders = await repository.All<Order>().ToArrayAsync();
@@ -75,26 +82,24 @@ namespace CustomCADSolutions.Core.Services
 
             await repository.SaveChangesAsync();
         }
-
+        
         public async Task FinishOrderAsync(int id, OrderModel model)
         {
             Order order = await repository.GetByIdAsync<Order>(id)
                 ?? throw new KeyNotFoundException();
+
             order.Status = OrderStatus.Finished;
 
-            ProductModel product = model.Product ?? throw new ArgumentNullException("Product cannot be null!");
-            order.Product = new()
+            CadModel cad = model.Cad!;
+            order.Cad = new()
             {
-                Name = product.Name,
-                Price = product.Price,
-                CategoryId = product.CategoryId,
-                IsValidated = product.IsValidated,
-                Cad = new()
-                {
-                    Bytes = product.Cad.Bytes,
-                    CreatorId = product.Cad.CreatorId,
-                    CreationDate = product.Cad.CreationDate,
-                }
+                Name = cad.Name,
+                Price = cad.Price,
+                CategoryId = cad.CategoryId,
+                Bytes = cad.Bytes,
+                IsValidated = cad.IsValidated,
+                CreatorId = cad.CreatorId,
+                CreationDate = cad.CreationDate,
             };
             await repository.SaveChangesAsync();
         }

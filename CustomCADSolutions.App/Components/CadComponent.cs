@@ -4,10 +4,9 @@ namespace CustomCADSolutions.App.Components
 {
     public class CadComponent : ViewComponent
     {
-        public IViewComponentResult Invoke(int id, int productId, string name, string button)
+        public IViewComponentResult Invoke(int id, string name, string button)
         {
             ViewBag.Id = id;
-            ViewBag.ProductId = productId;
             ViewBag.Name = name;
 
             string view = button switch
