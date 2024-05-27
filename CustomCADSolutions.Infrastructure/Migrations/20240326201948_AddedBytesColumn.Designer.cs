@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace CustomCADSolutions.AppWithIdentity.Data.Migrations
+namespace CustomCADSolutions.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(CadContext))]
     [Migration("20240326201948_AddedBytesColumn")]

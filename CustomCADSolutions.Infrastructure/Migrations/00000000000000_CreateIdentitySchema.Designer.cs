@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace CustomCADSolutions.AppWithIdentity.Data.Migrations
+namespace CustomCADSolutions.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(CadContext))]
     [Migration("00000000000000_CreateIdentitySchema")]

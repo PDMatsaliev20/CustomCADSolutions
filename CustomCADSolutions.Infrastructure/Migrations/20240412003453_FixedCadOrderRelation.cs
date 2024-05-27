@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace CustomCADSolutions.AppWithIdentity.Data.Migrations
+namespace CustomCADSolutions.Infrastructure.Data.Migrations
 {
     public partial class FixedCadOrderRelation : Migration
     {

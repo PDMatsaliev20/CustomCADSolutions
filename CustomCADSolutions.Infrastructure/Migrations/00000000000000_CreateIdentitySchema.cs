@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 using System;
 
-namespace CustomCADSolutions.AppWithIdentity.Data.Migrations
+namespace CustomCADSolutions.Infrastructure.Data.Migrations
 {
     public partial class CreateIdentitySchema : Migration
     {
