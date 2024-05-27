@@ -24,10 +24,11 @@ namespace CustomCADSolutions.App.Models.Cads.Input
         [Display(Name = nameof(DisplayResources.Price), ResourceType = typeof(DisplayResources))]
         public decimal Price { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(ErrorMessageResources),
-            ErrorMessageResourceName = nameof(ErrorMessageResources.Required))]
         [Display(Name = nameof(DisplayResources.File), ResourceType = typeof(DisplayResources))]
-        public IFormFile CadFile { get; set; } = null!;
+        public IFormFile? CadFile { get; set; } 
+
+        [Display(Name = nameof(DisplayResources.Folder), ResourceType = typeof(DisplayResources))]
+        public List<IFormFile>? CadFolder { get; set; } 
 
         [Required(ErrorMessageResourceType = typeof(ErrorMessageResources),
             ErrorMessageResourceName = nameof(ErrorMessageResources.Required))]

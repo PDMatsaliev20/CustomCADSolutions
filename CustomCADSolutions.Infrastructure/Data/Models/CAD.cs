@@ -17,8 +17,9 @@ namespace CustomCADSolutions.Infrastructure.Data.Models
         public string Name { get; set; } = null!;
 
         [Required]
+        [Comment("Extension name of 3D Model")]
         public string Extension { get; set; } = null!;
-
+        
         [Required]
         [Comment("Is 3D Model validated")]
         public bool IsValidated { get; set; }

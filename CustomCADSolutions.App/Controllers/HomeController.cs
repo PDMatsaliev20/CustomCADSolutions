@@ -11,6 +11,8 @@ using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
+using System.IO;
+using System.IO.Compression;
 
 namespace CustomCADSolutions.App.Controllers
 {
@@ -73,7 +75,7 @@ namespace CustomCADSolutions.App.Controllers
                 inputQuery.CadsPerPage = inputQuery.Cols * (inputQuery.CadsPerPage / inputQuery.Cols);
             }
 
-            
+
             CadQueryModel query = new()
             {
                 Category = inputQuery.Category,
@@ -105,7 +107,7 @@ namespace CustomCADSolutions.App.Controllers
                 CadModel model = await cadService.GetByIdAsync(id);
                 IEnumerable<OrderModel> orders = await orderService.GetAllAsync();
 
-                bool hasPermission = 
+                bool hasPermission =
                     orders.Select(o => o.BuyerId).Contains(User.GetId())
                     || model.CreatorId == User.GetId();
 
@@ -117,6 +119,19 @@ namespace CustomCADSolutions.App.Controllers
                 string relativePath = Path.Combine("others", "cads", $"{model.Name}{model.Id}{model.Extension}");
                 string downloadName = $"{model.Name}{model.Extension}";
                 return File(relativePath, "application/octet-stream", downloadName);
+
+                MemoryStream stream = new();
+                using ZipArchive archive = new(stream, ZipArchiveMode.Create, true);
+                string[] files = Directory.GetFiles(relativePath, "*", SearchOption.AllDirectories);
+                foreach (string file in files)
+                {
+                    string entryName = Path.GetRelativePath(relativePath, file);
+                    archive.CreateEntryFromFile(file, entryName);
+                }
+
+                stream.Position = 0;
+                string zipFileName = Path.GetFileName(relativePath.TrimEnd(Path.DirectorySeparatorChar)) + ".zip";
+                return File(stream, "application/zip", zipFileName);
             }
             catch (KeyNotFoundException)
             {
@@ -164,7 +179,7 @@ namespace CustomCADSolutions.App.Controllers
 
             return LocalRedirect(returnUrl);
         }
-        
+
         public IActionResult Privacy() => View();
 
         public new IActionResult Unauthorized() => base.Unauthorized();

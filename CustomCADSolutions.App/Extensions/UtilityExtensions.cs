@@ -3,8 +3,6 @@ using System.Security.Claims;
 using CustomCADSolutions.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Stripe;
-using CustomCADSolutions.Core.Contracts;
-using CustomCADSolutions.Core.Models;
 
 namespace CustomCADSolutions.App.Extensions
 {
@@ -14,26 +12,28 @@ namespace CustomCADSolutions.App.Extensions
 
         public static IEnumerable<string> GetErrors(this ModelStateDictionary model) => model.Values.Select(v => v.Errors).SelectMany(ec => ec.Select(e => e.ErrorMessage));
 
-        public static string GetFilePath(this IWebHostEnvironment env, string name, string extension)
-            => Path.Combine(env.WebRootPath, "others", "cads", name + extension);
+        public static string GetFilePath(this IWebHostEnvironment env, string fullName)
+            => Path.Combine(env.WebRootPath, "others", "cads", fullName);
 
         public static string GetFileExtension(this IFormFile cad) 
             => Path.GetExtension(cad.FileName);
 
-        public static async Task<bool> UploadCadAsync(this IWebHostEnvironment env, IFormFile cad, int id, string name)
+        public static async Task<string?> UploadFileAsync(this IWebHostEnvironment env, IFormFile cad, string filePath)
         {
-            if (cad == null || cad.Length == 0) return false;
+            if (cad != null && cad.Length != 0)
+            {
+                string fullPath = env.GetFilePath(filePath);
+                using FileStream stream = new(fullPath, FileMode.Create);
+                await cad.CopyToAsync(stream);
 
-            string path = env.GetFilePath($"{name}{id}", cad.GetFileExtension());
-            using FileStream stream = new(path, FileMode.Create);
-            await cad.CopyToAsync(stream);
-            
-            return true;
+                return fullPath;
+            }
+            else return null;
         }
 
         public static void DeleteFile(this IWebHostEnvironment env, string name, string extension)
         {
-            string filePath = env.GetFilePath(name, extension);
+            string filePath = env.GetFilePath(name + extension);
             System.IO.File.Delete(filePath);
         }
 

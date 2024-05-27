@@ -6,9 +6,10 @@ namespace CustomCADSolutions.Core.Models
 {
     public class CadModel
     {
-        [Key]
+        [Required]
         public int Id { get; set; }
 
+        [Required]
         public string Extension { get; set; } = null!;
 
         [Required(ErrorMessage = RequiredErrorMessage)]

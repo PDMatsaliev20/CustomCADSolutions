@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using CustomCADSolutions.App.Hubs;
 using Stripe;
+using NuGet.Packaging.Signing;
+using System.Text.RegularExpressions;
 
 namespace CustomCADSolutions.App.Controllers
 {
@@ -22,7 +24,7 @@ namespace CustomCADSolutions.App.Controllers
         private readonly ICadService cadService;
         private readonly ICategoryService categoryService;
         private readonly CadsHubHelper statisticsService;
-        
+
         // Addons
         private readonly IWebHostEnvironment env;
         private readonly ILogger logger;
@@ -104,16 +106,9 @@ namespace CustomCADSolutions.App.Controllers
         }
 
         [HttpPost]
-        [DisableRequestSizeLimit]
+        [RequestSizeLimit(150_000_000)]
         public async Task<IActionResult> Add(CadAddModel input)
         {
-            int maxFileSize = 10_000_000;
-            if (input.CadFile.Length > maxFileSize)
-            {
-                ModelState.AddModelError(nameof(input.CadFile),
-                    $"3d model cannot be over {maxFileSize / 1_000_000}MB");
-            }
-
             if (!ModelState.IsValid)
             {
                 input.Categories = await categoryService.GetAllAsync();
@@ -121,15 +116,59 @@ namespace CustomCADSolutions.App.Controllers
             }
 
             CadModel model = mapper.Map<CadModel>(input);
-            model.CreatorId = User.GetId(); 
+            model.CreatorId = User.GetId();
             model.IsValidated = User.IsInRole(Designer);
             model.CreationDate = DateTime.Now;
-            model.Extension = input.CadFile.GetFileExtension();
 
-            int cadId = await cadService.CreateAsync(model);
-            await env.UploadCadAsync(input.CadFile, cadId, input.Name);
+            if (input.CadFolder != null)
+            {
+                string[] cadFormats = [".gltf", ".glb"];
+
+                IFormFile cad = input.CadFolder
+                    .Single(f => cadFormats.Contains(f.GetFileExtension()));
+
+                Regex regex = new(@"^\w+/");
+                string partToRemove = regex.Match(cad.FileName).Value;
+                string cadPath = cad.FileName[partToRemove.Length..];
+
+                model.Extension = cad.GetFileExtension();
+                int cadId = await cadService.CreateAsync(model);
+
+                string directory = env.GetFilePath(input.Name + cadId);
+                Directory.CreateDirectory(directory);
+
+                string fullCadPath = Path.Combine(directory, cadPath);
+                using FileStream cadStream = new(fullCadPath, FileMode.Create);
+                await cad.CopyToAsync(cadStream);
+
+                foreach (IFormFile file in input.CadFolder.Where(f => f != cad))
+                {
+                    partToRemove = regex.Match(file.FileName).Value;
+                    string filePath = file.FileName[partToRemove.Length..];
+
+                    Regex newRegex = new(@"/?\w+.\w+$");
+                    string fileName = newRegex.Match(filePath).Value;
+
+                    string folders = filePath.Substring(0, filePath.Length - fileName.Length);
+                    if (!string.IsNullOrWhiteSpace(folders))
+                    {
+                        Directory.CreateDirectory(Path.Combine(directory, folders));
+                    }
+
+                    string fullFilePath = Path.Combine(directory, filePath);
+                    using FileStream stream = new(fullFilePath, FileMode.Create);
+                    await file.CopyToAsync(stream);
+                }
+            }
+            else if (input.CadFile != null)
+            {
+                model.Extension = input.CadFile.GetFileExtension();
+                int cadId = await cadService.CreateAsync(model);
+                await env.UploadFileAsync(input.CadFile, input.Name + cadId + input.CadFile.GetFileExtension());
+            }
+            else return BadRequest();
+
             await statisticsService.SendStatistics(User.GetId());
-
             return RedirectToAction(nameof(Index));
         }
 

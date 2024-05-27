@@ -141,6 +141,9 @@
   <data name="File" xml:space="preserve">
     <value>3D Model File</value>
   </data>
+  <data name="Folder" xml:space="preserve">
+    <value>Folder with 3D Model</value>
+  </data>
   <data name="Name" xml:space="preserve">
     <value>Name</value>
   </data>

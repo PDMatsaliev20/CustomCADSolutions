@@ -8,6 +8,7 @@ namespace CustomCADSolutions.App.Resources.Shared
         public static string Category { get => GetString(nameof(Category)); }
         public static string Description { get => GetString(nameof(Description)); }
         public static string File { get => GetString(nameof(File)); } 
+        public static string Folder { get => GetString(nameof(Folder)); } 
         public static string Axis { get => GetString(nameof(Axis)); }
         public static string Username { get => GetString(nameof(Username)); }
         public static string Email { get => GetString(nameof(Email)); }

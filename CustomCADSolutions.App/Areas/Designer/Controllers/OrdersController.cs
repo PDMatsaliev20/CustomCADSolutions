@@ -91,7 +91,7 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
             };
 
             int cadId = await orderService.FinishOrderAsync(id, model);
-            await env.UploadCadAsync(cad.CadFile, cadId, cad.Name);
+            await env.UploadFileAsync(cad.CadFile, cad.Name + cadId + cad.CadFile.GetFileExtension());
 
             return RedirectToAction(nameof(All));
         }
