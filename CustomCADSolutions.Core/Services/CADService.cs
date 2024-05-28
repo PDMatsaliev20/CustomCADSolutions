@@ -118,6 +118,15 @@ namespace CustomCADSolutions.Core.Services
             return repository.Count<Cad>(cad => predicate(mapper.Map<CadModel>(cad)));
         }
 
+        public async Task SetPathAsync(int id, string path)
+        {
+            Cad cad = await repository.GetByIdAsync<Cad>(id)
+                ?? throw new KeyNotFoundException("No such Cad exists.");
+
+            cad.Path = path;
+            await repository.SaveChangesAsync();
+        }
+
         public IList<string> ValidateEntity(CadModel model)
         {
             var validationResults = new List<ValidationResult>();

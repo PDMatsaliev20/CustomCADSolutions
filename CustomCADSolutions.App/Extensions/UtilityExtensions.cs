@@ -3,6 +3,9 @@ using System.Security.Claims;
 using CustomCADSolutions.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Stripe;
+using CustomCADSolutions.Core.Services;
+using System.Text.RegularExpressions;
+using CustomCADSolutions.App.Models.Cads.Input;
 
 namespace CustomCADSolutions.App.Extensions
 {
@@ -11,31 +14,6 @@ namespace CustomCADSolutions.App.Extensions
         public static string GetId(this ClaimsPrincipal user) => user.FindFirstValue(ClaimTypes.NameIdentifier)!;
 
         public static IEnumerable<string> GetErrors(this ModelStateDictionary model) => model.Values.Select(v => v.Errors).SelectMany(ec => ec.Select(e => e.ErrorMessage));
-
-        public static string GetFilePath(this IWebHostEnvironment env, string fullName)
-            => Path.Combine(env.WebRootPath, "others", "cads", fullName);
-
-        public static string GetFileExtension(this IFormFile cad) 
-            => Path.GetExtension(cad.FileName);
-
-        public static async Task<string?> UploadFileAsync(this IWebHostEnvironment env, IFormFile cad, string filePath)
-        {
-            if (cad != null && cad.Length != 0)
-            {
-                string fullPath = env.GetFilePath(filePath);
-                using FileStream stream = new(fullPath, FileMode.Create);
-                await cad.CopyToAsync(stream);
-
-                return fullPath;
-            }
-            else return null;
-        }
-
-        public static void DeleteFile(this IWebHostEnvironment env, string name, string extension)
-        {
-            string filePath = env.GetFilePath(name + extension);
-            System.IO.File.Delete(filePath);
-        }
 
         public static async Task AddUserAsync(this UserManager<AppUser> userManager, string username, string email, string password, string role)
         {

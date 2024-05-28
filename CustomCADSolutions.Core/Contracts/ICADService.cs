@@ -35,6 +35,14 @@ namespace CustomCADSolutions.Core.Contracts
         int Count(Func<CadModel, bool> predicate);
 
         /// <summary>
+        ///     Sets the Cad's path in the wwwroot folder.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="path"></param>
+        /// <exception cref="KeyNotFoundException">if no Cad with the given id exists.</exception>
+        Task SetPathAsync(int id, string path);
+
+        /// <summary>
         ///     Creates the specified Cad in the Cads table.
         /// </summary>
         /// <param name="model"></param>

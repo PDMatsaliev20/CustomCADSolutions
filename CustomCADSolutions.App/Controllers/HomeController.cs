@@ -61,7 +61,7 @@ namespace CustomCADSolutions.App.Controllers
             {
                 Id = 0,
                 Name = "Laptop",
-                Extension = "glb",
+                Extension = ".glb",
                 Coords = [23, 15, 20]
             });
         }
@@ -105,7 +105,8 @@ namespace CustomCADSolutions.App.Controllers
             try
             {
                 CadModel model = await cadService.GetByIdAsync(id);
-                IEnumerable<OrderModel> orders = await orderService.GetAllAsync();
+                IEnumerable<OrderModel> orders = (await orderService.GetAllAsync())
+                    .Where(o => o.CadId == id);
 
                 bool hasPermission =
                     orders.Select(o => o.BuyerId).Contains(User.GetId())
@@ -116,22 +117,46 @@ namespace CustomCADSolutions.App.Controllers
                     return StatusCode(402);
                 }
 
-                string relativePath = Path.Combine("others", "cads", $"{model.Name}{model.Id}{model.Extension}");
-                string downloadName = $"{model.Name}{model.Extension}";
-                return File(relativePath, "application/octet-stream", downloadName);
-
-                MemoryStream stream = new();
-                using ZipArchive archive = new(stream, ZipArchiveMode.Create, true);
-                string[] files = Directory.GetFiles(relativePath, "*", SearchOption.AllDirectories);
-                foreach (string file in files)
+                if (!model.IsFolder)
                 {
-                    string entryName = Path.GetRelativePath(relativePath, file);
-                    archive.CreateEntryFromFile(file, entryName);
+                    string downloadName = $"{model.Name}{model.Extension}";
+                    return File(model.Path, "application/octet-stream", downloadName);
                 }
+                else
+                {
+                    string path = Path.Combine(env.WebRootPath, "others", "cads", model.Name + model.Id);
+                    if (!Directory.Exists(path))
+                    {
+                        return NotFound();
+                    }
 
-                stream.Position = 0;
-                string zipFileName = Path.GetFileName(relativePath.TrimEnd(Path.DirectorySeparatorChar)) + ".zip";
-                return File(stream, "application/zip", zipFileName);
+                    string temp = Path.GetTempFileName();
+                    try
+                    {
+                        using (FileStream zipToOpen = new(temp, FileMode.OpenOrCreate))
+                        {
+                            using ZipArchive archive = new(zipToOpen, ZipArchiveMode.Create, true);
+
+                            string[] files = Directory.GetFiles(path, "*", SearchOption.AllDirectories);
+                            foreach (string file in files)
+                            {
+                                string entryName = Path.GetRelativePath(path, file);
+                                archive.CreateEntryFromFile(file, entryName);
+                            }
+                        }
+                        FileStream stream = new(temp, FileMode.Open, FileAccess.Read, FileShare.None);
+                        return File(stream, "application/zip", $"{model.Name}.zip");
+                    }
+                    catch (Exception ex)
+                    {
+                        if (System.IO.File.Exists(temp))
+                        {
+                            System.IO.File.Delete(temp);
+                        }
+
+                        return StatusCode(500, ex.Message);
+                    }
+                }
             }
             catch (KeyNotFoundException)
             {

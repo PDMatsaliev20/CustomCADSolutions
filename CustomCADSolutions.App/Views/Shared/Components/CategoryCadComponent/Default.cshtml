@@ -14,15 +14,13 @@
 
     const cad = {
         id: @Model.Id,
-        name: '@Model.Name',
-        extension: '@Model.Extension',
         x: @Model.Coords[0],
         y: @Model.Coords[1],
         z: @Model.Coords[2],
         fov: @Model.Fov,
     };
 
-        loadModel(cad);
+    loadModel(cad, '@Model.Path');
 </script>
 <div class="container col-md-4 col-12 mt-4">
     <div class="card">

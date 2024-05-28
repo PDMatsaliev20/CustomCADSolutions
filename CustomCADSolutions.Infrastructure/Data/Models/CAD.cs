@@ -19,6 +19,12 @@ namespace CustomCADSolutions.Infrastructure.Data.Models
         [Required]
         [Comment("Extension name of 3D Model")]
         public string Extension { get; set; } = null!;
+
+        [Required]
+        public bool IsFolder { get; set; }
+
+        [Comment("Path to 3D Model")]
+        public string? Path { get; set; } 
         
         [Required]
         [Comment("Is 3D Model validated")]

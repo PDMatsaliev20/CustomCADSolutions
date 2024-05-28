@@ -12,6 +12,11 @@ namespace CustomCADSolutions.Core.Models
         [Required]
         public string Extension { get; set; } = null!;
 
+        [Required]
+        public bool IsFolder { get; set; } = false;
+
+        public string Path { get; set; } = null!;
+
         [Required(ErrorMessage = RequiredErrorMessage)]
         [StringLength(CadConstants.NameMaxLength, MinimumLength = CadConstants.NameMinLength, ErrorMessage = LengthErrorMessage)]
         public string Name { get; set; } = null!;

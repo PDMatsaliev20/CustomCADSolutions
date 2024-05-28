@@ -6,21 +6,18 @@
     int id = Model.Id;
     string name = Model.Name;
 }
-
 <script type="module">
     import { loadModel } from '../../../js/site.mjs';
 
     const cad = {
         id: @Model.Id,
-        name: '@Model.Name',
-        extension: '@Model.Extension',
         x: @Model.Coords[0],
         y: @Model.Coords[1],
         z: @Model.Coords[2],
         fov: @Model.Fov,
     };
 
-    loadModel(cad);
+    loadModel(cad, '@Model.Path'.replace('\\', '\\\\'));
 </script>
 <div class="container col-md-8 col-12 mt-4">
     <div id="model-@Model.Id"></div>

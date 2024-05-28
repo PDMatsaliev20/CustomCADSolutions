@@ -150,7 +150,11 @@ namespace CustomCADSolutions.Infrastructure.Data.Migrations
 
                     b.Property<string>("Extension")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasComment("Extension name of 3D Model");
+
+                    b.Property<bool>("IsFolder")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsValidated")
                         .HasColumnType("bit")
@@ -161,6 +165,10 @@ namespace CustomCADSolutions.Infrastructure.Data.Migrations
                         .HasMaxLength(18)
                         .HasColumnType("nvarchar(18)")
                         .HasComment("Name of 3D Model");
+
+                    b.Property<string>("Path")
+                        .HasColumnType("nvarchar(max)")
+                        .HasComment("Path to 3D Model");
 
                     b.Property<decimal>("Price")
                         .HasPrecision(18, 2)

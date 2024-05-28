@@ -14,6 +14,7 @@ using CustomCADSolutions.App.Hubs;
 using Stripe;
 using NuGet.Packaging.Signing;
 using System.Text.RegularExpressions;
+using CustomCADSolutions.Infrastructure.Data.Models;
 
 namespace CustomCADSolutions.App.Controllers
 {
@@ -120,53 +121,41 @@ namespace CustomCADSolutions.App.Controllers
             model.IsValidated = User.IsInRole(Designer);
             model.CreationDate = DateTime.Now;
 
-            if (input.CadFolder != null)
+            try
             {
-                string[] cadFormats = [".gltf", ".glb"];
-
-                IFormFile cad = input.CadFolder
-                    .Single(f => cadFormats.Contains(f.GetFileExtension()));
-
-                Regex regex = new(@"^\w+/");
-                string partToRemove = regex.Match(cad.FileName).Value;
-                string cadPath = cad.FileName[partToRemove.Length..];
-
-                model.Extension = cad.GetFileExtension();
-                int cadId = await cadService.CreateAsync(model);
-
-                string directory = env.GetFilePath(input.Name + cadId);
-                Directory.CreateDirectory(directory);
-
-                string fullCadPath = Path.Combine(directory, cadPath);
-                using FileStream cadStream = new(fullCadPath, FileMode.Create);
-                await cad.CopyToAsync(cadStream);
-
-                foreach (IFormFile file in input.CadFolder.Where(f => f != cad))
+                if (input.CadFolder != null)
                 {
-                    partToRemove = regex.Match(file.FileName).Value;
-                    string filePath = file.FileName[partToRemove.Length..];
+                    string[] cadFormats = [".gltf", ".glb"];
+                    IFormFile cad = input.CadFolder!
+                        .Single(f => cadFormats.Contains(f.GetFileExtension()));
 
-                    Regex newRegex = new(@"/?\w+.\w+$");
-                    string fileName = newRegex.Match(filePath).Value;
-
-                    string folders = filePath.Substring(0, filePath.Length - fileName.Length);
-                    if (!string.IsNullOrWhiteSpace(folders))
-                    {
-                        Directory.CreateDirectory(Path.Combine(directory, folders));
-                    }
-
-                    string fullFilePath = Path.Combine(directory, filePath);
-                    using FileStream stream = new(fullFilePath, FileMode.Create);
-                    await file.CopyToAsync(stream);
+                    model.IsFolder = true;
+                    model.Extension = cad.GetFileExtension();
+                    int cadId = await cadService.CreateAsync(model);
+                    string cadPath = await env.UploadCadFolderAsync(cad, model.Name + cadId, input.CadFolder.Where(f => f != cad))
+                        ?? throw new NullReferenceException("Cad is null!");
+                    await cadService.SetPathAsync(cadId, cadPath);
                 }
+                else if (input.CadFile != null)
+                {
+                    model.Extension = input.CadFile.GetFileExtension();
+                    int cadId = await cadService.CreateAsync(model);
+                    string cadPath = await env.UploadCadAsync(input.CadFile, input.Name + cadId + input.CadFile.GetFileExtension())
+                        ?? throw new NullReferenceException("Cad is null!");
+                    await cadService.SetPathAsync(cadId, cadPath);
+                }
+                else throw new ArgumentNullException("Upload either File or Folder");
             }
-            else if (input.CadFile != null)
+            catch (NullReferenceException)
             {
-                model.Extension = input.CadFile.GetFileExtension();
-                int cadId = await cadService.CreateAsync(model);
-                await env.UploadFileAsync(input.CadFile, input.Name + cadId + input.CadFile.GetFileExtension());
+                input.Categories = await categoryService.GetAllAsync();
+                return View(input);
             }
-            else return BadRequest();
+            catch (ArgumentNullException)
+            {
+                input.Categories = await categoryService.GetAllAsync();
+                return View(input);
+            }
 
             await statisticsService.SendStatistics(User.GetId());
             return RedirectToAction(nameof(Index));
@@ -204,7 +193,13 @@ namespace CustomCADSolutions.App.Controllers
         {
             CadModel cad = await cadService.GetByIdAsync(id);
 
-            env.DeleteFile(cad.Name + cad.Id, cad.Extension);
+            if (cad.IsFolder)
+            {
+                string path = Regex.Match(cad.Path, $"others/cads/{cad.Name}{cad.Id}").Value;
+                env.DeleteFolder(path);
+            }
+            else env.DeleteFile(cad.Path);
+
             await cadService.DeleteAsync(id);
             await statisticsService.SendStatistics(User.GetId());
 
