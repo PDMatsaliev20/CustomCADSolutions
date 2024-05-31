@@ -8,7 +8,7 @@ function Header({ isAuthenticated, setIsAuthenticated }) {
     const navigate = useNavigate();
 
     const logout = async () => {
-        await axios.post('https://localhost:7127/API/Account/Logout');
+        await axios.post('https://localhost:7127/API/Identity/Logout');
     
         localStorage.removeItem('token');
         localStorage.removeItem('username');

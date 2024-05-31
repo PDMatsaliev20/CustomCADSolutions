@@ -5,6 +5,7 @@ import LoginPage from '../auth/login'
 import RegisterPage from '../auth/register'
 import ChooseRolePage from '../auth/choose-role'
 import PrivacyPolicyPage from '../public/policy'
+import AboutUsPage from '../public/about'
 import OrdersPage from '../private/orders'
 import CustomOrderPage from '../private/custom-order'
 import GalleryOrderPage from '../private/gallery-order'
@@ -18,7 +19,7 @@ function Body({ setIsAuthenticated }) {
     const navigate = useNavigate();
 
     const register = async (user, userRole) => {
-        const { token, role, username } = await axios.post(`https://localhost:7127/API/Account/Register/${userRole}`, user)
+        const { token, role, username } = await axios.post(`https://localhost:7127/API/Identity/Register/${userRole}`, user)
             .then(response => response.data);
 
         localStorage.setItem('token', token);
@@ -31,7 +32,7 @@ function Body({ setIsAuthenticated }) {
     };
 
     const login = async (user) => {
-        const { token, role, username } = await axios.post(`https://localhost:7127/API/Account/Login`, user)
+        const { token, role, username } = await axios.post(`https://localhost:7127/API/Identity/Login`, user)
             .then(response => response.data);
 
         localStorage.setItem('token', token);
@@ -46,7 +47,7 @@ function Body({ setIsAuthenticated }) {
     const isInRole = (role) => localStorage.getItem('role') === role;
 
     return (
-        <main className="mx-16 pb-20">
+        <main className="mx-16 pb-28">
             <Routes>
                 <Route path="*" element={<p className="text-center">404 not found bro</p>} />
 
@@ -58,6 +59,7 @@ function Body({ setIsAuthenticated }) {
                 <Route path="/register" element={<ChooseRolePage />} />
                 <Route path="/register/:role" element={<RegisterPage onRegister={register} />} />
                 <Route path="/policy" element={<PrivacyPolicyPage />} />
+                <Route path="/about" element={<AboutUsPage />} />
 
                 { /* Private part of CustomCADSolutions */}
                 <Route path="/orders" element={isInRole('Contributor') ?
