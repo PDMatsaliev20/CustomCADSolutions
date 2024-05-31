@@ -4,6 +4,7 @@ import Body from './layout/body'
 import Footer from './layout/footer'
 import { BrowserRouter } from 'react-router-dom'
 import { useState, useEffect } from 'react'
+import './index.css'
 
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);

@@ -3,20 +3,20 @@ import { Link } from 'react-router-dom'
 function Footer() {
     return (
         <footer className="absolute bottom-0 w-full h-24 border-t-2 border-gray-400 rounded-t-lg bg-indigo-100 ">
-            <div className="mt-6 flex justify-evenly items-center text-sm">
-                <div className="underline font-semibold">
+            <div className="mt-6 flex justify-evenly items-center">
+                <section className="underline font-semibold text-sm">
                     <p className="mb-2 text-center"><Link to="/policy">Privacy Policy</Link></p>
                     <p className="mt-2 text-center"><Link to="/about">About Us</Link></p>
-                </div>
+                </section>
                 <section>
-                    <p className="text-lg font-black">
+                    <p className="text-lg font-bold">
                         &copy; 2023-{new Date().getFullYear()} -
-                        <Link to="/"> CustomCADSolutions</Link>
+                        <Link to="/" className="font-black"> CustomCADSolutions</Link>
                     </p>
                 </section>
-                <p className="italic">
+                <section className="italic">
                     <span>Contacts:</span>
-                    <section>
+                    <div>
                         <a href="https://www.instagram.com/customcadsolutions/">
                             <i className="ms-1 fa fa-instagram"></i>
                         </a>
@@ -29,8 +29,8 @@ function Footer() {
                         <a href="https://github.com/NinjataWRLD/CustomCADSolutions/">
                             <i className="ms-1 fa fa-github"></i>
                         </a>
-                    </section>
-                </p>
+                    </div>
+                </section>
             </div>
         </footer>
     );
