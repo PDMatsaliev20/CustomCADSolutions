@@ -1,11 +1,11 @@
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { useState } from 'react'
 
 function RegisterPage({ onRegister }) {
     const { role } = useParams();
 
-    const isClient = role.toLowerCase() == "client";
-    const isContributor = role.toLowerCase() == "contributor";
+    const isClient = role.toLowerCase() === "client";
+    const isContributor = role.toLowerCase() === "contributor";
 
     if (!(isClient || isContributor)) {
         return <p className="text-4xl text-center font-bold">Can't do that, sorry</p>;
@@ -27,11 +27,11 @@ function RegisterPage({ onRegister }) {
     }
 
     return (
-        <section className="flex flex-col items-center gap-8 mt-8">
+        <section className="flex flex-col items-center my-12">
             <h1 className="text-4xl text-center font-bold">
                 Register as a {role == 'client' ? 'Client' : 'Contributor'}!
             </h1>
-            <article className="w-5/12 px-12 py-6 bg-indigo-400 rounded-lg">
+            <section className="w-6/12 pt-8 pb-2 px-12 mt-8 bg-indigo-400 rounded-md">
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
                         <label htmlFor="text" className="block text-indigo-50">Username</label>
@@ -40,7 +40,7 @@ function RegisterPage({ onRegister }) {
                             id="username"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
-                            className="text-indigo-900 w-full  mt-1 p-2 px-4 border border-indigo-300 rounded focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                            className="text-indigo-900 w-full mt-1 p-2 px-4 border border-indigo-300 rounded focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                             placeholder="Your_Username123"
                             required
                         />
@@ -64,12 +64,12 @@ function RegisterPage({ onRegister }) {
                             id="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className="text-indigo-900 w-full  mt-1 p-2 px-4 border border-indigo-300 rounded focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                            className="text-indigo-900 w-full mt-1 p-2 px-4 border border-indigo-300 rounded focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                             required
-                            placeholder="my_sercret_password_123"
+                            placeholder="your_sercret_password_123"
                         />
                     </div>
-                    <div className="mb-4">
+                    <div className="mb-2">
                         <label htmlFor="confirmPassword" className="block text-indigo-50">Confirm Password</label>
                         <input
                             type="password"
@@ -78,19 +78,24 @@ function RegisterPage({ onRegister }) {
                             onChange={(e) => setConfirmPassword(e.target.value)}
                             className="text-indigo-900 w-full  mt-1 p-2 px-4 border border-indigo-300 rounded focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                             required
-                            placeholder="my_sercret_password_123"
+                            placeholder="your_sercret_password_123"
                         />
                     </div>
-                    <div className="pt-3 flex justify-center">
+                    <div className="py-4 flex flex-col justify-center items-center gap-3 text-indigo-50">
                         <button
                             type="submit"
                             className="bg-indigo-600 text-indigo-50 py-2 px-4 rounded hover:bg-indigo-700"
                         >
                             Register
                         </button>
+                        <button>
+                            <Link to={isClient ? '/register/contributor' : '/register/client'}>
+                                or switch roles
+                            </Link>
+                        </button>
                     </div>
                 </form>
-            </article>
+            </section>
         </section>
     );
 }
