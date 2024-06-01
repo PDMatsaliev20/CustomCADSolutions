@@ -1,5 +1,6 @@
 import Path from '../components/path'
 import BtnLink from '../components/btn-link'
+import Cad from '../cad'
 
 function HomePage() {
 
@@ -29,8 +30,10 @@ function HomePage() {
                         <BtnLink to="/register/contributor" text="Looking to sell" />
                     </div>
                 </article>
-                <aside className="h-full flex items-center">
-                    <iframe className="h-full w-96" mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" src="https://sketchfab.com/models/99bfe75ebd734fa3832a63e02e2cacf7/embed?autospin=1&autostart=1&transparent=1&ui_animations=0&ui_infos=0&ui_stop=0&ui_inspector=0&ui_watermark_link=0&ui_watermark=0&ui_ar=0&ui_help=0&ui_settings=0&ui_vr=0&ui_fullscreen=0&ui_annotations=0&ui_color=93c5fd"> </iframe>
+                <aside className="h-96 w-96 flex items-center">    
+                    <div id="model-253" className="w-full h-full">
+                        <Cad id={253} isHomeCad={true} />
+                    </div>
                 </aside>
             </section>
             <hr className="h-px border-0 bg-black" />
