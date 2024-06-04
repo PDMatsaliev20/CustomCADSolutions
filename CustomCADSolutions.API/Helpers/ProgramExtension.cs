@@ -80,7 +80,8 @@ namespace Microsoft.Extensions.DependencyInjection
                 {
                     builder.WithOrigins("https://localhost:5173")
                            .AllowAnyHeader()
-                           .AllowAnyMethod();
+                            .AllowAnyMethod()
+                            .AllowCredentials();
                 });
             });
         }
@@ -109,29 +110,6 @@ namespace Microsoft.Extensions.DependencyInjection
             });
 
             return services;
-        }
-
-        private static byte[] GetJwtSecretKey(this IConfiguration config)
-        {
-            string? secretKey = config["JwtSettings:SecretKey"];
-            if (string.IsNullOrEmpty(secretKey))
-            {
-                secretKey = GenerateSecretKey(32);
-                config["JwtSettings:SecretKey"] = secretKey;
-            }
-            byte[] keyBytes = Encoding.ASCII.GetBytes(secretKey);
-
-            return keyBytes;
-        }
-
-        private static string GenerateSecretKey(int keyLengthInBytes)
-        {
-            byte[] keyBytes = new byte[keyLengthInBytes];
-            using RandomNumberGenerator rng = RandomNumberGenerator.Create();
-            rng.GetBytes(keyBytes);
-
-            string secretKey = Convert.ToBase64String(keyBytes);
-            return secretKey;
         }
 
         public static void AddRoles(this IServiceCollection services, IEnumerable<string> roles)

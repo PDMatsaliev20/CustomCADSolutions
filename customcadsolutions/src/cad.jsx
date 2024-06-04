@@ -4,7 +4,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import axios from 'axios'
 import { useState, useEffect } from 'react'
 
-function Cad({ id, isHomeCad = false }) {
+function Cad({ id, isHomeCad = false, token }) {
 
     const [model, setModel] = useState({});
 
@@ -26,7 +26,6 @@ function Cad({ id, isHomeCad = false }) {
             // Renderer
             const parentContainer = document.getElementById(`model-${id}`);
             if (parentContainer.children.length > 0) {
-                console.log('Cad already loaded');
                 return;
             }
 
@@ -66,6 +65,11 @@ function Cad({ id, isHomeCad = false }) {
             const controls = new OrbitControls(camera, renderer.domElement);
             controls.enableDamping = true;
             controls.dampingFactor = 0.1;
+            controls.mouseButtons = {
+                LEFT: THREE.MOUSE.ROTATE,
+                MIDDLE: THREE.MOUSE.DOLLY,
+                RIGHT: THREE.MOUSE.PAN
+            }
 
 
             // Animation
@@ -92,13 +96,19 @@ function Cad({ id, isHomeCad = false }) {
         try {
             const headers = {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('token')
+                'Authorization': 'Bearer ' + token
             };
 
-            const url = isHomeCad ? `https://localhost:7127/API/Home/Cad` : `https://localhost:7127/API/Cads/${id}`;
-            await axios.get(url, { headers })
-                .then(response => setModel(response.data))
-                .catch(error => console.error(error));
+
+            if (isHomeCad) {
+                await axios.get('https://localhost:7127/API/Home/Cad')
+                    .then(response => setModel(response.data))
+                    .catch(error => console.error(error));
+            } else {
+                await axios.get(`https://localhost:7127/API/Cads/${id}`, { headers })
+                    .then(response => setModel(response.data))
+                    .catch(error => console.error(error));
+            }
 
         } catch (error) {
             console.error('Error fetching CAD:', error);

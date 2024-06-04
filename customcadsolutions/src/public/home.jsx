@@ -32,7 +32,7 @@ function HomePage() {
                 </article>
                 <aside className="h-96 w-96 flex items-center">    
                     <div id="model-253" className="w-full h-full">
-                        <Cad id={253} isHomeCad={true} />
+                        <Cad id={253} isHomeCad />
                     </div>
                 </aside>
             </section>

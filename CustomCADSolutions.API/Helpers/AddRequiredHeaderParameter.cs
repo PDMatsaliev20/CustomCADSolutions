@@ -26,7 +26,7 @@ namespace Microsoft.Extensions.DependencyInjection
                                 Name = "Authorization", 
                                 In = ParameterLocation.Header, 
                                 BearerFormat = "Bearer token", 
-                                Reference = new OpenApiReference 
+                                Reference = new() 
                                 {
                                     Type = ReferenceType.SecurityScheme, 
                                     Id = "Bearer" 

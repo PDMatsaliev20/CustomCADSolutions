@@ -13,6 +13,27 @@ namespace CustomCADSolutions.API.Controllers
     [ApiController]
     public class IdentityController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IConfiguration config) : ControllerBase
     {
+        [HttpGet("IsAuthenticated")]
+        public ActionResult<bool> IsAuthenticated()
+        {
+            KeyValuePair<string, string>? nullableCookie = Request.Cookies.FirstOrDefault(c => c.Key == "token");
+
+            if (nullableCookie == null || !nullableCookie.HasValue)
+            {
+                return Ok(new { isAuthenticated = false });
+            }
+            KeyValuePair<string, string> cookie = nullableCookie.Value;
+
+            string jwt = cookie.Value;
+            string key = config["JwtSettings:SecretKey"] ?? throw new Exception("SecretKey not provided.");
+            string issuer = config["JwtSettings:Issuer"] ?? throw new Exception("Issuer not provided.");
+            string audience = config["JwtSettings:Audience"] ?? throw new Exception("Audience not provided.");
+            bool tokenIsValid = JwtExtensions.IsTokenValid(jwt, key, issuer, audience);
+
+            return Ok(new { isAuthenticated = tokenIsValid });
+        }
+        
+
         [HttpPost("Register/{role}")]
         [Consumes("application/json")]
         public async Task<ActionResult> Register([FromRoute] string role, [FromBody] UserRegisterModel model)
@@ -79,35 +100,12 @@ namespace CustomCADSolutions.API.Controllers
             try
             {
                 await signInManager.SignOutAsync();
-                return Ok("Succeeded in logging out.");
+                return Ok("Bye-bye.");
             }
             catch
             {
-                return BadRequest("Failed to log out.");
-            }
+                return BadRequest("You're still here?");
         }
-
-        private async Task<string> GenerateJwtTokenAsync(AppUser user)
-        {
-            byte[] key = Encoding.ASCII.GetBytes(config["JwtSettings:SecretKey"]!);
-
-            JwtSecurityTokenHandler tokenHandler = new();
-
-            SecurityToken token = tokenHandler.CreateToken(new()
-            {
-                Subject = new(new Claim[]
-                {
-                    new(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                    new(ClaimTypes.Email, user.Email!),
-                    new(ClaimTypes.Name, user.UserName!),
-                    new(ClaimTypes.Role, (await userManager.GetRolesAsync(user)).FirstOrDefault() ?? string.Empty)
-                }),
-                Expires = DateTime.UtcNow.AddDays(30),
-                SigningCredentials = new(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
-                Audience = config["JwtSettings:Audience"],
-                Issuer = config["JwtSettings:Issuer"],
-            });
-            return tokenHandler.WriteToken(token);
         }
     }
 }
