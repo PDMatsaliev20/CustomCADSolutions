@@ -11,10 +11,7 @@ function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     useEffect(() => {
-        const token = localStorage.getItem('token');
-        if (typeof token === "string" && token.length > 0) {
-            setIsAuthenticated(true);
-        }
+        checkIfAuthenticated();
     }, [isAuthenticated]);
 
     return (
@@ -22,11 +19,20 @@ function App() {
             <BrowserRouter>
                 <Header isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} />
                 <Navbar />
-                <Body setIsAuthenticated={setIsAuthenticated} />
+                <Body isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} />
                 <Footer />
             </BrowserRouter>
         </div>
     );
+
+    async function checkIfAuthenticated() {
+        const response = await axios.get('https://localhost:7127/API/Identity/IsAuthenticated', {
+            withCredentials: true
+        }).catch(e => console.error(e));
+        if (response.data) {
+            setIsAuthenticated(true);
+        }
+    }
 }
 
 export default App;

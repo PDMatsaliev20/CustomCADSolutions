@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using CustomCADSolutions.Infrastructure.Data.Models;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Text;
 using CustomCADSolutions.API.Models.Users;
 using Microsoft.AspNetCore.Identity;
-using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using CustomCADSolutions.API.Helpers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CustomCADSolutions.API.Controllers
 {
@@ -13,36 +13,25 @@ namespace CustomCADSolutions.API.Controllers
     [ApiController]
     public class IdentityController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IConfiguration config) : ControllerBase
     {
-        [HttpGet("IsAuthenticated")]
-        public ActionResult<bool> IsAuthenticated()
+        private readonly AuthenticationProperties authProps = new()
         {
-            KeyValuePair<string, string>? nullableCookie = Request.Cookies.FirstOrDefault(c => c.Key == "token");
+            IsPersistent = true,
+            ExpiresUtc = DateTimeOffset.UtcNow.AddDays(1)
+        };
+        private readonly AuthenticationProperties rememberMeAuthProp = new()
+        {
+            IsPersistent = true,
+            ExpiresUtc = DateTimeOffset.UtcNow.AddMonths(1)
+        };
 
-            if (nullableCookie == null || !nullableCookie.HasValue)
-            {
-                return Ok(new { isAuthenticated = false });
-            }
-            KeyValuePair<string, string> cookie = nullableCookie.Value;
-
-            string jwt = cookie.Value;
-            string key = config["JwtSettings:SecretKey"] ?? throw new Exception("SecretKey not provided.");
-            string issuer = config["JwtSettings:Issuer"] ?? throw new Exception("Issuer not provided.");
-            string audience = config["JwtSettings:Audience"] ?? throw new Exception("Audience not provided.");
-            bool tokenIsValid = JwtExtensions.IsTokenValid(jwt, key, issuer, audience);
-
-            return Ok(new { isAuthenticated = tokenIsValid });
-        }
-        
+        [Authorize]
+        [HttpGet("IsAuthenticated")]
+        public ActionResult Auth() => Ok("You're authenticated!");
 
         [HttpPost("Register/{role}")]
         [Consumes("application/json")]
         public async Task<ActionResult> Register([FromRoute] string role, [FromBody] UserRegisterModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest();
-            }
-
             AppUser user = new()
             {
                 UserName = model.Username,
@@ -64,34 +53,31 @@ namespace CustomCADSolutions.API.Controllers
                 return BadRequest();
             }
             await userManager.AddToRoleAsync(user, role);
-            await signInManager.SignInAsync(user, isPersistent: false);
+            await user.SignIn(signInManager, authProps);
 
-            string token = await GenerateJwtTokenAsync(user);
-            return Ok(new { token, role, username = user.UserName});
+            return Ok("Welcome!");
         }
 
         [HttpPost("Login")]
         [Consumes("application/json")]
         public async Task<ActionResult> Login([FromBody] UserLoginModel model)
         {
-            if (!ModelState.IsValid)
+            AppUser? user = await userManager.FindByNameAsync(model.Username);
+
+            if (user == null)
             {
-                return BadRequest();
+                return BadRequest("Invalid Username.");
             }
 
-            var result = await signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, lockoutOnFailure: false);
-            if (!result.Succeeded)
+            if (!await userManager.CheckPasswordAsync(user, model.Password))
             {
-                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                return BadRequest();
+                return Unauthorized("Invalid Password.");
             }
 
-            AppUser user = (await userManager.FindByNameAsync(model.Username))!;
+            await user.SignIn(signInManager,
+                model.RememberMe ? rememberMeAuthProp : authProps);
 
-            string token = await GenerateJwtTokenAsync(user);
-            string role = (await userManager.GetRolesAsync(user)).Single();
-
-            return Ok(new { token, role, username = user.UserName });
+            return Ok("Welcome back!");
         }
 
         [HttpPost("Logout")]
@@ -99,13 +85,13 @@ namespace CustomCADSolutions.API.Controllers
         {
             try
             {
-                await signInManager.SignOutAsync();
+                await signInManager.Context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
                 return Ok("Bye-bye.");
             }
             catch
             {
                 return BadRequest("You're still here?");
-        }
+            }
         }
     }
 }

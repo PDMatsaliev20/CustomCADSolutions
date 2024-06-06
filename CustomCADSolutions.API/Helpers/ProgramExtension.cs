@@ -5,12 +5,7 @@ using CustomCADSolutions.Core.Contracts;
 using CustomCADSolutions.Core.Services;
 using CustomCADSolutions.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using System.Security.Cryptography;
-using Microsoft.OpenApi.Models;
-using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -55,21 +50,7 @@ namespace Microsoft.Extensions.DependencyInjection
         public static void AddApiConfigurations(this IServiceCollection services)
         {
             services.AddEndpointsApiExplorer();
-            services.AddSwaggerGen(options =>
-            {
-                options.OperationFilter<AddRequiredHeaderParameter>();
-
-                OpenApiSecurityScheme securityScheme = new()
-                {
-                    Name = "Authorization",
-                    Type = SecuritySchemeType.Http,
-                    Scheme = "Bearer",
-                    BearerFormat = "JWT",
-                    In = ParameterLocation.Header,
-                    Description = "JWT Authorization header. \r\n\r\n Enter the token in the text input below.",
-                };
-                options.AddSecurityDefinition("Bearer", securityScheme);
-            });
+            services.AddSwaggerGen();
         }
 
         public static void AddCorsForReact(this IServiceCollection services)
@@ -79,35 +60,26 @@ namespace Microsoft.Extensions.DependencyInjection
                 opt.AddDefaultPolicy(builder =>
                 {
                     builder.WithOrigins("https://localhost:5173")
-                           .AllowAnyHeader()
+                            .AllowAnyHeader()
                             .AllowAnyMethod()
                             .AllowCredentials();
                 });
             });
         }
 
-        public static IServiceCollection AddAuthWithJwt(this IServiceCollection services, IConfiguration config)
+        public static IServiceCollection AddAuthWithCookie(this IServiceCollection services)
         {
-            services.AddAuthentication(opt =>
-            {
-                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                byte[] key = config.GetJwtSecretKey();
-
-            }).AddJwtBearer(opt =>
-            {
-                opt.SaveToken = true;
-                byte[] key = config.GetJwtSecretKey();
-                opt.TokenValidationParameters = new()
+            services.AddAuthentication(opt 
+                    => opt.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
                 {
-                    ValidateIssuer = true,
-                    ValidIssuer = config["JwtSettings:Issuer"],
-                    ValidateAudience = true,
-                    ValidAudience = config["JwtSettings:Audience"],
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key)
-                };
-            });
+                    options.LoginPath = "/API/Identity/Login";
+                    options.LogoutPath = "/api/identity/logout";
+                    options.Cookie.HttpOnly = true;
+                    options.Cookie.SameSite = SameSiteMode.None;
+                    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                    options.SlidingExpiration = true;
+                });
 
             return services;
         }

@@ -4,7 +4,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import axios from 'axios'
 import { useState, useEffect } from 'react'
 
-function Cad({ id, isHomeCad = false, token }) {
+function Cad({ id, isHomeCad, token }) {
 
     const [model, setModel] = useState({});
 

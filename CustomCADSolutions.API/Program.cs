@@ -6,12 +6,12 @@ builder.Services.AddCadContext(builder.Configuration);
 builder.Services.AddAppIdentity();
 builder.Services.AddAbstractions();
 
+string[] roles = [Admin, Designer, Contributor, Client];
+builder.Services.AddAuthWithCookie().AddRoles(roles);
+
 builder.Services.AddControllers().AddJsonAndXml();
 builder.Services.AddApiConfigurations();
 builder.Services.AddCorsForReact();
-
-string[] roles = [Admin, Designer, Contributor, Client];
-builder.Services.AddAuthWithJwt(builder.Configuration).AddRoles(roles);
 
 WebApplication app = builder.Build();
 
