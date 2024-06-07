@@ -1,6 +1,6 @@
 ﻿namespace CustomCADSolutions.App.Extensions
 {
-    public class StripeSettings
+    public class StripeInfo
     {
         public string SecretKey { get; set; } = null!;
         public string PublishableKey { get; set; } = null!;

@@ -12,17 +12,8 @@ namespace CustomCADSolutions.App.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Authorize(Roles = RoleConstants.Admin)]
-    public class RolesController : Controller
+    public class RolesController(RoleManager<AppRole> roleManager, UserManager<AppUser> userManager) : Controller
     {
-        private readonly RoleManager<AppRole> roleManager;
-        private readonly UserManager<AppUser> userManager;
-
-        public RolesController(RoleManager<AppRole> roleManager, UserManager<AppUser> userManager)
-        {
-            this.roleManager = roleManager;
-            this.userManager = userManager;
-        }
-
         [HttpGet]
         public async Task<IActionResult> Index()
         {

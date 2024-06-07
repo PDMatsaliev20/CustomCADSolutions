@@ -19,34 +19,17 @@ using CustomCADSolutions.Infrastructure.Data.Models;
 namespace CustomCADSolutions.App.Controllers
 {
     [Authorize(Roles = $"{Contributor},{Designer}")]
-    public class CadsController : Controller
+    public class CadsController(
+        ICadService cadService,
+        ICategoryService categoryService,
+        CadsHubHelper statisticsService,
+        IWebHostEnvironment env,
+        ILogger<CadsController> logger) : Controller
     {
-        // Services
-        private readonly ICadService cadService;
-        private readonly ICategoryService categoryService;
-        private readonly CadsHubHelper statisticsService;
-
-        // Addons
-        private readonly IWebHostEnvironment env;
-        private readonly ILogger logger;
-        private readonly IMapper mapper;
-
-        public CadsController(
-            ICadService cadService,
-            ICategoryService categoryService,
-            CadsHubHelper statisticsService,
-            IWebHostEnvironment env,
-            ILogger<CadsController> logger)
-        {
-            this.cadService = cadService;
-            this.categoryService = categoryService;
-            this.statisticsService = statisticsService;
-
-            MapperConfiguration config = new(cfg => cfg.AddProfile<CadAppProfile>());
-            this.mapper = config.CreateMapper();
-            this.env = env;
-            this.logger = logger;
-        }
+        private readonly ILogger logger = logger;
+        private readonly IMapper mapper = new MapperConfiguration(cfg
+                    => cfg.AddProfile<CadAppProfile>())
+                .CreateMapper();
 
         [HttpPost]
         [IgnoreAntiforgeryToken]

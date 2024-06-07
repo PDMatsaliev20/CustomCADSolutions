@@ -2,29 +2,14 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication;
 using CustomCADSolutions.App.Models.Users;
-using Microsoft.Extensions.Localization;
 using CustomCADSolutions.Infrastructure.Data.Models;
 
 namespace CustomCADSolutions.App.Controllers
 {
-    public class AccountController : Controller
+    public class AccountController(
+        UserManager<AppUser> userManager,
+        SignInManager<AppUser> signInManager) : Controller
     {
-        private readonly SignInManager<AppUser> signInManager;
-        private readonly UserManager<AppUser> userManager;
-        private readonly IUserStore<AppUser> userStore;
-        private readonly IUserEmailStore<AppUser> emailStore;
-
-        public AccountController(
-            UserManager<AppUser> userManager,
-            IUserStore<AppUser> userStore,
-            SignInManager<AppUser> signInManager)
-        {
-            this.userManager = userManager;
-            this.userStore = userStore;
-            this.signInManager = signInManager;
-            this.emailStore = (IUserEmailStore<AppUser>)this.userStore;
-        }
-
         [HttpGet]
         public IActionResult Register()
         {
@@ -42,10 +27,7 @@ namespace CustomCADSolutions.App.Controllers
                 return View(model);
             }
 
-            AppUser user = new();
-
-            await userStore.SetUserNameAsync(user, model.Username, CancellationToken.None);
-            await emailStore.SetEmailAsync(user, model.Email, CancellationToken.None);
+            AppUser user = new() { UserName = model.Username, Email = model.Email };
             var result = await userManager.CreateAsync(user, model.Password);
 
             if (result.Succeeded)

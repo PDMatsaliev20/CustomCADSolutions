@@ -3,15 +3,8 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace CustomCADSolutions.Infrastructure.Data.Common
 {
-    public class Repository : IRepository
+    public class Repository(CadContext context) : IRepository
     {
-        private readonly CadContext context;
-
-        public Repository(CadContext context)
-        {
-            this.context = context;
-        }
-
         public IQueryable<T> All<T>() where T : class
         {
             return context.Set<T>();

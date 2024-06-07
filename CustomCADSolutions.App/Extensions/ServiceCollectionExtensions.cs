@@ -103,7 +103,7 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddStripe(this IServiceCollection services, IConfiguration config)
         {
             IConfigurationSection stripeSection = config.GetSection("Stripe");
-            services.Configure<StripeSettings>(stripeSection);
+            services.Configure<StripeInfo>(stripeSection);
             return services;
         }
 

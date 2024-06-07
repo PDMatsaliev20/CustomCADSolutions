@@ -16,43 +16,18 @@ using System.IO.Compression;
 
 namespace CustomCADSolutions.App.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController(
+        ICadService cadService,
+        ICategoryService categoryService,
+        IOrderService orderService,
+        UserManager<AppUser> userManager,
+        SignInManager<AppUser> signInManager,
+        IWebHostEnvironment env,
+        ILogger<HomeController> logger) : Controller
     {
-        // Services
-        private readonly ICadService cadService;
-        private readonly ICategoryService categoryService;
-        private readonly IOrderService orderService;
-
-        // Managers
-        private readonly IWebHostEnvironment env;
-        private readonly UserManager<AppUser> userManager;
-        private readonly SignInManager<AppUser> signInManager;
-
-        // Additional
-        private readonly IMapper mapper;
-        private readonly ILogger<HomeController> logger;
-
-        public HomeController(
-            ICadService cadService,
-            ICategoryService categoryService,
-            IOrderService orderService,
-            UserManager<AppUser> userManager,
-            SignInManager<AppUser> signInManager,
-            IWebHostEnvironment env,
-            ILogger<HomeController> logger)
-        {
-            this.cadService = cadService;
-            this.categoryService = categoryService;
-            this.orderService = orderService;
-
-            this.env = env;
-            this.userManager = userManager;
-            this.signInManager = signInManager;
-
-            MapperConfiguration config = new(cfg => cfg.AddProfile<CadAppProfile>());
-            mapper = config.CreateMapper();
-            this.logger = logger;
-        }
+        private readonly IMapper mapper = new MapperConfiguration(cfg 
+                => cfg.AddProfile<CadAppProfile>())
+            .CreateMapper();
 
         [HttpGet]
         public IActionResult Index()

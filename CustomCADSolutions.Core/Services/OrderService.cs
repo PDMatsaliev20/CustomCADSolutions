@@ -11,21 +11,14 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CustomCADSolutions.Core.Services
 {
-    public class OrderService : IOrderService
+    public class OrderService(IRepository repository) : IOrderService
     {
-        private readonly IRepository repository;
-        private readonly IMapper mapper;
-
-        public OrderService(IRepository repository)
-        {
-            this.repository = repository;
-            mapper = new MapperConfiguration(cfg =>
+        private readonly IMapper mapper = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile<CadCoreProfile>();
                 cfg.AddProfile<OrderCoreProfile>();
             }).CreateMapper();
-        }
-        
+
         public async Task<IEnumerable<OrderModel>> GetAllAsync()
         {
             Order[] orders = await repository.All<Order>().ToArrayAsync();

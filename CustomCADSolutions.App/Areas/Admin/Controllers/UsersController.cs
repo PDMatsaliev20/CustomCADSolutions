@@ -10,19 +10,10 @@ namespace CustomCADSolutions.App.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Authorize(Roles = RoleConstants.Admin)]
-    public class UsersController : Controller
+    public class UsersController(
+        UserManager<AppUser> userManager,
+        ILogger<UsersController> logger) : Controller
     {
-        private readonly ILogger<UsersController> logger;
-        private readonly UserManager<AppUser> userManager;
-
-        public UsersController(
-            UserManager<AppUser> userManager,
-            ILogger<UsersController> logger)
-        {
-            this.userManager = userManager;
-            this.logger = logger;
-        }
-
         [HttpGet]
         public async Task<IActionResult> Index()
         {

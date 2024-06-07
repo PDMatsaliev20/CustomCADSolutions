@@ -15,32 +15,16 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
 {
     [Area("Designer")]
     [Authorize(Roles = RoleConstants.Designer)]
-    public class OrdersController : Controller
+    public class OrdersController(
+        IOrderService orderService,
+        ICategoryService categoryService,
+        IWebHostEnvironment env,
+        ILogger<OrdersController> logger) : Controller
     {
-        // Services
-        private readonly IOrderService orderService;
-        private readonly ICategoryService categoryService;
-
-        // Addons
-        private readonly IMapper mapper;
-        private readonly IWebHostEnvironment env;
-        private readonly ILogger logger;
-
-        public OrdersController(
-            IOrderService orderService,
-            ICategoryService categoryService,
-            IWebHostEnvironment env,
-            ILogger<OrdersController> logger)
-        {
-            this.orderService = orderService;
-            this.categoryService = categoryService;
-
-            this.env = env;
-            this.logger = logger;
-            MapperConfiguration config = new(cfg => cfg.AddProfile<OrderAppProfile>());
-            this.mapper = config.CreateMapper();
-        }
-
+        private readonly IMapper mapper = new MapperConfiguration(cfg 
+                => cfg.AddProfile<OrderAppProfile>())
+            .CreateMapper();
+        
         [HttpGet]
         public async Task<IActionResult> All()
         {

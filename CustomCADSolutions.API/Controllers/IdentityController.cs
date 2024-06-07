@@ -11,7 +11,7 @@ namespace CustomCADSolutions.API.Controllers
 {
     [Route("API/[controller]")]
     [ApiController]
-    public class IdentityController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IConfiguration config) : ControllerBase
+    public class IdentityController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager) : ControllerBase
     {
         private readonly AuthenticationProperties authProps = new()
         {

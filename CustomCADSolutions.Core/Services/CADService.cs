@@ -13,21 +13,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CustomCADSolutions.Core.Services
 {
-    public class CadService : ICadService
+    public class CadService(IRepository repository) : ICadService
     {
-        private readonly IRepository repository;
-        private readonly IMapper mapper;
-
-        public CadService(IRepository repository)
-        {
-            this.repository = repository;
-            MapperConfiguration config = new(cfg =>
+        private readonly IMapper mapper = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile<CadCoreProfile>();
                 cfg.AddProfile<OrderCoreProfile>();
-            });
-            this.mapper = config.CreateMapper();
-        }
+            }).CreateMapper();
 
         public async Task<CadQueryModel> GetAllAsync(CadQueryModel query)
         {

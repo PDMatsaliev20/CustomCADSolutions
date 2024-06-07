@@ -5,13 +5,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CustomCADSolutions.Infrastructure.Data
 {
-    public class CadContext : IdentityDbContext<AppUser, AppRole, string>
+    public class CadContext(DbContextOptions<CadContext> options) : IdentityDbContext<AppUser, AppRole, string>(options)
     {
-        public CadContext(DbContextOptions<CadContext> options)
-            : base(options)
-        {
-        }
-
         public DbSet<Order> Orders { get; set; } = null!;
         public DbSet<Cad> Cads { get; set; } = null!;
         public DbSet<Category> Categories { get; set; } = null!;

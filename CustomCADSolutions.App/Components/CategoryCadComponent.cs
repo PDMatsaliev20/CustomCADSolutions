@@ -5,14 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CustomCADSolutions.App.Components
 {
-    public class CategoryCadComponent : ViewComponent
+    public class CategoryCadComponent() : ViewComponent
     {
-        private readonly IOrderService orderService;
-        public CategoryCadComponent(IOrderService orderService)
-        {
-            this.orderService = orderService;
-        }
-
         public async Task<IViewComponentResult> InvokeAsync(CadViewModel cad)
         {
             ViewBag.Buttons = new string[] { "Order" };

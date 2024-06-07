@@ -11,28 +11,14 @@ namespace CustomCADSolutions.App.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Authorize(RoleConstants.Admin)]
-    public class OrdersController : Controller
+    public class OrdersController(
+        IOrderService orderService,
+        ICategoryService categoryService,
+        ILogger<OrdersController> logger) : Controller
     {
-        // Services
-        private readonly IOrderService orderService;
-        private readonly ICategoryService categoryService;
-
-        //Addons
-        private readonly ILogger logger;
-        private readonly IMapper mapper;
-
-        public OrdersController(
-            IOrderService orderService,
-            ICategoryService categoryService,
-            ILogger<OrdersController> logger)
-        {
-            this.orderService = orderService;
-            this.categoryService = categoryService;
-
-            this.logger = logger;
-            MapperConfiguration config = new(cfg => cfg.AddProfile<OrderAppProfile>());
-            this.mapper = config.CreateMapper();
-        }
+        private readonly IMapper mapper = new MapperConfiguration(cfg
+                    => cfg.AddProfile<OrderAppProfile>())
+                .CreateMapper();
 
         [HttpGet]
         public async Task<IActionResult> Index()

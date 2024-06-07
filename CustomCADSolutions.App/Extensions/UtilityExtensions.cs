@@ -36,7 +36,7 @@ namespace CustomCADSolutions.App.Extensions
             }
         }
 
-        public static bool ProcessPayment(this StripeSettings stripeSettings, string stripeToken, string name, decimal price)
+        public static bool ProcessPayment(this StripeInfo stripeSettings, string stripeToken, string name, decimal price)
         {
             StripeConfiguration.ApiKey = stripeSettings.TestSecretKey;
             ChargeCreateOptions options = new()

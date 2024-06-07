@@ -9,17 +9,11 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace CustomCADSolutions.Core.Services
 {
-    public class CategoryService : ICategoryService
+    public class CategoryService(IRepository repository) : ICategoryService
     {
-        private readonly IRepository repository;
-        private readonly IMapper mapper;
-
-        public CategoryService(IRepository repository)
-        {
-            this.repository = repository;
-            MapperConfiguration config = new(cfg => cfg.AddProfile<CategoryCoreProfile>());
-            this.mapper = config.CreateMapper();
-        }
+        private readonly IMapper mapper = new MapperConfiguration(cfg
+                    => cfg.AddProfile<CategoryCoreProfile>())
+                .CreateMapper();
 
         public async Task<IEnumerable<CategoryModel>> GetAllAsync()
         {
