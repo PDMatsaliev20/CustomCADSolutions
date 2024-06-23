@@ -24,10 +24,6 @@ namespace CustomCADSolutions.API.Controllers
             ExpiresUtc = DateTimeOffset.UtcNow.AddMonths(1)
         };
 
-        [Authorize]
-        [HttpGet("IsAuthenticated")]
-        public ActionResult Auth() => Ok("You're authenticated!");
-
         [HttpPost("Register/{role}")]
         [Consumes("application/json")]
         public async Task<ActionResult> Register([FromRoute] string role, [FromBody] UserRegisterModel model)
@@ -91,6 +87,31 @@ namespace CustomCADSolutions.API.Controllers
             catch
             {
                 return BadRequest("You're still here?");
+            }
+        }
+
+        [HttpGet("IsAuthenticated")]
+        public ActionResult IsAuthenticated() => Ok(User.Identity?.IsAuthenticated ?? false);
+
+        [HttpGet("IsAuthorized")]
+        public ActionResult IsAuthorized(string role) => Ok(User.IsInRole(role));
+
+        [HttpGet("GetUserRole")]
+        public async Task<ActionResult> GetUserRole()
+        {
+            AppUser? user = await userManager.GetUserAsync(User);
+            if (user == null) return Unauthorized();
+
+            IEnumerable<string> roles = await userManager.GetRolesAsync(user);
+            try
+            {
+                string role = roles.Single();
+
+                return Ok(role);
+            }
+            catch
+            {
+                return BadRequest();
             }
         }
     }
