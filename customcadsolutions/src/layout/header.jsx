@@ -1,10 +1,13 @@
-import { Link, useNavigate } from 'react-router-dom'
+import AuthContext from '../auth-context'
 import GuestMenu from '../components/guest-menu'
 import AccountMenu from '../components/account-menu'
+import { Link, useNavigate } from 'react-router-dom'
+import { useContext } from 'react'
 import axios from 'axios'
 
+function Header() {
+    const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
 
-function Header({ isAuthenticated, setIsAuthenticated }) {
     const navigate = useNavigate();
 
     const logout = async () => {

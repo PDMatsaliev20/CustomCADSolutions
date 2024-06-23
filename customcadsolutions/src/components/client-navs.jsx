@@ -1,8 +1,15 @@
 import { Link } from 'react-router-dom'
 
 function ClientNavigationalMenu({ shouldBlur, shouldHide }) {
+
+    const handleClick = () => {
+        if (shouldBlur) {
+            alert('Only for Clients!');
+        }
+    }
+
     return (
-        <ul className={`${shouldHide ? "hidden" : ''} ${shouldBlur ? "blur-sm" : ''}`} onClick={() => alert('Only for Clients!')}>
+        <ul className={`${shouldHide ? "hidden" : ''} ${shouldBlur ? "blur-sm" : ''}`} onClick={handleClick}>
             {
                 shouldBlur ?
                     <>

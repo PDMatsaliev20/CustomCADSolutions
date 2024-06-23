@@ -1,3 +1,4 @@
+import AuthContext from './auth-context'
 import Header from './layout/header'
 import Navbar from './layout/navbar'
 import Body from './layout/body'
@@ -21,10 +22,12 @@ function App() {
     return (
         <div className="relative min-h-screen bg-indigo-50">
             <BrowserRouter>
-                <Header isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} />
-                <Navbar isAuthenticated={isAuthenticated} userRole={userRole} />
-                <Body isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} />
-                <Footer />
+                <AuthContext.Provider value={{isAuthenticated, setIsAuthenticated, userRole }}>
+                    <Header />
+                    <Navbar />
+                    <Body />
+                    <Footer />
+                </AuthContext.Provider>
             </BrowserRouter>
         </div>
     );

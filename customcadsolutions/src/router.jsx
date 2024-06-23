@@ -14,13 +14,13 @@ import UploadCadPage from './private/upload-cad'
 import SellCadPage from './private/sell-cad'
 import AuthGuard from './auth/authguard'
 
-function Router({ onLogin, onRegister, isAuthenticated }) {
+function Router({ onLogin, onRegister }) {
     return (
         <Routes>
             <Route path="*" element={<p className="text-center">404 not found bro</p>} />
 
             { /* Public part of CustomCADSolutions */}
-            <Route element={<AuthGuard isAuthenticated={isAuthenticated} />}>
+            <Route element={<AuthGuard />}>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/home" element={<HomePage />} />
                 <Route path="/gallery" element={<GalleryPage />} />
@@ -32,7 +32,7 @@ function Router({ onLogin, onRegister, isAuthenticated }) {
             </Route>
 
             { /* Private part of CustomCADSolutions */}
-            <Route element={<AuthGuard isPrivate isAuthenticated={isAuthenticated} />}>
+            <Route element={<AuthGuard isPrivate />}>
                 <Route path="/orders" element={<OrdersPage /> } />
                 <Route path="/orders/custom" element={<CustomOrderPage /> } />
                 <Route path="/orders/gallery" element={<GalleryOrderPage /> } />

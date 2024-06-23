@@ -1,8 +1,15 @@
 import { Link } from 'react-router-dom'
 
 function ContributorNavigationalMenu({ shouldBlur, shouldHide }) {
+
+    const handleClick = () => {
+        if (shouldBlur) {
+            alert('Only for Contributors!')
+        }
+    };
+
     return (
-        <ul className={`${shouldHide ? "hidden" : ''} ${shouldBlur ? "blur-sm" : ''}`} onClick={() => alert('Only for Contributors!')}>
+        <ul className={`${shouldHide ? "hidden" : ''} ${shouldBlur ? "blur-sm" : ''}`} onClick={handleClick}>
             {
                 shouldBlur ?
                     <>

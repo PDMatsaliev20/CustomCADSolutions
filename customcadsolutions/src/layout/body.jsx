@@ -1,8 +1,11 @@
+import AuthContext from '../auth-context'
 import { useNavigate } from 'react-router-dom'
+import { useContext } from 'react'
 import axios from 'axios'
 import Router from '../router'
 
-function Body({ isAuthenticated, setIsAuthenticated }) {
+function Body() {
+    const { setIsAuthenticated } = useContext(AuthContext);
     const navigate = useNavigate();
 
     const register = async (user, userRole) => {
@@ -31,7 +34,7 @@ function Body({ isAuthenticated, setIsAuthenticated }) {
 
     return (
         <main className="mx-16 pb-28">
-            <Router onLogin={login} onRegister={register} isAuthenticated={isAuthenticated} />
+            <Router onLogin={login} onRegister={register} />
         </main>                                                     
     );
 }
