@@ -3,7 +3,7 @@ function Profile({ person }) {
 
     return (
         <article className="flex p-2 w-full bg-indigo-200 border border-indigo-500 rounded-sm">
-            <img src={img} className="w-32 h-auto" />
+            <img src={img} className="flex-auto w-32 h-auto" />
             <details className="ms-3" open>
                 <summary>
                     <span className="text-xl font-bold">{name}</span>

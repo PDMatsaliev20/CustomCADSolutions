@@ -21,13 +21,17 @@ function AboutUsPage() {
     };
 
     return (
-        <div className="my-10 bg-indigo-300 rounded-md">
+        <div className="my-10 bg-indigo-300 p-4 rounded-md">
             <h1 className="text-4xl text-center font-semibold py-7">About Us and Our Team:</h1>
             <section className="mb-5 gap-2 px-5 pt-5 bg-indigo-800 rounded-md">
-                <article className="flex">
-                    <Profile person={ivcho} />
-                    <Profile person={borko} />
-                </article>
+                <div className="flex flex-col gap-3 xl:flex-row">
+                    <article>
+                        <Profile person={ivcho} />
+                    </article>
+                    <article>
+                        <Profile person={borko} />
+                    </article>
+                </div>
                 <div className="flex flex-col py-3 items-center text-indigo-50">
                     <span className="">
                         Want to join our team?
