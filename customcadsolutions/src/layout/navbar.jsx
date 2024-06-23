@@ -1,39 +1,14 @@
-import { Link } from 'react-router-dom'
+import PublicNavs from '../components/public-navs'
+import ClientNavs from '../components/client-navs'
+import ContributorNavs from '../components/contributor-navs'
 
-function Navbar() {
+function Navbar({ isAuthenticated, userRole }) {
     return (
         <nav className="sticky top-0 z-50 bg-indigo-300 rounded-b-lg shadow-md py-3">
             <div className="flex justify-around text-sm">
-                <ul>
-                    <li className="float-left ms-2 me-4">
-                        <Link to="/home">Home</Link>
-                    </li>
-                    <li className="float-left me-4">
-                        <Link to="/gallery">Gallery</Link>
-                    </li>
-                </ul>
-                <ul>
-                    <li className="float-left me-4">
-                        <Link to="/orders">Your Orders</Link>
-                    </li>
-                    <li className="float-left me-4">
-                        <Link to="/orders/custom">Order Custom 3D Model</Link>
-                    </li>
-                    <li className="float-left me-4">
-                        <Link to="/orders/gallery">Order from Gallery</Link>
-                    </li>
-                </ul>
-                <ul>
-                    <li className="float-left me-4">
-                        <Link to="/cads">Your 3d Models</Link>
-                    </li>
-                    <li className="float-left me-4">
-                        <Link to="/cads/upload">Upload 3D Model</Link>
-                    </li>
-                    <li className="float-left me-2">
-                        <Link to="/cads/sell">Sell us a 3D Model</Link>
-                    </li>
-                </ul>
+                <PublicNavs />
+                <ClientNavs shouldBlur={!isAuthenticated} shouldHide={isAuthenticated && userRole !== 'Client'} />
+                <ContributorNavs shouldBlur={!isAuthenticated} shouldHide={isAuthenticated && userRole !== 'Contributor'} />
             </div>
         </nav>
     );
