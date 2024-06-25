@@ -396,3 +396,5 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+/CustomCADSolutions.App/wwwroot/others/cads
+/customcadsolutions/public/others/cads
