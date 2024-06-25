@@ -4,7 +4,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import axios from 'axios'
 import { useState, useEffect } from 'react'
 
-function Cad({ id, isHomeCad, token }) {
+function Cad({ id, isHomeCad }) {
 
     const [model, setModel] = useState({});
 
@@ -65,32 +65,46 @@ function Cad({ id, isHomeCad, token }) {
             const controls = new OrbitControls(camera, renderer.domElement);
             controls.enableDamping = true;
             controls.dampingFactor = 0.1;
-            controls.mouseButtons = {
-                LEFT: THREE.MOUSE.ROTATE,
-                MIDDLE: THREE.MOUSE.DOLLY,
-                RIGHT: THREE.MOUSE.PAN
+
+            if (isHomeCad) {
+                const panOffset = new THREE.Vector3();
+                const panUp = new THREE.Vector3(0, 1, 0);
+                const panIn = new THREE.Vector3(0, 0, -1);
+
+                // Apply panning in the world space
+
+                panOffset.copy(panIn).multiplyScalar(6);
+                camera.position.add(panOffset);
+                controls.target.add(panOffset);
+                controls.update();
+
+                panOffset.copy(panUp).multiplyScalar(3);
+                camera.position.add(panOffset);
+                controls.target.add(panOffset);
+                controls.update();
             }
 
-            const panOffset = new THREE.Vector3();
-            const panUp = new THREE.Vector3(0, 1, 0);
-            const panIn = new THREE.Vector3(0, 0, -1);
+            let isInteracting = false
+            let resumeTimeout;
 
-            // Apply panning in the world space
-            
-            panOffset.copy(panIn).multiplyScalar(6);
-            camera.position.add(panOffset);
-            controls.target.add(panOffset);
-            controls.update();
+            controls.addEventListener('change', function () {
+                isInteracting = true;
+                clearTimeout(resumeTimeout);
 
-            panOffset.copy(panUp).multiplyScalar(3);
-            camera.position.add(panOffset);
-            controls.target.add(panOffset);
-            controls.update();
+                resumeTimeout = setTimeout(() => {
+                    isInteracting = false;
+                }, 1500);
+            });
+
             // Animation
             function animate() {
                 requestAnimationFrame(animate);
-                controls.update();
                 renderer.render(scene, camera);
+                controls.update();
+
+                if (!isInteracting) {
+                    scene.rotation.y += 0.01;
+                }
             }
             animate();
 
@@ -108,18 +122,12 @@ function Cad({ id, isHomeCad, token }) {
 
     async function populateCad(id, isHomeCad) {
         try {
-            const headers = {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + token
-            };
-
-
             if (isHomeCad) {
                 await axios.get('https://localhost:7127/API/Home/Cad')
                     .then(response => setModel(response.data))
                     .catch(error => console.error(error));
             } else {
-                await axios.get(`https://localhost:7127/API/Cads/${id}`, { headers })
+                await axios.get(`https://localhost:7127/API/Cads/${id}`, { withCredentials: true })
                     .then(response => setModel(response.data))
                     .catch(error => console.error(error));
             }
