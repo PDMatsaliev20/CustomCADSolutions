@@ -1,12 +1,12 @@
 function AccountMenu({handleLogout, username}) {
     return (
-        <ul className="flex items-center gap-1">
-            <li className="float-left flex flex-col items-center justify-center">
-                <i className="text-3xl fa fa-user-circle"></i>
-                <span className="text-lg">{username}</span>
+        <ul className="text-lg flex items-center gap-x-3">
+            <li className="float-left flex gap-x-2 items-center justify-center">
+                <i className="text-3xl fa fa-user"></i>
+                <span>{username}</span>
             </li>
-            <li className="float-left ms-5">
-                <button onClick={handleLogout} className="text-lg">Log out</button>
+            <li>
+                <button onClick={handleLogout}>Log out</button>
             </li>
         </ul>
     );
