@@ -2,11 +2,11 @@ import { Link } from 'react-router-dom'
 
 function Footer() {
     return (
-        <footer className="absolute bottom-0 w-full h-24 border-t-2 border-indigo-200 rounded-t-lg bg-indigo-100 ">
-            <div className="mt-6 flex justify-evenly items-center">
-                <section className="underline font-semibold text-sm">
-                    <p className="mb-2 text-center"><Link to="/policy">Privacy Policy</Link></p>
-                    <p className="mt-2 text-center"><Link to="/about">About Us</Link></p>
+        <footer className="basis-full grow sticky z-50 self-end py-4 border-t-2 border-indigo-300 rounded-t-lg bg-indigo-100 ">
+            <div className="flex justify-evenly items-center">
+                <section className="flex gap-6 underline-offset-4 underline font-semibold text-sm">
+                    <p className="text-center"><Link to="/policy">Privacy Policy</Link></p>
+                    <p className="text-center"><Link to="/about">About Us</Link></p>
                 </section>
                 <section>
                     <p className="text-lg font-bold">
@@ -16,7 +16,7 @@ function Footer() {
                 </section>
                 <section className="italic">
                     <span>Contacts:</span>
-                    <div>
+                    <div className="ms-1 inline">
                         <a href="https://www.instagram.com/customcadsolutions/">
                             <i className="ms-1 fa fa-instagram"></i>
                         </a>

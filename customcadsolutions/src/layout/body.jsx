@@ -33,7 +33,7 @@ function Body() {
     };
 
     return (
-        <main className="mx-16 pb-28">
+        <main className="basis-full mx-16 my-5">
             <Router onLogin={login} onRegister={register} />
         </main>                                                     
     );

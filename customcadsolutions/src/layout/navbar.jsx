@@ -8,7 +8,7 @@ function Navbar() {
     const { isAuthenticated, userRole } = useContext(AuthContext);
 
     return (
-        <nav className="sticky top-0 z-50 bg-indigo-300 rounded-b-lg shadow-md py-3">
+        <nav className="bg-indigo-300 rounded-b-lg shadow-md py-3">
             <div className="flex justify-around text-sm">
                 <PublicNavs />
                 <ClientNavs shouldBlur={!isAuthenticated} shouldHide={isAuthenticated && userRole !== 'Client'} />

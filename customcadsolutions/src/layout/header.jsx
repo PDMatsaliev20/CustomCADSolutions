@@ -20,21 +20,27 @@ function Header() {
     };
 
     return (
-        <header className="bg-indigo-200 flex justify-between items-center border-b border-black py-1">
-            <Link to="/" className="my-5 ms-5 w-60">
-                <img src="../src/assets/logga.png" className="mw-100 h-auto hover:opacity-60" />
-            </Link>
-
-            <form className="w-1/4 flex gap-3" onSubmit={() => navigate("/")} method="get">
-                <input className="px-3 py-2 w-full rounded-md bg-indigo-50" type="search" placeholder="Search CustomCADSolutions" />
-                <button type="submit">
-                    <i className="fa fa-search"></i>
-                </button>
-            </form>
-
-            <div className="flex me-3">
-                {isAuthenticated ? <AccountMenu handleLogout={logout} username={localStorage.getItem('username')} /> : <GuestMenu />}
-            </div>
+        <header className="bg-indigo-200 border-b border-black py-1">
+            <ul className="flex mx-5 justify-between items-center">
+                <li className="my-4 w-60">
+                    <Link to="/">
+                        <img src="../src/assets/logga.png" className="mw-100 h-auto hover:opacity-60" />
+                    </Link>
+                </li>
+                <li className="w-1/3"> 
+                    <form className="flex gap-3" onSubmit={() => navigate("/")} method="get">
+                        <input className="px-3 py-2 w-full rounded-md bg-indigo-50" type="search" placeholder="Search by Name, Cateogry, Creator..." />
+                        <button type="submit">
+                            <i className="fa fa-search"></i>
+                        </button>
+                    </form>
+                </li>
+                <li>
+                    <div className="flex">
+                        {isAuthenticated ? <AccountMenu handleLogout={logout} username={localStorage.getItem('username')} /> : <GuestMenu />}
+                    </div>
+                </li>
+            </ul>           
         </header>
     );
 }
