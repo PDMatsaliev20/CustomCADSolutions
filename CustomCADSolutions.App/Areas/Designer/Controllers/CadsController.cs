@@ -22,34 +22,33 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
             .CreateMapper();
 
         [HttpGet]
-        public async Task<IActionResult> All([FromQuery] CadQueryInputModel inputQuery)
+        public async Task<IActionResult> All([FromQuery] CadQueryInputModel query)
         {
             // Ensuring cads per page are divisible by the count of columns
-            if (inputQuery.CadsPerPage % inputQuery.Cols != 0)
+            if (query.CadsPerPage % query.Cols != 0)
             {
-                inputQuery.CadsPerPage = inputQuery.Cols * (inputQuery.CadsPerPage / inputQuery.Cols);
+                query.CadsPerPage = query.Cols * (query.CadsPerPage / query.Cols);
             }
-
-            CadQueryModel query = new()
+            
+            CadQueryResult result = await cadService.GetAllAsync(new()
             {
-                Category = inputQuery.Category,
-                Creator = inputQuery.Creator,
-                SearchName = inputQuery.SearchName,
-                SearchCreator = inputQuery.SearchCreator,
-                Sorting = inputQuery.Sorting,
-                CurrentPage = inputQuery.CurrentPage,
-                CadsPerPage = inputQuery.CadsPerPage,
+                Category = query.Category,
+                Creator = query.Creator,
+                SearchName = query.SearchName,
+                SearchCreator = query.SearchCreator,
+                Sorting = query.Sorting,
+                CurrentPage = query.CurrentPage,
+                CadsPerPage = query.CadsPerPage,
                 Validated = true,
                 Unvalidated = true,
-            };
-            query = await cadService.GetAllAsync(query);
+            });
 
-            inputQuery.Categories = await categoryService.GetAllNamesAsync();
-            inputQuery.TotalCount = query.TotalCount;
-            inputQuery.Cads = mapper.Map<CadViewModel[]>(query.Cads);
+            query.Categories = await categoryService.GetAllNamesAsync();
+            query.TotalCount = result.TotalCount;
+            query.Cads = mapper.Map<CadViewModel[]>(result.Cads);
 
             ViewBag.Sortings = typeof(CadSorting).GetEnumNames();
-            return View(inputQuery);
+            return View(query);
         }
 
         [HttpGet]
@@ -73,10 +72,10 @@ namespace CustomCADSolutions.App.Areas.Designer.Controllers
                 Validated = false,
                 Unvalidated = true,
             };
-            query = await cadService.GetAllAsync(query);
+            CadQueryResult result = await cadService.GetAllAsync(query);
 
-            inputQuery.TotalCount = query.TotalCount;
-            inputQuery.Cads = mapper.Map<CadViewModel[]>(query.Cads);
+            inputQuery.TotalCount = result.TotalCount;
+            inputQuery.Cads = mapper.Map<CadViewModel[]>(result.Cads);
             inputQuery.Categories = await categoryService.GetAllNamesAsync();
 
             ViewBag.Sortings = typeof(CadSorting).GetEnumNames();

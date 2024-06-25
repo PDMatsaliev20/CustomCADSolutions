@@ -12,8 +12,8 @@ namespace CustomCADSolutions.Tests.ServicesTests.CadTests
             int expectedCount = this.cads.Length;
             CadQueryModel query = new();
 
-            query = await service.GetAllAsync(query);
-            int actualCount = query.TotalCount;
+            CadQueryResult result = await service.GetAllAsync(query);
+            int actualCount = result.TotalCount;
 
             Assert.That(actualCount, Is.EqualTo(expectedCount),
                 message: string.Format(IncorrectCountByFilter, "None"));
@@ -26,8 +26,8 @@ namespace CustomCADSolutions.Tests.ServicesTests.CadTests
             int expectedCount = this.cads.Count(c => c.Category.Name == categoryName);
             CadQueryModel query = new() { Category = categoryName };
 
-            query = await service.GetAllAsync(query);
-            int actualCount = query.TotalCount;
+            CadQueryResult result = await service.GetAllAsync(query);
+            int actualCount = result.TotalCount;
 
             Assert.That(actualCount, Is.EqualTo(expectedCount),
                 message: string.Format(IncorrectCountByFilter, "Category"));
@@ -40,8 +40,8 @@ namespace CustomCADSolutions.Tests.ServicesTests.CadTests
             int expectedCount = this.cads.Count(c => c.Creator.UserName == creatorName);
             CadQueryModel query = new() { Creator = creatorName };
 
-            query = await service.GetAllAsync(query);
-            int actualCount = query.TotalCount;
+            CadQueryResult result = await service.GetAllAsync(query);
+            int actualCount = result.TotalCount;
 
             Assert.That(actualCount, Is.EqualTo(expectedCount),
                 message: string.Format(IncorrectCountByFilter, "Creator"));
@@ -54,8 +54,8 @@ namespace CustomCADSolutions.Tests.ServicesTests.CadTests
             int expectedCount = this.cads.Count(c => c.Name.Contains(likeName));
             CadQueryModel query = new() { SearchName = likeName };
 
-            query = await service.GetAllAsync(query);
-            int actualCount = query.TotalCount;
+            CadQueryResult result = await service.GetAllAsync(query);
+            int actualCount = result.TotalCount;
 
             Assert.That(actualCount, Is.EqualTo(expectedCount),
                 message: string.Format(IncorrectCountByFilter, "LikeName"));
@@ -69,8 +69,8 @@ namespace CustomCADSolutions.Tests.ServicesTests.CadTests
             int expectedCount = this.cads.Count(c => c.Creator.UserName.Contains(likeCreator));
             CadQueryModel query = new() { SearchCreator = likeCreator };
 
-            query = await service.GetAllAsync(query);
-            int actualCount = query.TotalCount;
+            CadQueryResult result = await service.GetAllAsync(query);
+            int actualCount = result.TotalCount;
 
             Assert.That(actualCount, Is.EqualTo(expectedCount),
                 message: string.Format(IncorrectCountByFilter, "LikeCreator"));
@@ -102,8 +102,8 @@ namespace CustomCADSolutions.Tests.ServicesTests.CadTests
 
             CadQueryModel query = new() { Validated = validated, Unvalidated = unvalidated };
 
-            query = await service.GetAllAsync(query);
-            int actualCount = query.TotalCount;
+            CadQueryResult result = await service.GetAllAsync(query);
+            int actualCount = result.TotalCount;
 
             Assert.That(actualCount, Is.EqualTo(expectedCount),
                 message: string.Format(IncorrectCountByFilter, "Validated and Unvalidated"));
@@ -148,8 +148,8 @@ namespace CustomCADSolutions.Tests.ServicesTests.CadTests
             }).Select(c => c.Id);
             CadQueryModel query = new() { Sorting = sorting, CadsPerPage = 8 };
 
-            query = await service.GetAllAsync(query);
-            var actualSort = query.Cads.Select(c => c.Id);
+            CadQueryResult result = await service.GetAllAsync(query);
+            var actualSort = result.Cads.Select(c => c.Id);
 
             Assert.That(actualSort, Is.EqualTo(expectedSort),
                 message: string.Format(IncorrectSortByFilter, sorting.ToString()));

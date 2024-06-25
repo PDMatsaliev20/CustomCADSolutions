@@ -22,26 +22,24 @@ namespace CustomCADSolutions.App.Areas.Admin.Controllers
             .CreateMapper();
 
         [HttpGet]
-        public async Task<IActionResult> Index([FromQuery] CadQueryInputModel inputQuery)
+        public async Task<IActionResult> Index([FromQuery] CadQueryInputModel query)
         {
-            if (inputQuery.CadsPerPage % inputQuery.Cols != 0)
+            if (query.CadsPerPage % query.Cols != 0)
             {
-                inputQuery.CadsPerPage = inputQuery.Cols * (inputQuery.CadsPerPage / inputQuery.Cols);
+                query.CadsPerPage = query.Cols * (query.CadsPerPage / query.Cols);
             }
 
-            CadQueryModel query = new()
+            CadQueryResult result = await cadService.GetAllAsync(new()
             {
-                Category = inputQuery.Category,
-                SearchName = inputQuery.SearchName,
-                Sorting = inputQuery.Sorting,
-                CurrentPage = inputQuery.CurrentPage,
-                CadsPerPage = inputQuery.CadsPerPage,
+                Category = query.Category,
+                SearchName = query.SearchName,
+                Sorting = query.Sorting,
+                CurrentPage = query.CurrentPage,
+                CadsPerPage = query.CadsPerPage,
                 Validated = true,
                 Unvalidated = true,
-            };
-            query = await cadService.GetAllAsync(query);
-
-            return View(mapper.Map<CadViewModel[]>(query.Cads));
+            });
+            return View(mapper.Map<CadViewModel[]>(result.Cads));
         }
 
         [HttpPost]

@@ -10,7 +10,7 @@ namespace CustomCADSolutions.Core.Contracts
         /// </summary>
         /// <param name="query">Specify Creator name, sorting, count, etc.</param>
         /// <returns>A Task object that represents the specified Cads.</returns>
-        Task<CadQueryModel> GetAllAsync(CadQueryModel query);
+        Task<CadQueryResult> GetAllAsync(CadQueryModel query);
 
         /// <summary>
         ///     Searches for a Cad by the given id.

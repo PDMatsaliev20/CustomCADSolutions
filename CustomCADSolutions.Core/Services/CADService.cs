@@ -21,7 +21,7 @@ namespace CustomCADSolutions.Core.Services
                 cfg.AddProfile<OrderCoreProfile>();
             }).CreateMapper();
 
-        public async Task<CadQueryModel> GetAllAsync(CadQueryModel query)
+        public async Task<CadQueryResult> GetAllAsync(CadQueryModel query)
         {
             IQueryable<Cad> allCads = repository.All<Cad>();
 

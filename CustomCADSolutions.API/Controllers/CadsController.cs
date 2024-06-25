@@ -26,28 +26,13 @@ namespace CustomCADSolutions.API.Controllers
         [Consumes("application/json")]
         [Produces("application/json")]
         [ProducesResponseType(Status200OK)]
-        public async Task<ActionResult<CadQueryDTO>> GetAsync([FromQuery] CadQueryModel inputQuery)
+        public async Task<ActionResult<CadQueryResult>> GetAsync([FromQuery] CadQueryModel query)
         {
-            if (inputQuery.CadsPerPage % 3 != 0)
+            if (query.CadsPerPage % 3 != 0)
             {
-                inputQuery.CadsPerPage = 3 * (inputQuery.CadsPerPage / 3);
+                query.CadsPerPage = 3 * (query.CadsPerPage / 3);
             }
-
-            CadQueryModel query = new()
-            {
-                Category = inputQuery.Category,
-                Creator = inputQuery.Creator,
-                SearchName = inputQuery.SearchName,
-                SearchCreator = inputQuery.SearchCreator,
-                Sorting = inputQuery.Sorting,
-                CurrentPage = inputQuery.CurrentPage,
-                CadsPerPage = inputQuery.CadsPerPage,
-                Validated = inputQuery.Validated,
-                Unvalidated = inputQuery.Unvalidated,
-            };
-
-            query = await cadService.GetAllAsync(query);
-            return mapper.Map<CadQueryDTO>(query);
+            return await cadService.GetAllAsync(query);
         }
 
         [HttpGet("{id}")]

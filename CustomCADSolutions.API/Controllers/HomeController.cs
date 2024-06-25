@@ -11,15 +11,17 @@ namespace CustomCADSolutions.API.Controllers
     [Route("API/[controller]")]
     public class HomeController(ICadService cadService) : ControllerBase
     {
-        private readonly IMapper mapper = new MapperConfiguration(cfg 
+        private readonly IMapper mapper = new MapperConfiguration(cfg
                 => cfg.AddProfile<CadApiProfile>())
             .CreateMapper();
 
         [HttpGet("Cad")]
         public async Task<ActionResult<CadExportDTO>> GetAsync()
-        {
-            CadModel model = await cadService.GetByIdAsync(253);
-            return mapper.Map<CadExportDTO>(model);
-        }
+            => mapper.Map<CadExportDTO>(await cadService.GetByIdAsync(253));
+        
+
+        [HttpGet("Gallery")]
+        public async Task<ActionResult<CadQueryResult>> GetAllAsync([FromQuery] CadQueryModel query)
+            => await cadService.GetAllAsync(query);        
     }
 }

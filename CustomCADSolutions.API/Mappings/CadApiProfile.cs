@@ -9,8 +9,6 @@ namespace CustomCADSolutions.API.Mappings
         public CadApiProfile()
         {
             ModelToExport();
-            QueryToDTO();
-            DTOToQuery();
             ImportToModel();
         }
 
@@ -24,17 +22,6 @@ namespace CustomCADSolutions.API.Mappings
                 opt.MapFrom(model => model.Creator.UserName))
             .ForMember(export => export.CategoryName, opt =>
                 opt.MapFrom(model => model.Category.Name));
-
-        /// <summary>
-        ///     Converts Query to DTO
-        /// </summary>
-        public void QueryToDTO() => CreateMap<CadQueryModel, CadQueryDTO>();
-
-        /// <summary>
-        ///     Converts DTO to Query
-        /// </summary>
-        public void DTOToQuery() => CreateMap<CadQueryDTO, CadQueryModel>();
-
 
         /// <summary>
         /// Converts DTO to Service Model
