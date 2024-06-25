@@ -16,29 +16,35 @@ function ChooseRole() {
 
     return (
         <>
-            <section className="my-16 flex justify-center">
+            <section className="my-8 flex justify-center">
                 <section className="w-7/12 pt-16 pb-12 bg-indigo-200 rounded-2xl shadow-xl shadow-indigo-300">
                     <h2 className="font-bold text-4xl text-center">What are your intentions?</h2>
                     <div className="mt-10 flex justify-center">
                         <form onSubmit={handleSubmit} className="w-2/3">
-                            <div className="flex mb-6">
+                            <div className="flex flex-wrap mb-6">
                                 <div className="flex items-center">
-                                    <input type="radio" name="role" value="client"
+                                    <input type="radio" name="role" value="client" id="client"
                                         className="w-5 aspect-square" onClick={handleClient} />
                                 </div>
                                 <div className="ms-2">
-                                    <label className="text-lg font-bold">I want to order 3D Models</label>
-                                    <p className="text-sm">(you can scroll through our gallery or place a custom order)</p>
+                                    <label htmlFor="client" className="text-lg font-bold">
+                                        I want to order 3D Models -
+                                        <strong className="text-indigo-800"> Client</strong>
+                                        <p className="text-sm font-normal">(you can scroll through our gallery or place a custom order)</p>
+                                    </label>
                                 </div>
                             </div>
-                            <div className="flex">
+                            <div className="flex flex-wrap">
                                 <div className="flex items-center">
-                                    <input type="radio" name="role" value="contributor"
+                                    <input type="radio" name="role" value="contributor" id="contributor"
                                         className="w-5 aspect-square" onClick={handleContributor} />
                                 </div>
                                 <div className="ms-2">
-                                    <label className="text-lg font-bold">I want to sell 3D Models</label>
-                                    <p className="text-sm">(you can upload to our gallery or sell directly to us)</p>
+                                    <label className="text-lg font-bold" htmlFor="contributor">
+                                        I want to sell 3D Models -
+                                        <strong className="text-indigo-800"> Contributor</strong>
+                                        <p className="text-sm font-normal">(you can upload to our gallery or sell directly to us)</p>
+                                    </label>
                                 </div>
                             </div>
                             <div className="flex justify-center mt-10">

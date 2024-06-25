@@ -27,13 +27,13 @@ function RegisterPage({ onRegister }) {
     }
 
     return (
-        <section className="flex flex-col items-center my-12">
+        <section className="flex flex-col items-center">
             <h1 className="text-4xl text-center font-bold">
-                Register as a {role == 'client' ? 'Client' : 'Contributor'}!
+                Register as a {role == 'client' ? 'Client' : 'Contributor'}
             </h1>
-            <section className="w-6/12 pt-8 pb-2 px-12 mt-8 bg-indigo-400 rounded-md">
-                <form onSubmit={handleSubmit}>
-                    <div className="mb-4">
+            <section className="w-7/12 pt-8 pb-2 px-12 mt-8 bg-indigo-400 rounded-md">
+                <form onSubmit={handleSubmit} className="flex flex-wrap gap-x-8">
+                    <div className="mb-4 basis-5/12 grow">
                         <label htmlFor="text" className="block text-indigo-50">Username</label>
                         <input
                             type="text"
@@ -45,7 +45,7 @@ function RegisterPage({ onRegister }) {
                             required
                         />
                     </div>
-                    <div className="mb-4">
+                    <div className="mb-4 basis-5/12 grow">
                         <label htmlFor="email" className="block text-indigo-50">Email</label>
                         <input
                             type="email"
@@ -57,7 +57,7 @@ function RegisterPage({ onRegister }) {
                             required
                         />
                     </div>
-                    <div className="mb-4">
+                    <div className="mb-4 basis-5/12 grow">
                         <label htmlFor="password" className="block text-indigo-50">Password</label>
                         <input
                             type="password"
@@ -69,7 +69,7 @@ function RegisterPage({ onRegister }) {
                             placeholder="your_sercret_password_123"
                         />
                     </div>
-                    <div className="mb-2">
+                    <div className="mb-2 basis-5/12 grow">
                         <label htmlFor="confirmPassword" className="block text-indigo-50">Confirm Password</label>
                         <input
                             type="password"
@@ -81,14 +81,14 @@ function RegisterPage({ onRegister }) {
                             placeholder="your_sercret_password_123"
                         />
                     </div>
-                    <div className="py-4 flex flex-col justify-center items-center gap-3 text-indigo-50">
+                    <div className="basis-full py-4 flex justify-center items-center gap-3 text-indigo-50">
                         <button
                             type="submit"
-                            className="bg-indigo-600 text-indigo-50 py-2 px-4 rounded hover:bg-indigo-700"
+                            className="bg-indigo-600 text-indigo-50 font-bold py-2 px-4 rounded hover:bg-indigo-700"
                         >
                             Register
                         </button>
-                        <button>
+                        <button className="text-sm bg-indigo-200 text-black py-1 px-2 rounded">
                             <Link to={isClient ? '/register/contributor' : '/register/client'}>
                                 or switch roles
                             </Link>

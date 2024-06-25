@@ -13,9 +13,9 @@ function LoginPage({ onLogin }) {
     }
 
     return (
-        <section className="flex flex-col items-center mt-12">
+        <section className="flex flex-col items-center">
             <h1 className="text-4xl text-center font-bold ">
-                Log in to your existing account.
+                Log in to your existing account
             </h1>
             <section className="w-5/12 mt-8 px-12 pt-8 pb-6 bg-indigo-400 rounded-lg">
                 <form onSubmit={handleSubmit}>

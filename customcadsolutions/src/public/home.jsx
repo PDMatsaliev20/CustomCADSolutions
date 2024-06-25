@@ -18,9 +18,9 @@ function HomePage() {
 
     return (
         <>
-            <section className="h-96 flex justify-evenly mt-3 mb-5">
+            <section className="flex justify-evenly">
                 <article className="flex flex-col justify-evenly text-center">
-                    <h2 className="text-5xl font-bold italic">The Land of 3D Models</h2>
+                    <h1 className="text-5xl font-bold italic">The Land of 3D Models</h1>
                     <div className="flex flex-col gap-3">
                         <span className="text-2xl ">We offer high-quality 3D Models tailored to your needs!</span>
                         <span className="text-lg italic">(*optional 5-10 business day delivery)</span>
@@ -30,23 +30,20 @@ function HomePage() {
                         <BtnLink to="/register/contributor" text="Looking to sell" />
                     </div>
                 </article>
-                <aside className="h-96 w-96 flex items-center">    
+                <aside className="h-96 basis-2/5 flex items-center">
                     <div id="model-0" className="w-full h-full">
                         <Cad id={0} isHomeCad />
                     </div>
                 </aside>
             </section>
-            <hr className="h-px border-0 bg-black" />
 
-            { /* Weird bug where <hr /> alternates between thick and thin? */}
-            { /* Temporarily fixed it by adding an invisible <hr /> between them. */}
-            <hr className="h-px border-0 bg-transparent" />
+            <hr className="border-t border-black" />
 
-            <h3 className="text-4xl text-center mt-5 font-semibold">Two ways to go about this:</h3>
+            <h3 className="text-4xl text-center mt-8 font-semibold">Two ways to go about this:</h3>
             <section className="my-10">
                 <article className="flex justify-evenly items-center gap-5">
                     <Path parent={customerParent} children={customerChildren} />
-                    or
+                    <div className="border-x-2 border-indigo-700 w-3 h-32"></div>
                     <Path parent={contributorParent} children={contributorChildren} />
                 </article>
             </section>

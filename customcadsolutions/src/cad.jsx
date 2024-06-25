@@ -71,7 +71,21 @@ function Cad({ id, isHomeCad, token }) {
                 RIGHT: THREE.MOUSE.PAN
             }
 
+            const panOffset = new THREE.Vector3();
+            const panUp = new THREE.Vector3(0, 1, 0);
+            const panIn = new THREE.Vector3(0, 0, -1);
 
+            // Apply panning in the world space
+            
+            panOffset.copy(panIn).multiplyScalar(6);
+            camera.position.add(panOffset);
+            controls.target.add(panOffset);
+            controls.update();
+
+            panOffset.copy(panUp).multiplyScalar(3);
+            camera.position.add(panOffset);
+            controls.target.add(panOffset);
+            controls.update();
             // Animation
             function animate() {
                 requestAnimationFrame(animate);
