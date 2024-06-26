@@ -40,19 +40,34 @@ namespace CustomCADSolutions.Infrastructure.Data.Models
         public DateTime CreationDate { get; set; }
 
         [Required]
-        [MaxLength(CadConstants.XMax)]
-        [Comment("X coordinate of 3D Model")]
+        [Range(CadConstants.CoordMax, CadConstants.CoordMin)]
+        [Comment("Camera's X coordinate of 3D Model")]
         public int X { get; set; }
         
         [Required]
-        [MaxLength(CadConstants.YMax)]
-        [Comment("Y coordinate of 3D Model")]
+        [Range(CadConstants.CoordMax, CadConstants.CoordMin)]
+        [Comment("Camera's Y coordinate of 3D Model")]
         public int Y { get; set; }
 
         [Required]
-        [MaxLength(CadConstants.ZMax)]
-        [Comment("Z coordinate of 3D Model")]
+        [Range(CadConstants.CoordMax, CadConstants.CoordMin)]
+        [Comment("Camera's Z coordinate of 3D Model")]
         public int Z { get; set; }
+
+        [Required]
+        [Range(CadConstants.PanMin, CadConstants.PanMax)]
+        [Comment("Panning along the x-axis of 3D Model")]
+        public int PanX { get; set; }
+        
+        [Required]
+        [Range(CadConstants.PanMin, CadConstants.PanMax)]
+        [Comment("Panning along the y-axis of 3D Model")]
+        public int PanY { get; set; }
+        
+        [Required]
+        [Range(CadConstants.PanMin, CadConstants.PanMax)]
+        [Comment("Panning along the z-axis of 3D Model")]
+        public int PanZ { get; set; }
 
         [Required]
         [Comment("Identification of the creator of the 3D Model")]

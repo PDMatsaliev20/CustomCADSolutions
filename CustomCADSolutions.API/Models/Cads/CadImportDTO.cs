@@ -28,5 +28,8 @@ namespace CustomCADSolutions.API.Models.Cads
 
         [Required(ErrorMessage = RequiredErrorMessage)]
         public int[] Coords { get; set; } = new int[3];
+        
+        [Required(ErrorMessage = RequiredErrorMessage)]
+        public int[] PanCoords { get; set; } = new int[3];
     }
 }

@@ -61,7 +61,7 @@ namespace CustomCADSolutions.Core.Services
             }
             if (query.SearchCreator != null)
             {
-                allCads = allCads.Where(c => c.Creator!.UserName.Contains(query.SearchCreator));
+                allCads = allCads.Where(c => c.Creator!.UserName!.Contains(query.SearchCreator));
             }
 
             allCads = query.Sorting switch
@@ -154,6 +154,9 @@ namespace CustomCADSolutions.Core.Services
             cad.X = model.Coords[0];
             cad.Y = model.Coords[1];
             cad.Z = model.Coords[2];
+            cad.PanX = model.PanCoords[0];
+            cad.PanY = model.PanCoords[1];
+            cad.PanZ = model.PanCoords[2];
 
             await repository.SaveChangesAsync();
         }

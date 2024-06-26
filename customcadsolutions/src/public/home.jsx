@@ -31,8 +31,8 @@ function HomePage() {
                     </div>
                 </article>
                 <aside className="h-96 basis-2/5 flex items-center">
-                    <div id="model-0" className="w-full h-full">
-                        <Cad id={0} isHomeCad />
+                    <div id="model-253" className="w-full h-full">
+                        <Cad isHomeCad />
                     </div>
                 </aside>
             </section>

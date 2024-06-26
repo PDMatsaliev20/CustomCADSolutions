@@ -20,14 +20,11 @@
             public const double PriceMin = 0.01;
             public const double PriceMax = 1000;
 
-            public const int XMin = -1000;
-            public const int XMax = 1000;
-
-            public const int YMin = -1000;
-            public const int YMax = 1000;
-
-            public const int ZMin = -1000;
-            public const int ZMax = 1000;
+            public const int CoordMin = -1000;
+            public const int CoordMax = 1000;
+            
+            public const int PanMin = -1000;
+            public const int PanMax = 1000;
 
             public const string SpinAxisErrorMessage = "{0} must be either x, y or z";
             public const string SpinAxisRegEx = "[xyz]?";

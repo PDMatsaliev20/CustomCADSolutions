@@ -2,13 +2,13 @@
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-function loadModel({ id, x, y, z, fov }, path) {
+function loadModel({ id, x, y, z, fov, panx, pany, panz, pan }, path) {
     // Scene
     const scene = new THREE.Scene();
     scene.background = null;
 
     // Camera
-    const camera = new THREE.PerspectiveCamera(fov, window.innerWidth / window.innerHeight, 0.001, 100);
+    const camera = new THREE.PerspectiveCamera(fov, window.innerWidth / window.innerHeight, 0.01, 10000);
     camera.position.set(x, y, z);
     camera.lookAt(0, 0, 0);
 
@@ -42,33 +42,86 @@ function loadModel({ id, x, y, z, fov }, path) {
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
     scene.add(ambientLight);
 
+    // Controls
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.1;
+
+    function addPanning(axis, pan) {
+        const panOffset = new THREE.Vector3();
+        switch (axis) {
+            case 'x': panOffset.copy(new THREE.Vector3(1, 0, 0)).multiplyScalar(pan); break;
+            case 'y': panOffset.copy(new THREE.Vector3(0, 1, 0)).multiplyScalar(pan); break;
+            case 'z': panOffset.copy(new THREE.Vector3(0, 0, 1)).multiplyScalar(pan); break;
+        }
+
+        camera.position.add(panOffset);
+        controls.target.add(panOffset);
+        controls.update();
+    }
+    addPanning('x', panx);
+    addPanning('y', pany);
+    addPanning('z', panz);
+
+    function removePanning(axis, pan) {
+        const panOffset = new THREE.Vector3();
+        switch(axis) {
+            case 'x': panOffset.copy(new THREE.Vector3(-1, 0, 0)).multiplyScalar(pan); break;
+            case 'y': panOffset.copy(new THREE.Vector3(0, -1, 0)).multiplyScalar(pan); break;
+            case 'z': panOffset.copy(new THREE.Vector3(0, 0, -1)).multiplyScalar(pan);break;
+        }
+
+        camera.position.add(panOffset);
+        controls.target.add(panOffset);
+        controls.update();
+    }
+
     // GLTF Loading
     const loader = new GLTFLoader();
     loader.load(path,
         function (gltf) {
+
+            $('#PanX').on('input', () => {
+                removePanning('x', panx);
+                panx = parseInt($('#PanX').val());
+                addPanning('x', panx);
+            });
+
+            $('#PanY').on('input', () => {
+                removePanning('y', pany);
+                pany = parseInt($('#PanY').val());
+                addPanning('y', pany);
+            });
+
+            $('#PanZ').on('input', () => {
+                removePanning('z', panz);
+                panz = parseInt($('#PanZ').val());
+                addPanning('z', panz);
+            });
+
             $('#X').on('input', function () {
-                x = parseFloat($('#X').val());
+                x = parseInt($('#X').val());
                 if (Math.round(camera.position.x) != x) {
                     camera.position.x = x;
                 }
             });
 
             $('#Y').on('input', function () {
-                y = parseFloat($('#Y').val());
+                y = parseInt($('#Y').val());
                 if (Math.round(camera.position.y) != y) {
                     camera.position.y = y;
                 }
             });
 
             $('#Z').on('input', function () {
-                z = parseFloat($('#Z').val());
+                z = parseInt($('#Z').val());
                 if (Math.round(camera.position.z) != z) {
                     camera.position.z = z;
                 }
             });
 
-            $('#X, #Y, #Z').on('input', () => $.ajax({
-                url: `/Cads/UpdateCoords/${id}?x=${x}&y=${y}&z=${z}`,
+            $('#X, #Y, #Z, #PanX, #PanY, #PanZ').on('input', () => $.ajax({
+                url: `/Cads/UpdateCoords/${id}?x=${x}&y=${y}&z=${z}&panx=${panx}&pany=${pany}&panz=${panz}`,
                 type: 'POST',
                 contentType: 'application/json',
                 success: function () {
@@ -84,11 +137,6 @@ function loadModel({ id, x, y, z, fov }, path) {
         (xhr) => console.log((xhr.loaded / xhr.total * 100) + '% loaded'),
         (error) => console.error(error)
     );
-
-    // Controls
-    const controls = new OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true;
-    controls.dampingFactor = 0.1;
 
     // Animation
     function animate() {

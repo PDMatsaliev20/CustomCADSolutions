@@ -41,11 +41,9 @@ namespace CustomCADSolutions.App.Controllers
         [HttpGet]
         public async Task<IActionResult> Order(int id)
         {
-            CadModel model = await cadService.GetByIdAsync(id);
-            CadViewModel view = mapper.Map<CadViewModel>(model);
-            
             ViewBag.StripeKey = stripe.TestPublishableKey;
-            return View(view);
+            CadModel model = await cadService.GetByIdAsync(id);
+            return View(mapper.Map<CadViewModel>(model));
         }
 
         [HttpPost]

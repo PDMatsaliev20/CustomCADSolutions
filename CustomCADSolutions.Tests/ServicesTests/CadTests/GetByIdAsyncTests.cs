@@ -52,6 +52,9 @@ namespace CustomCADSolutions.Tests.ServicesTests.CadTests
 
                 Assert.That(actualCad.Coords, Is.EqualTo(expectedCad.Coords),
                     string.Format(ModelPropertyMismatch, "Coords"));
+                
+                Assert.That(actualCad.PanCoords, Is.EqualTo(expectedCad.PanCoords),
+                    string.Format(ModelPropertyMismatch, "Coords"));
 
                 Assert.That(actualCad.CreatorId, Is.EqualTo(expectedCad.CreatorId),
                     string.Format(ModelPropertyMismatch, "CreatorId"));

@@ -4,12 +4,15 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import axios from 'axios'
 import { useState, useEffect } from 'react'
 
-function Cad({ id, isHomeCad }) {
-
+function Cad({ cad, id, isHomeCad }) {
     const [model, setModel] = useState({});
 
     useEffect(() => {
-        populateCad(id, isHomeCad);
+        if (cad) {
+            setModel(cad);
+        } else {
+            populateCad(id, isHomeCad);
+        }
     }, [id]);
 
 
@@ -24,7 +27,7 @@ function Cad({ id, isHomeCad }) {
             camera.position.set(model.coords[0], model.coords[1], model.coords[2]);
 
             // Renderer
-            const parentContainer = document.getElementById(`model-${id}`);
+            const parentContainer = document.getElementById(`model-${model.id}`);
             if (parentContainer.children.length > 0) {
                 return;
             }
@@ -41,7 +44,7 @@ function Cad({ id, isHomeCad }) {
                 camera.aspect = width / height;
                 camera.updateProjectionMatrix();
             }
-            updateRendererSize(renderer, camera, id);
+            updateRendererSize(renderer, camera, model.id);
 
             // Lights
             const directionalLight = new THREE.DirectionalLight(0xa5b4fc, 1);
@@ -66,24 +69,20 @@ function Cad({ id, isHomeCad }) {
             controls.enableDamping = true;
             controls.dampingFactor = 0.1;
 
-            if (isHomeCad) {
-                const panOffset = new THREE.Vector3();
-                const panUp = new THREE.Vector3(0, 1, 0);
-                const panIn = new THREE.Vector3(0, 0, -1);
+            const panOffset = new THREE.Vector3();
+            panOffset.copy(new THREE.Vector3(1, 0, 0)).multiplyScalar(model.panCoords[0]);
+            camera.position.add(panOffset);
 
-                // Apply panning in the world space
+            panOffset.copy(new THREE.Vector3(0, 1, 0)).multiplyScalar(model.panCoords[1]);
+            camera.position.add(panOffset);
 
-                panOffset.copy(panIn).multiplyScalar(6);
-                camera.position.add(panOffset);
-                controls.target.add(panOffset);
-                controls.update();
+            panOffset.copy(new THREE.Vector3(0, 0, 1)).multiplyScalar(model.panCoords[2]);
+            camera.position.add(panOffset);
 
-                panOffset.copy(panUp).multiplyScalar(3);
-                camera.position.add(panOffset);
-                controls.target.add(panOffset);
-                controls.update();
-            }
-
+            camera.position.add(panOffset);
+            controls.target.add(panOffset);
+            controls.update();
+            
             let isInteracting = false
             let resumeTimeout;
 
@@ -112,13 +111,13 @@ function Cad({ id, isHomeCad }) {
             window.addEventListener('resize', function () {
                 const width = parentContainer.clientWidth;
                 const height = parentContainer.clientHeight;
-                updateRendererSize(renderer, camera, id);
+                updateRendererSize(renderer, camera, model.id);
                 camera.aspect = width / height;
                 camera.updateProjectionMatrix();
             });
         }
 
-    }, [model.path, model.coords, model.fov, id]);
+    }, [model.path, model.coords, model.fov, model.id]);
 
     async function populateCad(id, isHomeCad) {
         try {

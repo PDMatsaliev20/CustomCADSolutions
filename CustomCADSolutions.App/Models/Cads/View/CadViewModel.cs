@@ -11,6 +11,7 @@
         public string CreationDate { get; set; } = null!;
         public decimal Price { get; set; }
         public int[] Coords { get; set; } = new int[3];
+        public int[] PanCoords { get; set; } = new int[3];
         public short Fov { get; set; } = 90;
     }
 }

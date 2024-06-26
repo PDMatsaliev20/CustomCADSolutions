@@ -32,7 +32,10 @@ namespace CustomCADSolutions.Core.Models
 
         [Required(ErrorMessage = RequiredErrorMessage)]
         public int[] Coords { get; set; } = new int[3];
-        
+
+        [Required(ErrorMessage = RequiredErrorMessage)]
+        public int[] PanCoords { get; set; } = new int[3];
+
         [Required(ErrorMessage = RequiredErrorMessage)]
         public int CategoryId { get; set; }
 

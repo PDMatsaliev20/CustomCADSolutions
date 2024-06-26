@@ -15,7 +15,8 @@ namespace CustomCADSolutions.Tests.ServicesTests.CadTests
             expectedCad.IsValidated = !expectedCad.IsValidated;
             expectedCad.Price++;
             expectedCad.CategoryId = 2;
-            expectedCad.Coords = new int[3] { 100, 100, 100 };
+            expectedCad.Coords = [100, 100, 100];
+            expectedCad.PanCoords = [200, 200, 200];
 
             await service.EditAsync(id, expectedCad);
             CadModel actualCad = await service.GetByIdAsync(id);

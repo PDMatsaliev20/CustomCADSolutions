@@ -18,7 +18,9 @@ namespace CustomCADSolutions.Core.Mappings
 
         public void EntityToModel() => CreateMap<Cad, CadModel>()
                 .ForMember(model => model.Coords, opt =>
-                    opt.MapFrom(entity => new int[] { entity.X, entity.Y, entity.Z }));
+                    opt.MapFrom(entity => new int[] { entity.X, entity.Y, entity.Z }))
+            .ForMember(model => model.PanCoords, opt =>
+                    opt.MapFrom(entity => new int[] { entity.PanX, entity.PanY, entity.PanZ }));
         
         /// <summary>
         ///     Converts Service Model to Entity

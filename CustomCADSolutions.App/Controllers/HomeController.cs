@@ -37,7 +37,8 @@ namespace CustomCADSolutions.App.Controllers
                 Id = 0,
                 Name = "Laptop",
                 Extension = ".glb",
-                Coords = [23, 15, 20]
+                Coords = [23, 15, 20],
+                PanCoords = [0, 6, 0]
             });
         }
 
@@ -49,7 +50,6 @@ namespace CustomCADSolutions.App.Controllers
             {
                 query.CadsPerPage = query.Cols * (query.CadsPerPage / query.Cols);
             }
-
 
             CadQueryResult result = await cadService.GetAllAsync(new()
             {

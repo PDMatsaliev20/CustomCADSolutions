@@ -4,6 +4,7 @@ using CustomCADSolutions.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CustomCADSolutions.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(CadContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240626114929_AddedPanning")]
+    partial class AddedPanning
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -166,17 +169,10 @@ namespace CustomCADSolutions.Infrastructure.Data.Migrations
                         .HasColumnType("nvarchar(18)")
                         .HasComment("Name of 3D Model");
 
-                    b.Property<int>("PanX")
-                        .HasColumnType("int")
-                        .HasComment("Panning along the x-axis of 3D Model");
-
-                    b.Property<int>("PanY")
+                    b.Property<int>("Pan")
+                        .HasMaxLength(1000)
                         .HasColumnType("int")
                         .HasComment("Panning along the y-axis of 3D Model");
-
-                    b.Property<int>("PanZ")
-                        .HasColumnType("int")
-                        .HasComment("Panning along the z-axis of 3D Model");
 
                     b.Property<string>("Path")
                         .HasColumnType("nvarchar(max)")
@@ -188,16 +184,19 @@ namespace CustomCADSolutions.Infrastructure.Data.Migrations
                         .HasComment("Price of 3d model");
 
                     b.Property<int>("X")
+                        .HasMaxLength(1000)
                         .HasColumnType("int")
-                        .HasComment("Camera's X coordinate of 3D Model");
+                        .HasComment("X coordinate of 3D Model");
 
                     b.Property<int>("Y")
+                        .HasMaxLength(1000)
                         .HasColumnType("int")
-                        .HasComment("Camera's Y coordinate of 3D Model");
+                        .HasComment("Y coordinate of 3D Model");
 
                     b.Property<int>("Z")
+                        .HasMaxLength(1000)
                         .HasColumnType("int")
-                        .HasComment("Camera's Z coordinate of 3D Model");
+                        .HasComment("Z coordinate of 3D Model");
 
                     b.HasKey("Id");
 

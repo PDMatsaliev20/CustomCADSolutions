@@ -11,10 +11,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using CustomCADSolutions.App.Hubs;
-using Stripe;
-using NuGet.Packaging.Signing;
 using System.Text.RegularExpressions;
-using CustomCADSolutions.Infrastructure.Data.Models;
 
 namespace CustomCADSolutions.App.Controllers
 {
@@ -33,10 +30,11 @@ namespace CustomCADSolutions.App.Controllers
 
         [HttpPost]
         [IgnoreAntiforgeryToken]
-        public async Task<IActionResult> UpdateCoords(int id, int x, int y, int z)
+        public async Task<IActionResult> UpdateCoords(int id, int x, int y, int z, int panx, int pany, int panz)
         {
             CadModel model = await cadService.GetByIdAsync(id);
             model.Coords = [x, y, z];
+            model.PanCoords = [panx, pany, panz];
 
             await cadService.EditAsync(id, model);
             return RedirectToAction(nameof(Details), new { id });

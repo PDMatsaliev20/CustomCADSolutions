@@ -91,6 +91,7 @@ namespace CustomCADSolutions.API.Controllers
                 cad.Name = dto.Name;
                 cad.CategoryId = dto.CategoryId;
                 cad.Coords = dto.Coords;
+                cad.PanCoords = dto.PanCoords;
                 cad.Price = dto.Price;
                 await cadService.EditAsync(id, cad);
 
