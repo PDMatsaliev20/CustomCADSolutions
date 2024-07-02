@@ -2,9 +2,10 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import axios from 'axios'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 function Cad({ cad, id, isHomeCad }) {
+    const mountRef = useRef(null);
     const [model, setModel] = useState({});
 
     useEffect(() => {
@@ -23,28 +24,29 @@ function Cad({ cad, id, isHomeCad }) {
             scene.background = null;
 
             // Camera
-            const camera = new THREE.PerspectiveCamera(model.fov, window.innerWidth / window.innerHeight, 0.001, 100);
+            const camera = new THREE.PerspectiveCamera(model.fov, window.innerWidth / window.innerHeight, 0.001, 1000);
             camera.position.set(model.coords[0], model.coords[1], model.coords[2]);
 
             // Renderer
-            const parentContainer = document.getElementById(`model-${model.id}`);
-            if (parentContainer.children.length > 0) {
+            const mount = mountRef.current;
+            if (mount.children.length > 0) {
                 return;
             }
 
             const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-            parentContainer.appendChild(renderer.domElement);
+            mount.appendChild(renderer.domElement);
 
-            function updateRendererSize(renderer, camera, id) {
-                const parentContainer = document.getElementById(`model-${id}`);
-                const width = parentContainer.clientWidth;
-                const height = parentContainer.clientHeight;
+            function updateRendererSize() {
+                const width = mount.clientWidth;
+                const height = mount.clientHeight;
 
                 renderer.setSize(width, height);
                 camera.aspect = width / height;
                 camera.updateProjectionMatrix();
+
+                return [width, height];
             }
-            updateRendererSize(renderer, camera, model.id);
+            updateRendererSize();
 
             // Lights
             const directionalLight = new THREE.DirectionalLight(0xa5b4fc, 1);
@@ -62,7 +64,6 @@ function Cad({ cad, id, isHomeCad }) {
                 () => { },
                 (error) => console.error(error)
             );
-
 
             // Controls
             const controls = new OrbitControls(camera, renderer.domElement);
@@ -101,23 +102,24 @@ function Cad({ cad, id, isHomeCad }) {
                 renderer.render(scene, camera);
                 controls.update();
 
-                if (!isInteracting) {
+                if (isHomeCad && !isInteracting) {
                     scene.rotation.y += 0.01;
                 }
             }
             animate();
 
             // Adapt to screen size
-            window.addEventListener('resize', function () {
-                const width = parentContainer.clientWidth;
-                const height = parentContainer.clientHeight;
-                updateRendererSize(renderer, camera, model.id);
-                camera.aspect = width / height;
-                camera.updateProjectionMatrix();
-            });
-        }
+            window.addEventListener('resize', updateRendererSize);
 
+            return () => {
+                mount.removeChild(renderer.domElement);
+                window.removeEventListener('resize', updateRendererSize);
+                renderer.dispose();
+            };
+        }
     }, [model.path, model.coords, model.fov, model.id]);
+
+    return <div ref={mountRef} className="w-full h-full" />;
 
     async function populateCad(id, isHomeCad) {
         try {
