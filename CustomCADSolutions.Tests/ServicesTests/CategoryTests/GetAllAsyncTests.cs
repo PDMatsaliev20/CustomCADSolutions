@@ -1,6 +1,6 @@
 ﻿using static CustomCADSolutions.Core.TestsErrorMessages;
 
-namespace CustomCADSolutions.Tests.ServiceTests.CategoryTests
+namespace CustomCADSolutions.Tests.ServicesTests.CategoryTests
 {
     public class GetAllAsyncTests : BaseCategoriesTests
     {

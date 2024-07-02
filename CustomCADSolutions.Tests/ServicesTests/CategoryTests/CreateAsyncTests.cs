@@ -1,7 +1,7 @@
 ﻿using CustomCADSolutions.Core.Models;
 using static CustomCADSolutions.Core.TestsErrorMessages;
 
-namespace CustomCADSolutions.Tests.ServiceTests.CategoryTests
+namespace CustomCADSolutions.Tests.ServicesTests.CategoryTests
 {
     public class CreateAsyncTests : BaseCategoriesTests
     {

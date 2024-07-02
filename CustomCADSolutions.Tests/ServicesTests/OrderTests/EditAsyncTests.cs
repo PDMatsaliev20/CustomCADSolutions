@@ -2,7 +2,7 @@
 using CustomCADSolutions.Core.Models;
 using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 
-namespace CustomCADSolutions.Tests.ServiceTests.OrderTests
+namespace CustomCADSolutions.Tests.ServicesTests.OrderTests
 {
     public  class EditAsyncTests : BaseOrdersTests
     {

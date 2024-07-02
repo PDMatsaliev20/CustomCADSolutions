@@ -1,6 +1,6 @@
 ﻿using static CustomCADSolutions.Core.TestsErrorMessages;
 
-namespace CustomCADSolutions.Tests.ServiceTests.OrderTests
+namespace CustomCADSolutions.Tests.ServicesTests.OrderTests
 {
     public class ExistsByIdAsyncTests : BaseOrdersTests
     {

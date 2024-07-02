@@ -8,7 +8,7 @@ using CustomCADSolutions.Infrastructure.Data.Common;
 using CustomCADSolutions.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace CustomCADSolutions.Tests.ServiceTests.OrderTests
+namespace CustomCADSolutions.Tests.ServicesTests.OrderTests
 {
     [TestFixture]
     public class BaseOrdersTests

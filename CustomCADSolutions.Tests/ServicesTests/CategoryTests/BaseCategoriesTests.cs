@@ -8,7 +8,7 @@ using AutoMapper;
 using CustomCADSolutions.Core.Mappings;
 using CustomCADSolutions.Core.Models;
 
-namespace CustomCADSolutions.Tests.ServiceTests.CategoryTests
+namespace CustomCADSolutions.Tests.ServicesTests.CategoryTests
 {
     public class BaseCategoriesTests
     {
