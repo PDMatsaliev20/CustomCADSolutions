@@ -18,31 +18,20 @@ function GalleryPage() {
             <section className="my-10">
                 <ul className="flex flex-wrap justify-between gap-y-12 gap-x-3">
                     {cads.map(cad =>
-                        <>
-                            <li key={cad.id} className="basis-3/12 shrink">
-                                <div id={`model-${cad.id}`} className="aspect-square bg-indigo-100 w-full"></div>
-                            </li>
-                            <li key={cad.id} className="basis-3/12 shrink">
-                                <div id={`model-${cad.id}`} className="aspect-square bg-indigo-100 w-full"></div>
-                            </li>
-                            <li key={cad.id} className="basis-3/12 shrink">
-                                <div id={`model-${cad.id}`} className="aspect-square bg-indigo-100 w-full"></div>
-                            </li>
-                            <li key={cad.id} className="basis-3/12 shrink">
-                                <div id={`model-${cad.id}`} className="aspect-square bg-indigo-100 w-full"></div>
-                            </li>
-
-
-                        </>
+                        <li key={cad.id} className="basis-3/12 shrink">
+                            <div className="aspect-square bg-indigo-100 rounded-2xl border border-indigo-600 w-full">
+                                <Cad cad={cad} />
+                            </div>
+                        </li>
                     )}
                 </ul>
             </section>
         </>
     )
-    ;
+        ;
 
     async function getCads() {
-        const { cads, count } = await axios.get('https://localhost:7127/API/Home/Gallery')
+        const { cads, count } = await axios.get('https://localhost:7127/API/Home/Gallery?CadsPerPage=3')
             .then(response => response.data);
 
         setCads([...cads]);

@@ -21,7 +21,7 @@ namespace CustomCADSolutions.API.Controllers
         
 
         [HttpGet("Gallery")]
-        public async Task<ActionResult<CadQueryResult>> GetAllAsync([FromQuery] CadQueryModel query)
-            => await cadService.GetAllAsync(query);        
+        public async Task<ActionResult<CadQueryDTO>> GetAllAsync([FromQuery] CadQueryModel query)
+            => mapper.Map<CadQueryDTO>(await cadService.GetAllAsync(query));
     }
 }
