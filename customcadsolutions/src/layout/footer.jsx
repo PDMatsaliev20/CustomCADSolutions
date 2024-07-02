@@ -1,12 +1,15 @@
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 function Footer() {
+    const { t } = useTranslation();
+
     return (
         <footer className="basis-full grow sticky z-50 self-end py-4 border-t-2 border-indigo-300 rounded-t-lg bg-indigo-100 ">
             <div className="flex justify-evenly items-center">
                 <section className="flex gap-6 underline-offset-4 underline font-semibold text-sm">
-                    <p className="text-center"><Link to="/policy">Privacy Policy</Link></p>
-                    <p className="text-center"><Link to="/about">About Us</Link></p>
+                    <p className="text-center"><Link to="/policy">{t('Privacy Policy')}</Link></p>
+                    <p className="text-center"><Link to="/about">{t('About Us')}</Link></p>
                 </section>
                 <section>
                     <p className="text-lg font-bold">
@@ -15,7 +18,7 @@ function Footer() {
                     </p>
                 </section>
                 <section className="italic">
-                    <span>Contacts:</span>
+                    <span>{t('Contacts')}</span>
                     <div className="ms-1 inline">
                         <a href="https://www.instagram.com/customcadsolutions/">
                             <i className="ms-1 fa fa-instagram"></i>

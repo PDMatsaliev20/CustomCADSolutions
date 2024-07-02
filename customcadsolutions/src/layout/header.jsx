@@ -1,11 +1,14 @@
-import AuthContext from '../auth-context'
+﻿import AuthContext from '../auth-context'
 import GuestMenu from '../components/guest-menu'
 import AccountMenu from '../components/account-menu'
+import LanguageSelector from '../components/language'
 import { Link, useNavigate } from 'react-router-dom'
 import { useContext } from 'react'
+import { useTranslation } from 'react-i18next'
 import axios from 'axios'
 
 function Header() {
+    const { t } = useTranslation();
     const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
 
     const navigate = useNavigate();
@@ -27,9 +30,10 @@ function Header() {
                         <img src="../src/assets/logga.png" className="mw-100 h-auto hover:opacity-60" />
                     </Link>
                 </li>
-                <li className="w-1/3"> 
-                    <form className="flex gap-3" onSubmit={() => navigate("/")} method="get">
-                        <input className="px-3 py-2 w-full rounded-md bg-indigo-50" type="search" placeholder="Search by Name, Cateogry, Creator..." />
+                <li className="w-1/3 flex gap-x-4"> 
+                    <LanguageSelector />
+                    <form className="flex basis-full align-center gap-3" onSubmit={() => navigate("/")} method="get">
+                        <input className="px-3 py-2 w-full rounded-md bg-indigo-50" type="search" placeholder={t('Searchbar')} />
                         <button type="submit">
                             <i className="fa fa-search"></i>
                         </button>

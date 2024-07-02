@@ -1,10 +1,12 @@
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 
 function ContributorNavigationalMenu({ shouldBlur, shouldHide }) {
+    const { t } = useTranslation();
 
     const handleClick = () => {
         if (shouldBlur) {
-            alert('Only for Contributors!')
+            alert(t('Only for Contributors!'))
         }
     };
 
@@ -14,24 +16,24 @@ function ContributorNavigationalMenu({ shouldBlur, shouldHide }) {
                 shouldBlur ?
                     <>
                         <li className="float-left me-4">
-                            <span>Your 3d Models</span>
+                            <span>{t('Your 3D Models')}</span>
                         </li>
                         <li className="float-left me-4">
-                            <span>Upload 3D Model</span>
+                            <span>{t('Upload 3D Model')}</span>
                         </li>
                         <li className="float-left me-2">
-                            <span>Sell us a 3D Model</span>
+                            <span>{t('Sell us a 3D Model')}</span>
                         </li>
                     </> :
                     <>
                         <li className="float-left me-4">
-                            <Link to="/cads">Your 3d Models</Link>
+                            <Link to="/cads">{t('Your 3D Models')}</Link>
                         </li>
                         <li className="float-left me-4">
-                            <Link to="/cads/upload">Upload 3D Model</Link>
+                            <Link to="/cads/upload">{t('Upload 3D Model')}</Link>
                         </li>
                         <li className="float-left me-2">
-                            <Link to="/cads/sell">Sell us a 3D Model</Link>
+                            <Link to="/cads/sell">{t('Sell us a 3D Model')}</Link>
                         </li>
                     </>
             }

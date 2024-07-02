@@ -5,15 +5,18 @@ import Body from './layout/body'
 import Footer from './layout/footer'
 import { BrowserRouter } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next'
 import axios from 'axios'
 import './index.css'
 
 function App() {
-    const { t } = useTranslation();
-    console.log(t('Welcome to React'));
+    const { t, i18n } = useTranslation();
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [userRole, setUserRole] = useState();
+
+    if (localStorage.getItem('language') && i18n.language !== localStorage.getItem('language')) {
+        i18n.changeLanguage(localStorage.getItem('language'));
+    }
 
     useEffect(() => {
         checkIfAuthenticated();

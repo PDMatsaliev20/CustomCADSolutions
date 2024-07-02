@@ -1,4 +1,8 @@
-function AccountMenu({handleLogout, username}) {
+import { useTranslation } from 'react-i18next'
+
+function AccountMenu({ handleLogout, username }) {
+    const { t } = useTranslation();
+
     return (
         <ul className="text-lg flex items-center gap-x-3">
             <li className="float-left flex gap-x-2 items-center justify-center">
@@ -6,7 +10,7 @@ function AccountMenu({handleLogout, username}) {
                 <span>{username}</span>
             </li>
             <li>
-                <button onClick={handleLogout}>Log out</button>
+                <button onClick={handleLogout}>{t('Log out')}</button>
             </li>
         </ul>
     );

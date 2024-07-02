@@ -1,10 +1,12 @@
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 
 function ClientNavigationalMenu({ shouldBlur, shouldHide }) {
+    const { t } = useTranslation();
 
     const handleClick = () => {
         if (shouldBlur) {
-            alert('Only for Clients!');
+            alert(t('Only for Clients!'));
         }
     }
 
@@ -14,25 +16,25 @@ function ClientNavigationalMenu({ shouldBlur, shouldHide }) {
                 shouldBlur ?
                     <>
                         <li className="float-left me-4">
-                            <span>Your Orders</span>
+                            <span>{t('Your Orders')}</span>
                         </li>
                         <li className="float-left me-4">
-                            <span>Order Custom 3D Model</span>
+                            <span>{t('Order Custom 3D Model')}</span>
                         </li>
                         <li className="float-left me-4">
-                            <span>Order from Gallery</span>
+                            <span>{t('Order from Gallery')}</span>
                         </li>
                     </>
                     :
                     <>
                         <li className="float-left me-4">
-                            <Link to="/orders">Your Orders</Link>
+                            <Link to="/orders">{t('Your Orders')}</Link>
                         </li>
                         <li className="float-left me-4">
-                            <Link to="/orders/custom">Order Custom 3D Model</Link>
+                            <Link to="/orders/custom">{t('Order Custom 3D Model')}</Link>
                         </li>
                         <li className="float-left me-4">
-                            <Link to="/orders/gallery">Order from Gallery</Link>
+                            <Link to="/orders/gallery">{t('Order from Gallery')}</Link>
                         </li>
                     </>
             }

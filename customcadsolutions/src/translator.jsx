@@ -1,16 +1,14 @@
 ﻿import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
+import translationEN from './languages/en/translation.json'
+import translationBG from './languages/bg/translation.json'
 
 const resources = {
     en: {
-        translation: {
-            "Welcome to React": "Welcome to React and react-i18next"
-        }
+        translation: translationEN
     },
     bg: {
-        translation: {
-            "Welcome to React": "Добре дошли при Реакт и реакт-и18н"
-        }
+        translation: translationBG
     }
 };
 
@@ -19,6 +17,7 @@ i18n
     .init({
         resources,
         lng: "bg",
+        fallbackLng: 'en',
         interpolation: {
             escapeValue: false 
         }

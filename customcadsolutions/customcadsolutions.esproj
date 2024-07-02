@@ -174,4 +174,7 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="src\languages\bg\" />
+  </ItemGroup>
 </Project>

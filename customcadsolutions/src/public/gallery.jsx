@@ -1,8 +1,10 @@
 import axios from 'axios'
+import { useTranslation } from 'react-i18next'
 import { useState, useEffect } from 'react'
 import Cad from '../cad'
 
 function GalleryPage() {
+    const { t } = useTranslation();
     const [cads, setCads] = useState([]);
     const [totalCount, setTotalCount] = useState(0);
 
@@ -14,7 +16,7 @@ function GalleryPage() {
 
     return (
         <>
-            <h1 className="mt-3 text-3xl text-center font-bold">Our Gallery</h1>
+            <h1 className="mt-3 text-3xl text-center font-bold">{t('Our Gallery')}</h1>
             <section className="my-10">
                 <ul className="flex flex-wrap justify-between gap-y-12 gap-x-3">
                     {cads.map(cad =>
