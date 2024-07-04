@@ -55,13 +55,13 @@ namespace CustomCADSolutions.Core.Services
                 }
             }
 
-            if (query.SearchName != null)
+            if (!string.IsNullOrWhiteSpace(query.SearchName))
             {
                 allCads = allCads.Where(c => c.Name.Contains(query.SearchName));
             }
-            if (query.SearchCreator != null)
+            if (!string.IsNullOrWhiteSpace(query.SearchCreator))
             {
-                allCads = allCads.Where(c => c.Creator!.UserName!.Contains(query.SearchCreator));
+                allCads = allCads.Where(c => c.Creator.UserName!.Contains(query.SearchCreator));
             }
 
             allCads = query.Sorting switch
@@ -73,7 +73,6 @@ namespace CustomCADSolutions.Core.Services
                 CadSorting.Category => allCads.OrderBy(m => m.Category.Name),
                 _ => allCads.OrderBy(c => c.Id),
             };
-
 
             if (query.CadsPerPage > 16)
             {
@@ -88,9 +87,9 @@ namespace CustomCADSolutions.Core.Services
             CadModel[] models = mapper.Map<CadModel[]>(cads);
             return new()
             {
-                TotalCount = allCads.Count(),
+                Count = (await allCads.ToArrayAsync()).Length,
                 Cads = models,
-            };
+            }; 
         }
 
         public async Task<CadModel> GetByIdAsync(int id)

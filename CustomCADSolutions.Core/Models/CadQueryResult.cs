@@ -2,7 +2,7 @@
 {
     public class CadQueryResult
     {
-        public int TotalCount { get; set; }
+        public int Count { get; set; }
         public ICollection<CadModel> Cads { get; set; } = new List<CadModel>();
     }
 }
