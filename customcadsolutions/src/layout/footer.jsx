@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTwitter, faInstagram, faFacebook, faGithub } from '@fortawesome/free-brands-svg-icons'
 
 function Footer() {
     const { t } = useTranslation();
@@ -17,20 +19,20 @@ function Footer() {
                         <Link to="/" className="font-black"> CustomCADSolutions</Link>
                     </p>
                 </section>
-                <section className="italic">
+                <section className="italic flex gap-x-3">
                     <span>{t('Contacts')}</span>
-                    <div className="ms-1 inline">
+                    <div className="inline-flex gap-x-2">
                         <a href="https://www.instagram.com/customcadsolutions/">
-                            <i className="ms-1 fa fa-instagram"></i>
+                            <FontAwesomeIcon icon={faInstagram} />
                         </a>
                         <a href="https://twitter.com/customcads/">
-                            <i className="ms-1 fa fa-twitter"></i>
+                            <FontAwesomeIcon icon={faTwitter} />
                         </a>
                         <a href="#"> {/* Create a Facebook profile */}
-                            <i className="ms-1 fa fa-facebook"></i>
+                            <FontAwesomeIcon icon={faFacebook} />
                         </a>
                         <a href="https://github.com/NinjataWRLD/CustomCADSolutions/">
-                            <i className="ms-1 fa fa-github"></i>
+                            <FontAwesomeIcon icon={faGithub} />
                         </a>
                     </div>
                 </section>

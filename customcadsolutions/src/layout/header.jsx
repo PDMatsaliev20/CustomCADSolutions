@@ -2,13 +2,12 @@
 import GuestMenu from '../components/guest-menu'
 import AccountMenu from '../components/account-menu'
 import LanguageSelector from '../components/language'
+import SearchBar from '../components/search-bar'
 import { Link, useNavigate } from 'react-router-dom'
 import { useContext } from 'react'
-import { useTranslation } from 'react-i18next'
 import axios from 'axios'
 
 function Header() {
-    const { t } = useTranslation();
     const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
 
     const navigate = useNavigate();
@@ -23,24 +22,19 @@ function Header() {
     };
 
     return (
-        <header className="bg-indigo-200 border-b border-black py-1">
-            <ul className="flex mx-5 justify-between items-center">
-                <li className="my-4 w-60">
-                    <Link to="/">
-                        <img src="../src/assets/logga.png" className="mw-100 h-auto hover:opacity-60" />
+        <header className="bg-indigo-200 h-20 border-b border-black py-1">
+            <ul className="h-full flex mx-5 justify-between items-center">
+                <li className="basis-1/4 flex gap-x-4 items-center">
+                    <Link to="/" className="w-5/6 h-auto">
+                        <img src="../src/assets/logo.png" className="w-full h-auto hover:opacity-60" />
                     </Link>
+                    <SearchBar />
                 </li>
                 <li className="w-1/3 flex gap-x-4"> 
-                    <LanguageSelector />
-                    <form className="flex basis-full align-center gap-3" onSubmit={() => navigate("/")} method="get">
-                        <input className="px-3 py-2 w-full rounded-md bg-indigo-50" type="search" placeholder={t('Searchbar')} />
-                        <button type="submit">
-                            <i className="fa fa-search"></i>
-                        </button>
-                    </form>
                 </li>
-                <li>
-                    <div className="flex">
+                <li className="h-full flex items-center">
+                    <LanguageSelector />
+                    <div className="flex gap-x-5">
                         {isAuthenticated ? <AccountMenu handleLogout={logout} username={localStorage.getItem('username')} /> : <GuestMenu />}
                     </div>
                 </li>

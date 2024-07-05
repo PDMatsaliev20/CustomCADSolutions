@@ -1,11 +1,6 @@
 ﻿import { useTranslation } from 'react-i18next'
 import { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { fas } from '@fortawesome/free-solid-svg-icons'
-import { faTwitter, faFontAwesome } from '@fortawesome/free-brands-svg-icons'
-
-library.add(fas, faTwitter, faFontAwesome);
 
 function LanguageSelector() {
     const { i18n } = useTranslation();
@@ -24,11 +19,9 @@ function LanguageSelector() {
     };
 
     return (
-        <div className="flex flex-col justify-center">
-            <button onClick={handleClick}>
-                <FontAwesomeIcon icon="fa-solid fa-globe" className="text-3xl text-indigo-500" />
-            </button>
-        </div>
+        <button onClick={handleClick} className="text-indigo-600 hover:text-indigo-600 active:text-indigo-400">
+            <FontAwesomeIcon icon={'fas', 'fa-globe'} className="text-4xl" />
+        </button>
     );
 }
 
