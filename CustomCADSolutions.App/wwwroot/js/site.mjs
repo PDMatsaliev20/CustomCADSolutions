@@ -2,7 +2,7 @@
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-function loadModel({ id, x, y, z, fov, panx, pany, panz, pan }, path) {
+function loadModel({ id, x, y, z, fov, panx, pany, panz }, path) {
     // Scene
     const scene = new THREE.Scene();
     scene.background = null;
@@ -39,6 +39,10 @@ function loadModel({ id, x, y, z, fov, panx, pany, panz, pan }, path) {
     directionalLight.position.set(1, 1, 1).normalize();
     scene.add(directionalLight);
 
+    const directionalLight2 = new THREE.DirectionalLight(0xffffff, 1);
+    directionalLight2.position.set(-1, 1, 1).normalize();
+    scene.add(directionalLight2);
+
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
     scene.add(ambientLight);
 
@@ -46,90 +50,70 @@ function loadModel({ id, x, y, z, fov, panx, pany, panz, pan }, path) {
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.1;
-
-    function addPanning(axis, pan) {
-        const panOffset = new THREE.Vector3();
-        switch (axis) {
-            case 'x': panOffset.copy(new THREE.Vector3(1, 0, 0)).multiplyScalar(pan); break;
-            case 'y': panOffset.copy(new THREE.Vector3(0, 1, 0)).multiplyScalar(pan); break;
-            case 'z': panOffset.copy(new THREE.Vector3(0, 0, 1)).multiplyScalar(pan); break;
-        }
-
-        camera.position.add(panOffset);
-        controls.target.add(panOffset);
-        controls.update();
-    }
-    addPanning('x', panx);
-    addPanning('y', pany);
-    addPanning('z', panz);
-
-    function removePanning(axis, pan) {
-        const panOffset = new THREE.Vector3();
-        switch(axis) {
-            case 'x': panOffset.copy(new THREE.Vector3(-1, 0, 0)).multiplyScalar(pan); break;
-            case 'y': panOffset.copy(new THREE.Vector3(0, -1, 0)).multiplyScalar(pan); break;
-            case 'z': panOffset.copy(new THREE.Vector3(0, 0, -1)).multiplyScalar(pan);break;
-        }
-
-        camera.position.add(panOffset);
-        controls.target.add(panOffset);
-        controls.update();
-    }
+    controls.target.set(panx, pany, panz);
+    controls.update();
 
     // GLTF Loading
     const loader = new GLTFLoader();
     loader.load(path,
         function (gltf) {
 
-            $('#PanX').on('input', () => {
-                removePanning('x', panx);
-                panx = parseInt($('#PanX').val());
-                addPanning('x', panx);
-            });
-
-            $('#PanY').on('input', () => {
-                removePanning('y', pany);
-                pany = parseInt($('#PanY').val());
-                addPanning('y', pany);
-            });
-
-            $('#PanZ').on('input', () => {
-                removePanning('z', panz);
-                panz = parseInt($('#PanZ').val());
-                addPanning('z', panz);
-            });
-
-            $('#X').on('input', function () {
-                x = parseInt($('#X').val());
-                if (Math.round(camera.position.x) != x) {
-                    camera.position.x = x;
+            const onCoordChange = (coord) => {
+                switch (coord) {
+                    case 'x':
+                        x = parseInt($('#x').val());
+                        camera.position.x = x;
+                        break;
+                    case 'y':
+                        y = parseInt($('#y').val());
+                        camera.position.y = y;
+                        break;
+                    case 'z':
+                        z = parseInt($('#z').val());
+                        camera.position.z = z;
+                        break;
                 }
-            });
+            };
+            $('#x').on('input', () => onCoordChange('x'));
+            $('#y').on('input', () => onCoordChange('y'));
+            $('#z').on('input', () => onCoordChange('z'));
 
-            $('#Y').on('input', function () {
-                y = parseInt($('#Y').val());
-                if (Math.round(camera.position.y) != y) {
-                    camera.position.y = y;
+            const onPanChange = (pan) => {
+                let diff;
+                switch (pan) {
+                    case 'panx':
+                        diff = parseInt($('#panx').val()) - panx;
+                        panx += diff;
+                        controls.target.x = panx;
+                        $('#x').val(x + diff);
+                        onCoordChange('x');
+                        break;
+                    case 'pany':
+                        diff = parseInt($('#pany').val()) - pany;
+                        pany += diff;
+                        controls.target.y = pany;
+                        $('#y').val(y + diff);
+                        onCoordChange('y');
+                        break;
+                    case 'panz':
+                        diff = parseInt($('#panz').val()) - panz;
+                        panz += diff;
+                        controls.target.z = panz;
+                        $('#z').val(z + diff);
+                        onCoordChange('z');
+                        break;
                 }
-            });
+            };
+            $('#panx').on('input', () => onPanChange('panx'));
+            $('#pany').on('input', () => onPanChange('pany'));
+            $('#panz').on('input', () => onPanChange('panz'));
 
-            $('#Z').on('input', function () {
-                z = parseInt($('#Z').val());
-                if (Math.round(camera.position.z) != z) {
-                    camera.position.z = z;
-                }
-            });
-
-            $('#X, #Y, #Z, #PanX, #PanY, #PanZ').on('input', () => $.ajax({
+            $('#x, #y, #z, #panx, #pany, #panz').on('input', () => $.ajax({
                 url: `/Cads/UpdateCoords/${id}?x=${x}&y=${y}&z=${z}&panx=${panx}&pany=${pany}&panz=${panz}`,
                 type: 'POST',
                 contentType: 'application/json',
-                success: function () {
-                    console.log('Success');
-                },
-                error: function (error) {
-                    console.error('Error:', error);
-                }
+                success: () => { },
+                error: (err) => { }
             }));
 
             scene.add(gltf.scene);

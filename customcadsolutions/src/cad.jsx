@@ -49,11 +49,15 @@ function Cad({ cad, id, isHomeCad }) {
             updateRendererSize();
 
             // Lights
-            const directionalLight = new THREE.DirectionalLight(0xa5b4fc, 1);
+            const directionalLight = new THREE.DirectionalLight(isHomeCad ? 0xa5b4fc : 0xffffff, 1);
             directionalLight.position.set(1, 1, 1).normalize();
             scene.add(directionalLight);
 
-            const ambientLight = new THREE.AmbientLight(0xa5b4fc, 0.5);
+            const directionalLight2 = new THREE.DirectionalLight(0xffffff, 1);
+            directionalLight2.position.set(-1, 1, 1).normalize();
+            scene.add(directionalLight2);
+
+            const ambientLight = new THREE.AmbientLight(isHomeCad ? 0xa5b4fc : 0xffffff, 0.5); 
             scene.add(ambientLight);
 
             // GLTF Loading
@@ -69,19 +73,7 @@ function Cad({ cad, id, isHomeCad }) {
             const controls = new OrbitControls(camera, renderer.domElement);
             controls.enableDamping = true;
             controls.dampingFactor = 0.1;
-
-            const panOffset = new THREE.Vector3();
-            panOffset.copy(new THREE.Vector3(1, 0, 0)).multiplyScalar(model.panCoords[0]);
-            camera.position.add(panOffset);
-
-            panOffset.copy(new THREE.Vector3(0, 1, 0)).multiplyScalar(model.panCoords[1]);
-            camera.position.add(panOffset);
-
-            panOffset.copy(new THREE.Vector3(0, 0, 1)).multiplyScalar(model.panCoords[2]);
-            camera.position.add(panOffset);
-
-            camera.position.add(panOffset);
-            controls.target.add(panOffset);
+            controls.target.set(model.panCoords[0], model.panCoords[1], model.panCoords[2]);
             controls.update();
             
             let isInteracting = false
