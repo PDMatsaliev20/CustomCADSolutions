@@ -41,6 +41,14 @@
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </None>
+    <None Update="public\others\cads\Desk262.glb">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </None>
+    <None Update="public\others\cads\Fish265.glb">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </None>
     <None Update="public\others\cads\Glocks255.glb">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
@@ -150,10 +158,6 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </None>
     <None Update="public\others\cads\Hellhound257\textures\REAR_LEG_normal.png">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </None>
-    <None Update="public\others\cads\Knife261.glb">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </None>

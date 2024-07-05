@@ -1,12 +1,15 @@
 import axios from 'axios'
 import { useTranslation } from 'react-i18next'
+import { useLocation } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import Cad from '../cad'
 
 function GalleryPage() {
     const { t } = useTranslation();
     const [cads, setCads] = useState([]);
-    const [totalCount, setTotalCount] = useState(0);
+    const [_, setTotalCount] = useState(0);
+
+    const query = new URLSearchParams(useLocation().search).get('search');
 
     useEffect(() => {
         if (!cads.length) {
@@ -33,14 +36,14 @@ function GalleryPage() {
         ;
 
     async function getCads() {
-        const { cads, count } = await axios.get('https://localhost:7127/API/Home/Gallery?CadsPerPage=3')
+        const { cads, count } = await axios.get(`https://localhost:7127/API/Home/Gallery?CadsPerPage=9&SearchName=${query || ''}`)
             .then(response => response.data);
 
-        setCads([...cads]);
-        setTotalCount(count);
+        if (count > 0) {
+            setCads([...cads]);
+            setTotalCount(count);
+        }
     }
-
-    return <>a</>;
 }
 
 export default GalleryPage;
