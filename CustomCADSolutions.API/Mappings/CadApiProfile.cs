@@ -28,7 +28,7 @@ namespace CustomCADSolutions.API.Mappings
                 opt.MapFrom(model => model.Category.Name));
 
         public void DTOToQuery() => CreateMap<CadQueryDTO, CadQueryModel>()
-            .ForMember(model => model.Sorting, opt => opt.MapFrom(dto => (CadSorting)dto.Sorting.Value));
+            .ForMember(model => model.Sorting, opt => opt.MapFrom(dto => Enum.Parse<CadSorting>(dto.Sorting ?? ((CadSorting)1).ToString())));
 
         public void QueryResultToDTO() => CreateMap<CadQueryResult, CadQueryResultDTO>();
 
