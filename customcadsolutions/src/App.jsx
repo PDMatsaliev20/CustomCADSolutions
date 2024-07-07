@@ -14,8 +14,9 @@ import { fas } from '@fortawesome/free-solid-svg-icons'
 library.add(fas);
 
 function App() {
-    const { t, i18n } = useTranslation();
+    const { i18n } = useTranslation();
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [exists, setExists] = useState(false);
     const [userRole, setUserRole] = useState();
 
     if (localStorage.getItem('language') && i18n.language !== localStorage.getItem('language')) {
@@ -23,11 +24,12 @@ function App() {
     }
 
     useEffect(() => {
-        checkIfAuthenticated();
-        if (isAuthenticated) {
-            getUserRole();
+        checkUserAuthentication();
+        checkUserExists();
+        if (exists && isAuthenticated) {
+            checkUserAuthorization();
         }
-    }, [isAuthenticated]);
+    }, [isAuthenticated, exists]);
 
     return (
         <BrowserRouter>
@@ -44,22 +46,40 @@ function App() {
         </BrowserRouter>
     );
 
-    async function checkIfAuthenticated() {
-        const response = await axios.get('https://localhost:7127/API/Identity/IsAuthenticated', {
-            withCredentials: true
-        }).catch(e => console.error(e));
-        if (response.data) {
+    async function checkUserAuthentication() {
+        const response = await axios.get(
+            'https://localhost:7127/API/Identity/IsAuthenticated',
+            { withCredentials: true }
+        ).catch(e => console.error(e));
+
+        if (!response.data) {
+            setIsAuthenticated(false);
+        } else if (exists) {
             setIsAuthenticated(true);
         }
     }
 
-    async function getUserRole() {
-        const response = await axios.get('https://localhost:7127/API/Identity/GetUserRole', {
-            withCredentials: true
-        }).catch(e => console.error(e));
-        const role = response.data;
-        setUserRole(role);
+    async function checkUserExists() {
+        const response = await axios.get(
+            'https://localhost:7127/API/Identity/UserExists',
+            { withCredentials: true }
+        ).catch(e => console.error(e));
+
+        if (response.data) {
+            setExists(true);
+        } else {
+            setExists(false);
+        }
+    }
+
+    async function checkUserAuthorization() {
+        const response = await axios.get(
+            'https://localhost:7127/API/Identity/GetUserRole',
+            { withCredentials: true }
+        ).catch(e => console.error(e));
+
+        setUserRole(response.data);
     }
 }
 
-export default App;
+    export default App;

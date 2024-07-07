@@ -96,6 +96,9 @@ namespace CustomCADSolutions.API.Controllers
         [HttpGet("IsAuthorized")]
         public ActionResult IsAuthorized(string role) => Ok(User.IsInRole(role));
 
+        [HttpGet("UserExists")]
+        public ActionResult Exists() => Ok(userManager.Users.Any(u => User.Identity!.Name == u.UserName));
+
         [HttpGet("GetUserRole")]
         public async Task<ActionResult> GetUserRole()
         {
