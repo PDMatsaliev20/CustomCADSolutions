@@ -17,11 +17,11 @@ function LoginPage({ onLogin }) {
     }
 
     return (
-        <section className="flex flex-col items-center">
-            <h1 className="text-4xl text-center font-bold ">
+        <section className="flex flex-col gap-y-4 items-center">
+            <h1 className="my-6 text-4xl text-center font-bold ">
                 {t('Log in to your existing account')}
             </h1>
-            <section className="w-5/12 mt-8 px-12 pt-8 pb-6 bg-indigo-400 rounded-lg">
+            <section className="w-5/12 px-12 pt-8 pb-6 bg-indigo-400 rounded-lg">
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
                         <label htmlFor="text" className="block text-indigo-50">{t('Username')}</label>
@@ -65,6 +65,14 @@ function LoginPage({ onLogin }) {
                         </button>
                     </div>
                 </form>
+            </section>
+            <section className="">
+                <button className="">
+                    <p>Don't have an account yet?</p>
+                    <Link to="/register" className="text-center font-semibold text-indigo-700">
+                        Register
+                    </Link>
+                </button>
             </section>
         </section>
     );

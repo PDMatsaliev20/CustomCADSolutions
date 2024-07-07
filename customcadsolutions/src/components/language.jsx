@@ -20,7 +20,7 @@ function LanguageSelector() {
 
     return (
         <button onClick={handleClick} className="text-indigo-600 hover:text-indigo-600 active:text-indigo-400">
-            <FontAwesomeIcon icon={'fas', 'fa-globe'} className="text-4xl" />
+            <FontAwesomeIcon icon={'fas', 'fa-globe'} className="text-3xl" />
         </button>
     );
 }

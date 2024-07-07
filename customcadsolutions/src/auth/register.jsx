@@ -29,7 +29,7 @@ function RegisterPage({ onRegister }) {
     }
 
     return (
-        <section className="flex flex-col items-center">
+        <section className="flex flex-col gap-y-4 items-center">
             <h1 className="text-4xl text-center font-bold">
                 {t('Register as a')} {role == 'client' ? t('Client') : t('Contributor')}
             </h1>
@@ -97,6 +97,14 @@ function RegisterPage({ onRegister }) {
                         </button>
                     </div>
                 </form>
+            </section>
+            <section className="">
+                <button className="">
+                    <p>Already have an account?</p>
+                    <Link to="/login" className="text-center font-semibold text-indigo-700">
+                        Log in
+                    </Link>
+                </button>
             </section>
         </section>
     );

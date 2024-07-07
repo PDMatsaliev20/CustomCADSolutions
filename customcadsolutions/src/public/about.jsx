@@ -30,12 +30,6 @@ function AboutUsPage() {
                     <article className="basis-[49%] shrink-0">
                         <Profile person={borko} />
                     </article>
-                    <article className="basis-[49%] shrink-0">
-                        <Profile person={borko} />
-                    </article>
-                    <article className="basis-[49%] shrink-0">
-                        <Profile person={ivcho} />
-                    </article>
                 </div>
                 <div className="flex flex-col py-3 items-center text-indigo-50">
                     <span className="">

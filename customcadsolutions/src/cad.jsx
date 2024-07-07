@@ -43,8 +43,6 @@ function Cad({ cad, id, isHomeCad }) {
                 renderer.setSize(width, height);
                 camera.aspect = width / height;
                 camera.updateProjectionMatrix();
-
-                return [width, height];
             }
             updateRendererSize();
 
@@ -106,7 +104,6 @@ function Cad({ cad, id, isHomeCad }) {
             return () => {
                 mount.removeChild(renderer.domElement);
                 window.removeEventListener('resize', updateRendererSize);
-                renderer.dispose();
             };
         }
     }, [model.path, model.coords, model.fov, model.id]);
