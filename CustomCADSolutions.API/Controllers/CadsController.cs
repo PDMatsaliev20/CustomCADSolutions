@@ -10,6 +10,7 @@ using Newtonsoft.Json.Serialization;
 using CustomCADSolutions.API.Mappings;
 using CustomCADSolutions.API.Models.Cads;
 using Microsoft.AspNetCore.Authorization;
+using CustomCADSolutions.API.Models.Queries;
 
 namespace CustomCADSolutions.API.Controllers
 {
@@ -26,13 +27,16 @@ namespace CustomCADSolutions.API.Controllers
         [Consumes("application/json")]
         [Produces("application/json")]
         [ProducesResponseType(Status200OK)]
-        public async Task<ActionResult<CadQueryDTO>> GetAsync([FromQuery] CadQueryModel query)
+        public async Task<ActionResult<CadQueryResultDTO>> GetAsync([FromQuery] CadQueryDTO dto)
         {
-            if (query.CadsPerPage % 3 != 0)
+            if (dto.CadsPerPage % 3 != 0)
             {
-                query.CadsPerPage = 3 * (query.CadsPerPage / 3);
+                dto.CadsPerPage = 3 * (dto.CadsPerPage / 3);
             }
-            return mapper.Map<CadQueryDTO>(await cadService.GetAllAsync(query));
+
+            CadQueryModel query = mapper.Map<CadQueryModel>(dto);
+            CadQueryResult result = await cadService.GetAllAsync(query);
+            return mapper.Map<CadQueryResultDTO>(result);
         }
 
         [HttpGet("{id}")]

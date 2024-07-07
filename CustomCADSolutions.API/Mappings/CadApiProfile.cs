@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CustomCADSolutions.API.Models.Cads;
+using CustomCADSolutions.API.Models.Queries;
 using CustomCADSolutions.Core.Models;
 
 namespace CustomCADSolutions.API.Mappings
@@ -8,6 +9,7 @@ namespace CustomCADSolutions.API.Mappings
     {
         public CadApiProfile()
         {
+            QueryResultToDTO();
             QueryToDTO();
             ModelToExport();
             ImportToModel();
@@ -24,7 +26,9 @@ namespace CustomCADSolutions.API.Mappings
             .ForMember(export => export.CategoryName, opt =>
                 opt.MapFrom(model => model.Category.Name));
 
-        public void QueryToDTO() => CreateMap<CadQueryResult, CadQueryDTO>();
+        public void QueryToDTO() => CreateMap<CadQueryModel, CadQueryDTO>();
+
+        public void QueryResultToDTO() => CreateMap<CadQueryResult, CadQueryResultDTO>();
 
         /// <summary>
         /// Converts DTO to Service Model
