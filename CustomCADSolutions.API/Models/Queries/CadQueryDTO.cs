@@ -12,6 +12,6 @@ namespace CustomCADSolutions.API.Models.Queries
         public int CadsPerPage { get; set; } = 3;
         public bool Validated { get; set; } = true;
         public bool Unvalidated { get; set; } = true;
-        public CadSortingDTO Sorting { get; set; } = null!;
+        public CadSortingDTO Sorting { get; set; } = new() { Name = "Newest", Value = 1 };
     }
 }

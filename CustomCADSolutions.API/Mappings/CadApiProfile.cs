@@ -2,6 +2,7 @@
 using CustomCADSolutions.API.Models.Cads;
 using CustomCADSolutions.API.Models.Queries;
 using CustomCADSolutions.Core.Models;
+using CustomCADSolutions.Infrastructure.Data.Models.Enums;
 
 namespace CustomCADSolutions.API.Mappings
 {
@@ -10,7 +11,7 @@ namespace CustomCADSolutions.API.Mappings
         public CadApiProfile()
         {
             QueryResultToDTO();
-            QueryToDTO();
+            DTOToQuery();
             ModelToExport();
             ImportToModel();
         }
@@ -26,7 +27,8 @@ namespace CustomCADSolutions.API.Mappings
             .ForMember(export => export.CategoryName, opt =>
                 opt.MapFrom(model => model.Category.Name));
 
-        public void QueryToDTO() => CreateMap<CadQueryModel, CadQueryDTO>();
+        public void DTOToQuery() => CreateMap<CadQueryDTO, CadQueryModel>()
+            .ForMember(model => model.Sorting, opt => opt.MapFrom(dto => (CadSorting)dto.Sorting.Value));
 
         public void QueryResultToDTO() => CreateMap<CadQueryResult, CadQueryResultDTO>();
 
