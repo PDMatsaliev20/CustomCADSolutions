@@ -21,25 +21,25 @@ function HomePage() {
 
     return (
         <>
-            <section className="flex justify-evenly">
-                <article className="flex flex-col justify-evenly text-center">
+            <section className="flex justify-between">
+                <article className="basis-8/12 shrink-0 flex flex-col justify-center gap-y-8 text-center">
                     <h1 className="text-5xl font-bold italic">{t('The Land of 3D Models')}</h1>
-                    <div className="flex flex-col gap-3">
+                    <span className="flex flex-col gap-y-3">
                         <span className="text-2xl ">{t('We offer high-quality 3D Models tailored to your needs')}</span>
                         <span className="text-lg italic">{t('optional 5-10 business day delivery')}</span>
-                    </div>
-                    <div className="mt-4 flex justify-center gap-8">
+                    </span>
+                    <div className="flex justify-center gap-x-5">
                         <BtnLink to="/register/client" text={t('Looking to buy')} />
                         <BtnLink to="/register/contributor" text={t('Looking to sell')} />
                     </div>
                 </article>
-                <aside className="h-96 basis-2/5 flex items-center">
+                <aside className="grow h-96">
                     <Cad isHomeCad />
                 </aside>
             </section>
 
             <hr className="border-t border-black" />
-
+            
             <h3 className="text-4xl text-center mt-8 font-semibold">{t('Two ways to go about this')}</h3>
             <section className="my-10">
                 <article className="flex justify-evenly items-center gap-5">
