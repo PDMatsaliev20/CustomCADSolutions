@@ -1,51 +1,33 @@
-import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useTranslation } from 'react-i18next'
+import { useState } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-function SearchBar() {
-    const navigate = useNavigate();
+function SearchBtn() {
     const { t } = useTranslation();
+    const navigate = useNavigate();
+    const [search, setSearch] = useState('');
 
-    const [text, setText] = useState('');
+    const handleSearch = (e) => setSearch(e.target.value);
 
-    const handleInput = (e) => {
-        setText(e.target.value);
-        localStorage.setItem('search', e.target.value);
-    }
-    
-    const handleSearch = (e) => {
-        e.preventDefault();
-        navigate(`/gallery?search=${text}`);
+    const handleClick = () => {
+        if (search) {
+            navigate(`/gallery?cad=${search}`);
+        } else navigate('/gallery');
     };
 
-    useEffect(() => {
-        const searchQuery = new URLSearchParams(location.search).get('search');
-        if (searchQuery) {
-            setText(searchQuery);
-            navigate(`gallery?search=${searchQuery}`);
-        } else {
-            setText('');
-        }
-    }, [location.search]);
-
-    useEffect(() => {
-        if (!location.search.includes('search')) {
-            setText('');
-        }
-    }, [location.pathname]);
-
     return (
-        <>
-            <button type="submit">
-                <FontAwesomeIcon icon={'fa-solid', 'fa-search'} className="align-center text-indigo-500 text-2xl" />
-            </button>
-            <form className="hidden flex basis-full align-center gap-3" onSubmit={handleSearch} method="get">
-                <input className="px-3 py-2 w-full rounded-md bg-indigo-50" type="search" placeholder={t('Searchbar')}
-                    value={text} onChange={handleInput} />
-            </form>
-        </>
+        <form className="h-4/6 w-full">
+            <div className="h-full flex gap-x-4 bg-indigo-50 px-4 py-2 rounded-md">
+                <input type="search" placeholder={t('Searchbar')} onChange={handleSearch}
+                    className="w-full bg-indigo-50 text-indigo-900 focus:outline-none"
+                />
+                <button type="submit" onClick={handleClick}>
+                    <FontAwesomeIcon icon={'search'} className="flex items-center text-indigo-500 text-2xl" />
+                </button>
+            </div>
+        </form>
     )
 }
 
-export default SearchBar;
+export default SearchBtn;
