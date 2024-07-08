@@ -16,7 +16,7 @@ function Footer() {
                 <section>
                     <p className="text-lg font-bold">
                         &copy; 2023-{new Date().getFullYear()} -
-                        <Link to="/" className="font-black"> CustomCADSolutions</Link>
+                        <Link to="/" className="font-black"> CustomCADs</Link>
                     </p>
                 </section>
                 <section className="italic flex gap-x-3">

@@ -1,5 +1,4 @@
 import AuthContext from '../auth-context'
-import PublicNavs from '../components/public-navs'
 import ClientNavs from '../components/client-navs'
 import ContributorNavs from '../components/contributor-navs'
 import { useContext } from 'react'
@@ -7,13 +6,19 @@ import { useContext } from 'react'
 function Navbar() {
     const { isAuthenticated, userRole } = useContext(AuthContext);
 
+    let navs;
+    if (isAuthenticated) {
+        switch (userRole) {
+            case 'Client': navs = <ClientNavs />; break;
+            case 'Contributor': navs = <ContributorNavs />; break;
+            case 'Designer': navs = <p>designer navs</p>; break;
+            case 'Administrator': navs = <p>admin navs</p>; break;
+        }
+    }
+
     return (
-        <nav className="bg-indigo-300 rounded-b-lg shadow-md py-3">
-            <div className="flex justify-around text-sm">
-                <PublicNavs />
-                <ClientNavs shouldBlur={!isAuthenticated} shouldHide={isAuthenticated && userRole !== 'Client'} />
-                <ContributorNavs shouldBlur={!isAuthenticated} shouldHide={isAuthenticated && userRole !== 'Contributor'} />
-            </div>
+        <nav className="bg-indigo-300 rounded-b-lg px-5 py-3 shadow-md min-h-8">
+            {navs}
         </nav>
     );
 }

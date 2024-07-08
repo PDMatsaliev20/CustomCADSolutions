@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 
-function ContributorNavigationalMenu({ shouldBlur, shouldHide }) {
+function ContributorNavigationalMenu({ shouldBlur }) {
     const { t } = useTranslation();
 
     const handleClick = () => {
@@ -11,7 +11,7 @@ function ContributorNavigationalMenu({ shouldBlur, shouldHide }) {
     };
 
     return (
-        <ul className={`${shouldHide ? "hidden" : ''} ${shouldBlur ? "blur-sm" : ''}`} onClick={handleClick}>
+        <ul className={`${shouldBlur ? "blur-sm" : ''} flex justify-around text-indigo-900 font-bold`} onClick={handleClick}>
             {
                 shouldBlur ?
                     <>
