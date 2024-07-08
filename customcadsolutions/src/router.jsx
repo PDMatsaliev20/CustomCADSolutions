@@ -19,19 +19,16 @@ function Router({ onLogin, onRegister }) {
         <Routes>
             <Route path="*" element={<p className="text-center">404 not found bro</p>} />
 
-            { /* Public part of CustomCADSolutions */}
+            { /* Public part of CustomCADs */}
             <Route element={<AuthGuard />}>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/home" element={<HomePage />} />
                 <Route path="/gallery" element={<GalleryPage />} />
-                <Route path="/login" element={<LoginPage onLogin={onLogin} />} />
-                <Route path="/register" element={<ChooseRolePage />} />
-                <Route path="/register/:role" element={<RegisterPage onRegister={onRegister} />} />
                 <Route path="/policy" element={<PrivacyPolicyPage />} />
                 <Route path="/about" element={<AboutUsPage />} />
             </Route>
 
-            { /* Private part of CustomCADSolutions */}
+            { /* Private part of CustomCADs */}
             <Route element={<AuthGuard isPrivate />}>
                 <Route path="/orders" element={<OrdersPage /> } />
                 <Route path="/orders/custom" element={<CustomOrderPage /> } />
@@ -39,6 +36,12 @@ function Router({ onLogin, onRegister }) {
                 <Route path="/cads" element={<CadsPage /> } />
                 <Route path="/cads/upload" element={<UploadCadPage /> } />
                 <Route path="/cads/sell" element={<SellCadPage /> } />
+            </Route>
+
+            <Route element={<AuthGuard isPrivateOnly />}>
+                <Route path="/login" element={<LoginPage onLogin={onLogin} />} />
+                <Route path="/register" element={<ChooseRolePage />} />
+                <Route path="/register/:role" element={<RegisterPage onRegister={onRegister} />} />
             </Route>
         </Routes>
     );

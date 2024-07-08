@@ -2,11 +2,15 @@ import AuthContext from '../auth-context'
 import { Outlet, Navigate } from 'react-router-dom'
 import { useContext } from 'react'
 
-function AuthGuard({ isPrivate }) {
+function AuthGuard({ isPrivate, isPrivateOnly }) {
     const { isAuthenticated } = useContext(AuthContext);
     
     if (!isAuthenticated && isPrivate) {
         return <Navigate to="/login" replace />;
+    }
+
+    if (isAuthenticated && isPrivateOnly) {
+        return <Navigate to="/home" replace />;
     }
 
     return <Outlet />;
