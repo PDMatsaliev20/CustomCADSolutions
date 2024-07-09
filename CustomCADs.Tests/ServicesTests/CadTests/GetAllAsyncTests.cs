@@ -13,7 +13,7 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
             CadQueryModel query = new();
 
             CadQueryResult result = await service.GetAllAsync(query);
-            int actualCount = result.TotalCount;
+            int actualCount = result.Count;
 
             Assert.That(actualCount, Is.EqualTo(expectedCount),
                 message: string.Format(IncorrectCountByFilter, "None"));
@@ -27,7 +27,7 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
             CadQueryModel query = new() { Category = categoryName };
 
             CadQueryResult result = await service.GetAllAsync(query);
-            int actualCount = result.TotalCount;
+            int actualCount = result.Count;
 
             Assert.That(actualCount, Is.EqualTo(expectedCount),
                 message: string.Format(IncorrectCountByFilter, "Category"));
@@ -41,7 +41,7 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
             CadQueryModel query = new() { Creator = creatorName };
 
             CadQueryResult result = await service.GetAllAsync(query);
-            int actualCount = result.TotalCount;
+            int actualCount = result.Count;
 
             Assert.That(actualCount, Is.EqualTo(expectedCount),
                 message: string.Format(IncorrectCountByFilter, "Creator"));
@@ -55,7 +55,7 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
             CadQueryModel query = new() { SearchName = likeName };
 
             CadQueryResult result = await service.GetAllAsync(query);
-            int actualCount = result.TotalCount;
+            int actualCount = result.Count;
 
             Assert.That(actualCount, Is.EqualTo(expectedCount),
                 message: string.Format(IncorrectCountByFilter, "LikeName"));
@@ -70,7 +70,7 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
             CadQueryModel query = new() { SearchCreator = likeCreator };
 
             CadQueryResult result = await service.GetAllAsync(query);
-            int actualCount = result.TotalCount;
+            int actualCount = result.Count;
 
             Assert.That(actualCount, Is.EqualTo(expectedCount),
                 message: string.Format(IncorrectCountByFilter, "LikeCreator"));
@@ -103,7 +103,7 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
             CadQueryModel query = new() { Validated = validated, Unvalidated = unvalidated };
 
             CadQueryResult result = await service.GetAllAsync(query);
-            int actualCount = result.TotalCount;
+            int actualCount = result.Count;
 
             Assert.That(actualCount, Is.EqualTo(expectedCount),
                 message: string.Format(IncorrectCountByFilter, "Validated and Unvalidated"));
