@@ -76,29 +76,6 @@ namespace CustomCADs.Core.Services
             await repository.SaveChangesAsync();
         }
         
-        public async Task<int> FinishOrderAsync(int id, OrderModel model)
-        {
-            Order order = await repository.GetByIdAsync<Order>(id)
-                ?? throw new KeyNotFoundException();
-
-            order.Status = OrderStatus.Finished;
-
-            CadModel cad = model.Cad!;
-            order.Cad = new()
-            {
-                Name = cad.Name,
-                Price = cad.Price,
-                CategoryId = cad.CategoryId,
-                Extension = cad.Extension,
-                IsValidated = cad.IsValidated,
-                CreatorId = cad.CreatorId,
-                CreationDate = cad.CreationDate,
-            };
-            await repository.SaveChangesAsync();
-
-            return order.Cad.Id;
-        }
-
         public async Task DeleteAsync(int id)
         {
             Order order = await repository.GetByIdAsync<Order>(id)

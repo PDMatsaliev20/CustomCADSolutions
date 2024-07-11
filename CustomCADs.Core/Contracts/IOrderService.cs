@@ -40,15 +40,6 @@ namespace CustomCADs.Core.Contracts
         Task EditAsync(int id, OrderModel entity);
 
         /// <summary>
-        ///     Creates a Cad with the properties of the model's CadModel and saves it as the specified Order's Cad.
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="model"></param>
-        /// <returns>A Task object that represents the id of the finished Order.</returns>
-        /// <exception cref="KeyNotFoundException">if no Order with the given id exists.</exception>
-        Task<int> FinishOrderAsync(int id, OrderModel model);
-
-        /// <summary>
         ///     Deletes the Order with the given id.
         /// </summary>
         /// <param name="id"></param>

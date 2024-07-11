@@ -17,6 +17,7 @@ namespace CustomCADs.App.Areas.Designer.Controllers
     [Authorize(Roles = RoleConstants.Designer)]
     public class OrdersController(
         IOrderService orderService,
+        ICadService cadService,
         ICategoryService categoryService,
         IWebHostEnvironment env,
         ILogger<OrdersController> logger) : Controller
@@ -62,8 +63,8 @@ namespace CustomCADs.App.Areas.Designer.Controllers
         [HttpPost]
         public async Task<IActionResult> Finish(int id, CadFinishModel cad)
         {
-            OrderModel model = await orderService.GetByIdAsync(id);
-            model.Cad = new()
+            OrderModel orderModel = await orderService.GetByIdAsync(id);
+            int cadId = await cadService.CreateAsync(new()
             {
                 Name = cad.Name,
                 Price = cad.Price,
@@ -72,9 +73,10 @@ namespace CustomCADs.App.Areas.Designer.Controllers
                 IsValidated = true,
                 CreatorId = User.GetId(),
                 CreationDate = DateTime.Now,
-            };
+            });
 
-            int cadId = await orderService.FinishOrderAsync(id, model);
+            orderModel.CadId = cadId;
+            await orderService.EditAsync(id, orderModel);
             await env.UploadCadAsync(cad.CadFile, cad.Name + cadId + cad.CadFile.GetFileExtension());
 
             return RedirectToAction(nameof(All));

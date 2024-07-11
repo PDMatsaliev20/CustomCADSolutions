@@ -159,7 +159,7 @@ namespace CustomCADs.API.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(Status204NoContent)]
         [ProducesResponseType(Status404NotFound)]
-        [ProducesResponseType(Status400BadRequest)]
+        [ProducesResponseType(Status500InternalServerError)]
         public async Task<ActionResult<OrderModel>> DeleteAsync(int id)
         {
             try
@@ -173,34 +173,8 @@ namespace CustomCADs.API.Controllers
             }
             catch
             {
-                return BadRequest();
+                return StatusCode(500);
             }
-        }
-
-        [HttpPut("Finish/{id}")]
-        [Consumes("application/json")]
-        [ProducesResponseType(Status204NoContent)]
-        [ProducesResponseType(Status400BadRequest)]
-        public async Task<ActionResult> FinishAsync(int id, CadImportDTO dto)
-        {
-            if (!await orderService.ExistsByIdAsync(id))
-            {
-                return BadRequest();
-            }
-            OrderModel order = (await orderService.GetByIdAsync(id))!;
-
-            order.Cad = new()
-            {
-                Name = dto.Name,
-                IsValidated = dto.IsValidated,
-                Price = dto.Price,
-                CreationDate = DateTime.Now,
-                CreatorId = dto.CreatorId,
-                CategoryId = dto.CategoryId,
-            };
-            await orderService.FinishOrderAsync(id, order);
-
-            return NoContent();
         }
     }
 }
