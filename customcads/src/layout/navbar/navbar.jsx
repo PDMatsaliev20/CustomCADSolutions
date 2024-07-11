@@ -1,6 +1,6 @@
-import AuthContext from '../auth-context'
-import ClientNavs from '../components/client-navs'
-import ContributorNavs from '../components/contributor-navs'
+import AuthContext from '@/components/auth-context'
+import ClientNavs from './components/client-navs'
+import ContributorNavs from './components/contributor-navs'
 import { useContext } from 'react'
 
 function Navbar() {

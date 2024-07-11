@@ -1,6 +1,6 @@
-import Path from '../components/path'
-import BtnLink from '../components/btn-link'
-import Cad from '../cad'
+import Path from './components/path'
+import BtnLink from './components/btn-link'
+import Cad from '@/components/cad'
 import { useTranslation } from 'react-i18next'
 
 function HomePage() {

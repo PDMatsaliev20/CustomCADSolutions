@@ -1,4 +1,4 @@
-import AuthContext from '../auth-context'
+import AuthContext from '@/components/auth-context'
 import { useState, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'

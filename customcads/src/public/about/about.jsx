@@ -1,4 +1,4 @@
-import Profile from '../components/profile'
+import Profile from './components/profile'
 import { useTranslation } from 'react-i18next'
 
 function AboutUsPage() {

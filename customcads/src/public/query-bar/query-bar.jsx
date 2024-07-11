@@ -1,5 +1,5 @@
-import InputField from './input-field'
-import SelectField from './select-field'
+import InputField from './components/input-field'
+import SelectField from './components/select-field'
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import axios from 'axios'

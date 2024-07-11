@@ -1,4 +1,4 @@
-import Cad from '../cad'
+import Cad from '@/components/cad'
 
 function GalleryItem({ item }) {
     return (

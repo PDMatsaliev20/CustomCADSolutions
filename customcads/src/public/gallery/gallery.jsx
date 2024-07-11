@@ -1,8 +1,8 @@
 import axios from 'axios'
 import { useTranslation } from 'react-i18next'
 import { useState, useEffect } from 'react'
-import QueryBar from '../components/query-bar'
-import GalleryItem from '../components/gallery-item'
+import QueryBar from '../query-bar/query-bar'
+import GalleryItem from './components/gallery-item'
 
 function GalleryPage() {
     const { t } = useTranslation();

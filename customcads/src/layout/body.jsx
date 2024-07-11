@@ -1,8 +1,8 @@
-import AuthContext from '../auth-context'
+import AuthContext from '@/components/auth-context'
 import { useNavigate } from 'react-router-dom'
 import { useContext } from 'react'
 import axios from 'axios'
-import Router from '../router'
+import Router from '@/components/router'
 
 function Body() {
     const { setIsAuthenticated } = useContext(AuthContext);
