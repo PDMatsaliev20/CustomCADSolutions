@@ -22,7 +22,7 @@ export function HeaderBtnWithText({ path, text, icon }) {
         <Link to={path}>
             <button className="px-2 py-2 flex items-center gap-x-2 bg-indigo-300 rounded-xl border-2 border-indigo-400">
                 <FontAwesomeIcon icon={icon} className="text-2xl text-indigo-700" />
-                <span className="text-indigo-950">{t(text)}</span>
+                <span className="text-indigo-950">{t(`header.${text}`)}</span>
             </button>
         </Link>
     );

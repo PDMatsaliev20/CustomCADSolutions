@@ -6,7 +6,7 @@ function ClientNavigationalMenu({ shouldBlur }) {
 
     const handleClick = () => {
         if (shouldBlur) {
-            alert(t('Only for Clients!'));
+            alert(t('navbar.Only for Clients!'));
         }
     }
 
@@ -16,25 +16,25 @@ function ClientNavigationalMenu({ shouldBlur }) {
                 shouldBlur ?
                     <>
                         <li className="float-left me-4">
-                            <span>{t('Your Orders')}</span>
+                            <span>{t('navbar.Your Orders')}</span>
                         </li>
                         <li className="float-left me-4">
-                            <span>{t('Order Custom 3D Model')}</span>
+                            <span>{t('navbar.Order Custom 3D Model')}</span>
                         </li>
                         <li className="float-left me-4">
-                            <span>{t('Order from Gallery')}</span>
+                            <span>{t('navbar.Order from Gallery')}</span>
                         </li>
                     </>
                     :
                     <>
                         <li className="float-left me-4">
-                            <Link to="/orders">{t('Your Orders')}</Link>
+                            <Link to="/orders">{t('navbar.Your Orders')}</Link>
                         </li>
                         <li className="float-left me-4">
-                            <Link to="/orders/custom">{t('Order Custom 3D Model')}</Link>
+                            <Link to="/orders/custom">{t('navbar.Order Custom 3D Model')}</Link>
                         </li>
                         <li className="float-left me-4">
-                            <Link to="/orders/gallery">{t('Order from Gallery')}</Link>
+                            <Link to="/orders/gallery">{t('navbar.Order from Gallery')}</Link>
                         </li>
                     </>
             }

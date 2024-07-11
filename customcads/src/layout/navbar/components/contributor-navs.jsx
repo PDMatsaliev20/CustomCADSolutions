@@ -6,7 +6,7 @@ function ContributorNavigationalMenu({ shouldBlur }) {
 
     const handleClick = () => {
         if (shouldBlur) {
-            alert(t('Only for Contributors!'))
+            alert(t('navbar.Only for Contributors!'))
         }
     };
 
@@ -16,24 +16,24 @@ function ContributorNavigationalMenu({ shouldBlur }) {
                 shouldBlur ?
                     <>
                         <li className="float-left me-4">
-                            <span>{t('Your 3D Models')}</span>
+                            <span>{t('navbar.Your 3D Models')}</span>
                         </li>
                         <li className="float-left me-4">
-                            <span>{t('Upload 3D Model')}</span>
+                            <span>{t('navbar.Upload 3D Model')}</span>
                         </li>
                         <li className="float-left me-2">
-                            <span>{t('Sell us a 3D Model')}</span>
+                            <span>{t('navbar.Sell us a 3D Model')}</span>
                         </li>
                     </> :
                     <>
                         <li className="float-left me-4">
-                            <Link to="/cads">{t('Your 3D Models')}</Link>
+                            <Link to="/cads">{t('navbar.Your 3D Models')}</Link>
                         </li>
                         <li className="float-left me-4">
-                            <Link to="/cads/upload">{t('Upload 3D Model')}</Link>
+                            <Link to="/cads/upload">{t('navbar.Upload 3D Model')}</Link>
                         </li>
                         <li className="float-left me-2">
-                            <Link to="/cads/sell">{t('Sell us a 3D Model')}</Link>
+                            <Link to="/cads/sell">{t('navbar.Sell us a 3D Model')}</Link>
                         </li>
                     </>
             }

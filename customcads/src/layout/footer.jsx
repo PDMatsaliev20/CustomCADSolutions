@@ -10,17 +10,17 @@ function Footer() {
         <footer className="basis-full grow sticky z-50 self-end py-4 border-t-2 border-indigo-300 rounded-t-lg bg-indigo-100 ">
             <div className="flex justify-evenly items-center">
                 <section className="flex gap-6 underline-offset-4 underline font-semibold text-sm">
-                    <p className="text-center"><Link to="/policy">{t('Privacy Policy')}</Link></p>
-                    <p className="text-center"><Link to="/about">{t('About Us')}</Link></p>
+                    <p className="text-center"><Link to="/policy">{t('footer.Privacy Policy')}</Link></p>
+                    <p className="text-center"><Link to="/about">{t('footer.About Us')}</Link></p>
                 </section>
                 <section>
                     <p className="text-lg font-bold">
                         &copy; 2023-{new Date().getFullYear()} -
-                        <Link to="/" className="font-black"> CustomCADs</Link>
+                        <Link to="/about" className="font-black"> CustomCADs</Link>
                     </p>
                 </section>
                 <section className="italic flex gap-x-3">
-                    <span>{t('Contacts')}</span>
+                    <span>{t('footer.Contacts')}</span>
                     <div className="inline-flex gap-x-2">
                         <a href="https://www.instagram.com/customcadsolutions/">
                             <FontAwesomeIcon icon={faInstagram} />

@@ -27,12 +27,12 @@ function AccountBtn({ onLogout, username }) {
             >
                 <li>
                     <span className="italic font-bold">
-                        {t(userRole)}
+                        {t(`header.${userRole}`)}
                     </span>
                 </li>
                 <li>
                     <button className="underline underline-offset-4" onClick={onLogout}>
-                        {t('Log out')}
+                        {t('header.Log out')}
                     </button>
                 </li>
             </ul>

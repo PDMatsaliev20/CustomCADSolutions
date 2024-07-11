@@ -19,7 +19,7 @@ function SearchBtn() {
     return (
         <form className="h-4/6 w-full">
             <div className="h-full flex gap-x-4 bg-indigo-50 px-4 py-2 rounded-md">
-                <input type="search" placeholder={t('Searchbar')} onChange={handleSearch}
+                <input type="search" placeholder={t('header.Searchbar')} onChange={handleSearch}
                     className="w-full bg-indigo-50 text-indigo-900 focus:outline-none"
                 />
                 <button type="submit" onClick={handleClick}>

@@ -57,15 +57,15 @@ function QueryBar({ setQueryString }) {
             <form onSubmit={handleSearch} method="get">
                 <div className="flex flex-wrap justify-center items-center gap-y-5">
                     <div className="basis-full flex justify-evenly">
-                        <InputField value={query.searchName} onChange={handleCadNameInput} placeholder={t('Search 3D Models')} />
-                        <InputField value={query.searchCreator} onChange={handleCreatorNameInput} placeholder={t('Search 3D Designers')} />
+                        <InputField value={query.searchName} onChange={handleCadNameInput} placeholder={t('body.gallery.Search 3D Models')} />
+                        <InputField value={query.searchCreator} onChange={handleCreatorNameInput} placeholder={t('body.gallery.Search 3D Designers')} />
                     </div>
                     <div className="basis-full flex flex-wrap justify-evenly">
-                        <SelectField label={t('Category: ')} value={query.category} onChange={handleCategory} items={categories} defaultOption={'All'} />
+                        <SelectField label={t('body.gallery.Category')} value={query.category} onChange={handleCategory} items={categories} defaultOption={'All'} langPath={'common.categories.'} />
                         {/* TODO: Add front-end, back-end and database functionality for date range */}
-                        <SelectField label={t('Sort by: ')} value={query.sorting} onChange={handleSorting} items={sortings} />
+                        <SelectField label={t('body.gallery.Sort by')} value={query.sorting} onChange={handleSorting} items={sortings} langPath={'common.sortings.'} />
                     </div>
-                    <button className="hidden bg-indigo-200 py-1 px-4 rounded">{t('Search')}</button>
+                    <button className="hidden bg-indigo-200 py-1 px-4 rounded">{t('body.gallery.Search')}</button>
                 </div>
             </form>
         </div>
