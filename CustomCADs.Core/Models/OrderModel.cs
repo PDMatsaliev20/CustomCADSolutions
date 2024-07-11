@@ -4,6 +4,7 @@ using CustomCADs.Infrastructure.Data.Models.Enums;
 using CustomCADs.Infrastructure.Data.Models;
 using static CustomCADs.Infrastructure.Data.DataConstants;
 using static CustomCADs.Infrastructure.Data.DataConstants.OrderConstants;
+using CustomCADs.Infrastructure.Data.Models.Identity;
 
 namespace CustomCADs.Core.Models
 {

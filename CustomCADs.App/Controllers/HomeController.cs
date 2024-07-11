@@ -5,7 +5,6 @@ using CustomCADs.App.Models.Cads.View;
 using CustomCADs.Core.Models;
 using CustomCADs.Core.Contracts;
 using static CustomCADs.Infrastructure.Data.DataConstants.RoleConstants;
-using CustomCADs.Infrastructure.Data.Models;
 using CustomCADs.Infrastructure.Data.Models.Enums;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
@@ -13,6 +12,7 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using System.IO;
 using System.IO.Compression;
+using CustomCADs.Infrastructure.Data.Models.Identity;
 
 namespace CustomCADs.App.Controllers
 {

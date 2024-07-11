@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication;
 using CustomCADs.App.Models.Users;
-using CustomCADs.Infrastructure.Data.Models;
+using CustomCADs.Infrastructure.Data.Models.Identity;
 
 namespace CustomCADs.App.Controllers
 {

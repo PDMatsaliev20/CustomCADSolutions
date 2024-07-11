@@ -1,6 +1,7 @@
 ﻿using CustomCADs.Infrastructure.Data.Models;
 using static CustomCADs.Infrastructure.Data.DataConstants;
 using System.ComponentModel.DataAnnotations;
+using CustomCADs.Infrastructure.Data.Models.Identity;
 
 namespace CustomCADs.Core.Models
 {

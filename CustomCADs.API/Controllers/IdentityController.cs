@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using CustomCADs.Infrastructure.Data.Models;
 using CustomCADs.API.Models.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using CustomCADs.API.Helpers;
 using Microsoft.AspNetCore.Authorization;
+using CustomCADs.Infrastructure.Data.Models.Identity;
 
 namespace CustomCADs.API.Controllers
 {

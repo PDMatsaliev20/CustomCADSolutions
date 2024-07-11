@@ -6,6 +6,7 @@ using CustomCADs.Core.Services;
 using CustomCADs.Infrastructure.Data;
 using CustomCADs.Infrastructure.Data.Common;
 using CustomCADs.Infrastructure.Data.Models;
+using CustomCADs.Infrastructure.Data.Models.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace CustomCADs.Tests.ServicesTests.OrderTests

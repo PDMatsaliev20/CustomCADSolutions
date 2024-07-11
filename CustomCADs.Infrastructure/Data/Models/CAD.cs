@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
 using static CustomCADs.Infrastructure.Data.DataConstants;
+using CustomCADs.Infrastructure.Data.Models.Identity;
 
 namespace CustomCADs.Infrastructure.Data.Models
 {

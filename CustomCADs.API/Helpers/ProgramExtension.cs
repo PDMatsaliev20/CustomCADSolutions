@@ -3,9 +3,9 @@ using CustomCADs.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using CustomCADs.Core.Contracts;
 using CustomCADs.Core.Services;
-using CustomCADs.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using CustomCADs.Infrastructure.Data.Models.Identity;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
