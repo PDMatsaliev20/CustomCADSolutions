@@ -23,9 +23,7 @@ namespace CustomCADs.API.Mappings
             .ForMember(export => export.CreationDate, opt =>
                 opt.MapFrom(model => model.CreationDate.ToString("dd/MM/yyyy HH:mm:ss")))
             .ForMember(export => export.CreatorName, opt =>
-                opt.MapFrom(model => model.Creator.UserName))
-            .ForMember(export => export.CategoryName, opt =>
-                opt.MapFrom(model => model.Category.Name));
+                opt.MapFrom(model => model.Creator.UserName));
 
         public void DTOToQuery() => CreateMap<CadQueryDTO, CadQueryModel>()
             .ForMember(model => model.Sorting, opt => opt.MapFrom(dto => Enum.Parse<CadSorting>(dto.Sorting ?? ((CadSorting)1).ToString())));

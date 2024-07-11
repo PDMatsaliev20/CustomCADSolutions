@@ -11,14 +11,16 @@ using CustomCADs.API.Mappings;
 using CustomCADs.API.Models.Cads;
 using Microsoft.AspNetCore.Authorization;
 using CustomCADs.API.Models.Queries;
+using CustomCADs.API.Helpers;
 
 namespace CustomCADs.API.Controllers
 {
-    [Authorize(Roles = "Contributor")]
+    [Authorize(Roles = "Contributor,Designer")]
     [ApiController]
     [Route("API/[controller]")]
     public class CadsController(ICadService cadService) : ControllerBase
     {
+        private readonly string createdAtReturnAction = nameof(GetSingleAsync).Replace("Async", "");
         private readonly IMapper mapper = new MapperConfiguration(cfg 
                 => cfg.AddProfile<CadApiProfile>())
             .CreateMapper();
@@ -38,7 +40,7 @@ namespace CustomCADs.API.Controllers
         [Produces("application/json")]
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status404NotFound)]
-        public async Task<ActionResult<CadExportDTO>> GetAsync(int id)
+        public async Task<ActionResult<CadExportDTO>> GetSingleAsync(int id)
         {
             try
             {
@@ -60,6 +62,7 @@ namespace CustomCADs.API.Controllers
         {
             CadModel model = mapper.Map<CadModel>(import);
             model.CreationDate = DateTime.Now;
+            model.CreatorId = User.GetId();
 
             try
             {
@@ -68,7 +71,7 @@ namespace CustomCADs.API.Controllers
                 model = await cadService.GetByIdAsync(id);
                 CadExportDTO export = mapper.Map<CadExportDTO>(model);
 
-                return CreatedAtAction(null, new { id }, export);
+                return CreatedAtAction(createdAtReturnAction, new { id }, export);
             }
             catch
             {
@@ -86,11 +89,14 @@ namespace CustomCADs.API.Controllers
             try
             {
                 CadModel cad = await cadService.GetByIdAsync(id);
-                
+
+                if (User.Identity!.Name != cad.Creator.UserName)
+                {
+                    return Forbid();
+                }
+
                 cad.Name = dto.Name;
                 cad.CategoryId = dto.CategoryId;
-                cad.Coords = dto.Coords;
-                cad.PanCoords = dto.PanCoords;
                 cad.Price = dto.Price;
                 await cadService.EditAsync(id, cad);
 
