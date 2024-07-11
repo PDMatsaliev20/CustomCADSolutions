@@ -31,7 +31,7 @@ function ChooseRole() {
                                 <div className="ms-2">
                                     <label htmlFor="client" className="text-lg font-bold">
                                         {t('body.chooseRole.I want to order 3D Models')}
-                                        <strong className="text-indigo-800">{t('body.chooseRole.Client')}</strong>
+                                        <strong className="text-indigo-800"> {t('common.roles.Client')}</strong>
                                         <p className="text-sm font-normal">{t('body.chooseRole.you can scroll through our gallery or place a custom order')}</p>
                                     </label>
                                 </div>
@@ -44,7 +44,7 @@ function ChooseRole() {
                                 <div className="ms-2">
                                     <label className="text-lg font-bold" htmlFor="contributor">
                                         {t('body.chooseRole.I want to sell 3D Models')}
-                                        <strong className="text-indigo-800">{t('body.chooseRole.Contributor')}</strong>
+                                        <strong className="text-indigo-800"> {t('common.roles.Contributor')}</strong>
                                         <p className="text-sm font-normal">{t('body.chooseRole.you can upload to our gallery or sell directly to us')}</p>
                                     </label>
                                 </div>

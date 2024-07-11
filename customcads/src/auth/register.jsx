@@ -31,7 +31,7 @@ function RegisterPage({ onRegister }) {
     return (
         <section className="flex flex-col gap-y-4 items-center">
             <h1 className="text-4xl text-center font-bold">
-                {t('body.register.Register as a')} {role == 'client' ? t('body.register.Client') : t('body.register.Contributor')}
+                {t('body.register.Register as a')} {role == 'client' ? t('common.roles.Client') : t('common.roles.Contributor')}
             </h1>
             <section className="w-7/12 pt-8 pb-2 px-12 mt-8 bg-indigo-400 rounded-md">
                 <form onSubmit={handleSubmit} className="flex flex-wrap gap-x-8">
