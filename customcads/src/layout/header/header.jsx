@@ -27,7 +27,7 @@ function Header() {
                     <li className="h-full flex gap-x-6 items-center">
                         <HeaderBtn path="/home" icon="home" />
                         <Link to="/about" className="w-56">
-                            <img src="../src/assets/loggafr.png" className="w-full h-auto hover:opacity-60" />
+                            <img src="../src/assets/logo.png" className="w-full h-auto hover:opacity-60" />
                         </Link>
                     </li>
                     <li className="h-full basis-4/12 flex gap-x-4 items-center">
