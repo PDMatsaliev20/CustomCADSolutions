@@ -1,15 +1,11 @@
 ﻿import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
-import translationEN from '@/languages/en/translation.json'
-import translationBG from '@/languages/bg/translation.json'
+import useEnglish from '@/languages/hooks/useEnglish'
+import useBulgarian from '@/languages/hooks/useBulgarian'
 
 const resources = {
-    en: {
-        translation: translationEN
-    },
-    bg: {
-        translation: translationBG
-    }
+    en: useEnglish(),
+    bg: useBulgarian()
 };
 
 i18n
