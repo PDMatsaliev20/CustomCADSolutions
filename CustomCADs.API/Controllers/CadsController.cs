@@ -29,11 +29,6 @@ namespace CustomCADs.API.Controllers
         [ProducesResponseType(Status200OK)]
         public async Task<ActionResult<CadQueryResultDTO>> GetAsync([FromQuery] CadQueryDTO dto)
         {
-            if (dto.CadsPerPage % 3 != 0)
-            {
-                dto.CadsPerPage = 3 * (dto.CadsPerPage / 3);
-            }
-
             CadQueryModel query = mapper.Map<CadQueryModel>(dto);
             CadQueryResult result = await cadService.GetAllAsync(query);
             return mapper.Map<CadQueryResultDTO>(result);

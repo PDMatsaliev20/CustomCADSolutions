@@ -43,12 +43,6 @@ namespace CustomCADs.App.Controllers
         [HttpGet]
         public async Task<IActionResult> Index([FromQuery] CadQueryInputModel query)
         {
-            // Ensuring cads per page are divisible by the count of columns
-            if (query.CadsPerPage % query.Cols != 0)
-            {
-                query.CadsPerPage = query.Cols * (query.CadsPerPage / query.Cols);
-            }
-
             CadQueryResult result = await cadService.GetAllAsync(new()
             {
                 Category = query.Category,

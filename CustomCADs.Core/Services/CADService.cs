@@ -23,6 +23,11 @@ namespace CustomCADs.Core.Services
 
         public async Task<CadQueryResult> GetAllAsync(CadQueryModel query)
         {
+            if (query.CadsPerPage >= 3)
+            {
+                // So that the cads in a page are always 1, 2, 3 or a multiple of 3
+                query.CadsPerPage -= query.CadsPerPage % 3;
+            }
             IQueryable<Cad> allCads = repository.All<Cad>();
 
             if (query.Category != null)

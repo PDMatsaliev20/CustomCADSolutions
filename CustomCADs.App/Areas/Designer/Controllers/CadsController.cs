@@ -24,12 +24,6 @@ namespace CustomCADs.App.Areas.Designer.Controllers
         [HttpGet]
         public async Task<IActionResult> All([FromQuery] CadQueryInputModel query)
         {
-            // Ensuring cads per page are divisible by the count of columns
-            if (query.CadsPerPage % query.Cols != 0)
-            {
-                query.CadsPerPage = query.Cols * (query.CadsPerPage / query.Cols);
-            }
-            
             CadQueryResult result = await cadService.GetAllAsync(new()
             {
                 Category = query.Category,
@@ -54,12 +48,6 @@ namespace CustomCADs.App.Areas.Designer.Controllers
         [HttpGet]
         public async Task<IActionResult> Submitted([FromQuery] CadQueryInputModel inputQuery)
         {
-            // Ensuring cads per page are divisible by the count of columns
-            if (inputQuery.CadsPerPage % inputQuery.Cols != 0)
-            {
-                inputQuery.CadsPerPage = inputQuery.Cols * (inputQuery.CadsPerPage / inputQuery.Cols);
-            }
-
             CadQueryModel query = new()
             {
                 Category = inputQuery.Category,
