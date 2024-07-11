@@ -1,6 +1,4 @@
-﻿using CustomCADs.API.Models.Others;
-
-namespace CustomCADs.API.Models.Queries
+﻿namespace CustomCADs.API.Models.Queries
 {
     public class CadQueryDTO
     {

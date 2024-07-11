@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using CustomCADs.Core.Contracts;
 using CustomCADs.Core.Models;
-using CustomCADs.Infrastructure.Data.Models.Enums;
 using Microsoft.AspNetCore.Mvc;
 using static Microsoft.AspNetCore.Http.StatusCodes;
 using Microsoft.AspNetCore.JsonPatch;
@@ -75,7 +74,7 @@ namespace CustomCADs.API.Controllers
             try
             {
                 int id = await orderService.CreateAsync(model);
-
+                
                 model = await orderService.GetByIdAsync(id);
                 OrderExportDTO export = mapper.Map<OrderExportDTO>(model);
 
@@ -105,9 +104,6 @@ namespace CustomCADs.API.Controllers
 
                 order.Name = dto.Name;
                 order.Description = dto.Description;
-                order.Status = Enum.Parse<OrderStatus>(dto.Status);
-                order.ShouldShow = dto.ShouldShow;
-                order.Name = dto.Name;
                 order.CategoryId = dto.CategoryId;
                 await orderService.EditAsync(id, order);
 
