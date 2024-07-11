@@ -27,7 +27,7 @@ function AccountBtn({ onLogout, username }) {
             >
                 <li>
                     <span className="italic font-bold">
-                        {t(`header.${userRole}`)}
+                        {t(`common.roles.${userRole}`)}
                     </span>
                 </li>
                 <li>
