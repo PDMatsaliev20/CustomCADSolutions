@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using CustomCADs.API.Mappings;
 using CustomCADs.API.Models.Others;
-using CustomCADs.Core.Models;
 using CustomCADs.Infrastructure.Data.Models.Enums;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,7 +10,7 @@ namespace CustomCADs.API.Controllers
     [Route("/API/Sortings")]
     public class CadSortingsController : ControllerBase
     {
-        private IMapper mapper = new MapperConfiguration(opt 
+        private readonly IMapper mapper = new MapperConfiguration(opt 
                 => opt.AddProfile<OtherApiProfile>())
             .CreateMapper();
 

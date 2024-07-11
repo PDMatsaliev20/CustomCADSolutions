@@ -2,7 +2,6 @@
 using CustomCADs.API.Models.Others;
 using CustomCADs.Core.Models;
 using CustomCADs.Infrastructure.Data.Models.Enums;
-using Microsoft.OpenApi.Extensions;
 
 namespace CustomCADs.API.Mappings
 {

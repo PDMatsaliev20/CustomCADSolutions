@@ -33,10 +33,10 @@ await app.Services.UseRolesAsync(roles);
 
 Dictionary<string, string> users = new()
 {
-    ["Administrator"] = "NinjataBG",
-    ["Designer"] = "Designer",
-    ["Contributor"] = "Contributor",
-    ["Client"] = "Client",
+    [Admin] = "NinjataBG",
+    [Designer] = "Designer",
+    [Contributor] = "Contributor",
+    [Client] = "Client",
 };
 await app.Services.UseAppUsers(app.Configuration, users);
 

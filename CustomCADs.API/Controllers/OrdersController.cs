@@ -7,9 +7,9 @@ using static Microsoft.AspNetCore.Http.StatusCodes;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 using CustomCADs.API.Mappings;
-using CustomCADs.API.Models.Cads;
 using CustomCADs.API.Models.Orders;
 using Microsoft.AspNetCore.Authorization;
+using CustomCADs.API.Helpers;
 
 namespace CustomCADs.API.Controllers
 {
@@ -18,6 +18,7 @@ namespace CustomCADs.API.Controllers
     [Route("API/[controller]")]
     public class OrdersController(IOrderService orderService) : ControllerBase
     {
+        private readonly string createdAtReturnAction = nameof(GetSingleAsync).Replace("Async", "");
         private readonly IMapper mapper = new MapperConfiguration(cfg =>
         {
             cfg.AddProfile<OrderApiProfile>();
@@ -69,6 +70,7 @@ namespace CustomCADs.API.Controllers
         {
             OrderModel model = mapper.Map<OrderModel>(dto);
             model.OrderDate = DateTime.Now;
+            model.BuyerId = User.GetId();
             
             try
             {
@@ -77,7 +79,7 @@ namespace CustomCADs.API.Controllers
                 model = await orderService.GetByIdAsync(id);
                 OrderExportDTO export = mapper.Map<OrderExportDTO>(model);
 
-                return CreatedAtAction(null, new { id }, export);
+                return CreatedAtAction(createdAtReturnAction, new { id }, export);
             }
             catch
             {
@@ -96,7 +98,7 @@ namespace CustomCADs.API.Controllers
             {
                 OrderModel order = await orderService.GetByIdAsync(id);
 
-                if (dto.BuyerId != order.BuyerId)
+                if (User.Identity!.Name != order.Buyer.UserName)
                 {
                     return Forbid();
                 }

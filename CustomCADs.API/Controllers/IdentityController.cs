@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using CustomCADs.API.Helpers;
-using Microsoft.AspNetCore.Authorization;
+using static CustomCADs.API.Helpers.Utilities;
 using CustomCADs.Infrastructure.Data.Models.Identity;
 
 namespace CustomCADs.API.Controllers
@@ -13,17 +13,6 @@ namespace CustomCADs.API.Controllers
     [ApiController]
     public class IdentityController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager) : ControllerBase
     {
-        private readonly AuthenticationProperties authProps = new()
-        {
-            IsPersistent = true,
-            ExpiresUtc = DateTimeOffset.UtcNow.AddDays(1)
-        };
-        private readonly AuthenticationProperties rememberMeAuthProp = new()
-        {
-            IsPersistent = true,
-            ExpiresUtc = DateTimeOffset.UtcNow.AddMonths(1)
-        };
-
         [HttpPost("Register/{role}")]
         [Consumes("application/json")]
         public async Task<ActionResult> Register([FromRoute] string role, [FromBody] UserRegisterModel model)
@@ -33,11 +22,11 @@ namespace CustomCADs.API.Controllers
                 UserName = model.Username,
                 Email = model.Email
             };
-            var result = await userManager.CreateAsync(user, model.Password);
+            IdentityResult result = await userManager.CreateAsync(user, model.Password);
 
             if (!result.Succeeded)
             {
-                foreach (var error in result.Errors)
+                foreach (IdentityError error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
@@ -49,7 +38,7 @@ namespace CustomCADs.API.Controllers
                 return BadRequest();
             }
             await userManager.AddToRoleAsync(user, role);
-            await user.SignIn(signInManager, authProps);
+            await user.SignInAsync(signInManager, GetAuthProps(false));
 
             return Ok("Welcome!");
         }
@@ -70,8 +59,7 @@ namespace CustomCADs.API.Controllers
                 return Unauthorized("Invalid Password.");
             }
 
-            await user.SignIn(signInManager,
-                model.RememberMe ? rememberMeAuthProp : authProps);
+            await user.SignInAsync(signInManager, GetAuthProps(model.RememberMe));
 
             return Ok("Welcome back!");
         }
