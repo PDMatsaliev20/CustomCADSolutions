@@ -40,7 +40,7 @@
             public const string CategoryDisplay = "Category of 3D Model";
 
             public const string DescriptionDisplay = "Full Description of 3D Model";
-            public const int DescriptionMaxLength = 1500;
+            public const int DescriptionMaxLength = 750;
             public const int DescriptionMinLength = 5;
         }
 
