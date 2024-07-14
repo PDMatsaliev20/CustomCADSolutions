@@ -13,9 +13,11 @@ namespace CustomCADs.API.Controllers
     [Route("API/[controller]")]
     public class HomeController(ICadService cadService) : ControllerBase
     {
-        private readonly IMapper mapper = new MapperConfiguration(cfg
-                => cfg.AddProfile<CadApiProfile>())
-            .CreateMapper();
+        private readonly IMapper mapper = new MapperConfiguration(cfg =>
+        {
+            cfg.AddProfile<OtherApiProfile>();
+            cfg.AddProfile<CadApiProfile>();
+        }).CreateMapper();
 
         [HttpGet("Cad")]
         [ProducesResponseType(Status200OK)]

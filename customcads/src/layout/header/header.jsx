@@ -4,11 +4,12 @@ import HeaderBtn from './components/header-btn'
 import AccountBtn from './components/account-btn'
 import LanguageBtn from './components/language-btn'
 import SearchBar from './components/search-bar'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useContext } from 'react'
 import axios from 'axios'
 
 function Header() {
+    const navigate = useNavigate();
     const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
 
     const logout = async () => {
@@ -17,6 +18,7 @@ function Header() {
         });
 
         setIsAuthenticated(false);
+        localStorage.removeItem('username');
         navigate("/");
     };
     
@@ -27,7 +29,7 @@ function Header() {
                     <li className="h-full flex gap-x-6 items-center">
                         <HeaderBtn path="/home" icon="home" />
                         <Link to="/about" className="w-56">
-                            <img src="../src/assets/logo.png" className="w-full h-auto hover:opacity-60" />
+                            <img src="/src/assets/logo.png" className="w-full h-auto hover:opacity-60" />
                         </Link>
                     </li>
                     <li className="h-full basis-4/12 flex gap-x-4 items-center">

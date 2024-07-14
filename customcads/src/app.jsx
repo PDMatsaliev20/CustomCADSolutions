@@ -15,21 +15,23 @@ library.add(fas);
 
 function App() {
     const { i18n } = useTranslation();
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [exists, setExists] = useState(false);
+    const hasUsername = localStorage.getItem('username');
+    const [isAuthenticated, setIsAuthenticated] = useState(hasUsername);
     const [userRole, setUserRole] = useState();
 
-    if (localStorage.getItem('language') && i18n.language !== localStorage.getItem('language')) {
-        i18n.changeLanguage(localStorage.getItem('language'));
+    useEffect(() => {
+        const language = localStorage.getItem('language');
+        if (language && i18n.language !== language) {
+            i18n.changeLanguage(language);
     }
+    }, []);
 
     useEffect(() => {
         checkUserAuthentication();
-        checkUserExists();
-        if (exists && isAuthenticated) {
+        if (isAuthenticated) {
             checkUserAuthorization();
         }
-    }, [isAuthenticated, exists]);
+    }, [isAuthenticated]);
 
     return (
         <BrowserRouter>
@@ -52,23 +54,10 @@ function App() {
             { withCredentials: true }
         ).catch(e => console.error(e));
 
-        if (!response.data) {
-            setIsAuthenticated(false);
-        } else if (exists) {
-            setIsAuthenticated(true);
-        }
-    }
-
-    async function checkUserExists() {
-        const response = await axios.get(
-            'https://localhost:7127/API/Identity/UserExists',
-            { withCredentials: true }
-        ).catch(e => console.error(e));
-
         if (response.data) {
-            setExists(true);
+            setIsAuthenticated(true);
         } else {
-            setExists(false);
+            setIsAuthenticated(false);
         }
     }
 

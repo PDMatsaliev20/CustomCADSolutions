@@ -20,7 +20,7 @@ namespace CustomCADs.API.Mappings
             .ForMember(dto => dto.BuyerName, opt => opt.MapFrom(model => model.Buyer.UserName))
             .ForMember(dto => dto.Status, opt => opt.MapFrom(model => model.Status.ToString()))
             .ForMember(dto => dto.OrderDate, opt => opt.MapFrom(model => model.OrderDate.ToString("dd/MM/yyyy HH:mm:ss")))
-            .ForMember(dto => dto.CategoryName, opt => opt.MapFrom(model => model.Category.Name))
+            .ForMember(dto => dto.Category, opt => opt.MapFrom(model => model.Category.Name))
             ;
 
         /// <summary>

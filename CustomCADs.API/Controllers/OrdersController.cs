@@ -12,7 +12,7 @@ using CustomCADs.API.Helpers;
 
 namespace CustomCADs.API.Controllers
 {
-    [Authorize(Roles = "Client,Contributor")]
+    [Authorize(Roles = "Client")]
     [ApiController]
     [Route("API/[controller]")]
     public class OrdersController(IOrderService orderService) : ControllerBase

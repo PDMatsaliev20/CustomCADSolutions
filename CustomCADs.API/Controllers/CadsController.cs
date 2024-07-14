@@ -21,9 +21,11 @@ namespace CustomCADs.API.Controllers
     public class CadsController(ICadService cadService) : ControllerBase
     {
         private readonly string createdAtReturnAction = nameof(GetSingleAsync).Replace("Async", "");
-        private readonly IMapper mapper = new MapperConfiguration(cfg 
-                => cfg.AddProfile<CadApiProfile>())
-            .CreateMapper();
+        private readonly IMapper mapper = new MapperConfiguration(cfg =>
+        {
+            cfg.AddProfile<OtherApiProfile>();
+            cfg.AddProfile<CadApiProfile>();
+        }).CreateMapper();
 
         [HttpGet]
         [Consumes("application/json")]

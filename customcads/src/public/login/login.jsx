@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
 function LoginPage({ onLogin }) {
-
     const { t } = useTranslation();
 
     const [username, setUsername] = useState('');

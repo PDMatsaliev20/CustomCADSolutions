@@ -7,7 +7,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using AutoMapper;
 using CustomCADs.Core.Mappings;
-using System.Drawing;
 using System.ComponentModel.DataAnnotations;
 
 

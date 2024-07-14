@@ -20,8 +20,8 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
             .CreateMapper();
 
         protected ICadService service;
-        private Category[] categories = new Category[8]
-        {
+        private CategoryModel[] categories = 
+        [
             new() { Id = 1, Name = "Category1" },
             new() { Id = 2, Name = "Category2" },
             new() { Id = 3, Name = "Category3" },
@@ -30,15 +30,15 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
             new() { Id = 6, Name = "Category6" },
             new() { Id = 7, Name = "Category7" },
             new() { Id = 8, Name = "Category8" },
-        };
-        protected AppUser[] users = new AppUser[3]
-        {
+        ];
+        protected AppUser[] users =
+        [
             new() { UserName = "Contributor" },
             new() { UserName = "Designer" },
             new() { UserName = "Hacker" },
-        };
-        protected CadModel[] cads = new CadModel[]
-        {
+        ];
+        protected CadModel[] cads =
+        [
             new() { Id = 1, Name = "Cad1", Extension = "a", CategoryId = 1, Price = 1m, IsValidated = false, CreationDate = DateTime.Now.AddDays(-1), Coords = new int[3], PanCoords = new int[3] },
             new() { Id = 2, Name = "Cad2", Extension = "ab", CategoryId = 2, Price = 2m, IsValidated = false, CreationDate = DateTime.Now.AddDays(-2), Coords = new int[3], PanCoords = new int[3] },
             new() { Id = 3, Name = "Cad3", Extension = "abc", CategoryId = 3, Price = 3m, IsValidated = false, CreationDate = DateTime.Now.AddDays(-3), Coords = new int[3], PanCoords = new int[3] },
@@ -47,7 +47,7 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
             new() { Id = 6, Name = "Cad6", Extension = "abcdef", CategoryId = 6, Price = 6m, IsValidated = true, CreationDate = DateTime.Now.AddDays(-6), Coords = new int[3], PanCoords = new int[3] },
             new() { Id = 7, Name = "Cad7", Extension = "abcdefg", CategoryId = 7, Price = 7m, IsValidated = true, CreationDate = DateTime.Now.AddDays(-7), Coords = new int[3], PanCoords = new int[3] },
             new() { Id = 8, Name = "Cad8", Extension = "abcdefgh", CategoryId = 8, Price = 8m, IsValidated = true, CreationDate = DateTime.Now.AddDays(-8), Coords = new int[3], PanCoords = new int[3] },
-        };
+        ];
 
         [OneTimeSetUp]
         public async Task OneTimeSetup()
