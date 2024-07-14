@@ -44,6 +44,7 @@ namespace CustomCADs.API.Controllers
             await userManager.AddToRoleAsync(user, role);
             await user.SignInAsync(signInManager, GetAuthProps(false));
 
+            Response.Cookies.Append("username", user.UserName);
             return Ok("Welcome!");
         }
 
@@ -65,9 +66,9 @@ namespace CustomCADs.API.Controllers
             {
                 return Unauthorized("Invalid Password.");
             }
-
             await user.SignInAsync(signInManager, GetAuthProps(model.RememberMe));
 
+            Response.Cookies.Append("username", user.UserName!);
             return Ok("Welcome back!");
         }
 
@@ -79,6 +80,7 @@ namespace CustomCADs.API.Controllers
             try
             {
                 await signInManager.Context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                Response.Cookies.Delete("username");
                 return Ok("Bye-bye.");
             }
             catch

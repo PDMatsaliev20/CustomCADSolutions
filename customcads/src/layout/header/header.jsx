@@ -12,13 +12,19 @@ function Header() {
     const navigate = useNavigate();
     const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
 
+    const getUsername = () => {
+        const cookies = document.cookie.split('; ');
+        const usernameCookie = cookies.find(cookie => cookie.split('=')[0] === 'username');
+        const usernameCookieValue = usernameCookie.split('=')[1];
+        return usernameCookieValue;
+    };
+
     const logout = async () => {
         await axios.post('https://localhost:7127/API/Identity/Logout', {}, {
             withCredentials: true
         });
 
         setIsAuthenticated(false);
-        localStorage.removeItem('username');
         navigate("/");
     };
     
@@ -38,7 +44,7 @@ function Header() {
                     <li className="h-full gap-x-4 flex items-center justify-end ">
                         <HeaderBtn path="/gallery" icon="cart-shopping" />
                         <div className="flex gap-x-5">
-                            {isAuthenticated ? <AccountBtn onLogout={logout} username={localStorage.getItem('username')} /> : <LoginBtn />}
+                            {isAuthenticated ? <AccountBtn onLogout={logout} username={getUsername()} /> : <LoginBtn />}
                         </div>
                         <LanguageBtn />
                     </li>

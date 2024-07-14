@@ -13,7 +13,6 @@ function Body() {
             withCredentials: true
         });
 
-        localStorage.setItem('username', user.username);
         setIsAuthenticated(true);
         navigate("/");
     };
@@ -24,7 +23,6 @@ function Body() {
                 withCredentials: true
             });
 
-            localStorage.setItem('username', user.username);
             setIsAuthenticated(true);
             navigate("/");
         } catch (e) {
