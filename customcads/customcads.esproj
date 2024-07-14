@@ -178,4 +178,7 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="src\languages\resources\en\pages\private\" />
+  </ItemGroup>
 </Project>

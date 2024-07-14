@@ -1,18 +1,23 @@
 import { Routes, Route } from 'react-router-dom'
+import AuthGuard from '@/components/auth-guard'
+
 import HomePage from '@/public/home/home'
 import GalleryPage from '@/public/gallery/gallery'
+import PrivacyPolicyPage from '@/public/policy/policy'
+import AboutUsPage from '@/public/about/about'
+
 import LoginPage from '@/public/login/login'
 import RegisterPage from '@/public/register/register'
 import ChooseRolePage from '@/public/register/choose-role'
-import PrivacyPolicyPage from '@/public/policy/policy'
-import AboutUsPage from '@/public/about/about'
-import OrdersPage from '@/private/orders'
-import CustomOrderPage from '@/private/custom-order'
-import GalleryOrderPage from '@/private/gallery-order'
-import CadsPage from '@/private/cads'
-import UploadCadPage from '@/private/upload-cad'
-import SellCadPage from '@/private/sell-cad'
-import AuthGuard from '@/components/auth-guard'
+
+import UserOrdersPage from '@/private/orders/user-orders'
+import CustomOrderPage from '@/private/orders/CRUD/custom-order/custom-order'
+import GalleryOrderPage from '@/private/orders/CRUD/gallery-order/gallery-order'
+import OrderDetailsPage from '@/private/orders/CRUD/order-details/order-details'
+
+import UserCadsPage from '@/private/cads/user-cads'
+import UploadCadPage from '@/private/cads/upload-cad/upload-cad'
+import SellCadPage from '@/private/cads/sell-cad/sell-cad'
 
 function Router({ onLogin, onRegister }) {
     return (
@@ -30,10 +35,11 @@ function Router({ onLogin, onRegister }) {
 
             { /* Private part of CustomCADs */}
             <Route element={<AuthGuard isPrivate />}>
-                <Route path="/orders" element={<OrdersPage /> } />
+                <Route path="/orders" element={<UserOrdersPage /> } />
+                <Route path="/orders/:id" element={<OrderDetailsPage /> } />
                 <Route path="/orders/custom" element={<CustomOrderPage /> } />
                 <Route path="/orders/gallery" element={<GalleryOrderPage /> } />
-                <Route path="/cads" element={<CadsPage /> } />
+                <Route path="/cads" element={<UserCadsPage /> } />
                 <Route path="/cads/upload" element={<UploadCadPage /> } />
                 <Route path="/cads/sell" element={<SellCadPage /> } />
             </Route>
