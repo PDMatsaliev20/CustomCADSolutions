@@ -1,4 +1,4 @@
-using CustomCADs.Core.Contracts;
+﻿using CustomCADs.Core.Contracts;
 using CustomCADs.Core.Services;
 using CustomCADs.Infrastructure.Data;
 using CustomCADs.Infrastructure.Data.Common;
@@ -69,12 +69,16 @@ namespace Microsoft.Extensions.DependencyInjection
 
         public static IServiceCollection AddAuthWithCookie(this IServiceCollection services)
         {
-            services.AddAuthentication(opt 
-                    => opt.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme)
+            services.AddAuthentication(opt =>
+            {
+                opt.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                opt.DefaultForbidScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            })
                 .AddCookie(options =>
                 {
                     options.LoginPath = "/API/Identity/Login";
-                    options.LogoutPath = "/api/identity/logout";
+                    options.LogoutPath = "/API/Identity/Logout";
+                    options.AccessDeniedPath = "/AccessDenied";
                     options.Cookie.HttpOnly = true;
                     options.Cookie.SameSite = SameSiteMode.None;
                     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
