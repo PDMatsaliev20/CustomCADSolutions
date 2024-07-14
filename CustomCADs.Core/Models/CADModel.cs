@@ -43,7 +43,7 @@ namespace CustomCADs.Core.Models
         [Required(ErrorMessage = RequiredErrorMessage)]
         public string CreatorId { get; set; } = null!;
 
-        public Category Category { get; set; } = null!;
+        public CategoryModel Category { get; set; } = null!;
 
         public AppUser Creator { get; set; } = null!;
 

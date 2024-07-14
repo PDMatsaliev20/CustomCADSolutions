@@ -16,6 +16,7 @@ namespace CustomCADs.Core.Services
     {
         private readonly IMapper mapper = new MapperConfiguration(cfg =>
             {
+                cfg.AddProfile<CategoryCoreProfile>();
                 cfg.AddProfile<CadCoreProfile>();
                 cfg.AddProfile<OrderCoreProfile>();
             }).CreateMapper();
