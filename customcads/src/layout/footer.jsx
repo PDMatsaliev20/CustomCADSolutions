@@ -7,7 +7,7 @@ function Footer() {
     const { t } = useTranslation();
 
     return (
-        <footer className="basis-full grow sticky z-50 self-end py-4 border-t-2 border-indigo-300 rounded-t-lg bg-indigo-100 ">
+        <footer className="sticky z-50 justify-self-end py-4 border-t-2 border-indigo-300 rounded-t-lg bg-indigo-100 ">
             <div className="flex justify-evenly items-center">
                 <section className="flex gap-6 underline-offset-4 underline font-semibold text-sm">
                     <p className="text-center"><Link to="/policy">{t('footer.Privacy Policy')}</Link></p>

@@ -22,7 +22,7 @@ function GalleryPage() {
     }, [queryString]);
 
     return (
-        <div className="mt-4 mb-8 flex flex-wrap justify-center gap-y-8">
+        <div className="mb-8 flex flex-wrap justify-center gap-y-8">
             <h1 className="basis-full text-center text-4xl text-indigo-950 font-bold">{t('body.gallery.Our Gallery')}</h1>
             <QueryBar setQueryString={setQueryString} />
             <section className="basis-full">

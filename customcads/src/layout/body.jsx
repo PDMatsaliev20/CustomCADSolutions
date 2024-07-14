@@ -33,7 +33,7 @@ function Body() {
     };
 
     return (
-        <main className="basis-full mx-16 my-5">
+        <main className="basis-full grow self-stretch my-8 mx-16">
             <Router onLogin={login} onRegister={register} />
         </main>                                                     
     );

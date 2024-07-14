@@ -20,7 +20,7 @@ function AboutUsPage() {
     };
 
     return (
-        <div className="my-10 bg-indigo-300 px-4 py-1 rounded-md">
+        <div className="my-6 bg-indigo-300 px-4 rounded-md">
             <h1 className="text-4xl text-center font-semibold py-7">{t('body.about.About Us and Our Team')}</h1>
             <section className="mb-5 gap-2 px-5 pt-5 bg-indigo-800 rounded-md">
                 <div className="flex flex-col flex-wrap gap-x-3 gap-y-5 xl:flex-row">
