@@ -19,11 +19,14 @@ namespace CustomCADs.API.Controllers
             cfg.AddProfile<CadApiProfile>();
         }).CreateMapper();
 
+        [HttpGet("/AccessDenied")]
+        [ProducesResponseType(Status403Forbidden)]
+        public ActionResult AccessDenied() => StatusCode(Status403Forbidden, "Access Denied");
+        
         [HttpGet("Cad")]
         [ProducesResponseType(Status200OK)]
         public async Task<ActionResult<CadExportDTO>> GetAsync()
             => mapper.Map<CadExportDTO>(await cadService.GetByIdAsync(253));
-
 
         [HttpGet("Gallery")]
         [ProducesResponseType(Status200OK)]

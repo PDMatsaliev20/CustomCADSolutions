@@ -1,6 +1,6 @@
-﻿using static CustomCADs.Infrastructure.Data.DataConstants;
+﻿using System.ComponentModel.DataAnnotations;
+using static CustomCADs.Infrastructure.Data.DataConstants;
 using static CustomCADs.Infrastructure.Data.DataConstants.OrderConstants;
-using System.ComponentModel.DataAnnotations;
 
 namespace CustomCADs.API.Models.Orders
 {

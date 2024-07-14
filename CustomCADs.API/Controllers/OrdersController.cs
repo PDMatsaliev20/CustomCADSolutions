@@ -1,18 +1,20 @@
 ﻿using AutoMapper;
-using CustomCADs.Core.Contracts;
-using CustomCADs.Core.Models;
-using Microsoft.AspNetCore.Mvc;
-using static Microsoft.AspNetCore.Http.StatusCodes;
-using Microsoft.AspNetCore.JsonPatch;
-using Microsoft.EntityFrameworkCore;
+using CustomCADs.API.Helpers;
 using CustomCADs.API.Mappings;
 using CustomCADs.API.Models.Orders;
+using CustomCADs.Core.Contracts;
+using CustomCADs.Core.Models;
 using Microsoft.AspNetCore.Authorization;
-using CustomCADs.API.Helpers;
+using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using static CustomCADs.Infrastructure.Data.DataConstants.RoleConstants;
 
 namespace CustomCADs.API.Controllers
 {
-    [Authorize(Roles = "Client")]
+    using static StatusCodes;
+
+    [Authorize(Roles = Client)]
     [ApiController]
     [Route("API/[controller]")]
     public class OrdersController(IOrderService orderService) : ControllerBase

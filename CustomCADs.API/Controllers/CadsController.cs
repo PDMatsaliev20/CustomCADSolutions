@@ -1,21 +1,22 @@
 ﻿using AutoMapper;
-using CustomCADs.Core.Contracts;
-using CustomCADs.Core.Models;
-using Microsoft.AspNetCore.Mvc;
-using static Microsoft.AspNetCore.Http.StatusCodes;
-using Microsoft.AspNetCore.JsonPatch;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.JsonPatch.Operations;
-using Newtonsoft.Json.Serialization;
+using CustomCADs.API.Helpers;
 using CustomCADs.API.Mappings;
 using CustomCADs.API.Models.Cads;
-using Microsoft.AspNetCore.Authorization;
 using CustomCADs.API.Models.Queries;
-using CustomCADs.API.Helpers;
+using CustomCADs.Core.Contracts;
+using CustomCADs.Core.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.JsonPatch.Operations;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Serialization;
+using static CustomCADs.Infrastructure.Data.DataConstants.RoleConstants;
+using static Microsoft.AspNetCore.Http.StatusCodes;
 
 namespace CustomCADs.API.Controllers
 {
-    [Authorize(Roles = "Contributor,Designer")]
+    [Authorize(Roles = $"{Contributor},{Designer}")]
     [ApiController]
     [Route("API/[controller]")]
     public class CadsController(ICadService cadService) : ControllerBase

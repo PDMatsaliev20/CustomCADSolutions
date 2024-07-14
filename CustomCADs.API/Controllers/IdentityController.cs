@@ -1,20 +1,24 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CustomCADs.API.Helpers;
 using CustomCADs.API.Models.Users;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
-using CustomCADs.API.Helpers;
-using static CustomCADs.API.Helpers.Utilities;
 using CustomCADs.Infrastructure.Data.Models.Identity;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using static CustomCADs.API.Helpers.Utilities;
 
 namespace CustomCADs.API.Controllers
 {
-    [Route("API/[controller]")]
+    using static StatusCodes;
+
     [ApiController]
+    [Route("API/[controller]")]
     public class IdentityController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager) : ControllerBase
     {
         [HttpPost("Register/{role}")]
         [Consumes("application/json")]
+        [ProducesResponseType(Status200OK)]
+        [ProducesResponseType(Status400BadRequest)]
         public async Task<ActionResult> Register([FromRoute] string role, [FromBody] UserRegisterModel model)
         {
             AppUser user = new()
@@ -45,6 +49,9 @@ namespace CustomCADs.API.Controllers
 
         [HttpPost("Login")]
         [Consumes("application/json")]
+        [ProducesResponseType(Status200OK)]
+        [ProducesResponseType(Status400BadRequest)]
+        [ProducesResponseType(Status401Unauthorized)]
         public async Task<ActionResult> Login([FromBody] UserLoginModel model)
         {
             AppUser? user = await userManager.FindByNameAsync(model.Username);
@@ -65,6 +72,8 @@ namespace CustomCADs.API.Controllers
         }
 
         [HttpPost("Logout")]
+        [ProducesResponseType(Status200OK)]
+        [ProducesResponseType(Status400BadRequest)]
         public async Task<ActionResult> Logout()
         {
             try
@@ -79,15 +88,20 @@ namespace CustomCADs.API.Controllers
         }
 
         [HttpGet("IsAuthenticated")]
-        public ActionResult IsAuthenticated() => Ok(User.Identity?.IsAuthenticated ?? false);
+        [ProducesResponseType(Status200OK)]
+        public ActionResult<bool> IsAuthenticated() => User.Identity?.IsAuthenticated ?? false;
 
         [HttpGet("IsAuthorized")]
-        public ActionResult IsAuthorized(string role) => Ok(User.IsInRole(role));
+        [ProducesResponseType(Status200OK)]
+        public ActionResult<bool> IsAuthorized(string role) => User.IsInRole(role);
 
         [HttpGet("UserExists")]
-        public ActionResult Exists() => Ok(userManager.Users.Any(u => User.Identity!.Name == u.UserName));
+        [ProducesResponseType(Status200OK)]
+        public ActionResult<bool> Exists() => userManager.Users.Any(u => User.Identity!.Name == u.UserName);
 
         [HttpGet("GetUserRole")]
+        [ProducesResponseType(Status200OK)]
+        [ProducesResponseType(Status400BadRequest)]
         public async Task<ActionResult> GetUserRole()
         {
             AppUser? user = await userManager.GetUserAsync(User);

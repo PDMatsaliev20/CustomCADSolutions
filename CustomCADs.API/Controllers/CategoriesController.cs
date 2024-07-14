@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CustomCADs.API.Controllers
 {
-    [Route("API/[controller]")]
     [ApiController]
+    [Route("API/[controller]")]
     public class CategoriesController(ICategoryService categoryService) : ControllerBase
     {
         private readonly IMapper mapper = new MapperConfiguration(opt => 
