@@ -36,6 +36,15 @@ namespace CustomCADs.Core.Services
             return model;
         }
  
+        public async Task<CategoryModel> GetByNameAsync(string name)
+        {
+            Category entity = await repository.All<Category>().FirstOrDefaultAsync(c => c.Name == name)
+                ?? throw new KeyNotFoundException();
+
+            CategoryModel model = mapper.Map<CategoryModel>(entity);
+            return model;
+        }
+
         public async Task<int> CreateAsync(CategoryModel model)
         {
             Category entity = mapper.Map<Category>(model);  

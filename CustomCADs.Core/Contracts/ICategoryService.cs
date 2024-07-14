@@ -23,6 +23,14 @@ namespace CustomCADs.Core.Contracts
         /// <returns>A Task object that represents the Category</returns>
         /// <exception cref="KeyNotFoundException">if no Category with the given id exists.</exception>
         Task<CategoryModel> GetByIdAsync(int id);
+        
+        /// <summary>
+        ///     Searches for a Category by the given name
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns>A Task object that represents the Category</returns>
+        /// <exception cref="KeyNotFoundException">if no Category with the given name exists.</exception>
+        Task<CategoryModel> GetByNameAsync(string name);
 
         /// <summary>
         ///     Creates the specified Category in the Categories table

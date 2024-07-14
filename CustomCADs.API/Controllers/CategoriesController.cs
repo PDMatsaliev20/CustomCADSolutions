@@ -40,5 +40,22 @@ namespace CustomCADs.API.Controllers
                 return NotFound();
             }
         }
+        
+        [HttpGet("ByName/{name}")]
+        [Produces("application/json")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        public async Task<ActionResult<CategoryDTO>> GetAsync(string name)
+        {
+            try
+            {
+                CategoryModel category = await categoryService.GetByNameAsync(name);
+                return mapper.Map<CategoryDTO>(category);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+        }
     }
 }
