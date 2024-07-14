@@ -23,7 +23,7 @@ function App() {
         const language = localStorage.getItem('language');
         if (language && i18n.language !== language) {
             i18n.changeLanguage(language);
-    }
+        }
     }, []);
 
     useEffect(() => {
@@ -36,8 +36,8 @@ function App() {
     return (
         <BrowserRouter>
             <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated, userRole }}>
-                <div className="flex flex-wrap items-start min-h-screen bg-indigo-50">
-                    <div className="basis-full grow sticky top-0 z-50">
+                <div className="flex flex-col min-h-screen bg-indigo-50">
+                    <div className="justify-self-start sticky top-0 z-50">
                         <Header />
                         <Navbar />
                     </div>
