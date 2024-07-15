@@ -1,18 +1,11 @@
-import { Link } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useNavigate } from 'react-router-dom'
+import HeaderBtn from './header-btn'
 
 function LoginBtn() {
-    const { t } = useTranslation();
+    const navigate = useNavigate();
 
-    return (
-        <Link to="/login">
-            <button className="p-2 flex items-center gap-x-2 bg-indigo-300 rounded-xl border-2 border-indigo-400 shadow shadow-indigo-900">
-                <span className="text-indigo-950 ">{t('header.Log in')}</span>
-                <FontAwesomeIcon icon={'person-circle-question'} className="text-2xl text-indigo-700" />
-            </button>
-        </Link>
-    );
+    return <HeaderBtn icon="user-secret" padding="p-2" textSize="text-3xl"
+        onClick={() => navigate('/login')} />;
 }
 
 export default LoginBtn;

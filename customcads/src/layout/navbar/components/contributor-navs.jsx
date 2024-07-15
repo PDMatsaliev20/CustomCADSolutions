@@ -11,7 +11,7 @@ function ContributorNavigationalMenu({ shouldBlur }) {
     };
 
     return (
-        <ul className={`${shouldBlur ? "blur-sm" : ''} flex justify-around text-indigo-900 font-bold`} onClick={handleClick}>
+        <ul className={`${shouldBlur ? "blur-sm" : ''} flex justify-around`} onClick={handleClick}>
             {
                 shouldBlur ?
                     <>

@@ -15,29 +15,38 @@ library.add(fas);
 
 function App() {
     const { i18n } = useTranslation();
-    const hasUsername = localStorage.getItem('username');
-    const [isAuthenticated, setIsAuthenticated] = useState(hasUsername);
+
+    const getCookie = (cookieName) => {
+        const cookies = document.cookie.split('; ');
+        const usernameCookie = cookies.find(cookie => cookie.split('=')[0] === cookieName);
+        return usernameCookie && usernameCookie.split('=')[1];
+    };
+    
+    const [isAuthenticated, setIsAuthenticated] = useState(getCookie('username'));
     const [userRole, setUserRole] = useState();
+    const [username, setUsername] = useState();
 
     useEffect(() => {
         const language = localStorage.getItem('language');
         if (language && i18n.language !== language) {
             i18n.changeLanguage(language);
+            localStorage.setItem('language', language);
         }
     }, []);
 
     useEffect(() => {
         checkUserAuthentication();
         if (isAuthenticated) {
+            setUsername(getCookie('username'));
             checkUserAuthorization();
         }
     }, [isAuthenticated]);
 
     return (
         <BrowserRouter>
-            <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated, userRole }}>
+            <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated, username, userRole }}>
                 <div className="flex flex-col min-h-screen bg-indigo-50">
-                    <div className="justify-self-start sticky top-0 z-50">
+                    <div className="sticky top-0 z-50">
                         <Header />
                         <Navbar />
                     </div>
@@ -71,4 +80,4 @@ function App() {
     }
 }
 
-    export default App;
+export default App;

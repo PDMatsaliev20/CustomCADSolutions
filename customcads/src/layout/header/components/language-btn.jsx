@@ -1,6 +1,6 @@
 ﻿import { useTranslation } from 'react-i18next'
 import { useState } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import HeaderBtn from './header-btn'
 
 function LanguageSelector() {
     const { i18n } = useTranslation();
@@ -8,7 +8,7 @@ function LanguageSelector() {
     const languages = ['bg', 'en'];
     let languageIndex = languages.indexOf(language);
 
-    const handleClick = (e) => {
+    const handleClick = () => {
         if (languageIndex + 1 > languages.length - 1) {
             languageIndex = 0;
         } else languageIndex++;
@@ -18,11 +18,7 @@ function LanguageSelector() {
         i18n.changeLanguage(languages[languageIndex]);
     };
 
-    return (
-        <button onClick={handleClick} className="text-indigo-600 hover:text-indigo-600 active:text-indigo-400">
-            <FontAwesomeIcon icon={'fas', 'fa-globe'} className="text-3xl" />
-        </button>
-    );
+    return <HeaderBtn icon="globe" padding="p-2" textSize="text-3xl" onClick={handleClick} />;
 }
 
 export default LanguageSelector;

@@ -17,14 +17,16 @@ function SearchBtn() {
     };
 
     return (
-        <form className="h-4/6 w-full">
-            <div className="h-full flex gap-x-4 bg-indigo-50 px-4 py-2 rounded-md">
-                <input type="search" placeholder={t('header.Searchbar')} onChange={handleSearch}
-                    className="w-full bg-indigo-50 text-indigo-900 focus:outline-none"
-                />
-                <button type="submit" onClick={handleClick}>
-                    <FontAwesomeIcon icon={'search'} className="flex items-center text-indigo-500 text-2xl" />
-                </button>
+        <form className="h-full w-full">
+            <div className="h-full bg-indigo-50 rounded-md">
+                <div className="flex gap-x-4 px-4 py-3 ">
+                    <input type="search" placeholder={t('header.Searchbar')} onChange={handleSearch}
+                        className="w-full bg-indigo-50 text-lg text-indigo-900 focus:outline-none"
+                    />
+                    <button type="submit" onClick={handleClick}>
+                        <FontAwesomeIcon icon={'search'} className="flex items-center text-indigo-500 text-2xl" />
+                    </button>
+                </div>
             </div>
         </form>
     )
