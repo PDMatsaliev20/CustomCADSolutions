@@ -77,7 +77,7 @@ function OrderDetails() {
             </div>
             <div className="basis-10/12 mx-auto text-indigo-100">
                 <form onSubmit={handleFormSubmit} autoComplete="off">
-                    <div className="flex flex-wrap gap-y-8 px-8 py-4 bg-indigo-500 rounded-md">
+                    <div className="flex flex-wrap gap-y-8 px-8 py-4 bg-indigo-500 rounded-md border-2 border-indigo-700 shadow-lg shadow-indigo-900">
                         <header className="basis-full">
                             <div className="flex items-center justify-around">
                                 <select name="categoryId" value={order.categoryId} onChange={handleInput}
@@ -122,8 +122,8 @@ function OrderDetails() {
                             </div>
                         </footer>
                     </div>
-                    <div className={`${isEditing ? 'flex justify-center mt-4' : ' hidden'}`}>
-                        <button className="bg-indigo-500 text-indigo-50 font-bold py-3 px-6 rounded-lg">Submit</button>
+                    <div className={`${isEditing ? 'flex justify-center mt-8' : ' hidden'}`}>
+                        <button className="bg-indigo-500 text-indigo-50 font-bold py-3 px-6 rounded-lg border border-indigo-700 shadow shadow-indigo-950">Save changes</button>
                     </div>
                 </form>
             </div>

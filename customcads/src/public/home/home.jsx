@@ -4,7 +4,6 @@ import Cad from '@/components/cad'
 import { useTranslation } from 'react-i18next'
 
 function HomePage() {
-
     const { t } = useTranslation();
 
     const customerParent = { path: '/register/client', content: t('body.home.Register as Client') };
@@ -21,14 +20,14 @@ function HomePage() {
 
     return (
         <>
-            <section className="flex justify-between">
-                <article className="basis-8/12 shrink-0 flex flex-col justify-center gap-y-8 text-center">
-                    <h1 className="text-5xl font-bold italic">{t('body.home.The Land of 3D Models')}</h1>
-                    <span className="flex flex-col gap-y-3">
+            <section className="flex justify-between items-center">
+                <article className="h-full basis-8/12 shrink-0 flex flex-wrap items-center gap-y-8 text-center">
+                    <h1 className="basis-full text-5xl font-bold italic">{t('body.home.The Land of 3D Models')}</h1>
+                    <span className="basis-full flex flex-col gap-y-3">
                         <span className="text-2xl ">{t('body.home.We offer high-quality 3D Models tailored to your needs')}</span>
                         <span className="text-lg italic">{t('body.home.optional 5-10 business day delivery')}</span>
                     </span>
-                    <div className="flex justify-center gap-x-5">
+                    <div className="basis-full flex justify-center gap-x-5">
                         <BtnLink to="/register/client" text={t('body.home.Looking to buy')} />
                         <BtnLink to="/register/contributor" text={t('body.home.Looking to sell')} />
                     </div>
@@ -39,7 +38,7 @@ function HomePage() {
             </section>
 
             <hr className="border-t border-black" />
-            
+
             <h3 className="text-4xl text-center mt-8 font-semibold">{t('body.home.Two ways to go about this')}</h3>
             <section className="my-10">
                 <article className="flex justify-evenly items-center gap-5">
