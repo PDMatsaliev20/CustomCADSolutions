@@ -1,6 +1,6 @@
-﻿using static CustomCADs.Core.TestsErrorMessages;
-using CustomCADs.Core.Models;
-using CustomCADs.Infrastructure.Data.Models.Enums;
+﻿using CustomCADs.Core.Models;
+using CustomCADs.Domain.Entities.Enums;
+using static CustomCADs.Core.TestsErrorMessages;
 
 namespace CustomCADs.Tests.ServicesTests.CadTests
 {

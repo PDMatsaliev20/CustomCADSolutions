@@ -1,5 +1,4 @@
 ﻿using CustomCADs.Core.Models;
-using System.Drawing;
 using static CustomCADs.Core.TestsErrorMessages;
 
 namespace CustomCADs.Tests.ServicesTests.CadTests
