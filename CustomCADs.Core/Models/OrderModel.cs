@@ -1,10 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using CustomCADs.Domain.Entities;
+using CustomCADs.Domain.Entities.Enums;
+using CustomCADs.Domain.Entities.Identity;
 using System.ComponentModel.DataAnnotations;
-using CustomCADs.Infrastructure.Data.Models.Enums;
-using CustomCADs.Infrastructure.Data.Models;
-using static CustomCADs.Infrastructure.Data.DataConstants;
-using static CustomCADs.Infrastructure.Data.DataConstants.OrderConstants;
-using CustomCADs.Infrastructure.Data.Models.Identity;
+using System.ComponentModel.DataAnnotations.Schema;
+using static CustomCADs.Domain.DataConstants;
+using static CustomCADs.Domain.DataConstants.OrderConstants;
 
 namespace CustomCADs.Core.Models
 {

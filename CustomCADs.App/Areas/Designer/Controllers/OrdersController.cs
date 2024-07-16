@@ -1,15 +1,15 @@
-﻿using CustomCADs.App.Models.Orders;
-using static CustomCADs.Infrastructure.Data.DataConstants;
-using CustomCADs.Infrastructure.Data.Models.Enums;
+﻿using AutoMapper;
+using CustomCADs.App.Extensions;
+using CustomCADs.App.Mappings;
+using CustomCADs.App.Models.Cads.Input;
+using CustomCADs.App.Models.Orders;
+using CustomCADs.Core.Contracts;
+using CustomCADs.Core.Models;
+using CustomCADs.Domain.Entities.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static CustomCADs.App.Extensions.UtilityExtensions;
-using CustomCADs.App.Extensions;
-using AutoMapper;
-using CustomCADs.App.Mappings;
-using CustomCADs.App.Models.Cads.Input;
-using CustomCADs.Core.Contracts;
-using CustomCADs.Core.Models;
+using static CustomCADs.Domain.DataConstants;
 
 namespace CustomCADs.App.Areas.Designer.Controllers
 {

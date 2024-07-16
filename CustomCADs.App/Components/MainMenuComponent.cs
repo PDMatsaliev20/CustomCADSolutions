@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using static CustomCADs.Infrastructure.Data.DataConstants.RoleConstants;
+using static CustomCADs.Domain.DataConstants.RoleConstants;
 
 namespace CustomCADs.App.Components
 {

@@ -1,8 +1,8 @@
-﻿using CustomCADs.Infrastructure.Data.Models;
+﻿using CustomCADs.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CustomCADs.Infrastructure.Data.Common.Configurations
+namespace CustomCADs.Infrastructure.Data.Configurations
 {
     public class CadConfiguration : IEntityTypeConfiguration<Cad>
     {
@@ -10,7 +10,7 @@ namespace CustomCADs.Infrastructure.Data.Common.Configurations
         {
             builder.HasOne(c => c.Creator).WithMany().OnDelete(DeleteBehavior.Cascade);
             builder.HasMany(c => c.Orders).WithOne(o => o.Cad).OnDelete(DeleteBehavior.NoAction);
-         
+
             builder.Navigation(c => c.Creator).AutoInclude();
             builder.Navigation(c => c.Orders).AutoInclude();
             builder.Navigation(c => c.Category).AutoInclude();

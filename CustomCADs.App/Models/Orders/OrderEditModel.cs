@@ -1,7 +1,7 @@
 ﻿using CustomCADs.App.Resources.Shared;
-using static CustomCADs.Infrastructure.Data.DataConstants;
-using System.ComponentModel.DataAnnotations;
 using CustomCADs.Core.Models;
+using System.ComponentModel.DataAnnotations;
+using static CustomCADs.Domain.DataConstants;
 
 namespace CustomCADs.App.Models.Orders
 {

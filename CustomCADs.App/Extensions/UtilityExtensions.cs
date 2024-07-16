@@ -1,11 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
-using System.Security.Claims;
+﻿using CustomCADs.Domain.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Stripe;
-using CustomCADs.Core.Services;
-using System.Text.RegularExpressions;
-using CustomCADs.App.Models.Cads.Input;
-using CustomCADs.Infrastructure.Data.Models.Identity;
+using System.Security.Claims;
 
 namespace CustomCADs.App.Extensions
 {

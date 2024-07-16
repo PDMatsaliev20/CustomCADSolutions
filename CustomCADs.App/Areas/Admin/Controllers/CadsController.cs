@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using CustomCADs.App.Models.Cads.View;
 using CustomCADs.Core.Contracts;
 using CustomCADs.Core.Models;
-using static CustomCADs.Infrastructure.Data.DataConstants;
+using static CustomCADs.Domain.DataConstants;
 
 namespace CustomCADs.App.Areas.Admin.Controllers
 {

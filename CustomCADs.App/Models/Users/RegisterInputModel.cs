@@ -1,6 +1,6 @@
 ﻿using CustomCADs.App.Resources.Shared;
 using System.ComponentModel.DataAnnotations;
-using static CustomCADs.Infrastructure.Data.DataConstants;
+using static CustomCADs.Domain.DataConstants;
 
 namespace CustomCADs.App.Models.Users
 {

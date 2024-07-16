@@ -3,6 +3,6 @@
     public class CadQueryResult
     {
         public int Count { get; set; }
-        public ICollection<CadModel> Cads { get; set; } = new List<CadModel>();
+        public ICollection<CadModel> Cads { get; set; } = [];
     }
 }

@@ -1,6 +1,6 @@
 ﻿using CustomCADs.App.Resources.Shared;
 using System.ComponentModel.DataAnnotations;
-using static CustomCADs.Infrastructure.Data.DataConstants.RoleConstants;
+using static CustomCADs.Domain.DataConstants.RoleConstants;
 
 namespace CustomCADs.App.Models.Roles.Input
 {

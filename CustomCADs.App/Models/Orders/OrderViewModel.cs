@@ -8,7 +8,7 @@
         public string Description { get; set; } = null!;
         public string OrderDate { get; set; } = null!;
         public string Status { get; set; } = null!;
-        public int CadId { get; set; }
+        public int? CadId { get; set; }
         public string BuyerId { get; set; } = null!;
         public string BuyerName { get; set; } = null!;
     }

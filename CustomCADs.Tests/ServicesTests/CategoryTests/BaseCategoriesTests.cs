@@ -1,31 +1,31 @@
-﻿using CustomCADs.Core.Contracts;
-using CustomCADs.Infrastructure.Data.Models;
-using CustomCADs.Infrastructure.Data;
-using CustomCADs.Infrastructure.Data.Common;
-using Microsoft.EntityFrameworkCore;
-using CustomCADs.Core.Services;
-using AutoMapper;
+﻿using AutoMapper;
+using CustomCADs.Core.Contracts;
 using CustomCADs.Core.Mappings;
 using CustomCADs.Core.Models;
+using CustomCADs.Core.Services;
+using CustomCADs.Domain;
+using CustomCADs.Domain.Entities;
+using CustomCADs.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace CustomCADs.Tests.ServicesTests.CategoryTests
 {
     public class BaseCategoriesTests
     {
         private IRepository repository;
-        private IMapper mapper = new MapperConfiguration(cfg => 
+        private readonly IMapper mapper = new MapperConfiguration(cfg => 
                 cfg.AddProfile<CategoryCoreProfile>())
             .CreateMapper();
 
         protected ICategoryService service;
-        protected readonly CategoryModel[] categories = new CategoryModel[5]
-        {
+        protected readonly CategoryModel[] categories =
+        [
             new() { Id = 1, Name = "Category1" },
             new() { Id = 2, Name = "Category2" },
             new() { Id = 3, Name = "Category3" },
             new() { Id = 4, Name = "Category4" },
             new() { Id = 5, Name = "Category5" }
-        };
+        ];
 
         [OneTimeSetUp]
         public void OneTimeSetup()

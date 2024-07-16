@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using static CustomCADs.Infrastructure.Data.DataConstants;
-using static CustomCADs.Infrastructure.Data.DataConstants.CadConstants;
+using static CustomCADs.Domain.DataConstants;
+using static CustomCADs.Domain.DataConstants.CadConstants;
 
 namespace CustomCADs.API.Models.Cads
 {

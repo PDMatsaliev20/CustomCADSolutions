@@ -1,5 +1,5 @@
 ﻿using CustomCADs.App.Resources.Shared;
-using CustomCADs.Infrastructure.Data.Models.Enums;
+using CustomCADs.Domain.Entities.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace CustomCADs.App.Models.Cads.View

@@ -1,15 +1,15 @@
-﻿using CustomCADs.App.Models.Orders;
-using static CustomCADs.Infrastructure.Data.DataConstants.RoleConstants;
-using CustomCADs.Infrastructure.Data.Models.Enums;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
 using CustomCADs.App.Extensions;
-using AutoMapper;
 using CustomCADs.App.Mappings;
-using Microsoft.Extensions.Options;
 using CustomCADs.App.Models.Cads.View;
+using CustomCADs.App.Models.Orders;
 using CustomCADs.Core.Contracts;
 using CustomCADs.Core.Models;
+using CustomCADs.Domain.Entities.Enums;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using static CustomCADs.Domain.DataConstants.RoleConstants;
 
 namespace CustomCADs.App.Controllers
 {

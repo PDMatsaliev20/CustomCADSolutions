@@ -1,7 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using CustomCADs.Domain;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
-namespace CustomCADs.Infrastructure.Data.Common
+namespace CustomCADs.Infrastructure.Data
 {
     public class Repository(CadContext context) : IRepository
     {
@@ -32,7 +33,7 @@ namespace CustomCADs.Infrastructure.Data.Common
 
         public async Task AddRangeAsync<T>(params T[] entity) where T : class
         {
-            await context.Set<T>().AddRangeAsync(entity); 
+            await context.Set<T>().AddRangeAsync(entity);
         }
 
         public void Delete<T>(T entity) where T : class

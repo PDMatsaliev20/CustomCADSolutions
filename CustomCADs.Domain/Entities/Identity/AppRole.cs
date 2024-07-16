@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
-using static CustomCADs.Infrastructure.Data.DataConstants.RoleConstants;
+using static CustomCADs.Domain.DataConstants;
 
-namespace CustomCADs.Infrastructure.Data.Models.Identity
+namespace CustomCADs.Domain.Entities.Identity
 {
     public class AppRole : IdentityRole
     {
@@ -15,7 +15,7 @@ namespace CustomCADs.Infrastructure.Data.Models.Identity
             Description = description;
         }
 
-        [MaxLength(DescriptionMaxLength)]
+        [MaxLength(RoleConstants.DescriptionMaxLength)]
         public string? Description { get; set; }
     }
 }

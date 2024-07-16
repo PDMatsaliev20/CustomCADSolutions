@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Infrastructure.Data
+﻿namespace CustomCADs.Domain
 {
     public static class DataConstants
     {

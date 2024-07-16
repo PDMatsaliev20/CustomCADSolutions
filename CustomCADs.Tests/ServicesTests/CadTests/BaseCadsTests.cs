@@ -3,10 +3,10 @@ using CustomCADs.Core.Contracts;
 using CustomCADs.Core.Mappings;
 using CustomCADs.Core.Models;
 using CustomCADs.Core.Services;
+using CustomCADs.Domain;
+using CustomCADs.Domain.Entities;
+using CustomCADs.Domain.Entities.Identity;
 using CustomCADs.Infrastructure.Data;
-using CustomCADs.Infrastructure.Data.Common;
-using CustomCADs.Infrastructure.Data.Models;
-using CustomCADs.Infrastructure.Data.Models.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace CustomCADs.Tests.ServicesTests.CadTests

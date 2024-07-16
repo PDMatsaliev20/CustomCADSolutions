@@ -1,6 +1,6 @@
 ﻿using CustomCADs.App.Extensions;
 using CustomCADs.App.Hubs;
-using CustomCADs.Infrastructure.Data.Models.Identity;
+using CustomCADs.Domain.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.StaticFiles;

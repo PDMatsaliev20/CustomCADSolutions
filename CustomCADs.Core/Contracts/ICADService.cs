@@ -1,5 +1,4 @@
 ﻿using CustomCADs.Core.Models;
-using System.Drawing;
 
 namespace CustomCADs.Core.Contracts
 {

@@ -1,4 +1,4 @@
-using static CustomCADs.Infrastructure.Data.DataConstants.RoleConstants;
+using static CustomCADs.Domain.DataConstants.RoleConstants;
 
 var builder = WebApplication.CreateBuilder(args);
 

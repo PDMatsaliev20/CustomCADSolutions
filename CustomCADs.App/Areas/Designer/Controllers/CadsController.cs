@@ -1,12 +1,12 @@
-﻿using CustomCADs.App.Mappings;
+﻿using AutoMapper;
+using CustomCADs.App.Mappings;
 using CustomCADs.App.Models.Cads.View;
 using CustomCADs.Core.Contracts;
 using CustomCADs.Core.Models;
-using static CustomCADs.Infrastructure.Data.DataConstants;
-using CustomCADs.Infrastructure.Data.Models.Enums;
-using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+using CustomCADs.Domain.Entities.Enums;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using static CustomCADs.Domain.DataConstants;
 
 namespace CustomCADs.App.Areas.Designer.Controllers
 {

@@ -1,12 +1,12 @@
-﻿using CustomCADs.Core.Contracts;
+﻿using AutoMapper;
+using CustomCADs.Core.Contracts;
+using CustomCADs.Core.Mappings;
 using CustomCADs.Core.Models;
-using CustomCADs.Infrastructure.Data.Common;
-using CustomCADs.Infrastructure.Data.Models;
-using CustomCADs.Infrastructure.Data.Models.Enums;
+using CustomCADs.Domain;
+using CustomCADs.Domain.Entities;
+using CustomCADs.Domain.Entities.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using AutoMapper;
-using CustomCADs.Core.Mappings;
 using System.ComponentModel.DataAnnotations;
 
 

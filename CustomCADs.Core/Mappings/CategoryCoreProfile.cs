@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using CustomCADs.Core.Models;
-using CustomCADs.Infrastructure.Data.Models;
+using CustomCADs.Domain.Entities;
 
 namespace CustomCADs.Core.Mappings
 {

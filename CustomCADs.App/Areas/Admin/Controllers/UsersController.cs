@@ -1,10 +1,10 @@
 ﻿using CustomCADs.App.Models.Users;
+using CustomCADs.Domain.Entities.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using static CustomCADs.Infrastructure.Data.DataConstants;
-using CustomCADs.Infrastructure.Data.Models.Identity;
+using static CustomCADs.Domain.DataConstants;
 
 namespace CustomCADs.App.Areas.Admin.Controllers
 {

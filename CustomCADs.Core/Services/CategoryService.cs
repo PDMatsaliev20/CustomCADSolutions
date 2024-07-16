@@ -2,8 +2,8 @@
 using CustomCADs.Core.Contracts;
 using CustomCADs.Core.Mappings;
 using CustomCADs.Core.Models;
-using CustomCADs.Infrastructure.Data.Common;
-using CustomCADs.Infrastructure.Data.Models;
+using CustomCADs.Domain;
+using CustomCADs.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 

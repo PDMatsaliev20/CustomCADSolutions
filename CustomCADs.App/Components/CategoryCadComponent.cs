@@ -1,7 +1,6 @@
 ﻿using CustomCADs.App.Models.Cads.View;
-using CustomCADs.Core.Contracts;
-using static CustomCADs.Infrastructure.Data.DataConstants.RoleConstants;
 using Microsoft.AspNetCore.Mvc;
+using static CustomCADs.Domain.DataConstants.RoleConstants;
 
 namespace CustomCADs.App.Components
 {

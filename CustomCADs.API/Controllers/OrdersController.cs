@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using static CustomCADs.Infrastructure.Data.DataConstants.RoleConstants;
+using static CustomCADs.Domain.DataConstants.RoleConstants;
 
 namespace CustomCADs.API.Controllers
 {

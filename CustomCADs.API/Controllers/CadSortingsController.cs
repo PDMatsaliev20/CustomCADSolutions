@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using CustomCADs.API.Mappings;
 using CustomCADs.API.Models.Others;
-using CustomCADs.Infrastructure.Data.Models.Enums;
+using CustomCADs.Domain.Entities.Enums;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CustomCADs.API.Controllers

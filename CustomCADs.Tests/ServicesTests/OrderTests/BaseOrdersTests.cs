@@ -3,10 +3,10 @@ using CustomCADs.Core.Contracts;
 using CustomCADs.Core.Mappings;
 using CustomCADs.Core.Models;
 using CustomCADs.Core.Services;
+using CustomCADs.Domain;
+using CustomCADs.Domain.Entities;
+using CustomCADs.Domain.Entities.Identity;
 using CustomCADs.Infrastructure.Data;
-using CustomCADs.Infrastructure.Data.Common;
-using CustomCADs.Infrastructure.Data.Models;
-using CustomCADs.Infrastructure.Data.Models.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace CustomCADs.Tests.ServicesTests.OrderTests
@@ -20,20 +20,20 @@ namespace CustomCADs.Tests.ServicesTests.OrderTests
             .CreateMapper();
 
         protected IOrderService service;
-        protected AppUser[] users = new AppUser[3]
-        {
+        protected AppUser[] users =
+        [
             new() { UserName = "Client" },
             new() { UserName = "Contributor" },
             new() { UserName = "Hacker" },
-        };
-        protected OrderModel[] orders = new OrderModel[5]
-        {
+        ];
+        protected OrderModel[] orders =
+        [
             new() { Id = 1, Name = "Order1", Description = "ClientOrder1", CategoryId = 1 },
             new() { Id = 2, Name = "Order2", Description = "ClientOrder2", CategoryId = 2 },
             new() { Id = 3, Name = "Order3", Description = "ClientOrder3", CategoryId = 3 },
             new() { Id = 4, Name = "Order4", Description = "ContributorOrder1", CategoryId = 4 },
             new() { Id = 5, Name = "Order5", Description = "ContributorOrder2", CategoryId = 5 },
-        };
+        ];
 
         [OneTimeSetUp]
         public async Task OneTimeSetup()

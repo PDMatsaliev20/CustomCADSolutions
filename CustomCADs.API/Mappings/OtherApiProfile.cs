@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using CustomCADs.API.Models.Others;
 using CustomCADs.Core.Models;
-using CustomCADs.Infrastructure.Data.Models.Enums;
-using CustomCADs.Infrastructure.Data.Models.Identity;
+using CustomCADs.Domain.Entities.Enums;
+using CustomCADs.Domain.Entities.Identity;
 
 namespace CustomCADs.API.Mappings
 {

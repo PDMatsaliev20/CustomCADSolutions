@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
+﻿using CustomCADs.App.Models.Users;
+using CustomCADs.Domain.Entities.Identity;
 using Microsoft.AspNetCore.Authentication;
-using CustomCADs.App.Models.Users;
-using CustomCADs.Infrastructure.Data.Models.Identity;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CustomCADs.App.Controllers
 {

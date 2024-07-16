@@ -1,10 +1,11 @@
-﻿using CustomCADs.Infrastructure.Data.Models.Enums;
-using CustomCADs.Infrastructure.Data.Models.Identity;
+﻿using CustomCADs.Domain.Entities.Enums;
+using CustomCADs.Domain.Entities.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using static CustomCADs.Domain.DataConstants;
 
-namespace CustomCADs.Infrastructure.Data.Models
+namespace CustomCADs.Domain.Entities
 {
     public class Order
     {
@@ -18,7 +19,7 @@ namespace CustomCADs.Infrastructure.Data.Models
 
         [Required]
         [Comment("Description of Order")]
-        [MaxLength(DataConstants.OrderConstants.DescriptionMaxLength)]
+        [MaxLength(OrderConstants.DescriptionMaxLength)]
         public string Description { get; set; } = null!;
 
         [Required]
@@ -35,7 +36,7 @@ namespace CustomCADs.Infrastructure.Data.Models
 
         [Comment("Identification of Order's Category")]
         public int CategoryId { get; set; }
-        
+
         [Comment("Identification of Orders' 3D Model")]
         public int? CadId { get; set; }
 
@@ -47,8 +48,8 @@ namespace CustomCADs.Infrastructure.Data.Models
         public Category Category { get; set; } = null!;
 
         [ForeignKey(nameof(CadId))]
-        public Cad? Cad { get; set; } 
-        
+        public Cad? Cad { get; set; }
+
         [ForeignKey(nameof(BuyerId))]
         public AppUser Buyer { get; set; } = null!;
     }

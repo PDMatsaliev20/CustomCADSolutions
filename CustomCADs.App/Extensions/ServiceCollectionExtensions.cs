@@ -1,17 +1,17 @@
-﻿using CustomCADs.App.Resources.Shared;
+﻿using CustomCADs.App.Extensions;
+using CustomCADs.App.Hubs;
+using CustomCADs.App.Resources.Shared;
 using CustomCADs.Core.Contracts;
 using CustomCADs.Core.Services;
+using CustomCADs.Domain;
+using CustomCADs.Domain.Entities.Identity;
 using CustomCADs.Infrastructure.Data;
-using CustomCADs.Infrastructure.Data.Common;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
-using Microsoft.AspNetCore.Mvc;
-using CustomCADs.App.Extensions;
-using CustomCADs.App.Hubs;
-using CustomCADs.Infrastructure.Data.Models.Identity;
 
 namespace Microsoft.Extensions.DependencyInjection
 {

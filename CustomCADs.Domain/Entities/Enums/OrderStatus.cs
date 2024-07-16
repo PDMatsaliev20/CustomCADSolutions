@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Infrastructure.Data.Models.Enums
+﻿namespace CustomCADs.Domain.Entities.Enums
 {
     public enum OrderStatus
     {

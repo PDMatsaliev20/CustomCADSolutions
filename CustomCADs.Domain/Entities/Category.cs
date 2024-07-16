@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CustomCADs.Infrastructure.Data.Models
+namespace CustomCADs.Domain.Entities
 {
     public class Category
     {

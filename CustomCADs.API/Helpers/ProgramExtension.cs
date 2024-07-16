@@ -1,8 +1,8 @@
 ﻿using CustomCADs.Core.Contracts;
 using CustomCADs.Core.Services;
+using CustomCADs.Domain;
 using CustomCADs.Infrastructure.Data;
-using CustomCADs.Infrastructure.Data.Common;
-using CustomCADs.Infrastructure.Data.Models.Identity;
+using CustomCADs.Domain.Entities.Identity;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

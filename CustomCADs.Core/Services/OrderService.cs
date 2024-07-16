@@ -2,9 +2,8 @@
 using CustomCADs.Core.Contracts;
 using CustomCADs.Core.Mappings;
 using CustomCADs.Core.Models;
-using CustomCADs.Infrastructure.Data.Common;
-using CustomCADs.Infrastructure.Data.Models;
-using CustomCADs.Infrastructure.Data.Models.Enums;
+using CustomCADs.Domain;
+using CustomCADs.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.ComponentModel.DataAnnotations;
@@ -15,6 +14,7 @@ namespace CustomCADs.Core.Services
     {
         private readonly IMapper mapper = new MapperConfiguration(cfg =>
             {
+                cfg.AddProfile<CategoryCoreProfile>();
                 cfg.AddProfile<CadCoreProfile>();
                 cfg.AddProfile<OrderCoreProfile>();
             }).CreateMapper();

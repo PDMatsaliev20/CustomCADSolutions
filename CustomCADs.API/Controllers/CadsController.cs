@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.JsonPatch.Operations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Serialization;
-using static CustomCADs.Infrastructure.Data.DataConstants.RoleConstants;
+using static CustomCADs.Domain.DataConstants.RoleConstants;
 using static Microsoft.AspNetCore.Http.StatusCodes;
 
 namespace CustomCADs.API.Controllers

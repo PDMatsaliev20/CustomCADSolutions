@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
 using CustomCADs.API.Mappings;
 using CustomCADs.API.Models.Others;
-using CustomCADs.Infrastructure.Data.Models.Identity;
+using CustomCADs.Domain.Entities.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using static CustomCADs.Infrastructure.Data.DataConstants.RoleConstants;
+using static CustomCADs.Domain.DataConstants.RoleConstants;
 
 namespace CustomCADs.API.Controllers
 {
