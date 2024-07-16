@@ -1,6 +1,5 @@
-export default function loadStatistics(calculating, hasMessage, hasNotMessage) {
+export default function loadStatistics(calculating, hasMessage, hasNotMessage, userId) {
     "use strict";
-
     var connection = new signalR.HubConnectionBuilder().withUrl("/cadsHub").build();
 
     connection.on("ReceiveStatistics", function (userCadsCount, unvCadsCount) {
@@ -28,8 +27,7 @@ export default function loadStatistics(calculating, hasMessage, hasNotMessage) {
     connection.start().then(function () {
         $('#user-cads-wrapper').removeClass('d-none');
         $('#unvalidated-cads-wrapper').removeClass('d-none');
-
-        const userId = '@User.GetId()';
+        
         connection.invoke("SendStatistics", userId).catch(function (err) {
             console.error(err.toString());
         });
