@@ -35,7 +35,7 @@ function UserOrders() {
             <h1 className="basis-full text-center text-4xl text-indigo-950 font-bold">{t('body.orders.Your Orders')}</h1>
             <ul className="basis-full flex flex-wrap justify-center gap-y-8 gap-x-[5%]">
                 {orders.map(order =>
-                    <li key={order.id} className="basis-[30%]">
+                    <li key={order.id} className="basis-[30%] max-w-[30%]">
                         <Order order={order} onDelete={() => handleOrderDelete(order.id)} />
                     </li>
                 )}

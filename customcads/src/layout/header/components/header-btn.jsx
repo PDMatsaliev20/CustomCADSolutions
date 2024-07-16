@@ -5,7 +5,7 @@ export default function HeaderBtn({ onClick, icon, padding, textSize }) {
         <button onClick={onClick}
             className={`flex bg-indigo-100 rounded-[100%] border-4 border-indigo-200 shadow-md shadow-indigo-700 ${padding}`}
         >
-            <FontAwesomeIcon icon={icon} className={`text-indigo-700 ${textSize}`} />
+            <FontAwesomeIcon icon={icon} className={`text-indigo-600 ${textSize}`} />
         </button>
     );
 }

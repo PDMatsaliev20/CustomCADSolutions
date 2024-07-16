@@ -17,7 +17,7 @@ function Navbar() {
     }
 
     return (
-        <nav className="text-indigo-900 font-bold bg-indigo-300 rounded-b-lg px-5 py-3 shadow-lg shadow-indigo-800 min-h-8">
+        <nav className="text-indigo-900 font-bold bg-indigo-300 rounded-b-lg px-5 py-3 shadow-lg shadow-indigo-400 min-h-8">
             {navs}
         </nav>
     );
