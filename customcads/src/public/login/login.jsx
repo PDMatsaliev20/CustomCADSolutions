@@ -1,8 +1,10 @@
-import { useState } from 'react'
+import AuthContext from '@/components/auth-context'
+import { useState, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
-function LoginPage({ onLogin }) {
+function LoginPage() {
+    const { onLogin } = useContext(AuthContext);
     const { t } = useTranslation();
 
     const [username, setUsername] = useState('');

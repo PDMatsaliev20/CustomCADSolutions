@@ -4,9 +4,9 @@ import { useContext } from 'react'
 import AuthContext from '@/components/auth-context'
 import HeaderBtn from './header-btn'
 
-export default function Example({ onLogout, username }) {
+export default function Example() {
     const { t } = useTranslation();
-    const { userRole } = useContext(AuthContext);
+    const { userRole, username, onLogout } = useContext(AuthContext);
 
     return (
         <Disclosure as="div" className="relative">

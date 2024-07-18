@@ -42,9 +42,47 @@ function App() {
         }
     }, [isAuthenticated]);
 
+    const handleRegister = async (user, userRole) => {
+        await axios.post(`https://localhost:7127/API/Identity/Register/${userRole}`, user, {
+            withCredentials: true
+        });
+
+        setIsAuthenticated(true);
+    };
+
+    const handleLogin = async (user) => {
+        try {
+            await axios.post(`https://localhost:7127/API/Identity/Login`, user, {
+                withCredentials: true
+            });
+
+            setIsAuthenticated(true);
+        } catch (e) {
+            alert('Non-existent account or wrong password.');
+        }
+    };
+
+    const handleLogout = async () => {
+        await axios.post('https://localhost:7127/API/Identity/Logout', {}, {
+            withCredentials: true
+        });
+
+        setIsAuthenticated(false);
+    };
+
+    const contextValues = {
+        onRegister: handleRegister,
+        onLogin: handleLogin,
+        onLogout: handleLogout,
+        isAuthenticated,
+        setIsAuthenticated,
+        username,
+        userRole
+    };
+
     return (
         <BrowserRouter>
-            <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated, username, userRole }}>
+            <AuthContext.Provider value={contextValues}>
                 <div className="flex flex-col min-h-screen bg-indigo-50">
                     <div className="sticky top-0 z-50">
                         <Header />

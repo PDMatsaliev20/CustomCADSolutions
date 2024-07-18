@@ -11,15 +11,15 @@ import RegisterPage from '@/public/register/register'
 import ChooseRolePage from '@/public/register/choose-role'
 
 import UserOrdersPage from '@/private/orders/user-orders'
+import OrderDetailsPage from '@/private/orders/CRUD/order-details/order-details'
 import CustomOrderPage from '@/private/orders/CRUD/custom-order/custom-order'
 import GalleryOrderPage from '@/private/orders/CRUD/gallery-order/gallery-order'
-import OrderDetailsPage from '@/private/orders/CRUD/order-details/order-details'
 
 import UserCadsPage from '@/private/cads/user-cads'
 import UploadCadPage from '@/private/cads/upload-cad/upload-cad'
 import SellCadPage from '@/private/cads/sell-cad/sell-cad'
 
-function Router({ onLogin, onRegister }) {
+function Router() {
     return (
         <Routes>
             <Route path="*" element={<p className="text-center">404 not found bro</p>} />
@@ -46,9 +46,9 @@ function Router({ onLogin, onRegister }) {
 
             {/* Public only part of CustomCADs */}
             <Route element={<AuthGuard isPublicOnly />}>
-                <Route path="/login" element={<LoginPage onLogin={onLogin} />} />
+                <Route path="/login" element={<LoginPage />} />
                 <Route path="/register" element={<ChooseRolePage />} />
-                <Route path="/register/:role" element={<RegisterPage onRegister={onRegister} />} />
+                <Route path="/register/:role" element={<RegisterPage />} />
             </Route>
         </Routes>
     );

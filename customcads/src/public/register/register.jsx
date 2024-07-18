@@ -1,8 +1,10 @@
+import AuthContext from '@/components/auth-context'
 import { Link, useParams } from 'react-router-dom'
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 
-function RegisterPage({ onRegister }) {
+function RegisterPage() {
+    const { onRegister } = useContext(AuthContext);
     const { t } = useTranslation();
     const { role } = useParams();
 
