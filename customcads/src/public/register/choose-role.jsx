@@ -25,8 +25,15 @@ function ChooseRole() {
                         <form onSubmit={handleSubmit} >
                             <div className="flex flex-wrap mb-6">
                                 <div className="flex items-center">
-                                    <input type="radio" name="role" value="client" id="client"
-                                        className="w-5 aspect-square" onClick={handleClient} />
+                                    <input
+                                        id="client"
+                                        type="radio"
+                                        name="role"
+                                        value="client"
+                                        onClick={handleClient}
+                                        className="w-5 aspect-square"
+                                        required
+                                    />
                                 </div>
                                 <div className="ms-2">
                                     <label htmlFor="client" className="text-lg font-bold">
@@ -38,8 +45,15 @@ function ChooseRole() {
                             </div>
                             <div className="flex flex-wrap">
                                 <div className="flex items-center">
-                                    <input type="radio" name="role" value="contributor" id="contributor"
-                                        className="w-5 aspect-square" onClick={handleContributor} />
+                                    <input
+                                        id="contributor"
+                                        type="radio"
+                                        name="role"
+                                        value="contributor"
+                                        onClick={handleContributor}
+                                        className="w-5 aspect-square"
+                                        required
+                                    />
                                 </div>
                                 <div className="ms-2">
                                     <label className="text-lg font-bold" htmlFor="contributor">

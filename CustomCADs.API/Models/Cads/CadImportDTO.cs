@@ -15,6 +15,7 @@ namespace CustomCADs.API.Models.Cads
         public int CategoryId { get; set; }
 
         [Required(ErrorMessage = RequiredErrorMessage)]
+        [Range(PriceMin, PriceMax, ErrorMessage = RangeErrorMessage)]
         public decimal Price { get; set; }
     }
 }

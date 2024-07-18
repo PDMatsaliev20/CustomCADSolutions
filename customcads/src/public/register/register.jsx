@@ -1,33 +1,31 @@
 import AuthContext from '@/components/auth-context'
 import { Link, useParams } from 'react-router-dom'
 import { useState, useContext } from 'react'
+import validateRegister from './validateRegister'
+import userValidation from '@/constants/data/user'
+import useForm from '@/hooks/useForm'
 import { useTranslation } from 'react-i18next'
 
 function RegisterPage() {
     const { onRegister } = useContext(AuthContext);
+    const navigate = useNavigate();
     const { t } = useTranslation();
     const { role } = useParams();
+    
+    const { values: user, touched, errors, handleInput, handleBlur, handleSubmit } = useForm(
+        { username: '', email: '', password: '', confirmPassword: '' },
+        validateRegister
+    );
 
     const isClient = role.toLowerCase() === "client";
     const isContributor = role.toLowerCase() === "contributor";
-
     if (!(isClient || isContributor)) {
         return <p className="text-4xl text-center font-bold">Can't do that, sorry</p>;
     }
 
-    const [username, setUsername] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        if (password != confirmPassword) {
-            alert('passwords do not match bro');
-        }
-        else {
-            onRegister({ username, email, password, confirmPassword }, isClient ? 'Client' : 'Contributor');
-        }
+    const handleSubmitCallback = () => {
+        onRegister(user, isClient ? 'Client' : 'Contributor');
+        navigate("/");
     }
 
     return (
@@ -35,55 +33,75 @@ function RegisterPage() {
             <h1 className="text-4xl text-center font-bold">
                 {t('body.register.Register as a')} {role == 'client' ? t('common.roles.Client') : t('common.roles.Contributor')}
             </h1>
-            <section className="w-7/12 pt-8 pb-2 px-12 mt-8 bg-indigo-400 rounded-md">
-                <form onSubmit={handleSubmit} className="flex flex-wrap gap-x-8">
-                    <div className="mb-4 basis-5/12 grow">
-                        <label htmlFor="text" className="block text-indigo-50">{t('body.register.Username')}</label>
+            <div className="w-7/12 pt-8 pb-2 px-12 mt-8 bg-indigo-400 rounded-md">
+                <form onSubmit={(e) => handleSubmit(e, handleSubmitCallback)} autoComplete="off" noValidate>
+                    <div className="mb-4">
+                        <label htmlFor="username" className="block text-indigo-50">{t('body.register.Username')}*</label>
                         <input
-                            type="text"
                             id="username"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
+                            type="text"
+                            name="username"
+                            value={user.username}
+                            onChange={handleInput}
+                            onBlur={handleBlur}
                             className="text-indigo-900 w-full mt-1 p-2 px-4 border border-indigo-300 rounded focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                             placeholder={t("body.register.Your_Username123")}
-                            required
+                            maxLength={userValidation.username.maxLength}
                         />
+                        <span className={`${touched.username && errors.username ? 'inline-block' : 'hidden'} text-sm bg-red-700 p-1 rounded text-indigo-100 font-bold`}>
+                            {errors.username}
+                        </span>
                     </div>
-                    <div className="mb-4 basis-5/12 grow">
-                        <label htmlFor="email" className="block text-indigo-50">{t('body.register.Email')}</label>
+                    <div className="mb-4">
+                        <label htmlFor="email" className="block text-indigo-50">{t('body.register.Email')}*</label>
                         <input
-                            type="email"
                             id="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            type="email"
+                            name="email"
+                            value={user.email}
+                            onChange={handleInput}
+                            onBlur={handleBlur}
                             className="text-indigo-900 w-full  mt-1 p-2 px-4 border border-indigo-300 rounded focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                             placeholder={t("body.register.your@email.com")}
-                            required
+                            maxLength={userValidation.email.maxLength}
                         />
+                        <span className={`${touched.email && errors.email ? 'inline-block' : 'hidden'} text-sm bg-red-700 p-1 rounded text-indigo-100 font-bold`}>
+                            {errors.email}
+                        </span>
                     </div>
-                    <div className="mb-4 basis-5/12 grow">
-                        <label htmlFor="password" className="block text-indigo-50">{t('body.register.Password')}</label>
+                    <div className="mb-4">
+                        <label htmlFor="password" className="block text-indigo-50">{t('body.register.Password')}*</label>
                         <input
-                            type="password"
                             id="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            className="text-indigo-900 w-full mt-1 p-2 px-4 border border-indigo-300 rounded focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                            required
-                            placeholder={t("body.register.your_sercret_password_123")}
-                        />
-                    </div>
-                    <div className="mb-2 basis-5/12 grow">
-                        <label htmlFor="confirmPassword" className="block text-indigo-50">{t('body.register.Confirm Password')}</label>
-                        <input
                             type="password"
-                            id="confirmPassword"
-                            value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                            className="text-indigo-900 w-full  mt-1 p-2 px-4 border border-indigo-300 rounded focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                            required
+                            name="password"
+                            value={user.password}
+                            onChange={handleInput}
+                            onBlur={handleBlur}
+                            className="text-indigo-900 w-full mt-1 p-2 px-4 border border-indigo-300 rounded focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                             placeholder={t("body.register.your_sercret_password_123")}
+                            maxLength={userValidation.password.maxLength}
                         />
+                        <span className={`${touched.password && errors.password ? 'inline-block' : 'hidden'} text-sm bg-red-700 p-1 rounded text-indigo-100 font-bold`}>
+                            {errors.password}
+                        </span>
+                    </div>
+                    <div className="mb-2">
+                        <label htmlFor="confirmPassword" className="block text-indigo-50">{t('body.register.Confirm Password')}*</label>
+                        <input
+                            id="confirmPassword"
+                            type="password"
+                            name="confirmPassword"
+                            value={user.confirmPassword}
+                            onChange={handleInput}
+                            onBlur={handleBlur}
+                            className="text-indigo-900 w-full  mt-1 p-2 px-4 border border-indigo-300 rounded focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                            placeholder={t("body.register.your_sercret_password_123")}
+                            maxLength={userValidation.password.maxLength}
+                        />
+                        <span className={`${touched.confirmPassword && errors.confirmPassword ? 'inline-block' : 'hidden'} text-sm bg-red-700 p-1 rounded text-indigo-100 font-bold`}>
+                            {errors.confirmPassword}
+                        </span>
                     </div>
                     <div className="basis-full py-4 flex justify-center items-center gap-3 text-indigo-50">
                         <button
@@ -99,7 +117,7 @@ function RegisterPage() {
                         </button>
                     </div>
                 </form>
-            </section>
+            </div>
             <section className="">
                 <button className="">
                     <p>{t('body.register.Already have an account')}</p>

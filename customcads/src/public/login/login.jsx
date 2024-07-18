@@ -1,20 +1,27 @@
 import AuthContext from '@/components/auth-context'
 import { useState, useContext } from 'react'
+import validateLogin from './validateLogin'
+import useForm from '@/hooks/useForm'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
 function LoginPage() {
     const { onLogin } = useContext(AuthContext);
+    const navigate = useNavigate();
     const { t } = useTranslation();
 
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [rememberMe, setRememberMe] = useState(false);
+    const {
+        values: user,
+        touched,
+        errors,
+        handleInput,
+        handleBlur,
+        handleSubmit,
+    } = useForm({ username: '', password: '', rememberMe: false }, validateLogin);
 
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        onLogin({ username, password });
+    const handleSubmitCallback = () => {
+        onLogin(user);
+        navigate("/");
     }
 
     return (
@@ -22,35 +29,52 @@ function LoginPage() {
             <h1 className="my-6 text-4xl text-center font-bold ">
                 {t('body.login.Log in to your existing account')}
             </h1>
-            <section className="w-5/12 px-12 pt-8 pb-6 bg-indigo-400 rounded-lg">
-                <form onSubmit={handleSubmit}>
+            <div className="w-6/12 px-12 pt-8 pb-6 bg-indigo-400 rounded-lg">
+                <form onSubmit={(e) => handleSubmit(e, handleSubmitCallback)} noValidate>
                     <div className="mb-4">
                         <label htmlFor="text" className="block text-indigo-50">{t('body.login.Username')}</label>
                         <input
-                            type="text"
                             id="username"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
+                            type="text"
+                            name="username"
+                            value={user.username}
+                            onInput={handleInput}
+                            onBlur={handleBlur}
                             className="text-indigo-900 w-full mt-1 p-2 px-4 border border-indigo-300 rounded focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                             placeholder={t("body.login.Your_Username123")}
                             required
                         />
+                        <span className={`${touched.username && errors.username ? 'inline-block' : 'hidden'} mt-1 text-sm bg-red-700 p-1 rounded text-indigo-100 font-bold`}
+                        >
+                            {errors.username}
+                        </span>
                     </div>
                     <div className="mb-4">
                         <label htmlFor="password" className="block text-indigo-50">{t('body.login.Password')}</label>
                         <input
-                            type="password"
                             id="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            type="password"
+                            name="password"
+                            value={user.password}
+                            onInput={handleInput}
+                            onBlur={handleBlur}
                             className="text-indigo-900 w-full mt-1 p-2 px-4 border border-indigo-300 rounded focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                             required
                             placeholder={t("body.login.your_sercret_password_123")}
                         />
+                        <span className={`${touched.password && errors.password ? 'inline-block' : 'hidden'} mt-1 text-sm bg-red-700 p-1 rounded text-indigo-100 font-bold`}
+                        >
+                            {errors.password}
+                        </span>
                     </div>
                     <div className="flex justify-between items-center">
                         <div className="flex items-center">
-                            <input type="checkbox" onClick={() => setRememberMe(!rememberMe)} />
+                            <input
+                                type="checkbox"
+                                name="rememberMe"
+                                value={user.rememberMe}
+                                onInput={handleInput}
+                            />
                             <label className="ms-1 text-indigo-50">{t('body.login.Remember me')}</label>
                         </div>
                         <div>
@@ -66,7 +90,7 @@ function LoginPage() {
                         </button>
                     </div>
                 </form>
-            </section>
+            </div>
             <section className="">
                 <button className="">
                     <p>{t("body.login.Don't have an account yet")}</p>

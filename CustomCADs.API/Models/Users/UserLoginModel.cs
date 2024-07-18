@@ -1,16 +1,19 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using static CustomCADs.Domain.DataConstants;
+using static CustomCADs.Domain.DataConstants.UserConstants;
 
 namespace CustomCADs.API.Models.Users
 {
     public class UserLoginModel
     {
-        [Required]
-        [StringLength(UserConstants.NameMaxLength, MinimumLength = UserConstants.NameMinLength)]
+        [Required(ErrorMessage = RequiredErrorMessage)]
+        [StringLength(NameMaxLength, MinimumLength = NameMinLength, 
+            ErrorMessage = LengthErrorMessage)]
         public string Username { get; set; } = null!;
 
-        [Required]
-        [StringLength(UserConstants.PasswordMaxLength, MinimumLength = UserConstants.PasswordMinLength)]
+        [Required(ErrorMessage = RequiredErrorMessage)]
+        [StringLength(PasswordMaxLength, MinimumLength = PasswordMinLength,
+            ErrorMessage = RequiredErrorMessage)]
         [DataType(DataType.Password)]
         public string Password { get; set; } = null!;
 

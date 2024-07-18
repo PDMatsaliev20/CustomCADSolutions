@@ -179,6 +179,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="src\constants\data\" />
     <Folder Include="src\languages\resources\en\pages\private\" />
   </ItemGroup>
 </Project>
