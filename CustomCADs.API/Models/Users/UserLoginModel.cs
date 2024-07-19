@@ -13,7 +13,7 @@ namespace CustomCADs.API.Models.Users
 
         [Required(ErrorMessage = RequiredErrorMessage)]
         [StringLength(PasswordMaxLength, MinimumLength = PasswordMinLength,
-            ErrorMessage = RequiredErrorMessage)]
+            ErrorMessage = LengthErrorMessage)]
         [DataType(DataType.Password)]
         public string Password { get; set; } = null!;
 

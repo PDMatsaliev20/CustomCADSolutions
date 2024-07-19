@@ -1,9 +1,9 @@
 import AuthContext from '@/components/auth-context'
-import { Link, useParams } from 'react-router-dom'
-import { useState, useContext } from 'react'
 import validateRegister from './validateRegister'
 import userValidation from '@/constants/data/user'
 import useForm from '@/hooks/useForm'
+import { useContext } from 'react'
+import { Link, useParams, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
 function RegisterPage() {

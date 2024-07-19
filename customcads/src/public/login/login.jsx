@@ -1,8 +1,8 @@
 import AuthContext from '@/components/auth-context'
-import { useState, useContext } from 'react'
 import validateLogin from './validateLogin'
 import useForm from '@/hooks/useForm'
-import { Link } from 'react-router-dom'
+import { useContext } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
 function LoginPage() {
