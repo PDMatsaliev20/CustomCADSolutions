@@ -1,5 +1,5 @@
 import AuthContext from '@/components/auth-context'
-import validateLogin from './validateLogin'
+import validateLogin from './validate-login'
 import useForm from '@/hooks/useForm'
 import { useContext } from 'react'
 import { Link, useNavigate } from 'react-router-dom'

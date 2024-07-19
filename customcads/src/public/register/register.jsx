@@ -1,5 +1,5 @@
 import AuthContext from '@/components/auth-context'
-import validateRegister from './validateRegister'
+import validateRegister from './validate-register'
 import userValidation from '@/constants/data/user'
 import useForm from '@/hooks/useForm'
 import { useContext } from 'react'
