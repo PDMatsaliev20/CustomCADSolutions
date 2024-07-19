@@ -15,8 +15,9 @@ import chooseRoleEn from '@/languages/resources/en/pages/public/choose-role.json
 import registerEn from '@/languages/resources/en/pages/public/register.json'
 import loginEn from '@/languages/resources/en/pages/public/login.json'
 
-import ordersBg from '@/languages/resources/en/pages/private/orders.json'
-import ordersDetailsBg from '@/languages/resources/en/pages/private/order-details.json'
+import ordersEn from '@/languages/resources/en/pages/private/orders.json'
+import ordersDetailsEn from '@/languages/resources/en/pages/private/order-details.json'
+import customOrderEn from '@/languages/resources/en/pages/private/custom-order.json'
 
 export default () => {
     return {
@@ -30,8 +31,9 @@ export default () => {
                 chooseRole: chooseRoleEn,
                 register: registerEn,
                 login: loginEn,
-                orders: ordersBg,
-                orderDetails: ordersDetailsBg,
+                orders: ordersEn,
+                orderDetails: ordersDetailsEn,
+                customOrder: customOrderEn,
             },
             footer: footerEn,
             common: {

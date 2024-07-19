@@ -17,6 +17,7 @@ import loginBg from '@/languages/resources/bg/pages/public/login.json'
 
 import ordersBg from '@/languages/resources/bg/pages/private/orders.json'
 import ordersDetailsBg from '@/languages/resources/bg/pages/private/order-details.json'
+import customOrderBg from '@/languages/resources/bg/pages/private/custom-order.json'
 
 export default () => {
     return {
@@ -32,6 +33,7 @@ export default () => {
                 login: loginBg,
                 orders: ordersBg,
                 orderDetails: ordersDetailsBg,
+                customOrder: customOrderBg,
             },
             footer: footerBg,
             common: {
