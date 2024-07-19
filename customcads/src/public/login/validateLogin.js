@@ -2,7 +2,7 @@ import userValidation from '@/constants/data/user'
 import * as errorMessages from '@/constants/errors' 
 
 export default (user) => {
-    let errors = { username: '', password: '' };
+    let errors = {};
     const username = user.username.trim();
     const { isRequired: usernameIsRequired, minLength: usernameMinLength, maxLength: usernameMaxLength } = userValidation.username;
 
