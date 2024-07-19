@@ -1,8 +1,5 @@
 {
   "Title": "Make Your Custom Order",
-  "Name": "Name",
   "NamePlaceholder": "Your Order's Name",
-  "Description": "Description",
-  "DescriptionPlaceholder": "The Lengthy Description Of Your Order",
-  "Category": "Category"
+  "DescriptionPlaceholder": "The Lengthy Description Of Your Order"
 }

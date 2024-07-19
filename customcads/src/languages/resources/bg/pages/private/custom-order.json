@@ -1,8 +1,5 @@
 {
   "Title": "Поръчай на Дизайнер",
-  "Name": "Име",
   "NamePlaceholder": "Името на Поръчката Ви",
-  "Description": "Описание",
-  "DescriptionPlaceholder": "Дълго Описание на Поръчката Ви",
-  "Category": "Категория"
+  "DescriptionPlaceholder": "Дълго Описание на Поръчката Ви"
 }

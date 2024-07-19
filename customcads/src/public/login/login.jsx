@@ -32,7 +32,9 @@ function LoginPage() {
             <div className="w-6/12 px-12 pt-8 pb-6 bg-indigo-400 rounded-lg">
                 <form onSubmit={(e) => handleSubmit(e, handleSubmitCallback)} noValidate>
                     <div className="mb-4">
-                        <label htmlFor="text" className="block text-indigo-50">{t('body.login.Username')}</label>
+                        <label htmlFor="text" className="block text-indigo-50">
+                            {t('common.labels.Username')}
+                        </label>
                         <input
                             id="username"
                             type="text"
@@ -50,7 +52,9 @@ function LoginPage() {
                         </span>
                     </div>
                     <div className="mb-4">
-                        <label htmlFor="password" className="block text-indigo-50">{t('body.login.Password')}</label>
+                        <label htmlFor="password" className="block text-indigo-50">
+                            {t('common.labels.Password')}
+                        </label>
                         <input
                             id="password"
                             type="password"

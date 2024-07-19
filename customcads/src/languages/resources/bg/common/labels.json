@@ -1,0 +1,9 @@
+{
+  "Username": "Потребителско име",
+  "Email": "Имейл",
+  "Password": "Парола",
+  "Confirm Password": "Потвърди Парола",
+  "Name": "Име",
+  "Description": "Описание",
+  "Category": "Категория"
+}

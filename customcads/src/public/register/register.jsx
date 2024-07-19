@@ -12,10 +12,14 @@ function RegisterPage() {
     const { t } = useTranslation();
     const { role } = useParams();
     
-    const { values: user, touched, errors, handleInput, handleBlur, handleSubmit } = useForm(
-        { username: '', email: '', password: '', confirmPassword: '' },
-        validateRegister
-    );
+    const {
+        values: user,
+        touched,
+        errors,
+        handleInput,
+        handleBlur,
+        handleSubmit
+    } = useForm({ username: '', email: '', password: '', confirmPassword: '' }, validateRegister);
 
     const isClient = role.toLowerCase() === "client";
     const isContributor = role.toLowerCase() === "contributor";
@@ -36,7 +40,9 @@ function RegisterPage() {
             <div className="w-7/12 pt-8 pb-2 px-12 mt-8 bg-indigo-400 rounded-md">
                 <form onSubmit={(e) => handleSubmit(e, handleSubmitCallback)} autoComplete="off" noValidate>
                     <div className="mb-4">
-                        <label htmlFor="username" className="block text-indigo-50">{t('body.register.Username')}*</label>
+                        <label htmlFor="username" className="block text-indigo-50">
+                            {t('common.labels.Username')}*
+                        </label>
                         <input
                             id="username"
                             type="text"
@@ -53,7 +59,9 @@ function RegisterPage() {
                         </span>
                     </div>
                     <div className="mb-4">
-                        <label htmlFor="email" className="block text-indigo-50">{t('body.register.Email')}*</label>
+                        <label htmlFor="email" className="block text-indigo-50">
+                            {t('common.labels.Email')}*
+                        </label>
                         <input
                             id="email"
                             type="email"
@@ -70,7 +78,9 @@ function RegisterPage() {
                         </span>
                     </div>
                     <div className="mb-4">
-                        <label htmlFor="password" className="block text-indigo-50">{t('body.register.Password')}*</label>
+                        <label htmlFor="password" className="block text-indigo-50">
+                            {t('common.labels.Password')}*
+                        </label>
                         <input
                             id="password"
                             type="password"
@@ -87,7 +97,9 @@ function RegisterPage() {
                         </span>
                     </div>
                     <div className="mb-2">
-                        <label htmlFor="confirmPassword" className="block text-indigo-50">{t('body.register.Confirm Password')}*</label>
+                        <label htmlFor="confirmPassword" className="block text-indigo-50">\
+                            {t('common.labels.Confirm Password')}*
+                        </label>
                         <input
                             id="confirmPassword"
                             type="password"

@@ -28,7 +28,7 @@ export default function Example() {
 
                         <MenuItem as="div" className="basis-full">
                             <span className="italic font-bold">
-                                Role: {t(`common.roles.${userRole}`)}
+                                {`${t('header.Role')} ${t(`common.roles.${userRole}`)}`}
                             </span>
                         </MenuItem>
                         

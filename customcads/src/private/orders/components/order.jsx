@@ -17,7 +17,7 @@ function Order({ order, onDelete }) {
                 <p className="text-indigo-900 text-center text-lg truncate">{order.description}</p>
                 <div className="flex justify-around text-indigo-50 font-bold">
                     <Link to={`${order.id}`}
-                        className="basis-5/12 bg-indigo-700 border border-indigo-500 p-2 rounded text-center text-indigo-50 hover:bg-emerald-500 hover:border-transparent"
+                        className="basis-5/12 bg-indigo-700 border border-indigo-500 p-2 rounded text-center text-indigo-50 hover:opacity-70 hover:border-transparent"
                     >
                         {t('body.orders.Details')}
                     </Link>

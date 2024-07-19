@@ -1,3 +1,4 @@
+import labelsBg from '@/languages/resources/bg/common/labels.json'
 import rolesBg from '@/languages/resources/bg/common/roles.json'
 import categoriesBg from '@/languages/resources/bg/common/categories.json'
 import sortingsBg from '@/languages/resources/bg/common/sortings.json'
@@ -37,6 +38,7 @@ export default () => {
             },
             footer: footerBg,
             common: {
+                labels: labelsBg,
                 roles: rolesBg,
                 categories: categoriesBg,
                 sortings: sortingsBg,
