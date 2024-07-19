@@ -14,7 +14,7 @@ import { fas } from '@fortawesome/free-solid-svg-icons'
 library.add(fas);
 
 function App() {
-    const { i18n } = useTranslation();
+    const { t, i18n } = useTranslation();
 
     const getCookie = (cookieName) => {
         const cookies = document.cookie.split('; ');
@@ -58,7 +58,7 @@ function App() {
 
             setIsAuthenticated(true);
         } catch (e) {
-            alert('Non-existent account or wrong password.');
+            return t('common.errors.Non-existent account or wrong password');
         }
     };
 

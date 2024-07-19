@@ -1,8 +1,10 @@
 import userValidation from '@/constants/data/user'
-import * as errorMessages from '@/constants/errors' 
+import useErrors from '@/hooks/useErrors'
 
-export default (user) => {
+const useValidateLogin = (user) => {
+    const errorMessages = useErrors();
     let errors = {};
+
     const username = user.username.trim();
     const { isRequired: usernameIsRequired, minLength: usernameMinLength, maxLength: usernameMaxLength } = userValidation.username;
 
@@ -23,3 +25,5 @@ export default (user) => {
 
     return errors;
 };
+
+export default useValidateLogin;

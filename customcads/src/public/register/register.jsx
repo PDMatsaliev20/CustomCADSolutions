@@ -1,5 +1,5 @@
 import AuthContext from '@/components/auth-context'
-import validateRegister from './validate-register'
+import useValidateRegister from './useValidateRegister'
 import userValidation from '@/constants/data/user'
 import useForm from '@/hooks/useForm'
 import { useContext } from 'react'
@@ -19,7 +19,7 @@ function RegisterPage() {
         handleInput,
         handleBlur,
         handleSubmit
-    } = useForm({ username: '', email: '', password: '', confirmPassword: '' }, validateRegister);
+    } = useForm({ username: '', email: '', password: '', confirmPassword: '' }, useValidateRegister);
 
     const isClient = role.toLowerCase() === "client";
     const isContributor = role.toLowerCase() === "contributor";

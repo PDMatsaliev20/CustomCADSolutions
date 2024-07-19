@@ -1,0 +1,16 @@
+{
+  "field": "The field",
+  "required": "is required",
+  "between": "must be between",
+  "and": "and",
+  "characters": "characters",
+  "have": "must have a",
+  "symbol": "symbol",
+  "not": "must not be",
+  "first": "the first character",
+  "last": "the last character",
+  "invalid": "is not valid",
+  "Passwords must be equal!": "Passwords must be equal!",
+  "Invalid data": "Invalid data!",
+  "Non-existent account or wrong password": "Non-existent account or wrong password"
+}

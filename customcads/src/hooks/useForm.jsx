@@ -1,13 +1,16 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next'
 
 const useForm = (initialState, validate) => {
+    const { t } = useTranslation();
     const [values, setValues] = useState(initialState);
     const [touched, setTouched] = useState({});
     const [errors, setErrors] = useState({});
+    const validated = validate(values);
 
     useEffect(() => {
-        setErrors(validate(values));
-    }, [values, validate]);
+        setErrors(validated);
+    }, [values]);
 
     const handleInput = (e) => {
         const { name, value } = e.target;
@@ -17,21 +20,21 @@ const useForm = (initialState, validate) => {
     const handleBlur = (e) => {
         const { name } = e.target;
         setTouched(prevTouched => ({ ...prevTouched, [name]: true }));
-        const validationErrors = validate(values);
+        const validationErrors = validated;
         setErrors(prevErrors => ({
             ...prevErrors,
             [name]: validationErrors[name],
         }));
     };
 
-    const handleSubmit = (e, callback) => {
+    const handleSubmit = async (e, callback) => {
         e.preventDefault();
-        const validationErrors = validate(values);
+        const validationErrors = validated;
         setErrors(validationErrors);
 
         if (Object.keys(validationErrors).length === 0) {
-            callback();
-        } else alert('Avoid invalid data!');
+            await callback();
+        } else alert(t('common.errors.Invalid data'));
     };
 
     return {

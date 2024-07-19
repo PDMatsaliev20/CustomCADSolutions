@@ -1,5 +1,5 @@
 import AuthContext from '@/components/auth-context'
-import validateLogin from './validate-login'
+import useValidateLogin from './useValidateLogin'
 import useForm from '@/hooks/useForm'
 import { useContext } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
@@ -17,11 +17,13 @@ function LoginPage() {
         handleInput,
         handleBlur,
         handleSubmit,
-    } = useForm({ username: '', password: '', rememberMe: false }, validateLogin);
+    } = useForm({ username: '', password: '', rememberMe: false }, useValidateLogin);
 
-    const handleSubmitCallback = () => {
-        onLogin(user);
-        navigate("/");
+    const handleSubmitCallback = async () => {
+        const message = await onLogin(user);
+        if (message) {
+            alert(message);
+        } else navigate("/");
     }
 
     return (

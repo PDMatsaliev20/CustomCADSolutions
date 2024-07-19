@@ -1,4 +1,5 @@
 import labelsEn from '@/languages/resources/en/common/labels.json'
+import errorsEn from '@/languages/resources/en/common/errors.json'
 import rolesEn from '@/languages/resources/en/common/roles.json'
 import categoriesEn from '@/languages/resources/en/common/categories.json'
 import sortingsEn from '@/languages/resources/en/common/sortings.json'
@@ -39,6 +40,7 @@ export default () => {
             footer: footerEn,
             common: {
                 labels: labelsEn,
+                errors: errorsEn,
                 roles: rolesEn,
                 categories: categoriesEn,
                 sortings: sortingsEn,
