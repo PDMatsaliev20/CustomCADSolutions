@@ -9,6 +9,10 @@
     <BuildOutputFolder>$(MSBuildProjectDirectory)\dist</BuildOutputFolder>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove=".vscode\**" />
+    <TypeScriptConfiguration Remove=".vscode\**" />
+  </ItemGroup>
+  <ItemGroup>
     <None Update="public\icon.ico">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
