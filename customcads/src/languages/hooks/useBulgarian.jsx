@@ -21,6 +21,8 @@ import ordersBg from '@/languages/resources/bg/pages/private/client/user-orders.
 import ordersDetailsBg from '@/languages/resources/bg/pages/private/client/order-details.json'
 import customOrderBg from '@/languages/resources/bg/pages/private/client/custom-order.json'
 
+import cadsBg from '@/languages/resources/bg/pages/private/contributor/user-cads.json'
+
 export default () => {
     return {
         translation: {
@@ -36,6 +38,7 @@ export default () => {
                 orders: ordersBg,
                 orderDetails: ordersDetailsBg,
                 customOrder: customOrderBg,
+                cads: cadsBg,
             },
             footer: footerBg,
             common: {
