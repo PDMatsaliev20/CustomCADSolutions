@@ -17,9 +17,9 @@ import chooseRoleBg from '@/languages/resources/bg/pages/public/choose-role.json
 import registerBg from '@/languages/resources/bg/pages/public/register.json'
 import loginBg from '@/languages/resources/bg/pages/public/login.json'
 
-import ordersBg from '@/languages/resources/bg/pages/private/orders.json'
-import ordersDetailsBg from '@/languages/resources/bg/pages/private/order-details.json'
-import customOrderBg from '@/languages/resources/bg/pages/private/custom-order.json'
+import ordersBg from '@/languages/resources/bg/pages/private/client/user-orders.json'
+import ordersDetailsBg from '@/languages/resources/bg/pages/private/client/order-details.json'
+import customOrderBg from '@/languages/resources/bg/pages/private/client/custom-order.json'
 
 export default () => {
     return {

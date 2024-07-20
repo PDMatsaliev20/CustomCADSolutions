@@ -17,9 +17,9 @@ import chooseRoleEn from '@/languages/resources/en/pages/public/choose-role.json
 import registerEn from '@/languages/resources/en/pages/public/register.json'
 import loginEn from '@/languages/resources/en/pages/public/login.json'
 
-import ordersEn from '@/languages/resources/en/pages/private/orders.json'
-import ordersDetailsEn from '@/languages/resources/en/pages/private/order-details.json'
-import customOrderEn from '@/languages/resources/en/pages/private/custom-order.json'
+import ordersEn from '@/languages/resources/en/pages/private/client/user-orders.json'
+import ordersDetailsEn from '@/languages/resources/en/pages/private/client/order-details.json'
+import customOrderEn from '@/languages/resources/en/pages/private/client/custom-order.json'
 
 export default () => {
     return {
