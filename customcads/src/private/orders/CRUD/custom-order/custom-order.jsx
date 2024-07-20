@@ -35,10 +35,10 @@ function CustomOrder() {
     };
 
     return (
-        <div className="flex flex-col gap-y-8">
+        <div className="flex flex-col gap-y-8 my-6">
             <h1 className="text-4xl text-center text-indigo-950 font-bold">{t('body.customOrder.Title')}</h1>
             <form onSubmit={(e) => handleSubmit(e, handleSubmitCallback)} autoComplete="off" noValidate>
-                <div className="w-1/2 mx-auto flex flex-wrap justify-center gap-y-4 gap-x-4 bg-indigo-700 py-6 px-12 rounded">
+                <div className="w-1/2 mx-auto flex flex-wrap justify-center gap-y-4 gap-x-4 bg-indigo-700 py-6 px-12 rounded-xl">
                     <div className="basis-full flex flex-wrap">
                         <label htmlFor="name" className="basis-full text-indigo-50">
                             {t('common.labels.Name')}
@@ -97,7 +97,9 @@ function CustomOrder() {
                         </span>
                     </div>
                     <div className="mt-1">
-                        <button className="bg-indigo-200 text-indigo-800 rounded py-1 px-2">{t('Order')}</button>
+                        <button className="bg-indigo-200 text-indigo-800 rounded py-1 px-2">
+                            {t('body.customOrder.Order')}
+                        </button>
                     </div>
                 </div>
             </form>

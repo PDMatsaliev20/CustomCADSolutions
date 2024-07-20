@@ -1,14 +1,14 @@
 {
-  "The Land of 3D Models": "Земята на 3D Моделите",
-  "We offer high-quality 3D Models tailored to your needs": "Предлагаме висококачествени 3D Модели, изготвени за вас!",
-  "optional 5-10 business day delivery": "*възможна доставка до 5-10 работни дни",
-  "Looking to buy": "Търся да закупя",
-  "Looking to sell": "Търся да продам",
-  "Two ways to go about this": "Изберете между:",
-  "Register as Client": "Регистрация като Клиент",
-  "Order from our Gallery": "Поръчай от Галерията ни",
-  "Order from our 3D Designers": "Поръчай от 3D Дизайнерите ни",
-  "Register as Contributor": "Регистрация като Сътрудник",
-  "Upload to Gallery": "Качи 3D модел в Галерията ни",
-  "Sell Directly to Us": "Продай свой 3D модел на нас"
+  "Title": "Земята на 3D Моделите",
+  "Subtitle": "Предлагаме висококачествени 3D Модели, изготвени за вас!",
+  "Hint": "*възможна доставка до 5-10 работни дни",
+  "BuyBtn": "Търся да закупя",
+  "SellBtn": "Търся да продам",
+  "Title2": "Има два вида потребители тук:",
+  "Register1Btn": "Клиент",
+  "SubRegister1Btn1": "Закупи от Галерията",
+  "SubRegister1Btn2": "3D Модел По Поръчка",
+  "Register2Btn": "Сътрудник",
+  "SubRegister2Btn1": "Качи 3D Модел",
+  "SubRegister2Btn2": "Продай ни 3D Модел"
 }

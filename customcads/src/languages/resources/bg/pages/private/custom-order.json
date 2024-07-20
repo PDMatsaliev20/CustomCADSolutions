@@ -1,5 +1,6 @@
 {
-  "Title": "Поръчай на Дизайнер",
+  "Title": "Опиши Своя 3D Модел По Поръчка",
   "NamePlaceholder": "Името на Поръчката Ви",
-  "DescriptionPlaceholder": "Дълго Описание на Поръчката Ви"
+  "DescriptionPlaceholder": "Дълго Описание на Поръчката Ви",
+  "Order": "Поръчай"
 }

@@ -1,5 +1,6 @@
 {
-  "Title": "Make Your Custom Order",
+  "Title": "Describe Your Custom 3D Model",
   "NamePlaceholder": "Your Order's Name",
-  "DescriptionPlaceholder": "The Lengthy Description Of Your Order"
+  "DescriptionPlaceholder": "The Lengthy Description Of Your Order",
+  "Order": "Order"
 }

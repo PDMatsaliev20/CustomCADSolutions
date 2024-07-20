@@ -1,7 +1,7 @@
 import AuthContext from '@/components/auth-context'
 import Header from './layout/header/header'
 import Navbar from './layout/navbar/navbar'
-import Footer from './layout/footer'
+import Footer from './layout/footer/footer'
 import { useState, useEffect } from 'react'
 import { Outlet  } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'

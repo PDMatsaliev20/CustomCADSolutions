@@ -1,14 +1,14 @@
 {
-  "The Land of 3D Models": "The Land of 3D Models",
-  "We offer high-quality 3D Models tailored to your needs": "We offer high-quality 3D Models tailored to your needs!",
-  "optional 5-10 business day delivery": "*optional 5-10 business day delivery",
-  "Looking to buy": "Looking to buy",
-  "Looking to sell": "Looking to sell",
-  "Two ways to go about this": "Two ways to go about this:",
-  "Register as Client": "Register as Client",
-  "Order from our Gallery": "Order from our Gallery",
-  "Order from our 3D Designers": "Order from our 3D Designers",
-  "Register as Contributor": "Register as Contributor",
-  "Upload to Gallery": "Upload your 3D Model to Gallery",
-  "Sell Directly to Us": "Sell a 3D Model directly to Us"
+  "Title": "The Land of 3D Models",
+  "Subtitle": "We offer high-quality 3D Models tailored to your needs!",
+  "Hint": "*optional 5-10 business day delivery",
+  "BuyBtn": "Looking to buy",
+  "SellBtn": "Looking to sell",
+  "Title2": "There are two types of users here:",
+  "Register1Btn": "Client",
+  "SubRegister1Btn1": "Buy from Gallery",
+  "SubRegister1Btn2": "Custom 3D Model",
+  "Register2Btn": "Contributor",
+  "SubRegister2Btn1": "Upload a 3D Model",
+  "SubRegister2Btn2": "Sell us a 3D Model"
 }

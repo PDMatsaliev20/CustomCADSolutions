@@ -23,7 +23,7 @@ export default (order) => {
 
     if (descriptionIsRequired && !description) {
         errors.description = errorMessages.required(descriptionLabel);
-    } else if (description.length > descriptionMaxLength) {
+    } else if (!(description.length >= descriptionMinLength && description.length <= descriptionMaxLength)) {
         errors.description = errorMessages.length(descriptionLabel, descriptionMinLength, descriptionMaxLength);
     } 
 
