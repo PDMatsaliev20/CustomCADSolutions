@@ -51,13 +51,7 @@ function GalleryPage() {
     }, [searchParams]);
 
     useEffect(() => {
-        if (query.searchName || query.searchCreator || query.category || query.sorting) {
-            filterCads();
-        } else {
-            if (!cads.length) {
-                loadCads();
-            }
-        }
+        loadCads();
     }, [query]);
 
     return (
@@ -65,7 +59,7 @@ function GalleryPage() {
             <h1 className="basis-full text-center text-4xl text-indigo-950 font-bold">{t('body.gallery.Our Gallery')}</h1>
             <QueryBar setQuery={setQuery} />
             <section className="basis-full">
-                <ul className="flex flex-wrap justify-between gap-y-12 gap-x-3">
+                <ul className="grid grid-cols-3 gap-y-12 gap-x-10">
                     {cads.map(cad => <GalleryItem key={cad.id} item={cad} />)}
                 </ul>
             </section>
@@ -73,17 +67,6 @@ function GalleryPage() {
     );
 
     async function loadCads() {
-        const queryString = turnQueryToString(query);
-        const { cads, count } = await axios.get(`https://localhost:7127/API/Home/Gallery?${queryString}`)
-            .then(response => response.data);
-
-        if (count) {
-            setCads(cads);
-            setTotalCount(count);
-        }
-    }
-
-    async function filterCads() {
         const queryString = turnQueryToString(query);
         const { cads, count } = await axios.get(`https://localhost:7127/API/Home/Gallery?${queryString}`)
             .then(response => response.data);

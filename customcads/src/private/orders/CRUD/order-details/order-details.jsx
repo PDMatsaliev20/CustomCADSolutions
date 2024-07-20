@@ -1,11 +1,12 @@
 import { useTranslation } from 'react-i18next'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, useLoaderData } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 
 function OrderDetails() {
     const { t } = useTranslation();
     const { id } = useParams();
+    const { loadedCategories, loadedOrder } = useLoaderData();
     const navigate = useNavigate();
 
     const [originalOrder, setOriginalOrder] = useState();
@@ -13,35 +14,17 @@ function OrderDetails() {
     const [categories, setCategories] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
 
-    const machineReadableDateTime = order.orderDate && order.orderDate.replaceAll('.', '-');
-
-    const fetchCategories = async () => {
-        const response = await axios.get('https://localhost:7127/API/Categories', {
-            withCredentials: true
-        }).catch(e => console.error(e));
-        if (!categories.length) {
-            setCategories(response.data);
-        }
-    };
-
-    const fetchOrder = async () => {
-        const response = await axios.get(`https://localhost:7127/API/Orders/${id}`, {
-            withCredentials: true
-        }).catch(e => console.error(e));
-
-        if (categories.length) {
-            if (JSON.stringify(order) !== JSON.stringify(response.data)) {
-                const fetchedCategory = categories.find(c => c.name === response.data.category);
-                const fetchedOrder = { ...response.data, categoryId: fetchedCategory.id.toString() };
-                setOriginalOrder(fetchedOrder);
-                setOrder(fetchedOrder);
-            }
-        }
-    };
-
     useEffect(() => {
-        fetchCategories();
-        fetchOrder();
+        if (!categories.length) {
+            setCategories(loadedCategories);
+        } else {
+            const { id } = categories.find(c => c.name === loadedOrder.category);
+            
+            const fetchedOrder = { ...loadedOrder, categoryId: id.toString() };
+
+            setOriginalOrder(fetchedOrder);
+            setOrder(fetchedOrder);
+        }
     }, [categories]);
 
     const handleInput = (e) => {
@@ -91,7 +74,7 @@ function OrderDetails() {
                                     className="bg-indigo-400 text-3xl text-center font-bold focus:outline-none py-2 rounded-xl border-4 border-indigo-300 shadow-xl shadow-indigo-900"
                                 />
                                 <span className="bg-indigo-200 text-indigo-700 px-4 py-2 rounded-xl italic border-4 border-indigo-300 shadow-md shadow-indigo-950">
-                                    {t(`common.statuses.${order.status}`)}
+                                    {t(`common.statuses.${loadedOrder.status}`)}
                                 </span>
                             </div>
                         </header>
@@ -102,22 +85,28 @@ function OrderDetails() {
                                     {t('body.orderDetails.you can edit the name, description and category')}
                                 </sub>
                             </label>
-                            <textarea id="description" name="description" onInput={handleInput} value={order.description}
-                                rows={4} maxLength={750} minLength={5}
+                            <textarea
+                                id="description"
+                                name="description"
+                                onInput={handleInput}
+                                value={order.description}
+                                rows={4}
+                                maxLength={750}
+                                minLength={5}
                                 className="w-full h-auto bg-inherit text-indigo-700 focus:outline-none"
                             />
                         </section>
                         <footer className="basis-full flex justify-between">
                             <div className="text-start">
                                 <span className="font-semibold">{t('body.orderDetails.Ordered by')}</span>
-                                <time dateTime={machineReadableDateTime} className="underline underline-offset-4 italic">
-                                    {order.buyerName}
-                                </time>
+                                <span className="underline underline-offset-4 italic">
+                                    {loadedOrder.buyerName}
+                                </span>
                             </div>
                             <div className="text-end">
                                 <span className="font-semibold">{t('body.orderDetails.Ordered on')}</span>
-                                <time dateTime={machineReadableDateTime} className="italic">
-                                    {order.orderDate}
+                                <time dateTime={loadedOrder.orderDate.replaceAll('.', '-')} className="italic">
+                                    {loadedOrder.orderDate}
                                 </time>
                             </div>
                         </footer>

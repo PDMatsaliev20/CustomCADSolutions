@@ -1,26 +1,17 @@
 import Order from './components/order'
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
+import { useLoaderData } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 
 function UserOrders() {
     const { t } = useTranslation();
+    const { loadedOrders } = useLoaderData();
     const [orders, setOrders] = useState([]);
-
-    const fetchOrders = async () => {
-        const response = await axios.get('https://localhost:7127/API/Orders', {
-            withCredentials: true
-        }).catch(e => console.error(e));
-
-        if (JSON.stringify(response.data) !== JSON.stringify(orders)) {
-            setOrders(response.data);
-        }
-    };
-
+    
     useEffect(() => {
-        fetchOrders();
-    }, [orders]);
+        setOrders(loadedOrders);
+    }, []);
 
     const handleOrderDelete = async (id) => {
         await axios.delete(`https://localhost:7127/API/Orders/${id}`, {

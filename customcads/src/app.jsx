@@ -1,10 +1,9 @@
 import AuthContext from '@/components/auth-context'
 import Header from './layout/header/header'
 import Navbar from './layout/navbar/navbar'
-import Body from './layout/body'
 import Footer from './layout/footer'
-import { BrowserRouter } from 'react-router-dom'
 import { useState, useEffect } from 'react'
+import { Outlet  } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import axios from 'axios'
 import './index.css'
@@ -21,7 +20,7 @@ function App() {
         const usernameCookie = cookies.find(cookie => cookie.split('=')[0] === cookieName);
         return usernameCookie && usernameCookie.split('=')[1];
     };
-    
+
     const [isAuthenticated, setIsAuthenticated] = useState(getCookie('username'));
     const [userRole, setUserRole] = useState();
     const [username, setUsername] = useState();
@@ -81,18 +80,18 @@ function App() {
     };
 
     return (
-        <BrowserRouter>
-            <AuthContext.Provider value={contextValues}>
-                <div className="flex flex-col min-h-screen bg-indigo-50">
-                    <div className="sticky top-0 z-50">
-                        <Header />
-                        <Navbar />
-                    </div>
-                    <Body />
-                    <Footer />
+        <AuthContext.Provider value={contextValues}>
+            <div className="flex flex-col min-h-screen bg-indigo-50">
+                <div className="sticky top-0 z-50">
+                    <Header />
+                    <Navbar />
                 </div>
-            </AuthContext.Provider>
-        </BrowserRouter>
+                <main className="basis-full grow self-stretch my-8 mx-16">
+                    <Outlet />
+                </main>
+                <Footer />
+            </div>
+        </AuthContext.Provider>
     );
 
     async function checkUserAuthentication() {
