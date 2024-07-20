@@ -40,7 +40,9 @@ function CustomOrder() {
             <form onSubmit={(e) => handleSubmit(e, handleSubmitCallback)} autoComplete="off" noValidate>
                 <div className="w-1/2 mx-auto flex flex-wrap justify-center gap-y-4 gap-x-4 bg-indigo-700 py-6 px-12 rounded">
                     <div className="basis-full flex flex-wrap">
-                        <label htmlFor="name" className="basis-full text-indigo-50">{t('body.customOrder.Name')}</label>
+                        <label htmlFor="name" className="basis-full text-indigo-50">
+                            {t('common.labels.Name')}
+                        </label>
                         <input
                             type="text"
                             id="name"
@@ -57,7 +59,9 @@ function CustomOrder() {
                         </span>
                     </div>
                     <div className="basis-full flex flex-wrap">
-                        <label htmlFor="description" className="basis-full text-indigo-50">{t('body.customOrder.Description')}</label>
+                        <label htmlFor="description" className="basis-full text-indigo-50">
+                            {t('common.labels.Description')}
+                        </label>
                         <textarea
                             id="description"
                             name="description"
@@ -72,7 +76,9 @@ function CustomOrder() {
                         </span>
                     </div>
                     <div className="basis-full flex flex-wrap">
-                        <label htmlFor="category" className="basis-full text-indigo-50">{t('body.customOrder.Category')}</label>
+                        <label htmlFor="category" className="basis-full text-indigo-50">
+                            {t('common.labels.Category')}
+                        </label>
                         <select
                             id="category"
                             name="categoryId"

@@ -6,7 +6,7 @@ function Order({ order, onDelete }) {
     const machineReadableDateTime = order.orderDate && order.orderDate.replaceAll('.', '-');
 
     const handleOrderDelete = () => {
-        confirm('Are you sure you want to delete this order?') && onDelete();
+        confirm(t('body.orders.Confirmation')) && onDelete();
     };
 
     return (

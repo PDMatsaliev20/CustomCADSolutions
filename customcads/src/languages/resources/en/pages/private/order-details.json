@@ -1,9 +1,10 @@
 {
-  "Title": "Order #",
+  "Title": "Order",
   "Status": "Status: ",
   "Category": "Category: ",
   "Description": "Description: ",
   "you can edit the name, description and category": "(you can edit the name, description and category)",
   "Ordered by": "Ordered by: ",
-  "Ordered on": "Ordered on: "
+  "Ordered on": "Ordered on: ",
+  "Save changes": "Save changes"
 }

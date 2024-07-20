@@ -73,7 +73,7 @@ function OrderDetails() {
     return (
         <div className="flex flex-wrap gap-y-8">
             <div className="basis-full">
-                <h1 className="text-4xl text-center text-indigo-950 font-bold">{`${t('body.orderDetails.Title')}${order.id}`}</h1>
+                <h1 className="text-4xl text-center text-indigo-950 font-bold">{`${t('body.orderDetails.Title')} #${id}`}</h1>
             </div>
             <div className="basis-10/12 mx-auto text-indigo-100">
                 <form onSubmit={handleFormSubmit} autoComplete="off">
@@ -123,7 +123,9 @@ function OrderDetails() {
                         </footer>
                     </div>
                     <div className={`${isEditing ? 'flex justify-center mt-8' : ' hidden'}`}>
-                        <button className="bg-indigo-500 text-indigo-50 font-bold py-3 px-6 rounded-lg border border-indigo-700 shadow shadow-indigo-950">Save changes</button>
+                        <button className="bg-indigo-500 text-indigo-50 font-bold py-3 px-6 rounded-lg border border-indigo-700 shadow shadow-indigo-950">
+                            {t('body.orderDetails.Save changes')}
+                        </button>
                     </div>
                 </form>
             </div>
