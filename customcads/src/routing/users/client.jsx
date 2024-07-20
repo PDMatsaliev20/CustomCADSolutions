@@ -1,15 +1,12 @@
-import AuthGuard from '@/components/auth-guard'
-import UserOrdersPage from '@/private/orders/user-orders'
-import OrderDetailsPage from '@/private/orders/CRUD/order-details/order-details'
-import CustomOrderPage from '@/private/orders/CRUD/custom-order/custom-order'
-import GalleryOrderPage from '@/private/orders/CRUD/gallery-order/gallery-order'
-import UserCadsPage from '@/private/cads/user-cads'
-import UploadCadPage from '@/private/cads/upload-cad/upload-cad'
-import SellCadPage from '@/private/cads/sell-cad/sell-cad'
+import AuthGuard from '../auth-guard'
+import UserOrdersPage from '@/private/client/user-orders'
+import OrderDetailsPage from '@/private/client/CRUD/order-details/order-details'
+import CustomOrderPage from '@/private/client/CRUD/custom-order/custom-order'
+import GalleryOrderPage from '@/private/client/CRUD/gallery-order/gallery-order'
 import axios from 'axios'
 
 export default {
-    element: <AuthGuard isPrivate />,
+    element: <AuthGuard isPrivate role="Client" />,
     children: [
         {
             path: '/orders',
@@ -44,22 +41,6 @@ export default {
         {
             path: '/orders/gallery',
             element: <GalleryOrderPage />
-        },
-        {
-            path: '/orders/gallery',
-            element: <GalleryOrderPage />
-        },
-        {
-            path: '/cads',
-            element: <UserCadsPage />
-        },
-        {
-            path: '/cads/upload',
-            element: <UploadCadPage />
-        },
-        {
-            path: '/cads/sell',
-            element: <SellCadPage />
-        },
+        }
     ]
 };

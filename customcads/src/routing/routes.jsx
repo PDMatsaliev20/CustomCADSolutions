@@ -1,15 +1,19 @@
 import App from '@/app'
 import publicRoutes from './users/public'
-import privateRoutes from './users/private'
-import publicOnlyRoutes from './users/public-only'
+import guestRoutes from './users/guest'
+import clientRoutes from './users/client'
+import contributorRoutes from './users/contributor'
+import designerRoutes from './users/designer'
 
 const userRoutes = {
     path: '/',
     element: <App />,
     children: [
         publicRoutes,
-        privateRoutes,
-        publicOnlyRoutes
+        guestRoutes,
+        clientRoutes,
+        contributorRoutes,
+        designerRoutes,
     ]
 };
 

@@ -1,4 +1,4 @@
-import AuthGuard from '@/components/auth-guard'
+import AuthGuard from '../auth-guard'
 import HomePage from '@/public/home/home'
 import GalleryPage from '@/public/gallery/gallery'
 import PrivacyPolicyPage from '@/public/policy/policy'
