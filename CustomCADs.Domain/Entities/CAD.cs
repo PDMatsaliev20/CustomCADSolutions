@@ -17,7 +17,10 @@ namespace CustomCADs.Domain.Entities
         [Comment("Name of 3D Model")]
         public string Name { get; set; } = null!;
 
-        //public string Description { get; set; } = null!;
+        [Required]
+        [MaxLength(CadConstants.DescriptionMaxLength)]
+        [Comment("Description of 3D Model")]
+        public string Description { get; set; } = null!;
 
         [Required]
         [Comment("Extension name of 3D Model")]

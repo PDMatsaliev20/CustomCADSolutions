@@ -22,6 +22,8 @@ import ordersDetailsEn from '@/languages/resources/en/pages/private/client/order
 import customOrderEn from '@/languages/resources/en/pages/private/client/custom-order.json'
 
 import cadsEn from '@/languages/resources/en/pages/private/contributor/user-cads.json'
+import cadDetailsEn from '@/languages/resources/en/pages/private/contributor/cad-details.json'
+import editCadEn from '@/languages/resources/en/pages/private/contributor/edit-cad.json'
 
 export default () => {
     return {
@@ -39,6 +41,8 @@ export default () => {
                 orderDetails: ordersDetailsEn,
                 customOrder: customOrderEn,
                 cads: cadsEn,
+                cadDetails: cadDetailsEn,
+                editCad: editCadEn,
             },
             footer: footerEn,
             common: {

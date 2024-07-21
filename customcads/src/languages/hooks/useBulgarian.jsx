@@ -22,6 +22,8 @@ import ordersDetailsBg from '@/languages/resources/bg/pages/private/client/order
 import customOrderBg from '@/languages/resources/bg/pages/private/client/custom-order.json'
 
 import cadsBg from '@/languages/resources/bg/pages/private/contributor/user-cads.json'
+import cadDetailsBg from '@/languages/resources/bg/pages/private/contributor/cad-details.json'
+import editCadBg from '@/languages/resources/bg/pages/private/contributor/edit-cad.json'
 
 export default () => {
     return {
@@ -39,6 +41,8 @@ export default () => {
                 orderDetails: ordersDetailsBg,
                 customOrder: customOrderBg,
                 cads: cadsBg,
+                cadDetails: cadDetailsBg,
+                editCad: editCadBg,
             },
             footer: footerBg,
             common: {

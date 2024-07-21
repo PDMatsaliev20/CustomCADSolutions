@@ -6,6 +6,7 @@ namespace CustomCADs.API.Models.Cads
     {
         public int Id { get; set; }
         public string Name { get; set; } = null!;
+        public string Description { get; set; } = null!;
         public string CreatorName { get; set; } = null!;
         public string CreationDate { get; set; } = null!;
         public bool IsValidated { get; set; }

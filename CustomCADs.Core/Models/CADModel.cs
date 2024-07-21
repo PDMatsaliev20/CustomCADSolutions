@@ -20,6 +20,10 @@ namespace CustomCADs.Core.Models
         [Required(ErrorMessage = RequiredErrorMessage)]
         [StringLength(CadConstants.NameMaxLength, MinimumLength = CadConstants.NameMinLength, ErrorMessage = LengthErrorMessage)]
         public string Name { get; set; } = null!;
+        
+        [Required(ErrorMessage = RequiredErrorMessage)]
+        [StringLength(CadConstants.DescriptionMaxLength, MinimumLength = CadConstants.DescriptionMinLength, ErrorMessage = LengthErrorMessage)]
+        public string Description { get; set; } = null!;
 
         public bool IsValidated { get; set; }
 

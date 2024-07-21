@@ -57,7 +57,7 @@ function CadDetailsPage() {
                 </h1>
                 <div className={`${isChanged ? 'flex justify-center' : 'hidden'}`}>
                     <button onClick={handleSaveChanges} className="bg-indigo-500 text-indigo-50 p-2 text-lg rounded-md">
-                        Save Changes
+                        {t('body.cadDetails.Save changes')}
                     </button>
                 </div>
             </div>
@@ -65,7 +65,7 @@ function CadDetailsPage() {
                 <div className="basis-full">
                     <Coords
                         type="camera"
-                        title={t('Camera Coords')}
+                        title={t('body.cadDetails.Camera Coords')}
                         coords={cad.coords}
                         relatedCoords={cad.panCoords}
                         setCoords={(coords) => setCad(cad => ({ ...cad, coords }))}
@@ -82,7 +82,7 @@ function CadDetailsPage() {
                 <div className="basis-full">
                     <Coords
                         type="pan"
-                        title={t('CAD Coords')}
+                        title={t('body.cadDetails.CAD Coords')}
                         coords={cad.panCoords}
                         relatedCoords={cad.coords}
                         setCoords={(panCoords) => setCad(cad => ({ ...cad, panCoords }))}

@@ -12,6 +12,10 @@
             public const string NameDisplay = "Name";
             public const int NameMaxLength = 18;
             public const int NameMinLength = 2;
+            
+            public const string DescriptionDisplay = "Description";
+            public const int DescriptionMaxLength = 750;
+            public const int DescriptionMinLength = 10;
 
             public const string CategoryDisplay = "Category";
 

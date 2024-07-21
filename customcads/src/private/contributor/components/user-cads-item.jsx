@@ -24,12 +24,12 @@ function UserCadItem({ item, onDelete }) {
                 <Link to={`edit/${item.id}`}
                     className="basis-5/12 bg-indigo-700 text-center text-indigo-50 py-2 rounded-md hover:opacity-70 border"
                 >
-                    {t('Edit')}
+                    {t('body.cads.Edit')}
                 </Link>
                 <button onClick={handleClick}
                     className="basis-5/12 bg-indigo-50 py-2 rounded-md hover:text-indigo-50 hover:bg-red-500 border border-indigo-700"
                 >
-                    {t('Delete')}
+                    {t('body.cads.Delete')}
                 </button>
             </div>
             <p className="basis-full text-center text-lg text-indigo-900 font-semibold">

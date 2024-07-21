@@ -10,6 +10,11 @@ namespace CustomCADs.API.Models.Cads
         [StringLength(NameMaxLength, MinimumLength = NameMinLength,
             ErrorMessage = LengthErrorMessage)]
         public string Name { get; set; } = null!;
+        
+        [Required(ErrorMessage = RequiredErrorMessage)]
+        [StringLength(DescriptionMaxLength, MinimumLength = DescriptionMinLength,
+            ErrorMessage = LengthErrorMessage)]
+        public string Description { get; set; } = null!;
 
         [Required(ErrorMessage = RequiredErrorMessage)]
         public int CategoryId { get; set; }

@@ -151,6 +151,7 @@ namespace CustomCADs.Core.Services
                 ?? throw new KeyNotFoundException("Model doesn't exist!");
 
             cad.Name = model.Name;
+            cad.Description = model.Description;
             cad.IsValidated = model.IsValidated;
             cad.Price = model.Price;
             cad.CategoryId = model.CategoryId;
