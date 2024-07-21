@@ -58,7 +58,7 @@ function Cad({ cad, isHomeCad }) {
             directionalLight2.position.set(-1, 1, 1).normalize();
             scene.add(directionalLight2);
 
-            const ambientLight = new THREE.AmbientLight(isHomeCad ? 0xa5b4fc : 0xffffff, 0.5); 
+            const ambientLight = new THREE.AmbientLight(isHomeCad ? 0xa5b4fc : 0xffffff, 0.5);
             scene.add(ambientLight);
 
             // Controls
@@ -68,9 +68,45 @@ function Cad({ cad, isHomeCad }) {
             controls.target.set(model.panCoords[0], model.panCoords[1], model.panCoords[2]);
             controls.update();
 
+            const onCameraCoordChange = (name, value) => {
+                switch (name.toLowerCase()) {
+                    case 'x': camera.position.x = value; break;
+                    case 'y': camera.position.y = value; break;
+                    case 'z': camera.position.z = value; break;
+                }
+            };
+
+            const onPanCoordChange = (name, value) => {
+                switch (name.toLowerCase()) {
+                    case 'x':
+                        camera.position.x += value - controls.target.x;
+                        controls.target.x = value;
+                        break;
+
+                    case 'y':
+                        camera.position.y += value - controls.target.y;
+                        controls.target.y = value;
+                        break;
+
+                    case 'z':
+                        camera.position.z += value - controls.target.z;
+                        controls.target.z = value;
+                        break;
+
+                }
+            };
+
+            const handleCoordChange = (e) => {
+                const { coordType, coordName, coordValue } = e.detail;
+
+                if (coordType === 'camera') onCameraCoordChange(coordName, coordValue);
+                else if (coordType === 'pan') onPanCoordChange(coordName, coordValue);
+            };
+
             // GLTF Loading
             const loader = new GLTFLoader();
             loader.load(model.path, (gltf) => {
+                window.addEventListener('onCoordChange', handleCoordChange);
                 scene.add(gltf.scene);
             },
                 () => { },
@@ -107,6 +143,7 @@ function Cad({ cad, isHomeCad }) {
             return () => {
                 mount.removeChild(renderer.domElement);
                 window.removeEventListener('resize', updateRendererSize);
+                window.removeEventListener('onCoordChange', handleCoordChange);
             };
         }
     }, [model.path, model.coords, model.fov, model.id]);

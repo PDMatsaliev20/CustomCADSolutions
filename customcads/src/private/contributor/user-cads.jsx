@@ -1,5 +1,5 @@
 import AuthContext from '@/components/auth-context'
-import QueryBar from './components/query-bar'
+import QueryBar from '@/components/query-bar/query-bar'
 import useQueryConverter from '@/hooks/useQueryConverter'
 import { useLoaderData } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -39,6 +39,14 @@ function UserCads() {
         }
     }, [query]);
 
+    const handleDelete = async (id) => {
+        await axios.delete(`https://localhost:7127/API/Cads/${id}`, {
+            withCredentials: true
+        }).catch(e => console.error(e));
+
+        setCads(cads => cads.filter(c => c.id !== id));
+    };
+
     return (
         <div className="flex flex-col gap-y-8 mb-8">
             <h1 className="text-4xl text-center text-indigo-950 font-bold">
@@ -47,7 +55,7 @@ function UserCads() {
             <section className="flex flex-wrap justify-center gap-y-8">
                 <QueryBar setQuery={setQuery} />
                 <ul className="basis-full grid grid-cols-3 gap-12">
-                    {cads.map(cad => <UserCadItem key={cad.id} item={cad} />)}
+                    {cads.map(cad => <UserCadItem key={cad.id} item={cad} onDelete={() => handleDelete(cad.id)} />)}
                 </ul>
             </section>
         </div>
