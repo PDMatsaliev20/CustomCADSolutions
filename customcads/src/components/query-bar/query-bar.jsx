@@ -1,7 +1,8 @@
-import InputField from './components/input-field'
-import SelectField from './components/select-field'
+import InputField from './input-field'
+import SelectField from './select-field'
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import axios from 'axios'
 
 function QueryBar({ setQuery }) {
@@ -9,7 +10,7 @@ function QueryBar({ setQuery }) {
 
     const [sortings, setSortings] = useState([]);
     const [categories, setCategories] = useState([]);
-    const [copyQuery, setCopyQuery] = useState({ searchName: '', searchCreator: '', category: '', sorting: 1 });
+    const [copyQuery, setCopyQuery] = useState({ searchName: '', category: '', sorting: 1 });
 
     useEffect(() => {
         getCategories();
@@ -30,38 +31,39 @@ function QueryBar({ setQuery }) {
     };
 
     return (
-        <div className="basis-10/12 bg-indigo-400 py-8 rounded-lg">
+        <div className="basis-full bg-indigo-400 py-8 rounded-lg border-2 border-indigo-600 shadow shadow-indigo-600">
             <form onSubmit={handleSearch} method="get" autoComplete="off">
                 <div className="flex flex-wrap justify-center items-center gap-y-5">
                     <div className="basis-full flex justify-evenly">
-                        <InputField name="searchName" value={copyQuery.searchName} onInput={handleInput}
-                            placeholder={t('body.gallery.Search 3D Models')}
-                        />
-                        <InputField name="searchCreator" value={copyQuery.searchCreator} onInput={handleInput}
-                            placeholder={t('body.gallery.Search 3D Designers')}
-                        />
-                    </div>
-                    <div className="basis-full flex flex-wrap justify-evenly">
                         <SelectField
-                            label={t('body.gallery.Category')}
+                            label={t('body.cads.Category')}
                             name="category"
                             value={copyQuery.category}
                             onInput={handleInput}
                             items={categories}
-                            defaultOption={'All'}
-                            langPath={'common.categories.'}
+                            defaultOption="All"
+                            langPath="common.categories."
+                            mapFunction={item => <option key={item.id} value={item.name}>{t(`common.categories.${item.name}`)}</option>}
                         />
-                        {/* TODO: Add front-end, back-end and database functionality for date range */}
+                        <div className="basis-1/4 bg-indigo-100 rounded-md overflow-hidden flex gap-x-2 items-center px-3 py-2">
+                            <InputField name="searchName" value={copyQuery.searchName} onInput={handleInput}
+                                placeholder={t('body.cads.Search 3D Models')}
+                            />
+                            <button>
+                                <FontAwesomeIcon icon="search" className="text-lg mt-1 text-indigo-600" />
+                            </button>
+                        </div>
                         <SelectField
-                            label={t('body.gallery.Sort by')}
+                            label={t('body.cads.Sort by')}
                             name="sorting"
                             value={copyQuery.sorting}
                             onInput={handleInput}
                             items={sortings}
-                            langPath={'common.sortings.'}
+                            langPath="common.sortings."
+                            mapFunction={item => <option key={item.value} value={item.value}>{t(`common.sortings.${item.name}`)}</option>}
                         />
                     </div>
-                    <button className="hidden bg-indigo-200 py-1 px-4 rounded">{t('body.gallery.Search')}</button>
+                    <button className="hidden bg-indigo-200 py-1 px-4 rounded">{t('body.cads.Search')}</button>
                 </div>
             </form>
         </div>

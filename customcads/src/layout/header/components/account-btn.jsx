@@ -1,12 +1,19 @@
 import { Disclosure, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
+import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useContext } from 'react'
 import AuthContext from '@/components/auth-context'
 import HeaderBtn from './header-btn'
 
 export default function Example() {
+    const navigate = useNavigate();
     const { t } = useTranslation();
     const { userRole, username, onLogout } = useContext(AuthContext);
+
+    const handleLogout = () => {
+        onLogout();
+        navigate('/');
+    };
 
     return (
         <Disclosure as="div" className="relative">
@@ -36,7 +43,7 @@ export default function Example() {
 
                         <div>
                             <MenuItem as="div" className="basis-full">
-                                <button className="font-bold text-indigo-900 bg-indigo-200 py-2 px-5 rounded border border-indigo-700 shadow shadow-indigo-800" onClick={onLogout}>
+                                <button className="font-bold text-indigo-900 bg-indigo-200 py-2 px-5 rounded border border-indigo-700 shadow shadow-indigo-800" onClick={handleLogout}>
                                     {t('header.Log out')}
                                 </button>
                             </MenuItem>

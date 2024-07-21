@@ -1,4 +1,4 @@
-import Order from './components/order'
+import Order from './components/user-orders-item'
 import { useTranslation } from 'react-i18next'
 import { useLoaderData } from 'react-router-dom'
 import { useState, useEffect } from 'react'

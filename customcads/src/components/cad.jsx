@@ -4,18 +4,21 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import axios from 'axios'
 import { useState, useEffect, useRef } from 'react'
 
-function Cad({ cad, id, isHomeCad }) {
+function Cad({ cad, isHomeCad }) {
     const mountRef = useRef(null);
     const [model, setModel] = useState({});
 
     useEffect(() => {
+        if (isHomeCad) {
+            populateCad(isHomeCad);
+        }
+    }, [isHomeCad]);
+
+    useEffect(() => {
         if (cad) {
             setModel(cad);
-        } else {
-            populateCad(id, isHomeCad);
         }
-    }, [id]);
-
+    }, []);
 
     useEffect(() => {
         if (model.path) {
@@ -58,6 +61,13 @@ function Cad({ cad, id, isHomeCad }) {
             const ambientLight = new THREE.AmbientLight(isHomeCad ? 0xa5b4fc : 0xffffff, 0.5); 
             scene.add(ambientLight);
 
+            // Controls
+            const controls = new OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.1;
+            controls.target.set(model.panCoords[0], model.panCoords[1], model.panCoords[2]);
+            controls.update();
+
             // GLTF Loading
             const loader = new GLTFLoader();
             loader.load(model.path, (gltf) => {
@@ -67,13 +77,6 @@ function Cad({ cad, id, isHomeCad }) {
                 (error) => console.error(error)
             );
 
-            // Controls
-            const controls = new OrbitControls(camera, renderer.domElement);
-            controls.enableDamping = true;
-            controls.dampingFactor = 0.1;
-            controls.target.set(model.panCoords[0], model.panCoords[1], model.panCoords[2]);
-            controls.update();
-            
             let isInteracting = false
             let resumeTimeout;
 
@@ -89,8 +92,8 @@ function Cad({ cad, id, isHomeCad }) {
             // Animation
             function animate() {
                 requestAnimationFrame(animate);
-                renderer.render(scene, camera);
                 controls.update();
+                renderer.render(scene, camera);
 
                 if (isHomeCad && !isInteracting) {
                     scene.rotation.y += 0.01;
@@ -110,14 +113,10 @@ function Cad({ cad, id, isHomeCad }) {
 
     return <div ref={mountRef} className="w-full h-full" />;
 
-    async function populateCad(id, isHomeCad) {
+    async function populateCad(isHomeCad) {
         try {
             if (isHomeCad) {
                 await axios.get('https://localhost:7127/API/Home/Cad')
-                    .then(response => setModel(response.data))
-                    .catch(error => console.error(error));
-            } else {
-                await axios.get(`https://localhost:7127/API/Cads/${id}`, { withCredentials: true })
                     .then(response => setModel(response.data))
                     .catch(error => console.error(error));
             }
