@@ -4,13 +4,16 @@ using static CustomCADs.Domain.DataConstants.CadConstants;
 
 namespace CustomCADs.API.Models.Cads
 {
-    public class CadImportDTO
+    public class CadPostDTO
     {
+        [Required(ErrorMessage = RequiredErrorMessage)]
+        public IFormFile File { get; set; } = null!;
+
         [Required(ErrorMessage = RequiredErrorMessage)]
         [StringLength(NameMaxLength, MinimumLength = NameMinLength,
             ErrorMessage = LengthErrorMessage)]
         public string Name { get; set; } = null!;
-        
+
         [Required(ErrorMessage = RequiredErrorMessage)]
         [StringLength(DescriptionMaxLength, MinimumLength = DescriptionMinLength,
             ErrorMessage = LengthErrorMessage)]

@@ -2,7 +2,7 @@
 
 namespace CustomCADs.API.Models.Cads
 {
-    public class CadExportDTO
+    public class CadGetDTO
     {
         public int Id { get; set; }
         public string Name { get; set; } = null!;

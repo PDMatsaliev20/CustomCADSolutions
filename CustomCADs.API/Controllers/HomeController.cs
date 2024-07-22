@@ -25,8 +25,8 @@ namespace CustomCADs.API.Controllers
         
         [HttpGet("Cad")]
         [ProducesResponseType(Status200OK)]
-        public async Task<ActionResult<CadExportDTO>> GetAsync()
-            => mapper.Map<CadExportDTO>(await cadService.GetByIdAsync(253));
+        public async Task<ActionResult<CadGetDTO>> GetAsync()
+            => mapper.Map<CadGetDTO>(await cadService.GetByIdAsync(253));
 
         [HttpGet("Gallery")]
         [ProducesResponseType(Status200OK)]

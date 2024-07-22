@@ -43,12 +43,12 @@ namespace CustomCADs.API.Controllers
         [Produces("application/json")]
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status404NotFound)]
-        public async Task<ActionResult<CadExportDTO>> GetSingleAsync(int id)
+        public async Task<ActionResult<CadGetDTO>> GetSingleAsync(int id)
         {
             try
             {
                 CadModel model = await cadService.GetByIdAsync(id);
-                return mapper.Map<CadExportDTO>(model);
+                return mapper.Map<CadGetDTO>(model);
             }
             catch (KeyNotFoundException)
             {
@@ -57,11 +57,11 @@ namespace CustomCADs.API.Controllers
         }
 
         [HttpPost]
-        [Consumes("application/json")]
+        [Consumes("multipart/form-data")]
         [Produces("application/json")]
         [ProducesResponseType(Status201Created)]
         [ProducesResponseType(Status400BadRequest)]
-        public async Task<ActionResult> PostAsync(CadImportDTO import)
+        public async Task<ActionResult> PostAsync([FromForm] CadPostDTO import)
         {
             CadModel model = mapper.Map<CadModel>(import);
             model.CreationDate = DateTime.Now;
@@ -87,7 +87,7 @@ namespace CustomCADs.API.Controllers
         [ProducesResponseType(Status204NoContent)]
         [ProducesResponseType(Status403Forbidden)]
         [ProducesResponseType(Status404NotFound)]
-        public async Task<ActionResult> PutAsync(int id, CadImportDTO dto)
+        public async Task<ActionResult> PutAsync(int id, CadPutDTO dto)
         {
             try
             {

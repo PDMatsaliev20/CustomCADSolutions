@@ -106,7 +106,7 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 ContentTypeProvider = new FileExtensionContentTypeProvider()
                 {
-                    Mappings = { [".glb"] = "model/gltf-binary" }
+                    Mappings = { [".glb"] = "model/gltf-binary", [".gltf"] = "model/gltf+json" }
                 }
             });
 
