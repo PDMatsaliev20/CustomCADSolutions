@@ -19,7 +19,7 @@ namespace CustomCADs.API.Controllers
     [Authorize(Roles = $"{Contributor},{Designer}")]
     [ApiController]
     [Route("API/[controller]")]
-    public class CadsController(ICadService cadService) : ControllerBase
+    public class CadsController(ICadService cadService, IWebHostEnvironment env) : ControllerBase
     {
         private readonly string createdAtReturnAction = nameof(GetSingleAsync).Replace("Async", "");
         private readonly IMapper mapper = new MapperConfiguration(cfg =>
@@ -66,14 +66,17 @@ namespace CustomCADs.API.Controllers
             CadModel model = mapper.Map<CadModel>(import);
             model.CreationDate = DateTime.Now;
             model.CreatorId = User.GetId();
-
+            model.Extension = import.File.GetFileExtension();
+            
             try
             {
                 int id = await cadService.CreateAsync(model);
-
                 model = await cadService.GetByIdAsync(id);
-                CadExportDTO export = mapper.Map<CadExportDTO>(model);
+                
+                string path = await env.UploadCadAsync(import.File, model.Name + id + model.Extension);
+                await cadService.SetPathAsync(id, path);
 
+                CadGetDTO export = mapper.Map<CadGetDTO>(model);
                 return CreatedAtAction(createdAtReturnAction, new { id }, export);
             }
             catch
@@ -97,6 +100,9 @@ namespace CustomCADs.API.Controllers
                 {
                     return Forbid();
                 }
+                
+                string path = env.RenameFile(cad.Name + id + cad.Extension, dto.Name + id + cad.Extension);
+                await cadService.SetPathAsync(id, path);
 
                 cad.Name = dto.Name;
                 cad.Description = dto.Description;
@@ -162,7 +168,11 @@ namespace CustomCADs.API.Controllers
             {
                 if (await cadService.ExistsByIdAsync(id))
                 {
+                    CadModel model = await cadService.GetByIdAsync(id);
+                    env.DeleteFile(model.Path);
+                    
                     await cadService.DeleteAsync(id);
+                    
                     return NoContent();
                 }
                 else return NotFound();
