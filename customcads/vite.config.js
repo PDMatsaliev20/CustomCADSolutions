@@ -42,7 +42,12 @@ export default defineConfig({
         }
     },
     server: {
-        proxy: { },
+        proxy: {
+            '^/others/cads': {
+                target, 
+                secure: false
+            }
+        },
         port: 5173,
         https: {
             key: fs.readFileSync(keyFilePath),
