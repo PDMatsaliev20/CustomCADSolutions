@@ -18,7 +18,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomCADs.Tests", "CustomC
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "customcads", "customcads\customcads.esproj", "{8E90CB15-C504-4DB7-9AFC-F0DBBD09627E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomCADs.Domain", "CustomCADs.Domain\CustomCADs.Domain.csproj", "{CBBE6C1C-CE41-4960-956C-BFE5765F3FFC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomCADs.Domain", "CustomCADs.Domain\CustomCADs.Domain.csproj", "{CBBE6C1C-CE41-4960-956C-BFE5765F3FFC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
