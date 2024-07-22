@@ -71,8 +71,8 @@ namespace CustomCADs.Core.Services
 
             allCads = query.Sorting switch
             {
-                CadSorting.Newest => allCads.OrderBy(c => c.CreationDate),
-                CadSorting.Oldest => allCads.OrderByDescending(c => c.CreationDate),
+                CadSorting.Newest => allCads.OrderByDescending(c => c.CreationDate),
+                CadSorting.Oldest => allCads.OrderBy(c => c.CreationDate),
                 CadSorting.Alphabetical => allCads.OrderBy(c => c.Name),
                 CadSorting.Unalphabetical => allCads.OrderByDescending(c => c.Name),
                 CadSorting.Category => allCads.OrderBy(m => m.Category.Name),

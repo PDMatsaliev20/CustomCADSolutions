@@ -44,7 +44,8 @@ function UserCads() {
             withCredentials: true
         }).catch(e => console.error(e));
 
-        setCads(cads => cads.filter(c => c.id !== id));
+        fetchCads();
+        navigate("");
     };
 
     return (

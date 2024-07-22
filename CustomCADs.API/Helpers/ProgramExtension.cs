@@ -6,6 +6,7 @@ using CustomCADs.Domain.Entities.Identity;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.StaticFiles;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -97,6 +98,19 @@ namespace Microsoft.Extensions.DependencyInjection
                     options.AddPolicy(role, policy => policy.RequireRole(role));
                 }
             });
+        }
+
+        public static IApplicationBuilder UseStaticFilesWithGlb(this IApplicationBuilder app)
+        {
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                ContentTypeProvider = new FileExtensionContentTypeProvider()
+                {
+                    Mappings = { [".glb"] = "model/gltf-binary" }
+                }
+            });
+
+            return app;
         }
 
         public static async Task UseRolesAsync(this IServiceProvider service, string[] roles)

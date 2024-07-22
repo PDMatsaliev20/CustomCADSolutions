@@ -16,7 +16,7 @@ builder.Services.AddCorsForReact();
 WebApplication app = builder.Build();
 
 app.UseDefaultFiles();
-app.UseStaticFiles();
+app.UseStaticFilesWithGlb();
 
 if (app.Environment.IsDevelopment())
 {
