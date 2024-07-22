@@ -5,5 +5,7 @@
   "Confirm Password": "Confirm Password",
   "Name": "Name",
   "Description": "Description",
-  "Category": "Category"
+  "Category": "Category",
+  "Price": "Price",
+  "3D Model": "3D Model"
 }

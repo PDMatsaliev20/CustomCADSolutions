@@ -24,6 +24,7 @@ import customOrderEn from '@/languages/resources/en/pages/private/client/custom-
 import cadsEn from '@/languages/resources/en/pages/private/contributor/user-cads.json'
 import cadDetailsEn from '@/languages/resources/en/pages/private/contributor/cad-details.json'
 import editCadEn from '@/languages/resources/en/pages/private/contributor/edit-cad.json'
+import uploadCadEn from '@/languages/resources/en/pages/private/contributor/upload-cad.json'
 
 export default () => {
     return {
@@ -43,6 +44,7 @@ export default () => {
                 cads: cadsEn,
                 cadDetails: cadDetailsEn,
                 editCad: editCadEn,
+                uploadCad: uploadCadEn,
             },
             footer: footerEn,
             common: {

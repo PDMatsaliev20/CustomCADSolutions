@@ -17,6 +17,11 @@ const useForm = (initialState, validate) => {
         setValues(prevValues => ({ ...prevValues, [name]: value }));
     };
 
+    const handleFileUpload = (e) => {
+        const { name, files } = e.target;
+        setValues(prevValues => ({ ...prevValues, [name]: files[0] }));
+    };
+
     const handleBlur = (e) => {
         const { name } = e.target;
         setTouched(prevTouched => ({ ...prevTouched, [name]: true }));
@@ -42,6 +47,7 @@ const useForm = (initialState, validate) => {
         touched,
         errors,
         handleInput,
+        handleFileUpload,
         handleBlur,
         handleSubmit,
     };
