@@ -10,7 +10,7 @@ function Cad({ cad, isHomeCad }) {
 
     useEffect(() => {
         if (isHomeCad) {
-            populateCad(isHomeCad);
+            fetchHomeCad();
         }
     }, [isHomeCad]);
 
@@ -150,13 +150,11 @@ function Cad({ cad, isHomeCad }) {
 
     return <div ref={mountRef} className="w-full h-full" />;
 
-    async function populateCad(isHomeCad) {
+    async function fetchHomeCad() {
         try {
-            if (isHomeCad) {
-                await axios.get('https://localhost:7127/API/Home/Cad')
-                    .then(response => setModel(response.data))
-                    .catch(error => console.error(error));
-            }
+            await axios.get('https://localhost:7127/API/Home/Cad')
+                .then(response => setModel(response.data))
+                .catch(error => console.error(error));
 
         } catch (error) {
             console.error('Error fetching CAD:', error);

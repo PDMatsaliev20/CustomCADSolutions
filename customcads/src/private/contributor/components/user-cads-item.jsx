@@ -5,14 +5,10 @@ function UserCadItem({ item, onDelete }) {
     const { t } = useTranslation();
 
     const handleClick = () => {
-        if (confirm('sure?')) {
+        if (confirm(t('body.cads.Confirmation'))) {
             onDelete();
         }
     };
-
-    const handleLinkClick = (e) => {
-        e.stopPropagation();
-    }
 
     return (
         <li className="flex flex-wrap gap-y-4 bg-indigo-200 rounded-xl border border-indigo-700 shadow-2xl shadow-indigo-800 px-6 py-6 basis-3/12 ">

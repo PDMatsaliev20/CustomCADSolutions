@@ -22,11 +22,16 @@ namespace CustomCADs.API.Controllers
         [HttpGet("/AccessDenied")]
         [ProducesResponseType(Status403Forbidden)]
         public ActionResult AccessDenied() => StatusCode(Status403Forbidden, "Access Denied");
-        
+
         [HttpGet("Cad")]
         [ProducesResponseType(Status200OK)]
-        public async Task<ActionResult<CadGetDTO>> GetAsync()
-            => mapper.Map<CadGetDTO>(await cadService.GetByIdAsync(253));
+        public ActionResult<CadGetDTO> GetAsync()
+            => new CadGetDTO()
+            {
+                CadPath = "/others/cads/HomeCAD.glb",
+                Coords = [2, 16, 33],
+                PanCoords = [0, 6, -3]
+            };
 
         [HttpGet("Gallery")]
         [ProducesResponseType(Status200OK)]

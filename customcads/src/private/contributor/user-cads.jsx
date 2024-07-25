@@ -1,7 +1,7 @@
 import AuthContext from '@/components/auth-context'
 import QueryBar from '@/components/query-bar/query-bar'
 import useQueryConverter from '@/hooks/useQueryConverter'
-import { useLoaderData } from 'react-router-dom'
+import { useLoaderData, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useState, useEffect, useContext } from 'react'
 import axios from 'axios'
@@ -10,6 +10,7 @@ import UserCadItem from './components/user-cads-item'
 function UserCads() {
     const { username } = useContext(AuthContext);
     const { t } = useTranslation();
+    const navigate = useNavigate();
     const { loadedCads } = useLoaderData();
     const [cads, setCads] = useState([]);
     const [query, setQuery] = useState({
@@ -17,7 +18,7 @@ function UserCads() {
         category: '',
         sorting: 1,
         currentPage: 1,
-        cadsPerPage: 6,
+        cadsPerPage: 9,
         creator: username,
         validated: true,
         unvalidated: true,
