@@ -33,7 +33,8 @@ export default {
             path: '/cads/edit/:id',
             element: <EditCadPage />,
             loader: async ({ params }) => {
-                const categories = await axios.get('https://localhost:7127/API/Categories', {
+
+                const categories = await axios.get('https://localhost:7127/API/Common/Categories', {
                     withCredentials: true
                 }).catch(e => console.error(e));
 

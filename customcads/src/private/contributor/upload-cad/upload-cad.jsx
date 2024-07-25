@@ -182,7 +182,7 @@ function UploadCad() {
     );
 
     async function fetchCategories() {
-        const response = await axios.get('https://localhost:7127/API/Categories');
+        const response = await axios.get('https://localhost:7127/API/Common/Categories');
         const categories = response.data;
         setCategories(categories);
     };

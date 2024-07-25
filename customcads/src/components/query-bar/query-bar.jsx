@@ -70,7 +70,7 @@ function QueryBar({ setQuery }) {
     );
 
     async function getCategories() {
-        const response = await axios.get('https://localhost:7127/API/Categories')
+        const response = await axios.get('https://localhost:7127/API/Common/Categories')
             .catch(e => console.error(e));
 
         if (response.data) {
@@ -79,7 +79,7 @@ function QueryBar({ setQuery }) {
     }
 
     async function getSortings() {
-        const response = await axios.get('https://localhost:7127/API/Others/CadSortings')
+        const response = await axios.get('https://localhost:7127/API/Common/CadSortings')
             .catch(e => console.error(e));
 
         if (response.data) {
