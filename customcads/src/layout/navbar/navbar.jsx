@@ -1,6 +1,7 @@
 import AuthContext from '@/components/auth-context'
 import ClientNavs from './components/client-navs'
 import ContributorNavs from './components/contributor-navs'
+import DesignerNavs from './components/designer-navs'
 import { useContext } from 'react'
 
 function Navbar() {
@@ -11,7 +12,7 @@ function Navbar() {
         switch (userRole) {
             case 'Client': navs = <ClientNavs />; break;
             case 'Contributor': navs = <ContributorNavs />; break;
-            case 'Designer': navs = <p>designer navs</p>; break;
+            case 'Designer': navs = <DesignerNavs />; break;
             case 'Administrator': navs = <p>admin navs</p>; break;
         }
     }
