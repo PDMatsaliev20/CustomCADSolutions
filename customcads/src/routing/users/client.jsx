@@ -1,8 +1,8 @@
 import AuthGuard from '../auth-guard'
-import UserOrdersPage from '@/private/client/user-orders'
-import OrderDetailsPage from '@/private/client/order-details/order-details'
-import CustomOrderPage from '@/private/client/custom-order/custom-order'
-import GalleryOrderPage from '@/private/client/gallery-order/gallery-order'
+import UserOrdersPage from '@/private/orders/user-orders/user-orders'
+import OrderDetailsPage from '@/private/orders/order-details/order-details'
+import CustomOrderPage from '@/private/orders/custom-order/custom-order'
+import GalleryOrderPage from '@/private/orders/gallery-order/gallery-order'
 import axios from 'axios'
 
 export default {

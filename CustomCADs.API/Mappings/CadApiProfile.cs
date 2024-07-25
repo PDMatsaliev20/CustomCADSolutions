@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CustomCADs.API.Helpers;
 using CustomCADs.API.Models.Cads;
 using CustomCADs.API.Models.Queries;
 using CustomCADs.Core.Models;
@@ -34,7 +35,9 @@ namespace CustomCADs.API.Mappings
         /// <summary>
         /// Converts Post DTO to Service Model
         /// </summary>
-        public void PostToModel() => CreateMap<CadPostDTO, CadModel>();
+        public void PostToModel() => CreateMap<CadPostDTO, CadModel>()
+            .ForMember(model => model.ImageExtension, opt => opt.MapFrom(post => post.Image.GetFileExtension()))
+            .ForMember(model => model.CadExtension, opt => opt.MapFrom(post => post.File.GetFileExtension()));
 
 
         /// <summary>

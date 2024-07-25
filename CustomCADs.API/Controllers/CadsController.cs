@@ -67,8 +67,7 @@ namespace CustomCADs.API.Controllers
             CadModel model = mapper.Map<CadModel>(import);
             model.CreationDate = DateTime.Now;
             model.CreatorId = User.GetId();
-            model.CadExtension = import.File.GetFileExtension();
-            model.ImageExtension = import.Image.GetFileExtension();
+            model.IsValidated = User.IsInRole(Designer);
             
             try
             {

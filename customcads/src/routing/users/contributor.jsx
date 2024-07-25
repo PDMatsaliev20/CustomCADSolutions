@@ -1,9 +1,9 @@
 import AuthGuard from '../auth-guard'
-import UserCadsPage from '@/private/contributor/user-cads'
-import CadDetailsPage from '@/private/contributor/cad-details/cad-details'
-import EditCadPage from '@/private/contributor/edit-cad/edit-cad'
-import UploadCadPage from '@/private/contributor/upload-cad/upload-cad'
-import SellCadPage from '@/private/contributor/sell-cad/sell-cad'
+import UserCadsPage from '@/private/cads/user-cads/user-cads'
+import CadDetailsPage from '@/private/cads/cad-details/cad-details'
+import EditCadPage from '@/private/cads/edit-cad/edit-cad'
+import UploadCadPage from '@/private/cads/upload-cad/upload-cad'
+import SellCadPage from '@/private/cads/sell-cad/sell-cad'
 import axios from 'axios'
 
 export default {
