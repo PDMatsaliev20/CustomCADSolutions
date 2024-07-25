@@ -11,13 +11,7 @@ export default {
     children: [
         {
             path: '/cads',
-            element: <UserCadsPage />,
-            loader: async () => {
-                const cads = await axios.get('https://localhost:7127/API/Cads', {
-                    withCredentials: true
-                }).catch(e => console.error(e));
-                return { loadedCads: cads.data.cads, loadedCadsCount: cads.data.count };
-            }
+            element: <UserCadsPage />
         },
         {
             path: '/cads/:id',

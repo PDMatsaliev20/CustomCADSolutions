@@ -1,7 +1,7 @@
 import AuthContext from '@/components/auth-context'
 import QueryBar from '@/components/query-bar/query-bar'
 import useQueryConverter from '@/hooks/useQueryConverter'
-import { useLoaderData, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useState, useEffect, useContext } from 'react'
 import axios from 'axios'
@@ -11,7 +11,6 @@ function UserCads() {
     const { username } = useContext(AuthContext);
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const { loadedCads } = useLoaderData();
     const [cads, setCads] = useState([]);
     const [query, setQuery] = useState({
         searchName: '',
@@ -25,17 +24,11 @@ function UserCads() {
     });
 
     useEffect(() => {
-        if (!cads.length) {
-            setCads(loadedCads);
-        }
-    }, []);
-
-    useEffect(() => {
         setQuery((query) => ({ ...query, creator: username }));
     }, [username]);
 
     useEffect(() => {
-        if (username) {
+        if (query.creator) {
             fetchCads();
         }
     }, [query]);
