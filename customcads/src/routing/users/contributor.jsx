@@ -7,7 +7,7 @@ import SellCadPage from '@/private/contributor/sell-cad/sell-cad'
 import axios from 'axios'
 
 export default {
-    element: <AuthGuard isPrivate role="Contributor" />,
+    element: <AuthGuard isPrivate role={['Contributor', 'Designer']} />,
     children: [
         {
             path: '/cads',

@@ -6,7 +6,7 @@ import GalleryOrderPage from '@/private/client/gallery-order/gallery-order'
 import axios from 'axios'
 
 export default {
-    element: <AuthGuard isPrivate role="Client" />,
+    element: <AuthGuard isPrivate role={['Client']} />,
     children: [
         {
             path: '/orders',

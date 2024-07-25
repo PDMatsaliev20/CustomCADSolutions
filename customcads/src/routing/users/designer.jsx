@@ -5,7 +5,7 @@ import AllCads from '@/private/designer/cads/all-cads'
 import UnvalidatedCads from '@/private/designer/cads/unvalidated-cads'
 
 export default {
-    element: <AuthGuard isPrivate role="Designer" />,
+    element: <AuthGuard isPrivate role={['Designer']} />,
     children: [
         {
             path: '/orders',
