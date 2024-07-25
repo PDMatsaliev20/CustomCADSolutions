@@ -14,21 +14,35 @@ namespace CustomCADs.API.Controllers
 
     [ApiController]
     [Route("API/[controller]")]
-    [Authorize("Administrator")]
-    public class UsersController(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager) : ControllerBase
+    [Authorize(Roles = Admin)]
+    public class AdminController(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager) : ControllerBase
     {
         private readonly IMapper mapper = new MapperConfiguration(opt
                 => opt.AddProfile<OtherApiProfile>())
             .CreateMapper();
 
-        [HttpGet]
+        [HttpGet("Roles")]
         [Produces("application/json")]
         [ProducesResponseType(Status200OK)]
-        public async Task<ActionResult<UserDTO[]>> GetAsync()
+        public async Task<ActionResult<IEnumerable<RoleDTO>>> GetRolesAsync()
+            => mapper.Map<RoleDTO[]>(await roleManager.Roles.ToArrayAsync());
+
+        [HttpGet("Roles/{name}")]
+        public async Task<ActionResult<RoleDTO>> GetRoleAsync(string name)
+        {
+            AppRole? role = await roleManager.FindByNameAsync(name);
+
+            return role == null ? NotFound() : mapper.Map<RoleDTO>(role);
+        }
+
+        [HttpGet("Users")]
+        [Produces("application/json")]
+        [ProducesResponseType(Status200OK)]
+        public async Task<ActionResult<UserDTO[]>> GetUsersAsync()
         {
             AppUser[] users = await userManager.Users.ToArrayAsync();
             UserDTO[] dtos = mapper.Map<UserDTO[]>(users);
-            
+
             for (int i = 0; i < dtos.Length; i++)
             {
                 IList<string> roles = await userManager.GetRolesAsync(users[i]);
@@ -38,8 +52,8 @@ namespace CustomCADs.API.Controllers
         }
 
 
-        [HttpGet("{name}")]
-        public async Task<ActionResult<UserDTO>> GetSingleAsync(string name)
+        [HttpGet("Users/{name}")]
+        public async Task<ActionResult<UserDTO>> GetUserAsync(string name)
         {
             AppUser? user = await userManager.FindByNameAsync(name);
             if (user == null)
@@ -53,23 +67,23 @@ namespace CustomCADs.API.Controllers
             return dto;
         }
 
-        [HttpPost("{username}")]
-        public async Task<ActionResult> PostAsync(string username)
+        [HttpPost("Users/{username}")]
+        public async Task<ActionResult> PostUserAsync(string username)
         {
             AppUser user = new(username) { Email = $"{username}@gmail.com" };
             IdentityResult result = await userManager.CreateAsync(user);
-            if (!result.Succeeded) 
+            if (!result.Succeeded)
             {
                 return StatusCode(Status500InternalServerError, result.Errors);
             }
-            
+
             await userManager.AddToRoleAsync(user, Client);
 
             return Ok($"Successful creation of client {username}");
         }
 
-        [HttpPatch("{username}/{newRole}")]
-        public async Task<ActionResult> PatchAsync(string username, string newRole)
+        [HttpPatch("Users/{username}")]
+        public async Task<ActionResult> PatchUserAsync(string username, string newRole)
         {
             if (!await roleManager.RoleExistsAsync(newRole))
             {

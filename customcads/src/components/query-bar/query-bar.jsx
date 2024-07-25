@@ -79,7 +79,7 @@ function QueryBar({ setQuery }) {
     }
 
     async function getSortings() {
-        const response = await axios.get('https://localhost:7127/API/Sortings')
+        const response = await axios.get('https://localhost:7127/API/Others/CadSortings')
             .catch(e => console.error(e));
 
         if (response.data) {
