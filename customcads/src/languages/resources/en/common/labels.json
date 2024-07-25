@@ -7,5 +7,6 @@
   "Description": "Description",
   "Category": "Category",
   "Price": "Price",
-  "3D Model": "3D Model"
+  "3D Model": "3D Model",
+  "Image":  "Image"
 }

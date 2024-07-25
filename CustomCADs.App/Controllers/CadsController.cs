@@ -104,19 +104,19 @@ namespace CustomCADs.App.Controllers
                         .Single(f => cadFormats.Contains(f.GetFileExtension()));
 
                     model.IsFolder = true;
-                    model.Extension = cad.GetFileExtension();
+                    model.CadExtension = cad.GetFileExtension();
                     int cadId = await cadService.CreateAsync(model);
                     string cadPath = await env.UploadCadFolderAsync(cad, model.Name + cadId, input.CadFolder.Where(f => f != cad))
                         ?? throw new NullReferenceException("Cad is null!");
-                    await cadService.SetPathAsync(cadId, cadPath);
+                    await cadService.SetPathsAsync(cadId, cadPath, "fix l8r");
                 }
                 else if (input.CadFile != null)
                 {
-                    model.Extension = input.CadFile.GetFileExtension();
+                    model.CadExtension = input.CadFile.GetFileExtension();
                     int cadId = await cadService.CreateAsync(model);
                     string cadPath = await env.UploadCadAsync(input.CadFile, input.Name + cadId + input.CadFile.GetFileExtension())
                         ?? throw new NullReferenceException("Cad is null!");
-                    await cadService.SetPathAsync(cadId, cadPath);
+                    await cadService.SetPathsAsync(cadId, cadPath, "fix l8r");
                 }
                 else throw new ArgumentNullException("Upload either File or Folder");
             }
@@ -169,10 +169,10 @@ namespace CustomCADs.App.Controllers
 
             if (cad.IsFolder)
             {
-                string path = Regex.Match(cad.Path, $"others/cads/{cad.Name}{cad.Id}").Value;
+                string path = Regex.Match(cad.CadPath, $"others/cads/{cad.Name}{cad.Id}").Value;
                 env.DeleteFolder(path);
             }
-            else env.DeleteFile(cad.Path);
+            else env.DeleteFile(cad.CadPath);
 
             await cadService.DeleteAsync(id);
             await statisticsService.SendStatistics(User.GetId());

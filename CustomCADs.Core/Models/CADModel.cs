@@ -10,12 +10,17 @@ namespace CustomCADs.Core.Models
         public int Id { get; set; }
 
         [Required]
-        public string Extension { get; set; } = null!;
+        public string CadExtension { get; set; } = null!;
+        
+        [Required]
+        public string ImageExtension { get; set; } = null!;
 
         [Required]
         public bool IsFolder { get; set; } = false;
 
-        public string Path { get; set; } = null!;
+        public string ImagePath { get; set; } = null!;
+        
+        public string CadPath { get; set; } = null!;
 
         [Required(ErrorMessage = RequiredErrorMessage)]
         [StringLength(CadConstants.NameMaxLength, MinimumLength = CadConstants.NameMinLength, ErrorMessage = LengthErrorMessage)]

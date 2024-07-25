@@ -86,8 +86,8 @@ namespace CustomCADs.App.Controllers
 
                 if (!model.IsFolder)
                 {
-                    string downloadName = $"{model.Name}{model.Extension}";
-                    return File(model.Path, "application/octet-stream", downloadName);
+                    string downloadName = $"{model.Name}{model.CadExtension}";
+                    return File(model.CadPath, "application/octet-stream", downloadName);
                 }
                 else
                 {

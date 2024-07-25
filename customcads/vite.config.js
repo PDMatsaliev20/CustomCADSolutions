@@ -46,7 +46,11 @@ export default defineConfig({
             '^/others/cads': {
                 target, 
                 secure: false
-            }
+            },
+            '^/others/images': {
+                target, 
+                secure: false
+            },
         },
         port: 5173,
         https: {

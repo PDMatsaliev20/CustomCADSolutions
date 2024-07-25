@@ -18,7 +18,9 @@ export default {
         max: 1000
     },
     file: {
-        isRequired: true,
-        maxSize: 150_000_000
+        isRequired: true
+    },
+    image: {
+        isRequired: true
     }
 };

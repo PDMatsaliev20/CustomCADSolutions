@@ -41,8 +41,11 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
                 Assert.That(actualCad.Name, Is.EqualTo(expectedCad.Name),
                     string.Format(ModelPropertyMismatch, "Name"));
 
-                Assert.That(actualCad.Extension, Is.EqualTo(expectedCad.Extension),
-                    string.Format(ModelPropertyMismatch, "Bytes"));
+                Assert.That(actualCad.CadExtension, Is.EqualTo(expectedCad.CadExtension),
+                    string.Format(ModelPropertyMismatch, "Cad"));
+                
+                Assert.That(actualCad.ImageExtension, Is.EqualTo(expectedCad.ImageExtension),
+                    string.Format(ModelPropertyMismatch, "Image"));
 
                 Assert.That(actualCad.IsValidated, Is.EqualTo(expectedCad.IsValidated),
                     string.Format(ModelPropertyMismatch, "IsValidated"));

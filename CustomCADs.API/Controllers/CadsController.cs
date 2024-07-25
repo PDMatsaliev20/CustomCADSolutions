@@ -57,6 +57,7 @@ namespace CustomCADs.API.Controllers
         }
 
         [HttpPost]
+        [RequestSizeLimit(300_000_000)]
         [Consumes("multipart/form-data")]
         [Produces("application/json")]
         [ProducesResponseType(Status201Created)]
@@ -66,15 +67,17 @@ namespace CustomCADs.API.Controllers
             CadModel model = mapper.Map<CadModel>(import);
             model.CreationDate = DateTime.Now;
             model.CreatorId = User.GetId();
-            model.Extension = import.File.GetFileExtension();
+            model.CadExtension = import.File.GetFileExtension();
+            model.ImageExtension = import.Image.GetFileExtension();
             
             try
             {
                 int id = await cadService.CreateAsync(model);
                 model = await cadService.GetByIdAsync(id);
-                
-                string path = await env.UploadCadAsync(import.File, model.Name + id + model.Extension);
-                await cadService.SetPathAsync(id, path);
+
+                string imagePath = await env.UploadImageAsync(import.Image, model.Name + id + model.ImageExtension);
+                string cadPath = await env.UploadCadAsync(import.File, model.Name + id + model.CadExtension);
+                await cadService.SetPathsAsync(id, cadPath, imagePath);
 
                 CadGetDTO export = mapper.Map<CadGetDTO>(model);
                 return CreatedAtAction(createdAtReturnAction, new { id }, export);
@@ -86,11 +89,11 @@ namespace CustomCADs.API.Controllers
         }
 
         [HttpPut("{id}")]
-        [Consumes("application/json")]
+        [Consumes("multipart/form-data")]
         [ProducesResponseType(Status204NoContent)]
         [ProducesResponseType(Status403Forbidden)]
         [ProducesResponseType(Status404NotFound)]
-        public async Task<ActionResult> PutAsync(int id, CadPutDTO dto)
+        public async Task<ActionResult> PutAsync(int id, [FromForm] CadPutDTO dto)
         {
             try
             {
@@ -100,11 +103,21 @@ namespace CustomCADs.API.Controllers
                 {
                     return Forbid();
                 }
-                
-                string path = env.RenameFile(cad.Name + id + cad.Extension, dto.Name + id + cad.Extension);
-                await cadService.SetPathAsync(id, path);
 
-                cad.Name = dto.Name;
+                if (cad.Name != dto.Name)
+                {
+                    string imagePath = env.RenameImage(cad.Name + id + cad.ImageExtension, dto.Name + id + cad.ImageExtension);
+                    string cadPath = env.RenameCad(cad.Name + id + cad.CadExtension, dto.Name + id + cad.CadExtension);
+                    await cadService.SetPathsAsync(id, cadPath, imagePath);
+
+                    cad.Name = dto.Name;
+                }
+                if (dto.Image != null)
+                {
+                    env.DeleteFile(cad.ImagePath);
+                    await env.UploadImageAsync(dto.Image, cad.Name + id + cad.ImageExtension);
+                } 
+
                 cad.Description = dto.Description;
                 cad.CategoryId = dto.CategoryId;
                 cad.Price = dto.Price;
@@ -169,7 +182,8 @@ namespace CustomCADs.API.Controllers
                 if (await cadService.ExistsByIdAsync(id))
                 {
                     CadModel model = await cadService.GetByIdAsync(id);
-                    env.DeleteFile(model.Path);
+                    env.DeleteFile(model.CadPath);
+                    env.DeleteFile(model.ImagePath);
                     
                     await cadService.DeleteAsync(id);
                     

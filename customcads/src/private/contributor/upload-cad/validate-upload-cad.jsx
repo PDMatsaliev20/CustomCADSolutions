@@ -50,5 +50,13 @@ export default (cad) => {
         errors.file = errorMessages.required(fileLabel);
     }
 
+    const image = cad.image;
+    const imageLabel = t('common.labels.Image');
+    const { isRequired: imageIsRequired } = cadValidation.image;
+
+    if (imageIsRequired && !image) {
+        errors.image = errorMessages.required(imageLabel);
+    }
+
     return errors;
 };

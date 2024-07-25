@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { useParams, useNavigate, useLoaderData } from 'react-router-dom'
 import { useState, useEffect } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import axios from 'axios'
 
 function EditCadPage() {
@@ -9,11 +10,17 @@ function EditCadPage() {
     const { loadedCategories, loadedCad } = useLoaderData();
     const navigate = useNavigate();
 
-    const [cad, setCad] = useState({ name: '', description: '', categoryId: 0, price: 0 });
+    const [cad, setCad] = useState({ name: '', description: '', categoryId: 0, price: 0, image: null });
     const [isEditing, setIsEditing] = useState(false);
 
     useEffect(() => {
-        setCad({ ...loadedCad, categoryId: loadedCad.category.id.toString() });
+        setCad(cad => ({
+            ...cad,
+            name: loadedCad.name,
+            description: loadedCad.description,
+            categoryId: loadedCad.category.id,
+            price: loadedCad.price,
+        }));
     }, []);
 
     const handleInput = (e) => {
@@ -21,7 +28,20 @@ function EditCadPage() {
         const newCad = { ...cad, [name]: value.trim() };
         setCad(cad => ({ ...cad, [name]: value }));
 
-        if (JSON.stringify(loadedCad) !== JSON.stringify(newCad)) {
+        if (loadedCad.name !== newCad.name
+            || loadedCad.description !== newCad.description
+            || loadedCad.category.id != newCad.categoryId
+            || loadedCad.price != newCad.price) {
+            setIsEditing(true);
+        } else {
+            setIsEditing(false);
+        }
+    };
+
+    const handleFileUpload = (e) => {
+        const { name, files } = e.target;
+        setCad(cad => ({ ...cad, [name]: files[0] }));
+        if (files[0]) {
             setIsEditing(true);
         } else {
             setIsEditing(false);
@@ -30,11 +50,14 @@ function EditCadPage() {
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
-        const body = { name: cad.name, description: cad.description, categoryId: cad.category.id, price: cad.price };
+        const body = { ...cad, categoryId: Number(cad.categoryId) };
         const response = await axios.put(`https://localhost:7127/API/Cads/${id}`, body, {
-            withCredentials: true
+            withCredentials: true,
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
         }).catch(e => console.error(e));
-
+        
         if ((100 < response.status) && (response.status < 300)) {
             navigate(`/cads`);
         }
@@ -94,14 +117,33 @@ function EditCadPage() {
                                 className="w-full h-auto bg-inherit text-indigo-700 focus:outline-none"
                             />
                         </section>
-                        <footer className="basis-full flex justify-between">
-                            <div className="text-start">
+                        <footer className="basis-full flex justify-between items-center">
+                            <div className="basis-1/3 text-start">
                                 <span className="font-semibold">{t('body.editCad.Created by')}</span>
                                 <span className="underline underline-offset-4 italic">
                                     {loadedCad.creatorName}
                                 </span>
                             </div>
-                            <div className="text-end">
+                            <div className="basis-1/3 flex justify-center">
+                                <label htmlFor="image" className="flex justify-around gap-x-4 items-center bg-indigo-300 px-4 py-1 rounded-md shadow-lg shadow-indigo-900">
+                                    <p className="text-indigo-50 font-bold">{t('common.labels.Image')}</p>
+                                    <div className="flex justify-center gap-x-4 bg-indigo-700 rounded-xl py-2 px-4 border-2 border-indigo-400">
+                                        <FontAwesomeIcon icon="arrow-up-from-bracket" className="text-xl text-indigo-100" />
+                                        <div className={`${cad.image ? 'font-bold flex items-center' : 'hidden'}`}>
+                                            <span className="text-indigo-50 w-24 truncate">{cad.image && cad.image.name}</span>
+                                        </div>
+                                    </div>
+                                </label>
+                                <input
+                                    type="file"
+                                    accept=".jpg, .png"
+                                    id="image"
+                                    name="image"
+                                    onInput={handleFileUpload}
+                                    hidden
+                                />
+                            </div>
+                            <div className="basis-1/3 text-end">
                                 <span className="font-semibold">{t('body.editCad.Created on')}</span>
                                 <time dateTime={loadedCad.creationDate.replaceAll('.', '-')} className="italic">
                                     {loadedCad.creationDate}

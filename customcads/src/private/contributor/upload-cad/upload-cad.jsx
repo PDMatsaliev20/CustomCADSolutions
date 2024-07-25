@@ -11,7 +11,7 @@ function UploadCad() {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const [categories, setCategories] = useState([]);
-    
+
     const {
         values: cad,
         touched,
@@ -20,7 +20,7 @@ function UploadCad() {
         handleInput,
         handleFileUpload,
         handleSubmit
-    } = useForm({ name: '', description: '', categoryId: 0, price: 0, file: null }, validateUploadCad);
+    } = useForm({ name: '', description: '', categoryId: 0, price: 0, file: null, image: null }, validateUploadCad);
 
     useEffect(() => {
         fetchCategories();
@@ -34,7 +34,7 @@ function UploadCad() {
                 'Content-Type': 'multipart/form-data'
             }
         }).catch(e => console.error(e));
-        
+
         navigate("/cads");
     };
 
@@ -51,21 +51,21 @@ function UploadCad() {
                                     <span>{cad.file && cad.file.name}</span>
                                 </div>
                             </label>
-                            <input 
+                            <input
                                 type="file"
-                                accept=".glb"  
+                                accept=".glb"
                                 id="file"
                                 name="file"
                                 onInput={handleFileUpload}
                                 onClick={(e) => e}
                                 onChange={handleBlur}
-                                className="w-full rounded bg-indigo-50 text-indigo-900 focus:outline-none p-2"                                
+                                className="w-full rounded bg-indigo-50 text-indigo-900 focus:outline-none p-2"
                                 hidden
                             />
                         </div>
                     </div>
                     <div className="w-8/12 mx-auto flex flex-wrap items-rt gap-y-4 gap-x-8 bg-indigo-700 py-8 px-12 rounded-xl">
-                        <div className="basis-full flex flex-wrap">
+                        <div className="basis-8/12 flex flex-wrap">
                             <label htmlFor="name" className="basis-full text-indigo-50">
                                 {t('common.labels.Name')}
                             </label>
@@ -83,6 +83,30 @@ function UploadCad() {
                             <span className={`${touched.name && errors.name ? 'inline-block' : 'hidden'} text-sm bg-red-700 p-1 rounded text-indigo-100 font-bold mt-1`}>
                                 {errors.name}
                             </span>
+                        </div>
+                        <div className="basis-2/12 grow flex flex-wrap">
+                            <div className="flex flex-wrap items-center gap-x-2 h-full">
+                                <label htmlFor="image">
+                                    <p className="text-indigo-50">{t('common.labels.Image')}</p>
+                                    <div className="flex justify-center gap-x-4 bg-indigo-200 rounded-xl py-2 px-4 border-2 border-indigo-500 shadow-lg shadow-indigo-900">
+                                        <FontAwesomeIcon icon="arrow-up-from-bracket" className="text-2xl text-indigo-800" />
+                                        <div className={`${cad.image ? 'text-indigo-800 font-bold flex items-center' : 'hidden'}`}>
+                                            <span>{cad.image && cad.image.name}</span>
+                                        </div>
+                                    </div>
+                                </label>
+                                <input
+                                    type="file"
+                                    accept=".jpg, .png"
+                                    id="image"
+                                    name="image"
+                                    onInput={handleFileUpload}
+                                    onClick={(e) => console.log(e)}
+                                    onChange={handleBlur}
+                                    className="w-full rounded bg-indigo-50 text-indigo-900 focus:outline-none p-2"
+                                    hidden
+                                />
+                            </div>
                         </div>
                         <div className="basis-5/12 grow flex flex-wrap items-start gap-y-4">
                             <div className="basis-full">

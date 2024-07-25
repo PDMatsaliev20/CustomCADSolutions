@@ -11,7 +11,8 @@ namespace CustomCADs.API.Models.Cads
         public string CreationDate { get; set; } = null!;
         public bool IsValidated { get; set; }
         public decimal Price { get; set; }
-        public string Path { get; set; } = null!;
+        public string CadPath { get; set; } = null!;
+        public string ImagePath { get; set; } = null!;
         public int[] Coords { get; set; } = new int[3];
         public int[] PanCoords { get; set; } = new int[3];
         public int Fov { get; set; } = 90;

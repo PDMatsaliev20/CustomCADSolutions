@@ -39,14 +39,14 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
         ];
         protected CadModel[] cads =
         [
-            new() { Id = 1, Name = "Cad1", Extension = "a", CategoryId = 1, Price = 1m, IsValidated = false, CreationDate = DateTime.Now.AddDays(-1), Coords = new int[3], PanCoords = new int[3] },
-            new() { Id = 2, Name = "Cad2", Extension = "ab", CategoryId = 2, Price = 2m, IsValidated = false, CreationDate = DateTime.Now.AddDays(-2), Coords = new int[3], PanCoords = new int[3] },
-            new() { Id = 3, Name = "Cad3", Extension = "abc", CategoryId = 3, Price = 3m, IsValidated = false, CreationDate = DateTime.Now.AddDays(-3), Coords = new int[3], PanCoords = new int[3] },
-            new() { Id = 4, Name = "Cad4", Extension = "abcd", CategoryId = 4, Price = 4m, IsValidated = false, CreationDate = DateTime.Now.AddDays(-4), Coords = new int[3], PanCoords = new int[3] },
-            new() { Id = 5, Name = "Cad5", Extension = "abcde", CategoryId = 5, Price = 5m, IsValidated = false, CreationDate = DateTime.Now.AddDays(-5), Coords = new int[3], PanCoords = new int[3] },
-            new() { Id = 6, Name = "Cad6", Extension = "abcdef", CategoryId = 6, Price = 6m, IsValidated = true, CreationDate = DateTime.Now.AddDays(-6), Coords = new int[3], PanCoords = new int[3] },
-            new() { Id = 7, Name = "Cad7", Extension = "abcdefg", CategoryId = 7, Price = 7m, IsValidated = true, CreationDate = DateTime.Now.AddDays(-7), Coords = new int[3], PanCoords = new int[3] },
-            new() { Id = 8, Name = "Cad8", Extension = "abcdefgh", CategoryId = 8, Price = 8m, IsValidated = true, CreationDate = DateTime.Now.AddDays(-8), Coords = new int[3], PanCoords = new int[3] },
+            new() { Id = 1, Name = "Cad1", CadExtension = "a", ImageExtension = "abcdefgh", CategoryId = 1, Price = 1m, IsValidated = false, CreationDate = DateTime.Now.AddDays(-1), Coords = new int[3], PanCoords = new int[3] },
+            new() { Id = 2, Name = "Cad2", CadExtension = "ab", ImageExtension = "abcdefg", CategoryId = 2, Price = 2m, IsValidated = false, CreationDate = DateTime.Now.AddDays(-2), Coords = new int[3], PanCoords = new int[3] },
+            new() { Id = 3, Name = "Cad3", CadExtension = "abc", ImageExtension = "abcdef", CategoryId = 3, Price = 3m, IsValidated = false, CreationDate = DateTime.Now.AddDays(-3), Coords = new int[3], PanCoords = new int[3] },
+            new() { Id = 4, Name = "Cad4", CadExtension = "abcd", ImageExtension = "abcde", CategoryId = 4, Price = 4m, IsValidated = false, CreationDate = DateTime.Now.AddDays(-4), Coords = new int[3], PanCoords = new int[3] },
+            new() { Id = 5, Name = "Cad5", CadExtension = "abcde", ImageExtension = "abcd", CategoryId = 5, Price = 5m, IsValidated = false, CreationDate = DateTime.Now.AddDays(-5), Coords = new int[3], PanCoords = new int[3] },
+            new() { Id = 6, Name = "Cad6", CadExtension = "abcdef", ImageExtension = "abc", CategoryId = 6, Price = 6m, IsValidated = true, CreationDate = DateTime.Now.AddDays(-6), Coords = new int[3], PanCoords = new int[3] },
+            new() { Id = 7, Name = "Cad7", CadExtension = "abcdefg", ImageExtension = "ab", CategoryId = 7, Price = 7m, IsValidated = true, CreationDate = DateTime.Now.AddDays(-7), Coords = new int[3], PanCoords = new int[3] },
+            new() { Id = 8, Name = "Cad8", CadExtension = "abcdefgh", ImageExtension = "a", CategoryId = 8, Price = 8m, IsValidated = true, CreationDate = DateTime.Now.AddDays(-8), Coords = new int[3], PanCoords = new int[3] },
         ];
 
         [OneTimeSetUp]

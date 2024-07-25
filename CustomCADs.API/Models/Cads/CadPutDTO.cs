@@ -6,6 +6,8 @@ namespace CustomCADs.API.Models.Cads
 {
     public class CadPutDTO
     {
+        public IFormFile? Image { get; set; }
+
         [Required(ErrorMessage = RequiredErrorMessage)]
         [StringLength(NameMaxLength, MinimumLength = NameMinLength,
             ErrorMessage = LengthErrorMessage)]

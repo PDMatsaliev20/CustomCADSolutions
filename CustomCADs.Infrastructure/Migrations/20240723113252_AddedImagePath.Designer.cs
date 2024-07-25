@@ -4,6 +4,7 @@ using CustomCADs.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CustomCADs.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(CadContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240723113252_AddedImagePath")]
+    partial class AddedImagePath
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,11 +33,6 @@ namespace CustomCADs.Infrastructure.Data.Migrations
                         .HasComment("Identification of 3D Model");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("CadExtension")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasComment("Extension of Image file");
 
                     b.Property<string>("CadPath")
                         .HasColumnType("nvarchar(max)")
@@ -59,10 +57,10 @@ namespace CustomCADs.Infrastructure.Data.Migrations
                         .HasColumnType("nvarchar(750)")
                         .HasComment("Description of 3D Model");
 
-                    b.Property<string>("ImageExtension")
+                    b.Property<string>("Extension")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
-                        .HasComment("Extension of 3D Model file");
+                        .HasComment("Extension name of 3D Model");
 
                     b.Property<string>("ImagePath")
                         .HasColumnType("nvarchar(max)")

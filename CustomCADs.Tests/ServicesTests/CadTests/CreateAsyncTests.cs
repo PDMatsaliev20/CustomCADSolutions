@@ -8,7 +8,7 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
         [Test]
         public async Task Test_AddsCorrectly()
         {
-            CadModel expectedCad = new() { Id = 10, Name = "NewCad", CreatorId = users[2].Id, Extension = ".gltf" };
+            CadModel expectedCad = new() { Id = 10, Name = "NewCad", CreatorId = users[2].Id, CadExtension = ".gltf", ImageExtension = ".png" };
 
             int id = await service.CreateAsync(expectedCad);
             CadModel actualCad = await service.GetByIdAsync(id);

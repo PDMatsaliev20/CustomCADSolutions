@@ -21,7 +21,7 @@ function Cad({ cad, isHomeCad }) {
     }, []);
 
     useEffect(() => {
-        if (model.path) {
+        if (model.cadPath) {
             // Scene
             const scene = new THREE.Scene();
             scene.background = null;
@@ -105,7 +105,7 @@ function Cad({ cad, isHomeCad }) {
 
             // GLTF Loading
             const loader = new GLTFLoader();
-            loader.load(model.path, (gltf) => {
+            loader.load(model.cadPath, (gltf) => {
                 window.addEventListener('onCoordChange', handleCoordChange);
                 scene.add(gltf.scene);
             },
@@ -146,7 +146,7 @@ function Cad({ cad, isHomeCad }) {
                 window.removeEventListener('onCoordChange', handleCoordChange);
             };
         }
-    }, [model.path, model.coords, model.fov, model.id]);
+    }, [model.cadPath, model.coords, model.fov, model.id]);
 
     return <div ref={mountRef} className="w-full h-full" />;
 

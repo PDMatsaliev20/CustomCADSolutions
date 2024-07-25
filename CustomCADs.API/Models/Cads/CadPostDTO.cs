@@ -8,6 +8,9 @@ namespace CustomCADs.API.Models.Cads
     {
         [Required(ErrorMessage = RequiredErrorMessage)]
         public IFormFile File { get; set; } = null!;
+        
+        [Required(ErrorMessage = RequiredErrorMessage)]
+        public IFormFile Image { get; set; } = null!;
 
         [Required(ErrorMessage = RequiredErrorMessage)]
         [StringLength(NameMaxLength, MinimumLength = NameMinLength,

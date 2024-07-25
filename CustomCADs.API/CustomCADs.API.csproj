@@ -30,4 +30,8 @@
 		<ProjectReference Include="..\CustomCADs.Core\CustomCADs.Core.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="wwwroot\others\images\" />
+	</ItemGroup>
+
 </Project>
