@@ -26,6 +26,8 @@ import cadDetailsEn from '@/languages/resources/en/pages/private/contributor/cad
 import editCadEn from '@/languages/resources/en/pages/private/contributor/edit-cad.json'
 import uploadCadEn from '@/languages/resources/en/pages/private/contributor/upload-cad.json'
 
+import unvalidatedCadsEn from '@/languages/resources/en/pages/private/designer/contributor-cads.json'
+
 export default () => {
     return {
         translation: {
@@ -45,6 +47,7 @@ export default () => {
                 cadDetails: cadDetailsEn,
                 editCad: editCadEn,
                 uploadCad: uploadCadEn,
+                unvalidatedCads: unvalidatedCadsEn,
             },
             footer: footerEn,
             common: {

@@ -39,7 +39,6 @@ function UserCads() {
         }).catch(e => console.error(e));
 
         fetchCads();
-        navigate("");
     };
 
     return (
