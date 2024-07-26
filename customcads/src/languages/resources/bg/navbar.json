@@ -5,6 +5,8 @@
   "Your 3D Models": "Твоите 3D модели",
   "Upload 3D Model": "Качи 3D модел",
   "Sell us a 3D Model": "Продай ни 3D модел",
-  "Client Orders": "Поръчки на Клиенти",
-  "Contributor 3D Models": "3D Модели на Сътрудници"
+  "Pending Orders": "Чакащи Поръчки",
+  "Begun Orders": "Започнати Поръчки",
+  "Finished Orders": "Завършени Поръчки",
+  "Unchecked 3D Models": "Непроверени 3D Модели"
 }

@@ -36,7 +36,7 @@ function UnvalidatedCads() {
         <>
             <div className="flex flex-col gap-y-8 mb-8">
                 <h1 className="text-4xl text-center text-indigo-950 font-bold">
-                    {t('body.unvalidatedCads.Title')}
+                    {t('body.designerCads.Title')}
                 </h1>
                 <section className="flex flex-wrap justify-center gap-y-8">
                     <QueryBar setQuery={setQuery} />

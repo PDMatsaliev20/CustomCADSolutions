@@ -46,14 +46,22 @@ namespace CustomCADs.API.Controllers
         {
             await cadService.EditStatusAsync(id, status);
             return NoContent();
-        }        
-        
+        }
+
         [HttpGet("Orders")]
         [Consumes("application/json")]
         [Produces("application/json")]
         [ProducesResponseType(Status200OK)]
-        public async Task<ActionResult<OrderExportDTO[]>> OrdersAsync() 
-            => mapper.Map<OrderExportDTO[]>(await orderService.GetAllAsync());
+        public async Task<ActionResult<OrderExportDTO[]>> OrdersAsync(string status)
+        {
+            IEnumerable<OrderModel> models = await orderService.GetAllAsync();
+            
+            IEnumerable<OrderModel> unfinished = models
+                .Where(m => status.Equals(m.Status.ToString(), 
+                    StringComparison.CurrentCultureIgnoreCase));
+
+            return mapper.Map<OrderExportDTO[]>(unfinished);
+        }
 
         [HttpPatch("Orders/Status/{id}")]
         [Consumes("application/json")]

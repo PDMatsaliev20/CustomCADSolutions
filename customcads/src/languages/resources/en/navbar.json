@@ -5,6 +5,8 @@
   "Your 3D Models": "Your 3D Models",
   "Upload 3D Model": "Upload 3D Model",
   "Sell us a 3D Model": "Sell us a 3D Model",
-  "Client Orders": "Client Orders",
-  "Contributor 3D Models":  "Contributor 3D Models"
+  "Pending Orders": "Pending Orders",
+  "Begun Orders": "Begun Orders",
+  "Finished Orders": "Finished Orders",
+  "Unchecked 3D Models": "Unchecked 3D Models"
 }

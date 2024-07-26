@@ -26,7 +26,8 @@ import cadDetailsBg from '@/languages/resources/bg/pages/private/contributor/cad
 import editCadBg from '@/languages/resources/bg/pages/private/contributor/edit-cad.json'
 import uploadCadBg from '@/languages/resources/bg/pages/private/contributor/upload-cad.json'
 
-import unvalidatedCadsBg from '@/languages/resources/bg/pages/private/designer/contributor-cads.json'
+import designerCadsBg from '@/languages/resources/bg/pages/private/designer/cads.json'
+import designerOrdersBg from '@/languages/resources/bg/pages/private/designer/orders.json'
 
 export default () => {
     return {
@@ -47,7 +48,8 @@ export default () => {
                 cadDetails: cadDetailsBg,
                 editCad: editCadBg,
                 uploadCad: uploadCadBg,
-                unvalidatedCads: unvalidatedCadsBg,
+                designerCads: designerCadsBg,
+                designerOrders: designerOrdersBg,
             },
             footer: footerBg,
             common: {
