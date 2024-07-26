@@ -10,8 +10,7 @@ namespace CustomCADs.Core.Models
         public string? SearchCreator { get; set; }
         public int CurrentPage { get; set; } = 1;
         public int CadsPerPage { get; set; } = 3;
-        public bool Validated { get; set; } = true;
-        public bool Unvalidated { get; set; } = true;
+        public CadStatus? Status { get; set; }
         public CadSorting Sorting { get; set; }
     }
 }

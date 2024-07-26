@@ -76,37 +76,30 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
                 message: string.Format(IncorrectCountByFilter, "LikeCreator"));
         }
 
-        [TestCase(false, false)]
-        [TestCase(false, true)]
-        [TestCase(true, false)]
-        [TestCase(true, true)]
-        public async Task Test_ReturnsCorrectlyWithValidationFilters(bool validated, bool unvalidated)
+        [TestCase(CadStatus.Unchecked)]
+        [TestCase(CadStatus.Validated)]
+        [TestCase(CadStatus.Reported)]
+        [TestCase(CadStatus.Banned)]
+        [TestCase(null)]
+        public async Task Test_ReturnsCorrectlyWithStatusFilters(CadStatus? status)
         {
             int expectedCount = 0;
-            if (validated ^ unvalidated)
+            if (status != null)
             {
-                if (validated)
-                {
-                    expectedCount = cads.Count(c => c.IsValidated);
-                }
-
-                if (unvalidated)
-                {
-                    expectedCount = cads.Count(c => !c.IsValidated);
-                }
+                expectedCount = cads.Count(c => c.Status == status);
             }
-            else if (validated && unvalidated)
+            else
             {
                 expectedCount = cads.Length;
             }
 
-            CadQueryModel query = new() { Validated = validated, Unvalidated = unvalidated };
+            CadQueryModel query = new() { Status = status };
 
             CadQueryResult result = await service.GetAllAsync(query);
             int actualCount = result.Count;
 
             Assert.That(actualCount, Is.EqualTo(expectedCount),
-                message: string.Format(IncorrectCountByFilter, "Validated and Unvalidated"));
+                message: string.Format(IncorrectCountByFilter, "Status"));
         }
 
         [TestCase(1, 3)]

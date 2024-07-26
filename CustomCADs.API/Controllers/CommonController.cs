@@ -28,22 +28,19 @@ namespace CustomCADs.API.Controllers
         [HttpGet("CadSortings")]
         [Produces("application/json")]
         [ProducesResponseType(200)]
-        public ActionResult<CadSortingDTO[]> GetCadSortingsAsync() => mapper.Map<CadSortingDTO[]>(Enum.GetValues<CadSorting>());
+        public ActionResult<CadSortingDTO[]> GetCadSortingsAsync() 
+            => mapper.Map<CadSortingDTO[]>(Enum.GetValues<CadSorting>());
 
-        [HttpGet("CadSortings/{id}")]
+        [HttpGet("CadStatuses")]
         [Produces("application/json")]
         [ProducesResponseType(200)]
-        [ProducesResponseType(404)]
-        public ActionResult<CadSortingDTO> GetCadSortingAsync(int id)
-        {
-            try
-            {
-                return mapper.Map<CadSortingDTO>((CadSorting)id);
-            }
-            catch (KeyNotFoundException)
-            {
-                return NotFound();
-            }
-        }
+        public ActionResult<CadStatusDTO[]> GetCadStatusesAsync()
+            => mapper.Map<CadStatusDTO[]>(Enum.GetValues<CadStatus>());
+
+        [HttpGet("OrderStatuses")]
+        [Produces("application/json")]
+        [ProducesResponseType(200)]
+        public ActionResult<OrderStatusDTO[]> GetOrderStatusesAsync()
+            => mapper.Map<OrderStatusDTO[]>(Enum.GetValues<OrderStatus>());
     }
 }

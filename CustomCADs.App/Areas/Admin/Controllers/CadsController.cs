@@ -30,8 +30,6 @@ namespace CustomCADs.App.Areas.Admin.Controllers
                 Sorting = query.Sorting,
                 CurrentPage = query.CurrentPage,
                 CadsPerPage = query.CadsPerPage,
-                Validated = true,
-                Unvalidated = true,
             });
             return View(mapper.Map<CadViewModel[]>(result.Cads));
         }

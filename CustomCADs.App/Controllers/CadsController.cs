@@ -51,8 +51,6 @@ namespace CustomCADs.App.Controllers
                 CurrentPage = query.CurrentPage,
                 CadsPerPage = query.CadsPerPage,
                 Creator = User.Identity!.Name,
-                Validated = true,
-                Unvalidated = true,
             });
 
             query.Categories = await categoryService.GetAllNamesAsync();
@@ -92,8 +90,10 @@ namespace CustomCADs.App.Controllers
 
             CadModel model = mapper.Map<CadModel>(input);
             model.CreatorId = User.GetId();
-            model.IsValidated = User.IsInRole(Designer);
             model.CreationDate = DateTime.Now;
+            model.Status = User.IsInRole(Designer)
+                ? CadStatus.Validated 
+                : CadStatus.Unchecked;
 
             try
             {

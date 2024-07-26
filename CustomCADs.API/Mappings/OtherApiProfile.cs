@@ -2,7 +2,6 @@
 using CustomCADs.API.Models.Others;
 using CustomCADs.Core.Models;
 using CustomCADs.Domain.Entities.Enums;
-using CustomCADs.Domain.Entities.Identity;
 
 namespace CustomCADs.API.Mappings
 {
@@ -11,20 +10,23 @@ namespace CustomCADs.API.Mappings
         public OtherApiProfile()
         {
             CategoryToDTO();
-            RoleToDTO();
-            UserToDTO();
-            SortingToDTO();
+            CadSortingToDTO();
+            CadStatusToDTO();
+            OrderStatusToDTO();
         }
+
         private void CategoryToDTO() => CreateMap<CategoryModel, CategoryDTO>();
 
-        private void RoleToDTO() => CreateMap<AppRole, RoleDTO>();
-        
-        private void UserToDTO() => CreateMap<AppUser, UserDTO>()
-            .ForMember(dto => dto.Username, opt => opt.MapFrom(user => user.UserName))
-            .ForMember(dto => dto.Role, opt => opt.Ignore());
-        
-        private void SortingToDTO() => CreateMap<CadSorting, CadSortingDTO>()
+        private void CadSortingToDTO() => CreateMap<CadSorting, CadSortingDTO>()
             .ForMember(dto => dto.Name, opt => opt.MapFrom(sort => sort.ToString()))
             .ForMember(dto => dto.Value, opt => opt.MapFrom(sort => sort));
+        
+        private void CadStatusToDTO() => CreateMap<CadStatus, CadStatusDTO>()
+            .ForMember(dto => dto.Name, opt => opt.MapFrom(status => status.ToString()))
+            .ForMember(dto => dto.Value, opt => opt.MapFrom(status => status));
+
+        private void OrderStatusToDTO() => CreateMap<OrderStatus, OrderStatusDTO>()
+            .ForMember(dto => dto.Name, opt => opt.MapFrom(status => status.ToString()))
+            .ForMember(dto => dto.Value, opt => opt.MapFrom(status => status));
     }
 }

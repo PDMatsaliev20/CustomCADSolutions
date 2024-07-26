@@ -1,4 +1,5 @@
-﻿using CustomCADs.Domain.Entities.Identity;
+﻿using CustomCADs.Domain.Entities.Enums;
+using CustomCADs.Domain.Entities.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -40,8 +41,8 @@ namespace CustomCADs.Domain.Entities
         public string? CadPath { get; set; }
 
         [Required]
-        [Comment("Is 3D Model validated")]
-        public bool IsValidated { get; set; }
+        [Comment("3D Model Status")]
+        public CadStatus Status { get; set; }
 
         [Required]
         [Range(CadConstants.PriceMin, CadConstants.PriceMax)]

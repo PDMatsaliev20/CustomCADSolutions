@@ -33,8 +33,6 @@ namespace CustomCADs.App.Areas.Designer.Controllers
                 Sorting = query.Sorting,
                 CurrentPage = query.CurrentPage,
                 CadsPerPage = query.CadsPerPage,
-                Validated = true,
-                Unvalidated = true,
             });
 
             query.Categories = await categoryService.GetAllNamesAsync();
@@ -57,8 +55,7 @@ namespace CustomCADs.App.Areas.Designer.Controllers
                 Sorting = inputQuery.Sorting,
                 CurrentPage = inputQuery.CurrentPage,
                 CadsPerPage = inputQuery.CadsPerPage,
-                Validated = false,
-                Unvalidated = true,
+                Status = CadStatus.Unchecked,
             };
             CadQueryResult result = await cadService.GetAllAsync(query);
 
@@ -75,7 +72,7 @@ namespace CustomCADs.App.Areas.Designer.Controllers
         {
             CadModel model = await cadService.GetByIdAsync(cadId);
 
-            model.IsValidated = true;
+            model.Status = CadStatus.Validated;
             await cadService.EditAsync(cadId, model);
 
             return RedirectToAction(nameof(Submitted));

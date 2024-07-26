@@ -40,24 +40,9 @@ namespace CustomCADs.Core.Services
                 allCads = allCads.Where(c => c.Creator!.UserName == query.Creator);
             }
 
-            if (query.Validated ^ query.Unvalidated)
+            if (query.Status != null)
             {
-                if (query.Validated)
-                {
-                    allCads = allCads.Where(c => c.IsValidated);
-                }
-
-                if (query.Unvalidated)
-                {
-                    allCads = allCads.Where(c => !c.IsValidated);
-                }
-            }
-            else
-            {
-                if (!(query.Validated && query.Unvalidated))
-                {
-                    allCads = allCads.Take(0);
-                }
+                allCads = allCads.Where(c => c.Status == query.Status);
             }
 
             if (!string.IsNullOrWhiteSpace(query.SearchName))
@@ -166,12 +151,12 @@ namespace CustomCADs.Core.Services
             await repository.SaveChangesAsync();
         }
         
-        public async Task EditIsValidatedAsync(int id, bool isValidated)
+        public async Task EditStatusAsync(int id, CadStatus status)
         {
             Cad cad = await repository.GetByIdAsync<Cad>(id)
                 ?? throw new KeyNotFoundException("Model doesn't exist!");
 
-            cad.IsValidated = isValidated;
+            cad.Status = status;
             await repository.SaveChangesAsync();
         }
 

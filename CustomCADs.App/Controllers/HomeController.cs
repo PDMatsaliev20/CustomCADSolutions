@@ -53,8 +53,7 @@ namespace CustomCADs.App.Controllers
                 Sorting = query.Sorting,
                 CurrentPage = query.CurrentPage,
                 CadsPerPage = query.CadsPerPage,
-                Validated = true,
-                Unvalidated = false,
+                Status = CadStatus.Validated,
             });
 
             query.Categories = await categoryService.GetAllNamesAsync();

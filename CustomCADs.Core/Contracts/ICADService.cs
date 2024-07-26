@@ -1,4 +1,5 @@
 ﻿using CustomCADs.Core.Models;
+using CustomCADs.Domain.Entities.Enums;
 
 namespace CustomCADs.Core.Contracts
 {
@@ -59,12 +60,12 @@ namespace CustomCADs.Core.Contracts
         Task EditAsync(int id, CadModel model);
 
         /// <summary>
-        ///     Overwrites Cad's IsValidated property with the given.
+        ///     Overwrites Cad's Status property with the given.
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="isValidated"></param>
+        /// <param name="status"></param>
         /// <returns>A Task object that represents the asynchronous Save Changes operation after the edit.</returns>
-        Task EditIsValidatedAsync(int id, bool isValidated);
+        Task EditStatusAsync(int id, CadStatus status);
 
         /// <summary>
         ///     Reverts all related Orders to Pending, sets their CadId to null and and deletes the Cad with the given id.

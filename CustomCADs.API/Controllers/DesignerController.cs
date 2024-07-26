@@ -22,6 +22,7 @@ namespace CustomCADs.API.Controllers
         {
             cfg.AddProfile<OrderApiProfile>();
             cfg.AddProfile<CadApiProfile>();
+            cfg.AddProfile<OtherApiProfile>();
         }).CreateMapper();
 
         [HttpGet("Cads")]
@@ -31,20 +32,19 @@ namespace CustomCADs.API.Controllers
         public async Task<ActionResult<CadQueryResultDTO>> CadsAsync([FromQuery] CadQueryDTO dto)
         {
             CadQueryModel query = mapper.Map<CadQueryModel>(dto);
-            query.Unvalidated = true;
-            query.Validated = false;
+            query.Status = CadStatus.Unchecked;
 
             CadQueryResult result = await cadService.GetAllAsync(query);
             return mapper.Map<CadQueryResultDTO>(result);
         }
 
-        [HttpPatch("Cads/Validate/{id}")]
+        [HttpPatch("Cads/Status/{id}")]
         [Consumes("application/json")]
         [Produces("application/json")]
         [ProducesResponseType(Status204NoContent)]
-        public async Task<ActionResult> ValidateCadAsync(int id)
+        public async Task<ActionResult> UpdateCadStatusCadAsync(int id, CadStatus status)
         {
-            await cadService.EditIsValidatedAsync(id, true);
+            await cadService.EditStatusAsync(id, status);
             return NoContent();
         }        
         
@@ -59,7 +59,7 @@ namespace CustomCADs.API.Controllers
         [Consumes("application/json")]
         [Produces("application/json")]
         [ProducesResponseType(Status204NoContent)]
-        public async Task<ActionResult> UpdateStatusAsync(int id, OrderStatus status)
+        public async Task<ActionResult> UpdateOrderStatusAsync(int id, OrderStatus status)
         {
             await orderService.EditStatusAsync(id, status);
             return NoContent();

@@ -18,7 +18,7 @@ namespace CustomCADs.API.Controllers
     public class AdminController(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager) : ControllerBase
     {
         private readonly IMapper mapper = new MapperConfiguration(opt
-                => opt.AddProfile<OtherApiProfile>())
+                => opt.AddProfile<IdentityApiProfile>())
             .CreateMapper();
 
         [HttpGet("Roles")]

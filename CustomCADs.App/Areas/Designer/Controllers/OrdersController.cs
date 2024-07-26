@@ -70,7 +70,7 @@ namespace CustomCADs.App.Areas.Designer.Controllers
                 Price = cad.Price,
                 CategoryId = cad.CategoryId,
                 CadExtension = cad.CadFile.GetFileExtension(),
-                IsValidated = true,
+                Status = CadStatus.Validated,
                 CreatorId = User.GetId(),
                 CreationDate = DateTime.Now,
             });

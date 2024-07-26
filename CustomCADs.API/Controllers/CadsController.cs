@@ -5,6 +5,7 @@ using CustomCADs.API.Models.Cads;
 using CustomCADs.API.Models.Queries;
 using CustomCADs.Core.Contracts;
 using CustomCADs.Core.Models;
+using CustomCADs.Domain.Entities.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.JsonPatch.Operations;
@@ -68,7 +69,9 @@ namespace CustomCADs.API.Controllers
             CadModel model = mapper.Map<CadModel>(import);
             model.CreationDate = DateTime.Now;
             model.CreatorId = User.GetId();
-            model.IsValidated = User.IsInRole(Designer);
+            model.Status = User.IsInRole(Designer) 
+                ? CadStatus.Validated 
+                : CadStatus.Unchecked;
             
             try
             {

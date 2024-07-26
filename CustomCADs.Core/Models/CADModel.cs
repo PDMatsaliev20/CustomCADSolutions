@@ -1,4 +1,5 @@
-﻿using CustomCADs.Domain.Entities.Identity;
+﻿using CustomCADs.Domain.Entities.Enums;
+using CustomCADs.Domain.Entities.Identity;
 using System.ComponentModel.DataAnnotations;
 using static CustomCADs.Domain.DataConstants;
 
@@ -30,7 +31,8 @@ namespace CustomCADs.Core.Models
         [StringLength(CadConstants.DescriptionMaxLength, MinimumLength = CadConstants.DescriptionMinLength, ErrorMessage = LengthErrorMessage)]
         public string Description { get; set; } = null!;
 
-        public bool IsValidated { get; set; }
+        [Required(ErrorMessage = RequiredErrorMessage)]
+        public CadStatus Status { get; set; }
 
         [Required(ErrorMessage = RequiredErrorMessage)]
         [Range(CadConstants.PriceMin, CadConstants.PriceMax)]

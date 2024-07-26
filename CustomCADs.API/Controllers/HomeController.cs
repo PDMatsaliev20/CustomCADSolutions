@@ -4,6 +4,7 @@ using CustomCADs.API.Models.Cads;
 using CustomCADs.API.Models.Queries;
 using CustomCADs.Core.Contracts;
 using CustomCADs.Core.Models;
+using CustomCADs.Domain.Entities.Enums;
 using Microsoft.AspNetCore.Mvc;
 using static Microsoft.AspNetCore.Http.StatusCodes;
 
@@ -41,6 +42,8 @@ namespace CustomCADs.API.Controllers
             try
             {
                 CadQueryModel query = mapper.Map<CadQueryModel>(dto);
+                query.Status = CadStatus.Validated;
+
                 CadQueryResult result = await cadService.GetAllAsync(query);
                 return mapper.Map<CadQueryResultDTO>(result);
             }

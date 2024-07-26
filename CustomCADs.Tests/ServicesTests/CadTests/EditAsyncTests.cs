@@ -1,4 +1,5 @@
 ﻿using CustomCADs.Core.Models;
+using CustomCADs.Domain.Entities.Enums;
 using static CustomCADs.Core.TestsErrorMessages;
 
 namespace CustomCADs.Tests.ServicesTests.CadTests
@@ -11,7 +12,7 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
         {
             CadModel expectedCad = await service.GetByIdAsync(id);
             expectedCad.Name = "EditedCad";
-            expectedCad.IsValidated = !expectedCad.IsValidated;
+            expectedCad.Status = CadStatus.Banned;
             expectedCad.Price++;
             expectedCad.CategoryId = 2;
             expectedCad.Coords = [100, 100, 100];
@@ -25,8 +26,8 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
                 Assert.That(actualCad.Name, Is.EqualTo(expectedCad.Name ),
                     string.Format(DoesNotEditEnough, "Name"));
 
-                Assert.That(actualCad.IsValidated, Is.EqualTo(expectedCad.IsValidated ),
-                    string.Format(DoesNotEditEnough, "IsValidated"));
+                Assert.That(actualCad.Status, Is.EqualTo(expectedCad.Status),
+                    string.Format(DoesNotEditEnough, "Status"));
                 
                 Assert.That(actualCad.Price, Is.EqualTo(expectedCad.Price),
                     string.Format(DoesNotEditEnough, "Price"));
