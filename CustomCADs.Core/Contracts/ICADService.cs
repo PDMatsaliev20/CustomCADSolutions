@@ -59,6 +59,14 @@ namespace CustomCADs.Core.Contracts
         Task EditAsync(int id, CadModel model);
 
         /// <summary>
+        ///     Overwrites Cad's IsValidated property with the given.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="isValidated"></param>
+        /// <returns>A Task object that represents the asynchronous Save Changes operation after the edit.</returns>
+        Task EditIsValidatedAsync(int id, bool isValidated);
+
+        /// <summary>
         ///     Reverts all related Orders to Pending, sets their CadId to null and and deletes the Cad with the given id.
         /// </summary>
         /// <param name="id"></param>

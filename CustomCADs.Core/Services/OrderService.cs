@@ -4,6 +4,7 @@ using CustomCADs.Core.Mappings;
 using CustomCADs.Core.Models;
 using CustomCADs.Domain;
 using CustomCADs.Domain.Entities;
+using CustomCADs.Domain.Entities.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.ComponentModel.DataAnnotations;
@@ -69,10 +70,18 @@ namespace CustomCADs.Core.Services
 
             order.Name = model.Name;
             order.Description = model.Description;
-            order.Status = model.Status;
             order.ShouldShow = model.ShouldShow;
             order.CategoryId = model.CategoryId;
 
+            await repository.SaveChangesAsync();
+        }
+
+        public async Task EditStatusAsync(int id, OrderStatus status)
+        {
+            Order order = await repository.GetByIdAsync<Order>(id)
+                ?? throw new KeyNotFoundException();
+
+            order.Status = status;
             await repository.SaveChangesAsync();
         }
         

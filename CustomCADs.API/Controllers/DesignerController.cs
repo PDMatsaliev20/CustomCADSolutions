@@ -1,0 +1,68 @@
+﻿using AutoMapper;
+using CustomCADs.API.Mappings;
+using CustomCADs.API.Models.Orders;
+using CustomCADs.API.Models.Queries;
+using CustomCADs.Core.Contracts;
+using CustomCADs.Core.Models;
+using CustomCADs.Domain.Entities.Enums;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using static CustomCADs.Domain.DataConstants.RoleConstants;
+
+namespace CustomCADs.API.Controllers
+{
+    using static StatusCodes;
+
+    [ApiController]
+    [Route("API/[controller]")]
+    [Authorize(Designer)]
+    public class DesignerController(ICadService cadService, IOrderService orderService) : ControllerBase
+    {
+        private readonly IMapper mapper = new MapperConfiguration(cfg =>
+        {
+            cfg.AddProfile<OrderApiProfile>();
+            cfg.AddProfile<CadApiProfile>();
+        }).CreateMapper();
+
+        [HttpGet("Cads")]
+        [Consumes("application/json")]
+        [Produces("application/json")]
+        [ProducesResponseType(Status200OK)]
+        public async Task<ActionResult<CadQueryResultDTO>> CadsAsync([FromQuery] CadQueryDTO dto)
+        {
+            CadQueryModel query = mapper.Map<CadQueryModel>(dto);
+            query.Unvalidated = true;
+            query.Validated = false;
+
+            CadQueryResult result = await cadService.GetAllAsync(query);
+            return mapper.Map<CadQueryResultDTO>(result);
+        }
+
+        [HttpPatch("Cads/Validate/{id}")]
+        [Consumes("application/json")]
+        [Produces("application/json")]
+        [ProducesResponseType(Status204NoContent)]
+        public async Task<ActionResult> ValidateCadAsync(int id)
+        {
+            await cadService.EditIsValidatedAsync(id, true);
+            return NoContent();
+        }        
+        
+        [HttpGet("Orders")]
+        [Consumes("application/json")]
+        [Produces("application/json")]
+        [ProducesResponseType(Status200OK)]
+        public async Task<ActionResult<OrderExportDTO[]>> OrdersAsync() 
+            => mapper.Map<OrderExportDTO[]>(await orderService.GetAllAsync());
+
+        [HttpPatch("Orders/Status/{id}")]
+        [Consumes("application/json")]
+        [Produces("application/json")]
+        [ProducesResponseType(Status204NoContent)]
+        public async Task<ActionResult> UpdateStatusAsync(int id, OrderStatus status)
+        {
+            await orderService.EditStatusAsync(id, status);
+            return NoContent();
+        }
+    }
+}

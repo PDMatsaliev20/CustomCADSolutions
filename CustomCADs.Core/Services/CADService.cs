@@ -153,7 +153,6 @@ namespace CustomCADs.Core.Services
 
             cad.Name = model.Name;
             cad.Description = model.Description;
-            cad.IsValidated = model.IsValidated;
             cad.Price = model.Price;
             cad.CategoryId = model.CategoryId;
 
@@ -164,6 +163,15 @@ namespace CustomCADs.Core.Services
             cad.PanY = model.PanCoords[1];
             cad.PanZ = model.PanCoords[2];
 
+            await repository.SaveChangesAsync();
+        }
+        
+        public async Task EditIsValidatedAsync(int id, bool isValidated)
+        {
+            Cad cad = await repository.GetByIdAsync<Cad>(id)
+                ?? throw new KeyNotFoundException("Model doesn't exist!");
+
+            cad.IsValidated = isValidated;
             await repository.SaveChangesAsync();
         }
 
