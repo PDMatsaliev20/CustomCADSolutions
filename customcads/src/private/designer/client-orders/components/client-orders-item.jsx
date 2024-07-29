@@ -1,10 +1,25 @@
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
-function Order({ order, onCompleteOrder }) {
+function Order({ order, primaryBtn, onPrimaryBtnClick, secondaryBtn, onSecondaryBtnClick }) {
     const { t } = useTranslation();
+    const navigate = useNavigate();
     const machineReadableDateTime = order.orderDate && order.orderDate.replaceAll('.', '-');
+
+    const handlePrimaryBtnClick = async () => {
+        if (confirm(t('u sure?'))) {
+            await onPrimaryBtnClick(order.id);
+            navigate('');
+        }
+    };
     
+    const handleSecondaryBtnClick = async () => {
+        if (confirm(t('u sure?'))) {
+            await onSecondaryBtnClick(order.id);
+            navigate('');
+        }
+    };
+
     return (
         <div className="bg-indigo-200 px-4 py-4 rounded-lg flex flex-col gap-y-2 shadow-lg shadow-indigo-800">
             <h3 className="text-2xl text-indigo-950 text-center font-semibold">{order.name}</h3>
@@ -12,14 +27,14 @@ function Order({ order, onCompleteOrder }) {
             <section className="py-3 px-2 flex flex-col gap-y-6">
                 <p className="text-indigo-900 text-center text-lg truncate">{order.description}</p>
                 <div className="min-h-10 flex justify-around text-indigo-50 font-bold">
-                    <Link to={`${order.id}`}
+                    <button onClick={handlePrimaryBtnClick}
                         className="basis-5/12 bg-indigo-700 border border-indigo-500 p-2 rounded text-center text-indigo-50 hover:opacity-70 hover:border-transparent"
                     >
-                        
-                    </Link>
-                    <button onClick={() => { } }
+                        {primaryBtn}
+                    </button>
+                    <button onClick={handleSecondaryBtnClick}
                         className="basis-5/12 bg-indigo-100 border border-indigo-600 p-2 rounded text-center text-indigo-950 hover:bg-rose-500 hover:border-transparent hover:text-indigo-50">
-                        
+                        {secondaryBtn}
                     </button>
                 </div>
             </section>
