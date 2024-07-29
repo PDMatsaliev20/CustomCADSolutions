@@ -26,8 +26,6 @@ namespace CustomCADs.API.Controllers
         }).CreateMapper();
 
         [HttpGet("Cads")]
-        [Consumes("application/json")]
-        [Produces("application/json")]
         [ProducesResponseType(Status200OK)]
         public async Task<ActionResult<CadQueryResultDTO>> CadsAsync([FromQuery] CadQueryDTO dto)
         {
@@ -39,18 +37,14 @@ namespace CustomCADs.API.Controllers
         }
 
         [HttpPatch("Cads/Status/{id}")]
-        [Consumes("application/json")]
-        [Produces("application/json")]
         [ProducesResponseType(Status204NoContent)]
-        public async Task<ActionResult> UpdateCadStatusCadAsync(int id, CadStatus status)
+        public async Task<ActionResult> UpdateCadStatusCadAsync(int id, string status)
         {
-            await cadService.EditStatusAsync(id, status);
+            await cadService.EditStatusAsync(id, Enum.Parse<CadStatus>(status));
             return NoContent();
         }
 
         [HttpGet("Orders")]
-        [Consumes("application/json")]
-        [Produces("application/json")]
         [ProducesResponseType(Status200OK)]
         public async Task<ActionResult<OrderExportDTO[]>> OrdersAsync(string status)
         {
@@ -64,12 +58,10 @@ namespace CustomCADs.API.Controllers
         }
 
         [HttpPatch("Orders/Status/{id}")]
-        [Consumes("application/json")]
-        [Produces("application/json")]
         [ProducesResponseType(Status204NoContent)]
-        public async Task<ActionResult> UpdateOrderStatusAsync(int id, OrderStatus status)
+        public async Task<ActionResult> UpdateOrderStatusAsync(int id, string status)
         {
-            await orderService.EditStatusAsync(id, status);
+            await orderService.EditStatusAsync(id, Enum.Parse<OrderStatus>(status));
             return NoContent();
         }
     }

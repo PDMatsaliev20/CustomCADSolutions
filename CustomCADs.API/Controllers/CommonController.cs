@@ -28,19 +28,7 @@ namespace CustomCADs.API.Controllers
         [HttpGet("CadSortings")]
         [Produces("application/json")]
         [ProducesResponseType(200)]
-        public ActionResult<CadSortingDTO[]> GetCadSortingsAsync() 
-            => mapper.Map<CadSortingDTO[]>(Enum.GetValues<CadSorting>());
-
-        [HttpGet("CadStatuses")]
-        [Produces("application/json")]
-        [ProducesResponseType(200)]
-        public ActionResult<CadStatusDTO[]> GetCadStatusesAsync()
-            => mapper.Map<CadStatusDTO[]>(Enum.GetValues<CadStatus>());
-
-        [HttpGet("OrderStatuses")]
-        [Produces("application/json")]
-        [ProducesResponseType(200)]
-        public ActionResult<OrderStatusDTO[]> GetOrderStatusesAsync()
-            => mapper.Map<OrderStatusDTO[]>(Enum.GetValues<OrderStatus>());
+        public ActionResult<string[]> GetCadSortingsAsync() 
+            => Enum.GetNames<CadSorting>();
     }
 }

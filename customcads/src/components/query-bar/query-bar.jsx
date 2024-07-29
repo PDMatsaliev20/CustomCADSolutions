@@ -10,7 +10,7 @@ function QueryBar({ setQuery }) {
 
     const [sortings, setSortings] = useState([]);
     const [categories, setCategories] = useState([]);
-    const [copyQuery, setCopyQuery] = useState({ searchName: '', category: '', sorting: 1 });
+    const [copyQuery, setCopyQuery] = useState({ searchName: '', category: '', sorting: 'Newest' });
 
     useEffect(() => {
         getCategories();
@@ -60,7 +60,7 @@ function QueryBar({ setQuery }) {
                             onInput={handleInput}
                             items={sortings}
                             langPath="common.sortings."
-                            mapFunction={item => <option key={item.value} value={item.value}>{t(`common.sortings.${item.name}`)}</option>}
+                            mapFunction={item => <option key={item} value={item}>{t(`common.sortings.${item}`)}</option>}
                         />
                     </div>
                     <button className="hidden bg-indigo-200 py-1 px-4 rounded">{t('body.cads.Search')}</button>
