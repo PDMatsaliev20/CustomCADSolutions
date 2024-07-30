@@ -1,7 +1,7 @@
 import AuthGuard from '../auth-guard'
-import ClientOrders from '@/private/designer/client-orders/client-orders'
-import CompleteOrder from '@/private/designer/client-orders/complete-order'
-import ContributorCads from '@/private/designer/contributor-cads/contributor-cads'
+import ClientOrders from '@/private/designer/client-orders/orders/orders'
+import CompleteOrder from '@/private/designer/client-orders/complete/complete-order'
+import ContributorCads from '@/private/designer/contributor-cads/cads'
 import axios from 'axios'
 
 export default {
@@ -26,7 +26,7 @@ export default {
             }
         },
         {
-            path: '/designer/orders/:status/:id',
+            path: '/designer/orders/complete/:id',
             element: <CompleteOrder />
         },
     ]

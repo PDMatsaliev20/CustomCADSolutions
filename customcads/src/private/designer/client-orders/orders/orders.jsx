@@ -1,10 +1,11 @@
-import Order from './components/client-orders-item'
-import { useLoaderData } from 'react-router-dom'
+import Order from './components/orders-item'
+import { useLoaderData, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import axios from 'axios'
 
 function AllOrders() {
     const { t } = useTranslation();
+    const navigate = useNavigate();
     const { status, loadedOrders } = useLoaderData();
     let primaryBtn, secondaryBtn, onPrimaryBtnClick, onSecondaryBtnClick;
 
@@ -24,10 +25,7 @@ function AllOrders() {
             break;
         case 'begun': 
             primaryBtn = t('Complete');
-            onPrimaryBtnClick = async (id) => await axios
-                .patch(`https://localhost:7127/API/Designer/Orders/Status/${id}?status=Finished`, {},
-                    { withCredentials: true })
-                .catch(e => console.error(e));
+            onPrimaryBtnClick = async (id) => navigate(`/designer/orders/complete/${id}`);
 
             secondaryBtn = t('Cancel');
             onSecondaryBtnClick = async (id) => await axios

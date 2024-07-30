@@ -1,4 +1,4 @@
-import ContributorCadItem from './components/contributor-cads-item'
+import ContributorCadItem from './components/cads-item'
 import useQueryConverter from '@/hooks/useQueryConverter'
 import QueryBar from '@/components/query-bar/query-bar'
 import { useTranslation } from 'react-i18next'

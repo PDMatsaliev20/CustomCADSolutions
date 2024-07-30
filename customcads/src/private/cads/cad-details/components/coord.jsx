@@ -4,7 +4,7 @@ function Coord({ type, name, value, relatedValue, setValue, setRelatedValue }) {
     const intervalRef = useRef(null);
     const timeoutRef = useRef(null);
 
-    const [intervalTime, setIntervalTime] = useState(150);
+    const [intervalTime, setIntervalTime] = useState(50);
 
     const handlePlusClick = () => {
         value++;

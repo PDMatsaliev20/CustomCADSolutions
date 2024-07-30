@@ -1,8 +1,8 @@
 import App from '@/app'
 import publicRoutes from './users/public'
 import guestRoutes from './users/guest'
-import clientRoutes from './users/client'
-import contributorRoutes from './users/contributor'
+import clientRoutes from './users/orders'
+import contributorRoutes from './users/cads'
 import designerRoutes from './users/designer'
 
 const userRoutes = {

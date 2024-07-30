@@ -7,12 +7,10 @@ function Order({ order, primaryBtn, onPrimaryBtnClick, secondaryBtn, onSecondary
     const machineReadableDateTime = order.orderDate && order.orderDate.replaceAll('.', '-');
 
     const handlePrimaryBtnClick = async () => {
-        if (confirm(t('u sure?'))) {
-            await onPrimaryBtnClick(order.id);
-            navigate('');
-        }
+        await onPrimaryBtnClick(order.id);
+        navigate('');
     };
-    
+
     const handleSecondaryBtnClick = async () => {
         if (confirm(t('u sure?'))) {
             await onSecondaryBtnClick(order.id);
