@@ -17,14 +17,14 @@ import chooseRoleBg from '@/languages/resources/bg/pages/public/choose-role.json
 import registerBg from '@/languages/resources/bg/pages/public/register.json'
 import loginBg from '@/languages/resources/bg/pages/public/login.json'
 
-import ordersBg from '@/languages/resources/bg/pages/private/client/user-orders.json'
-import ordersDetailsBg from '@/languages/resources/bg/pages/private/client/order-details.json'
-import customOrderBg from '@/languages/resources/bg/pages/private/client/custom-order.json'
+import ordersBg from '@/languages/resources/bg/pages/private/orders/user-orders.json'
+import ordersDetailsBg from '@/languages/resources/bg/pages/private/orders/order-details.json'
+import customOrderBg from '@/languages/resources/bg/pages/private/orders/custom-order.json'
 
-import cadsBg from '@/languages/resources/bg/pages/private/contributor/user-cads.json'
-import cadDetailsBg from '@/languages/resources/bg/pages/private/contributor/cad-details.json'
-import editCadBg from '@/languages/resources/bg/pages/private/contributor/edit-cad.json'
-import uploadCadBg from '@/languages/resources/bg/pages/private/contributor/upload-cad.json'
+import cadsBg from '@/languages/resources/bg/pages/private/cads/user-cads.json'
+import cadDetailsBg from '@/languages/resources/bg/pages/private/cads/cad-details.json'
+import editCadBg from '@/languages/resources/bg/pages/private/cads/edit-cad.json'
+import uploadCadBg from '@/languages/resources/bg/pages/private/cads/upload-cad.json'
 
 import designerCadsBg from '@/languages/resources/bg/pages/private/designer/cads.json'
 import designerOrdersBg from '@/languages/resources/bg/pages/private/designer/orders.json'

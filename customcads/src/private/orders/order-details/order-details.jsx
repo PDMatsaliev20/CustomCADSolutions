@@ -19,7 +19,7 @@ function OrderDetails() {
             setCategories(loadedCategories);
         } else {
             const { id } = categories.find(c => c.name === loadedOrder.category);
-            
+
             const fetchedOrder = { ...loadedOrder, categoryId: id.toString() };
 
             setOriginalOrder(fetchedOrder);
@@ -28,6 +28,10 @@ function OrderDetails() {
     }, [categories]);
 
     const handleInput = (e) => {
+        if (order.status !== 'Pending') {
+            alert(t('body.orderDetails.Warning'));
+            return;
+        }
         const newOrder = { ...order, [e.target.name]: e.target.value.trim() };
         setOrder(prevOrder => ({
             ...prevOrder,
@@ -35,7 +39,7 @@ function OrderDetails() {
         }));
 
         if (JSON.stringify(originalOrder) !== JSON.stringify(newOrder)) {
-            setIsEditing(true);
+                setIsEditing(true);
         } else {
             setIsEditing(false);
         }
@@ -63,14 +67,21 @@ function OrderDetails() {
                     <div className="flex flex-wrap gap-y-8 px-8 py-4 bg-indigo-500 rounded-md border-2 border-indigo-700 shadow-lg shadow-indigo-900">
                         <header className="basis-full">
                             <div className="flex items-center justify-around">
-                                <select name="categoryId" value={order.categoryId} onChange={handleInput}
+                                <select
+                                    name="categoryId"
+                                    value={order.categoryId}
+                                    onChange={handleInput}
                                     className="bg-indigo-200 text-indigo-700 px-3 py-3 rounded-xl font-bold focus:outline-none border-2 border-indigo-400 shadow-lg shadow-indigo-900"
                                 >
-                                    {
-                                        categories.map(category => <option key={category.id} value={category.id} className="bg-indigo-50" >{t(`common.categories.${category.name}`)}</option>)
-                                    }
+                                    {categories.map(category =>
+                                        <option key={category.id} value={category.id} className="bg-indigo-50">
+                                            {t(`common.categories.${category.name}`)}
+                                        </option>)}
                                 </select>
-                                <input name="name" value={order.name} onInput={handleInput}
+                                <input
+                                    name="name"
+                                    value={order.name}
+                                    onInput={handleInput}
                                     className="bg-indigo-400 text-3xl text-center font-bold focus:outline-none py-2 rounded-xl border-4 border-indigo-300 shadow-xl shadow-indigo-900"
                                 />
                                 <span className="bg-indigo-200 text-indigo-700 px-4 py-2 rounded-xl italic border-4 border-indigo-300 shadow-md shadow-indigo-950">
@@ -83,7 +94,7 @@ function OrderDetails() {
                                 <span>{t('body.orderDetails.Description')}</span>
                                 <sub className="opacity-50 text-indigo-950 font-thin">
                                     {t('body.orderDetails.you can edit the name, description and category')}
-                                </sub>
+                                </sub>  
                             </label>
                             <textarea
                                 id="description"
