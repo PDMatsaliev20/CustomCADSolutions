@@ -47,6 +47,14 @@ namespace CustomCADs.Core.Contracts
         /// <param name="status"></param>
         /// <returns>A Task object that represents the asynchronous Save Changes operation after the edit.</returns>
         Task EditStatusAsync(int id, OrderStatus status);
+        
+        /// <summary>
+        ///     Sets the Order's CadId from null to the given cadId.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="cadId"></param>
+        /// <returns>A Task object that represents the asynchronous Save Changes operation after the edit.</returns>
+        Task CompleteAsync(int id, int cadId);
 
         /// <summary>
         ///     Deletes the Order with the given id.

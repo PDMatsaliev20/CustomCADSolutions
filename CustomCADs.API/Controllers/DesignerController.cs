@@ -64,5 +64,14 @@ namespace CustomCADs.API.Controllers
             await orderService.EditStatusAsync(id, Enum.Parse<OrderStatus>(status));
             return NoContent();
         }
+
+        [HttpPatch("Orders/Complete/{id}")] 
+        [ProducesResponseType(Status204NoContent)]
+        public async Task<ActionResult> CompleteOrderAsync(int id, int cadId)
+        {
+            await orderService.CompleteAsync(id, cadId);
+            await orderService.EditStatusAsync(id, OrderStatus.Finished);
+            return NoContent();
+        }
     }
 }

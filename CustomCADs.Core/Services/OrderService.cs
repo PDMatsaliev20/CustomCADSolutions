@@ -85,6 +85,15 @@ namespace CustomCADs.Core.Services
             await repository.SaveChangesAsync();
         }
         
+        public async Task CompleteAsync(int id, int cadId)
+        {
+            Order order = await repository.GetByIdAsync<Order>(id)
+                ?? throw new KeyNotFoundException();
+
+            order.CadId = cadId;
+            await repository.SaveChangesAsync();
+        }
+        
         public async Task DeleteAsync(int id)
         {
             Order order = await repository.GetByIdAsync<Order>(id)
