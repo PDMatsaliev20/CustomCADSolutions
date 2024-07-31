@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using CustomCADs.API.Helpers;
 using CustomCADs.API.Mappings;
+using CustomCADs.API.Models.Cads;
 using CustomCADs.API.Models.Orders;
 using CustomCADs.Core.Contracts;
 using CustomCADs.Core.Models;
+using CustomCADs.Domain.Entities.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -24,18 +26,41 @@ namespace CustomCADs.API.Controllers
         {
             cfg.AddProfile<OrderApiProfile>();
             cfg.AddProfile<CadApiProfile>();
+            cfg.AddProfile<OtherApiProfile>();
         }).CreateMapper();
 
         [HttpGet]
         [Produces("application/json")]
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status400BadRequest)]
-        public async Task<ActionResult<OrderExportDTO[]>> GetAsync()
+        public async Task<ActionResult<OrderExportDTO[]>> GetOrdersAsync()
         {
             try
             {
                 IEnumerable<OrderModel> orders = (await orderService.GetAllAsync())
-                    .OrderBy(o => (int)o.Status).ThenBy(o => o.OrderDate);
+                    .Where(o => o.Status == OrderStatus.Pending || o.Status == OrderStatus.Begun)
+                    .OrderByDescending(o => (int)o.Status)
+                    .ThenBy(o => o.OrderDate);
+
+                return mapper.Map<OrderExportDTO[]>(orders);
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+        
+        [HttpGet("Completed")]
+        [Produces("application/json")]
+        [ProducesResponseType(Status200OK)]
+        [ProducesResponseType(Status400BadRequest)]
+        public async Task<ActionResult<OrderExportDTO[]>> GetCompletedOrdersAsync()
+        {
+            try
+            {
+                IEnumerable<OrderModel> orders = (await orderService.GetAllAsync())
+                    .Where(o => !(o.Status == OrderStatus.Pending || o.Status == OrderStatus.Begun))
+                    .OrderByDescending(o => (int)o.Status).ThenBy(o => o.OrderDate);
 
                 return mapper.Map<OrderExportDTO[]>(orders);
             }
@@ -175,6 +200,19 @@ namespace CustomCADs.API.Controllers
             {
                 return StatusCode(500);
             }
+        }
+
+        [HttpGet("GetCad/{id}")]
+        [ProducesResponseType(Status200OK)]
+        [ProducesResponseType(Status404NotFound)]
+        public async Task<ActionResult<CadGetDTO>> GetCadAsync(int id)
+        {
+            OrderModel order = await orderService.GetByIdAsync(id);
+            if (order.CadId != null)
+            {
+                return mapper.Map<CadGetDTO>(order.Cad);
+            }
+            else return NotFound();
         }
     }
 }

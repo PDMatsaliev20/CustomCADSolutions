@@ -20,9 +20,9 @@ function DesignerNavigationalMenu() {
                     </button>
                 </li>
                 <li className="grow flex items-center justify-evenly ">
-                    <Link to="/cads">{t('navbar.Your 3D Models')}</Link>
-                    <Link to="/cads/upload">{t('navbar.Upload 3D Model')}</Link>
-                    <Link to="/designer/cads">{t('navbar.Unchecked 3D Models')}</Link>
+                    <Link to="/cads">{t('navbar.Cads Link 1')}</Link>
+                    <Link to="/cads/upload">{t('navbar.Cads Link 2')}</Link>
+                    <Link to="/designer/cads">{t('navbar.Cads Link 4')}</Link>
                 </li>
                 <li className="">
                     <button onClick={handleRightArrow}>
@@ -37,9 +37,9 @@ function DesignerNavigationalMenu() {
                     </button>
                 </li>
                 <li className="grow flex items-center justify-evenly">
-                    <Link to="/designer/orders/pending">{t('navbar.Pending Orders')}</Link>
-                    <Link to="/designer/orders/begun">{t('navbar.Begun Orders')}</Link>
-                    <Link to="/designer/orders/finished">{t('navbar.Finished Orders')}</Link>
+                    <Link to="/designer/orders/pending">{t('navbar.Orders Link 4')}</Link>
+                    <Link to="/designer/orders/begun">{t('navbar.Orders Link 5')}</Link>
+                    <Link to="/designer/orders/finished">{t('navbar.Orders Link 6')}</Link>
                 </li>
                 <li className="flex items-center opacity-40">
                     <button disabled>

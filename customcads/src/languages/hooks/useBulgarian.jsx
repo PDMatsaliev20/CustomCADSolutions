@@ -20,6 +20,7 @@ import loginBg from '@/languages/resources/bg/pages/public/login.json'
 import ordersBg from '@/languages/resources/bg/pages/private/orders/user-orders.json'
 import ordersDetailsBg from '@/languages/resources/bg/pages/private/orders/order-details.json'
 import customOrderBg from '@/languages/resources/bg/pages/private/orders/custom-order.json'
+import finishedOrdersBg from '@/languages/resources/bg/pages/private/orders/finished-orders.json'
 
 import cadsBg from '@/languages/resources/bg/pages/private/cads/user-cads.json'
 import cadDetailsBg from '@/languages/resources/bg/pages/private/cads/cad-details.json'
@@ -44,6 +45,7 @@ export default () => {
                 orders: ordersBg,
                 orderDetails: ordersDetailsBg,
                 customOrder: customOrderBg,
+                finishedOrders: finishedOrdersBg,
                 cads: cadsBg,
                 cadDetails: cadDetailsBg,
                 editCad: editCadBg,

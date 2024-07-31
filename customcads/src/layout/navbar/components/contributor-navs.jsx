@@ -6,9 +6,9 @@ function ContributorNavigationalMenu() {
 
     return (
         <ul className="flex gap-x-4 justify-around">
-            <li><Link to="/cads">{t('navbar.Your 3D Models')}</Link></li>
-            <li><Link to="/cads/upload">{t('navbar.Upload 3D Model')}</Link></li>
-            <li><Link to="/cads/sell">{t('navbar.Sell us a 3D Model')}</Link></li>
+            <li><Link to="/cads">{t('navbar.Cads Link 1')}</Link></li>
+            <li><Link to="/cads/upload">{t('navbar.Cads Link 2')}</Link></li>
+            <li><Link to="/cads/sell">{t('navbar.Cads Link 3')}</Link></li>
         </ul>
     );
 }

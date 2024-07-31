@@ -20,6 +20,7 @@ import loginEn from '@/languages/resources/en/pages/public/login.json'
 import ordersEn from '@/languages/resources/en/pages/private/orders/user-orders.json'
 import ordersDetailsEn from '@/languages/resources/en/pages/private/orders/order-details.json'
 import customOrderEn from '@/languages/resources/en/pages/private/orders/custom-order.json'
+import finishedOrdersEn from '@/languages/resources/en/pages/private/orders/finished-orders.json'
 
 import cadsEn from '@/languages/resources/en/pages/private/cads/user-cads.json'
 import cadDetailsEn from '@/languages/resources/en/pages/private/cads/cad-details.json'
@@ -44,6 +45,7 @@ export default () => {
                 orders: ordersEn,
                 orderDetails: ordersDetailsEn,
                 customOrder: customOrderEn,
+                finishedOrders: finishedOrdersEn,
                 cads: cadsEn,
                 cadDetails: cadDetailsEn,
                 editCad: editCadEn,

@@ -2,7 +2,7 @@ import AuthGuard from '../auth-guard'
 import UserOrdersPage from '@/private/orders/user-orders/user-orders'
 import OrderDetailsPage from '@/private/orders/order-details/order-details'
 import CustomOrderPage from '@/private/orders/custom-order/custom-order'
-import GalleryOrderPage from '@/private/orders/gallery-order/gallery-order'
+import FinishedOrdersPage from '@/private/orders/finished-orders/finished-orders'
 import axios from 'axios'
 
 export default {
@@ -17,6 +17,17 @@ export default {
                 }).catch(e => console.error(e));
                 return { loadedOrders: orders.data };
             },
+        },
+        {
+            path: '/orders/finished',
+            element: <FinishedOrdersPage />,
+            loader: async () => {
+                const orders = await axios.get('https://localhost:7127/API/Orders/Completed', {
+                    withCredentials: true
+                }).catch(e => console.error(e));
+
+                return { loadedOrders: orders.data };
+            }
         },
         {
             path: '/orders/:id',
@@ -38,9 +49,5 @@ export default {
             path: '/orders/custom',
             element: <CustomOrderPage />
         },
-        {
-            path: '/orders/gallery',
-            element: <GalleryOrderPage />
-        }
     ]
 };

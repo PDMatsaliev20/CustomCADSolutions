@@ -1,12 +1,12 @@
 {
-  "Your Orders": "Your Orders",
-  "Order Custom 3D Model": "Custom 3D Model",
-  "Order from Gallery": "Buy from Gallery",
-  "Your 3D Models": "Your 3D Models",
-  "Upload 3D Model": "Upload 3D Model",
-  "Sell us a 3D Model": "Sell us a 3D Model",
-  "Pending Orders": "Pending Orders",
-  "Begun Orders": "Begun Orders",
-  "Finished Orders": "Finished Orders",
-  "Unchecked 3D Models": "Unchecked 3D Models"
+  "Orders Link 1": "Your Orders",
+  "Orders Link 2": "Order Custom 3D Model",
+  "Orders Link 3": "Completed Orders",
+  "Cads Link 1": "Your 3D Models",
+  "Cads Link 2": "Upload 3D Model",
+  "Cads Link 3": "Sell us a 3D Model",
+  "Cads Link 4": "Unchecked 3D Models",
+  "Orders Link 4": "Pending Orders",
+  "Orders Link 5": "Begun Orders",
+  "Orders Link 6": "Finished Orders"
 }
