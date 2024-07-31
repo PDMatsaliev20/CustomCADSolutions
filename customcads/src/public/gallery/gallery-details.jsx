@@ -1,9 +1,27 @@
+import AuthContext from '@/components/auth-context'
 import Cad from '@/components/cad'
-import { useLoaderData } from 'react-router-dom'
+import { useLoaderData, useNavigate } from 'react-router-dom'
+import { useContext } from 'react'
+import axios from 'axios'
 
 function GalleryDetailsPage() {
+    const { userRole } = useContext(AuthContext);
     const { loadedCad } = useLoaderData();
+    const navigate = useNavigate();
     
+    const handlePurchase = async () => {
+        if (userRole !== 'Client') {
+            alert('Gotta be a Client baby');
+            return;
+        }
+
+        await axios.post(`https://localhost:7127/API/Orders/Purchase/${loadedCad.id}?stripeToken=idklol`, {}, 
+{
+            withCredentials: true
+        }).catch(e => console.error(e));
+        navigate('/orders/finished');
+    }
+
     return (
         <div className="flex bg-indigo-300 rounded-md overflow-hidden border-2 border-indigo-600 shadow-lg shadow-indigo-400">
             <div className="flex justify-center items-center px-8">
@@ -30,7 +48,7 @@ function GalleryDetailsPage() {
                             rows={9}
                             className="resize-none bg-inherit focus:outline-none"
                         />
-                        <button
+                        <button onClick={handlePurchase}
                             className="self-center bg-indigo-700 py-2 px-4 rounded hover:font-extrabold focus:outline-none active:opacity-80"
                         >
                             Purchase

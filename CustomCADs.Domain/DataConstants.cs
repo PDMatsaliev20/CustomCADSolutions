@@ -2,6 +2,7 @@
 {
     public static class DataConstants
     {
+        public const string CadPurchasedMessage = "3D Model from the Gallery with id: {0}";
         public const string RequiredErrorMessage = "{0} is required!";
         public const string LengthErrorMessage = "{0} length must be between {2} and {1} characters";
         public const string RangeErrorMessage = "{0} must be between {2} and {1}";

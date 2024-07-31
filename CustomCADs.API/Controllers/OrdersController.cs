@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using static CustomCADs.Domain.DataConstants;
 using static CustomCADs.Domain.DataConstants.RoleConstants;
 
 namespace CustomCADs.API.Controllers
@@ -19,8 +21,9 @@ namespace CustomCADs.API.Controllers
     [Authorize(Roles = Client)]
     [ApiController]
     [Route("API/[controller]")]
-    public class OrdersController(IOrderService orderService) : ControllerBase
+    public class OrdersController(IOptions<StripeInfo> stripeOptions, IOrderService orderService, ICadService cadService) : ControllerBase
     {
+        private readonly StripeInfo stripe = stripeOptions.Value;
         private readonly string createdAtReturnAction = nameof(GetSingleAsync).Replace("Async", "");
         private readonly IMapper mapper = new MapperConfiguration(cfg =>
         {
@@ -200,6 +203,32 @@ namespace CustomCADs.API.Controllers
             {
                 return StatusCode(500);
             }
+        }
+
+        [HttpPost("Purchase/{id}")]
+        public async Task<ActionResult> Purchase(int id, string stripeToken)
+        {
+            CadModel cad = await cadService.GetByIdAsync(id);
+
+            bool chargeSucceded = true; //stripe.ProcessPayment(stripeToken, User.Identity!.Name!, cad);
+            if (!chargeSucceded)
+            {
+                return BadRequest();
+            }
+
+            OrderModel order = new()
+            {
+                Name = cad.Name,
+                Description = string.Format(CadPurchasedMessage, id),
+                Status = OrderStatus.Finished,
+                CategoryId = cad.CategoryId,
+                OrderDate = DateTime.Now,
+                CadId = id,
+                BuyerId = User.GetId(),
+            };
+            await orderService.CreateAsync(order);
+
+            return Ok();
         }
 
         [HttpGet("GetCad/{id}")]

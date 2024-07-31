@@ -1,7 +1,9 @@
-﻿using CustomCADs.Domain.Entities.Identity;
+﻿using CustomCADs.Core.Models;
+using CustomCADs.Domain.Entities.Identity;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
+using Stripe;
 using System.Security.Claims;
 
 namespace CustomCADs.API.Helpers
@@ -41,5 +43,19 @@ namespace CustomCADs.API.Helpers
                 IsPersistent = true,
                 ExpiresUtc = DateTimeOffset.UtcNow.AddDays(1)
             };
+
+        public static bool ProcessPayment(this StripeInfo stripeSettings, string stripeToken, string buyer, CadModel cad)
+        {
+            StripeConfiguration.ApiKey = stripeSettings.TestSecretKey;
+            Charge charge = new ChargeService().Create(new()
+            {
+                Amount = (long)(cad.Price * 100),
+                Currency = "USD",
+                Source = stripeToken,
+                Description = $"{buyer} bought {cad.Creator.UserName}'s {cad.Name} for {cad.Price}$.",
+            });
+
+            return charge.Status == "succeeded";
+        }
     }
 }

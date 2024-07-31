@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.StaticFiles;
+using CustomCADs.API.Helpers;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -40,6 +41,13 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<ICadService, CadService>();
             services.AddScoped<ICategoryService, CategoryService>();
+        }
+
+        public static IServiceCollection AddStripe(this IServiceCollection services, IConfiguration config)
+        {
+            IConfigurationSection stripeSection = config.GetSection("Stripe");
+            services.Configure<StripeInfo>(stripeSection);
+            return services;
         }
 
         public static void AddJsonAndXml(this IMvcBuilder mvc)
