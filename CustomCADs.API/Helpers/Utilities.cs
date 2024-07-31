@@ -12,6 +12,8 @@ namespace CustomCADs.API.Helpers
     {
         public static string GetId(this ClaimsPrincipal user) => user.FindFirstValue(ClaimTypes.NameIdentifier)!;
 
+        public static string GetMessage(this Exception ex) => $"{ex.GetType()}: {ex.Message}";
+
         public static string Capitalize(this string text)
         {
             if (string.IsNullOrEmpty(text))
