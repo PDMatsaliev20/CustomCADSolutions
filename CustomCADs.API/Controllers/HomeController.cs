@@ -52,5 +52,14 @@ namespace CustomCADs.API.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+
+        [HttpGet("Gallery/{id}")]
+        [ProducesResponseType(Status200OK)]
+        [ProducesResponseType(Status500InternalServerError)]
+        public async Task<ActionResult<CadGetDTO>> GetCadAsync(int id)
+        {
+            CadModel model = await cadService.GetByIdAsync(id);
+            return mapper.Map<CadGetDTO>(model);
+        }
     }
 }
