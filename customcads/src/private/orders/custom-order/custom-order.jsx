@@ -36,13 +36,13 @@ function CustomOrder() {
     };
 
     return (
-        <div className="flex flex-col gap-y-8 my-6">
+        <div className="flex flex-col gap-y-8 mt-4">
             <h1 className="text-4xl text-center text-indigo-950 font-bold">{t('body.customOrder.Title')}</h1>
             <form onSubmit={(e) => handleSubmit(e, handleSubmitCallback)} autoComplete="off" noValidate>
-                <div className="w-1/2 mx-auto flex flex-wrap justify-center gap-y-4 gap-x-4 bg-indigo-700 py-6 px-12 rounded-xl">
-                    <div className="basis-full flex flex-wrap">
+                <div className="w-7/12 mx-auto flex flex-wrap items-start gap-x-4 gap-y-4 bg-indigo-700 py-8 px-10 rounded-xl">
+                    <div className="basis-1/2 flex flex-wrap">
                         <label htmlFor="name" className="basis-full text-indigo-50">
-                            {t('common.labels.Name')}
+                            {t('common.labels.Name')}*
                         </label>
                         <input
                             type="text"
@@ -59,9 +59,30 @@ function CustomOrder() {
                             {errors.name}
                         </span>
                     </div>
+                    <div className="basis-1/3 grow flex flex-wrap">
+                        <label htmlFor="category" className="basis-full text-indigo-50">
+                            {t('common.labels.Category')}*
+                        </label>
+                        <select
+                            id="category"
+                            name="categoryId"
+                            value={order.category}
+                            onInput={handleInput}
+                            onBlur={handleBlur}
+                            className="inline-block w-full min-h-10 rounded bg-indigo-50 text-indigo-900 focus:outline-none p-2"
+                        >
+                            <option value={''}>{t(`common.categories.None`)}</option>
+                            {categories.map(category =>
+                                <option key={category.id} value={category.id}>{t(`common.categories.${category.name}`)}</option>
+                            )}
+                        </select>
+                        <span className={`${touched.categoryId && errors.categoryId ? 'inline-block' : 'hidden'} text-sm bg-red-700 p-1 rounded text-indigo-100 font-bold`}>
+                            {errors.categoryId}
+                        </span>
+                    </div>
                     <div className="basis-full flex flex-wrap">
                         <label htmlFor="description" className="basis-full text-indigo-50">
-                            {t('common.labels.Description')}
+                            {t('common.labels.Description')}*
                         </label>
                         <textarea
                             id="description"
@@ -71,30 +92,10 @@ function CustomOrder() {
                             onBlur={handleBlur}
                             className="w-full rounded bg-indigo-50 text-indigo-900 focus:outline-none p-2"
                             placeholder={t('body.customOrder.DescriptionPlaceholder')}
+                            rows={3}
                         />
                         <span className={`${touched.description && errors.description ? 'inline-block' : 'hidden'} text-sm bg-red-700 p-1 rounded text-indigo-100 font-bold mt-1`}>
                             {errors.description}
-                        </span>
-                    </div>
-                    <div className="basis-full flex flex-wrap">
-                        <label htmlFor="category" className="basis-full text-indigo-50">
-                            {t('common.labels.Category')}
-                        </label>
-                        <select
-                            id="category"
-                            name="categoryId"
-                            value={order.category}
-                            onInput={handleInput}
-                            onBlur={handleBlur}
-                            className="inline-block w-full rounded bg-indigo-50 text-indigo-900 focus:outline-none p-2"
-                        >
-                            <option value={''}>{t(`common.categories.None`)}</option>
-                            {categories.map(category =>
-                                <option key={category.id} value={category.id}>{t(`common.categories.${category.name}`)}</option>
-                            )}
-                        </select>
-                        <span className={`${touched.categoryId && errors.categoryId ? 'inline-block' : 'hidden'} text-sm bg-red-700 p-1 rounded text-indigo-100 font-bold`}>
-                            {errors.categoryId}
                         </span>
                     </div>
                     <div className="basis-full flex gap-x-1">
@@ -110,7 +111,7 @@ function CustomOrder() {
                             {t('common.labels.Delivery')}
                         </label>
                     </div>
-                    <div className="mt-1">
+                    <div className="basis-full flex justify-center">
                         <button className="bg-indigo-200 text-indigo-800 rounded py-2 px-4">
                             {t('body.customOrder.Order')}
                         </button>

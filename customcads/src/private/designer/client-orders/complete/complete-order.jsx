@@ -34,7 +34,7 @@ function UploadCad() {
                 'Content-Type': 'multipart/form-data'
             }
         }).catch(e => console.error(e));
-        
+
         const cadId = response.data.id;
 
         await axios.patch(`https://localhost:7127/API/Designer/Orders/Complete/${id}?cadId=${cadId}`, {}, {
@@ -49,7 +49,7 @@ function UploadCad() {
             <form onSubmit={(e) => handleSubmit(e, handleSubmitCallback)} autoComplete="off" noValidate>
                 <div className="flex flex-col gap-y-4">
                     <div className="flex justify-center items-center gap-x-4">
-                        <h1 className="text-4xl text-center text-indigo-950 font-bold">{t('body.uploadCad.Title')}:</h1>
+                        <h1 className="text-4xl text-center text-indigo-950 font-bold">{t('body.uploadCad.Title')}*:</h1>
                         <div className="flex flex-wrap items-center gap-x-2 h-full">
                             <label htmlFor="file" className="flex gap-x-4 bg-indigo-200 rounded-xl py-3 px-4 border-2 border-indigo-500 shadow-md shadow-indigo-700">
                                 <FontAwesomeIcon icon="arrow-up-from-bracket" className="text-3xl text-indigo-800" />
@@ -73,7 +73,7 @@ function UploadCad() {
                     <div className="w-8/12 mx-auto flex flex-wrap items-rt gap-y-4 gap-x-8 bg-indigo-700 py-8 px-12 rounded-xl">
                         <div className="basis-8/12 flex flex-wrap">
                             <label htmlFor="name" className="basis-full text-indigo-50">
-                                {t('common.labels.Name')}
+                                {t('common.labels.Name')}*
                             </label>
                             <input
                                 type="text"
@@ -90,20 +90,20 @@ function UploadCad() {
                                 {errors.name}
                             </span>
                         </div>
-                        <div className="basis-2/12 grow flex flex-wrap">
-                            <div className="flex flex-wrap items-center gap-x-2 h-full">
+                        <div className="w-2/12 flex flex-wrap">
+                            <div className="basis-full">
                                 <label htmlFor="image">
-                                    <p className="text-indigo-50">{t('common.labels.Image')}</p>
-                                    <div className="flex justify-center gap-x-4 bg-indigo-200 rounded-xl py-2 px-4 border-2 border-indigo-500 shadow-lg shadow-indigo-900">
+                                    <p className="text-indigo-50 text-center">{t('common.labels.Image')}*</p>
+                                    <div className="max-w-1/2 flex justify-center gap-x-4 bg-indigo-200 rounded-xl py-2 px-4 border-2 border-indigo-500 shadow-lg shadow-indigo-900">
                                         <FontAwesomeIcon icon="arrow-up-from-bracket" className="text-2xl text-indigo-800" />
                                         <div className={`${cad.image ? 'text-indigo-800 font-bold flex items-center' : 'hidden'}`}>
-                                            <span>{cad.image && cad.image.name}</span>
+                                            <span className="truncate max-w-32">{cad.image && cad.image.name}</span>
                                         </div>
                                     </div>
                                 </label>
                                 <input
                                     type="file"
-                                    accept=".jpg, .png"
+                                    accept=".jpg,.png"
                                     id="image"
                                     name="image"
                                     onInput={handleFileUpload}
@@ -117,7 +117,7 @@ function UploadCad() {
                         <div className="basis-5/12 grow flex flex-wrap items-start gap-y-4">
                             <div className="basis-full">
                                 <label htmlFor="category" className="text-indigo-50">
-                                    {t('common.labels.Category')}
+                                    {t('common.labels.Category')}*
                                 </label>
                                 <select
                                     id="category"
@@ -139,7 +139,7 @@ function UploadCad() {
                         </div>
                         <div className="basis-5/12 grow flex flex-wrap items-start">
                             <label htmlFor="price" className="basis-full text-indigo-50">
-                                {t('common.labels.Price')}
+                                {t('common.labels.Price')}*
                             </label>
                             <input
                                 type="number"
@@ -159,7 +159,7 @@ function UploadCad() {
                         </div>
                         <div className="basis-full flex flex-wrap">
                             <label htmlFor="description" className="basis-full text-indigo-50">
-                                {t('common.labels.Description')}
+                                {t('common.labels.Description')}*
                             </label>
                             <textarea
                                 id="description"

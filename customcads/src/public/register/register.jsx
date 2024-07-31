@@ -11,7 +11,7 @@ function RegisterPage() {
     const navigate = useNavigate();
     const { t } = useTranslation();
     const { role } = useParams();
-    
+
     const {
         values: user,
         touched,
@@ -34,7 +34,7 @@ function RegisterPage() {
 
     return (
         <section className="flex flex-col gap-y-4 items-center">
-            <h1 className="text-4xl text-center font-bold">
+            <h1 className="text-4xl text-center text-indigo-950 font-bold">
                 {t('body.register.Register as a')} {role == 'client' ? t('common.roles.Client') : t('common.roles.Contributor')}
             </h1>
             <div className="w-7/12 pt-8 pb-2 px-12 mt-8 bg-indigo-400 rounded-md">
@@ -97,7 +97,7 @@ function RegisterPage() {
                         </span>
                     </div>
                     <div className="mb-2">
-                        <label htmlFor="confirmPassword" className="block text-indigo-50">\
+                        <label htmlFor="confirmPassword" className="block text-indigo-50">
                             {t('common.labels.Confirm Password')}*
                         </label>
                         <input
@@ -122,21 +122,30 @@ function RegisterPage() {
                         >
                             {t('body.register.Register')}
                         </button>
-                        <button className="text-sm bg-indigo-200 text-black py-1 px-2 rounded">
-                            <Link to={isClient ? '/register/contributor' : '/register/client'}>
-                                {t('body.register.or switch roles')}
-                            </Link>
-                        </button>
+                        {/*<button className="text-sm bg-indigo-200 text-black py-1 px-2 rounded">*/}
+                        {/*    <Link to={isClient ? '/register/contributor' : '/register/client'}>*/}
+                        {/*        {t('body.register.or switch roles')}*/}
+                        {/*    </Link>*/}
+                        {/*</button>*/}
                     </div>
                 </form>
             </div>
-            <section className="">
-                <button className="">
-                    <p>{t('body.register.Already have an account')}</p>
+            <section className="flex gap-x-4">
+                <div className="text-center">
+                    <p className="text-indigo-950" >{t('body.register.Already have an account')}</p>
                     <Link to="/login" className="text-center font-semibold text-indigo-700">
                         {t('body.register.Log in')}
                     </Link>
-                </button>
+                </div>
+                <div className="text-center">
+                    <p className="text-indigo-950">
+                        <span>{t('body.register.Want to be')}</span>
+                        <span className="font-bold"> {isClient ? t('common.roles.Contributor') : t('common.roles.Client')}?</span>
+                    </p>
+                    <Link to={isClient ? '/register/contributor' : '/register/client'} className="text-center font-semibold text-indigo-700">
+                        {t('body.register.Switch roles')}
+                    </Link>
+                </div>
             </section>
         </section>
     );
