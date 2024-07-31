@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CustomCADs.API.Helpers;
 using CustomCADs.API.Mappings;
 using CustomCADs.API.Models.Others;
 using CustomCADs.Core.Contracts;
@@ -8,6 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CustomCADs.API.Controllers
 {
+    using static StatusCodes;
+
     [ApiController]
     [Route("/API/[controller]")]
     public class CommonController(ICategoryService categoryService) : ControllerBase
@@ -18,11 +21,27 @@ namespace CustomCADs.API.Controllers
 
         [HttpGet("Categories")]
         [Produces("application/json")]
-        [ProducesResponseType(200)]
+        [ProducesResponseType(Status200OK)]
+        [ProducesResponseType(Status500InternalServerError)]
+        [ProducesResponseType(Status502BadGateway)]
         public async Task<ActionResult<CategoryDTO[]>> GetCategoriesAsync()
         {
-            IEnumerable<CategoryModel> categories = await categoryService.GetAllAsync();
-            return mapper.Map<CategoryDTO[]>(categories);
+            try
+            {
+                IEnumerable<CategoryModel> categories = await categoryService.GetAllAsync();
+                return mapper.Map<CategoryDTO[]>(categories);
+            }
+            catch (Exception ex) when (
+                ex is AutoMapperConfigurationException
+                || ex is AutoMapperMappingException
+            )
+            {
+                return StatusCode(Status502BadGateway, ex.GetMessage());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(Status500InternalServerError, ex.GetMessage());
+            }
         }
 
         [HttpGet("CadSortings")]

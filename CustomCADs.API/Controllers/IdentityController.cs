@@ -19,33 +19,47 @@ namespace CustomCADs.API.Controllers
         [Consumes("application/json")]
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status400BadRequest)]
-        public async Task<ActionResult> Register([FromRoute] string role, [FromBody] UserRegisterModel model)
+        [ProducesResponseType(Status500InternalServerError)]
+        public async Task<ActionResult<string>> Register([FromRoute] string role, [FromBody] UserRegisterModel register)
         {
-            AppUser user = new()
+            if (string.IsNullOrWhiteSpace(role))
             {
-                UserName = model.Username,
-                Email = model.Email
-            };
-            IdentityResult result = await userManager.CreateAsync(user, model.Password);
+                return BadRequest("Role is required!");
+            }
 
-            if (!result.Succeeded)
+            try
             {
-                foreach (IdentityError error in result.Errors)
+                AppUser user = new()
                 {
-                    ModelState.AddModelError(string.Empty, error.Description);
+                    UserName = register.Username,
+                    Email = register.Email
+                };
+                IdentityResult result = await userManager.CreateAsync(user, register.Password);
+
+                if (!result.Succeeded)
+                {
+                    foreach (IdentityError error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                    return BadRequest(ModelState);
                 }
-                return BadRequest(ModelState);
-            }
 
-            if (!(role == "Client" || role == "Contributor"))
+                if (!(role == "Client" || role == "Contributor"))
+                {
+                    return BadRequest("You must apply to either be a Client or a Contributor");
+                }
+
+                await userManager.AddToRoleAsync(user, role);
+                await user.SignInAsync(signInManager, GetAuthProps(false));
+
+                Response.Cookies.Append("username", user.UserName);
+                return "Welcome!";
+            }
+            catch (Exception ex)
             {
-                return BadRequest();
+                return StatusCode(Status500InternalServerError, ex.GetMessage());
             }
-            await userManager.AddToRoleAsync(user, role);
-            await user.SignInAsync(signInManager, GetAuthProps(false));
-
-            Response.Cookies.Append("username", user.UserName);
-            return Ok("Welcome!");
         }
 
         [HttpPost("Login")]
@@ -53,39 +67,46 @@ namespace CustomCADs.API.Controllers
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status400BadRequest)]
         [ProducesResponseType(Status401Unauthorized)]
-        public async Task<ActionResult> Login([FromBody] UserLoginModel model)
+        [ProducesResponseType(Status500InternalServerError)]
+        public async Task<ActionResult<string>> Login([FromBody] UserLoginModel model)
         {
-            AppUser? user = await userManager.FindByNameAsync(model.Username);
-
-            if (user == null)
+            try
             {
-                return BadRequest("Invalid Username.");
-            }
+                AppUser? user = await userManager.FindByNameAsync(model.Username);
+                if (user == null)
+                {
+                    return BadRequest("Invalid Username.");
+                }
 
-            if (!await userManager.CheckPasswordAsync(user, model.Password))
+                if (!await userManager.CheckPasswordAsync(user, model.Password))
+                {
+                    return Unauthorized("Invalid Password.");
+                }
+                await user.SignInAsync(signInManager, GetAuthProps(model.RememberMe));
+
+                Response.Cookies.Append("username", user.UserName!);
+                return "Welcome back!";
+            }
+            catch (Exception ex)
             {
-                return Unauthorized("Invalid Password.");
+                return StatusCode(Status500InternalServerError, ex.GetMessage());
             }
-            await user.SignInAsync(signInManager, GetAuthProps(model.RememberMe));
-
-            Response.Cookies.Append("username", user.UserName!);
-            return Ok("Welcome back!");
         }
 
         [HttpPost("Logout")]
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status400BadRequest)]
-        public async Task<ActionResult> Logout()
+        public async Task<ActionResult<string>> Logout()
         {
             try
             {
                 await signInManager.Context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
                 Response.Cookies.Delete("username");
-                return Ok("Bye-bye.");
+                return "Bye-bye.";
             }
-            catch
+            catch (Exception ex)
             {
-                return BadRequest("You're still here?");
+                return StatusCode(Status500InternalServerError, ex.GetMessage());
             }
         }
 
@@ -93,32 +114,31 @@ namespace CustomCADs.API.Controllers
         [ProducesResponseType(Status200OK)]
         public ActionResult<bool> IsAuthenticated() => User.Identity?.IsAuthenticated ?? false;
 
-        [HttpGet("IsAuthorized")]
-        [ProducesResponseType(Status200OK)]
-        public ActionResult<bool> IsAuthorized(string role) => User.IsInRole(role);
-
-        [HttpGet("UserExists")]
-        [ProducesResponseType(Status200OK)]
-        public ActionResult<bool> Exists() => userManager.Users.Any(u => User.Identity!.Name == u.UserName);
-
         [HttpGet("GetUserRole")]
         [ProducesResponseType(Status200OK)]
-        [ProducesResponseType(Status400BadRequest)]
-        public async Task<ActionResult> GetUserRole()
+        [ProducesResponseType(Status401Unauthorized)]
+        [ProducesResponseType (Status500InternalServerError)]
+        public async Task<ActionResult<string>> GetUserRole()
         {
-            AppUser? user = await userManager.GetUserAsync(User);
-            if (user == null) return Unauthorized();
-
-            IEnumerable<string> roles = await userManager.GetRolesAsync(user);
             try
             {
-                string role = roles.Single();
+                AppUser? user = await userManager.GetUserAsync(User);
+                if (user == null) return Unauthorized();
 
-                return Ok(role);
+                IEnumerable<string> roles = await userManager.GetRolesAsync(user);
+                return roles.Single();
             }
-            catch
+            catch (ArgumentNullException)
             {
-                return BadRequest();
+                return StatusCode(Status500InternalServerError, "User has no role.");
+            }
+            catch (InvalidOperationException)
+            {
+                return StatusCode(Status500InternalServerError, "User has more than one role.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(Status500InternalServerError, ex.GetMessage());
             }
         }
     }

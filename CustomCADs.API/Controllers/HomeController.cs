@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CustomCADs.API.Helpers;
 using CustomCADs.API.Mappings;
 using CustomCADs.API.Models.Cads;
 using CustomCADs.API.Models.Queries;
@@ -6,10 +7,11 @@ using CustomCADs.Core.Contracts;
 using CustomCADs.Core.Models;
 using CustomCADs.Domain.Entities.Enums;
 using Microsoft.AspNetCore.Mvc;
-using static Microsoft.AspNetCore.Http.StatusCodes;
 
 namespace CustomCADs.API.Controllers
 {
+    using static StatusCodes;
+
     [ApiController]
     [Route("API/[controller]")]
     public class HomeController(ICadService cadService) : ControllerBase
@@ -37,6 +39,7 @@ namespace CustomCADs.API.Controllers
         [HttpGet("Gallery")]
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status500InternalServerError)]
+        [ProducesResponseType(Status502BadGateway)]
         public async Task<ActionResult<CadQueryResultDTO>> GetAllAsync([FromQuery] CadQueryDTO dto)
         {
             try
@@ -47,19 +50,46 @@ namespace CustomCADs.API.Controllers
                 CadQueryResult result = await cadService.GetAllAsync(query);
                 return mapper.Map<CadQueryResultDTO>(result);
             }
+            catch (Exception ex) when (
+                ex is AutoMapperConfigurationException
+                || ex is AutoMapperMappingException
+            )
+            {
+                return StatusCode(Status502BadGateway, ex.GetMessage());
+            }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.Message);
+                return StatusCode(500, ex.GetMessage());
             }
         }
 
         [HttpGet("Gallery/{id}")]
         [ProducesResponseType(Status200OK)]
+        [ProducesResponseType(Status404NotFound)]
         [ProducesResponseType(Status500InternalServerError)]
+        [ProducesResponseType(Status502BadGateway)]
         public async Task<ActionResult<CadGetDTO>> GetCadAsync(int id)
         {
-            CadModel model = await cadService.GetByIdAsync(id);
-            return mapper.Map<CadGetDTO>(model);
+            try
+            {
+                CadModel model = await cadService.GetByIdAsync(id);
+                return mapper.Map<CadGetDTO>(model);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.GetMessage());
+            }
+            catch (Exception ex) when (
+                ex is AutoMapperConfigurationException
+                || ex is AutoMapperMappingException
+            )
+            {
+                return StatusCode(Status502BadGateway, ex.GetMessage());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(Status500InternalServerError, ex.GetMessage());
+            }
         }
     }
 }
