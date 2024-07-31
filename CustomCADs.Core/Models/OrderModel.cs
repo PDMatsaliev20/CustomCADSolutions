@@ -30,7 +30,7 @@ namespace CustomCADs.Core.Models
         public OrderStatus Status { get; set; }
 
         [Required(ErrorMessage = RequiredErrorMessage)]
-        public bool ShouldShow { get; set; } = true;
+        public bool ShouldBeDelivered { get; set; } 
 
         public int? CadId { get; set; }
         

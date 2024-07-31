@@ -16,8 +16,9 @@ function CustomOrder() {
         errors,
         handleBlur,
         handleInput,
+        handleCheckboxInput,
         handleSubmit
-    } = useForm({ name: '', description: '', categoryId: 0 }, validateCustomOrder);
+    } = useForm({ name: '', description: '', categoryId: 0, shouldBeDelivered: false }, validateCustomOrder);
 
     useEffect(() => {
         fetchCategories();
@@ -88,7 +89,7 @@ function CustomOrder() {
                             className="inline-block w-full rounded bg-indigo-50 text-indigo-900 focus:outline-none p-2"
                         >
                             <option value={''}>{t(`common.categories.None`)}</option>
-                            {categories.map(category => 
+                            {categories.map(category =>
                                 <option key={category.id} value={category.id}>{t(`common.categories.${category.name}`)}</option>
                             )}
                         </select>
@@ -96,8 +97,21 @@ function CustomOrder() {
                             {errors.categoryId}
                         </span>
                     </div>
+                    <div className="basis-full flex gap-x-1">
+                        <input
+                            id="delivery"
+                            type="checkbox"
+                            name="shouldBeDelivered"
+                            checked={order.shouldBeDelivered}
+                            onChange={handleCheckboxInput}
+                            onBlur={handleBlur}
+                        />
+                        <label htmlFor="delivery" className="text-indigo-50 font-bold">
+                            {t('common.labels.Delivery')}
+                        </label>
+                    </div>
                     <div className="mt-1">
-                        <button className="bg-indigo-200 text-indigo-800 rounded py-1 px-2">
+                        <button className="bg-indigo-200 text-indigo-800 rounded py-2 px-4">
                             {t('body.customOrder.Order')}
                         </button>
                     </div>

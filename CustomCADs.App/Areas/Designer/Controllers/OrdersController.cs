@@ -86,7 +86,7 @@ namespace CustomCADs.App.Areas.Designer.Controllers
         public async Task<IActionResult> Hide(int id)
         {
             OrderModel model = await orderService.GetByIdAsync(id);
-            model.ShouldShow = false;
+            model.ShouldBeDelivered = false;
 
             await orderService.EditAsync(id, model);
             return RedirectToAction(nameof(All));

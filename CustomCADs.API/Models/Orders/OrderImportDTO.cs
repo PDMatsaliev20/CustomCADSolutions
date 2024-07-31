@@ -16,5 +16,8 @@ namespace CustomCADs.API.Models.Orders
 
         [Required(ErrorMessage = RequiredErrorMessage)]
         public int CategoryId { get; set; }
+
+        [Required(ErrorMessage = RequiredErrorMessage)]
+        public bool ShouldBeDelivered { get; set; } = false;
     }
 }

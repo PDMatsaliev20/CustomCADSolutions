@@ -31,8 +31,8 @@ namespace CustomCADs.Domain.Entities
         public OrderStatus Status { get; set; }
 
         [Required]
-        [Comment("Should Order Be Visible After Completion")]
-        public bool ShouldShow { get; set; }
+        [Comment("Should Order Be Delivered After Completion")]
+        public bool ShouldBeDelivered { get; set; }
 
         [Comment("Identification of Order's Category")]
         public int CategoryId { get; set; }

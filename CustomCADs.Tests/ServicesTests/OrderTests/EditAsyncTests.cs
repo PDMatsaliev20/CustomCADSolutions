@@ -15,7 +15,7 @@ namespace CustomCADs.Tests.ServicesTests.OrderTests
             expectedOrder.Description = "Client's Edited Order";
             expectedOrder.CategoryId = 2;
             expectedOrder.Status = OrderStatus.Finished;
-            expectedOrder.ShouldShow = false;
+            expectedOrder.ShouldBeDelivered = false;
 
             await service.EditAsync(id, expectedOrder);
             OrderModel actualOrder = await service.GetByIdAsync(id);
@@ -34,7 +34,7 @@ namespace CustomCADs.Tests.ServicesTests.OrderTests
                 Assert.That(actualOrder.Status, Is.EqualTo(expectedOrder.Status),
                     string.Format(DoesNotEditEnough, "Status"));
 
-                Assert.That(actualOrder.ShouldShow, Is.EqualTo(expectedOrder.ShouldShow),
+                Assert.That(actualOrder.ShouldBeDelivered, Is.EqualTo(expectedOrder.ShouldBeDelivered),
                     string.Format(DoesNotEditEnough, "ShouldShow"));
 
             });

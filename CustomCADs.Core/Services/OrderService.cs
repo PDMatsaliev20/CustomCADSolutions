@@ -70,7 +70,7 @@ namespace CustomCADs.Core.Services
 
             order.Name = model.Name;
             order.Description = model.Description;
-            order.ShouldShow = model.ShouldShow;
+            order.ShouldBeDelivered = model.ShouldBeDelivered;
             order.CategoryId = model.CategoryId;
 
             await repository.SaveChangesAsync();

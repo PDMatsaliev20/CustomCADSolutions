@@ -36,7 +36,7 @@ namespace CustomCADs.Tests.ServicesTests.OrderTests
                 Assert.That(actualOrder.OrderDate, Is.EqualTo(expectedOrder.OrderDate),
                     string.Format(ModelPropertyMismatch, "OrderDate"));
 
-                Assert.That(actualOrder.ShouldShow, Is.EqualTo(expectedOrder.ShouldShow),
+                Assert.That(actualOrder.ShouldBeDelivered, Is.EqualTo(expectedOrder.ShouldBeDelivered),
                     string.Format(ModelPropertyMismatch, "ShouldShow"));
 
                 Assert.That(actualOrder.Status, Is.EqualTo(expectedOrder.Status),
