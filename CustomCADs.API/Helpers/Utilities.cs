@@ -3,6 +3,7 @@ using CustomCADs.Domain.Entities.Identity;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.JsonPatch;
 using Stripe;
 using System.Security.Claims;
 
@@ -58,6 +59,19 @@ namespace CustomCADs.API.Helpers
             });
 
             return charge.Status == "succeeded";
+        }
+
+        public static string? CheckForBadChanges<TModel>(this JsonPatchDocument<TModel> patchDoc, params string[] fields) where TModel : class
+        {
+            foreach (string field in fields)
+            {
+                if (patchDoc.Operations.Any(op => op.path == field))
+                {
+                    return $"You're not allowed to edit {field}";
+                }
+            }
+
+            return null;
         }
     }
 }
