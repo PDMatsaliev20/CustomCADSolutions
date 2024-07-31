@@ -10,6 +10,21 @@ namespace CustomCADs.API.Helpers
     {
         public static string GetId(this ClaimsPrincipal user) => user.FindFirstValue(ClaimTypes.NameIdentifier)!;
 
+        public static string Capitalize(this string text)
+        {
+            if (string.IsNullOrEmpty(text))
+            {
+                return string.Empty;
+            }
+
+            if (text.Length == 1)
+            {
+                return text.ToUpper();
+            }
+            
+            return text[..1].ToUpper() + text[1..].ToLower();
+        }
+
         public static async Task SignInAsync(this AppUser user, SignInManager<AppUser> signInManager, AuthenticationProperties? authprop)
             => await signInManager.Context.SignInAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme,

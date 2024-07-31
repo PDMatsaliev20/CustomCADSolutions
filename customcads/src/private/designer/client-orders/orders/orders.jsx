@@ -7,47 +7,54 @@ function AllOrders() {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const { status, loadedOrders } = useLoaderData();
+    
     let primaryBtn, secondaryBtn, onPrimaryBtnClick, onSecondaryBtnClick;
 
     switch (status.toLowerCase()) {
-        case 'pending': 
-            primaryBtn = t('Accept');
-            onPrimaryBtnClick = async (id) => await axios
-                .patch(`https://localhost:7127/API/Designer/Orders/Status/${id}?status=Begun`, {},
-                    { withCredentials: true })
-                .catch(e => console.error(e));
+        case 'pending':
+            primaryBtn = t('body.designerOrders.Accept');
+            onPrimaryBtnClick = async (id) => {
+                await axios.patch(`https://localhost:7127/API/Designer/Orders/Status/${id}?status=Begun`, {}, {
+                    withCredentials: true
+                }).catch(e => console.error(e));
+                navigate('');
+            }
 
-            secondaryBtn = t('Report');
-            onSecondaryBtnClick = async (id) => await axios
-                .patch(`https://localhost:7127/API/Designer/Orders/Status/${id}?status=Reported`, {},
-                    { withCredentials: true })
-                .catch(e => console.error(e));
+            secondaryBtn = t('body.designerOrders.Report');
+            onSecondaryBtnClick = async (id) => {
+                if (confirm(t('body.designerOrders.Confirm Report'))) {
+                    await axios.patch(`https://localhost:7127/API/Designer/Orders/Status/${id}?status=Reported`, {}, {
+                        withCredentials: true
+                    }).catch(e => console.error(e));
+                    navigate('');
+                }
+            }
             break;
-        case 'begun': 
-            primaryBtn = t('Complete');
+
+        case 'begun':
+            primaryBtn = t('body.designerOrders.Complete');
             onPrimaryBtnClick = async (id) => navigate(`/designer/orders/complete/${id}`);
 
-            secondaryBtn = t('Cancel');
-            onSecondaryBtnClick = async (id) => await axios
-                .patch(`https://localhost:7127/API/Designer/Orders/Status/${id}?status=Pending`, {},
-                    { withCredentials: true })
-                .catch(e => console.error(e));
+            secondaryBtn = t('body.designerOrders.Cancel');
+            onSecondaryBtnClick = async (id) => {
+                await axios.patch(`https://localhost:7127/API/Designer/Orders/Status/${id}?status=Pending`, {}, {
+                    withCredentials: true
+                }).catch(e => console.error(e));
+                navigate('');
+            }
             break;
 
         case 'finished':
-            primaryBtn = t('Deliver');
-            onPrimaryBtnClick = async (id) => await axios
-                .patch(`https://localhost:7127/API/Designer/Orders/Status/${id}?status=Delivering`, {},
-                    { withCredentials: true })
-                .catch(e => console.error(e));
+            primaryBtn = t('body.designerOrders.Deliver');
+            onPrimaryBtnClick = () => { } // ?
 
-            secondaryBtn = t('Dismiss');
+            secondaryBtn = t('body.designerOrders.Dismiss');
             onSecondaryBtnClick = () => { } // ?
             break;
 
         default: return <>nah</>; break;
     }
-    
+
     return (
         <>
             <div className="flex flex-wrap justify-center gap-y-12 mb-8">

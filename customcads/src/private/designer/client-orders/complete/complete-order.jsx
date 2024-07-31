@@ -2,7 +2,7 @@ import useForm from '@/hooks/useForm'
 import validateUploadCad from './validate-complete-order'
 import cadValidation from '@/constants/data/cad'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
@@ -10,6 +10,7 @@ import axios from 'axios'
 function UploadCad() {
     const { t } = useTranslation();
     const { id } = useParams();
+    const navigate = useNavigate();
     const [categories, setCategories] = useState([]);
 
     const {
@@ -33,14 +34,14 @@ function UploadCad() {
                 'Content-Type': 'multipart/form-data'
             }
         }).catch(e => console.error(e));
-        console.log(response);
-        debugger;
         
         const cadId = response.data.id;
 
         await axios.patch(`https://localhost:7127/API/Designer/Orders/Complete/${id}?cadId=${cadId}`, {}, {
             withCredentials: true
         }).catch(e => console.error(e));
+
+        navigate('/cads/');
     };
 
     return (

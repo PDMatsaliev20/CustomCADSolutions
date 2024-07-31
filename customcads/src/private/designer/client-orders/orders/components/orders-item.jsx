@@ -8,14 +8,10 @@ function Order({ order, primaryBtn, onPrimaryBtnClick, secondaryBtn, onSecondary
 
     const handlePrimaryBtnClick = async () => {
         await onPrimaryBtnClick(order.id);
-        navigate('');
     };
 
     const handleSecondaryBtnClick = async () => {
-        if (confirm(t('u sure?'))) {
-            await onSecondaryBtnClick(order.id);
-            navigate('');
-        }
+        await onSecondaryBtnClick(order.id);
     };
 
     return (

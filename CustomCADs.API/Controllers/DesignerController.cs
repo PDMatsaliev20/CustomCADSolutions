@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CustomCADs.API.Helpers;
 using CustomCADs.API.Mappings;
 using CustomCADs.API.Models.Orders;
 using CustomCADs.API.Models.Queries;
@@ -49,12 +50,22 @@ namespace CustomCADs.API.Controllers
         public async Task<ActionResult<OrderExportDTO[]>> OrdersAsync(string status)
         {
             IEnumerable<OrderModel> models = await orderService.GetAllAsync();
-            
-            IEnumerable<OrderModel> unfinished = models
-                .Where(m => status.Equals(m.Status.ToString(), 
-                    StringComparison.CurrentCultureIgnoreCase));
 
-            return mapper.Map<OrderExportDTO[]>(unfinished);
+            string capitalizedStatus = status.Capitalize();
+            IEnumerable<OrderModel> filteredModels;
+
+            if (Enum.Parse<OrderStatus>(capitalizedStatus) == OrderStatus.Finished)
+            {
+                filteredModels = models
+                    .Where(m => m.Status == OrderStatus.Finished && m.ShouldBeDelivered);
+            } 
+            else
+            {
+                filteredModels = models
+                    .Where(m => capitalizedStatus.Equals(m.Status.ToString()));
+            }
+
+            return mapper.Map<OrderExportDTO[]>(filteredModels);
         }
 
         [HttpPatch("Orders/Status/{id}")]

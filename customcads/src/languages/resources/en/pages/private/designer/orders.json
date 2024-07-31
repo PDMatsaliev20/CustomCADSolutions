@@ -1,5 +1,12 @@
 {
   "Pending Title": "Orders to Begin",
   "Begun Title": "Orders to Finish",
-  "Finished Title": "Orders to Deliver"
+  "Finished Title": "Orders to Deliver",
+  "Accept": "Accept",
+  "Report": "Report",
+  "Complete": "Complete",
+  "Cancel": "Cancel",
+  "Deliver": "Deliver",
+  "Dismiss": "Dismiss",
+  "Confirm Report": "Are you sure you want to report this order?"
 }
