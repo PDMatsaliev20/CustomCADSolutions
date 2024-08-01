@@ -32,10 +32,10 @@ namespace CustomCADs.App.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            IEnumerable<OrderModel> orders = await orderService.GetAllAsync();
-            var buyerOrders = orders.Where(o => o.Buyer.UserName == User.Identity!.Name);
+            OrderQuery query = new() { Buyer = User.Identity!.Name };
+            OrderResult result = await orderService.GetAllAsync(query, new(), new());
 
-            var views = mapper.Map<OrderViewModel[]>(buyerOrders);
+            var views = mapper.Map<OrderViewModel[]>(result.Orders);
             return View(views);
         }
 

@@ -1,5 +1,7 @@
 ﻿using CustomCADs.Core.Models.Orders;
+using CustomCADs.Domain.Entities;
 using CustomCADs.Domain.Entities.Enums;
+using System.Linq.Expressions;
 
 namespace CustomCADs.Core.Contracts
 {
@@ -9,7 +11,7 @@ namespace CustomCADs.Core.Contracts
         ///     Pulls all Orders from the Orders table.
         /// </summary>
         /// <returns>A Task object that represents the Orders.</returns>
-        Task<IEnumerable<OrderModel>> GetAllAsync();
+        Task<OrderResult> GetAllAsync(OrderQuery query, OrderSearch search, OrderPagination pagination, Expression<Func<Order, bool>>? customFilter = null);
 
         /// <summary>
         ///     Searches for an Order by the given id.

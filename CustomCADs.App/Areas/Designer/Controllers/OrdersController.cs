@@ -29,8 +29,8 @@ namespace CustomCADs.App.Areas.Designer.Controllers
         [HttpGet]
         public async Task<IActionResult> All()
         {
-            IEnumerable<OrderModel> orders = await orderService.GetAllAsync();
-            var views = mapper.Map<OrderViewModel[]>(orders);
+            OrderResult result = await orderService.GetAllAsync(new(), new(), new());
+            var views = mapper.Map<OrderViewModel[]>(result.Orders);
 
             ViewBag.Statuses = typeof(OrderStatus).GetEnumNames();
             return View(views);

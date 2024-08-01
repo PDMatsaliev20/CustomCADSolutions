@@ -3,6 +3,7 @@ using CustomCADs.API.Helpers;
 using CustomCADs.API.Mappings;
 using CustomCADs.API.Models.Cads;
 using CustomCADs.API.Models.Orders;
+using CustomCADs.API.Models.Queries;
 using CustomCADs.Core.Contracts;
 using CustomCADs.Core.Models.Orders;
 using CustomCADs.Domain.Entities.Enums;
@@ -35,44 +36,21 @@ namespace CustomCADs.API.Controllers
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status500InternalServerError)]
         [ProducesResponseType(Status502BadGateway)]
-        public async Task<ActionResult<OrderExportDTO[]>> GetOrdersAsync()
+        public async Task<ActionResult<OrderResultDTO>> GetOrdersAsync(string status, [FromQuery] OrderPagination pagination, string? sorting, string? category, string? name)
         {
             try
             {
-                IEnumerable<OrderModel> orders = (await orderService.GetAllAsync())
-                    .Where(o => o.Status == OrderStatus.Pending || o.Status == OrderStatus.Begun)
-                    .OrderByDescending(o => (int)o.Status)
-                    .ThenBy(o => o.OrderDate);
-
-                return mapper.Map<OrderExportDTO[]>(orders);
-            }
-            catch (Exception ex) when (
-                ex is AutoMapperConfigurationException
-                || ex is AutoMapperMappingException
-            )
-            {
-                return StatusCode(Status502BadGateway, ex.GetMessage());
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(Status500InternalServerError, ex.GetMessage());
-            }
-        }
-
-        [HttpGet("Completed")]
-        [Produces("application/json")]
-        [ProducesResponseType(Status200OK)]
-        [ProducesResponseType(Status500InternalServerError)]
-        [ProducesResponseType(Status502BadGateway)]
-        public async Task<ActionResult<OrderExportDTO[]>> GetCompletedOrdersAsync()
-        {
-            try
-            {
-                IEnumerable<OrderModel> orders = (await orderService.GetAllAsync())
-                    .Where(o => !(o.Status == OrderStatus.Pending || o.Status == OrderStatus.Begun))
-                    .OrderByDescending(o => (int)o.Status).ThenBy(o => o.OrderDate);
-
-                return mapper.Map<OrderExportDTO[]>(orders);
+                if (!Enum.TryParse(status.Capitalize(), out OrderStatus enumStatus))
+                {
+                    string allowedStatuses = string.Join(", ", Enum.GetNames<OrderStatus>());
+                    return BadRequest(string.Format(InvalidStatus, allowedStatuses));
+                }
+                 
+                OrderQuery query = new() { Buyer = User.Identity!.Name, Status = enumStatus };
+                OrderSearch search = new() { Category = category, Name = name, Sorting = sorting ?? string.Empty };
+                
+                OrderResult result = await orderService.GetAllAsync(query, search, pagination);
+                return mapper.Map<OrderResultDTO>(result);
             }
             catch (Exception ex) when (
                 ex is AutoMapperConfigurationException

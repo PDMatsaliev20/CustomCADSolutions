@@ -8,6 +8,7 @@ using CustomCADs.Domain.Entities.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.ComponentModel.DataAnnotations;
+using System.Linq.Expressions;
 
 namespace CustomCADs.Core.Services
 {
@@ -20,12 +21,61 @@ namespace CustomCADs.Core.Services
                 cfg.AddProfile<OrderCoreProfile>();
             }).CreateMapper();
 
-        public async Task<IEnumerable<OrderModel>> GetAllAsync()
+        public async Task<OrderResult> GetAllAsync(OrderQuery query, OrderSearch search, OrderPagination pagination, Expression<Func<Order, bool>>? customFilter = null)
         {
-            Order[] orders = await repository.All<Order>().ToArrayAsync();
+            IQueryable<Order> dbOrders = repository.All<Order>();
+
+            // Querying
+            if (!string.IsNullOrWhiteSpace(query.Buyer))
+            {
+                dbOrders = dbOrders.Where(o => o.Buyer.UserName == query.Buyer);
+            }
+            if (query.Status != null)
+            {
+                dbOrders = dbOrders.Where(o => o.Status == query.Status);
+            }
+
+            // Optional custom
+            if (customFilter != null)
+            {
+                dbOrders = dbOrders.Where(customFilter);
+            }
+
+            // Search & Sort
+            if (!string.IsNullOrWhiteSpace(search.Name))
+            {
+                dbOrders = dbOrders.Where(o => o.Name.Contains(search.Name));
+            }
+            if (!string.IsNullOrWhiteSpace(search.Buyer))
+            {
+                dbOrders = dbOrders.Where(o => o.Buyer.UserName!.Contains(search.Buyer));
+            }
+            if (!string.IsNullOrWhiteSpace(search.Category))
+            {
+                dbOrders = dbOrders.Where(o => o.Category.Name == search.Category);
+            }
+            dbOrders = search.Sorting.ToLower() switch
+            {
+                "newest" => dbOrders.OrderBy(o => o.OrderDate),
+                "oldest" => dbOrders.OrderByDescending(o => o.OrderDate),
+                "alphabetical" => dbOrders.OrderBy(o => o.Name),
+                "unalphabetical" => dbOrders.OrderByDescending(o => o.Name),
+                "category" => dbOrders.OrderBy(o => o.Category.Name),
+                _ => dbOrders.OrderBy(o => o.Id)
+            };
+
+            // Pagination
+            Order[] orders = await dbOrders
+                .Skip((pagination.CurrentPage - 1) * pagination.CadsPerPage)
+                .Take(pagination.CadsPerPage)
+                .ToArrayAsync();
 
             OrderModel[] models = mapper.Map<OrderModel[]>(orders);
-            return models;
+            return new()
+            {
+                Count = dbOrders.Count(),
+                Orders = models
+            };
         }
 
         public async Task<OrderModel> GetByIdAsync(int id)
@@ -82,7 +132,7 @@ namespace CustomCADs.Core.Services
             order.Status = status;
             await repository.SaveChangesAsync();
         }
-        
+
         public async Task CompleteAsync(int id, int cadId)
         {
             Order order = await repository.GetByIdAsync<Order>(id)
@@ -91,7 +141,7 @@ namespace CustomCADs.Core.Services
             order.CadId = cadId;
             await repository.SaveChangesAsync();
         }
-        
+
         public async Task DeleteAsync(int id)
         {
             Order order = await repository.GetByIdAsync<Order>(id)

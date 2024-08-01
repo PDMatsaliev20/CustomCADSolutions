@@ -15,6 +15,7 @@ using static CustomCADs.Domain.DataConstants.RoleConstants;
 namespace CustomCADs.API.Controllers
 {
     using static StatusCodes;
+    using static ApiMessages;
 
     [ApiController]
     [Route("API/[controller]")]
@@ -83,30 +84,27 @@ namespace CustomCADs.API.Controllers
             }
         }
 
-        [HttpGet("Orders")]
+        [HttpGet("Orders/{status}")]
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status500InternalServerError)]
         [ProducesResponseType(Status502BadGateway)]
-        public async Task<ActionResult<OrderExportDTO[]>> GetOrdersByStatusAsync(string status)
+        public async Task<ActionResult<OrderResultDTO>> GetOrdersByStatusAsync(string status, [FromQuery] OrderPagination pagination, string? sorting, string? category, string? name, string? buyer)
         {
             try
             {
-                IEnumerable<OrderModel> models = await orderService.GetAllAsync();
-                string capitalizedStatus = status.Capitalize();
-
-                IEnumerable<OrderModel> filteredModels;
-                if (Enum.Parse<OrderStatus>(capitalizedStatus) == OrderStatus.Finished)
+                if (!Enum.TryParse(status.Capitalize(), out OrderStatus enumStatus))
                 {
-                    filteredModels = models
-                        .Where(m => m.Status == OrderStatus.Finished && m.ShouldBeDelivered);
-                }
-                else
-                {
-                    filteredModels = models
-                        .Where(m => capitalizedStatus.Equals(m.Status.ToString()));
+                    string allowedStatuses = string.Join(", ", Enum.GetNames<OrderStatus>());
+                    return BadRequest(string.Format(InvalidStatus, allowedStatuses));
                 }
 
-                return mapper.Map<OrderExportDTO[]>(filteredModels);
+                OrderQuery query = new() { Status = Enum.Parse<OrderStatus>(status.Capitalize()) };
+                OrderSearch search = new() { Category = category, Name = name, Buyer = buyer, Sorting = sorting ?? string.Empty };
+                
+                OrderResult result = await orderService.GetAllAsync(query, search, pagination, 
+                    order => order.Status != OrderStatus.Finished || order.ShouldBeDelivered);
+                
+                return mapper.Map<OrderResultDTO>(result);
             }
             catch (Exception ex) when (
                 ex is AutoMapperConfigurationException

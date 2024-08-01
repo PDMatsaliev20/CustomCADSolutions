@@ -23,8 +23,8 @@ namespace CustomCADs.App.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            IEnumerable<OrderModel> orders = await orderService.GetAllAsync();
-            var views = mapper.Map<OrderViewModel[]>(orders);
+            OrderResult result = await orderService.GetAllAsync(new(), new(), new());
+            var views = mapper.Map<OrderViewModel[]>(result);
 
             ViewBag.Categories = await categoryService.GetAllAsync();
             return View(views);

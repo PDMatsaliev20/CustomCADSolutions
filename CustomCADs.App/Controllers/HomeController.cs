@@ -71,18 +71,7 @@ namespace CustomCADs.App.Controllers
             try
             {
                 CadModel model = await cadService.GetByIdAsync(id);
-                IEnumerable<OrderModel> orders = (await orderService.GetAllAsync())
-                    .Where(o => o.CadId == id);
-
-                bool hasPermission =
-                    orders.Select(o => o.BuyerId).Contains(User.GetId())
-                    || model.CreatorId == User.GetId();
-
-                if (!hasPermission)
-                {
-                    return StatusCode(402);
-                }
-
+                
                 if (!model.IsFolder)
                 {
                     string downloadName = $"{model.Name}{model.CadExtension}";
