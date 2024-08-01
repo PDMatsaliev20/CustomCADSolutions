@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using CustomCADs.App.Mappings;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using CustomCADs.App.Models.Cads.View;
 using CustomCADs.Core.Contracts;
-using CustomCADs.Core.Models;
+using CustomCADs.Core.Models.Cads;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using static CustomCADs.Domain.DataConstants;
 
 namespace CustomCADs.App.Areas.Admin.Controllers

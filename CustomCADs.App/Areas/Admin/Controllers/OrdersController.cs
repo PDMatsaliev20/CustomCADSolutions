@@ -2,7 +2,7 @@
 using CustomCADs.App.Mappings;
 using CustomCADs.App.Models.Orders;
 using CustomCADs.Core.Contracts;
-using CustomCADs.Core.Models;
+using CustomCADs.Core.Models.Orders;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static CustomCADs.Domain.DataConstants;

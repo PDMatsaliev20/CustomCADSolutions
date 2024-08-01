@@ -1,9 +1,10 @@
-﻿using CustomCADs.Domain.Entities.Enums;
+﻿using CustomCADs.Core.Models.Orders;
+using CustomCADs.Domain.Entities.Enums;
 using CustomCADs.Domain.Entities.Identity;
 using System.ComponentModel.DataAnnotations;
 using static CustomCADs.Domain.DataConstants;
 
-namespace CustomCADs.Core.Models
+namespace CustomCADs.Core.Models.Cads
 {
     public class CadModel
     {
@@ -12,7 +13,7 @@ namespace CustomCADs.Core.Models
 
         [Required]
         public string CadExtension { get; set; } = null!;
-        
+
         [Required]
         public string ImageExtension { get; set; } = null!;
 
@@ -20,13 +21,13 @@ namespace CustomCADs.Core.Models
         public bool IsFolder { get; set; } = false;
 
         public string ImagePath { get; set; } = null!;
-        
+
         public string CadPath { get; set; } = null!;
 
         [Required(ErrorMessage = RequiredErrorMessage)]
         [StringLength(CadConstants.NameMaxLength, MinimumLength = CadConstants.NameMinLength, ErrorMessage = LengthErrorMessage)]
         public string Name { get; set; } = null!;
-        
+
         [Required(ErrorMessage = RequiredErrorMessage)]
         [StringLength(CadConstants.DescriptionMaxLength, MinimumLength = CadConstants.DescriptionMinLength, ErrorMessage = LengthErrorMessage)]
         public string Description { get; set; } = null!;

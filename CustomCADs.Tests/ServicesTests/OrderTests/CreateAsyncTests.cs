@@ -1,4 +1,4 @@
-﻿using CustomCADs.Core.Models;
+﻿using CustomCADs.Core.Models.Orders;
 using static CustomCADs.Core.TestsErrorMessages;
 
 namespace CustomCADs.Tests.ServicesTests.OrderTests

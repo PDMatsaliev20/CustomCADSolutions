@@ -1,4 +1,4 @@
-﻿using CustomCADs.Core.Models;
+﻿using CustomCADs.Core.Models.Cads;
 using CustomCADs.Domain.Entities.Enums;
 using static CustomCADs.Core.TestsErrorMessages;
 

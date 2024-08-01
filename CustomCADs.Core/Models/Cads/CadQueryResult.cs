@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Core.Models
+﻿namespace CustomCADs.Core.Models.Cads
 {
     public class CadQueryResult
     {

@@ -2,7 +2,7 @@
 using CustomCADs.API.Helpers;
 using CustomCADs.API.Models.Cads;
 using CustomCADs.API.Models.Queries;
-using CustomCADs.Core.Models;
+using CustomCADs.Core.Models.Cads;
 using CustomCADs.Domain.Entities.Enums;
 
 namespace CustomCADs.API.Mappings

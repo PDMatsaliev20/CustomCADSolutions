@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using CustomCADs.Core.Contracts;
 using CustomCADs.Core.Mappings;
-using CustomCADs.Core.Models;
+using CustomCADs.Core.Models.Cads;
 using CustomCADs.Domain;
 using CustomCADs.Domain.Entities;
 using CustomCADs.Domain.Entities.Enums;

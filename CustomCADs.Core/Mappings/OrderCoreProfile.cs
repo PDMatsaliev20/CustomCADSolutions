@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using CustomCADs.Core.Models;
+using CustomCADs.Core.Models.Orders;
 using CustomCADs.Domain.Entities;
 
 namespace CustomCADs.Core.Mappings

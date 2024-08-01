@@ -1,6 +1,7 @@
 ﻿using CustomCADs.API.Helpers;
 using CustomCADs.Core.Contracts;
-using CustomCADs.Core.Models;
+using CustomCADs.Core.Models.Cads;
+using CustomCADs.Core.Models.Orders;
 using CustomCADs.Domain.Entities.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

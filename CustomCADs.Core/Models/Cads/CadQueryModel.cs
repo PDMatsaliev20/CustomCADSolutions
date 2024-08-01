@@ -1,6 +1,6 @@
 ﻿using CustomCADs.Domain.Entities.Enums;
 
-namespace CustomCADs.Core.Models
+namespace CustomCADs.Core.Models.Cads
 {
     public class CadQueryModel
     {
@@ -11,6 +11,6 @@ namespace CustomCADs.Core.Models
         public int CurrentPage { get; set; } = 1;
         public int CadsPerPage { get; set; } = 3;
         public CadStatus? Status { get; set; }
-        public CadSorting Sorting { get; set; }
+        public Sorting Sorting { get; set; }
     }
 }

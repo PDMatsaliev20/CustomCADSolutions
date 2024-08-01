@@ -3,7 +3,7 @@ using CustomCADs.App.Extensions;
 using CustomCADs.App.Mappings;
 using CustomCADs.App.Models.Cads.View;
 using CustomCADs.Core.Contracts;
-using CustomCADs.Core.Models;
+using CustomCADs.Core.Models.Cads;
 using CustomCADs.Domain.Entities.Enums;
 using CustomCADs.Domain.Entities.Identity;
 using Microsoft.AspNetCore.Identity;

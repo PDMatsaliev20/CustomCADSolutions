@@ -4,7 +4,7 @@ using CustomCADs.App.Mappings;
 using CustomCADs.App.Models.Cads.Input;
 using CustomCADs.App.Models.Orders;
 using CustomCADs.Core.Contracts;
-using CustomCADs.Core.Models;
+using CustomCADs.Core.Models.Orders;
 using CustomCADs.Domain.Entities.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

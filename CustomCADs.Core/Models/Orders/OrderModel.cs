@@ -1,4 +1,5 @@
-﻿using CustomCADs.Domain.Entities;
+﻿using CustomCADs.Core.Models.Cads;
+using CustomCADs.Domain.Entities;
 using CustomCADs.Domain.Entities.Enums;
 using CustomCADs.Domain.Entities.Identity;
 using System.ComponentModel.DataAnnotations;
@@ -6,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using static CustomCADs.Domain.DataConstants;
 using static CustomCADs.Domain.DataConstants.OrderConstants;
 
-namespace CustomCADs.Core.Models
+namespace CustomCADs.Core.Models.Orders
 {
     public class OrderModel
     {
@@ -19,7 +20,7 @@ namespace CustomCADs.Core.Models
         public string Name { get; set; } = null!;
 
         [Required(ErrorMessage = RequiredErrorMessage)]
-        [StringLength(DescriptionMaxLength, MinimumLength = DescriptionMinLength, 
+        [StringLength(DescriptionMaxLength, MinimumLength = DescriptionMinLength,
             ErrorMessage = LengthErrorMessage)]
         public string Description { get; set; } = null!;
 
@@ -30,10 +31,10 @@ namespace CustomCADs.Core.Models
         public OrderStatus Status { get; set; }
 
         [Required(ErrorMessage = RequiredErrorMessage)]
-        public bool ShouldBeDelivered { get; set; } 
+        public bool ShouldBeDelivered { get; set; }
 
         public int? CadId { get; set; }
-        
+
         [Required(ErrorMessage = RequiredErrorMessage)]
         public int CategoryId { get; set; }
 
@@ -45,7 +46,7 @@ namespace CustomCADs.Core.Models
 
         [ForeignKey(nameof(CadId))]
         public CadModel? Cad { get; set; }
-            
+
         [ForeignKey(nameof(BuyerId))]
         public AppUser Buyer { get; set; } = null!;
     }

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using CustomCADs.App.Models.Cads.Input;
 using CustomCADs.App.Models.Cads.View;
-using CustomCADs.Core.Models;
+using CustomCADs.Core.Models.Cads;
 
 namespace CustomCADs.App.Mappings
 {

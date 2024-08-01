@@ -1,4 +1,4 @@
-﻿using CustomCADs.Core.Models;
+﻿using CustomCADs.Core.Models.Cads;
 using CustomCADs.Domain.Entities.Enums;
 
 namespace CustomCADs.Core.Contracts
