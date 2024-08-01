@@ -21,7 +21,7 @@ namespace CustomCADs.API.Controllers
     [Route("API/[controller]")]
     public class OrdersController(IOrderService orderService) : ControllerBase
     {
-        private readonly string createdAtReturnAction = nameof(GetSingleAsync).Replace("Async", "");
+        private readonly string createdAtReturnAction = nameof(GetOrderAsync).Replace("Async", "");
         private readonly IMapper mapper = new MapperConfiguration(cfg =>
         {
             cfg.AddProfile<OrderApiProfile>();
@@ -92,7 +92,7 @@ namespace CustomCADs.API.Controllers
         [ProducesResponseType(Status404NotFound)]
         [ProducesResponseType(Status500InternalServerError)]
         [ProducesResponseType(Status502BadGateway)]
-        public async Task<ActionResult<OrderExportDTO>> GetSingleAsync(int id)
+        public async Task<ActionResult<OrderExportDTO>> GetOrderAsync(int id)
         {
             try
             {
@@ -121,7 +121,7 @@ namespace CustomCADs.API.Controllers
         [ProducesResponseType(Status201Created)]
         [ProducesResponseType(Status500InternalServerError)]
         [ProducesResponseType(Status502BadGateway)]
-        public async Task<ActionResult> PostAsync(OrderImportDTO dto)
+        public async Task<ActionResult> PostOrderAsync(OrderImportDTO dto)
         {
             try
             {
@@ -154,7 +154,7 @@ namespace CustomCADs.API.Controllers
         [ProducesResponseType(Status403Forbidden)]
         [ProducesResponseType(Status404NotFound)]
         [ProducesResponseType(Status500InternalServerError)]
-        public async Task<ActionResult> PutAsync(int id, OrderImportDTO dto)
+        public async Task<ActionResult> PutOrderAsync(int id, OrderImportDTO dto)
         {
             try
             {
@@ -189,7 +189,7 @@ namespace CustomCADs.API.Controllers
         [ProducesResponseType(Status404NotFound)]
         [ProducesResponseType(Status409Conflict)]
         [ProducesResponseType(Status500InternalServerError)]
-        public async Task<ActionResult> PatchAsync(int id, [FromBody] JsonPatchDocument<OrderModel> patchOrder)
+        public async Task<ActionResult> PatchOrderAsync(int id, [FromBody] JsonPatchDocument<OrderModel> patchOrder)
         {
             // Forbid modifying certain Order properties
             string? modifiedForbiddenField = patchOrder.CheckForBadChanges("/id", "/orderDate", "/status", "/cadId", "/buyerId", "/category", "/cad", "/buyer");
@@ -240,7 +240,7 @@ namespace CustomCADs.API.Controllers
         [ProducesResponseType(Status204NoContent)]
         [ProducesResponseType(Status404NotFound)]
         [ProducesResponseType(Status500InternalServerError)]
-        public async Task<ActionResult> DeleteAsync(int id)
+        public async Task<ActionResult> DeleteOrderAsync(int id)
         {
             try
             {

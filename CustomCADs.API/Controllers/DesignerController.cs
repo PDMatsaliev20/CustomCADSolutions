@@ -30,7 +30,7 @@ namespace CustomCADs.API.Controllers
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status500InternalServerError)]
         [ProducesResponseType(Status502BadGateway)]
-        public async Task<ActionResult<CadQueryResultDTO>> CadsAsync([FromQuery] CadQueryDTO dto)
+        public async Task<ActionResult<CadQueryResultDTO>> GetUncheckedCadsAsync([FromQuery] CadQueryDTO dto)
         {
             try
             {
@@ -56,7 +56,7 @@ namespace CustomCADs.API.Controllers
         [HttpPatch("Cads/Status/{id}")]
         [ProducesResponseType(Status204NoContent)]
         [ProducesResponseType(Status404NotFound)]
-        public async Task<ActionResult> UpdateCadStatusCadAsync(int id, string status)
+        public async Task<ActionResult> UpdateCadStatusAsync(int id, string status)
         {
             try
             {
@@ -77,7 +77,7 @@ namespace CustomCADs.API.Controllers
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status500InternalServerError)]
         [ProducesResponseType(Status502BadGateway)]
-        public async Task<ActionResult<OrderExportDTO[]>> OrdersAsync(string status)
+        public async Task<ActionResult<OrderExportDTO[]>> GetOrdersByStatusAsync(string status)
         {
             try
             {

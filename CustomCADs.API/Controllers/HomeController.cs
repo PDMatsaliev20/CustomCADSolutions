@@ -28,7 +28,7 @@ namespace CustomCADs.API.Controllers
 
         [HttpGet("Cad")]
         [ProducesResponseType(Status200OK)]
-        public ActionResult<CadGetDTO> GetAsync()
+        public ActionResult<CadGetDTO> GetHomeCadAsync()
             => new CadGetDTO()
             {
                 CadPath = "/others/cads/HomeCAD.glb",
@@ -40,7 +40,7 @@ namespace CustomCADs.API.Controllers
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status500InternalServerError)]
         [ProducesResponseType(Status502BadGateway)]
-        public async Task<ActionResult<CadQueryResultDTO>> GetAllAsync([FromQuery] CadQueryDTO dto)
+        public async Task<ActionResult<CadQueryResultDTO>> GetGalleryAsync([FromQuery] CadQueryDTO dto)
         {
             try
             {
@@ -68,7 +68,7 @@ namespace CustomCADs.API.Controllers
         [ProducesResponseType(Status404NotFound)]
         [ProducesResponseType(Status500InternalServerError)]
         [ProducesResponseType(Status502BadGateway)]
-        public async Task<ActionResult<CadGetDTO>> GetCadAsync(int id)
+        public async Task<ActionResult<CadGetDTO>> GetGalleryCadAsync(int id)
         {
             try
             {

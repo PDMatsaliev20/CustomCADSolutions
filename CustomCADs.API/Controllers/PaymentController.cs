@@ -18,7 +18,7 @@ namespace CustomCADs.API.Controllers
     public class PaymentController(IOptions<StripeInfo> stripeOptions, ICadService cadService, IOrderService orderService) : ControllerBase
     {
         private readonly StripeInfo stripe = stripeOptions.Value;
-        private readonly string createdAtReturnAction = nameof(OrdersController.GetSingleAsync).Replace("Async", "");
+        private readonly string createdAtReturnAction = nameof(OrdersController.GetOrderAsync).Replace("Async", "");
 
         [HttpPost("Purchase/{id}")]
         [ProducesResponseType(Status201Created)]

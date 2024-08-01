@@ -8,11 +8,8 @@ using CustomCADs.Core.Models;
 using CustomCADs.Domain.Entities.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
-using Microsoft.AspNetCore.JsonPatch.Operations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json.Serialization;
-using System.Drawing.Text;
 using static CustomCADs.Domain.DataConstants.RoleConstants;
 
 namespace CustomCADs.API.Controllers
@@ -24,7 +21,7 @@ namespace CustomCADs.API.Controllers
     [Route("API/[controller]")]
     public class CadsController(ICadService cadService, IWebHostEnvironment env) : ControllerBase
     {
-        private readonly string createdAtReturnAction = nameof(GetSingleAsync).Replace("Async", "");
+        private readonly string createdAtReturnAction = nameof(GetCadAsync).Replace("Async", "");
         private readonly IMapper mapper = new MapperConfiguration(cfg =>
         {
             cfg.AddProfile<OtherApiProfile>();
@@ -36,7 +33,7 @@ namespace CustomCADs.API.Controllers
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status500InternalServerError)]
         [ProducesResponseType(Status502BadGateway)]
-        public async Task<ActionResult<CadQueryResultDTO>> GetAsync([FromQuery] CadQueryDTO dto)
+        public async Task<ActionResult<CadQueryResultDTO>> GetCadsAsync([FromQuery] CadQueryDTO dto)
         {
             try
             {
@@ -63,7 +60,7 @@ namespace CustomCADs.API.Controllers
         [ProducesResponseType(Status404NotFound)]
         [ProducesResponseType(Status500InternalServerError)]
         [ProducesResponseType(Status502BadGateway)]
-        public async Task<ActionResult<CadGetDTO>> GetSingleAsync(int id)
+        public async Task<ActionResult<CadGetDTO>> GetCadAsync(int id)
         {
             try
             {
@@ -96,7 +93,7 @@ namespace CustomCADs.API.Controllers
         [ProducesResponseType(Status404NotFound)]
         [ProducesResponseType(Status500InternalServerError)]
         [ProducesResponseType(Status502BadGateway)]
-        public async Task<ActionResult> PostAsync([FromForm] CadPostDTO import)
+        public async Task<ActionResult> PostCadAsync([FromForm] CadPostDTO import)
         {
             try
             {
@@ -143,7 +140,7 @@ namespace CustomCADs.API.Controllers
         [ProducesResponseType(Status403Forbidden)]
         [ProducesResponseType(Status404NotFound)]
         [ProducesResponseType(Status500InternalServerError)]
-        public async Task<ActionResult> PutAsync(int id, [FromForm] CadPutDTO dto)
+        public async Task<ActionResult> PutCadAsync(int id, [FromForm] CadPutDTO dto)
         {
             try
             {
@@ -192,7 +189,7 @@ namespace CustomCADs.API.Controllers
         [ProducesResponseType(Status404NotFound)]
         [ProducesResponseType(Status409Conflict)]
         [ProducesResponseType(Status500InternalServerError)]
-        public async Task<ActionResult> PatchAsync(int id, [FromBody] JsonPatchDocument<CadModel> patchCad)
+        public async Task<ActionResult> PatchCadAsync(int id, [FromBody] JsonPatchDocument<CadModel> patchCad)
         {
             string? modifiedForbiddenField = patchCad.CheckForBadChanges("/id", "/cadExtension", "/imageExtension", "/isFolder", "/imagePath", "/cadPath", "/status", "/creationDate", "/creatorId", "/category", "/creator", "/orders");
             if (modifiedForbiddenField != null)
@@ -242,7 +239,7 @@ namespace CustomCADs.API.Controllers
         [ProducesResponseType(Status204NoContent)]
         [ProducesResponseType(Status400BadRequest)]
         [ProducesResponseType(Status404NotFound)]
-        public async Task<ActionResult> DeleteAsync(int id)
+        public async Task<ActionResult> DeleteCadAsync(int id)
         {
             try
             {
