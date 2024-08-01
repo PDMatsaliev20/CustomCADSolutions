@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.JsonPatch.Operations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Serialization;
+using System.Drawing.Text;
 using static CustomCADs.Domain.DataConstants.RoleConstants;
 
 namespace CustomCADs.API.Controllers
@@ -31,20 +32,37 @@ namespace CustomCADs.API.Controllers
         }).CreateMapper();
 
         [HttpGet]
-        [Consumes("application/json")]
         [Produces("application/json")]
         [ProducesResponseType(Status200OK)]
+        [ProducesResponseType(Status500InternalServerError)]
+        [ProducesResponseType(Status502BadGateway)]
         public async Task<ActionResult<CadQueryResultDTO>> GetAsync([FromQuery] CadQueryDTO dto)
         {
-            CadQueryModel query = mapper.Map<CadQueryModel>(dto);
-            CadQueryResult result = await cadService.GetAllAsync(query);
-            return mapper.Map<CadQueryResultDTO>(result);
+            try
+            {
+                CadQueryModel query = mapper.Map<CadQueryModel>(dto);
+                CadQueryResult result = await cadService.GetAllAsync(query);
+                return mapper.Map<CadQueryResultDTO>(result);
+            }
+            catch (Exception ex) when (
+                ex is AutoMapperConfigurationException
+                || ex is AutoMapperMappingException
+            )
+            {
+                return StatusCode(Status502BadGateway, ex.GetMessage());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(Status500InternalServerError, ex.GetMessage());
+            }
         }
 
         [HttpGet("{id}")]
         [Produces("application/json")]
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status404NotFound)]
+        [ProducesResponseType(Status500InternalServerError)]
+        [ProducesResponseType(Status502BadGateway)]
         public async Task<ActionResult<CadGetDTO>> GetSingleAsync(int id)
         {
             try
@@ -56,6 +74,17 @@ namespace CustomCADs.API.Controllers
             {
                 return NotFound();
             }
+            catch (Exception ex) when (
+                ex is AutoMapperConfigurationException
+                || ex is AutoMapperMappingException
+            )
+            {
+                return StatusCode(Status502BadGateway, ex.GetMessage());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(Status500InternalServerError, ex.GetMessage());
+            }
         }
 
         [HttpPost]
@@ -64,17 +93,19 @@ namespace CustomCADs.API.Controllers
         [Produces("application/json")]
         [ProducesResponseType(Status201Created)]
         [ProducesResponseType(Status400BadRequest)]
+        [ProducesResponseType(Status404NotFound)]
+        [ProducesResponseType(Status500InternalServerError)]
+        [ProducesResponseType(Status502BadGateway)]
         public async Task<ActionResult> PostAsync([FromForm] CadPostDTO import)
         {
-            CadModel model = mapper.Map<CadModel>(import);
-            model.CreationDate = DateTime.Now;
-            model.CreatorId = User.GetId();
-            model.Status = User.IsInRole(Designer) 
-                ? CadStatus.Validated 
-                : CadStatus.Unchecked;
-            
             try
             {
+                CadModel model = mapper.Map<CadModel>(import);
+                model.CreationDate = DateTime.Now;
+                model.CreatorId = User.GetId();
+                model.Status = User.IsInRole(Designer) ?
+                    CadStatus.Validated : CadStatus.Unchecked;
+
                 int id = await cadService.CreateAsync(model);
                 model = await cadService.GetByIdAsync(id);
 
@@ -85,9 +116,24 @@ namespace CustomCADs.API.Controllers
                 CadGetDTO export = mapper.Map<CadGetDTO>(model);
                 return CreatedAtAction(createdAtReturnAction, new { id }, export);
             }
-            catch
+            catch (ArgumentNullException ex)
             {
-                return BadRequest();
+                return BadRequest(ex.GetMessage());
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+            catch (Exception ex) when (
+                ex is AutoMapperConfigurationException
+                || ex is AutoMapperMappingException
+            )
+            {
+                return StatusCode(Status502BadGateway, ex.GetMessage());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(Status500InternalServerError, ex.GetMessage());
             }
         }
 
@@ -96,6 +142,7 @@ namespace CustomCADs.API.Controllers
         [ProducesResponseType(Status204NoContent)]
         [ProducesResponseType(Status403Forbidden)]
         [ProducesResponseType(Status404NotFound)]
+        [ProducesResponseType(Status500InternalServerError)]
         public async Task<ActionResult> PutAsync(int id, [FromForm] CadPutDTO dto)
         {
             try
@@ -104,7 +151,7 @@ namespace CustomCADs.API.Controllers
 
                 if (User.Identity!.Name != cad.Creator.UserName)
                 {
-                    return Forbid();
+                    return Forbid("Not allowed to access another User's 3d model!");
                 }
 
                 if (cad.Name != dto.Name)
@@ -119,7 +166,7 @@ namespace CustomCADs.API.Controllers
                 {
                     env.DeleteFile(cad.ImagePath);
                     await env.UploadImageAsync(dto.Image, cad.Name + id + cad.ImageExtension);
-                } 
+                }
 
                 cad.Description = dto.Description;
                 cad.CategoryId = dto.CategoryId;
@@ -132,6 +179,10 @@ namespace CustomCADs.API.Controllers
             {
                 return NotFound();
             }
+            catch (Exception ex)
+            {
+                return StatusCode(Status500InternalServerError, ex.GetMessage());
+            }
         }
 
         [HttpPatch("{id}")]
@@ -139,13 +190,26 @@ namespace CustomCADs.API.Controllers
         [ProducesResponseType(Status204NoContent)]
         [ProducesResponseType(Status400BadRequest)]
         [ProducesResponseType(Status404NotFound)]
-        public async Task<ActionResult> PatchAsync(int id, [FromBody] List<Operation<CadModel>> operations)
+        [ProducesResponseType(Status409Conflict)]
+        [ProducesResponseType(Status500InternalServerError)]
+        public async Task<ActionResult> PatchAsync(int id, [FromBody] JsonPatchDocument<CadModel> patchCad)
         {
-            JsonPatchDocument<CadModel> patchCad = new(operations, new DefaultContractResolver());
+            string? modifiedForbiddenField = patchCad.CheckForBadChanges("/id", "/cadExtension", "/imageExtension", "/isFolder", "/imagePath", "/cadPath", "/status", "/creationDate", "/creatorId", "/category", "/creator", "/orders");
+            if (modifiedForbiddenField != null)
+            {
+                return BadRequest(modifiedForbiddenField);
+            }
+
             try
             {
                 CadModel model = await cadService.GetByIdAsync(id);
-                patchCad.ApplyTo(model);
+
+                string? error = null;
+                patchCad.ApplyTo(model, p => error = p.ErrorMessage);
+                if (error != null)
+                {
+                    return BadRequest(error);
+                }
 
                 IList<string> errors = cadService.ValidateEntity(model);
                 if (errors.Any())
@@ -176,27 +240,27 @@ namespace CustomCADs.API.Controllers
 
         [HttpDelete("{id}")]
         [ProducesResponseType(Status204NoContent)]
-        [ProducesResponseType(Status404NotFound)]
         [ProducesResponseType(Status400BadRequest)]
+        [ProducesResponseType(Status404NotFound)]
         public async Task<ActionResult> DeleteAsync(int id)
         {
             try
             {
-                if (await cadService.ExistsByIdAsync(id))
-                {
-                    CadModel model = await cadService.GetByIdAsync(id);
-                    env.DeleteFile(model.CadPath);
-                    env.DeleteFile(model.ImagePath);
-                    
-                    await cadService.DeleteAsync(id);
-                    
-                    return NoContent();
-                }
-                else return NotFound();
+                CadModel model = await cadService.GetByIdAsync(id);
+                env.DeleteFile(model.CadPath);
+                env.DeleteFile(model.ImagePath);
+
+                await cadService.DeleteAsync(id);
+
+                return NoContent();
             }
-            catch
+            catch (KeyNotFoundException ex)
             {
-                return BadRequest();
+                return NotFound(ex.GetMessage());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(Status500InternalServerError, ex.GetMessage());
             }
         }
     }
