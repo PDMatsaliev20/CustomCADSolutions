@@ -4,6 +4,7 @@ using CustomCADs.Core.Models;
 using CustomCADs.Domain.Entities.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using static CustomCADs.Domain.DataConstants;
 using static CustomCADs.Domain.DataConstants.RoleConstants;
@@ -54,6 +55,14 @@ namespace CustomCADs.API.Controllers
             catch (KeyNotFoundException ex)
             {
                 return NotFound(ex.GetMessage());
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                return Conflict(ex.GetMessage());
+            }
+            catch (DbUpdateException ex)
+            {
+                return BadRequest(ex.GetMessage());
             }
             catch (Exception ex)
             {

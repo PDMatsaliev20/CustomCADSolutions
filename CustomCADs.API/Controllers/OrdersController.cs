@@ -142,6 +142,14 @@ namespace CustomCADs.API.Controllers
             {
                 return StatusCode(Status502BadGateway, ex.GetMessage());
             }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                return Conflict(ex.GetMessage());
+            }
+            catch (DbUpdateException ex)
+            {
+                return BadRequest(ex.GetMessage());
+            }
             catch (Exception ex)
             {
                 return StatusCode(Status500InternalServerError, ex.GetMessage());
@@ -175,6 +183,14 @@ namespace CustomCADs.API.Controllers
             catch (KeyNotFoundException ex)
             {
                 return NotFound(ex.GetMessage());
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                return Conflict(ex.GetMessage());
+            }
+            catch (DbUpdateException ex)
+            {
+                return BadRequest(ex.GetMessage());
             }
             catch (Exception ex)
             {
@@ -249,6 +265,14 @@ namespace CustomCADs.API.Controllers
             catch (KeyNotFoundException ex)
             {
                 return NotFound(ex.GetMessage());
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                return Conflict(ex.GetMessage());
+            }
+            catch (DbUpdateException ex)
+            {
+                return BadRequest(ex.GetMessage());
             }
             catch (Exception ex)
             {

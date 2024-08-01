@@ -113,7 +113,18 @@ namespace CustomCADs.API.Controllers
                 CadGetDTO export = mapper.Map<CadGetDTO>(model);
                 return CreatedAtAction(createdAtReturnAction, new { id }, export);
             }
-            catch (ArgumentNullException ex)
+            catch (Exception ex) when (
+                ex is AutoMapperConfigurationException
+                || ex is AutoMapperMappingException
+            )
+            {
+                return StatusCode(Status502BadGateway, ex.GetMessage());
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                return Conflict(ex.GetMessage());
+            }
+            catch (DbUpdateException ex)
             {
                 return BadRequest(ex.GetMessage());
             }
@@ -121,12 +132,9 @@ namespace CustomCADs.API.Controllers
             {
                 return NotFound(ex.GetMessage());
             }
-            catch (Exception ex) when (
-                ex is AutoMapperConfigurationException
-                || ex is AutoMapperMappingException
-            )
+            catch (ArgumentNullException ex)
             {
-                return StatusCode(Status502BadGateway, ex.GetMessage());
+                return BadRequest(ex.GetMessage());
             }
             catch (Exception ex)
             {
@@ -175,6 +183,14 @@ namespace CustomCADs.API.Controllers
             catch (KeyNotFoundException ex)
             {
                 return NotFound(ex.GetMessage());
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                return Conflict(ex.GetMessage());
+            }
+            catch (DbUpdateException ex)
+            {
+                return BadRequest(ex.GetMessage());
             }
             catch (Exception ex)
             {
@@ -254,6 +270,14 @@ namespace CustomCADs.API.Controllers
             catch (KeyNotFoundException ex)
             {
                 return NotFound(ex.GetMessage());
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                return Conflict(ex.GetMessage());
+            }
+            catch (DbUpdateException ex)
+            {
+                return BadRequest(ex.GetMessage());
             }
             catch (Exception ex)
             {

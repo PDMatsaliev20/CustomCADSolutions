@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using static CustomCADs.API.Helpers.Utilities;
 
 namespace CustomCADs.API.Controllers
@@ -55,6 +56,14 @@ namespace CustomCADs.API.Controllers
 
                 Response.Cookies.Append("username", user.UserName);
                 return "Welcome!";
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                return Conflict(ex.GetMessage());
+            }
+            catch (DbUpdateException ex)
+            {
+                return BadRequest(ex.GetMessage());
             }
             catch (Exception ex)
             {
