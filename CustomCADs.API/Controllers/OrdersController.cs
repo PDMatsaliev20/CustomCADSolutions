@@ -32,7 +32,8 @@ namespace CustomCADs.API.Controllers
         [HttpGet]
         [Produces("application/json")]
         [ProducesResponseType(Status200OK)]
-        [ProducesResponseType(Status400BadRequest)]
+        [ProducesResponseType(Status500InternalServerError)]
+        [ProducesResponseType(Status502BadGateway)]
         public async Task<ActionResult<OrderExportDTO[]>> GetOrdersAsync()
         {
             try
@@ -44,16 +45,24 @@ namespace CustomCADs.API.Controllers
 
                 return mapper.Map<OrderExportDTO[]>(orders);
             }
-            catch
+            catch (Exception ex) when (
+                ex is AutoMapperConfigurationException
+                || ex is AutoMapperMappingException
+            )
             {
-                return BadRequest();
+                return StatusCode(Status502BadGateway, ex.GetMessage());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(Status500InternalServerError, ex.GetMessage());
             }
         }
-        
+
         [HttpGet("Completed")]
         [Produces("application/json")]
         [ProducesResponseType(Status200OK)]
-        [ProducesResponseType(Status400BadRequest)]
+        [ProducesResponseType(Status500InternalServerError)]
+        [ProducesResponseType(Status502BadGateway)]
         public async Task<ActionResult<OrderExportDTO[]>> GetCompletedOrdersAsync()
         {
             try
@@ -64,9 +73,16 @@ namespace CustomCADs.API.Controllers
 
                 return mapper.Map<OrderExportDTO[]>(orders);
             }
-            catch
+            catch (Exception ex) when (
+                ex is AutoMapperConfigurationException
+                || ex is AutoMapperMappingException
+            )
             {
-                return BadRequest();
+                return StatusCode(Status502BadGateway, ex.GetMessage());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(Status500InternalServerError, ex.GetMessage());
             }
         }
 
@@ -74,6 +90,8 @@ namespace CustomCADs.API.Controllers
         [Produces("application/json")]
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status404NotFound)]
+        [ProducesResponseType(Status500InternalServerError)]
+        [ProducesResponseType(Status502BadGateway)]
         public async Task<ActionResult<OrderExportDTO>> GetSingleAsync(int id)
         {
             try
@@ -81,35 +99,52 @@ namespace CustomCADs.API.Controllers
                 OrderModel order = await orderService.GetByIdAsync(id);
                 return mapper.Map<OrderExportDTO>(order);
             }
-            catch (KeyNotFoundException)
+            catch (KeyNotFoundException ex)
             {
-                return NotFound();
+                return NotFound(ex.GetMessage());
+            }
+            catch (Exception ex) when (
+                ex is AutoMapperConfigurationException
+                || ex is AutoMapperMappingException
+            )
+            {
+                return StatusCode(Status502BadGateway, ex.GetMessage());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(Status500InternalServerError, ex.GetMessage());
             }
         }
 
         [HttpPost]
         [Consumes("application/json")]
-        [Produces("application/json")]
         [ProducesResponseType(Status201Created)]
-        [ProducesResponseType(Status400BadRequest)]
-        public async Task<ActionResult<OrderExportDTO>> PostAsync(OrderImportDTO dto)
+        [ProducesResponseType(Status500InternalServerError)]
+        [ProducesResponseType(Status502BadGateway)]
+        public async Task<ActionResult> PostAsync(OrderImportDTO dto)
         {
-            OrderModel model = mapper.Map<OrderModel>(dto);
-            model.OrderDate = DateTime.Now;
-            model.BuyerId = User.GetId();
-            
             try
             {
-                int id = await orderService.CreateAsync(model);
-                
-                model = await orderService.GetByIdAsync(id);
-                OrderExportDTO export = mapper.Map<OrderExportDTO>(model);
+                OrderModel model = mapper.Map<OrderModel>(dto);
+                model.OrderDate = DateTime.Now;
+                model.BuyerId = User.GetId();
 
+                int id = await orderService.CreateAsync(model);
+                model = await orderService.GetByIdAsync(id);
+
+                OrderExportDTO export = mapper.Map<OrderExportDTO>(model);
                 return CreatedAtAction(createdAtReturnAction, new { id }, export);
             }
-            catch
+            catch (Exception ex) when (
+                ex is AutoMapperConfigurationException
+                || ex is AutoMapperMappingException
+            )
             {
-                return BadRequest();
+                return StatusCode(Status502BadGateway, ex.GetMessage());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(Status500InternalServerError, ex.GetMessage());
             }
         }
 
@@ -118,6 +153,7 @@ namespace CustomCADs.API.Controllers
         [ProducesResponseType(Status204NoContent)]
         [ProducesResponseType(Status403Forbidden)]
         [ProducesResponseType(Status404NotFound)]
+        [ProducesResponseType(Status500InternalServerError)]
         public async Task<ActionResult> PutAsync(int id, OrderImportDTO dto)
         {
             try
@@ -126,7 +162,7 @@ namespace CustomCADs.API.Controllers
 
                 if (User.Identity!.Name != order.Buyer.UserName)
                 {
-                    return Forbid();
+                    return Forbid("Not allowed to access another Client's order!");
                 }
 
                 order.Name = dto.Name;
@@ -140,6 +176,10 @@ namespace CustomCADs.API.Controllers
             {
                 return NotFound();
             }
+            catch (Exception ex)
+            {
+                return StatusCode(Status500InternalServerError, ex.GetMessage());
+            }
         }
 
         [HttpPatch("{id}")]
@@ -147,12 +187,27 @@ namespace CustomCADs.API.Controllers
         [ProducesResponseType(Status204NoContent)]
         [ProducesResponseType(Status400BadRequest)]
         [ProducesResponseType(Status404NotFound)]
+        [ProducesResponseType(Status409Conflict)]
+        [ProducesResponseType(Status500InternalServerError)]
         public async Task<ActionResult> PatchAsync(int id, [FromBody] JsonPatchDocument<OrderModel> patchOrder)
         {
+            // Forbid modifying certain Order properties
+            string? modifiedForbiddenField = patchOrder.CheckForBadChanges("/id", "/orderDate", "/status", "/cadId", "/buyerId", "/category", "/cad", "/buyer");
+            if (modifiedForbiddenField != null)
+            {
+                return BadRequest(modifiedForbiddenField);
+            }
+
             try
             {
                 OrderModel model = await orderService.GetByIdAsync(id);
-                patchOrder.ApplyTo(model);
+
+                string? error = null;
+                patchOrder.ApplyTo(model, p => error = p.ErrorMessage);
+                if (error != null)
+                {
+                    return BadRequest(error);
+                }
 
                 IList<string> errors = orderService.ValidateEntity(model);
                 if (errors.Any())
@@ -185,20 +240,20 @@ namespace CustomCADs.API.Controllers
         [ProducesResponseType(Status204NoContent)]
         [ProducesResponseType(Status404NotFound)]
         [ProducesResponseType(Status500InternalServerError)]
-        public async Task<ActionResult<OrderModel>> DeleteAsync(int id)
+        public async Task<ActionResult> DeleteAsync(int id)
         {
             try
             {
-                if (await orderService.ExistsByIdAsync(id))
-                {
-                    await orderService.DeleteAsync(id);
-                    return NoContent();
-                }
-                else return NotFound();
+                await orderService.DeleteAsync(id);
+                return NoContent();
             }
-            catch
+            catch (KeyNotFoundException ex)
             {
-                return StatusCode(500);
+                return NotFound(ex.GetMessage());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(Status500InternalServerError, ex.GetMessage());
             }
         }
 
@@ -207,12 +262,27 @@ namespace CustomCADs.API.Controllers
         [ProducesResponseType(Status404NotFound)]
         public async Task<ActionResult<CadGetDTO>> GetCadAsync(int id)
         {
-            OrderModel order = await orderService.GetByIdAsync(id);
-            if (order.CadId != null)
+            try
             {
+                OrderModel order = await orderService.GetByIdAsync(id);
+                if (order.CadId == null)
+                {
+                    return NotFound();
+                }
+
                 return mapper.Map<CadGetDTO>(order.Cad);
             }
-            else return NotFound();
+            catch (Exception ex) when (
+                ex is AutoMapperConfigurationException
+                || ex is AutoMapperMappingException
+            )
+            {
+                return StatusCode(Status502BadGateway, ex.GetMessage());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(Status500InternalServerError, ex.GetMessage());
+            }
         }
     }
 }

@@ -42,15 +42,13 @@ namespace CustomCADs.Core.Services
 
         public IList<string> ValidateEntity(OrderModel model)
         {
-            var validationResults = new List<ValidationResult>();
-            var validationContext = new ValidationContext(model);
-
-            if (!Validator.TryValidateObject(model, validationContext, validationResults, true))
+            List<ValidationResult> validationResults = [];
+            if (!Validator.TryValidateObject(model, new(model), validationResults, true))
             {
                 return validationResults.Select(result => result.ErrorMessage ?? string.Empty).ToList();
             }
 
-            return new List<string>();
+            return [];
         }
 
         public async Task<int> CreateAsync(OrderModel model)
