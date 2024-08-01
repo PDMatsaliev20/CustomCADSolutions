@@ -73,14 +73,10 @@ namespace CustomCADs.API.Controllers
             try
             {
                 AppUser? user = await userManager.FindByNameAsync(model.Username);
-                if (user == null)
-                {
-                    return BadRequest("Invalid Username.");
-                }
 
-                if (!await userManager.CheckPasswordAsync(user, model.Password))
+                if (user == null || !await userManager.CheckPasswordAsync(user, model.Password))
                 {
-                    return Unauthorized("Invalid Password.");
+                    return Unauthorized("Invalid Username or Password.");
                 }
                 await user.SignInAsync(signInManager, GetAuthProps(model.RememberMe));
 
@@ -123,7 +119,10 @@ namespace CustomCADs.API.Controllers
             try
             {
                 AppUser? user = await userManager.GetUserAsync(User);
-                if (user == null) return Unauthorized();
+                if (user == null)
+                {
+                    return Unauthorized("User not authenticated.");
+                }
 
                 IEnumerable<string> roles = await userManager.GetRolesAsync(user);
                 return roles.Single();

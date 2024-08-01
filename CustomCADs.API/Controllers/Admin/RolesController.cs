@@ -61,7 +61,7 @@ namespace CustomCADs.API.Controllers.Admin
             {
                 AppRole? role = await roleManager.FindByNameAsync(name);
 
-                return role == null ? NotFound() : mapper.Map<RoleDTO>(role);
+                return role == null ? NotFound("Role not found.") : mapper.Map<RoleDTO>(role);
             }
             catch (Exception ex) when (
                 ex is AutoMapperConfigurationException
@@ -122,14 +122,13 @@ namespace CustomCADs.API.Controllers.Admin
         {
             if (string.IsNullOrWhiteSpace(name))
             {
-                return BadRequest("Role name can't empty.");
+                return BadRequest("Name can't empty.");
             }
 
-            // Forbid modifying default Identity properties
             string? modifiedForbiddenField = patchRole.CheckForBadChanges("/id", "/normalizedName", "/concurrencyStamp");
             if (modifiedForbiddenField != null)
             {
-                return BadRequest(modifiedForbiddenField);
+                return BadRequest($"You're not allowed to edit {modifiedForbiddenField}");
             }
 
             try
@@ -137,7 +136,7 @@ namespace CustomCADs.API.Controllers.Admin
                 AppRole? role = await roleManager.FindByNameAsync(name);
                 if (role == null)
                 {
-                    return NotFound();
+                    return NotFound("Role not found.");
                 }
 
                 string? error = null;
@@ -168,7 +167,7 @@ namespace CustomCADs.API.Controllers.Admin
                 AppRole? role = await roleManager.FindByNameAsync(name);
                 if (role == null)
                 {
-                    return NotFound();
+                    return NotFound("Role not found.");
                 }
 
                 await roleManager.DeleteAsync(role);

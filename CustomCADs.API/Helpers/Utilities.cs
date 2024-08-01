@@ -65,10 +65,7 @@ namespace CustomCADs.API.Helpers
         {
             foreach (string field in fields)
             {
-                if (patchDoc.Operations.Any(op => op.path == field))
-                {
-                    return $"You're not allowed to edit {field}";
-                }
+                return patchDoc.Operations.FirstOrDefault(op => op.path == field)?.path;
             }
 
             return null;

@@ -69,7 +69,7 @@ namespace CustomCADs.API.Controllers
             }
             catch (KeyNotFoundException)
             {
-                return NotFound();
+                return NotFound("Cad not found.");
             }
             catch (Exception ex) when (
                 ex is AutoMapperConfigurationException
@@ -117,9 +117,9 @@ namespace CustomCADs.API.Controllers
             {
                 return BadRequest(ex.GetMessage());
             }
-            catch (KeyNotFoundException)
+            catch (KeyNotFoundException ex)
             {
-                return NotFound();
+                return NotFound(ex.GetMessage());
             }
             catch (Exception ex) when (
                 ex is AutoMapperConfigurationException
@@ -172,9 +172,9 @@ namespace CustomCADs.API.Controllers
 
                 return NoContent();
             }
-            catch (KeyNotFoundException)
+            catch (KeyNotFoundException ex)
             {
-                return NotFound();
+                return NotFound(ex.GetMessage());
             }
             catch (Exception ex)
             {
@@ -194,7 +194,7 @@ namespace CustomCADs.API.Controllers
             string? modifiedForbiddenField = patchCad.CheckForBadChanges("/id", "/cadExtension", "/imageExtension", "/isFolder", "/imagePath", "/cadPath", "/status", "/creationDate", "/creatorId", "/category", "/creator", "/orders");
             if (modifiedForbiddenField != null)
             {
-                return BadRequest(modifiedForbiddenField);
+                return BadRequest($"You're not allowed to edit {modifiedForbiddenField}");
             }
 
             try
@@ -217,21 +217,21 @@ namespace CustomCADs.API.Controllers
                 await cadService.EditAsync(id, model);
                 return NoContent();
             }
-            catch (KeyNotFoundException)
+            catch (KeyNotFoundException ex)
             {
-                return NotFound();
+                return NotFound(ex.GetMessage());
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException ex)
             {
-                return Conflict();
+                return Conflict(ex.GetMessage());
             }
-            catch (DbUpdateException)
+            catch (DbUpdateException ex)
             {
-                return BadRequest();
+                return BadRequest(ex.GetMessage());
             }
-            catch
+            catch (Exception ex)
             {
-                return StatusCode(Status500InternalServerError);
+                return StatusCode(Status500InternalServerError, ex.GetMessage());
             }
         }
 

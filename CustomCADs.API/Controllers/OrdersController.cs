@@ -172,9 +172,9 @@ namespace CustomCADs.API.Controllers
 
                 return NoContent();
             }
-            catch (KeyNotFoundException)
+            catch (KeyNotFoundException ex)
             {
-                return NotFound();
+                return NotFound(ex.GetMessage());
             }
             catch (Exception ex)
             {
@@ -191,11 +191,10 @@ namespace CustomCADs.API.Controllers
         [ProducesResponseType(Status500InternalServerError)]
         public async Task<ActionResult> PatchOrderAsync(int id, [FromBody] JsonPatchDocument<OrderModel> patchOrder)
         {
-            // Forbid modifying certain Order properties
             string? modifiedForbiddenField = patchOrder.CheckForBadChanges("/id", "/orderDate", "/status", "/cadId", "/buyerId", "/category", "/cad", "/buyer");
             if (modifiedForbiddenField != null)
             {
-                return BadRequest(modifiedForbiddenField);
+                return BadRequest($"You're not allowed to edit {modifiedForbiddenField}");
             }
 
             try
@@ -218,21 +217,21 @@ namespace CustomCADs.API.Controllers
                 await orderService.EditAsync(id, model);
                 return NoContent();
             }
-            catch (KeyNotFoundException)
+            catch (KeyNotFoundException ex)
             {
-                return NotFound();
+                return NotFound(ex.GetMessage());
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException ex)
             {
-                return Conflict();
+                return Conflict(ex.GetMessage());
             }
-            catch (DbUpdateException)
+            catch (DbUpdateException ex)
             {
-                return BadRequest();
+                return BadRequest(ex.GetMessage());
             }
-            catch
+            catch (Exception ex)
             {
-                return StatusCode(Status500InternalServerError);
+                return StatusCode(Status500InternalServerError, ex.GetMessage());
             }
         }
 
@@ -267,7 +266,7 @@ namespace CustomCADs.API.Controllers
                 OrderModel order = await orderService.GetByIdAsync(id);
                 if (order.CadId == null)
                 {
-                    return NotFound();
+                    return NotFound("Order has no associated Cad");
                 }
 
                 return mapper.Map<CadGetDTO>(order.Cad);
@@ -278,6 +277,10 @@ namespace CustomCADs.API.Controllers
             )
             {
                 return StatusCode(Status502BadGateway, ex.GetMessage());
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.GetMessage());
             }
             catch (Exception ex)
             {

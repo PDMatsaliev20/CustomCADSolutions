@@ -139,6 +139,11 @@ namespace CustomCADs.API.Controllers
         {
             try
             {
+                if (!await cadService.ExistsByIdAsync(cadId))
+                {
+                    throw new KeyNotFoundException();
+                }
+
                 await orderService.CompleteAsync(id, cadId);
                 await orderService.EditStatusAsync(id, OrderStatus.Finished);
                 return NoContent();

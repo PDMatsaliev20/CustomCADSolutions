@@ -80,7 +80,7 @@ namespace CustomCADs.API.Controllers.Admin
             AppUser? user = await userManager.FindByNameAsync(name);
             if (user == null)
             {
-                return NotFound();
+                return NotFound("User not found.");
             }
 
             try
@@ -122,7 +122,7 @@ namespace CustomCADs.API.Controllers.Admin
         {
             if (string.IsNullOrWhiteSpace(username))
             {
-                return BadRequest("Username can't empty.");
+                return BadRequest("Username can't be empty.");
             }
 
             if (!await roleManager.RoleExistsAsync(role))
@@ -169,11 +169,10 @@ namespace CustomCADs.API.Controllers.Admin
                 return BadRequest("Username can't empty.");
             }
 
-            // Forbid modifying default Identity properties
             string? modifiedForbiddenField = patchUser.CheckForBadChanges("/id", "/accessFailedCount", "/emailConfirmed", "/phoneNumberConfirmed", "/normalizedName", "/normalizedEmail", "/concurrencyStamp", "/securityStamp", "/lockoutEnabled", "/lockoutEnd", "/passwordHash", "/twoFactorEnabled");
             if (modifiedForbiddenField != null)
             {
-                return BadRequest(modifiedForbiddenField);
+                return BadRequest($"You're not allowed to edit {modifiedForbiddenField}");
             }
             
             try
@@ -181,7 +180,7 @@ namespace CustomCADs.API.Controllers.Admin
                 AppUser? user = await userManager.FindByNameAsync(username);
                 if (user == null)
                 {
-                    return NotFound();
+                    return NotFound("User not found.");
                 }
 
                 if (!string.IsNullOrWhiteSpace(newRole))
@@ -232,11 +231,10 @@ namespace CustomCADs.API.Controllers.Admin
                 AppUser? user = await userManager.FindByNameAsync(username);
                 if (user == null) 
                 {
-                    return NotFound();
+                    return NotFound("User not found.");
                 }
 
                 await userManager.DeleteAsync(user);
-
                 return NoContent();
             }
             catch (Exception ex)
