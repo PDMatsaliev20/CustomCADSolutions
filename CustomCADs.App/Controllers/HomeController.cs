@@ -60,7 +60,7 @@ namespace CustomCADs.App.Controllers
             query.TotalCount = result.Count;
             query.Cads = mapper.Map<CadViewModel[]>(result.Cads);
 
-            ViewBag.Sortings = typeof(CadSorting).GetEnumNames();
+            ViewBag.Sortings = typeof(Sorting).GetEnumNames();
             ViewBag.Category = query.Category;
             return View(query);
         }

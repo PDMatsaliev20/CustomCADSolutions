@@ -1,6 +1,6 @@
 ﻿namespace CustomCADs.Domain.Entities.Enums
 {
-    public enum CadSorting
+    public enum Sorting
     {
         Newest = 1,
         Oldest = 2,

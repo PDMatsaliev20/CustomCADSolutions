@@ -18,7 +18,7 @@ namespace CustomCADs.App.Models.Cads.View
         public string? SearchCreator { get; set; }
 
         [Display(Name = nameof(DisplayResources.Sorting), ResourceType = typeof(DisplayResources))]
-        public CadSorting Sorting { get; set; }
+        public Sorting Sorting { get; set; }
 
         public int CurrentPage { get; set; } = 1;
 

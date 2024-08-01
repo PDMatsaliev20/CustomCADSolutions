@@ -125,18 +125,18 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
                 string.Format(IncorrectPaging, currentPage));
         }
 
-        [TestCase(CadSorting.Newest)]
-        [TestCase(CadSorting.Alphabetical)]
-        [TestCase(CadSorting.Category)]
-        public async Task Test_ReturnsCorrectlyWithSorting(CadSorting sorting)
+        [TestCase(Sorting.Newest)]
+        [TestCase(Sorting.Alphabetical)]
+        [TestCase(Sorting.Category)]
+        public async Task Test_ReturnsCorrectlyWithSorting(Sorting sorting)
         {
             var expectedSort = (sorting switch
             {
-                CadSorting.Newest => cads.OrderBy(c => c.CreationDate),
-                CadSorting.Oldest => cads.OrderByDescending(c => c.CreationDate),
-                CadSorting.Alphabetical => cads.OrderBy(c => c.Name),
-                CadSorting.Unalphabetical => cads.OrderByDescending(c => c.Name),
-                CadSorting.Category => cads.OrderBy(m => m.Category.Name),
+                Sorting.Newest => cads.OrderBy(c => c.CreationDate),
+                Sorting.Oldest => cads.OrderByDescending(c => c.CreationDate),
+                Sorting.Alphabetical => cads.OrderBy(c => c.Name),
+                Sorting.Unalphabetical => cads.OrderByDescending(c => c.Name),
+                Sorting.Category => cads.OrderBy(m => m.Category.Name),
                 _ => cads.OrderBy(c => c.Id),
             }).Select(c => c.Id);
             CadQueryModel query = new() { Sorting = sorting, CadsPerPage = 8 };

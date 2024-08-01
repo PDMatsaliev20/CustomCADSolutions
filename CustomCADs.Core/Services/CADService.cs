@@ -56,11 +56,11 @@ namespace CustomCADs.Core.Services
 
             allCads = query.Sorting switch
             {
-                CadSorting.Newest => allCads.OrderByDescending(c => c.CreationDate),
-                CadSorting.Oldest => allCads.OrderBy(c => c.CreationDate),
-                CadSorting.Alphabetical => allCads.OrderBy(c => c.Name),
-                CadSorting.Unalphabetical => allCads.OrderByDescending(c => c.Name),
-                CadSorting.Category => allCads.OrderBy(m => m.Category.Name),
+                Sorting.Newest => allCads.OrderByDescending(c => c.CreationDate),
+                Sorting.Oldest => allCads.OrderBy(c => c.CreationDate),
+                Sorting.Alphabetical => allCads.OrderBy(c => c.Name),
+                Sorting.Unalphabetical => allCads.OrderByDescending(c => c.Name),
+                Sorting.Category => allCads.OrderBy(m => m.Category.Name),
                 _ => allCads.OrderBy(c => c.Id),
             };
 

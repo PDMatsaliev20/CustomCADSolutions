@@ -123,6 +123,6 @@ namespace CustomCADs.API.Controllers
         [Produces("application/json")]
         [ProducesResponseType(200)]
         public ActionResult<string[]> GetCadSortingsAsync()
-            => Enum.GetNames<CadSorting>();
+            => Enum.GetNames<Sorting>();
     }
 }

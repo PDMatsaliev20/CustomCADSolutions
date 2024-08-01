@@ -39,7 +39,7 @@ namespace CustomCADs.App.Areas.Designer.Controllers
             query.TotalCount = result.Count;
             query.Cads = mapper.Map<CadViewModel[]>(result.Cads);
 
-            ViewBag.Sortings = typeof(CadSorting).GetEnumNames();
+            ViewBag.Sortings = typeof(Sorting).GetEnumNames();
             return View(query);
         }
 
@@ -63,7 +63,7 @@ namespace CustomCADs.App.Areas.Designer.Controllers
             inputQuery.Cads = mapper.Map<CadViewModel[]>(result.Cads);
             inputQuery.Categories = await categoryService.GetAllNamesAsync();
 
-            ViewBag.Sortings = typeof(CadSorting).GetEnumNames();
+            ViewBag.Sortings = typeof(Sorting).GetEnumNames();
             return View(inputQuery);
         }
 
