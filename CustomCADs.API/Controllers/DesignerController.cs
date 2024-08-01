@@ -28,61 +28,129 @@ namespace CustomCADs.API.Controllers
 
         [HttpGet("Cads")]
         [ProducesResponseType(Status200OK)]
+        [ProducesResponseType(Status500InternalServerError)]
+        [ProducesResponseType(Status502BadGateway)]
         public async Task<ActionResult<CadQueryResultDTO>> CadsAsync([FromQuery] CadQueryDTO dto)
         {
-            CadQueryModel query = mapper.Map<CadQueryModel>(dto);
-            query.Status = CadStatus.Unchecked;
+            try
+            {
+                CadQueryModel query = mapper.Map<CadQueryModel>(dto);
+                query.Status = CadStatus.Unchecked;
 
-            CadQueryResult result = await cadService.GetAllAsync(query);
-            return mapper.Map<CadQueryResultDTO>(result);
+                CadQueryResult result = await cadService.GetAllAsync(query);
+                return mapper.Map<CadQueryResultDTO>(result);
+            }
+            catch (Exception ex) when (
+                ex is AutoMapperConfigurationException
+                || ex is AutoMapperMappingException
+            )
+            {
+                return StatusCode(Status502BadGateway, ex.GetMessage());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(Status500InternalServerError, ex.GetMessage());
+            }
         }
 
         [HttpPatch("Cads/Status/{id}")]
         [ProducesResponseType(Status204NoContent)]
+        [ProducesResponseType(Status404NotFound)]
         public async Task<ActionResult> UpdateCadStatusCadAsync(int id, string status)
         {
-            await cadService.EditStatusAsync(id, Enum.Parse<CadStatus>(status));
-            return NoContent();
+            try
+            {
+                await cadService.EditStatusAsync(id, Enum.Parse<CadStatus>(status));
+                return NoContent();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.GetMessage());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(Status500InternalServerError, ex.GetMessage());
+            }
         }
 
         [HttpGet("Orders")]
         [ProducesResponseType(Status200OK)]
+        [ProducesResponseType(Status500InternalServerError)]
+        [ProducesResponseType(Status502BadGateway)]
         public async Task<ActionResult<OrderExportDTO[]>> OrdersAsync(string status)
         {
-            IEnumerable<OrderModel> models = await orderService.GetAllAsync();
-
-            string capitalizedStatus = status.Capitalize();
-            IEnumerable<OrderModel> filteredModels;
-
-            if (Enum.Parse<OrderStatus>(capitalizedStatus) == OrderStatus.Finished)
+            try
             {
-                filteredModels = models
-                    .Where(m => m.Status == OrderStatus.Finished && m.ShouldBeDelivered);
-            } 
-            else
-            {
-                filteredModels = models
-                    .Where(m => capitalizedStatus.Equals(m.Status.ToString()));
+                IEnumerable<OrderModel> models = await orderService.GetAllAsync();
+                string capitalizedStatus = status.Capitalize();
+
+                IEnumerable<OrderModel> filteredModels;
+                if (Enum.Parse<OrderStatus>(capitalizedStatus) == OrderStatus.Finished)
+                {
+                    filteredModels = models
+                        .Where(m => m.Status == OrderStatus.Finished && m.ShouldBeDelivered);
+                }
+                else
+                {
+                    filteredModels = models
+                        .Where(m => capitalizedStatus.Equals(m.Status.ToString()));
+                }
+
+                return mapper.Map<OrderExportDTO[]>(filteredModels);
             }
-
-            return mapper.Map<OrderExportDTO[]>(filteredModels);
+            catch (Exception ex) when (
+                ex is AutoMapperConfigurationException
+                || ex is AutoMapperMappingException
+            )
+            {
+                return StatusCode(Status502BadGateway, ex.GetMessage());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(Status500InternalServerError, ex.GetMessage());
+            }
         }
 
         [HttpPatch("Orders/Status/{id}")]
         [ProducesResponseType(Status204NoContent)]
+        [ProducesResponseType(Status404NotFound)]
         public async Task<ActionResult> UpdateOrderStatusAsync(int id, string status)
         {
-            await orderService.EditStatusAsync(id, Enum.Parse<OrderStatus>(status));
-            return NoContent();
+            try
+            {
+                await orderService.EditStatusAsync(id, Enum.Parse<OrderStatus>(status));
+                return NoContent();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.GetMessage());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(Status500InternalServerError, ex.GetMessage());
+            }
         }
 
-        [HttpPatch("Orders/Complete/{id}")] 
+        [HttpPatch("Orders/Complete/{id}")]
         [ProducesResponseType(Status204NoContent)]
+        [ProducesResponseType(Status404NotFound)]
+        [ProducesResponseType(Status500InternalServerError)]
         public async Task<ActionResult> CompleteOrderAsync(int id, int cadId)
         {
-            await orderService.CompleteAsync(id, cadId);
-            await orderService.EditStatusAsync(id, OrderStatus.Finished);
-            return NoContent();
+            try
+            {
+                await orderService.CompleteAsync(id, cadId);
+                await orderService.EditStatusAsync(id, OrderStatus.Finished);
+                return NoContent();
+            }
+            catch (KeyNotFoundException ex) 
+            {
+                return NotFound(ex.GetMessage()); 
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(Status500InternalServerError, ex.GetMessage());
+            }
         }
     }
 }
