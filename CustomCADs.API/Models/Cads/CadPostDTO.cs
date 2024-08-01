@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using static CustomCADs.Domain.DataConstants;
 using static CustomCADs.Domain.DataConstants.CadConstants;
+using static CustomCADs.Domain.DataConstants.CategoryConstants;
 
 namespace CustomCADs.API.Models.Cads
 {
@@ -23,6 +24,7 @@ namespace CustomCADs.API.Models.Cads
         public string Description { get; set; } = null!;
 
         [Required(ErrorMessage = RequiredErrorMessage)]
+        [Range(IdMin, IdMax, ErrorMessage = RangeErrorMessage)]
         public int CategoryId { get; set; }
 
         [Required(ErrorMessage = RequiredErrorMessage)]
