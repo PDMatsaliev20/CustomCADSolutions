@@ -1,11 +1,12 @@
- import useForm from '@/hooks/useForm'
+import useForm from '@/hooks/useForm'
 import validateUploadCad from './validate-upload-cad'
 import cadValidation from '@/constants/data/cad'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useState, useEffect } from 'react'
-import axios from 'axios'
+import { GetCategories } from '@/requests/public/home'
+import { PostCad } from '@/requests/private/cads'
 
 function UploadCad() {
     const { t } = useTranslation();
@@ -26,16 +27,13 @@ function UploadCad() {
         fetchCategories();
     }, []);
 
-    const handleSubmitCallback = () => {
-        const dto = { ...cad };
-        axios.post('https://localhost:7127/API/Cads', dto, {
-            withCredentials: true,
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        }).catch(e => console.error(e));
-
-        navigate("/cads");
+    const handleSubmitCallback = async () => {
+        try {
+            await PostCad(cad);
+            navigate("/cads");
+        } catch (e) {
+            console.error(e);
+        }
     };
 
     return (
@@ -182,9 +180,12 @@ function UploadCad() {
     );
 
     async function fetchCategories() {
-        const response = await axios.get('https://localhost:7127/API/Common/Categories');
-        const categories = response.data;
-        setCategories(categories);
+        try {
+            const { data } = await GetCategories();
+            setCategories(data);
+        } catch (e) {
+            console.error(e);
+        }
     };
 }
 

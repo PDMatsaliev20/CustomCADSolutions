@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next'
 import { useParams, useNavigate, useLoaderData } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import axios from 'axios'
+import { PutCad } from '@/requests/private/cads'
 
 function EditCadPage() {
     const { t } = useTranslation();
@@ -50,16 +50,14 @@ function EditCadPage() {
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
-        const body = { ...cad, categoryId: Number(cad.categoryId) };
-        const response = await axios.put(`https://localhost:7127/API/Cads/${id}`, body, {
-            withCredentials: true,
-            headers: {
-                'Content-Type': 'multipart/form-data'
+        try {
+            const body = { ...cad, categoryId: Number(cad.categoryId) };
+            const { status } = await PutCad(id, body);
+            if ((100 < status) && (status < 300)) {
+                navigate(`/cads`);
             }
-        }).catch(e => console.error(e));
-        
-        if ((100 < response.status) && (response.status < 300)) {
-            navigate(`/cads`);
+        } catch (e) {
+            console.error(e);
         }
     };
 

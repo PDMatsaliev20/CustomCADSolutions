@@ -2,7 +2,7 @@ import Order from './components/user-orders-item'
 import { useTranslation } from 'react-i18next'
 import { useLoaderData } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import axios from 'axios'
+import { DeleteOrder } from '@/requests/private/orders'
 
 function UserOrders() {
     const { t } = useTranslation();
@@ -14,11 +14,12 @@ function UserOrders() {
     }, []);
 
     const handleOrderDelete = async (id) => {
-        await axios.delete(`https://localhost:7127/API/Orders/${id}`, {
-            withCredentials: true
-        }).catch(e => console.error(e));
-
-        setOrders(orders => orders.filter(o => o.id !== id));
+        try {
+            await DeleteOrder(id);
+            setOrders(orders => orders.filter(o => o.id !== id));
+        } catch (e) {
+            console.error(e);
+        }
     };
 
     return (

@@ -1,5 +1,5 @@
-﻿import i18n from "i18next";
-import { initReactI18next } from "react-i18next";
+﻿import i18n from "i18next"
+import { initReactI18next } from "react-i18next"
 import useEnglish from '@/languages/hooks/useEnglish'
 import useBulgarian from '@/languages/hooks/useBulgarian'
 
@@ -8,8 +8,7 @@ const resources = {
     bg: useBulgarian()
 };
 
-i18n
-    .use(initReactI18next)
+i18n.use(initReactI18next)
     .init({
         resources,
         lng: localStorage.getItem('language') || 'bg',

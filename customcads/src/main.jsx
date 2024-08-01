@@ -3,9 +3,11 @@ import { createRoot } from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import routes from '@/routing/routes'
 import './components/translator'
-import './index.css'
 import 'tailwindcss/tailwind.css'
 
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { fas } from '@fortawesome/free-solid-svg-icons'
+library.add(fas);
 
 const router = createBrowserRouter(routes);
 

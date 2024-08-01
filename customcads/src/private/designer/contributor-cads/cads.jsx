@@ -2,13 +2,11 @@ import ContributorCadItem from './components/cads-item'
 import useQueryConverter from '@/hooks/useQueryConverter'
 import QueryBar from '@/components/query-bar/query-bar'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import axios from 'axios'
+import { GetCadsByStatus, PatchCadStatus } from '@/requests/private/designer'
 
 function UnvalidatedCads() {
     const { t } = useTranslation();
-    const navigate = useNavigate();
     const [cads, setCads] = useState([]);
     const [query, setQuery] = useState({ searchName: '', category: '', creator: '', sorting: 1 });
     
@@ -16,22 +14,15 @@ function UnvalidatedCads() {
         fetchCads();
     }, [query]);
 
-    const handleValidate = async (id) => {
-        await axios.patch(`https://localhost:7127/API/Designer/Cads/Status/${id}?status=1`, {}, {
-            withCredentials: true
-        }).catch(e => console.error(e));
-
-        fetchCads();
-    }
+    const handlePatch = async (id, status) => {
+        try {
+            await PatchCadStatus(id, status);
+            fetchCads();
+        } catch (e) {
+            console.error(e);
+        }
+    };
     
-    const handleReport = async (id) => {
-        await axios.patch(`https://localhost:7127/API/Designer/Cads/Status/${id}?status=2`, {}, {
-            withCredentials: true
-        }).catch(e => console.error(e));
-
-        fetchCads();
-    }
-
     return (
         <>
             <div className="flex flex-col gap-y-8 mb-8">
@@ -44,8 +35,8 @@ function UnvalidatedCads() {
                         {cads.map(cad =>
                             <ContributorCadItem key={cad.id}
                                 item={cad}
-                                onValidate={() => handleValidate(cad.id)}
-                                onReport={() => handleReport(cad.id)} />)    
+                                onValidate={() => handlePatch(cad.id, 'Validated')}
+                                onReport={() => handlePatch(cad.id, 'Reported')} />)    
                         }
                     </ul>
                 </section>
@@ -55,12 +46,12 @@ function UnvalidatedCads() {
 
     async function fetchCads() {
         const queryString = useQueryConverter(query);
-        const response = await axios.get(`https://localhost:7127/API/Designer/Cads?${queryString}`, {
-            withCredentials: true
-        }).catch(e => console.error(e));
-
-        const { cads } = response.data;
-        setCads(cads);
+        try {
+            const { data: { cads } } = await GetCadsByStatus(queryString);
+            setCads(cads);
+        } catch (e) {
+            console.error(e);
+        }
     }
 }
 

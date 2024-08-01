@@ -1,7 +1,7 @@
 import Order from './components/orders-item'
 import { useLoaderData, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import axios from 'axios'
+import { PatchOrderStatus } from '@/requests/private/designer'
 
 function AllOrders() {
     const { t } = useTranslation();
@@ -14,19 +14,23 @@ function AllOrders() {
         case 'pending':
             primaryBtn = t('body.designerOrders.Accept');
             onPrimaryBtnClick = async (id) => {
-                await axios.patch(`https://localhost:7127/API/Designer/Orders/Status/${id}?status=Begun`, {}, {
-                    withCredentials: true
-                }).catch(e => console.error(e));
-                navigate('');
+                try {
+                    await PatchOrderStatus(id, 'Begun');
+                    navigate('');
+                } catch (e) {
+                    console.error(e);
+                }
             }
 
             secondaryBtn = t('body.designerOrders.Report');
             onSecondaryBtnClick = async (id) => {
                 if (confirm(t('body.designerOrders.Confirm Report'))) {
-                    await axios.patch(`https://localhost:7127/API/Designer/Orders/Status/${id}?status=Reported`, {}, {
-                        withCredentials: true
-                    }).catch(e => console.error(e));
-                    navigate('');
+                    try {
+                        await PatchOrderStatus(id, 'Reported');
+                        navigate('');
+                    } catch (e) {
+                        console.error(e);
+                    }
                 }
             }
             break;
@@ -37,10 +41,12 @@ function AllOrders() {
 
             secondaryBtn = t('body.designerOrders.Cancel');
             onSecondaryBtnClick = async (id) => {
-                await axios.patch(`https://localhost:7127/API/Designer/Orders/Status/${id}?status=Pending`, {}, {
-                    withCredentials: true
-                }).catch(e => console.error(e));
-                navigate('');
+                try {
+                    await PatchOrderStatus(id, 'Pending');
+                    navigate('');
+                } catch (e) {
+                    console.error(e);
+                }
             }
             break;
 

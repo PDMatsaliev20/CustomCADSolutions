@@ -1,9 +1,9 @@
 import InputField from './input-field'
 import SelectField from './select-field'
 import { useState, useEffect } from 'react'
+import { GetCategories, GetCadSortings } from '@/requests/public/home'
 import { useTranslation } from 'react-i18next'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import axios from 'axios'
 
 function QueryBar({ setQuery }) {
     const { t } = useTranslation();
@@ -27,7 +27,7 @@ function QueryBar({ setQuery }) {
         if (e) {
             e.preventDefault();
         }
-        setQuery(oldQuery => ({...oldQuery, ...copyQuery}));
+        setQuery(oldQuery => ({ ...oldQuery, ...copyQuery }));
     };
 
     return (
@@ -70,20 +70,24 @@ function QueryBar({ setQuery }) {
     );
 
     async function getCategories() {
-        const response = await axios.get('https://localhost:7127/API/Common/Categories')
-            .catch(e => console.error(e));
-
-        if (response.data) {
-            setCategories(response.data);
+        try {
+            const { data } = await GetCategories();
+            if (data) {
+                setCategories(data);
+            }
+        } catch (e) {
+            console.error(e);
         }
     }
 
     async function getSortings() {
-        const response = await axios.get('https://localhost:7127/API/Common/CadSortings')
-            .catch(e => console.error(e));
-
-        if (response.data) {
-            setSortings(response.data);
+        try {
+            const { data } = await GetCadSortings();
+            if (data) {
+                setSortings(data);
+            }
+        } catch (e) {
+            console.error(e);
         }
     }
 }

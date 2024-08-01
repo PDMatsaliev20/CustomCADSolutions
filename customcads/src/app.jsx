@@ -3,17 +3,13 @@ import Header from './layout/header/header'
 import Navbar from './layout/navbar/navbar'
 import Footer from './layout/footer/footer'
 import { useState, useEffect } from 'react'
-import { Outlet  } from 'react-router-dom'
+import { Outlet } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import axios from 'axios'
+import { Register, Login, Logout, IsAuthenticated, GetUserRole } from '@/requests/public/identity'
 import './index.css'
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { fas } from '@fortawesome/free-solid-svg-icons'
-
-library.add(fas);
 
 function App() {
-    const { t, i18n } = useTranslation();
+    const { i18n } = useTranslation();
 
     const getCookie = (cookieName) => {
         const cookies = document.cookie.split('; ');
@@ -42,31 +38,30 @@ function App() {
     }, [isAuthenticated]);
 
     const handleRegister = async (user, userRole) => {
-        await axios.post(`https://localhost:7127/API/Identity/Register/${userRole}`, user, {
-            withCredentials: true
-        });
-
-        setIsAuthenticated(true);
+        try {
+            await Register(user, userRole);
+            setIsAuthenticated(true);
+        } catch (e) {
+            console.error(e);
+        }
     };
 
     const handleLogin = async (user) => {
         try {
-            await axios.post(`https://localhost:7127/API/Identity/Login`, user, {
-                withCredentials: true
-            });
-
+            await Login(user);
             setIsAuthenticated(true);
         } catch (e) {
-            return t('common.errors.Non-existent account or wrong password');
+            console.error(e);
         }
     };
 
     const handleLogout = async () => {
-        await axios.post('https://localhost:7127/API/Identity/Logout', {}, {
-            withCredentials: true
-        });
-
-        setIsAuthenticated(false);
+        try {
+            await Logout();
+            setIsAuthenticated(false);
+        } catch (e) {
+            console.error(e);
+        }
     };
 
     const contextValues = {
@@ -76,7 +71,7 @@ function App() {
         isAuthenticated,
         setIsAuthenticated,
         username,
-        userRole
+        userRole,
     };
 
     return (
@@ -95,25 +90,28 @@ function App() {
     );
 
     async function checkUserAuthentication() {
-        const response = await axios.get(
-            'https://localhost:7127/API/Identity/IsAuthenticated',
-            { withCredentials: true }
-        ).catch(e => console.error(e));
+        try {
+            const { data } = await IsAuthenticated();
 
-        if (response.data) {
-            setIsAuthenticated(true);
-        } else {
-            setIsAuthenticated(false);
+            if (data) {
+                setIsAuthenticated(true);
+            } else {
+                setIsAuthenticated(false);
+            }
+        }
+        catch (e) {
+            console.error(e);
         }
     }
 
     async function checkUserAuthorization() {
-        const response = await axios.get(
-            'https://localhost:7127/API/Identity/GetUserRole',
-            { withCredentials: true }
-        ).catch(e => console.error(e));
-
-        setUserRole(response.data);
+        try {
+            const { data } = await GetUserRole();
+            setUserRole(data);
+        }
+        catch (e) {
+            console.error(e);
+        }
     }
 }
 

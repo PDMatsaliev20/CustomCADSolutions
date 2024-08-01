@@ -5,7 +5,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useState, useEffect } from 'react'
-import axios from 'axios'
+import { GetCategories } from '@/requests/public/home'
+import { PostCad } from '@/requests/private/cads'
+import { CompleteOrder } from '@/requests/private/designer'
 
 function UploadCad() {
     const { t } = useTranslation();
@@ -28,20 +30,13 @@ function UploadCad() {
     }, []);
 
     const handleSubmitCallback = async () => {
-        const response = await axios.post('https://localhost:7127/API/Cads', cad, {
-            withCredentials: true,
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        }).catch(e => console.error(e));
-
-        const cadId = response.data.id;
-
-        await axios.patch(`https://localhost:7127/API/Designer/Orders/Complete/${id}?cadId=${cadId}`, {}, {
-            withCredentials: true
-        }).catch(e => console.error(e));
-
-        navigate('/cads/');
+        try {
+            const { data } = await PostCad(cad);
+            await CompleteOrder(id, data.id);
+            navigate('/cads/');
+        } catch (e) {
+            console.error(e);
+        }
     };
 
     return (
@@ -188,9 +183,8 @@ function UploadCad() {
     );
 
     async function fetchCategories() {
-        const response = await axios.get('https://localhost:7127/API/Common/Categories');
-        const categories = response.data;
-        setCategories(categories);
+        const { data } = await GetCategories();
+        setCategories(data);
     };
 }
 

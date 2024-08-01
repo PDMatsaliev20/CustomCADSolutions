@@ -4,7 +4,8 @@ import orderValidation from '@/constants/data/order'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useState, useEffect } from 'react'
-import axios from 'axios'
+import { PostOrder } from '@/requests/private/orders'
+import { GetCategories } from '@/requests/public/home'
 
 function CustomOrder() {
     const { t } = useTranslation();
@@ -23,16 +24,14 @@ function CustomOrder() {
     useEffect(() => {
         fetchCategories();
     }, []);
-
-    const createOrder = async () => {
-        await axios.post('https://localhost:7127/API/Orders', order, {
-            withCredentials: true
-        }).catch(e => console.error(e));
-    }
-
-    const handleSubmitCallback = () => {
-        createOrder();
-        navigate("/orders");
+    
+    const handleSubmitCallback = async () => {
+        try {
+            await PostOrder(order);
+            navigate("/orders");
+        } catch (e) {
+            console.error(e);
+        }
     };
 
     return (
@@ -122,9 +121,12 @@ function CustomOrder() {
     );
 
     async function fetchCategories() {
-        const response = await axios.get('https://localhost:7127/API/Common/Categories');
-        const categories = response.data;
-        setCategories(categories);
+        try {
+            const { data } = await GetCategories();
+            setCategories(data);
+        } catch (e) {
+            console.error(e);
+        }
     };
 }
 

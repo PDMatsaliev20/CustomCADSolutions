@@ -1,7 +1,7 @@
 import QueryBar from '@/components/query-bar/query-bar'
 import useQueryConverter from '@/hooks/useQueryConverter'
 import GalleryItem from './components/gallery-item'
-import axios from 'axios'
+import { Gallery } from '@/requests/public/home'
 import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useState, useEffect } from 'react'
@@ -47,8 +47,7 @@ function GalleryPage() {
 
     async function loadCads() {
         const queryString = useQueryConverter(query);
-        const { cads, count } = await axios.get(`https://localhost:7127/API/Home/Gallery?${queryString}`)
-            .then(response => response.data);
+        const { data: { cads, count } } = await Gallery(queryString)
         
         setCads(cads);
         setTotalCount(count);

@@ -2,7 +2,7 @@ import AuthContext from '@/components/auth-context'
 import Cad from '@/components/cad'
 import { useLoaderData, useNavigate } from 'react-router-dom'
 import { useContext } from 'react'
-import axios from 'axios'
+import { Purchase } from '@/requests/private/payment'
 
 function GalleryDetailsPage() {
     const { userRole } = useContext(AuthContext);
@@ -15,11 +15,12 @@ function GalleryDetailsPage() {
             return;
         }
 
-        await axios.post(`https://localhost:7127/API/Payment/Purchase/${loadedCad.id}?stripeToken=idklol`, {}, 
-{
-            withCredentials: true
-        }).catch(e => console.error(e));
-        navigate('/orders/finished');
+        try {
+            await Purchase(loadedCad.id, 'stripe public token mock');
+            navigate('/orders/finished');
+        } catch (e) {
+            console.error(e);
+        }
     }
 
     return (

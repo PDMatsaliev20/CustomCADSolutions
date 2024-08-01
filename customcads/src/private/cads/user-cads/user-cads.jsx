@@ -1,16 +1,14 @@
 import AuthContext from '@/components/auth-context'
 import QueryBar from '@/components/query-bar/query-bar'
 import useQueryConverter from '@/hooks/useQueryConverter'
-import { useNavigate } from 'react-router-dom'
+import UserCadItem from './components/user-cads-item'
+import { GetCads, DeleteCad } from '@/requests/private/cads'
 import { useTranslation } from 'react-i18next'
 import { useState, useEffect, useContext } from 'react'
-import axios from 'axios'
-import UserCadItem from './components/user-cads-item'
 
 function UserCads() {
     const { username } = useContext(AuthContext);
     const { t } = useTranslation();
-    const navigate = useNavigate();
     const [cads, setCads] = useState([]);
     const [query, setQuery] = useState({
         searchName: '',
@@ -34,11 +32,12 @@ function UserCads() {
     }, [query]);
 
     const handleDelete = async (id) => {
-        await axios.delete(`https://localhost:7127/API/Cads/${id}`, {
-            withCredentials: true
-        }).catch(e => console.error(e));
-
-        fetchCads();
+        try {
+            await DeleteCad(id);
+            fetchCads();
+        } catch (e) {
+            console.error(e);
+        }
     };
 
     return (
@@ -57,11 +56,12 @@ function UserCads() {
 
     async function fetchCads() {
         const queryString = useQueryConverter(query);
-
-        const { cads } = await axios.get(`https://localhost:7127/API/Cads?${queryString}`, {
-            withCredentials: true
-        }).then(response => response.data).catch(e => console.error(e));
-        setCads(cads);
+        try {
+            const { data: { cads } } = await GetCads(queryString);
+            setCads(cads);
+        } catch (e) {
+            console.error(e);
+        }
     }
 }
 

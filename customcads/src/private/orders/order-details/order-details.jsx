@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { useParams, useNavigate, useLoaderData } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import axios from 'axios'
+import { PutOrder } from '@/requests/private/orders'
 
 function OrderDetails() {
     const { t } = useTranslation();
@@ -48,12 +48,14 @@ function OrderDetails() {
     const handleFormSubmit = async (e) => {
         e.preventDefault();
         const body = { name: order.name, description: order.description, categoryId: order.categoryId };
-        const response = await axios.put(`https://localhost:7127/API/Orders/${id}`, body, {
-            withCredentials: true
-        }).catch(e => console.error(e));
 
-        if ((100 < response.status) && (response.status < 300)) {
-            navigate(`/orders`);
+        try {
+            const { status } = await PutOrder(id, body);
+            if ((100 < status) && (status < 300)) {
+                navigate(`/orders`);
+            }
+        } catch (e) {
+            console.error(e);
         }
     };
 

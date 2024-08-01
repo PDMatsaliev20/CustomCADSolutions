@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { useState, useEffect } from 'react'
-import axios from 'axios'
+import { PatchOrder, GetOrderCad } from '@/requests/private/orders'
 
 function Order({ order }) {
     const { t } = useTranslation();
@@ -13,20 +13,23 @@ function Order({ order }) {
     }, []);
 
     const handleRequest = async () => {
-        await axios.patch(`https://localhost:7127/API/Orders/${order.id}`, [{
-            op: 'replace', 
-            path: '/shouldBeDelivered',
-            value: !shouldBeDelivered
-        }], {
-            withCredentials: true
-        }).catch(e => console.error(e));
-        
-        if (shouldBeDelivered) {
-            alert(t('body.finishedOrders.Alert Cancel Message'));
-        } else {
-            alert(t('body.finishedOrders.Alert Delivery Message'));
+        try {
+            const flipShouldBeDelivered = {
+                op: 'replace',
+                path: '/shouldBeDelivered',
+                value: !shouldBeDelivered
+            };
+            await PatchOrder(order.id, [flipShouldBeDelivered]);
+
+            if (shouldBeDelivered) {
+                alert(t('body.finishedOrders.Alert Cancel Message'));
+            } else {
+                alert(t('body.finishedOrders.Alert Delivery Message'));
+            }
+            setShouldBeDelivered(shouldBeDelivered => !shouldBeDelivered);
+        } catch (e) {
+            console.error(e);
         }
-        setShouldBeDelivered(shouldBeDelivered => !shouldBeDelivered);
     };
 
     return (
@@ -61,11 +64,13 @@ function Order({ order }) {
         </div>
     );
 
-    async function fetchCad () {
-        const response = await axios.get(`https://localhost:7127/API/Orders/GetCad/${order.id}`, {
-            withCredentials: true
-        }).catch(e => console.error(e));
-        setCad(response.data);
+    async function fetchCad() {
+        try {
+            const { data } = await GetOrderCad(order.id);
+            setCad(data);
+        } catch (e) {
+            console.error(e);
+        }
     };
 
 }

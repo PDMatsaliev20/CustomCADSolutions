@@ -4,7 +4,7 @@ import GalleryPage from '@/public/gallery/gallery'
 import GalleryDetailsPage from '@/public/gallery/gallery-details'
 import PrivacyPolicyPage from '@/public/policy/policy'
 import AboutUsPage from '@/public/about/about'
-import axios from 'axios'
+import { GalleryCad } from '@/requests/public/home'
 
 export default {
     element: <AuthGuard />,
@@ -26,11 +26,12 @@ export default {
             element: <GalleryDetailsPage />,
             loader: async ({ params }) => {
                 const { id } = params;
-                const cad = await axios.get(`https://localhost:7127/API/Home/Gallery/${id}`, {
-                    withCredentials: true
-                }).catch(e => console.error(e));
-
-                return { loadedCad: cad.data };
+                try {
+                    const { data } = await GalleryCad(id);
+                    return { loadedCad: data };
+                } catch (e) {
+                    console.error(e);
+                }
             }
         },
         {

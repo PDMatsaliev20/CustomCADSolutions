@@ -1,5 +1,4 @@
 import Cad from '@/components/cad'
-import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
 function ContributorCadItem({ item, onValidate, onReport }) {

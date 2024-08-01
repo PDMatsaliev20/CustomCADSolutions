@@ -3,7 +3,7 @@ import Coords from './components/coords'
 import { useLoaderData, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useState, useEffect } from 'react'
-import axios from 'axios'
+import { PatchCad } from '@/requests/private/cads'
 
 function CadDetailsPage() {
     const { t } = useTranslation();
@@ -16,7 +16,7 @@ function CadDetailsPage() {
         loadedCad.price = loadedCad.price.toString();
         setCad(loadedCad);
     }, [loadedCad]);
-    
+
     const compareValues = (val1, val2) => JSON.stringify(val1) === JSON.stringify(val2);
 
     const updateIsChanged = () => {
@@ -31,22 +31,21 @@ function CadDetailsPage() {
     }, [cad.coords, cad.panCoords]);
 
     const handleSaveChanges = async () => {
-        await axios.patch(`https://localhost:7127/API/Cads/${cad.id}`, [
-            {
+        try {
+            const updateCoords = {
                 path: "/coords",
                 op: "replace",
                 value: cad.coords
-            },
-            {
+            }, updatePanCoords = {
                 path: "/panCoords",
                 op: "replace",
                 value: cad.panCoords
-            },
-        ], {
-            withCredentials: true
-        }).catch(e => console.error(e));
-
-        navigate('', { replace: true });
+            }
+            await PatchCad(cad.id, [updateCoords, updatePanCoords]);
+            navigate('', { replace: true });
+        } catch (e) {
+            console.error(e);
+        }
     };
 
     return (

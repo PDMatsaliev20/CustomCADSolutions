@@ -3,7 +3,8 @@ import UserOrdersPage from '@/private/orders/user-orders/user-orders'
 import OrderDetailsPage from '@/private/orders/order-details/order-details'
 import CustomOrderPage from '@/private/orders/custom-order/custom-order'
 import FinishedOrdersPage from '@/private/orders/finished-orders/finished-orders'
-import axios from 'axios'
+import { GetOrders, GetCompletedOrders, GetOrder } from '@/requests/private/orders'
+import { GetCategories } from '@/requests/public/home'
 
 export default {
     element: <AuthGuard isPrivate role={['Client']} />,
@@ -12,21 +13,24 @@ export default {
             path: '/orders',
             element: <UserOrdersPage />,
             loader: async () => {
-                const orders = await axios.get('https://localhost:7127/API/Orders', {
-                    withCredentials: true
-                }).catch(e => console.error(e));
-                return { loadedOrders: orders.data };
+                try {
+                    const { data } = await GetOrders();
+                    return { loadedOrders: data };
+                } catch (e) {
+                    console.error(e);
+                }
             },
         },
         {
             path: '/orders/finished',
             element: <FinishedOrdersPage />,
             loader: async () => {
-                const orders = await axios.get('https://localhost:7127/API/Orders/Completed', {
-                    withCredentials: true
-                }).catch(e => console.error(e));
-
-                return { loadedOrders: orders.data };
+                try {
+                    const { data } = await GetCompletedOrders();
+                    return { loadedOrders: data };
+                } catch (e) {
+                    console.error(e);
+                }
             }
         },
         {
@@ -34,15 +38,15 @@ export default {
             element: <OrderDetailsPage />,
             loader: async ({ params }) => {
                 const { id } = params;
-                const categories = await axios.get('https://localhost:7127/API/Common/Categories', {
-                    withCredentials: true
-                }).catch(e => console.error(e));
+                try {
+                    const categories = await GetCategories();
+                    const orderRes = await GetOrder(id);
 
-                const order = await axios.get(`https://localhost:7127/API/Orders/${id}`, {
-                    withCredentials: true
-                }).catch(e => console.error(e));
+                    return { loadedCategories: categories.data, loadedOrder: orderRes.data };
+                } catch (e) {
+                    console.error(e);
+                }
 
-                return { loadedCategories: categories.data, loadedOrder: order.data };
             }
         },
         {

@@ -2,7 +2,7 @@ import AuthGuard from '../auth-guard'
 import ClientOrders from '@/private/designer/client-orders/orders/orders'
 import CompleteOrder from '@/private/designer/client-orders/complete/complete-order'
 import ContributorCads from '@/private/designer/contributor-cads/cads'
-import axios from 'axios'
+import { GetOrdersByStatus } from '@/requests/private/designer'
 
 export default {
     element: <AuthGuard isPrivate role={['Designer']} />,
@@ -18,11 +18,12 @@ export default {
                 const { status } = params;
                 const capitalizedStatus = status[0].toUpperCase() + status.slice(1);
 
-                const orders = await axios.get(`https://localhost:7127/API/Designer/Orders?status=${status}`, {
-                    withCredentials: true
-                }).catch(e => console.error(e));
-
-                return { loadedOrders: orders.data, status: capitalizedStatus };
+                try {
+                    const { data } = await GetOrdersByStatus(status);
+                    return { loadedOrders: data, status: capitalizedStatus };
+                } catch (e) {
+                    console.error(e);
+                }
             }
         },
         {
