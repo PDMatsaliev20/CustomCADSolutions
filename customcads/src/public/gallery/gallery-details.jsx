@@ -15,7 +15,7 @@ function GalleryDetailsPage() {
             return;
         }
 
-        await axios.post(`https://localhost:7127/API/Orders/Purchase/${loadedCad.id}?stripeToken=idklol`, {}, 
+        await axios.post(`https://localhost:7127/API/Payment/Purchase/${loadedCad.id}?stripeToken=idklol`, {}, 
 {
             withCredentials: true
         }).catch(e => console.error(e));

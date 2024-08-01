@@ -47,7 +47,7 @@ namespace CustomCADs.API.Helpers
                 ExpiresUtc = DateTimeOffset.UtcNow.AddDays(1)
             };
 
-        public static bool ProcessPayment(this StripeInfo stripeSettings, string stripeToken, string buyer, CadModel cad)
+        public static Charge ProcessPayment(this StripeInfo stripeSettings, string stripeToken, string buyer, CadModel cad)
         {
             StripeConfiguration.ApiKey = stripeSettings.TestSecretKey;
             Charge charge = new ChargeService().Create(new()
@@ -58,7 +58,7 @@ namespace CustomCADs.API.Helpers
                 Description = $"{buyer} bought {cad.Creator.UserName}'s {cad.Name} for {cad.Price}$.",
             });
 
-            return charge.Status == "succeeded";
+            return charge;
         }
 
         public static string? CheckForBadChanges<TModel>(this JsonPatchDocument<TModel> patchDoc, params string[] fields) where TModel : class
