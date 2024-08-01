@@ -1,12 +1,13 @@
 import AuthContext from '@/components/auth-context'
 import useValidateLogin from './useValidateLogin'
 import useForm from '@/hooks/useForm'
+import { Login } from '@/requests/public/identity'
 import { useContext } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
 function LoginPage() {
-    const { onLogin } = useContext(AuthContext);
+    const { setIsAuthenticated } = useContext(AuthContext);
     const navigate = useNavigate();
     const { t } = useTranslation();
 
@@ -20,10 +21,13 @@ function LoginPage() {
     } = useForm({ username: '', password: '', rememberMe: false }, useValidateLogin);
 
     const handleSubmitCallback = async () => {
-        const message = await onLogin(user);
-        if (message) {
-            alert(message);
-        } else navigate("/");
+        try {
+            await Login(user);
+            setIsAuthenticated(true);
+            navigate("/");
+        } catch (e) {
+            alert(e.response.data);
+        }
     }
 
     return (

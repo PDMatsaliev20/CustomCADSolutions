@@ -2,12 +2,13 @@ import AuthContext from '@/components/auth-context'
 import useValidateRegister from './useValidateRegister'
 import userValidation from '@/constants/data/user'
 import useForm from '@/hooks/useForm'
+import { Register } from '@/requests/public/identity'
 import { useContext } from 'react'
 import { Link, useParams, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
 function RegisterPage() {
-    const { onRegister } = useContext(AuthContext);
+    const { setIsAuthenticated } = useContext(AuthContext);
     const navigate = useNavigate();
     const { t } = useTranslation();
     const { role } = useParams();
@@ -27,9 +28,14 @@ function RegisterPage() {
         return <p className="text-4xl text-center font-bold">Can't do that, sorry</p>;
     }
 
-    const handleSubmitCallback = () => {
-        onRegister(user, isClient ? 'Client' : 'Contributor');
-        navigate("/");
+    const handleSubmitCallback = async () => {
+        try {
+            await Register(user, isClient ? 'Client' : 'Contributor');
+            setIsAuthenticated(true);
+            navigate("/");
+        } catch (e) {
+            alert(e.response.data);
+        }
     }
 
     return (

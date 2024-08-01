@@ -1,3 +1,4 @@
+import { Logout } from '@/requests/public/identity'
 import { Disclosure, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -8,11 +9,16 @@ import HeaderBtn from './header-btn'
 export default function Example() {
     const navigate = useNavigate();
     const { t } = useTranslation();
-    const { userRole, username, onLogout } = useContext(AuthContext);
+    const { userRole, username, setIsAuthenticated } = useContext(AuthContext);
 
-    const handleLogout = () => {
-        onLogout();
-        navigate('/');
+    const handleLogout = async () => {
+        try {
+            await Logout();
+            setIsAuthenticated(false);
+            navigate('/');
+        } catch (e) {
+            alert(e.response.data);
+        }
     };
 
     return (
@@ -38,7 +44,7 @@ export default function Example() {
                                 {`${t('header.Role')} ${t(`common.roles.${userRole}`)}`}
                             </span>
                         </MenuItem>
-                        
+
                         <div className="basis-full border-b-2 border-indigo-700 my-2 mb-1"></div>
 
                         <div>

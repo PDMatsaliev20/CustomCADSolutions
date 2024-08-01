@@ -37,45 +37,8 @@ function App() {
         }
     }, [isAuthenticated]);
 
-    const handleRegister = async (user, userRole) => {
-        try {
-            await Register(user, userRole);
-            setIsAuthenticated(true);
-        } catch (e) {
-            console.error(e);
-        }
-    };
-
-    const handleLogin = async (user) => {
-        try {
-            await Login(user);
-            setIsAuthenticated(true);
-        } catch (e) {
-            console.error(e);
-        }
-    };
-
-    const handleLogout = async () => {
-        try {
-            await Logout();
-            setIsAuthenticated(false);
-        } catch (e) {
-            console.error(e);
-        }
-    };
-
-    const contextValues = {
-        onRegister: handleRegister,
-        onLogin: handleLogin,
-        onLogout: handleLogout,
-        isAuthenticated,
-        setIsAuthenticated,
-        username,
-        userRole,
-    };
-
     return (
-        <AuthContext.Provider value={contextValues}>
+        <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated, username, userRole }}>
             <div className="flex flex-col min-h-screen bg-indigo-50">
                 <div className="sticky top-0 z-50">
                     <Header />
