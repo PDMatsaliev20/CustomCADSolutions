@@ -15,6 +15,7 @@ using static CustomCADs.Domain.DataConstants.RoleConstants;
 namespace CustomCADs.API.Controllers
 {
     using static StatusCodes;
+    using static ApiMessages;
 
     [Authorize(Roles = Client)]
     [ApiController]
@@ -170,7 +171,7 @@ namespace CustomCADs.API.Controllers
 
                 if (User.Identity!.Name != order.Buyer.UserName)
                 {
-                    return Forbid("Not allowed to access another Client's order!");
+                    return Forbid(ForbiddenAccess);
                 }
 
                 order.Name = dto.Name;
@@ -210,7 +211,7 @@ namespace CustomCADs.API.Controllers
             string? modifiedForbiddenField = patchOrder.CheckForBadChanges("/id", "/orderDate", "/status", "/cadId", "/buyerId", "/category", "/cad", "/buyer");
             if (modifiedForbiddenField != null)
             {
-                return BadRequest($"You're not allowed to edit {modifiedForbiddenField}");
+                return BadRequest(string.Format(ForbiddenPatch, modifiedForbiddenField));
             }
 
             try
@@ -290,7 +291,7 @@ namespace CustomCADs.API.Controllers
                 OrderModel order = await orderService.GetByIdAsync(id);
                 if (order.CadId == null)
                 {
-                    return NotFound("Order has no associated Cad");
+                    return NotFound(OrderHasNoCad);
                 }
 
                 return mapper.Map<CadGetDTO>(order.Cad);

@@ -15,6 +15,7 @@ using static CustomCADs.Domain.DataConstants.RoleConstants;
 namespace CustomCADs.API.Controllers
 {
     using static StatusCodes;
+    using static ApiMessages;
 
     [Authorize(Roles = $"{Contributor},{Designer}")]
     [ApiController]
@@ -69,7 +70,7 @@ namespace CustomCADs.API.Controllers
             }
             catch (KeyNotFoundException)
             {
-                return NotFound("Cad not found.");
+                return NotFound(string.Format(ApiMessages.NotFound, "Cad"));
             }
             catch (Exception ex) when (
                 ex is AutoMapperConfigurationException
@@ -156,7 +157,7 @@ namespace CustomCADs.API.Controllers
 
                 if (User.Identity!.Name != cad.Creator.UserName)
                 {
-                    return Forbid("Not allowed to access another User's 3d model!");
+                    return Forbid(ForbiddenAccess);
                 }
 
                 if (cad.Name != dto.Name)
@@ -210,7 +211,7 @@ namespace CustomCADs.API.Controllers
             string? modifiedForbiddenField = patchCad.CheckForBadChanges("/id", "/cadExtension", "/imageExtension", "/isFolder", "/imagePath", "/cadPath", "/status", "/creationDate", "/creatorId", "/category", "/creator", "/orders");
             if (modifiedForbiddenField != null)
             {
-                return BadRequest($"You're not allowed to edit {modifiedForbiddenField}");
+                return BadRequest(string.Format(ForbiddenPatch, modifiedForbiddenField));
             }
 
             try

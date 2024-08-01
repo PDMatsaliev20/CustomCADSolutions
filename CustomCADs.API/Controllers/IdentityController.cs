@@ -11,6 +11,7 @@ using static CustomCADs.API.Helpers.Utilities;
 namespace CustomCADs.API.Controllers
 {
     using static StatusCodes;
+    using static ApiMessages;
 
     [ApiController]
     [Route("API/[controller]")]
@@ -25,7 +26,7 @@ namespace CustomCADs.API.Controllers
         {
             if (string.IsNullOrWhiteSpace(role))
             {
-                return BadRequest("Role is required!");
+                return BadRequest(string.Format(IsRequired, "Role"));
             }
 
             try
@@ -48,7 +49,7 @@ namespace CustomCADs.API.Controllers
 
                 if (!(role == "Client" || role == "Contributor"))
                 {
-                    return BadRequest("You must apply to either be a Client or a Contributor");
+                    return BadRequest(ForbiddenRoleRegister);
                 }
 
                 await userManager.AddToRoleAsync(user, role);
@@ -85,7 +86,7 @@ namespace CustomCADs.API.Controllers
 
                 if (user == null || !await userManager.CheckPasswordAsync(user, model.Password))
                 {
-                    return Unauthorized("Invalid Username or Password.");
+                    return Unauthorized(InvalidLogin);
                 }
                 await user.SignInAsync(signInManager, GetAuthProps(model.RememberMe));
 
@@ -130,7 +131,7 @@ namespace CustomCADs.API.Controllers
                 AppUser? user = await userManager.GetUserAsync(User);
                 if (user == null)
                 {
-                    return Unauthorized("User not authenticated.");
+                    return Unauthorized(UnauthenticatedUser);
                 }
 
                 IEnumerable<string> roles = await userManager.GetRolesAsync(user);
@@ -138,11 +139,11 @@ namespace CustomCADs.API.Controllers
             }
             catch (ArgumentNullException)
             {
-                return StatusCode(Status500InternalServerError, "User has no role.");
+                return StatusCode(Status500InternalServerError, UserHasNoRole);
             }
             catch (InvalidOperationException)
             {
-                return StatusCode(Status500InternalServerError, "User has more than one role.");
+                return StatusCode(Status500InternalServerError, UserHasRoles);
             }
             catch (Exception ex)
             {
