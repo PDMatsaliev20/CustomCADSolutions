@@ -1,35 +1,18 @@
-import AuthContext from '@/components/auth-context'
-import QueryBar from '@/components/query-bar/query-bar'
-import useQueryConverter from '@/hooks/useQueryConverter'
+import SearchBar from '@/components/searchbar/searchbar'
+import useObjectToURL from '@/hooks/useObjectToURL'
 import UserCadItem from './components/user-cads-item'
 import { GetCads, DeleteCad } from '@/requests/private/cads'
 import { useTranslation } from 'react-i18next'
-import { useState, useEffect, useContext } from 'react'
+import { useState, useEffect } from 'react'
 
 function UserCads() {
-    const { username } = useContext(AuthContext);
     const { t } = useTranslation();
     const [cads, setCads] = useState([]);
-    const [query, setQuery] = useState({
-        searchName: '',
-        category: '',
-        sorting: 1,
-        currentPage: 1,
-        cadsPerPage: 9,
-        creator: username,
-        validated: true,
-        unvalidated: true,
-    });
+    const [search, setSearch] = useState({ name: '', category: '', sorting: '' });
 
     useEffect(() => {
-        setQuery((query) => ({ ...query, creator: username }));
-    }, [username]);
-
-    useEffect(() => {
-        if (query.creator) {
-            fetchCads();
-        }
-    }, [query]);
+        fetchCads();
+    }, [search]);
 
     const handleDelete = async (id) => {
         try {
@@ -46,7 +29,7 @@ function UserCads() {
                 {t('body.cads.Title')}
             </h1>
             <section className="flex flex-wrap justify-center gap-y-8">
-                <QueryBar setQuery={setQuery} />
+                <SearchBar setSearch={setSearch} />
                 <ul className="basis-full grid grid-cols-3 gap-12">
                     {cads.map(cad => <UserCadItem key={cad.id} item={cad} onDelete={() => handleDelete(cad.id)} />)}
                 </ul>
@@ -55,9 +38,9 @@ function UserCads() {
     );
 
     async function fetchCads() {
-        const queryString = useQueryConverter(query);
+        const requestSearchParams = useObjectToURL({ ...search });
         try {
-            const { data: { cads } } = await GetCads(queryString);
+            const { data: { cads } } = await GetCads(requestSearchParams);
             setCads(cads);
         } catch (e) {
             console.error(e);

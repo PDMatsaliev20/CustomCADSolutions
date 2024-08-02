@@ -1,7 +1,7 @@
 import axios from '../axios'
 
-const GetCads = async (query) => {
-    return await axios.get(`API/Cads?${query}`);
+const GetCads = async (searchParams) => {
+    return await axios.get(`API/Cads?${searchParams}`);
 }
 
 const GetCad = async (id) => {

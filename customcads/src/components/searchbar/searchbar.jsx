@@ -1,16 +1,15 @@
 import InputField from './input-field'
 import SelectField from './select-field'
 import { useState, useEffect } from 'react'
-import { GetCategories, GetCadSortings } from '@/requests/public/home'
+import { GetCategories, GetSortings } from '@/requests/public/home'
 import { useTranslation } from 'react-i18next'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-function QueryBar({ setQuery }) {
+function SearchBar({ setSearch }) {
     const { t } = useTranslation();
-
     const [sortings, setSortings] = useState([]);
     const [categories, setCategories] = useState([]);
-    const [copyQuery, setCopyQuery] = useState({ searchName: '', category: '', sorting: 'Newest' });
+    const [copySearch, setCopySearch] = useState({ name: '', owner: '', category: '', sorting: 'Newest' });
 
     useEffect(() => {
         getCategories();
@@ -19,15 +18,15 @@ function QueryBar({ setQuery }) {
 
     useEffect(() => {
         handleSearch();
-    }, [copyQuery]);
+    }, [copySearch]);
 
-    const handleInput = (e) => setCopyQuery(query => ({ ...query, [e.target.name]: e.target.value }));
+    const handleInput = (e) => setCopySearch(search => ({ ...search, [e.target.name]: e.target.value }));
 
     const handleSearch = (e) => {
         if (e) {
             e.preventDefault();
         }
-        setQuery(oldQuery => ({ ...oldQuery, ...copyQuery }));
+        setSearch(oldQuery => ({ ...oldQuery, ...copySearch }));
     };
 
     return (
@@ -36,9 +35,9 @@ function QueryBar({ setQuery }) {
                 <div className="flex flex-wrap justify-center items-center gap-y-5">
                     <div className="basis-full flex justify-evenly">
                         <SelectField
-                            label={t('body.cads.Category')}
+                            label={t('common.searchbar.Category')}
                             name="category"
-                            value={copyQuery.category}
+                            value={copySearch.category}
                             onInput={handleInput}
                             items={categories}
                             defaultOption="All"
@@ -46,24 +45,27 @@ function QueryBar({ setQuery }) {
                             mapFunction={item => <option key={item.id} value={item.name}>{t(`common.categories.${item.name}`)}</option>}
                         />
                         <div className="basis-1/4 bg-indigo-100 rounded-md overflow-hidden flex gap-x-2 items-center px-3 py-2">
-                            <InputField name="searchName" value={copyQuery.searchName} onInput={handleInput}
-                                placeholder={t('body.cads.Search 3D Models')}
+                            <InputField
+                                name="name"
+                                value={copySearch.name}
+                                onInput={handleInput}
+                                placeholder={t('common.searchbar.Search Name')}
                             />
                             <button>
                                 <FontAwesomeIcon icon="search" className="text-lg mt-1 text-indigo-600" />
                             </button>
                         </div>
                         <SelectField
-                            label={t('body.cads.Sort by')}
+                            label={t('common.searchbar.Sort by')}
                             name="sorting"
-                            value={copyQuery.sorting}
+                            value={copySearch.sorting}
                             onInput={handleInput}
                             items={sortings}
                             langPath="common.sortings."
                             mapFunction={item => <option key={item} value={item}>{t(`common.sortings.${item}`)}</option>}
                         />
                     </div>
-                    <button className="hidden bg-indigo-200 py-1 px-4 rounded">{t('body.cads.Search')}</button>
+                    <button className="hidden bg-indigo-200 py-1 px-4 rounded">{t('common.searchbar.Search')}</button>
                 </div>
             </form>
         </div>
@@ -82,7 +84,7 @@ function QueryBar({ setQuery }) {
 
     async function getSortings() {
         try {
-            const { data } = await GetCadSortings();
+            const { data } = await GetSortings();
             if (data) {
                 setSortings(data);
             }
@@ -92,4 +94,4 @@ function QueryBar({ setQuery }) {
     }
 }
 
-export default QueryBar;
+export default SearchBar;

@@ -1,7 +1,7 @@
 import axios from '../axios'
 
-const GetOrders = async (status) => {
-    return await axios.get(`API/Orders?status=${status}`);
+const GetOrders = async (status, searchParams) => {
+    return await axios.get(`API/Orders?status=${status}&${searchParams}`);
 }
 
 const GetOrder = async (id) => {

@@ -1,6 +1,6 @@
 import ContributorCadItem from './components/cads-item'
-import useQueryConverter from '@/hooks/useQueryConverter'
-import QueryBar from '@/components/query-bar/query-bar'
+import SearchBar from '@/components/searchbar/searchbar'
+import useObjectToURL from '@/hooks/useObjectToURL'
 import { useTranslation } from 'react-i18next'
 import { useState, useEffect } from 'react'
 import { GetCadsByStatus, PatchCadStatus } from '@/requests/private/designer'
@@ -8,11 +8,11 @@ import { GetCadsByStatus, PatchCadStatus } from '@/requests/private/designer'
 function UnvalidatedCads() {
     const { t } = useTranslation();
     const [cads, setCads] = useState([]);
-    const [query, setQuery] = useState({ searchName: '', category: '', creator: '', sorting: 1 });
+    const [search, setSearch] = useState({ name: '', category: '', creator: '', sorting: '' });
     
     useEffect(() => {
         fetchCads();
-    }, [query]);
+    }, [search]);
 
     const handlePatch = async (id, status) => {
         try {
@@ -30,7 +30,7 @@ function UnvalidatedCads() {
                     {t('body.designerCads.Title')}
                 </h1>
                 <section className="flex flex-wrap justify-center gap-y-8">
-                    <QueryBar setQuery={setQuery} />
+                    <SearchBar setSearch={setSearch} />
                     <ul className="basis-full grid grid-cols-3 gap-12">
                         {cads.map(cad =>
                             <ContributorCadItem key={cad.id}
@@ -45,9 +45,9 @@ function UnvalidatedCads() {
     );
 
     async function fetchCads() {
-        const queryString = useQueryConverter(query);
+        const requestSearchParams = useObjectToURL({ ...search });
         try {
-            const { data: { cads } } = await GetCadsByStatus(queryString);
+            const { data: { cads } } = await GetCadsByStatus(requestSearchParams);
             setCads(cads);
         } catch (e) {
             console.error(e);

@@ -1,15 +1,15 @@
 import axios from '../axios'
 
-const GetCadsByStatus = async (query) => {
-    return await axios.get(`API/Designer/Cads?${query}`);
+const GetCadsByStatus = async (searchParams) => {
+    return await axios.get(`API/Designer/Cads?${searchParams}`);
 };
 
 const PatchCadStatus = async (id, status) => {
     return await axios.patch(`API/Designer/Cads/Status/${id}?status=${status}`);
 };
 
-const GetOrdersByStatus = async (status) => {
-    return await axios.get(`API/Designer/Orders?status=${status}`);
+const GetOrdersByStatus = async (status, searchParams) => {
+    return await axios.get(`API/Designer/Orders?status=${status}&${searchParams}`);
 };
 
 const BeginOrder = async (id) => {

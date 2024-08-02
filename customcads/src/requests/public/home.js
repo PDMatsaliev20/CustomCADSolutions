@@ -4,8 +4,8 @@ const Cad = async () => {
     return await axios.get('API/Home/Cad');
 };
 
-const Gallery = async (query) => {
-    return await axios.get(`API/Home/Gallery?${query}`);
+const Gallery = async (searchParams) => {
+    return await axios.get(`API/Home/Gallery?${searchParams}`);
 };
 
 const GalleryCad = async (id) => {
@@ -16,8 +16,8 @@ const GetCategories = async () => {
     return await axios.get('API/Home/Categories');
 };
 
-const GetCadSortings = async () => {
-    return await axios.get('API/Home/CadSortings');
+const GetSortings = async () => {
+    return await axios.get('API/Home/Sortings');
 };
 
-export { Cad, Gallery, GalleryCad, GetCategories, GetCadSortings };
+export { Cad, Gallery, GalleryCad, GetCategories, GetSortings };
