@@ -147,7 +147,7 @@ namespace CustomCADs.API.Controllers
             {
                 OrderModel order = await orderService.GetByIdAsync(id);
 
-                if (User.Identity!.Name != order.Buyer.UserName)
+                if (User.GetId() != order.BuyerId)
                 {
                     return Forbid(ForbiddenAccess);
                 }

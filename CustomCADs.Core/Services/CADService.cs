@@ -160,12 +160,14 @@ namespace CustomCADs.Core.Services
 
         public async Task DeleteAsync(int id)
         {
-            IEnumerable<Order> orders = repository.All<Order>()
+            IQueryable<Order> orders = repository.All<Order>()
                 .Where(o => o.CadId == id);
 
             foreach (Order order in orders)
             {
                 order.Status = OrderStatus.Pending;
+                order.DesignerId = null;
+                order.Designer = null;
                 order.CadId = null;
                 order.Cad = null;
             }

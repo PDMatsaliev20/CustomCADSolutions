@@ -34,20 +34,17 @@ namespace CustomCADs.Core.Models.Orders
         public bool ShouldBeDelivered { get; set; }
 
         public int? CadId { get; set; }
+        public CadModel? Cad { get; set; }
 
+        public string? DesignerId { get; set; }
+        public AppUser? Designer { get; set; }
+        
         [Required(ErrorMessage = RequiredErrorMessage)]
         public int CategoryId { get; set; }
+        public Category Category { get; set; } = null!;
 
         [Required(ErrorMessage = RequiredErrorMessage)]
         public string BuyerId { get; set; } = null!;
-
-        [ForeignKey(nameof(CategoryId))]
-        public Category Category { get; set; } = null!;
-
-        [ForeignKey(nameof(CadId))]
-        public CadModel? Cad { get; set; }
-
-        [ForeignKey(nameof(BuyerId))]
         public AppUser Buyer { get; set; } = null!;
     }
 }

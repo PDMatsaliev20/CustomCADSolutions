@@ -40,6 +40,9 @@ namespace CustomCADs.Domain.Entities
         [Comment("Identification of Orders' 3D Model")]
         public int? CadId { get; set; }
 
+        [Comment("Identification of Order's 3D Designer")]
+        public string? DesignerId { get; set; }
+
         [Required]
         [Comment("Identification of User")]
         public string BuyerId { get; set; } = null!;
@@ -49,6 +52,9 @@ namespace CustomCADs.Domain.Entities
 
         [ForeignKey(nameof(CadId))]
         public Cad? Cad { get; set; }
+        
+        [ForeignKey(nameof(DesignerId))]
+        public AppUser? Designer { get; set; } 
 
         [ForeignKey(nameof(BuyerId))]
         public AppUser Buyer { get; set; } = null!;
