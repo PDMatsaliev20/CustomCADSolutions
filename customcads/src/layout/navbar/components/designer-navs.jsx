@@ -37,9 +37,9 @@ function DesignerNavigationalMenu() {
                     </button>
                 </li>
                 <li className="grow flex items-center justify-evenly">
-                    <Link to="/designer/orders/pending">{t('navbar.Orders Link 4')}</Link>
-                    <Link to="/designer/orders/begun">{t('navbar.Orders Link 5')}</Link>
-                    <Link to="/designer/orders/finished">{t('navbar.Orders Link 6')}</Link>
+                    <Link to="/designer/orders/pending">{t('navbar.Orders Link 1')}</Link>
+                    <Link to="/designer/orders/begun">{t('navbar.Orders Link 2')}</Link>
+                    <Link to="/designer/orders/finished">{t('navbar.Orders Link 3')}</Link>
                 </li>
                 <li className="flex items-center opacity-40">
                     <button disabled>

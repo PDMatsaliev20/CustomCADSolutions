@@ -1,11 +1,7 @@
 import axios from '../axios'
 
-const GetOrders = async () => {
-    return await axios.get('API/Orders');
-}
-
-const GetCompletedOrders = async () => {
-    return await axios.get('API/Orders/Completed');
+const GetOrders = async (status) => {
+    return await axios.get(`API/Orders?status=${status}`);
 }
 
 const GetOrder = async (id) => {
@@ -32,4 +28,4 @@ const DeleteOrder = async (id) => {
     return await axios.delete(`API/Orders/${id}`);
 }
 
-export { GetOrders, GetCompletedOrders, GetOrder, GetOrderCad, PostOrder, PutOrder, PatchOrder, DeleteOrder };
+export { GetOrders, GetOrder, GetOrderCad, PostOrder, PutOrder, PatchOrder, DeleteOrder };

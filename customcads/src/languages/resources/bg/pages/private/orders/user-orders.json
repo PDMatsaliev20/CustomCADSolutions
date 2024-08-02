@@ -1,10 +1,20 @@
 {
-  "Your Orders": "Твоите Поръчки",
-  "Status": "Статус: ",
+  "pending_title": "Твоите Чакащи Поръчки",
+  "begun_title": "Твоите Започнати Поръчки",
+  "finished_title": "Твоите Завършени Поръчки",
+  "New": "Order а New 3D Model",
+  "No orders": "You have no orders. You can make one by clicking the button above!",
   "Description": "Описание: ",
-  "Details": "Детайли",
-  "Edit": "Промени",
-  "Cancel": "Откажи",
-  "Ordered on": "Поръчано на: ",
-  "Confirmation": "Сигурни ли сте, че желаете да откажете тази поръчка?"
+  "Category": "Категория: ",
+  "Details": "Виж Повече",
+  "Delete": "Изтрий Поръчката",
+  "Contact": "Свържи се с Дизайнера",
+  "Cancel Order": "Откажи Поръчката",
+  "Download": "Изтегли 3D Модел",
+  "Request": "Заяви Доставка",
+  "Cancel Request": "Откажи Заявката",
+  "Alert Delete": "Сигурни ли сте, че желаете да откажете тази поръчка?",
+  "Alert Delivery": "Доставка на поръчката е заявена",
+  "Alert Cancel": "Доставка на поръчката е отказана",
+  "Ordered on": "Поръчано на: "
 }

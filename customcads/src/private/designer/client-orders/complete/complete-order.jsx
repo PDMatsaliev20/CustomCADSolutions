@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next'
 import { useState, useEffect } from 'react'
 import { GetCategories } from '@/requests/public/home'
 import { PostCad } from '@/requests/private/cads'
-import { CompleteOrder } from '@/requests/private/designer'
+import { FinishOrder } from '@/requests/private/designer'
 
 function UploadCad() {
     const { t } = useTranslation();
@@ -32,7 +32,7 @@ function UploadCad() {
     const handleSubmitCallback = async () => {
         try {
             const { data } = await PostCad(cad);
-            await CompleteOrder(id, data.id);
+            await FinishOrder(id, data.id);
             navigate('/cads/');
         } catch (e) {
             console.error(e);

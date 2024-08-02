@@ -1,12 +1,9 @@
 {
-  "Orders Link 1": "Your Orders",
-  "Orders Link 2": "Order Custom 3D Model",
-  "Orders Link 3": "Completed Orders",
+  "Orders Link 1": "Pending Orders",
+  "Orders Link 2": "Begun Orders",
+  "Orders Link 3": "Finished Orders",
   "Cads Link 1": "Your 3D Models",
   "Cads Link 2": "Upload 3D Model",
   "Cads Link 3": "Sell us a 3D Model",
-  "Cads Link 4": "Unchecked 3D Models",
-  "Orders Link 4": "Pending Orders",
-  "Orders Link 5": "Begun Orders",
-  "Orders Link 6": "Finished Orders"
+  "Cads Link 4": "Unchecked 3D Models"
 }

@@ -5,7 +5,7 @@ import { PutOrder } from '@/requests/private/orders'
 
 function OrderDetails() {
     const { t } = useTranslation();
-    const { id } = useParams();
+    const { id, status } = useParams();
     const { loadedCategories, loadedOrder } = useLoaderData();
     const navigate = useNavigate();
 
@@ -50,9 +50,9 @@ function OrderDetails() {
         const body = { name: order.name, description: order.description, categoryId: order.categoryId };
 
         try {
-            const { status } = await PutOrder(id, body);
-            if ((100 < status) && (status < 300)) {
-                navigate(`/orders`);
+            const response= await PutOrder(id, body);
+            if ((100 < response.status) && (response.status < 300)) {
+                navigate(`/orders/${status}`);
             }
         } catch (e) {
             console.error(e);

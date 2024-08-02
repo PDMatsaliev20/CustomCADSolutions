@@ -19,8 +19,8 @@ export default {
                 const capitalizedStatus = status[0].toUpperCase() + status.slice(1);
 
                 try {
-                    const { data } = await GetOrdersByStatus(status);
-                    return { loadedOrders: data, status: capitalizedStatus };
+                    const { data: { orders } } = await GetOrdersByStatus(status);
+                    return { loadedOrders: orders, status: capitalizedStatus };
                 } catch (e) {
                     console.error(e);
                 }
