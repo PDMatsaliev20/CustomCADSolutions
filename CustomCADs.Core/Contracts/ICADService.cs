@@ -1,5 +1,8 @@
-﻿using CustomCADs.Core.Models.Cads;
+﻿using CustomCADs.Core.Models;
+using CustomCADs.Core.Models.Cads;
+using CustomCADs.Domain.Entities;
 using CustomCADs.Domain.Entities.Enums;
+using System.Linq.Expressions;
 
 namespace CustomCADs.Core.Contracts
 {
@@ -10,7 +13,7 @@ namespace CustomCADs.Core.Contracts
         /// </summary>
         /// <param name="query">Specify Creator name, sorting, count, etc.</param>
         /// <returns>A Task object that represents the specified Cads.</returns>
-        Task<CadQueryResult> GetAllAsync(CadQueryModel query);
+        Task<CadResult> GetAllAsync(CadQuery query, SearchModel search, PaginationModel pagination, Expression<Func<Cad, bool>>? customFilter = null);
 
         /// <summary>
         ///     Searches for a Cad by the given id.

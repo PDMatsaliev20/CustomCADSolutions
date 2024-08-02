@@ -4,6 +4,7 @@ using CustomCADs.API.Mappings;
 using CustomCADs.API.Models.Cads;
 using CustomCADs.API.Models.Queries;
 using CustomCADs.Core.Contracts;
+using CustomCADs.Core.Models;
 using CustomCADs.Core.Models.Cads;
 using CustomCADs.Domain.Entities.Enums;
 using Microsoft.AspNetCore.Authorization;
@@ -34,12 +35,14 @@ namespace CustomCADs.API.Controllers
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status500InternalServerError)]
         [ProducesResponseType(Status502BadGateway)]
-        public async Task<ActionResult<CadQueryResultDTO>> GetCadsAsync([FromQuery] CadQueryDTO dto)
+        public async Task<ActionResult<CadQueryResultDTO>> GetCadsAsync([FromQuery] PaginationModel pagination, string? sorting, string? category, string? name)
         {
+            CadQuery query = new() { Creator = User.Identity!.Name };
+            SearchModel search = new() { Category = category, Name = name, Sorting = sorting ?? "" };
+
             try
             {
-                CadQueryModel query = mapper.Map<CadQueryModel>(dto);
-                CadQueryResult result = await cadService.GetAllAsync(query);
+                CadResult result = await cadService.GetAllAsync(query, search, pagination);
                 return mapper.Map<CadQueryResultDTO>(result);
             }
             catch (Exception ex) when (

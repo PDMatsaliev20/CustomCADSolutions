@@ -42,14 +42,14 @@ namespace CustomCADs.API.Controllers
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status500InternalServerError)]
         [ProducesResponseType(Status502BadGateway)]
-        public async Task<ActionResult<CadQueryResultDTO>> GetGalleryAsync([FromQuery] CadQueryDTO dto)
+        public async Task<ActionResult<CadQueryResultDTO>> GetGalleryAsync([FromQuery] PaginationModel pagination, string? sorting, string? category, string? name, string? creator)
         {
+            CadQuery query = new() { Status = CadStatus.Validated };
+            SearchModel search = new() { Category = category, Name = name, Owner = creator, Sorting = sorting ?? "" };
+            
             try
             {
-                CadQueryModel query = mapper.Map<CadQueryModel>(dto);
-                query.Status = CadStatus.Validated;
-
-                CadQueryResult result = await cadService.GetAllAsync(query);
+                CadResult result = await cadService.GetAllAsync(query, search, pagination);
                 return mapper.Map<CadQueryResultDTO>(result);
             }
             catch (Exception ex) when (
@@ -119,10 +119,10 @@ namespace CustomCADs.API.Controllers
             }
         }
 
-        [HttpGet("CadSortings")]
+        [HttpGet("Sortings")]
         [Produces("application/json")]
         [ProducesResponseType(200)]
-        public ActionResult<string[]> GetCadSortingsAsync()
+        public ActionResult<string[]> GetSortingsAsync()
             => Enum.GetNames<Sorting>();
     }
 }

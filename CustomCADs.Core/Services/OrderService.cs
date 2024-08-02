@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CustomCADs.Core.Contracts;
 using CustomCADs.Core.Mappings;
+using CustomCADs.Core.Models;
 using CustomCADs.Core.Models.Orders;
 using CustomCADs.Domain;
 using CustomCADs.Domain.Entities;
@@ -21,7 +22,7 @@ namespace CustomCADs.Core.Services
                 cfg.AddProfile<OrderCoreProfile>();
             }).CreateMapper();
 
-        public async Task<OrderResult> GetAllAsync(OrderQuery query, OrderSearch search, OrderPagination pagination, Expression<Func<Order, bool>>? customFilter = null)
+        public async Task<OrderResult> GetAllAsync(OrderQuery query, SearchModel search, PaginationModel pagination, Expression<Func<Order, bool>>? customFilter = null)
         {
             IQueryable<Order> dbOrders = repository.All<Order>();
 
@@ -35,7 +36,7 @@ namespace CustomCADs.Core.Services
                 dbOrders = dbOrders.Where(o => o.Status == query.Status);
             }
 
-            // Optional custom
+            // Optional custom filter
             if (customFilter != null)
             {
                 dbOrders = dbOrders.Where(customFilter);
@@ -46,9 +47,9 @@ namespace CustomCADs.Core.Services
             {
                 dbOrders = dbOrders.Where(o => o.Name.Contains(search.Name));
             }
-            if (!string.IsNullOrWhiteSpace(search.Buyer))
+            if (!string.IsNullOrWhiteSpace(search.Owner))
             {
-                dbOrders = dbOrders.Where(o => o.Buyer.UserName!.Contains(search.Buyer));
+                dbOrders = dbOrders.Where(o => o.Buyer.UserName!.Contains(search.Owner));
             }
             if (!string.IsNullOrWhiteSpace(search.Category))
             {
@@ -66,8 +67,8 @@ namespace CustomCADs.Core.Services
 
             // Pagination
             Order[] orders = await dbOrders
-                .Skip((pagination.CurrentPage - 1) * pagination.CadsPerPage)
-                .Take(pagination.CadsPerPage)
+                .Skip((pagination.Page - 1) * pagination.Limit)
+                .Take(pagination.Limit)
                 .ToArrayAsync();
 
             OrderModel[] models = mapper.Map<OrderModel[]>(orders);

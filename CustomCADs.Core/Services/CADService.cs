@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CustomCADs.Core.Contracts;
 using CustomCADs.Core.Mappings;
+using CustomCADs.Core.Models;
 using CustomCADs.Core.Models.Cads;
 using CustomCADs.Domain;
 using CustomCADs.Domain.Entities;
@@ -8,6 +9,7 @@ using CustomCADs.Domain.Entities.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.ComponentModel.DataAnnotations;
+using System.Linq.Expressions;
 
 
 namespace CustomCADs.Core.Services
@@ -21,57 +23,53 @@ namespace CustomCADs.Core.Services
                 cfg.AddProfile<OrderCoreProfile>();
             }).CreateMapper();
 
-        public async Task<CadQueryResult> GetAllAsync(CadQueryModel query)
+        public async Task<CadResult> GetAllAsync(CadQuery query, SearchModel search, PaginationModel pagination, Expression<Func<Cad, bool>>? customFilter = null)
         {
-            if (query.CadsPerPage >= 3)
-            {
-                // So that the cads in a page are always 1, 2, 3 or a multiple of 3
-                query.CadsPerPage -= query.CadsPerPage % 3;
-            }
             IQueryable<Cad> allCads = repository.All<Cad>();
 
-            if (query.Category != null)
-            {
-                allCads = allCads.Where(c => c.Category.Name == query.Category);
-            }
-
+            // Querying
             if (query.Creator != null)
             {
                 allCads = allCads.Where(c => c.Creator!.UserName == query.Creator);
             }
-
             if (query.Status != null)
             {
                 allCads = allCads.Where(c => c.Status == query.Status);
             }
 
-            if (!string.IsNullOrWhiteSpace(query.SearchName))
+            // Optional custom filter
+            if (customFilter != null)
             {
-                allCads = allCads.Where(c => c.Name.Contains(query.SearchName));
-            }
-            if (!string.IsNullOrWhiteSpace(query.SearchCreator))
-            {
-                allCads = allCads.Where(c => c.Creator.UserName!.Contains(query.SearchCreator));
+                allCads = allCads.Where(customFilter);
             }
 
-            allCads = query.Sorting switch
+            // Search & Sort
+            if (search.Category != null)
             {
-                Sorting.Newest => allCads.OrderByDescending(c => c.CreationDate),
-                Sorting.Oldest => allCads.OrderBy(c => c.CreationDate),
-                Sorting.Alphabetical => allCads.OrderBy(c => c.Name),
-                Sorting.Unalphabetical => allCads.OrderByDescending(c => c.Name),
-                Sorting.Category => allCads.OrderBy(m => m.Category.Name),
+                allCads = allCads.Where(c => c.Category.Name == search.Category);
+            }
+            if (!string.IsNullOrWhiteSpace(search.Name))
+            {
+                allCads = allCads.Where(c => c.Name.Contains(search.Name));
+            }
+            if (!string.IsNullOrWhiteSpace(search.Owner))
+            {
+                allCads = allCads.Where(c => c.Creator.UserName!.Contains(search.Owner));
+            }
+
+            allCads = search.Sorting.ToLower() switch
+            {
+                "newest" => allCads.OrderByDescending(c => c.CreationDate),
+                "oldest" => allCads.OrderBy(c => c.CreationDate),
+                "alphabetical" => allCads.OrderBy(c => c.Name),
+                "unalphabetical" => allCads.OrderByDescending(c => c.Name),
+                "category" => allCads.OrderBy(m => m.Category.Name),
                 _ => allCads.OrderBy(c => c.Id),
             };
 
-            if (query.CadsPerPage > 16)
-            {
-                query.CadsPerPage = 16;
-            }
-
             Cad[] cads = await allCads
-                .Skip((query.CurrentPage - 1) * query.CadsPerPage)
-                .Take(query.CadsPerPage)
+                .Skip((pagination.Page - 1) * pagination.Limit)
+                .Take(pagination.Limit)
                 .ToArrayAsync();
 
             CadModel[] models = mapper.Map<CadModel[]>(cads);

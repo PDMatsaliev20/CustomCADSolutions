@@ -2,6 +2,7 @@
 using CustomCADs.App.Mappings;
 using CustomCADs.App.Models.Cads.View;
 using CustomCADs.Core.Contracts;
+using CustomCADs.Core.Models;
 using CustomCADs.Core.Models.Cads;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -23,14 +24,18 @@ namespace CustomCADs.App.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Index([FromQuery] CadQueryInputModel query)
         {
-            CadQueryResult result = await cadService.GetAllAsync(new()
+            SearchModel search = new()
             {
                 Category = query.Category,
-                SearchName = query.SearchName,
-                Sorting = query.Sorting,
-                CurrentPage = query.CurrentPage,
-                CadsPerPage = query.CadsPerPage,
-            });
+                Name = query.SearchName,
+                Sorting = query.Sorting.ToString(),
+            };
+            PaginationModel pagination = new()
+            {
+                Page = query.CurrentPage,
+                Limit = query.CadsPerPage,
+            };
+            CadResult result = await cadService.GetAllAsync(new(), search, pagination);
             return View(mapper.Map<CadViewModel[]>(result.Cads));
         }
 

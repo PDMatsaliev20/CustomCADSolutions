@@ -5,6 +5,7 @@ using CustomCADs.API.Models.Cads;
 using CustomCADs.API.Models.Orders;
 using CustomCADs.API.Models.Queries;
 using CustomCADs.Core.Contracts;
+using CustomCADs.Core.Models;
 using CustomCADs.Core.Models.Orders;
 using CustomCADs.Domain.Entities.Enums;
 using Microsoft.AspNetCore.Authorization;
@@ -36,7 +37,7 @@ namespace CustomCADs.API.Controllers
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status500InternalServerError)]
         [ProducesResponseType(Status502BadGateway)]
-        public async Task<ActionResult<OrderResultDTO>> GetOrdersAsync(string status, [FromQuery] OrderPagination pagination, string? sorting, string? category, string? name)
+        public async Task<ActionResult<OrderResultDTO>> GetOrdersAsync(string status, [FromQuery] PaginationModel pagination, string? sorting, string? category, string? name)
         {
             try
             {
@@ -47,7 +48,7 @@ namespace CustomCADs.API.Controllers
                 }
                  
                 OrderQuery query = new() { Buyer = User.Identity!.Name, Status = enumStatus };
-                OrderSearch search = new() { Category = category, Name = name, Sorting = sorting ?? string.Empty };
+                SearchModel search = new() { Category = category, Name = name, Sorting = sorting ?? string.Empty };
                 
                 OrderResult result = await orderService.GetAllAsync(query, search, pagination);
                 return mapper.Map<OrderResultDTO>(result);

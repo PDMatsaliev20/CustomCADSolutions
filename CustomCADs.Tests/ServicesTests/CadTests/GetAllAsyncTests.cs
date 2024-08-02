@@ -1,4 +1,5 @@
-﻿using CustomCADs.Core.Models.Cads;
+﻿using CustomCADs.Core.Models;
+using CustomCADs.Core.Models.Cads;
 using CustomCADs.Domain.Entities.Enums;
 using static CustomCADs.Core.TestsErrorMessages;
 
@@ -10,9 +11,8 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
         public async Task Test_ReturnsAllWithNoFilters()
         {
             int expectedCount = this.cads.Length;
-            CadQueryModel query = new();
-
-            CadQueryResult result = await service.GetAllAsync(query);
+            
+            CadResult result = await service.GetAllAsync(new(), new(), new());
             int actualCount = result.Count;
 
             Assert.That(actualCount, Is.EqualTo(expectedCount),
@@ -24,9 +24,9 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
         public async Task Test_ReturnsCorrectlyWithCategoryFilter(string categoryName)
         {
             int expectedCount = this.cads.Count(c => c.Category.Name == categoryName);
-            CadQueryModel query = new() { Category = categoryName };
+            SearchModel search = new() { Category = categoryName };
 
-            CadQueryResult result = await service.GetAllAsync(query);
+            CadResult result = await service.GetAllAsync(new(), search, new());
             int actualCount = result.Count;
 
             Assert.That(actualCount, Is.EqualTo(expectedCount),
@@ -38,9 +38,9 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
         public async Task Test_ReturnsCorrectlyWithCreatorFilter(string creatorName)
         {
             int expectedCount = this.cads.Count(c => c.Creator.UserName == creatorName);
-            CadQueryModel query = new() { Creator = creatorName };
+            SearchModel search = new() { Owner = creatorName };
 
-            CadQueryResult result = await service.GetAllAsync(query);
+            CadResult result = await service.GetAllAsync(new(), search, new());
             int actualCount = result.Count;
 
             Assert.That(actualCount, Is.EqualTo(expectedCount),
@@ -52,9 +52,9 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
         public async Task Test_ReturnsCorrectlyWithLikeNameFilter(string likeName)
         {
             int expectedCount = this.cads.Count(c => c.Name.Contains(likeName));
-            CadQueryModel query = new() { SearchName = likeName };
+            SearchModel search = new() { Name = likeName };
 
-            CadQueryResult result = await service.GetAllAsync(query);
+            CadResult result = await service.GetAllAsync(new(), search, new());
             int actualCount = result.Count;
 
             Assert.That(actualCount, Is.EqualTo(expectedCount),
@@ -67,9 +67,9 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
         public async Task Test_ReturnsCorrectlyWithLikeCreatorFilter(string likeCreator)
         {
             int expectedCount = this.cads.Count(c => c.Creator.UserName.Contains(likeCreator));
-            CadQueryModel query = new() { SearchCreator = likeCreator };
+            SearchModel search = new() { Owner = likeCreator };
 
-            CadQueryResult result = await service.GetAllAsync(query);
+            CadResult result = await service.GetAllAsync(new(), search, new());
             int actualCount = result.Count;
 
             Assert.That(actualCount, Is.EqualTo(expectedCount),
@@ -93,9 +93,9 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
                 expectedCount = cads.Length;
             }
 
-            CadQueryModel query = new() { Status = status };
+            CadQuery query = new() { Status = status };
 
-            CadQueryResult result = await service.GetAllAsync(query);
+            CadResult result = await service.GetAllAsync(query);
             int actualCount = result.Count;
 
             Assert.That(actualCount, Is.EqualTo(expectedCount),
@@ -116,8 +116,8 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
                 .Select(c => c.Id)
                 .ToArray();
 
-            CadQueryModel query = new() { CurrentPage = currentPage, CadsPerPage = cadsPerPage };
-            int[] actualCadIds = (await service.GetAllAsync(query)).Cads
+            PaginationModel pagination = new() { Page = currentPage, Limit = cadsPerPage };
+            int[] actualCadIds = (await service.GetAllAsync(new(), new(), pagination)).Cads
                 .Select(c => c.Id)
                 .ToArray();
 
@@ -139,9 +139,8 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
                 Sorting.Category => cads.OrderBy(m => m.Category.Name),
                 _ => cads.OrderBy(c => c.Id),
             }).Select(c => c.Id);
-            CadQueryModel query = new() { Sorting = sorting, CadsPerPage = 8 };
 
-            CadQueryResult result = await service.GetAllAsync(query);
+            CadResult result = await service.GetAllAsync(new(), new() { Sorting = sorting.ToString() }, new() { Limit = 8 });
             var actualSort = result.Cads.Select(c => c.Id);
 
             Assert.That(actualSort, Is.EqualTo(expectedSort),

@@ -3,6 +3,7 @@ using CustomCADs.API.Helpers;
 using CustomCADs.API.Mappings;
 using CustomCADs.API.Models.Queries;
 using CustomCADs.Core.Contracts;
+using CustomCADs.Core.Models;
 using CustomCADs.Core.Models.Cads;
 using CustomCADs.Core.Models.Orders;
 using CustomCADs.Domain.Entities.Enums;
@@ -32,14 +33,14 @@ namespace CustomCADs.API.Controllers
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status500InternalServerError)]
         [ProducesResponseType(Status502BadGateway)]
-        public async Task<ActionResult<CadQueryResultDTO>> GetUncheckedCadsAsync([FromQuery] CadQueryDTO dto)
+        public async Task<ActionResult<CadQueryResultDTO>> GetUncheckedCadsAsync([FromQuery] PaginationModel pagination, string? sorting, string? category, string? name, string? creator)
         {
+            CadQuery query = new() { Status = CadStatus.Unchecked };
+            SearchModel search = new() { Category = category, Owner = creator, Name = name, Sorting = sorting ?? ""};
+
             try
             {
-                CadQueryModel query = mapper.Map<CadQueryModel>(dto);
-                query.Status = CadStatus.Unchecked;
-
-                CadQueryResult result = await cadService.GetAllAsync(query);
+                CadResult result = await cadService.GetAllAsync(query, search, pagination);
                 return mapper.Map<CadQueryResultDTO>(result);
             }
             catch (Exception ex) when (
@@ -87,7 +88,7 @@ namespace CustomCADs.API.Controllers
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status500InternalServerError)]
         [ProducesResponseType(Status502BadGateway)]
-        public async Task<ActionResult<OrderResultDTO>> GetOrdersByStatusAsync(string status, [FromQuery] OrderPagination pagination, string? sorting, string? category, string? name, string? buyer)
+        public async Task<ActionResult<OrderResultDTO>> GetOrdersByStatusAsync(string status, [FromQuery] PaginationModel pagination, string? sorting, string? category, string? name, string? buyer)
         {
             try
             {
@@ -98,7 +99,7 @@ namespace CustomCADs.API.Controllers
                 }
 
                 OrderQuery query = new() { Status = Enum.Parse<OrderStatus>(status.Capitalize()) };
-                OrderSearch search = new() { Category = category, Name = name, Buyer = buyer, Sorting = sorting ?? string.Empty };
+                SearchModel search = new() { Category = category, Name = name, Owner = buyer, Sorting = sorting ?? string.Empty };
                 
                 OrderResult result = await orderService.GetAllAsync(query, search, pagination, 
                     order => order.Status != OrderStatus.Finished || order.ShouldBeDelivered);

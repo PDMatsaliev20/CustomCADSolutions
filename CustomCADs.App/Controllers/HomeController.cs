@@ -3,6 +3,7 @@ using CustomCADs.App.Extensions;
 using CustomCADs.App.Mappings;
 using CustomCADs.App.Models.Cads.View;
 using CustomCADs.Core.Contracts;
+using CustomCADs.Core.Models;
 using CustomCADs.Core.Models.Cads;
 using CustomCADs.Domain.Entities.Enums;
 using CustomCADs.Domain.Entities.Identity;
@@ -18,7 +19,6 @@ namespace CustomCADs.App.Controllers
     public class HomeController(
         ICadService cadService,
         ICategoryService categoryService,
-        IOrderService orderService,
         UserManager<AppUser> userManager,
         SignInManager<AppUser> signInManager,
         IWebHostEnvironment env,
@@ -42,27 +42,35 @@ namespace CustomCADs.App.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Category([FromQuery] CadQueryInputModel query)
+        public async Task<IActionResult> Category([FromQuery] CadQueryInputModel queryModel)
         {
-            CadQueryResult result = await cadService.GetAllAsync(new()
+            CadQuery query = new()
             {
-                Category = query.Category,
-                Creator = query.Creator,
-                SearchName = query.SearchName,
-                SearchCreator = query.SearchCreator,
-                Sorting = query.Sorting,
-                CurrentPage = query.CurrentPage,
-                CadsPerPage = query.CadsPerPage,
+                Creator = queryModel.Creator,
                 Status = CadStatus.Validated,
-            });
+            };
+            SearchModel search = new()
+            {
+                Category = queryModel.Category,
+                Name = queryModel.SearchName,
+                Owner = queryModel.SearchCreator,
+                Sorting = queryModel.Sorting.ToString(),
+            };
+            PaginationModel pagination = new()
+            {
+                Page = queryModel.CurrentPage,
+                Limit = queryModel.CadsPerPage,
+            };
 
-            query.Categories = await categoryService.GetAllNamesAsync();
-            query.TotalCount = result.Count;
-            query.Cads = mapper.Map<CadViewModel[]>(result.Cads);
+            CadResult result = await cadService.GetAllAsync(query, search, pagination);
+
+            queryModel.Categories = await categoryService.GetAllNamesAsync();
+            queryModel.TotalCount = result.Count;
+            queryModel.Cads = mapper.Map<CadViewModel[]>(result.Cads);
 
             ViewBag.Sortings = typeof(Sorting).GetEnumNames();
-            ViewBag.Category = query.Category;
-            return View(query);
+            ViewBag.Category = queryModel.Category;
+            return View(queryModel);
         }
 
         [HttpGet]
