@@ -124,21 +124,45 @@ namespace CustomCADs.Core.Services
             await repository.SaveChangesAsync();
         }
 
-        public async Task EditStatusAsync(int id, OrderStatus status)
+        public async Task BeginAsync(int id, string designerId)
         {
             Order order = await repository.GetByIdAsync<Order>(id)
                 ?? throw new KeyNotFoundException();
 
-            order.Status = status;
+            order.Status = OrderStatus.Begun;
+            order.DesignerId = designerId;
+
             await repository.SaveChangesAsync();
         }
+        
+        public async Task ReportAsync(int id)
+        {
+            Order order = await repository.GetByIdAsync<Order>(id)
+                ?? throw new KeyNotFoundException();
 
+            order.Status = OrderStatus.Reported;
+            await repository.SaveChangesAsync();
+        }
+        
+        public async Task CancelAsync(int id)
+        {
+            Order order = await repository.GetByIdAsync<Order>(id)
+                ?? throw new KeyNotFoundException();
+
+            order.DesignerId = null;
+            order.Status = OrderStatus.Pending;
+
+            await repository.SaveChangesAsync();
+        }
+        
         public async Task CompleteAsync(int id, int cadId)
         {
             Order order = await repository.GetByIdAsync<Order>(id)
                 ?? throw new KeyNotFoundException();
 
             order.CadId = cadId;
+            order.Status = OrderStatus.Finished;
+
             await repository.SaveChangesAsync();
         }
 

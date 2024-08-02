@@ -83,7 +83,7 @@ namespace CustomCADs.API.Controllers
             }
         }
 
-        [HttpGet("Orders/{status}")]
+        [HttpGet("Orders")]
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status500InternalServerError)]
         [ProducesResponseType(Status502BadGateway)]
@@ -118,14 +118,70 @@ namespace CustomCADs.API.Controllers
             }
         }
 
-        [HttpPatch("Orders/Status/{id}")]
+        [HttpPatch("Orders/Begin/{id}")]
         [ProducesResponseType(Status204NoContent)]
         [ProducesResponseType(Status404NotFound)]
-        public async Task<ActionResult> UpdateOrderStatusAsync(int id, string status)
+        public async Task<ActionResult> BeginOrderAsync(int id)
         {
             try
             {
-                await orderService.EditStatusAsync(id, Enum.Parse<OrderStatus>(status));
+                await orderService.BeginAsync(id, User.GetId());
+                return NoContent();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.GetMessage());
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                return Conflict(ex.GetMessage());
+            }
+            catch (DbUpdateException ex)
+            {
+                return BadRequest(ex.GetMessage());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(Status500InternalServerError, ex.GetMessage());
+            }
+        }
+        
+        [HttpPatch("Orders/Report/{id}")]
+        [ProducesResponseType(Status204NoContent)]
+        [ProducesResponseType(Status404NotFound)]
+        public async Task<ActionResult> ReportOrderAsync(int id)
+        {
+            try
+            {
+                await orderService.ReportAsync(id);
+                return NoContent();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.GetMessage());
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                return Conflict(ex.GetMessage());
+            }
+            catch (DbUpdateException ex)
+            {
+                return BadRequest(ex.GetMessage());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(Status500InternalServerError, ex.GetMessage());
+            }
+        }
+        
+        [HttpPatch("Orders/Cancel/{id}")]
+        [ProducesResponseType(Status204NoContent)]
+        [ProducesResponseType(Status404NotFound)]
+        public async Task<ActionResult> CancelOrderAsync(int id)
+        {
+            try
+            {
+                await orderService.CancelAsync(id);
                 return NoContent();
             }
             catch (KeyNotFoundException ex)
@@ -146,7 +202,7 @@ namespace CustomCADs.API.Controllers
             }
         }
 
-        [HttpPatch("Orders/Complete/{id}")]
+        [HttpPatch("Orders/Finish/{id}")]
         [ProducesResponseType(Status204NoContent)]
         [ProducesResponseType(Status404NotFound)]
         [ProducesResponseType(Status500InternalServerError)]
@@ -160,7 +216,6 @@ namespace CustomCADs.API.Controllers
                 }
 
                 await orderService.CompleteAsync(id, cadId);
-                await orderService.EditStatusAsync(id, OrderStatus.Finished);
                 return NoContent();
             }
             catch (KeyNotFoundException ex) 
