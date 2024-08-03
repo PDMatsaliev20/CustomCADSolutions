@@ -1,10 +1,10 @@
-import AuthGuard from '../auth-guard'
+import AuthGuard from '@/routing/auth-guard'
 import ClientOrders from '@/private/designer/client-orders/orders/orders'
 import CompleteOrder from '@/private/designer/client-orders/complete/complete-order'
 import ContributorCads from '@/private/designer/contributor-cads/cads'
 
 export default {
-    element: <AuthGuard isPrivate role={['Designer']} />,
+    element: <AuthGuard auth="private" roles={['Designer']} />,
     children: [
         {
             path: '/designer/cads',

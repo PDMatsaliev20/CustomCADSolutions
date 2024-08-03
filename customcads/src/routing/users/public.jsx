@@ -1,13 +1,16 @@
-import AuthGuard from '../auth-guard'
+import AuthGuard from '@/routing/auth-guard'
 import HomePage from '@/public/home/home'
 import GalleryPage from '@/public/gallery/gallery'
 import GalleryDetailsPage from '@/public/gallery/gallery-details'
 import PrivacyPolicyPage from '@/public/policy/policy'
 import AboutUsPage from '@/public/about/about'
+import ClientInfoPage from '@/public/info/client'
+import ContributorInfoPage from '@/public/info/contributor'
+import DesignerInfoPage from '@/public/info/designer'
 import { GalleryCad } from '@/requests/public/home'
 
 export default {
-    element: <AuthGuard />,
+    element: <AuthGuard auth="public" />,
     children: [
         {
             path: '/',
@@ -37,6 +40,18 @@ export default {
         {
             path: '/about',
             element: <AboutUsPage />
+        },
+        {
+            path: '/info/client',
+            element: <ClientInfoPage />
+        },
+        {
+            path: '/info/contributor',
+            element: <ContributorInfoPage />
+        },
+        {
+            path: '/info/designer',
+            element: <DesignerInfoPage />
         },
         {
             path: '/policy',

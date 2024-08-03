@@ -3,7 +3,7 @@ import useObjectToURL from '@/hooks/useObjectToURL'
 import PendingOrder from './components/pending-order'
 import BegunOrder from './components/begun-order'
 import FinishedOrder from './components/finished-order'
-import { useLoaderData } from 'react-router-dom'
+import { Link,useLoaderData } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useState, useEffect } from 'react'
 import { GetOrdersByStatus } from '@/requests/private/designer'
@@ -28,11 +28,32 @@ function AllOrders() {
     };
 
     return (
-        <div className="flex flex-wrap justify-center gap-y-12 mb-8">
-            <h1 className="basis-full text-center text-4xl text-indigo-950 font-bold">
-                {t(`body.designerOrders.${status} Title`)}
-            </h1>
-            <SearchBar setSearch={setSearch} />
+        <div className="flex flex-wrap justify-center gap-y-12 mt-4 mb-8">
+            <div className="basis-full flex flex-col gap-y-[1px]">
+                <h2 className="px-4 basis-full text-3xl text-indigo-950">
+                    <div className="flex justify-between items-center rounded-t-xl border-4 border-indigo-600 overflow-hidden bg-indigo-500 text-center font-bold">
+                        <Link
+                            to="/designer/orders/pending"
+                            className={`basis-1/3 bg-indigo-300 py-4 hover:no-underline ${status === 'Pending' ? 'font-extrabold bg-indigo-500 text-indigo-50' : ''}`}
+                        >
+                            {t('body.designerOrders.Pending Title')}
+                        </Link>
+                        <Link
+                            to="/designer/orders/begun"
+                            className={`basis-1/3 bg-indigo-300 py-4 border-x-2 border-indigo-600 hover:no-underline ${status === 'Begun' ? 'font-extrabold bg-indigo-500 text-indigo-50' : ''}`}
+                        >
+                            {t('body.designerOrders.Begun Title')}
+                        </Link>
+                        <Link
+                            to="/designer/orders/finished"
+                            className={`basis-1/3 bg-indigo-300 py-4 hover:no-underline ${status === 'Finished' ? 'font-extrabold bg-indigo-500 text-indigo-50' : ''}`}
+                        >
+                            {t('body.designerOrders.Finished Title')}
+                        </Link>
+                    </div>
+                </h2>
+                <SearchBar setSearch={setSearch} />
+            </div>
             {!orders.length ?
                 <p className="basis-full text-lg text-indigo-900 text-center font-bold">{t('body.designerOrders.No orders')}</p>
                 : <ul className="basis-full grid grid-cols-3 gap-y-8 gap-x-[5%]">

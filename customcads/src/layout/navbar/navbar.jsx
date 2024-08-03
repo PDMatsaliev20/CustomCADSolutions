@@ -1,4 +1,5 @@
 import AuthContext from '@/components/auth-context'
+import GuestNavs from './components/guest-navs'
 import ClientNavs from './components/client-navs'
 import ContributorNavs from './components/contributor-navs'
 import DesignerNavs from './components/designer-navs'
@@ -7,7 +8,7 @@ import { useContext } from 'react'
 function Navbar() {
     const { isAuthenticated, userRole } = useContext(AuthContext);
 
-    let navs;
+    let navs = <GuestNavs />;
     if (isAuthenticated) {
         switch (userRole) {
             case 'Client': navs = <ClientNavs />; break;
@@ -18,7 +19,7 @@ function Navbar() {
     }
 
     return (
-        <nav className="text-indigo-900 font-bold bg-indigo-300 rounded-b-lg px-5 py-3 shadow-lg shadow-indigo-400 min-h-8">
+        <nav className="text-indigo-900 font-bold min-h-8">
             {navs}
         </nav>
     );

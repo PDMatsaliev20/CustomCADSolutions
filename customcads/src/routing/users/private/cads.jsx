@@ -1,4 +1,4 @@
-import AuthGuard from '../auth-guard'
+import AuthGuard from '@/routing/auth-guard'
 import UserCadsPage from '@/private/cads/user-cads/user-cads'
 import CadDetailsPage from '@/private/cads/cad-details/cad-details'
 import EditCadPage from '@/private/cads/edit-cad/edit-cad'
@@ -8,7 +8,7 @@ import { GetCad } from '@/requests/private/cads'
 import { GetCategories } from '@/requests/public/home'
 
 export default {
-    element: <AuthGuard isPrivate role={['Contributor', 'Designer']} />,
+    element: <AuthGuard auth="private" roles={['Contributor', 'Designer']} />,
     children: [
         {
             path: '/cads',

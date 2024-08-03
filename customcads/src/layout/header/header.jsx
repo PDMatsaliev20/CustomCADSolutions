@@ -7,7 +7,7 @@ import Logo from './components/logo'
 
 function Header() {
     return (
-        <header className="bg-indigo-200 py-4 border-b border-indigo-700 py-1">
+        <header className="bg-indigo-200 py-4 border-b border-indigo-700 rounded-b-lg py-1">
             <ul className="flex mx-5 justify-between items-center">
                 <li className="flex gap-x-6 items-center">
                     <HomeBtn />

@@ -6,14 +6,14 @@ function AboutUsPage() {
     const { t } = useTranslation();
 
     const ivcho = {
-        img: './src/assets/engineer.jpg',
+        img: '/src/assets/engineer.jpg',
         name: t('body.about.WebDevName'),
         role: t('body.about.WebDevRole'),
         desc: t('body.about.WebDevInfo')
     };
 
     const borko = {
-        img: './src/assets/designer.jpg',
+        img: '/src/assets/designer.jpg',
         name: t('body.about.3dDesignerName'),
         role: t('body.about.3dDesignerRole'),
         desc: t('body.about.3dDesignerInfo')

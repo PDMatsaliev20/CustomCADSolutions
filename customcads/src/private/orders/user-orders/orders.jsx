@@ -39,16 +39,32 @@ function UserOrders() {
     };
 
     return (
-        <div className="flex flex-wrap justify-center gap-y-8 mb-8">
-            <h1 className="basis-full text-4xl text-center text-indigo-950 font-bold">
-                {t(`body.orders.${status}_title`)}
-            </h1>
-            <Link to="/orders/custom"
-                className="py-2 px-8 rounded bg-indigo-800 text-indigo-50 font-extrabold"
-            >
-                {t('body.orders.New')}
-            </Link>
-            <SearchBar setSearch={setSearch} />
+        <div className="flex flex-wrap justify-center gap-y-8 mt-4 mb-8">
+            <div className="basis-full flex flex-col gap-y-[0.4px]"> 
+                <h2 className="px-4 text-2xl text-indigo-950">
+                    <div className="flex justify-between items-center rounded-t-xl border-4 border-indigo-700 overflow-hidden bg-indigo-500 text-center font-bold">
+                        <Link
+                            to="/orders/pending"
+                            className={`basis-1/3 bg-indigo-300 py-4 hover:no-underline ${status === 'pending' ? 'font-extrabold bg-indigo-500 text-indigo-50' : ''}`}
+                        >
+                            {t('body.orders.pending_title')}
+                        </Link>
+                        <Link
+                            to="/orders/begun"
+                            className={`basis-1/3 bg-indigo-300 py-4 border-x-2 border-indigo-700 hover:no-underline ${status === 'begun' ? 'font-extrabold bg-indigo-500 text-indigo-50' : ''}`}
+                        >
+                            {t('body.orders.begun_title')}
+                        </Link>
+                        <Link
+                            to="/orders/finished"
+                            className={`basis-1/3 bg-indigo-300 py-4 hover:no-underline ${status === 'finished' ? 'font-extrabold bg-indigo-500 text-indigo-50' : ''}`}
+                        >
+                            {t('body.orders.finished_title')}
+                        </Link>
+                    </div>
+                </h2>
+                <SearchBar setSearch={setSearch} />
+            </div>
             {!orders.length ?
                 <p className="text-lg text-indigo-900 text-center font-bold">{t('body.orders.No orders')}</p>
                 : <ul className="basis-full grid grid-cols-12 gap-x-16 gap-y-12">

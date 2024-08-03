@@ -1,25 +1,26 @@
 import AuthContext from '@/components/auth-context'
 import { Outlet, Navigate } from 'react-router-dom'
-import { useContext } from 'react'
+import { useState, useEffect, useContext } from 'react'
 
-function AuthGuard({ isPrivate, isGuest, roles }) {
+function AuthGuard({ auth, roles }) {
     const { isAuthenticated, userRole } = useContext(AuthContext);
-
-    if (!isAuthenticated && isPrivate) {
-        return <Navigate to="/login" replace />;
-    }
-
-    if (isAuthenticated) {
-        if (isGuest) {
-            return <Navigate to="/home" replace />;
-        }
-
-        if (isPrivate && roles && userRole && !roles.includes(userRole)) {
-            return <Navigate to="/home" replace />;
-        }
-    }
+    const [response, setResponse] = useState(<Outlet />);
     
-    return <Outlet />;
+    useEffect(() => {
+        if (auth === 'guest' && isAuthenticated) {
+            setResponse(<Navigate to="/home" replace />);
+        } else if (auth === 'private') {
+            if (!isAuthenticated) {
+                setResponse(<Navigate to="/login" replace />);
+            } else if (roles && userRole && !roles.includes(userRole)) {
+                setResponse(<Navigate to="/home" replace />);
+            }
+        } else {
+            setResponse(<Outlet />);
+        }
+    }, [auth, roles, isAuthenticated, userRole]);
+
+    return response;
 }
 
 export default AuthGuard;

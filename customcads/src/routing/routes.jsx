@@ -1,9 +1,9 @@
 import App from '@/app'
 import publicRoutes from './users/public'
 import guestRoutes from './users/guest'
-import clientRoutes from './users/orders'
-import contributorRoutes from './users/cads'
-import designerRoutes from './users/designer'
+import clientRoutes from './users/private/orders'
+import contributorRoutes from './users/private/cads'
+import designerRoutes from './users/private/designer'
 
 const userRoutes = {
     path: '/',
