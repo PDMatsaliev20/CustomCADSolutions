@@ -95,7 +95,7 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
 
             CadQuery query = new() { Status = status };
 
-            CadResult result = await service.GetAllAsync(query);
+            CadResult result = await service.GetAllAsync(query, new(), new());
             int actualCount = result.Count;
 
             Assert.That(actualCount, Is.EqualTo(expectedCount),

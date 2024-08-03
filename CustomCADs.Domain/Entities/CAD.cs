@@ -56,32 +56,32 @@ namespace CustomCADs.Domain.Entities
         [Required]
         [Range(CadConstants.CoordMax, CadConstants.CoordMin)]
         [Comment("Camera's X coordinate of 3D Model")]
-        public int X { get; set; }
+        public double X { get; set; }
 
         [Required]
         [Range(CadConstants.CoordMax, CadConstants.CoordMin)]
         [Comment("Camera's Y coordinate of 3D Model")]
-        public int Y { get; set; }
+        public double Y { get; set; }
 
         [Required]
         [Range(CadConstants.CoordMax, CadConstants.CoordMin)]
         [Comment("Camera's Z coordinate of 3D Model")]
-        public int Z { get; set; }
+        public double Z { get; set; }
 
         [Required]
         [Range(CadConstants.PanMin, CadConstants.PanMax)]
         [Comment("Panning along the x-axis of 3D Model")]
-        public int PanX { get; set; }
+        public double PanX { get; set; }
 
         [Required]
         [Range(CadConstants.PanMin, CadConstants.PanMax)]
         [Comment("Panning along the y-axis of 3D Model")]
-        public int PanY { get; set; }
+        public double PanY { get; set; }
 
         [Required]
         [Range(CadConstants.PanMin, CadConstants.PanMax)]
         [Comment("Panning along the z-axis of 3D Model")]
-        public int PanZ { get; set; }
+        public double PanZ { get; set; }
 
         [Required]
         [Comment("Identification of the creator of the 3D Model")]

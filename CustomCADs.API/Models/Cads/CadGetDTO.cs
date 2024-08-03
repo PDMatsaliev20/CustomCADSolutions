@@ -12,8 +12,8 @@ namespace CustomCADs.API.Models.Cads
         public decimal Price { get; set; }
         public string CadPath { get; set; } = null!;
         public string ImagePath { get; set; } = null!;
-        public int[] Coords { get; set; } = new int[3];
-        public int[] PanCoords { get; set; } = new int[3];
+        public double[] Coords { get; set; } = [];
+        public double[] PanCoords { get; set; } = [];
         public int Fov { get; set; } = 90;
         public string Status { get; set; } = null!;
         public CategoryDTO Category { get; set; } = null!;

@@ -43,10 +43,10 @@ namespace CustomCADs.Core.Models.Cads
         public DateTime CreationDate { get; set; }
 
         [Required(ErrorMessage = RequiredErrorMessage)]
-        public int[] Coords { get; set; } = new int[3];
+        public double[] Coords { get; set; } = new double[3];
 
         [Required(ErrorMessage = RequiredErrorMessage)]
-        public int[] PanCoords { get; set; } = new int[3];
+        public double[] PanCoords { get; set; } = new double[3];
 
         [Required(ErrorMessage = RequiredErrorMessage)]
         public int CategoryId { get; set; }
