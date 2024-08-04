@@ -1,13 +1,15 @@
-import * as THREE from 'three';
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import * as THREE from 'three'
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import axios from 'axios'
 import { useState, useEffect, useRef } from 'react'
 
 function Cad({ cad, isHomeCad }) {
     const mountRef = useRef(null);
-    const [model, setModel] = useState({});
     const isTouchedRef = useRef(false);
+    const workerRef = useRef(null);
+    const [model, setModel] = useState({});
+    const [scene, setScene] = useState(null);
 
     useEffect(() => {
         if (isHomeCad) {
@@ -22,16 +24,50 @@ function Cad({ cad, isHomeCad }) {
     }, []);
 
     useEffect(() => {
+        if (scene) {
+            workerRef.current = new Worker(new URL('cad-worker.js', import.meta.url));
+
+            workerRef.current.onmessage = (e) => {
+                const { error, arrayBuffer } = e.data;
+
+                if (error) {
+                    console.error(error);
+                } else if (arrayBuffer) {
+                    const url = URL.createObjectURL(new Blob(new Uint8Array([arrayBuffer]), { type: 'glb' }));
+
+                    new GLTFLoader().parse(arrayBuffer, '', (glb) => {
+                        scene.add(glb.scene);
+                        URL.revokeObjectURL(url);
+                    }, (error) => console.error(error));
+                }
+            };
+
+            const path = model.cadPath;
+            switch (path.split('.').pop().toLowerCase()) {
+                case 'gltf':
+                    new GLTFLoader().load(path, (gltf) => {
+                        scene.add(gltf.scene);
+                    }, undefined, (e) => {
+                        console.error(e);
+                    }
+                    );
+                    break;
+                default: workerRef.current.postMessage({ url: path }); break;
+            }
+        }
+    }, [scene]);
+
+    useEffect(() => {
         if (model.cadPath) {
             const scene = new THREE.Scene();
-            scene.background = null;
-            
+            setScene(scene);
+
             const camera = new THREE.PerspectiveCamera(model.fov, window.innerWidth / window.innerHeight, 0.001, 1000);
             camera.position.set(model.coords[0], model.coords[1], model.coords[2]);
             if (model.coords.every(c => c === 0)) {
                 camera.position.set(0, 0, 5);
             }
-            
+
             const mount = mountRef.current;
             if (mount.children.length > 0) {
                 return;
@@ -65,7 +101,7 @@ function Cad({ cad, isHomeCad }) {
                     }
                 }));
             };
-            
+
             function trackChanges() {
                 isTouchedRef.current = false;
             };
@@ -90,23 +126,15 @@ function Cad({ cad, isHomeCad }) {
 
             const ambientLight = new THREE.AmbientLight(isHomeCad ? 0xa5b4fc : 0xffffff, 0.5);
             scene.add(ambientLight);
-            
+
             const controls = new OrbitControls(camera, renderer.domElement);
             controls.enableDamping = true;
             controls.dampingFactor = 0.1;
             controls.target.set(model.panCoords[0], model.panCoords[1], model.panCoords[2]);
             controls.update();
 
-            const loader = new GLTFLoader();
-            loader.load(model.cadPath, (gltf) => {
-                scene.add(gltf.scene);
-            },
-                () => { },
-                (error) => console.error(error)
-            );
-            
             controls.addEventListener('change', cadTouched);
-            
+
             function animate() {
                 requestAnimationFrame(animate);
                 controls.update();
@@ -132,7 +160,7 @@ function Cad({ cad, isHomeCad }) {
                 window.removeEventListener('SendPosition', sendPosition);
             };
         }
-    }, [model.cadPath, model.coords, model.fov, model.id]);
+    }, [model.id, model.cadPath]);
 
     return <div ref={mountRef} className="w-full h-full" />;
 
