@@ -7,6 +7,7 @@ import { useState, useEffect, useRef } from 'react'
 function Cad({ cad, isHomeCad }) {
     const mountRef = useRef(null);
     const [model, setModel] = useState({});
+    const isTouchedRef = useRef(false);
 
     useEffect(() => {
         if (isHomeCad) {
@@ -22,15 +23,15 @@ function Cad({ cad, isHomeCad }) {
 
     useEffect(() => {
         if (model.cadPath) {
-            // Scene
             const scene = new THREE.Scene();
             scene.background = null;
-
-            // Camera
+            
             const camera = new THREE.PerspectiveCamera(model.fov, window.innerWidth / window.innerHeight, 0.001, 1000);
             camera.position.set(model.coords[0], model.coords[1], model.coords[2]);
-
-            // Renderer
+            if (model.coords.every(c => c === 0)) {
+                camera.position.set(0, 0, 5);
+            }
+            
             const mount = mountRef.current;
             if (mount.children.length > 0) {
                 return;
@@ -38,6 +39,36 @@ function Cad({ cad, isHomeCad }) {
 
             const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
             mount.appendChild(renderer.domElement);
+
+            let isInteracting = false
+            let resumeTimeout;
+
+            function cadTouched() {
+                if (!isTouchedRef.current) {
+                    window.dispatchEvent(new CustomEvent('PositionChanged'));
+                    isTouchedRef.current = true;
+                }
+
+                isInteracting = true;
+                clearTimeout(resumeTimeout);
+
+                resumeTimeout = setTimeout(() => {
+                    isInteracting = false;
+                }, 1500);
+            }
+
+            function sendPosition() {
+                window.dispatchEvent(new CustomEvent('SavePosition', {
+                    detail: {
+                        coords: [camera.position.x, camera.position.y, camera.position.z],
+                        panCoords: [controls.target.x, controls.target.y, controls.target.z]
+                    }
+                }));
+            };
+            
+            function trackChanges() {
+                isTouchedRef.current = false;
+            };
 
             function updateRendererSize() {
                 const width = mount.clientWidth;
@@ -49,7 +80,6 @@ function Cad({ cad, isHomeCad }) {
             }
             updateRendererSize();
 
-            // Lights
             const directionalLight = new THREE.DirectionalLight(isHomeCad ? 0xa5b4fc : 0xffffff, 1);
             directionalLight.position.set(1, 1, 1).normalize();
             scene.add(directionalLight);
@@ -60,72 +90,23 @@ function Cad({ cad, isHomeCad }) {
 
             const ambientLight = new THREE.AmbientLight(isHomeCad ? 0xa5b4fc : 0xffffff, 0.5);
             scene.add(ambientLight);
-
-            // Controls
+            
             const controls = new OrbitControls(camera, renderer.domElement);
             controls.enableDamping = true;
             controls.dampingFactor = 0.1;
             controls.target.set(model.panCoords[0], model.panCoords[1], model.panCoords[2]);
             controls.update();
 
-            const onCameraCoordChange = (name, value) => {
-                switch (name.toLowerCase()) {
-                    case 'x': camera.position.x = value; break;
-                    case 'y': camera.position.y = value; break;
-                    case 'z': camera.position.z = value; break;
-                }
-            };
-
-            const onPanCoordChange = (name, value) => {
-                switch (name.toLowerCase()) {
-                    case 'x':
-                        camera.position.x += value - controls.target.x;
-                        controls.target.x = value;
-                        break;
-
-                    case 'y':
-                        camera.position.y += value - controls.target.y;
-                        controls.target.y = value;
-                        break;
-
-                    case 'z':
-                        camera.position.z += value - controls.target.z;
-                        controls.target.z = value;
-                        break;
-
-                }
-            };
-
-            const handleCoordChange = (e) => {
-                const { coordType, coordName, coordValue } = e.detail;
-
-                if (coordType === 'camera') onCameraCoordChange(coordName, coordValue);
-                else if (coordType === 'pan') onPanCoordChange(coordName, coordValue);
-            };
-
-            // GLTF Loading
             const loader = new GLTFLoader();
             loader.load(model.cadPath, (gltf) => {
-                window.addEventListener('onCoordChange', handleCoordChange);
                 scene.add(gltf.scene);
             },
                 () => { },
                 (error) => console.error(error)
             );
-
-            let isInteracting = false
-            let resumeTimeout;
-
-            controls.addEventListener('change', function () {
-                isInteracting = true;
-                clearTimeout(resumeTimeout);
-
-                resumeTimeout = setTimeout(() => {
-                    isInteracting = false;
-                }, 1500);
-            });
-
-            // Animation
+            
+            controls.addEventListener('change', cadTouched);
+            
             function animate() {
                 requestAnimationFrame(animate);
                 controls.update();
@@ -137,13 +118,18 @@ function Cad({ cad, isHomeCad }) {
             }
             animate();
 
-            // Adapt to screen size
+            controls.addEventListener('change', cadTouched);
             window.addEventListener('resize', updateRendererSize);
+            window.addEventListener('TrackChanges', trackChanges);
+            window.addEventListener('SendPosition', sendPosition);
+
 
             return () => {
                 mount.removeChild(renderer.domElement);
+                controls.removeEventListener('change', cadTouched);
                 window.removeEventListener('resize', updateRendererSize);
-                window.removeEventListener('onCoordChange', handleCoordChange);
+                window.removeEventListener('TrackChanges', trackChanges);
+                window.removeEventListener('SendPosition', sendPosition);
             };
         }
     }, [model.cadPath, model.coords, model.fov, model.id]);

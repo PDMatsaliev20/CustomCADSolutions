@@ -1,3 +1,13 @@
 a:hover {
     text-decoration-line: none;
 }
+
+.hide-spinner::-webkit-outer-spin-button,
+.hide-spinner::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.hide-spinner {
+    -moz-appearance: textfield;
+}
