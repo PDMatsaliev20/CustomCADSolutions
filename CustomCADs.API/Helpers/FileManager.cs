@@ -44,7 +44,7 @@
         public static string RenameImage(this IWebHostEnvironment env, string oldName, string newName)
         {
             File.Move(env.GetImagePath(oldName), env.GetImagePath(newName));
-            return GetRelativeCadPath(newName);
+            return GetRelativeImagePath(newName);
         }
 
         public static string RenameCad(this IWebHostEnvironment env, string oldName, string newName)

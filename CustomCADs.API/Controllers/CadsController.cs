@@ -163,20 +163,20 @@ namespace CustomCADs.API.Controllers
                     return Forbid(ForbiddenAccess);
                 }
 
-                if (cad.Name != dto.Name)
-                {
-                    string imagePath = env.RenameImage(cad.Name + id + cad.ImageExtension, dto.Name + id + cad.ImageExtension);
-                    string cadPath = env.RenameCad(cad.Name + id + cad.CadExtension, dto.Name + id + cad.CadExtension);
-                    await cadService.SetPathsAsync(id, cadPath, imagePath);
-
-                    cad.Name = dto.Name;
-                }
                 if (dto.Image != null)
                 {
                     env.DeleteFile(cad.ImagePath);
-                    await env.UploadImageAsync(dto.Image, cad.Name + id + cad.ImageExtension);
+                    string imagePath = await env.UploadImageAsync(dto.Image, dto.Name + id + dto.Image.GetFileExtension());
+                    await cadService.SetPathsAsync(id, cad.CadPath, imagePath);
+                    cad.ImageExtension = dto.Image.GetFileExtension();
+
+                } else if (cad.Name != dto.Name)
+                {
+                    string imagePath = env.RenameImage(cad.Name + cad.Id + cad.ImageExtension, dto.Name + cad.Id + cad.ImageExtension);
+                    await cadService.SetPathsAsync(id, cad.CadPath, imagePath);
                 }
 
+                cad.Name = dto.Name;
                 cad.Description = dto.Description;
                 cad.CategoryId = dto.CategoryId;
                 cad.Price = dto.Price;
