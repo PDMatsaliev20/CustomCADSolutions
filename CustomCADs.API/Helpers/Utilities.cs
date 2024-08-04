@@ -26,15 +26,15 @@ namespace CustomCADs.API.Helpers
             {
                 return text.ToUpper();
             }
-            
+
             return text[..1].ToUpper() + text[1..].ToLower();
         }
 
         public static async Task SignInAsync(this AppUser user, SignInManager<AppUser> signInManager, AuthenticationProperties? authprop)
             => await signInManager.Context.SignInAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme,
-                await signInManager.CreateUserPrincipalAsync(user),
-                authprop);
+                await signInManager.CreateUserPrincipalAsync(user).ConfigureAwait(false),
+                authprop).ConfigureAwait(false);
 
         public static AuthenticationProperties GetAuthProps(bool rememberMe) => rememberMe ?
             new()

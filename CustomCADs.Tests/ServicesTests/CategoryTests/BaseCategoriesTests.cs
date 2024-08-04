@@ -41,8 +41,8 @@ namespace CustomCADs.Tests.ServicesTests.CategoryTests
         public async Task Setup()
         {
             Category[] categories = mapper.Map<Category[]>(this.categories);
-            await repository.AddRangeAsync(categories);
-            await repository.SaveChangesAsync();
+            await repository.AddRangeAsync(categories).ConfigureAwait(false);
+            await repository.SaveChangesAsync().ConfigureAwait(false);
         }
 
         [TearDown]
@@ -50,7 +50,7 @@ namespace CustomCADs.Tests.ServicesTests.CategoryTests
         {
             Category[] allCategories = await repository.All<Category>().ToArrayAsync();
             repository.DeleteRange(allCategories);
-            await repository.SaveChangesAsync();
+            await repository.SaveChangesAsync().ConfigureAwait(false);
         }
     }
 }

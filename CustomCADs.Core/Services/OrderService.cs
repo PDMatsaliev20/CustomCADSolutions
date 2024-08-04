@@ -69,7 +69,8 @@ namespace CustomCADs.Core.Services
             Order[] orders = await dbOrders
                 .Skip((pagination.Page - 1) * pagination.Limit)
                 .Take(pagination.Limit)
-                .ToArrayAsync();
+                .ToArrayAsync()
+                .ConfigureAwait(false);
 
             OrderModel[] models = mapper.Map<OrderModel[]>(orders);
             return new()
@@ -81,7 +82,7 @@ namespace CustomCADs.Core.Services
 
         public async Task<OrderModel> GetByIdAsync(int id)
         {
-            Order order = await repository.GetByIdAsync<Order>(id)
+            Order order = await repository.GetByIdAsync<Order>(id).ConfigureAwait(false)
                 ?? throw new KeyNotFoundException();
 
             OrderModel model = mapper.Map<OrderModel>(order);
@@ -89,7 +90,7 @@ namespace CustomCADs.Core.Services
         }
 
         public async Task<bool> ExistsByIdAsync(int id)
-            => await repository.GetByIdAsync<Order>(id) != null;
+            => await repository.GetByIdAsync<Order>(id).ConfigureAwait(false) != null;
 
         public IList<string> ValidateEntity(OrderModel model)
         {
@@ -106,15 +107,15 @@ namespace CustomCADs.Core.Services
         {
             Order order = mapper.Map<Order>(model);
 
-            EntityEntry<Order> entry = await repository.AddAsync<Order>(order);
-            await repository.SaveChangesAsync();
+            EntityEntry<Order> entry = await repository.AddAsync(order).ConfigureAwait(false);
+            await repository.SaveChangesAsync().ConfigureAwait(false);
 
             return entry.Entity.Id;
         }
 
         public async Task EditAsync(int id, OrderModel model)
         {
-            Order order = await repository.GetByIdAsync<Order>(id)
+            Order order = await repository.GetByIdAsync<Order>(id).ConfigureAwait(false)
                 ?? throw new KeyNotFoundException();
 
             order.Name = model.Name;
@@ -122,58 +123,58 @@ namespace CustomCADs.Core.Services
             order.ShouldBeDelivered = model.ShouldBeDelivered;
             order.CategoryId = model.CategoryId;
 
-            await repository.SaveChangesAsync();
+            await repository.SaveChangesAsync().ConfigureAwait(false);
         }
 
         public async Task BeginAsync(int id, string designerId)
         {
-            Order order = await repository.GetByIdAsync<Order>(id)
+            Order order = await repository.GetByIdAsync<Order>(id).ConfigureAwait(false)
                 ?? throw new KeyNotFoundException();
 
             order.Status = OrderStatus.Begun;
             order.DesignerId = designerId;
 
-            await repository.SaveChangesAsync();
+            await repository.SaveChangesAsync().ConfigureAwait(false);
         }
         
         public async Task ReportAsync(int id)
         {
-            Order order = await repository.GetByIdAsync<Order>(id)
+            Order order = await repository.GetByIdAsync<Order>(id).ConfigureAwait(false)
                 ?? throw new KeyNotFoundException();
 
             order.Status = OrderStatus.Reported;
-            await repository.SaveChangesAsync();
+            await repository.SaveChangesAsync().ConfigureAwait(false);
         }
         
         public async Task CancelAsync(int id)
         {
-            Order order = await repository.GetByIdAsync<Order>(id)
+            Order order = await repository.GetByIdAsync<Order>(id).ConfigureAwait(false)
                 ?? throw new KeyNotFoundException();
 
             order.DesignerId = null;
             order.Status = OrderStatus.Pending;
 
-            await repository.SaveChangesAsync();
+            await repository.SaveChangesAsync().ConfigureAwait(false);
         }
         
         public async Task CompleteAsync(int id, int cadId)
         {
-            Order order = await repository.GetByIdAsync<Order>(id)
+            Order order = await repository.GetByIdAsync<Order>(id).ConfigureAwait(false)
                 ?? throw new KeyNotFoundException();
 
             order.CadId = cadId;
             order.Status = OrderStatus.Finished;
 
-            await repository.SaveChangesAsync();
+            await repository.SaveChangesAsync().ConfigureAwait(false);
         }
 
         public async Task DeleteAsync(int id)
         {
-            Order order = await repository.GetByIdAsync<Order>(id)
+            Order order = await repository.GetByIdAsync<Order>(id).ConfigureAwait(false)
                 ?? throw new KeyNotFoundException();
 
             repository.Delete(order);
-            await repository.SaveChangesAsync();
+            await repository.SaveChangesAsync().ConfigureAwait(false);
         }
     }
 }

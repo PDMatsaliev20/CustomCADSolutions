@@ -10,8 +10,8 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
         {
             CadModel expectedCad = new() { Id = 10, Name = "NewCad", CreatorId = users[2].Id, CadExtension = ".gltf", ImageExtension = ".png" };
 
-            int id = await service.CreateAsync(expectedCad);
-            CadModel actualCad = await service.GetByIdAsync(id);
+            int id = await service.CreateAsync(expectedCad).ConfigureAwait(false);
+            CadModel actualCad = await service.GetByIdAsync(id).ConfigureAwait(false);
 
             Assert.Multiple(() =>
             {
@@ -31,7 +31,7 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
         {
             Assert.ThrowsAsync<ArgumentNullException>(async () =>
             {
-                await service.CreateAsync(null!);
+                await service.CreateAsync(null!).ConfigureAwait(false);
             }, string.Format(AddedNull, "Cad"));
         }
     }

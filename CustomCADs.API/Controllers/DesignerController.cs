@@ -40,7 +40,7 @@ namespace CustomCADs.API.Controllers
 
             try
             {
-                CadResult result = await cadService.GetAllAsync(query, search, pagination);
+                CadResult result = await cadService.GetAllAsync(query, search, pagination).ConfigureAwait(false);
                 return mapper.Map<CadQueryResultDTO>(result);
             }
             catch (Exception ex) when (
@@ -63,7 +63,7 @@ namespace CustomCADs.API.Controllers
         {
             try
             {
-                await cadService.EditStatusAsync(id, Enum.Parse<CadStatus>(status));
+                await cadService.EditStatusAsync(id, Enum.Parse<CadStatus>(status)).ConfigureAwait(false);
                 return NoContent();
             }
             catch (KeyNotFoundException ex)
@@ -102,7 +102,7 @@ namespace CustomCADs.API.Controllers
                 SearchModel search = new() { Category = category, Name = name, Owner = buyer, Sorting = sorting ?? string.Empty };
                 
                 OrderResult result = await orderService.GetAllAsync(query, search, pagination, 
-                    order => order.Status != OrderStatus.Finished || order.ShouldBeDelivered);
+                    order => order.Status != OrderStatus.Finished || order.ShouldBeDelivered).ConfigureAwait(false);
                 
                 return mapper.Map<OrderResultDTO>(result);
             }
@@ -126,7 +126,7 @@ namespace CustomCADs.API.Controllers
         {
             try
             {
-                await orderService.BeginAsync(id, User.GetId());
+                await orderService.BeginAsync(id, User.GetId()).ConfigureAwait(false);
                 return NoContent();
             }
             catch (KeyNotFoundException ex)
@@ -154,7 +154,7 @@ namespace CustomCADs.API.Controllers
         {
             try
             {
-                await orderService.ReportAsync(id);
+                await orderService.ReportAsync(id).ConfigureAwait(false);
                 return NoContent();
             }
             catch (KeyNotFoundException ex)
@@ -182,7 +182,7 @@ namespace CustomCADs.API.Controllers
         {
             try
             {
-                await orderService.CancelAsync(id);
+                await orderService.CancelAsync(id).ConfigureAwait(false);
                 return NoContent();
             }
             catch (KeyNotFoundException ex)
@@ -211,12 +211,12 @@ namespace CustomCADs.API.Controllers
         {
             try
             {
-                if (!await cadService.ExistsByIdAsync(cadId))
+                if (!await cadService.ExistsByIdAsync(cadId).ConfigureAwait(false))
                 {
                     throw new KeyNotFoundException();
                 }
 
-                await orderService.CompleteAsync(id, cadId);
+                await orderService.CompleteAsync(id, cadId).ConfigureAwait(false);
                 return NoContent();
             }
             catch (KeyNotFoundException ex) 

@@ -30,7 +30,7 @@ namespace CustomCADs.API.Controllers
         {
             try
             {
-                CadModel cad = await cadService.GetByIdAsync(id);
+                CadModel cad = await cadService.GetByIdAsync(id).ConfigureAwait(false);
 
                 var charge = stripe.ProcessPayment(stripeToken, User.Identity!.Name!, cad);
                 if (charge.Status != "succeeded")
@@ -48,8 +48,8 @@ namespace CustomCADs.API.Controllers
                     CadId = id,
                     BuyerId = User.GetId(),
                 };
-                int newOrderId = await orderService.CreateAsync(order);
-                OrderModel newOrder = await orderService.GetByIdAsync(newOrderId);
+                int newOrderId = await orderService.CreateAsync(order).ConfigureAwait(false);
+                OrderModel newOrder = await orderService.GetByIdAsync(newOrderId).ConfigureAwait(false);
 
                 return CreatedAtAction(createdAtReturnAction, "Orders", new { id = newOrderId }, newOrder);
             }

@@ -11,7 +11,7 @@ namespace CustomCADs.Tests.ServicesTests.CategoryTests
         {
             Assert.DoesNotThrowAsync(async () =>
             {
-                await service.GetByIdAsync(id);
+                await service.GetByIdAsync(id).ConfigureAwait(false);
             }, string.Format(ExistsButCannotFind, "Category"));
         }
         
@@ -20,7 +20,7 @@ namespace CustomCADs.Tests.ServicesTests.CategoryTests
         public async Task Test_ReturnsCorrectly(int id)
         {
             CategoryModel expectedCategory = categories.First(c => c.Id == id);
-            CategoryModel actualCategory = await service.GetByIdAsync(id);
+            CategoryModel actualCategory = await service.GetByIdAsync(id).ConfigureAwait(false);
 
             Assert.That(actualCategory.Name, Is.EqualTo(expectedCategory.Name), 
                 string.Format(ModelPropertyMismatch, "Name"));
@@ -33,7 +33,7 @@ namespace CustomCADs.Tests.ServicesTests.CategoryTests
         {
             Assert.ThrowsAsync<KeyNotFoundException>(async () =>
             {
-                await service.GetByIdAsync(id);
+                await service.GetByIdAsync(id).ConfigureAwait(false);
             }, string.Format(FindsButDoesNotExist, "Category"));
         }
     }

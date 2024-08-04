@@ -15,9 +15,9 @@ namespace CustomCADs.Tests.ServicesTests.OrderTests
                 CategoryId = 3,
                 BuyerId = users[1].Id,
             };
-            int id = await service.CreateAsync(expected);
+            int id = await service.CreateAsync(expected).ConfigureAwait(false);
 
-            OrderModel actual = await service.GetByIdAsync(id);
+            OrderModel actual = await service.GetByIdAsync(id).ConfigureAwait(false);
 
             Assert.Multiple(() =>
             {
@@ -40,7 +40,7 @@ namespace CustomCADs.Tests.ServicesTests.OrderTests
         {
             Assert.ThrowsAsync<ArgumentNullException>(async () =>
             {
-                await service.CreateAsync(null!);
+                await service.CreateAsync(null!).ConfigureAwait(false);
             }, string.Format(AddedNull, "Category"));
         }
     }

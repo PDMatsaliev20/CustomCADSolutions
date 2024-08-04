@@ -10,15 +10,15 @@ namespace CustomCADs.Tests.ServicesTests.OrderTests
         [TestCase(4)]
         public async Task Test_EditsDesiredProperties(int id)
         {
-            OrderModel expectedOrder = await service.GetByIdAsync(id);
+            OrderModel expectedOrder = await service.GetByIdAsync(id).ConfigureAwait(false);
             expectedOrder.Name = "EditedOrder";
             expectedOrder.Description = "Client's Edited Order";
             expectedOrder.CategoryId = 2;
             expectedOrder.Status = OrderStatus.Finished;
             expectedOrder.ShouldBeDelivered = false;
 
-            await service.EditAsync(id, expectedOrder);
-            OrderModel actualOrder = await service.GetByIdAsync(id);
+            await service.EditAsync(id, expectedOrder).ConfigureAwait(false);
+            OrderModel actualOrder = await service.GetByIdAsync(id).ConfigureAwait(false);
 
             Assert.Multiple(() =>
             {
@@ -44,13 +44,13 @@ namespace CustomCADs.Tests.ServicesTests.OrderTests
         [TestCase(4)]
         public async Task Test_DoesNotEditUndesiredProperties(int id)
         {
-            OrderModel expectedOrder = await service.GetByIdAsync(id);
+            OrderModel expectedOrder = await service.GetByIdAsync(id).ConfigureAwait(false);
             expectedOrder.Id = 1000;
             expectedOrder.OrderDate = DateTime.Now.AddYears(-500);
             expectedOrder.BuyerId = users[2].Id;
 
-            await service.EditAsync(id, expectedOrder);
-            OrderModel actualOrder = await service.GetByIdAsync(id);
+            await service.EditAsync(id, expectedOrder).ConfigureAwait(false);
+            OrderModel actualOrder = await service.GetByIdAsync(id).ConfigureAwait(false);
 
             Assert.Multiple(() =>
             {
@@ -72,7 +72,7 @@ namespace CustomCADs.Tests.ServicesTests.OrderTests
         {
             Assert.ThrowsAsync<KeyNotFoundException>(async () =>
             {
-                await service.EditAsync(id, new());
+                await service.EditAsync(id, new()).ConfigureAwait(false);
             }, string.Format(EditsNonExistent, "Order"));
         }
     }

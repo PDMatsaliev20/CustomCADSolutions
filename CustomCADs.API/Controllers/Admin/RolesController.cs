@@ -33,7 +33,7 @@ namespace CustomCADs.API.Controllers.Admin
         {
             try
             {
-                AppRole[] roles = await roleManager.Roles.ToArrayAsync();
+                AppRole[] roles = await roleManager.Roles.ToArrayAsync().ConfigureAwait(false);
                 return mapper.Map<RoleDTO[]>(roles);
             }
             catch (Exception ex) when (
@@ -59,7 +59,7 @@ namespace CustomCADs.API.Controllers.Admin
         {
             try
             {
-                AppRole? role = await roleManager.FindByNameAsync(name);
+                AppRole? role = await roleManager.FindByNameAsync(name).ConfigureAwait(false);
 
                 return role == null ? NotFound("Role not found.") : mapper.Map<RoleDTO>(role);
             }
@@ -91,7 +91,7 @@ namespace CustomCADs.API.Controllers.Admin
             try
             {
                 AppRole role = new(name, description);
-                IdentityResult result = await roleManager.CreateAsync(role);
+                IdentityResult result = await roleManager.CreateAsync(role).ConfigureAwait(false);
                 if (!result.Succeeded)
                 {
                     return StatusCode(Status500InternalServerError, result.Errors);
@@ -133,7 +133,7 @@ namespace CustomCADs.API.Controllers.Admin
 
             try
             {
-                AppRole? role = await roleManager.FindByNameAsync(name);
+                AppRole? role = await roleManager.FindByNameAsync(name).ConfigureAwait(false);
                 if (role == null)
                 {
                     return NotFound("Role not found.");
@@ -146,7 +146,7 @@ namespace CustomCADs.API.Controllers.Admin
                 {
                     return BadRequest(error);
                 }
-                await roleManager.UpdateAsync(role);
+                await roleManager.UpdateAsync(role).ConfigureAwait(false);
 
                 return NoContent();
             }
@@ -164,13 +164,13 @@ namespace CustomCADs.API.Controllers.Admin
         {
             try
             {
-                AppRole? role = await roleManager.FindByNameAsync(name);
+                AppRole? role = await roleManager.FindByNameAsync(name).ConfigureAwait(false);
                 if (role == null)
                 {
                     return NotFound("Role not found.");
                 }
 
-                await roleManager.DeleteAsync(role);
+                await roleManager.DeleteAsync(role).ConfigureAwait(false);
                 return NoContent();
             }
             catch (Exception ex)

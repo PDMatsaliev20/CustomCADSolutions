@@ -59,10 +59,10 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
 
             this.repository = new Repository(new(options));
 
-            await repository.AddRangeAsync(users);
+            await repository.AddRangeAsync(users).ConfigureAwait(false);
             SeedCreators();
 
-            await repository.AddRangeAsync(categories);
+            await repository.AddRangeAsync(categories).ConfigureAwait(false);
             SeedCategories();
             
             await repository.SaveChangesAsync();
@@ -74,28 +74,28 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
         public async Task Setup()
         {
             Cad[] allCads = mapper.Map<Cad[]>(cads);
-            await repository.AddRangeAsync<Cad>(allCads);
-            await repository.SaveChangesAsync();
+            await repository.AddRangeAsync<Cad>(allCads).ConfigureAwait(false);
+            await repository.SaveChangesAsync().ConfigureAwait(false);
         }
 
         [TearDown]
         public async Task Teardown()
         {
-            Cad[] cads = await repository.All<Cad>().ToArrayAsync();
+            Cad[] cads = await repository.All<Cad>().ToArrayAsync().ConfigureAwait(false);
             repository.DeleteRange(cads);
-            await repository.SaveChangesAsync();
+            await repository.SaveChangesAsync().ConfigureAwait(false);
         }
 
         [OneTimeTearDown]
         public async Task OneTimeTearDown()
         {
-            AppUser[] users = await repository.All<AppUser>().ToArrayAsync();
+            AppUser[] users = await repository.All<AppUser>().ToArrayAsync().ConfigureAwait(false);
             repository.DeleteRange(users);
             
-            Category[] categories = await repository.All<Category>().ToArrayAsync();
+            Category[] categories = await repository.All<Category>().ToArrayAsync().ConfigureAwait(false);
             repository.DeleteRange(categories);
             
-            await repository.SaveChangesAsync();
+            await repository.SaveChangesAsync().ConfigureAwait(false);
         }
 
         private void SeedCreators()

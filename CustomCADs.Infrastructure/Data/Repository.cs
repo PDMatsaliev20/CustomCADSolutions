@@ -18,7 +18,7 @@ namespace CustomCADs.Infrastructure.Data
 
         public async Task<T?> GetByIdAsync<T>(params object[] ids) where T : class
         {
-            return await context.Set<T>().FindAsync(ids);
+            return await context.Set<T>().FindAsync(ids).ConfigureAwait(false);
         }
 
         public int Count<T>(Func<T, bool> predicate) where T : class
@@ -28,12 +28,12 @@ namespace CustomCADs.Infrastructure.Data
 
         public async Task<EntityEntry<T>> AddAsync<T>(T entity) where T : class
         {
-            return await context.Set<T>().AddAsync(entity);
+            return await context.Set<T>().AddAsync(entity).ConfigureAwait(false);
         }
 
         public async Task AddRangeAsync<T>(params T[] entity) where T : class
         {
-            await context.Set<T>().AddRangeAsync(entity);
+            await context.Set<T>().AddRangeAsync(entity).ConfigureAwait(false);
         }
 
         public void Delete<T>(T entity) where T : class
@@ -46,6 +46,7 @@ namespace CustomCADs.Infrastructure.Data
             context.Set<T>().RemoveRange(entities);
         }
 
-        public async Task<int> SaveChangesAsync() => await context.SaveChangesAsync();
+        public async Task<int> SaveChangesAsync() 
+            => await context.SaveChangesAsync().ConfigureAwait(false);
     }
 }

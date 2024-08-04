@@ -12,7 +12,7 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
         {
             Assert.ThrowsAsync<KeyNotFoundException>(async () =>
             {
-                await service.GetByIdAsync(id);
+                await service.GetByIdAsync(id).ConfigureAwait(false);
             }, string.Format(ExistsButCannotFind, "Cads"));
         }
         
@@ -22,7 +22,7 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
         {
             Assert.DoesNotThrowAsync(async () =>
             {
-                await service.GetByIdAsync(id);
+                await service.GetByIdAsync(id).ConfigureAwait(false);
             }, string.Format(FindsButDoesNotExist, "Cad"));
         }
         
@@ -31,7 +31,7 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
         public async Task Test_ReturnsCorrectly(int id)
         {
             CadModel expectedCad = this.cads.First(cad => cad.Id == id);
-            CadModel actualCad = await service.GetByIdAsync(id);
+            CadModel actualCad = await service.GetByIdAsync(id).ConfigureAwait(false);
 
             Assert.Multiple(() =>
             {

@@ -70,19 +70,20 @@ namespace CustomCADs.Core.Services
             Cad[] cads = await allCads
                 .Skip((pagination.Page - 1) * pagination.Limit)
                 .Take(pagination.Limit)
-                .ToArrayAsync();
+                .ToArrayAsync()
+                .ConfigureAwait(false);
 
             CadModel[] models = mapper.Map<CadModel[]>(cads);
             return new()
             {
-                Count = (await allCads.ToArrayAsync()).Length,
+                Count = allCads.Count(),
                 Cads = models,
             }; 
         }
 
         public async Task<CadModel> GetByIdAsync(int id)
         {
-            Cad cad = await repository.GetByIdAsync<Cad>(id)
+            Cad cad = await repository.GetByIdAsync<Cad>(id).ConfigureAwait(false)
                 ?? throw new KeyNotFoundException($"Model with id: {id} doesn't exist");
 
             CadModel model = mapper.Map<CadModel>(cad);
@@ -90,7 +91,7 @@ namespace CustomCADs.Core.Services
         }
 
         public async Task<bool> ExistsByIdAsync(int id)
-            => await repository.GetByIdAsync<Cad>(id) != null;
+            => await repository.GetByIdAsync<Cad>(id).ConfigureAwait(false) != null;
 
         public int Count(Func<CadModel, bool> predicate)
         {
@@ -99,12 +100,12 @@ namespace CustomCADs.Core.Services
 
         public async Task SetPathsAsync(int id, string cadPath, string imagePath)
         {
-            Cad cad = await repository.GetByIdAsync<Cad>(id)
+            Cad cad = await repository.GetByIdAsync<Cad>(id).ConfigureAwait(false)
                 ?? throw new KeyNotFoundException("No such Cad exists.");
 
             cad.CadPath = cadPath;
             cad.ImagePath = imagePath;
-            await repository.SaveChangesAsync();
+            await repository.SaveChangesAsync().ConfigureAwait(false);
         }
 
         public IList<string> ValidateEntity(CadModel model)
@@ -121,15 +122,15 @@ namespace CustomCADs.Core.Services
         public async Task<int> CreateAsync(CadModel model)
         {
             Cad cad = mapper.Map<Cad>(model);
-            EntityEntry<Cad> entry = await repository.AddAsync<Cad>(cad);
-            await repository.SaveChangesAsync();
+            EntityEntry<Cad> entry = await repository.AddAsync(cad).ConfigureAwait(false);
+            await repository.SaveChangesAsync().ConfigureAwait(false);
 
             return entry.Entity.Id;
         }
 
         public async Task EditAsync(int id, CadModel model)
         {
-            Cad cad = await repository.GetByIdAsync<Cad>(id)
+            Cad cad = await repository.GetByIdAsync<Cad>(id).ConfigureAwait(false)
                 ?? throw new KeyNotFoundException("Model doesn't exist!");
 
             cad.Name = model.Name;
@@ -144,16 +145,16 @@ namespace CustomCADs.Core.Services
             cad.PanY = model.PanCoords[1];
             cad.PanZ = model.PanCoords[2];
 
-            await repository.SaveChangesAsync();
+            await repository.SaveChangesAsync().ConfigureAwait(false);
         }
         
         public async Task EditStatusAsync(int id, CadStatus status)
         {
-            Cad cad = await repository.GetByIdAsync<Cad>(id)
+            Cad cad = await repository.GetByIdAsync<Cad>(id).ConfigureAwait(false)
                 ?? throw new KeyNotFoundException("Model doesn't exist!");
 
             cad.Status = status;
-            await repository.SaveChangesAsync();
+            await repository.SaveChangesAsync().ConfigureAwait(false);
         }
 
         public async Task DeleteAsync(int id)
@@ -170,11 +171,11 @@ namespace CustomCADs.Core.Services
                 order.Cad = null;
             }
 
-            Cad cad = await repository.GetByIdAsync<Cad>(id)
+            Cad cad = await repository.GetByIdAsync<Cad>(id).ConfigureAwait(false)
                 ?? throw new KeyNotFoundException();
 
             repository.Delete<Cad>(cad);
-            await repository.SaveChangesAsync();
+            await repository.SaveChangesAsync().ConfigureAwait(false);
         }
     }
 }

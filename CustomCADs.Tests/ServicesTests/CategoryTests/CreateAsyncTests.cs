@@ -10,8 +10,8 @@ namespace CustomCADs.Tests.ServicesTests.CategoryTests
         {
             CategoryModel expectedCategory = new() { Name = "NewCategory" };
 
-            int id = await service.CreateAsync(expectedCategory);
-            CategoryModel actualCategory = await service.GetByIdAsync(id);
+            int id = await service.CreateAsync(expectedCategory).ConfigureAwait(false);
+            CategoryModel actualCategory = await service.GetByIdAsync(id).ConfigureAwait(false);
 
             Assert.That(expectedCategory.Name, Is.EqualTo(actualCategory.Name),
                 string.Format(ModelPropertyMismatch, "Name"));
@@ -22,7 +22,7 @@ namespace CustomCADs.Tests.ServicesTests.CategoryTests
         {
             Assert.ThrowsAsync<ArgumentNullException>(async () =>
             {
-                await service.CreateAsync(null!);
+                await service.CreateAsync(null!).ConfigureAwait(false);
             }, string.Format(AddedNull, "Category"));
         }
     }

@@ -8,11 +8,11 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
         [TestCase(4)]
         public async Task Test_DeletesWhenCadExists(int id)
         {
-            await service.DeleteAsync(id);
+            await service.DeleteAsync(id).ConfigureAwait(false);
 
             Assert.ThrowsAsync<KeyNotFoundException>(async () =>
             {
-                await service.GetByIdAsync(id);
+                await service.GetByIdAsync(id).ConfigureAwait(false);
             }, string.Format(DidNotDelete, "Cad"));
         }
 
@@ -23,7 +23,7 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
         {
             Assert.ThrowsAsync<KeyNotFoundException>(async () =>
             {
-                await service.DeleteAsync(id);
+                await service.DeleteAsync(id).ConfigureAwait(false);
             }, string.Format(ShouldNotHaveDeleted, "Cad"));
         }
     }

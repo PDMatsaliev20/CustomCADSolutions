@@ -11,7 +11,7 @@ namespace CustomCADs.Tests.ServicesTests.OrderTests
         {
             Assert.DoesNotThrowAsync(async () =>
             {
-                await service.GetByIdAsync(id);
+                await service.GetByIdAsync(id).ConfigureAwait(false);
             }, string.Format(ExistsButCannotFind, "Order"));
         }
 
@@ -20,7 +20,7 @@ namespace CustomCADs.Tests.ServicesTests.OrderTests
         public async Task Test_ReturnsCorrectly(int id)
         {
             OrderModel expectedOrder = orders.First(o => o.Id == id);
-            OrderModel actualOrder = await service.GetByIdAsync(id);
+            OrderModel actualOrder = await service.GetByIdAsync(id).ConfigureAwait(false);
 
             Assert.Multiple(() =>
             {
@@ -61,7 +61,7 @@ namespace CustomCADs.Tests.ServicesTests.OrderTests
         {
             Assert.ThrowsAsync<KeyNotFoundException>(async () =>
             {
-                await service.GetByIdAsync(id);
+                await service.GetByIdAsync(id).ConfigureAwait(false);
             }, string.Format(FindsButDoesNotExist, "Order"));
         }
     }

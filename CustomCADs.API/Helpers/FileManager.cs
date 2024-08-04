@@ -22,7 +22,7 @@
             if (image != null && image.Length != 0)
             {
                 using FileStream stream = new(env.GetImagePath(fileName), FileMode.Create);
-                await image.CopyToAsync(stream);
+                await image.CopyToAsync(stream).ConfigureAwait(false);
 
                 return GetRelativeImagePath(fileName);
             }
@@ -34,7 +34,7 @@
             if (cad != null && cad.Length != 0)
             {
                 using FileStream stream = new(env.GetCadPath(fileName), FileMode.Create);
-                await cad.CopyToAsync(stream);
+                await cad.CopyToAsync(stream).ConfigureAwait(false);
 
                 return GetRelativeCadPath(fileName);
             }

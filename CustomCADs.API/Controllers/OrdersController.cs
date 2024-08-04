@@ -50,7 +50,7 @@ namespace CustomCADs.API.Controllers
                 OrderQuery query = new() { Buyer = User.Identity!.Name, Status = enumStatus };
                 SearchModel search = new() { Category = category, Name = name, Sorting = sorting ?? string.Empty };
                 
-                OrderResult result = await orderService.GetAllAsync(query, search, pagination);
+                OrderResult result = await orderService.GetAllAsync(query, search, pagination).ConfigureAwait(false);
                 return mapper.Map<OrderResultDTO>(result);
             }
             catch (Exception ex) when (
@@ -76,7 +76,7 @@ namespace CustomCADs.API.Controllers
         {
             try
             {
-                OrderModel order = await orderService.GetByIdAsync(id);
+                OrderModel order = await orderService.GetByIdAsync(id).ConfigureAwait(false);
                 return mapper.Map<OrderExportDTO>(order);
             }
             catch (KeyNotFoundException ex)
@@ -109,8 +109,8 @@ namespace CustomCADs.API.Controllers
                 model.OrderDate = DateTime.Now;
                 model.BuyerId = User.GetId();
 
-                int id = await orderService.CreateAsync(model);
-                model = await orderService.GetByIdAsync(id);
+                int id = await orderService.CreateAsync(model).ConfigureAwait(false);
+                model = await orderService.GetByIdAsync(id).ConfigureAwait(false);
 
                 OrderExportDTO export = mapper.Map<OrderExportDTO>(model);
                 return CreatedAtAction(createdAtReturnAction, new { id }, export);
@@ -146,7 +146,7 @@ namespace CustomCADs.API.Controllers
         {
             try
             {
-                OrderModel order = await orderService.GetByIdAsync(id);
+                OrderModel order = await orderService.GetByIdAsync(id).ConfigureAwait(false);
 
                 if (User.GetId() != order.BuyerId)
                 {
@@ -156,7 +156,7 @@ namespace CustomCADs.API.Controllers
                 order.Name = dto.Name;
                 order.Description = dto.Description;
                 order.CategoryId = dto.CategoryId;
-                await orderService.EditAsync(id, order);
+                await orderService.EditAsync(id, order).ConfigureAwait(false);
 
                 return NoContent();
             }
@@ -195,7 +195,7 @@ namespace CustomCADs.API.Controllers
 
             try
             {
-                OrderModel model = await orderService.GetByIdAsync(id);
+                OrderModel model = await orderService.GetByIdAsync(id).ConfigureAwait(false);
 
                 string? error = null;
                 patchOrder.ApplyTo(model, p => error = p.ErrorMessage);
@@ -210,7 +210,7 @@ namespace CustomCADs.API.Controllers
                     return BadRequest(string.Join("; ", errors));
                 }
 
-                await orderService.EditAsync(id, model);
+                await orderService.EditAsync(id, model).ConfigureAwait(false);
                 return NoContent();
             }
             catch (KeyNotFoundException ex)
@@ -239,7 +239,7 @@ namespace CustomCADs.API.Controllers
         {
             try
             {
-                await orderService.DeleteAsync(id);
+                await orderService.DeleteAsync(id).ConfigureAwait(false);
                 return NoContent();
             }
             catch (KeyNotFoundException ex)
@@ -267,7 +267,7 @@ namespace CustomCADs.API.Controllers
         {
             try
             {
-                OrderModel order = await orderService.GetByIdAsync(id);
+                OrderModel order = await orderService.GetByIdAsync(id).ConfigureAwait(false);
                 if (order.CadId == null)
                 {
                     return NotFound(OrderHasNoCad);

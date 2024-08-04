@@ -44,7 +44,7 @@ namespace CustomCADs.Tests.ServicesTests.OrderTests
             this.repository = new Repository(new(options));
             SeedBuyers();
             
-            await repository.AddRangeAsync(users);
+            await repository.AddRangeAsync(users).ConfigureAwait(false);
             await repository.AddRangeAsync(new Category[5]
             {
                 new() { Id = 1, Name = "Category1", },
@@ -52,8 +52,8 @@ namespace CustomCADs.Tests.ServicesTests.OrderTests
                 new() { Id = 3, Name = "Category3", },
                 new() { Id = 4, Name = "Category4", },
                 new() { Id = 5, Name = "Category5", },
-            });
-            await repository.SaveChangesAsync();
+            }).ConfigureAwait(false);
+            await repository.SaveChangesAsync().ConfigureAwait(false);
 
             this.service = new OrderService(repository);
         }
@@ -62,8 +62,8 @@ namespace CustomCADs.Tests.ServicesTests.OrderTests
         public async Task Setup()
         {
             Order[] entities = mapper.Map<Order[]>(orders);
-            await repository.AddRangeAsync(entities);
-            await repository.SaveChangesAsync();
+            await repository.AddRangeAsync(entities).ConfigureAwait(false);
+            await repository.SaveChangesAsync().ConfigureAwait(false);
         }
 
         [TearDown]
@@ -71,19 +71,19 @@ namespace CustomCADs.Tests.ServicesTests.OrderTests
         {
             Order[] allOrders = await repository.All<Order>().ToArrayAsync();
             repository.DeleteRange(allOrders);
-            await repository.SaveChangesAsync();
+            await repository.SaveChangesAsync().ConfigureAwait(false);
         }
 
         [OneTimeTearDown]
         public async Task OneTimeTeardown()
         {
-            Category[] categories = await repository.All<Category>().ToArrayAsync();
+            Category[] categories = await repository.All<Category>().ToArrayAsync().ConfigureAwait(false);
             repository.DeleteRange(categories);
 
-            AppUser[] users = await repository.All<AppUser>().ToArrayAsync();
+            AppUser[] users = await repository.All<AppUser>().ToArrayAsync().ConfigureAwait(false);
             repository.DeleteRange(users);
 
-            await repository.SaveChangesAsync();
+            await repository.SaveChangesAsync().ConfigureAwait(false);
         }
 
         private void SeedBuyers()

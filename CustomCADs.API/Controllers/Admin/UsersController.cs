@@ -35,13 +35,13 @@ namespace CustomCADs.API.Controllers.Admin
         {
             try
             {
-                AppUser[] users = await userManager.Users.ToArrayAsync();
+                AppUser[] users = await userManager.Users.ToArrayAsync().ConfigureAwait(false);
 
                 ICollection<UserDTO> dtos = [];
                 foreach (AppUser user in users)
                 {
                     UserDTO dto = mapper.Map<UserDTO>(user);
-                    IList<string> roles = await userManager.GetRolesAsync(user);
+                    IList<string> roles = await userManager.GetRolesAsync(user).ConfigureAwait(false);
                     dto.Role = roles.Single();
                     dtos.Add(dto);
                 }
@@ -77,7 +77,7 @@ namespace CustomCADs.API.Controllers.Admin
         [ProducesResponseType(Status502BadGateway)]
         public async Task<ActionResult<UserDTO>> GetUserAsync(string name)
         {
-            AppUser? user = await userManager.FindByNameAsync(name);
+            AppUser? user = await userManager.FindByNameAsync(name).ConfigureAwait(false);
             if (user == null)
             {
                 return NotFound("User not found.");
@@ -87,7 +87,7 @@ namespace CustomCADs.API.Controllers.Admin
             {
                 UserDTO dto = mapper.Map<UserDTO>(user);
 
-                IList<string> roles = await userManager.GetRolesAsync(user);
+                IList<string> roles = await userManager.GetRolesAsync(user).ConfigureAwait(false);
                 dto.Role = roles.Single();
 
                 return dto;
@@ -133,13 +133,13 @@ namespace CustomCADs.API.Controllers.Admin
             try
             {
                 AppUser user = new(username) { Email = $"{username}@gmail.com" };
-                IdentityResult result = await userManager.CreateAsync(user);
+                IdentityResult result = await userManager.CreateAsync(user).ConfigureAwait(false);
                 if (!result.Succeeded)
                 {
                     return StatusCode(Status500InternalServerError, result.Errors);
                 }
 
-                await userManager.AddToRoleAsync(user, role);
+                await userManager.AddToRoleAsync(user, role).ConfigureAwait(false);
                 UserDTO dto = mapper.Map<UserDTO>(user);
 
                 return CreatedAtAction(createdAtReturnAction, new { name = username }, dto);
@@ -177,7 +177,7 @@ namespace CustomCADs.API.Controllers.Admin
             
             try
             {
-                AppUser? user = await userManager.FindByNameAsync(username);
+                AppUser? user = await userManager.FindByNameAsync(username).ConfigureAwait(false);
                 if (user == null)
                 {
                     return NotFound("User not found.");
@@ -185,14 +185,14 @@ namespace CustomCADs.API.Controllers.Admin
 
                 if (!string.IsNullOrWhiteSpace(newRole))
                 {
-                    if (!await roleManager.RoleExistsAsync(newRole))
+                    if (!await roleManager.RoleExistsAsync(newRole).ConfigureAwait(false))
                     {
                         return BadRequest($"You must choose a role from [{string.Join(", ", roleManager.Roles)}]");
                     }
-                    IList<string> roles = await userManager.GetRolesAsync(user);
+                    IList<string> roles = await userManager.GetRolesAsync(user).ConfigureAwait(false);
 
-                    await userManager.RemoveFromRoleAsync(user, roles.Single());
-                    await userManager.AddToRoleAsync(user, newRole);
+                    await userManager.RemoveFromRoleAsync(user, roles.Single()).ConfigureAwait(false);
+                    await userManager.AddToRoleAsync(user, newRole).ConfigureAwait(false);
                 }
 
                 string? error = null;
@@ -202,7 +202,7 @@ namespace CustomCADs.API.Controllers.Admin
                 {
                     return BadRequest(error);
                 }
-                await userManager.UpdateAsync(user);
+                await userManager.UpdateAsync(user).ConfigureAwait(false);
 
                 return NoContent();
             }
@@ -228,13 +228,13 @@ namespace CustomCADs.API.Controllers.Admin
         {
             try
             {
-                AppUser? user = await userManager.FindByNameAsync(username);
+                AppUser? user = await userManager.FindByNameAsync(username).ConfigureAwait(false);
                 if (user == null) 
                 {
                     return NotFound("User not found.");
                 }
 
-                await userManager.DeleteAsync(user);
+                await userManager.DeleteAsync(user).ConfigureAwait(false);
                 return NoContent();
             }
             catch (Exception ex)

@@ -10,7 +10,7 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
         [TestCase(4)]
         public async Task Test_EditsDesiredProperties(int id)
         {
-            CadModel expectedCad = await service.GetByIdAsync(id);
+            CadModel expectedCad = await service.GetByIdAsync(id).ConfigureAwait(false);
             expectedCad.Name = "EditedCad";
             expectedCad.Status = CadStatus.Banned;
             expectedCad.Price++;
@@ -18,8 +18,8 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
             expectedCad.Coords = [100, 100, 100];
             expectedCad.PanCoords = [200, 200, 200];
 
-            await service.EditAsync(id, expectedCad);
-            CadModel actualCad = await service.GetByIdAsync(id);
+            await service.EditAsync(id, expectedCad).ConfigureAwait(false);
+            CadModel actualCad = await service.GetByIdAsync(id).ConfigureAwait(false);
 
             Assert.Multiple(() =>
             {
@@ -44,15 +44,15 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
         [TestCase(4)]
         public async Task Test_DoesNotEditUndesiredProperties(int id)
         {
-            CadModel expectedCad = await service.GetByIdAsync(id);
+            CadModel expectedCad = await service.GetByIdAsync(id).ConfigureAwait(false);
             expectedCad.Id = 100;
             expectedCad.CadExtension = "abc";
             expectedCad.ImageExtension = "xyz";
             expectedCad.CreationDate = DateTime.Now.AddDays(1);
             expectedCad.CreatorId = users[2].Id;
 
-            await service.EditAsync(id, expectedCad);
-            CadModel actualCad = await service.GetByIdAsync(id);
+            await service.EditAsync(id, expectedCad).ConfigureAwait(false);
+            CadModel actualCad = await service.GetByIdAsync(id).ConfigureAwait(false);
 
             Assert.Multiple(() =>
             {
@@ -80,7 +80,7 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
         {
             Assert.ThrowsAsync<KeyNotFoundException>(async () =>
             {
-                await service.EditAsync(id, new());
+                await service.EditAsync(id, new()).ConfigureAwait(false);
             }, string.Format(EditsNonExistent, "Cad"));
         }
     }

@@ -8,7 +8,7 @@ namespace CustomCADs.Tests.ServicesTests.OrderTests
         [TestCase(4)]
         public async Task Test_ReturnsTrueWhenOrderExists(int id)
         {
-            bool orderExists = await service.ExistsByIdAsync(id);
+            bool orderExists = await service.ExistsByIdAsync(id).ConfigureAwait(false);
             Assert.That(orderExists, Is.True, 
                 string.Format(DidNotFind, "Order"));
         }
@@ -18,7 +18,7 @@ namespace CustomCADs.Tests.ServicesTests.OrderTests
         [TestCase(100)]
         public async Task Test_ReturnsFalseWhenOrderDoesNotExists(int id)
         {
-            bool exists = await service.ExistsByIdAsync(id);
+            bool exists = await service.ExistsByIdAsync(id).ConfigureAwait(false);
             Assert.That(exists, Is.False, 
                 string.Format(ShouldNotHaveFound, "Order"));
         }

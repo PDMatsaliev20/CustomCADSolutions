@@ -29,7 +29,7 @@ app.UseCors();
 
 app.UseAuthentication();
 app.UseAuthorization();
-await app.Services.UseRolesAsync(roles);
+await app.Services.UseRolesAsync(roles).ConfigureAwait(false);
 
 Dictionary<string, string> users = new()
 {
@@ -38,7 +38,7 @@ Dictionary<string, string> users = new()
     [Contributor] = "Contributor",
     [Client] = "Client",
 };
-await app.Services.UseAppUsers(app.Configuration, users);
+await app.Services.UseAppUsers(app.Configuration, users).ConfigureAwait(false);
 
 app.MapControllers();
-await app.RunAsync();
+await app.RunAsync().ConfigureAwait(false);

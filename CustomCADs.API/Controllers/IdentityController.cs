@@ -36,7 +36,7 @@ namespace CustomCADs.API.Controllers
                     UserName = register.Username,
                     Email = register.Email
                 };
-                IdentityResult result = await userManager.CreateAsync(user, register.Password);
+                IdentityResult result = await userManager.CreateAsync(user, register.Password).ConfigureAwait(false);
 
                 if (!result.Succeeded)
                 {
@@ -52,8 +52,8 @@ namespace CustomCADs.API.Controllers
                     return BadRequest(ForbiddenRoleRegister);
                 }
 
-                await userManager.AddToRoleAsync(user, role);
-                await user.SignInAsync(signInManager, GetAuthProps(false));
+                await userManager.AddToRoleAsync(user, role).ConfigureAwait(false);
+                await user.SignInAsync(signInManager, GetAuthProps(false)).ConfigureAwait(false);
 
                 Response.Cookies.Append("username", user.UserName);
                 return "Welcome!";
@@ -82,13 +82,13 @@ namespace CustomCADs.API.Controllers
         {
             try
             {
-                AppUser? user = await userManager.FindByNameAsync(model.Username);
+                AppUser? user = await userManager.FindByNameAsync(model.Username).ConfigureAwait(false);
 
-                if (user == null || !await userManager.CheckPasswordAsync(user, model.Password))
+                if (user == null || !await userManager.CheckPasswordAsync(user, model.Password).ConfigureAwait(false))
                 {
                     return Unauthorized(InvalidLogin);
                 }
-                await user.SignInAsync(signInManager, GetAuthProps(model.RememberMe));
+                await user.SignInAsync(signInManager, GetAuthProps(model.RememberMe)).ConfigureAwait(false);
 
                 Response.Cookies.Append("username", user.UserName!);
                 return "Welcome back!";
@@ -106,7 +106,7 @@ namespace CustomCADs.API.Controllers
         {
             try
             {
-                await signInManager.Context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                await signInManager.Context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme).ConfigureAwait(false);
                 Response.Cookies.Delete("username");
                 return "Bye-bye.";
             }
@@ -128,7 +128,7 @@ namespace CustomCADs.API.Controllers
         {
             try
             {
-                AppUser? user = await userManager.GetUserAsync(User);
+                AppUser? user = await userManager.GetUserAsync(User).ConfigureAwait(false);
                 if (user == null)
                 {
                     return Unauthorized(UnauthenticatedUser);

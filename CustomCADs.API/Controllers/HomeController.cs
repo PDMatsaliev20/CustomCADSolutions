@@ -49,7 +49,7 @@ namespace CustomCADs.API.Controllers
             
             try
             {
-                CadResult result = await cadService.GetAllAsync(query, search, pagination);
+                CadResult result = await cadService.GetAllAsync(query, search, pagination).ConfigureAwait(false);
                 return mapper.Map<CadQueryResultDTO>(result);
             }
             catch (Exception ex) when (
@@ -74,7 +74,7 @@ namespace CustomCADs.API.Controllers
         {
             try
             {
-                CadModel model = await cadService.GetByIdAsync(id);
+                CadModel model = await cadService.GetByIdAsync(id).ConfigureAwait(false);
                 return mapper.Map<CadGetDTO>(model);
             }
             catch (KeyNotFoundException ex)
@@ -103,7 +103,7 @@ namespace CustomCADs.API.Controllers
         {
             try
             {
-                IEnumerable<CategoryModel> categories = await categoryService.GetAllAsync();
+                IEnumerable<CategoryModel> categories = await categoryService.GetAllAsync().ConfigureAwait(false);
                 return mapper.Map<CategoryDTO[]>(categories);
             }
             catch (Exception ex) when (
