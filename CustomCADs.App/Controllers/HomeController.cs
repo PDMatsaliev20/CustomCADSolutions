@@ -80,7 +80,7 @@ namespace CustomCADs.App.Controllers
             {
                 CadModel model = await cadService.GetByIdAsync(id);
                 
-                if (!model.IsFolder)
+                if (model.CadExtension == ".glb")
                 {
                     string downloadName = $"{model.Name}{model.CadExtension}";
                     return File(model.CadPath, "application/octet-stream", downloadName);

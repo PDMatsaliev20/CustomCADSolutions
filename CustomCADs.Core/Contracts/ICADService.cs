@@ -43,6 +43,7 @@ namespace CustomCADs.Core.Contracts
         /// <param name="id"></param>
         /// <param name="cadPath"></param>
         /// <param name="imagePath"></param>
+        /// <param name="otherFilesPaths"></param>
         /// <exception cref="KeyNotFoundException">if no Cad with the given id exists.</exception>
         Task SetPathsAsync(int id, string cadPath, string imagePath);
 

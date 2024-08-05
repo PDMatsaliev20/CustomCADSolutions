@@ -110,8 +110,8 @@ namespace CustomCADs.API.Controllers
                 int id = await cadService.CreateAsync(model).ConfigureAwait(false);
                 model = await cadService.GetByIdAsync(id).ConfigureAwait(false);
 
-                string imagePath = await env.UploadImageAsync(import.Image, model.Name + id + model.ImageExtension).ConfigureAwait(false);
-                string cadPath = await env.UploadCadAsync(import.File, model.Name + id + model.CadExtension).ConfigureAwait(false);
+                string imagePath = await env.UploadImageAsync(import.Image, model.Name + id + import.Image.GetFileExtension()).ConfigureAwait(false);
+                string cadPath = await env.UploadCadAsync(import.File, model.Name + id, import.File.GetFileExtension()).ConfigureAwait(false);
                 await cadService.SetPathsAsync(id, cadPath, imagePath).ConfigureAwait(false);
 
                 CadGetDTO export = mapper.Map<CadGetDTO>(model);
@@ -262,11 +262,11 @@ namespace CustomCADs.API.Controllers
         {
             try
             {
+                await cadService.DeleteAsync(id).ConfigureAwait(false);
+
                 CadModel model = await cadService.GetByIdAsync(id).ConfigureAwait(false);
                 env.DeleteFile(model.CadPath);
                 env.DeleteFile(model.ImagePath);
-
-                await cadService.DeleteAsync(id).ConfigureAwait(false);
 
                 return NoContent();
             }

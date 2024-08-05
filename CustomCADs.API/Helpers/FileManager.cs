@@ -31,7 +31,7 @@
 
         public static async Task<string> UploadCadAsync(this IWebHostEnvironment env, IFormFile cad, string fileName)
         {
-            if (cad != null && cad.Length != 0)
+            if (cad.Length != 0)
             {
                 using FileStream stream = new(env.GetCadPath(fileName), FileMode.Create);
                 await cad.CopyToAsync(stream).ConfigureAwait(false);

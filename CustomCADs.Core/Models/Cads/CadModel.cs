@@ -11,10 +11,6 @@ namespace CustomCADs.Core.Models.Cads
         [Required]
         public int Id { get; set; }
 
-        [Required]
-        public bool IsFolder { get; set; } = false;
-
-
         [Required(ErrorMessage = RequiredErrorMessage)]
         [StringLength(CadConstants.NameMaxLength, MinimumLength = CadConstants.NameMinLength, ErrorMessage = LengthErrorMessage)]
         public string Name { get; set; } = null!;

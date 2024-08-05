@@ -113,7 +113,6 @@ namespace CustomCADs.App.Controllers
                     IFormFile cad = input.CadFolder!
                         .Single(f => cadFormats.Contains(f.GetFileExtension()));
 
-                    model.IsFolder = true;
                     int cadId = await cadService.CreateAsync(model);
                     string cadPath = await env.UploadCadFolderAsync(cad, model.Name + cadId, input.CadFolder.Where(f => f != cad))
                         ?? throw new NullReferenceException("Cad is null!");
@@ -175,7 +174,7 @@ namespace CustomCADs.App.Controllers
         {
             CadModel cad = await cadService.GetByIdAsync(id);
 
-            if (cad.IsFolder)
+            if (cad.CadExtension != ".glb")
             {
                 string path = Regex.Match(cad.CadPath, $"others/cads/{cad.Name}{cad.Id}").Value;
                 env.DeleteFolder(path);

@@ -22,10 +22,7 @@ namespace CustomCADs.Domain.Entities
         [MaxLength(CadConstants.DescriptionMaxLength)]
         [Comment("Description of 3D Model")]
         public string Description { get; set; } = null!;
-
-        [Required]
-        public bool IsFolder { get; set; }
-
+        
         [Required]
         [Comment("3D Model Status")]
         public CadStatus Status { get; set; }
