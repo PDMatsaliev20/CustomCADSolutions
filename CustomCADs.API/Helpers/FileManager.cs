@@ -1,4 +1,6 @@
-﻿namespace CustomCADs.API.Helpers
+﻿using System.IO.Compression;
+
+namespace CustomCADs.API.Helpers
 {
     public static class FileManager
     {
@@ -29,16 +31,44 @@
             else throw new ArgumentNullException();
         }
 
-        public static async Task<string> UploadCadAsync(this IWebHostEnvironment env, IFormFile cad, string fileName)
+        public static async Task<string> UploadCadAsync(this IWebHostEnvironment env, IFormFile cad, string name, string extension)
         {
             if (cad.Length != 0)
             {
-                using FileStream stream = new(env.GetCadPath(fileName), FileMode.Create);
-                await cad.CopyToAsync(stream).ConfigureAwait(false);
+                string uploadedFilePath = env.GetCadPath($"{name}{extension}");
+                using (FileStream stream = new(uploadedFilePath, FileMode.Create))
+                {
+                    await cad.CopyToAsync(stream).ConfigureAwait(false);
+                }
 
-                return GetRelativeCadPath(fileName);
+                if (cad.GetFileExtension() == ".zip")
+                {
+                    string extractedFolderPath = env.GetCadPath($"{name}");
+                    ZipFile.ExtractToDirectory(uploadedFilePath, extractedFolderPath);
+
+                    File.Delete(uploadedFilePath);
+                    return GetRelativeCadPathFromFolder(extractedFolderPath, ["gltf"])
+                           ?? throw new ArgumentNullException("No CAD in the folder.");
+                }
+                return GetRelativeCadPath(name);
             }
-            else throw new ArgumentNullException();
+            else throw new ArgumentNullException("Empty file.");
+        }
+
+        private static string? GetRelativeCadPathFromFolder(string folder, string[] extensionsToSearch)
+        {
+            foreach (string subfolder in Directory.EnumerateDirectories(folder))
+            {
+                foreach (string file in Directory.EnumerateFiles(folder))
+                {
+                    if (extensionsToSearch.Contains(file.Split('.')[^1].ToLower()))
+                    {
+                        return file;
+                    }
+                }
+                return GetRelativeCadPathFromFolder(subfolder, extensionsToSearch);
+            }
+            return null;
         }
 
         public static string RenameImage(this IWebHostEnvironment env, string oldName, string newName)

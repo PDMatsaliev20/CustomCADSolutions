@@ -1,15 +1,15 @@
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
-import axios from 'axios'
 import { useState, useEffect, useRef } from 'react'
+import axios from 'axios'
+import { GetCad } from '@/requests/public/home'
 
 function Cad({ cad, isHomeCad }) {
     const mountRef = useRef(null);
     const isTouchedRef = useRef(false);
-    const workerRef = useRef(null);
     const [model, setModel] = useState({});
-    const [scene, setScene] = useState(null);
+    const [loader, setLoader] = useState(true);
 
     useEffect(() => {
         if (isHomeCad) {
@@ -24,43 +24,8 @@ function Cad({ cad, isHomeCad }) {
     }, []);
 
     useEffect(() => {
-        if (scene) {
-            workerRef.current = new Worker(new URL('cad-worker.js', import.meta.url));
-
-            workerRef.current.onmessage = (e) => {
-                const { error, arrayBuffer } = e.data;
-
-                if (error) {
-                    console.error(error);
-                } else if (arrayBuffer) {
-                    const url = URL.createObjectURL(new Blob(new Uint8Array([arrayBuffer]), { type: 'glb' }));
-
-                    new GLTFLoader().parse(arrayBuffer, '', (glb) => {
-                        scene.add(glb.scene);
-                        URL.revokeObjectURL(url);
-                    }, (error) => console.error(error));
-                }
-            };
-
-            const path = model.cadPath;
-            switch (path.split('.').pop().toLowerCase()) {
-                case 'gltf':
-                    new GLTFLoader().load(path, (gltf) => {
-                        scene.add(gltf.scene);
-                    }, undefined, (e) => {
-                        console.error(e);
-                    }
-                    );
-                    break;
-                default: workerRef.current.postMessage({ url: path }); break;
-            }
-        }
-    }, [scene]);
-
-    useEffect(() => {
         if (model.cadPath) {
             const scene = new THREE.Scene();
-            setScene(scene);
 
             const camera = new THREE.PerspectiveCamera(model.fov, window.innerWidth / window.innerHeight, 0.001, 1000);
             camera.position.set(model.coords[0], model.coords[1], model.coords[2]);
@@ -69,7 +34,7 @@ function Cad({ cad, isHomeCad }) {
             }
 
             const mount = mountRef.current;
-            if (mount.children.length > 0) {
+            if (!mount || mount.children.length > 0) {
                 return;
             }
 
@@ -133,6 +98,13 @@ function Cad({ cad, isHomeCad }) {
             controls.target.set(model.panCoords[0], model.panCoords[1], model.panCoords[2]);
             controls.update();
 
+            const loader = new GLTFLoader();
+            loader.load(model.cadPath,
+                (cad) => scene.add(cad.scene),
+                (xhr) => xhr.loaded === xhr.total && setLoader(false),
+                (e) => console.error(e)
+            );
+
             controls.addEventListener('change', cadTouched);
 
             function animate() {
@@ -160,15 +132,22 @@ function Cad({ cad, isHomeCad }) {
                 window.removeEventListener('SendPosition', sendPosition);
             };
         }
-    }, [model.id, model.cadPath]);
 
-    return <div ref={mountRef} className="w-full h-full" />;
+    }, [loader, model.id, model.cadPath]);
+
+    return !isHomeCad && loader
+        ? <>
+            <div ref={mountRef} className="w-full h-full hidden" />
+            <div className="w-full h-full flex justify-center items-center">
+                <div className="animate-spin w-12 h-12 border-4 border-indigo-500 border-b-transparent rounded-full border-box" />
+            </div>
+        </>
+        : <div ref={mountRef} className="w-full h-full" />;
 
     async function fetchHomeCad() {
         try {
-            await axios.get('https://localhost:7127/API/Home/Cad')
-                .then(response => setModel(response.data))
-                .catch(error => console.error(error));
+            const { data } = await GetCad();
+            setModel(data);
 
         } catch (error) {
             console.error('Error fetching CAD:', error);

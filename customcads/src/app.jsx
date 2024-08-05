@@ -5,7 +5,7 @@ import Footer from './layout/footer/footer'
 import { useState, useEffect } from 'react'
 import { Outlet } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { Register, Login, Logout, IsAuthenticated, GetUserRole } from '@/requests/public/identity'
+import { IsAuthenticated, GetUserRole } from '@/requests/public/identity'
 import './index.css'
 
 function App() {
