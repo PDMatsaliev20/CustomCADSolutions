@@ -168,7 +168,6 @@ namespace CustomCADs.API.Controllers
                     env.DeleteFile(cad.ImagePath);
                     string imagePath = await env.UploadImageAsync(dto.Image, dto.Name + id + dto.Image.GetFileExtension()).ConfigureAwait(false);
                     await cadService.SetPathsAsync(id, cad.CadPath, imagePath).ConfigureAwait(false);
-                    cad.ImageExtension = dto.Image.GetFileExtension();
 
                 } else if (cad.Name != dto.Name)
                 {

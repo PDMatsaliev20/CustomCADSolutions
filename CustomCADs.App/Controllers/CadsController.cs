@@ -114,7 +114,6 @@ namespace CustomCADs.App.Controllers
                         .Single(f => cadFormats.Contains(f.GetFileExtension()));
 
                     model.IsFolder = true;
-                    model.CadExtension = cad.GetFileExtension();
                     int cadId = await cadService.CreateAsync(model);
                     string cadPath = await env.UploadCadFolderAsync(cad, model.Name + cadId, input.CadFolder.Where(f => f != cad))
                         ?? throw new NullReferenceException("Cad is null!");
@@ -122,7 +121,6 @@ namespace CustomCADs.App.Controllers
                 }
                 else if (input.CadFile != null)
                 {
-                    model.CadExtension = input.CadFile.GetFileExtension();
                     int cadId = await cadService.CreateAsync(model);
                     string cadPath = await env.UploadCadAsync(input.CadFile, input.Name + cadId + input.CadFile.GetFileExtension())
                         ?? throw new NullReferenceException("Cad is null!");

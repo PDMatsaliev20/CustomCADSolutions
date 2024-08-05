@@ -24,21 +24,7 @@ namespace CustomCADs.Domain.Entities
         public string Description { get; set; } = null!;
 
         [Required]
-        [Comment("Extension of 3D Model file")]
-        public string ImageExtension { get; set; } = null!;
-        
-        [Required]
-        [Comment("Extension of Image file")]
-        public string CadExtension { get; set; } = null!;
-
-        [Required]
         public bool IsFolder { get; set; }
-
-        [Comment("Path to Image")]
-        public string? ImagePath { get; set; }
-        
-        [Comment("Path to 3D Model")]
-        public string? CadPath { get; set; }
 
         [Required]
         [Comment("3D Model Status")]
@@ -82,6 +68,14 @@ namespace CustomCADs.Domain.Entities
         [Range(CadConstants.PanMin, CadConstants.PanMax)]
         [Comment("Panning along the z-axis of 3D Model")]
         public double PanZ { get; set; }
+
+        [Required]
+        [Comment("Relative Path to Image")]
+        public string ImagePath { get; set; } = null!;
+
+        [Required]
+        [Comment("Relative Path to 3D Model")]
+        public string CadPath { get; set; } = null!;
 
         [Required]
         [Comment("Identification of the creator of the 3D Model")]

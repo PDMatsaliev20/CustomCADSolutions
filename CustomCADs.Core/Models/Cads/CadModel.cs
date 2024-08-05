@@ -12,17 +12,8 @@ namespace CustomCADs.Core.Models.Cads
         public int Id { get; set; }
 
         [Required]
-        public string CadExtension { get; set; } = null!;
-
-        [Required]
-        public string ImageExtension { get; set; } = null!;
-
-        [Required]
         public bool IsFolder { get; set; } = false;
 
-        public string ImagePath { get; set; } = null!;
-
-        public string CadPath { get; set; } = null!;
 
         [Required(ErrorMessage = RequiredErrorMessage)]
         [StringLength(CadConstants.NameMaxLength, MinimumLength = CadConstants.NameMinLength, ErrorMessage = LengthErrorMessage)]
@@ -47,6 +38,12 @@ namespace CustomCADs.Core.Models.Cads
 
         [Required(ErrorMessage = RequiredErrorMessage)]
         public double[] PanCoords { get; set; } = new double[3];
+
+        public string CadPath { get; set; } = string.Empty;
+        public string CadExtension => '.' + CadPath.Split('.')[^1].ToLower();
+
+        public string ImagePath { get; set; } = string.Empty;
+        public string ImageExtension => '.' + ImagePath.Split('.')[^1].ToLower();
 
         [Required(ErrorMessage = RequiredErrorMessage)]
         public int CategoryId { get; set; }

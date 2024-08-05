@@ -69,7 +69,6 @@ namespace CustomCADs.App.Areas.Designer.Controllers
                 Name = cad.Name,
                 Price = cad.Price,
                 CategoryId = cad.CategoryId,
-                CadExtension = cad.CadFile.GetFileExtension(),
                 Status = CadStatus.Validated,
                 CreatorId = User.GetId(),
                 CreationDate = DateTime.Now,

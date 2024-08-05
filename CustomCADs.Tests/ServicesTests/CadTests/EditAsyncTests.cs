@@ -46,8 +46,6 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
         {
             CadModel expectedCad = await service.GetByIdAsync(id).ConfigureAwait(false);
             expectedCad.Id = 100;
-            expectedCad.CadExtension = "abc";
-            expectedCad.ImageExtension = "xyz";
             expectedCad.CreationDate = DateTime.Now.AddDays(1);
             expectedCad.CreatorId = users[2].Id;
 
