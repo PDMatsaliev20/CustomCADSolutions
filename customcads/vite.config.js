@@ -43,11 +43,7 @@ export default defineConfig({
     },
     server: {
         proxy: {
-            '^/others/cads': {
-                target, 
-                secure: false
-            },
-            '^/others/images': {
+            '^/files': {
                 target, 
                 secure: false
             },

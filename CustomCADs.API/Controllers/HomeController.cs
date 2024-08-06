@@ -33,7 +33,7 @@ namespace CustomCADs.API.Controllers
         public ActionResult<CadGetDTO> GetHomeCadAsync()
             => new CadGetDTO()
             {
-                CadPath = "/others/cads/HomeCAD.glb",
+                CadPath = "/files/HomeCAD.glb",
                 Coords = [2, 16, 33],
                 PanCoords = [0, 6, -3]
             };

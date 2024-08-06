@@ -8,16 +8,16 @@ namespace CustomCADs.API.Helpers
             => Path.GetExtension(file.FileName);
 
         public static string GetRelativeImagePath(string name)
-            => $"\\{Path.Combine("others", "images", name)}";
+            => $"\\{Path.Combine("files", "images", name)}";
 
         public static string GetRelativeCadPath(string name)
-            => $"\\{Path.Combine("others", "cads", name)}";
+            => $"\\{Path.Combine("files", "cads", name)}";
 
         public static string GetImagePath(this IWebHostEnvironment env, string fileName)
-            => Path.Combine(env.WebRootPath, "others", "images", fileName);
+            => Path.Combine(env.WebRootPath, "files", "images", fileName);
 
         public static string GetCadPath(this IWebHostEnvironment env, string fileName)
-            => Path.Combine(env.WebRootPath, "others", "cads", fileName);
+            => Path.Combine(env.WebRootPath, "files", "cads", fileName);
 
         public static async Task<string> UploadImageAsync(this IWebHostEnvironment env, IFormFile image, string fileName)
         {
@@ -65,7 +65,7 @@ namespace CustomCADs.API.Helpers
                     {
                         var fileParts = file.Split("\\").SkipWhile(a => a != "cads");
                         string relativeFilePath = string.Join("/", fileParts);
-                        return $"/others/{relativeFilePath}";
+                        return $"/files/{relativeFilePath}";
                     }
                 }
                 return GetRelativeCadPathFromFolder(subfolder, extensionsToSearch);

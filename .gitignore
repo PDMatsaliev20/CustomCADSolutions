@@ -398,5 +398,5 @@ FodyWeavers.xsd
 *.sln.iml
 
 # 3D Models
-**/wwwroot/others/cads/**
-**/wwwroot/others/images/**
+**/wwwroot/files
+/CustomCADs.API/Mappings/OtherApiProfile.cs

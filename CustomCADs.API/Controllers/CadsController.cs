@@ -255,14 +255,17 @@ namespace CustomCADs.API.Controllers
         [ProducesResponseType(Status400BadRequest)]
         [ProducesResponseType(Status404NotFound)]
         public async Task<ActionResult> DeleteCadAsync(int id)
-        {
+        {   
             try
             {
-                await cadService.DeleteAsync(id).ConfigureAwait(false);
-                
                 CadModel model = await cadService.GetByIdAsync(id).ConfigureAwait(false);
-                env.DeleteImage(model.Name + id + model.ImageExtension);
-                env.DeleteCad(model.Name + id, model.CadExtension);
+                string cadFileName = model.Name + id, cadExtension = model.CadExtension,
+                imageFileName = model.Name + id, imageExtension = model.ImageExtension;
+                
+                await cadService.DeleteAsync(id).ConfigureAwait(false);
+
+                env.DeleteImage(imageFileName + imageExtension);
+                env.DeleteCad(cadFileName, cadExtension);
                 
                 return NoContent();
             }
