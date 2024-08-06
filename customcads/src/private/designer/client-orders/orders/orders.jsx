@@ -60,8 +60,7 @@ function AllOrders() {
                     {orders.map(order =>
                         <li key={order.id}>{chooseOrder(order)}</li>
                     )}
-                </ul>
-            }
+                </ul>}
         </div>
     );
     async function fetchOrders() {

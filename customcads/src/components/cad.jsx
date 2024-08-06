@@ -2,7 +2,6 @@ import * as THREE from 'three'
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import { useState, useEffect, useRef } from 'react'
-import axios from 'axios'
 import { GetCad } from '@/requests/public/home'
 
 function Cad({ cad, isHomeCad }) {

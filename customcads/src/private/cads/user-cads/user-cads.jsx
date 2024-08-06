@@ -21,9 +21,11 @@ function UserCads() {
             </h1>
             <section className="flex flex-wrap justify-center gap-y-8">
                 <SearchBar setSearch={setSearch} />
-                <ul className="basis-full grid grid-cols-3 gap-12">
-                    {cads.map(cad => <UserCadItem key={cad.id} item={cad} />)}
-                </ul>
+                {!cads.length
+                    ? <p className="text-lg text-indigo-900 text-center font-bold">{t('body.cads.No cads')}</p>
+                    : <ul className="basis-full grid grid-cols-3 gap-12">
+                        {cads.map(cad => <UserCadItem key={cad.id} item={cad} />)}
+                    </ul>}
             </section>
         </div>
     );

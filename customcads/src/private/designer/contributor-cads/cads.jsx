@@ -9,7 +9,7 @@ function UnvalidatedCads() {
     const { t } = useTranslation();
     const [cads, setCads] = useState([]);
     const [search, setSearch] = useState({ name: '', category: '', creator: '', sorting: '' });
-    
+
     useEffect(() => {
         fetchCads();
     }, [search]);
@@ -22,7 +22,7 @@ function UnvalidatedCads() {
             console.error(e);
         }
     };
-    
+
     return (
         <>
             <div className="flex flex-col gap-y-8 mb-8">
@@ -31,14 +31,16 @@ function UnvalidatedCads() {
                 </h1>
                 <section className="flex flex-wrap justify-center gap-y-8">
                     <SearchBar setSearch={setSearch} />
-                    <ul className="basis-full grid grid-cols-3 gap-12">
-                        {cads.map(cad =>
-                            <ContributorCadItem key={cad.id}
-                                item={cad}
-                                onValidate={() => handlePatch(cad.id, 'Validated')}
-                                onReport={() => handlePatch(cad.id, 'Reported')} />)    
-                        }
-                    </ul>
+                    {!cads.length
+                        ? <p className="text-lg text-indigo-900 text-center font-bold">{t('body.designerCads.No cads')}</p>
+                        : <ul className="basis-full grid grid-cols-3 gap-12">
+                            {cads.map(cad =>
+                                <ContributorCadItem key={cad.id}
+                                    item={cad}
+                                    onValidate={() => handlePatch(cad.id, 'Validated')}
+                                    onReport={() => handlePatch(cad.id, 'Reported')} />)
+                            }
+                        </ul>}
                 </section>
             </div>
         </>

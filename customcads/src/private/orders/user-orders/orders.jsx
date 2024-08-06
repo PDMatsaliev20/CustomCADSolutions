@@ -70,8 +70,7 @@ function UserOrders() {
                 : <ul className="basis-full grid grid-cols-12 gap-x-16 gap-y-12">
                     {orders.map(order =>
                         <li key={order.id} className="col-span-6">{chooseOrder(order)}</li>)}
-                </ul>
-            }
+                </ul>}
         </div>
     );
 
