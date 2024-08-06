@@ -51,7 +51,7 @@ function UploadCad() {
                             </label>
                             <input
                                 type="file"
-                                accept=".glb"
+                                accept=".glb,.zip"
                                 id="file"
                                 name="file"
                                 onInput={handleFileUpload}

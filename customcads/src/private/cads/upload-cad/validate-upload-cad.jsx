@@ -36,10 +36,12 @@ export default (cad) => {
 
     const price = cad.price;
     const priceLabel = t('common.labels.Price');
-    const { isRequired: priceIsRequired } = cadValidation.price;
+    const { isRequired: priceIsRequired, min: priceMinVal, max: priceMaxVal } = cadValidation.price;
 
     if (priceIsRequired && !price) {
         errors.price = errorMessages.required(priceLabel);
+    } else if (price < priceMinVal || price > priceMaxVal) {
+        errors.price = errorMessages.range(priceLabel, priceMinVal, priceMaxVal) + '$';
     }
 
     const file = cad.file;

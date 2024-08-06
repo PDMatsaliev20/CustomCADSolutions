@@ -8,10 +8,10 @@ namespace CustomCADs.API.Helpers
             => Path.GetExtension(file.FileName);
 
         public static string GetRelativeImagePath(string name)
-            => $"/{Path.Combine("others", "images", name)}";
+            => $"\\{Path.Combine("others", "images", name)}";
 
         public static string GetRelativeCadPath(string name)
-            => $"/{Path.Combine("others", "cads", name)}";
+            => $"\\{Path.Combine("others", "cads", name)}";
 
         public static string GetImagePath(this IWebHostEnvironment env, string fileName)
             => Path.Combine(env.WebRootPath, "others", "images", fileName);
@@ -50,7 +50,7 @@ namespace CustomCADs.API.Helpers
                     return GetRelativeCadPathFromFolder(extractedFolderPath, ["gltf"])
                            ?? throw new ArgumentNullException("No CAD in the folder.");
                 }
-                return GetRelativeCadPath(name);
+                return GetRelativeCadPath(name + extension);
             }
             else throw new ArgumentNullException("Empty file.");
         }
@@ -63,7 +63,9 @@ namespace CustomCADs.API.Helpers
                 {
                     if (extensionsToSearch.Contains(file.Split('.')[^1].ToLower()))
                     {
-                        return file;
+                        var fileParts = file.Split("\\").SkipWhile(a => a != "cads");
+                        string relativeFilePath = string.Join("/", fileParts);
+                        return $"/others/{relativeFilePath}";
                     }
                 }
                 return GetRelativeCadPathFromFolder(subfolder, extensionsToSearch);
@@ -71,27 +73,22 @@ namespace CustomCADs.API.Helpers
             return null;
         }
 
-        public static string RenameImage(this IWebHostEnvironment env, string oldName, string newName)
+        public static void DeleteImage(this IWebHostEnvironment env, string fileName)
+            => File.Delete(env.GetImagePath(fileName));
+        
+        public static void DeleteCad(this IWebHostEnvironment env, string name, string extension)
         {
-            File.Move(env.GetImagePath(oldName), env.GetImagePath(newName));
-            return GetRelativeImagePath(newName);
-        }
-
-        public static string RenameCad(this IWebHostEnvironment env, string oldName, string newName)
-        {
-            File.Move(env.GetCadPath(oldName), env.GetCadPath(newName));
-            return GetRelativeCadPath(newName);
-        }
-
-        public static void DeleteFile(this IWebHostEnvironment env, string path)
-        {
-            if (string.IsNullOrEmpty(path))
+            switch (extension)
             {
-                throw new ArgumentNullException();
-            }
-            string filePath = Path.Combine(env.WebRootPath, path[1..]);
-            File.Delete(filePath);
+                case ".glb":
+                    File.Delete(env.GetCadPath(name + extension));
+                    break;
+                case ".gltf":
+                    Directory.Delete(env.GetCadPath(name), true);
+                    break;
+                default:
+                    throw new Exception("Unsupported CAD type.");
+            }                
         }
-
     }
 }

@@ -114,6 +114,7 @@ namespace CustomCADs.API.Controllers
                 string cadPath = await env.UploadCadAsync(import.File, model.Name + id, import.File.GetFileExtension()).ConfigureAwait(false);
                 await cadService.SetPathsAsync(id, cadPath, imagePath).ConfigureAwait(false);
 
+                model = await cadService.GetByIdAsync(id).ConfigureAwait(false);
                 CadGetDTO export = mapper.Map<CadGetDTO>(model);
                 return CreatedAtAction(createdAtReturnAction, new { id }, export);
             }
@@ -165,13 +166,8 @@ namespace CustomCADs.API.Controllers
 
                 if (dto.Image != null)
                 {
-                    env.DeleteFile(cad.ImagePath);
+                    env.DeleteImage(cad.Name + id + cad.ImageExtension);
                     string imagePath = await env.UploadImageAsync(dto.Image, dto.Name + id + dto.Image.GetFileExtension()).ConfigureAwait(false);
-                    await cadService.SetPathsAsync(id, cad.CadPath, imagePath).ConfigureAwait(false);
-
-                } else if (cad.Name != dto.Name)
-                {
-                    string imagePath = env.RenameImage(cad.Name + cad.Id + cad.ImageExtension, dto.Name + cad.Id + cad.ImageExtension);
                     await cadService.SetPathsAsync(id, cad.CadPath, imagePath).ConfigureAwait(false);
                 }
 
@@ -263,11 +259,11 @@ namespace CustomCADs.API.Controllers
             try
             {
                 await cadService.DeleteAsync(id).ConfigureAwait(false);
-
+                
                 CadModel model = await cadService.GetByIdAsync(id).ConfigureAwait(false);
-                env.DeleteFile(model.CadPath);
-                env.DeleteFile(model.ImagePath);
-
+                env.DeleteImage(model.Name + id + model.ImageExtension);
+                env.DeleteCad(model.Name + id, model.CadExtension);
+                
                 return NoContent();
             }
             catch (KeyNotFoundException ex)
