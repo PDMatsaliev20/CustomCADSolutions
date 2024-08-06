@@ -1,16 +1,15 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { CancelOrder } from '@/requests/private/designer'
 
-function BegunOrder({ order }) {
+function BegunOrder({ order, updateParent }) {
     const { t } = useTranslation();
-    const navigate = useNavigate();
     const machineReadableDateTime = order.orderDate && order.orderDate.replaceAll('.', '-');
     
     const handleCancel = async () => {
         try {
             await CancelOrder(order.id);
-            navigate('');
+            updateParent(order.id);
         } catch (e) {
             console.error(e);
         }

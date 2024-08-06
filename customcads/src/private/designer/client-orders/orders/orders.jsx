@@ -3,7 +3,7 @@ import useObjectToURL from '@/hooks/useObjectToURL'
 import PendingOrder from './components/pending-order'
 import BegunOrder from './components/begun-order'
 import FinishedOrder from './components/finished-order'
-import { Link,useLoaderData } from 'react-router-dom'
+import { Link, useLoaderData } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useState, useEffect } from 'react'
 import { GetOrdersByStatus } from '@/requests/private/designer'
@@ -18,12 +18,15 @@ function AllOrders() {
         fetchOrders();
     }, [status, search]);
 
+    const updateOrders = (id) => {
+        setOrders(orders => orders.filter(order => order.id !== id));
+    };
 
     const chooseOrder = (order) => {
         switch (status) {
-            case 'Pending': return <PendingOrder order={order} />;
-            case 'Begun': return <BegunOrder order={order} />;
-            case 'Finished': return <FinishedOrder order={order} />;
+            case 'Pending': return <PendingOrder order={order} updateParent={updateOrders} />;
+            case 'Begun': return <BegunOrder order={order} updateParent={updateOrders} />;
+            case 'Finished': return <FinishedOrder order={order} updateParent={updateOrders} />;
         }
     };
 

@@ -99,7 +99,6 @@ function UploadCad() {
                                     id="image"
                                     name="image"
                                     onInput={handleFileUpload}
-                                    onClick={(e) => console.log(e)}
                                     onChange={handleBlur}
                                     className="w-full rounded bg-indigo-50 text-indigo-900 focus:outline-none p-2"
                                     hidden

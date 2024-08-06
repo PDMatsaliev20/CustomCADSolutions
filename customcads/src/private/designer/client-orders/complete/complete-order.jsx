@@ -33,7 +33,7 @@ function UploadCad() {
         try {
             const { data } = await PostCad(cad);
             await FinishOrder(id, data.id);
-            navigate('/cads/');
+            navigate(`/cads/${data.id}`);
         } catch (e) {
             console.error(e);
         }
@@ -54,7 +54,7 @@ function UploadCad() {
                             </label>
                             <input
                                 type="file"
-                                accept=".glb"
+                                accept=".glb,.zip"
                                 id="file"
                                 name="file"
                                 onInput={handleFileUpload}
@@ -102,7 +102,6 @@ function UploadCad() {
                                     id="image"
                                     name="image"
                                     onInput={handleFileUpload}
-                                    onClick={(e) => console.log(e)}
                                     onChange={handleBlur}
                                     className="w-full rounded bg-indigo-50 text-indigo-900 focus:outline-none p-2"
                                     hidden

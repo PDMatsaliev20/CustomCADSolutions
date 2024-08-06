@@ -15,33 +15,6 @@ function EditCadPage() {
     const [isEditing, setIsEditing] = useState(false);
     const [isChanged, setIsChanged] = useState(false);
 
-    const flipIsChanged = () => {
-        setIsChanged(true);
-    };
-    window.addEventListener('PositionChanged', flipIsChanged);
-
-    const savePosition = (e) => {
-        const { coords, panCoords } = e.detail;
-
-        try {
-            const updateCoords = {
-                path: "/coords",
-                op: "replace",
-                value: coords
-            }, updatePanCoords = {
-                path: "/panCoords",
-                op: "replace",
-                value: panCoords
-            }
-            PatchCad(id, [updateCoords, updatePanCoords]);
-            setIsChanged(false);
-            window.dispatchEvent(new CustomEvent("TrackChanges"));
-        } catch (e) {
-            console.error(e);
-        }
-    };
-    window.addEventListener('SavePosition', savePosition);
-
     useEffect(() => {
         setCad(cad => ({
             ...cad,
@@ -51,9 +24,40 @@ function EditCadPage() {
             price: loadedCad.price,
         }));
 
+        const flipIsChanged = () => {
+            setIsChanged(true);
+        };
+        window.addEventListener('PositionChanged', flipIsChanged);
+
+        const sendTrackChangesEvent = () => window.dispatchEvent(new CustomEvent("TrackChanges"));
+
+        const savePosition = (e) => {
+            const { coords, panCoords } = e.detail;
+
+            try {
+                const updateCoords = {
+                    path: "/coords",
+                    op: "replace",
+                    value: coords
+                }, updatePanCoords = {
+                    path: "/panCoords",
+                    op: "replace",
+                    value: panCoords
+                }
+                PatchCad(id, [updateCoords, updatePanCoords]);
+                setIsChanged(false);
+
+                setTimeout(sendTrackChangesEvent, 1500);
+            } catch (e) {
+                console.error(e);
+            }
+        };
+        window.addEventListener('SavePosition', savePosition);
+
         return () => {
             window.removeEventListener('PositionChanged', savePosition);
             window.removeEventListener('SavePosition', savePosition);
+            clearTimeout(sendTrackChangesEvent);
         };
     }, []);
 

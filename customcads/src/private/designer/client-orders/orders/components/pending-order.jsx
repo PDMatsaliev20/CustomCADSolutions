@@ -1,16 +1,14 @@
-import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { BeginOrder, ReportOrder } from '@/requests/private/designer'
 
-function PendingOrder({ order }) {
+function PendingOrder({ order, updateParent }) {
     const { t } = useTranslation();
-    const navigate = useNavigate();
     const machineReadableDateTime = order.orderDate && order.orderDate.replaceAll('.', '-');
 
     const handleBegin = async () => {
         try {
             await BeginOrder(order.id);
-            navigate('');
+            updateParent(order.id);
         } catch (e) {
             console.error(e);
         }
@@ -20,7 +18,7 @@ function PendingOrder({ order }) {
         if (confirm(t('body.designerOrders.Confirm Report'))) {
             try {
                 await ReportOrder(order.id);
-                navigate('');
+                updateParent(order.id);
             } catch (e) {
                 console.error(e);
             }
