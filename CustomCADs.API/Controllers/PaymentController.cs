@@ -1,4 +1,7 @@
-﻿using CustomCADs.API.Helpers;
+﻿using AutoMapper;
+using CustomCADs.API.Helpers;
+using CustomCADs.API.Mappings;
+using CustomCADs.API.Models.Orders;
 using CustomCADs.Core.Contracts;
 using CustomCADs.Core.Models.Cads;
 using CustomCADs.Core.Models.Orders;
@@ -21,21 +24,27 @@ namespace CustomCADs.API.Controllers
     {
         private readonly StripeInfo stripe = stripeOptions.Value;
         private readonly string createdAtReturnAction = nameof(OrdersController.GetOrderAsync).Replace("Async", "");
+        private readonly IMapper mapper = new MapperConfiguration(opt =>
+            opt.AddProfile<OrderApiProfile>()
+        ).CreateMapper();
 
         [HttpPost("Purchase/{id}")]
         [ProducesResponseType(Status201Created)]
         [ProducesResponseType(Status404NotFound)]
         [ProducesResponseType(Status500InternalServerError)]
-        public async Task<ActionResult> Purchase(int id, string stripeToken)
+        public async Task<ActionResult> Purchase(int id, string? stripeToken)
         {
             try
             {
                 CadModel cad = await cadService.GetByIdAsync(id).ConfigureAwait(false);
 
-                var charge = stripe.ProcessPayment(stripeToken, User.Identity!.Name!, cad);
-                if (charge.Status != "succeeded")
+                if (!string.IsNullOrEmpty(stripeToken))
                 {
-                    return BadRequest(charge.FailureMessage);
+                    var charge = stripe.ProcessPayment(stripeToken, User.Identity!.Name!, cad);
+                    if (charge.Status != "succeeded")
+                    {
+                        return BadRequest(charge.FailureMessage);
+                    }
                 }
 
                 OrderModel order = new()
@@ -49,9 +58,11 @@ namespace CustomCADs.API.Controllers
                     BuyerId = User.GetId(),
                 };
                 int newOrderId = await orderService.CreateAsync(order).ConfigureAwait(false);
-                OrderModel newOrder = await orderService.GetByIdAsync(newOrderId).ConfigureAwait(false);
+                
+                order = await orderService.GetByIdAsync(newOrderId).ConfigureAwait(false);
+                OrderExportDTO export = mapper.Map<OrderExportDTO>(order);
 
-                return CreatedAtAction(createdAtReturnAction, "Orders", new { id = newOrderId }, newOrder);
+                return CreatedAtAction(createdAtReturnAction, "Orders", new { id = newOrderId }, export);
             }
             catch (KeyNotFoundException ex)
             {

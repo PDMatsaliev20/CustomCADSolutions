@@ -128,11 +128,6 @@ function RegisterPage() {
                         >
                             {t('body.register.Register')}
                         </button>
-                        {/*<button className="text-sm bg-indigo-200 text-black py-1 px-2 rounded">*/}
-                        {/*    <Link to={isClient ? '/register/contributor' : '/register/client'}>*/}
-                        {/*        {t('body.register.or switch roles')}*/}
-                        {/*    </Link>*/}
-                        {/*</button>*/}
                     </div>
                 </form>
             </div>

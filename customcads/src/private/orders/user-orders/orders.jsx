@@ -68,7 +68,7 @@ function UserOrders() {
             {!orders.length ?
                 <p className="text-lg text-indigo-900 text-center font-bold">{t('body.orders.No orders')}</p>
                 : <ul className="basis-full grid grid-cols-12 gap-x-16 gap-y-12">
-                    {orders.map(order =>
+                    {orders.filter(o => o.status.toLowerCase() === status.toLowerCase()).map(order =>
                         <li key={order.id} className="col-span-6">{chooseOrder(order)}</li>)}
                 </ul>}
         </div>
