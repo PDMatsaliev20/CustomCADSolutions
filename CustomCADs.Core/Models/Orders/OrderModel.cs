@@ -33,6 +33,8 @@ namespace CustomCADs.Core.Models.Orders
         [Required(ErrorMessage = RequiredErrorMessage)]
         public bool ShouldBeDelivered { get; set; }
 
+        public string? ImagePath { get; set; }
+
         public int? CadId { get; set; }
         public CadModel? Cad { get; set; }
 

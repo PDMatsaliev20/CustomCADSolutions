@@ -56,6 +56,7 @@ namespace CustomCADs.API.Controllers
                     OrderDate = DateTime.Now,
                     CadId = id,
                     BuyerId = User.GetId(),
+                    DesignerId = cad.CreatorId,
                 };
                 int newOrderId = await orderService.CreateAsync(order).ConfigureAwait(false);
                 

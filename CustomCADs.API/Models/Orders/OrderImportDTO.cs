@@ -21,5 +21,7 @@ namespace CustomCADs.API.Models.Orders
 
         [Required(ErrorMessage = RequiredErrorMessage)]
         public bool ShouldBeDelivered { get; set; } = false;
+
+        public IFormFile? Image { get; set; }
     }
 }

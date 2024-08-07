@@ -7,26 +7,35 @@ namespace CustomCADs.API.Helpers
         public static string GetFileExtension(this IFormFile file)
             => Path.GetExtension(file.FileName);
 
-        public static string GetRelativeImagePath(string name)
-            => $"\\{Path.Combine("files", "images", name)}";
+        public static string GetRelativePath(string folder, string name)
+            => $"\\{Path.Combine("files", folder, name)}";
 
-        public static string GetRelativeCadPath(string name)
-            => $"\\{Path.Combine("files", "cads", name)}";
+        public static string GetPath(this IWebHostEnvironment env, string folder, string fileName)
+            => Path.Combine(env.WebRootPath, "files", folder, fileName);
 
-        public static string GetImagePath(this IWebHostEnvironment env, string fileName)
-            => Path.Combine(env.WebRootPath, "files", "images", fileName);
+        public static async Task<string> UploadOrderAsync(this IWebHostEnvironment env, IFormFile image, string fileName)
+        {
+            if (image != null && image.Length != 0)
+            {
+                string a = env.WebRootPath;
+                string b = GetRelativePath("orders", fileName);
+                string c = Path.Combine(a, b);
+                using FileStream stream = new(env.GetPath("orders", fileName), FileMode.Create);
+                await image.CopyToAsync(stream).ConfigureAwait(false);
 
-        public static string GetCadPath(this IWebHostEnvironment env, string fileName)
-            => Path.Combine(env.WebRootPath, "files", "cads", fileName);
-
+                return GetRelativePath("orders", fileName);
+            }
+            else throw new ArgumentNullException();
+        }
+        
         public static async Task<string> UploadImageAsync(this IWebHostEnvironment env, IFormFile image, string fileName)
         {
             if (image != null && image.Length != 0)
             {
-                using FileStream stream = new(env.GetImagePath(fileName), FileMode.Create);
+                using FileStream stream = new(env.GetPath("images", fileName), FileMode.Create);
                 await image.CopyToAsync(stream).ConfigureAwait(false);
 
-                return GetRelativeImagePath(fileName);
+                return GetRelativePath("images", fileName);
             }
             else throw new ArgumentNullException();
         }
@@ -35,7 +44,7 @@ namespace CustomCADs.API.Helpers
         {
             if (cad.Length != 0)
             {
-                string uploadedFilePath = env.GetCadPath($"{name}{extension}");
+                string uploadedFilePath = env.GetPath("cads", $"{name}{extension}");
                 using (FileStream stream = new(uploadedFilePath, FileMode.Create))
                 {
                     await cad.CopyToAsync(stream).ConfigureAwait(false);
@@ -43,14 +52,14 @@ namespace CustomCADs.API.Helpers
 
                 if (cad.GetFileExtension() == ".zip")
                 {
-                    string extractedFolderPath = env.GetCadPath($"{name}");
+                    string extractedFolderPath = env.GetPath("cads", $"{name}");
                     ZipFile.ExtractToDirectory(uploadedFilePath, extractedFolderPath);
 
                     File.Delete(uploadedFilePath);
                     return GetRelativeCadPathFromFolder(extractedFolderPath, ["gltf"])
                            ?? throw new ArgumentNullException("No CAD in the folder.");
                 }
-                return GetRelativeCadPath(name + extension);
+                return GetRelativePath("cads", name + extension);
             }
             else throw new ArgumentNullException("Empty file.");
         }
@@ -74,17 +83,17 @@ namespace CustomCADs.API.Helpers
         }
 
         public static void DeleteImage(this IWebHostEnvironment env, string fileName)
-            => File.Delete(env.GetImagePath(fileName));
+            => File.Delete(env.GetPath("images", fileName));
         
         public static void DeleteCad(this IWebHostEnvironment env, string name, string extension)
         {
             switch (extension)
             {
                 case ".glb":
-                    File.Delete(env.GetCadPath(name + extension));
+                    File.Delete(env.GetPath("cads", name + extension));
                     break;
                 case ".gltf":
-                    Directory.Delete(env.GetCadPath(name), true);
+                    Directory.Delete(env.GetPath("cads", name), true);
                     break;
                 default:
                     throw new Exception("Unsupported CAD type.");

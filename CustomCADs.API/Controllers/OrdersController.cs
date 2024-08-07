@@ -22,7 +22,7 @@ namespace CustomCADs.API.Controllers
     [Authorize(Roles = Client)]
     [ApiController]
     [Route("API/[controller]")]
-    public class OrdersController(IOrderService orderService) : ControllerBase
+    public class OrdersController(IOrderService orderService, IWebHostEnvironment env) : ControllerBase
     {
         private readonly string createdAtReturnAction = nameof(GetOrderAsync).Replace("Async", "");
         private readonly IMapper mapper = new MapperConfiguration(cfg =>
@@ -97,11 +97,12 @@ namespace CustomCADs.API.Controllers
         }
 
         [HttpPost]
-        [Consumes("application/json")]
+        [Consumes("multipart/form-data")]
+        [Produces("application/json")]
         [ProducesResponseType(Status201Created)]
         [ProducesResponseType(Status500InternalServerError)]
         [ProducesResponseType(Status502BadGateway)]
-        public async Task<ActionResult> PostOrderAsync(OrderImportDTO dto)
+        public async Task<ActionResult> PostOrderAsync([FromForm] OrderImportDTO dto)
         {
             try
             {
@@ -110,9 +111,14 @@ namespace CustomCADs.API.Controllers
                 model.BuyerId = User.GetId();
 
                 int id = await orderService.CreateAsync(model).ConfigureAwait(false);
-                model = await orderService.GetByIdAsync(id).ConfigureAwait(false);
+                if (dto.Image != null)
+                {
+                    await env.UploadOrderAsync(dto.Image, dto.Name + id + dto.Image.GetFileExtension());
+                }
 
+                model = await orderService.GetByIdAsync(id).ConfigureAwait(false);
                 OrderExportDTO export = mapper.Map<OrderExportDTO>(model);
+
                 return CreatedAtAction(createdAtReturnAction, new { id }, export);
             }
             catch (Exception ex) when (

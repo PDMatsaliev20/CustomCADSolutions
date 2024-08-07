@@ -37,6 +37,9 @@ namespace CustomCADs.Domain.Entities
         [Comment("Identification of Order's Category")]
         public int CategoryId { get; set; }
 
+        [Comment("Path to Optional Image of Order")]
+        public string? ImagePath { get; set; }
+
         [Comment("Identification of Orders' 3D Model")]
         public int? CadId { get; set; }
 

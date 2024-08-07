@@ -9,6 +9,7 @@
         public string Status { get; set; } = null!;
         public string OrderDate { get; set; } = null!;
         public string Category { get; set; } = null!;
+        public string? ImagePath { get; set; } 
         public string? DesignerName { get; set; }
         public string BuyerName { get; set; } = null!;
         public int? CadId { get; set; }
