@@ -3,7 +3,7 @@ import { useState } from 'react'
 import HeaderBtn from './header-btn'
 
 function LanguageSelector() {
-    const { i18n } = useTranslation();
+    const { t, i18n } = useTranslation();
     const [language, setLanguage] = useState(i18n.language);
     const languages = ['bg', 'en'];
     let languageIndex = languages.indexOf(language);
@@ -18,7 +18,7 @@ function LanguageSelector() {
         i18n.changeLanguage(languages[languageIndex]);
     };
 
-    return <HeaderBtn icon="globe" padding="p-2" textSize="text-3xl" onClick={handleClick} />;
+    return <HeaderBtn onClick={handleClick} icon="globe" iconOrder="1" text={t("header.Language")} />;
 }
 
 export default LanguageSelector;

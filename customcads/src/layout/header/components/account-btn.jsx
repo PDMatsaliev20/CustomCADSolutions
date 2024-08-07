@@ -6,7 +6,7 @@ import { useContext } from 'react'
 import AuthContext from '@/components/auth-context'
 import HeaderBtn from './header-btn'
 
-export default function Example() {
+export default function AccountBtn() {
     const navigate = useNavigate();
     const { t } = useTranslation();
     const { userRole, username, setIsAuthenticated } = useContext(AuthContext);
@@ -25,27 +25,20 @@ export default function Example() {
         <Disclosure as="div" className="relative">
             <Menu as="div" className="relative">
                 <MenuButton as="div">
-                    <HeaderBtn icon="id-card" textSize="text-3xl" padding="p-2" />
+                    <HeaderBtn icon="id-card" iconOrder="2" text={username} />
                 </MenuButton>
                 <MenuItems transition
-                    className="absolute right-0 mt-2 z-10 py-2 text-center text-indigo-800 
-                                rounded-md bg-indigo-50 border border-indigo-500 w-60 shadow-lg shadow-indigo-400
-                                data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 
-                                data-[enter]:duration-150 data-[enter]:ease-out 
-                                data-[leave]:duration-75 data-[leave]:ease-in"
+                    className="absolute left-0 mt-2 z-10 text-center text-indigo-800 rounded-md bg-indigo-50 border border-indigo-500 w-60 shadow-lg shadow-indigo-400
+                                data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-150 data-[enter]:ease-out data-[leave]:duration-75 data-[leave]:ease-in"
                 >
-                    <div className="flex flex-wrap justify-center gap-y-2">
-                        <MenuItem as="div" className="basis-full flex gap-x-2 justify-center items-center">
-                            <span className="text-lg font-extrabold">{username}</span>
-                        </MenuItem>
-
+                    <div className="my-4 flex flex-col gap-y-4">
                         <MenuItem as="div" className="basis-full">
                             <span className="italic font-bold">
                                 {`${t('header.Role')} ${t(`common.roles.${userRole}`)}`}
                             </span>
                         </MenuItem>
 
-                        <div className="basis-full border-b-2 border-indigo-700 my-2 mb-1"></div>
+                        <div className="basis-full border-b-2 border-indigo-700"></div>
 
                         <div>
                             <MenuItem as="div" className="basis-full">

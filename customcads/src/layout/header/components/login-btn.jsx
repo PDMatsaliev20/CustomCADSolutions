@@ -1,11 +1,15 @@
-import { useNavigate } from 'react-router-dom'
 import HeaderBtn from './header-btn'
+import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
 
 function LoginBtn() {
-    const navigate = useNavigate();
+    const { t } = useTranslation();
 
-    return <HeaderBtn icon="user-secret" padding="p-2" textSize="text-3xl"
-        onClick={() => navigate('/login')} />;
+    return (
+        <Link to="/login">
+            <HeaderBtn icon="user-secret" iconOrder="2" text={t("header.Login")} />
+        </Link>
+    )
 }
 
 export default LoginBtn;
