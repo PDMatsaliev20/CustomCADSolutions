@@ -1,7 +1,7 @@
 import Cad from '@/components/cad'
 import { useTranslation } from 'react-i18next'
 
-function ContributorCadItem({ item, onValidate, onReport }) {
+function UncheckedCad({ item, onValidate, onReport }) {
     const { t } = useTranslation();
 
     const handleValidate = () => {
@@ -43,4 +43,4 @@ function ContributorCadItem({ item, onValidate, onReport }) {
     );
 }
 
-export default ContributorCadItem;
+export default UncheckedCad;

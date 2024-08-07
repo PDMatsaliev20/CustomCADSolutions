@@ -9,7 +9,7 @@ import { GetCategories } from '@/requests/public/home'
 import { PostCad } from '@/requests/private/cads'
 import { FinishOrder } from '@/requests/private/designer'
 
-function UploadCad() {
+function CompleteOrder() {
     const { t } = useTranslation();
     const { id } = useParams();
     const navigate = useNavigate();
@@ -187,4 +187,4 @@ function UploadCad() {
     };
 }
 
-export default UploadCad;
+export default CompleteOrder;

@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next'
 import { useState, useEffect } from 'react'
 import { GetOrdersByStatus } from '@/requests/private/designer'
 
-function AllOrders() {
+function OngoingOrders() {
     const { t } = useTranslation();
     const { status } = useLoaderData();
     const [orders, setOrders] = useState([]);
@@ -77,4 +77,4 @@ function AllOrders() {
     }
 }
 
-export default AllOrders;
+export default OngoingOrders;

@@ -1,18 +1,18 @@
 import AuthGuard from '@/routing/auth-guard'
-import ClientOrders from '@/private/designer/client-orders/orders/orders'
-import CompleteOrder from '@/private/designer/client-orders/complete/complete-order'
-import ContributorCads from '@/private/designer/contributor-cads/cads'
+import OngoingOrders from '@/private/designer/ongoing-orders/ongoing-orders'
+import CompleteOrder from '@/private/designer/complete-order/complete-order'
+import UncheckedCads from '@/private/designer/unchecked-cads/unchecked-cads'
 
 export default {
     element: <AuthGuard auth="private" roles={['Designer']} />,
     children: [
         {
             path: '/designer/cads',
-            element: <ContributorCads />
+            element: <UncheckedCads />
         },
         {
             path: '/designer/orders/:status',
-            element: <ClientOrders />,
+            element: <OngoingOrders />,
             loader: async ({ params }) => ({ status: params.status[0].toUpperCase() + params.status.slice(1) })
         },
         {

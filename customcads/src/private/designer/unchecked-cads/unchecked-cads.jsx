@@ -1,11 +1,11 @@
-import ContributorCadItem from './components/cads-item'
+import ContributorCadItem from './components/unchecked-cad'
 import SearchBar from '@/components/searchbar/searchbar'
 import useObjectToURL from '@/hooks/useObjectToURL'
 import { useTranslation } from 'react-i18next'
 import { useState, useEffect } from 'react'
 import { GetCadsByStatus, PatchCadStatus } from '@/requests/private/designer'
 
-function UnvalidatedCads() {
+function UncheckedCads() {
     const { t } = useTranslation();
     const [cads, setCads] = useState([]);
     const [search, setSearch] = useState({ name: '', category: '', creator: '', sorting: '' });
@@ -57,4 +57,4 @@ function UnvalidatedCads() {
     }
 }
 
-export default UnvalidatedCads;
+export default UncheckedCads;
