@@ -4,7 +4,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCadContext(builder.Configuration);
 builder.Services.AddAppIdentity();
-builder.Services.AddAbstractions();
+builder.Services.AddStripe(builder.Configuration);
+builder.Services.AddServices();
 
 string[] roles = [Admin, Designer, Contributor, Client];
 builder.Services.AddAuthWithCookie().AddRoles(roles);

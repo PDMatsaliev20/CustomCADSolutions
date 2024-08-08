@@ -6,6 +6,7 @@ using CustomCADs.API.Models.Orders;
 using CustomCADs.API.Models.Queries;
 using CustomCADs.Core.Contracts;
 using CustomCADs.Core.Models;
+using CustomCADs.Core.Models.Cads;
 using CustomCADs.Core.Models.Orders;
 using CustomCADs.Domain.Entities.Enums;
 using Microsoft.AspNetCore.Authorization;
@@ -22,7 +23,7 @@ namespace CustomCADs.API.Controllers
     [Authorize(Roles = Client)]
     [ApiController]
     [Route("API/[controller]")]
-    public class OrdersController(IOrderService orderService, IWebHostEnvironment env) : ControllerBase
+    public class OrdersController(IOrderService orderService, ICadService cadService, IWebHostEnvironment env) : ControllerBase
     {
         private readonly string createdAtReturnAction = nameof(GetOrderAsync).Replace("Async", "");
         private readonly IMapper mapper = new MapperConfiguration(cfg =>
@@ -127,6 +128,51 @@ namespace CustomCADs.API.Controllers
             )
             {
                 return StatusCode(Status502BadGateway, ex.GetMessage());
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                return Conflict(ex.GetMessage());
+            }
+            catch (DbUpdateException ex)
+            {
+                return BadRequest(ex.GetMessage());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(Status500InternalServerError, ex.GetMessage());
+            }
+        }
+
+        [HttpPost("{id}")]
+        [ProducesResponseType(Status201Created)]
+        [ProducesResponseType(Status404NotFound)]
+        [ProducesResponseType(Status500InternalServerError)]
+        public async Task<ActionResult> OrderExistingAsync(int id)
+        {
+            try
+            {
+                CadModel cad = await cadService.GetByIdAsync(id).ConfigureAwait(false);
+                OrderModel order = new()
+                {
+                    Name = cad.Name,
+                    Description = string.Format(CadPurchasedMessage, id),
+                    Status = OrderStatus.Finished,
+                    CategoryId = cad.CategoryId,
+                    OrderDate = DateTime.Now,
+                    CadId = id,
+                    BuyerId = User.GetId(),
+                    DesignerId = cad.CreatorId,
+                };
+                int newOrderId = await orderService.CreateAsync(order).ConfigureAwait(false);
+
+                order = await orderService.GetByIdAsync(newOrderId).ConfigureAwait(false);
+                OrderExportDTO export = mapper.Map<OrderExportDTO>(order);
+
+                return CreatedAtAction(createdAtReturnAction, "Orders", new { id = newOrderId }, export);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.GetMessage());
             }
             catch (DbUpdateConcurrencyException ex)
             {

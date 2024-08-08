@@ -1,6 +1,6 @@
-﻿namespace CustomCADs.API.Helpers
+﻿namespace CustomCADs.Infrastructure.Payment
 {
-    public class StripeInfo
+    public class StripeKeys
     {
         public string LiveSecretKey { get; set; } = null!;
         public string LivePublishableKey { get; set; } = null!;

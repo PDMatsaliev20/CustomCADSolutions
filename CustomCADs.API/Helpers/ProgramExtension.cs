@@ -7,7 +7,8 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.StaticFiles;
-using CustomCADs.API.Helpers;
+using CustomCADs.Infrastructure.Payment;
+using Stripe;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -36,18 +37,19 @@ namespace Microsoft.Extensions.DependencyInjection
             .AddDefaultTokenProviders();
         }
 
-        public static void AddAbstractions(this IServiceCollection services)
+        public static IServiceCollection AddStripe(this IServiceCollection services, IConfiguration config)
+        {
+            services.Configure<StripeKeys>(config.GetSection("Stripe"));
+            services.AddScoped<PaymentIntentService>();
+            services.AddScoped<IStripeService, StripeService>();
+            return services;
+        }
+
+        public static void AddServices(this IServiceCollection services)
         {
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<ICadService, CadService>();
             services.AddScoped<ICategoryService, CategoryService>();
-        }
-
-        public static IServiceCollection AddStripe(this IServiceCollection services, IConfiguration config)
-        {
-            IConfigurationSection stripeSection = config.GetSection("Stripe");
-            services.Configure<StripeInfo>(stripeSection);
-            return services;
         }
 
         public static void AddJsonAndXml(this IMvcBuilder mvc)
