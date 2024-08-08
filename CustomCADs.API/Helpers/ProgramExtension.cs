@@ -9,6 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.StaticFiles;
 using CustomCADs.Infrastructure.Payment;
 using Stripe;
+using CustomCADs.Infrastructure.Payment.Services;
+using CustomCADs.Infrastructure.Payment.Contracts;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -110,7 +112,7 @@ namespace Microsoft.Extensions.DependencyInjection
             });
         }
 
-        public static IApplicationBuilder UseStaticFilesWithGlb(this IApplicationBuilder app)
+        public static IApplicationBuilder UseStaticFilesAndCads(this IApplicationBuilder app)
         {
             app.UseStaticFiles(new StaticFileOptions()
             {

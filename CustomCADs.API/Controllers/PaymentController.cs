@@ -3,7 +3,7 @@ using CustomCADs.API.Helpers;
 using CustomCADs.API.Mappings;
 using CustomCADs.Core.Contracts;
 using CustomCADs.Core.Models.Cads;
-using CustomCADs.Infrastructure.Payment;
+using CustomCADs.Infrastructure.Payment.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Stripe;

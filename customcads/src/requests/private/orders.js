@@ -13,7 +13,11 @@ const GetOrderCad = async (id) => {
 }
 
 const PostOrder = async (order) => {
-    return await axios.post(`API/Orders`, order);
+    return await axios.post('API/Orders', order);
+}
+
+const OrderExisting = async (id, order) => {
+    return await axios.post(`API/Orders/${id}`, order);
 }
 
 const PutOrder = async (id, order) => {
@@ -28,4 +32,4 @@ const DeleteOrder = async (id) => {
     return await axios.delete(`API/Orders/${id}`);
 }
 
-export { GetOrders, GetOrder, GetOrderCad, PostOrder, PutOrder, PatchOrder, DeleteOrder };
+export { GetOrders, GetOrder, GetOrderCad, PostOrder, OrderExisting, PutOrder, PatchOrder, DeleteOrder };

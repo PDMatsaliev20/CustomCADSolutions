@@ -1,8 +1,9 @@
+import Spinner from '@/components/spinner'
+import { GetCad } from '@/requests/public/home'
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import { useState, useEffect, useRef } from 'react'
-import { GetCad } from '@/requests/public/home'
 
 function Cad({ cad, isHomeCad }) {
     const mountRef = useRef(null);
@@ -137,9 +138,7 @@ function Cad({ cad, isHomeCad }) {
     return !isHomeCad && loader
         ? <>
             <div ref={mountRef} className="w-full h-full hidden" />
-            <div className="w-full h-full flex justify-center items-center">
-                <div className="animate-spin w-12 h-12 border-4 border-indigo-500 border-b-transparent rounded-full border-box" />
-            </div>
+            <Spinner />
         </>
         : <div ref={mountRef} className="w-full h-full" />;
 
