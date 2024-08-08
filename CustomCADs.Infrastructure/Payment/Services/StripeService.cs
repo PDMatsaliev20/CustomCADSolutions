@@ -1,7 +1,9 @@
-﻿using Microsoft.Extensions.Options;
+﻿using CustomCADs.Infrastructure.Payment.Contracts;
+using CustomCADs.Infrastructure.Payment.DTOs;
+using Microsoft.Extensions.Options;
 using Stripe;
 
-namespace CustomCADs.Infrastructure.Payment
+namespace CustomCADs.Infrastructure.Payment.Services
 {
     public class StripeService(IOptions<StripeKeys> options, PaymentIntentService paymentIntentService) : IStripeService
     {
@@ -15,7 +17,7 @@ namespace CustomCADs.Infrastructure.Payment
         public async Task<PaymentIntent> ProcessPayment(string paymentMethodId, PurchaseInfo purchase)
         {
             StripeConfiguration.ApiKey = keys.TestSecretKey;
-            
+
             return await paymentIntentService.CreateAsync(new()
             {
                 Amount = Convert.ToInt64(purchase.Price * 100),

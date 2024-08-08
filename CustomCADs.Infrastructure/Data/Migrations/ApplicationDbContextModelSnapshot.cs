@@ -105,7 +105,7 @@ namespace CustomCADs.Infrastructure.Data.Migrations
 
                     b.HasIndex("CreatorId");
 
-                    b.ToTable("Cads");
+                    b.ToTable("Cads", (string)null);
                 });
 
             modelBuilder.Entity("CustomCADs.Domain.Entities.Category", b =>
@@ -122,7 +122,7 @@ namespace CustomCADs.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
 
                     b.HasData(
                         new
@@ -349,7 +349,7 @@ namespace CustomCADs.Infrastructure.Data.Migrations
 
                     b.HasIndex("DesignerId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

@@ -1,6 +1,7 @@
-﻿using Stripe;
+﻿using CustomCADs.Infrastructure.Payment.DTOs;
+using Stripe;
 
-namespace CustomCADs.Infrastructure.Payment
+namespace CustomCADs.Infrastructure.Payment.Contracts
 {
     public interface IStripeService
     {
