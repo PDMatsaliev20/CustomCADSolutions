@@ -1,16 +1,39 @@
 import { useTranslation } from 'react-i18next'
-import { useState, useEffect } from 'react'
-import { PatchOrder, GetOrderCad } from '@/requests/private/orders'
+import { useState } from 'react'
+import { PatchOrder, DownloadOrderCad } from '@/requests/private/orders'
 
 function FinishedOrder({ order }) {
     const { t } = useTranslation();
-    const [cad, setCad] = useState({ cadPath: '' });
     const [shouldBeDelivered, setShouldBeDelivered] = useState(order.shouldBeDelivered);
     const machineReadableDateTime = order.orderDate && order.orderDate.replaceAll('.', '-');
 
-    useEffect(() => {
-        fetchCad();
-    }, []);
+    
+    const handleDownload = async () => {
+        try {
+            const { data, headers: { 'content-type': contentType } } = await DownloadOrderCad(order.id);
+            const blob = new Blob([data], { type: contentType });
+            
+            const url = window.URL.createObjectURL(blob);
+            
+            const link = document.createElement('a');
+            link.href = url;
+
+            switch (contentType) {
+                case 'model/gltf-binary': link.download = `${order.name}.glb`; break;
+                case 'application/zip': link.download = `${order.name}.zip`; break;
+                default: console.error('Unsupported MIME type.'); return;
+            }
+
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            window.URL.revokeObjectURL(url);
+
+        } catch (error) {
+            console.error('Failed to download the file', error);
+        }
+    };
 
     const handleRequest = async () => {
         try {
@@ -39,11 +62,11 @@ function FinishedOrder({ order }) {
             <section className="grow py-3 px-2 flex flex-col gap-y-6">
                 <p className="grow text-indigo-900 text-center text-lg line-clamp-3">{order.description}</p>
                 <div className="flex flex-wrap justify-around text-indigo-50 font-bold">
-                    <a href={cad.cadPath} download
+                    <button onClick={handleDownload}
                         className="basis-6/12 bg-indigo-700 border border-indigo-500 p-2 rounded text-center text-indigo-50 hover:opacity-70 hover:border-transparent"
                     >
                         {t('body.orders.Download')}
-                    </a>
+                    </button>
                     <button onClick={handleRequest}
                         className="basis-5/12 bg-indigo-100 border border-indigo-600 p-2 rounded text-center text-indigo-950 hover:bg-rose-500 hover:border-transparent hover:text-indigo-50">
                         {
@@ -63,15 +86,6 @@ function FinishedOrder({ order }) {
             </div>
         </div>
     );
-
-    async function fetchCad() {
-        try {
-            const { data } = await GetOrderCad(order.id);
-            setCad(data);
-        } catch (e) {
-            console.error(e);
-        }
-    };
 
 }
 

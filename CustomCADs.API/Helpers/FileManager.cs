@@ -27,7 +27,7 @@ namespace CustomCADs.API.Helpers
             }
             else throw new ArgumentNullException();
         }
-        
+
         public static async Task<string> UploadImageAsync(this IWebHostEnvironment env, IFormFile image, string fileName)
         {
             if (image != null && image.Length != 0)
@@ -50,11 +50,12 @@ namespace CustomCADs.API.Helpers
                     await cad.CopyToAsync(stream).ConfigureAwait(false);
                 }
 
-                if (cad.GetFileExtension() == ".zip")
+                if (cad.GetFileExtension() == ".zip" && IsValidZipFile(cad))
                 {
                     string extractedFolderPath = env.GetPath("cads", $"{name}");
-                    ZipFile.ExtractToDirectory(uploadedFilePath, extractedFolderPath);
+                    SafeExtractZipFile(cad, extractedFolderPath);
 
+                    ZipFile.ExtractToDirectory(uploadedFilePath, extractedFolderPath);
                     File.Delete(uploadedFilePath);
                     return GetRelativeCadPathFromFolder(extractedFolderPath, ["gltf"])
                            ?? throw new ArgumentNullException("No CAD in the folder.");
@@ -82,22 +83,86 @@ namespace CustomCADs.API.Helpers
             return null;
         }
 
-        public static void DeleteImage(this IWebHostEnvironment env, string fileName)
-            => File.Delete(env.GetPath("images", fileName));
-        
-        public static void DeleteCad(this IWebHostEnvironment env, string name, string extension)
+        public static bool IsValidZipFile(IFormFile file)
         {
-            switch (extension)
+            try
             {
-                case ".glb":
-                    File.Delete(env.GetPath("cads", name + extension));
+                using Stream stream = file.OpenReadStream();
+                using ZipArchive zip = new(stream, ZipArchiveMode.Read, true);
+                return zip.Entries.Count > 0;
+            }
+            catch (InvalidDataException)
+            {
+                return false;
+            }
+        }
+
+        public static void SafeExtractZipFile(IFormFile zipFile, string extractPath)
+        {
+            Stream stream = zipFile.OpenReadStream();
+            ZipArchive archive = new(stream);
+            {
+                foreach (ZipArchiveEntry entry in archive.Entries)
+                {
+                    string destinationPath = Path.GetFullPath(Path.Combine(extractPath, entry.FullName));
+
+                    if (!destinationPath.StartsWith(Path.GetFullPath(extractPath)))
+                    {
+                        throw new IOException("Attempt to extract file outside of target directory.");
+                    }
+                }
+            }
+        }
+
+        public static async Task<byte[]> GetCadBytes(this IWebHostEnvironment env, string name, string extension)
+        {
+            string path = env.GetPath("cads", name);
+            if (extension == ".glb")
+            {
+                byte[] bytes = await File.ReadAllBytesAsync(path + extension).ConfigureAwait(false);
+                using MemoryStream memoryStream = new(bytes);
+                return memoryStream.ToArray();
+            }
+            else if (extension == ".gltf")
+            {
+                using MemoryStream memoryStream = new();
+                using (ZipArchive archive = new(memoryStream, ZipArchiveMode.Create, true))
+                {
+                    string[] files = Directory.GetFiles(path, "*", SearchOption.AllDirectories);
+                    foreach (string file in files)
+                    {
+                        string relativePath = Path.GetRelativePath(path, file);
+                        archive.CreateEntryFromFile(file, relativePath);
+                    }
+                }
+                memoryStream.Position = 0;
+                return memoryStream.ToArray();
+            }
+            else throw new Exception();
+        }
+
+        public static void DeleteFile(this IWebHostEnvironment env, string folder, string name, string extension)
+        {
+            switch (folder)
+            {
+                case "orders": break;
+                case "images": break;
+                case "cads":
+                    switch (extension)
+                    {
+                        case ".glb":
+                            File.Delete(env.GetPath("cads", name + extension));
+                            break;
+                        case ".gltf":
+                            Directory.Delete(env.GetPath("cads", name), true);
+                            break;
+                        default:
+                            throw new Exception("Unsupported CAD type.");
+                    }
                     break;
-                case ".gltf":
-                    Directory.Delete(env.GetPath("cads", name), true);
-                    break;
-                default:
-                    throw new Exception("Unsupported CAD type.");
-            }                
+
+                default: throw new InvalidOperationException();
+            }
         }
     }
 }

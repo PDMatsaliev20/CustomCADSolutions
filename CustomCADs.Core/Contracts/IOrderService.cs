@@ -1,4 +1,5 @@
 ﻿using CustomCADs.Core.Models;
+using CustomCADs.Core.Models.Cads;
 using CustomCADs.Core.Models.Orders;
 using CustomCADs.Domain.Entities;
 using System.Linq.Expressions;
@@ -20,6 +21,14 @@ namespace CustomCADs.Core.Contracts
         /// <returns>A Task that represents the Order as a service model.</returns>
         /// <exception cref="KeyNotFoundException">if no Order with the given id exists.</exception>
         Task<OrderModel> GetByIdAsync(int id);
+        
+        /// <summary>
+        ///     Searches for the Order's Cad by the given id.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>A Task that represents the Order as a service model.</returns>
+        /// <exception cref="KeyNotFoundException">if no Order with the given id exists.</exception>
+        Task<CadModel> GetCadAsync(int id);
 
         ///<summary>
         ///     Checks whether an Order exists by the given id.

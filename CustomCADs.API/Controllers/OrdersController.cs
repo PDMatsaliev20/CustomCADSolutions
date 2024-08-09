@@ -47,10 +47,10 @@ namespace CustomCADs.API.Controllers
                     string allowedStatuses = string.Join(", ", Enum.GetNames<OrderStatus>());
                     return BadRequest(string.Format(InvalidStatus, allowedStatuses));
                 }
-                 
+
                 OrderQuery query = new() { Buyer = User.Identity!.Name, Status = enumStatus };
                 SearchModel search = new() { Category = category, Name = name, Sorting = sorting ?? string.Empty };
-                
+
                 OrderResult result = await orderService.GetAllAsync(query, search, pagination).ConfigureAwait(false);
                 return mapper.Map<OrderResultDTO>(result);
             }
@@ -291,6 +291,12 @@ namespace CustomCADs.API.Controllers
         {
             try
             {
+                OrderModel model = await orderService.GetByIdAsync(id).ConfigureAwait(false);
+                if (string.IsNullOrEmpty(model.ImagePath))
+                {
+                    env.DeleteFile("orders", model.Name + model.Id, model.ImageExtension!);
+                }
+
                 await orderService.DeleteAsync(id).ConfigureAwait(false);
                 return NoContent();
             }
@@ -312,27 +318,21 @@ namespace CustomCADs.API.Controllers
             }
         }
 
-        [HttpGet("GetCad/{id}")]
+        [HttpGet("DownloadCad/{id}")]
+        [Produces("model/gltf-binary", "application/zip")]
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status404NotFound)]
-        public async Task<ActionResult<CadGetDTO>> GetCadAsync(int id)
+        [ProducesResponseType(Status500InternalServerError)]
+        public async Task<ActionResult> DownloadCad(int id)
         {
             try
             {
-                OrderModel order = await orderService.GetByIdAsync(id).ConfigureAwait(false);
-                if (order.CadId == null)
-                {
-                    return NotFound(OrderHasNoCad);
-                }
-
-                return mapper.Map<CadGetDTO>(order.Cad);
-            }
-            catch (Exception ex) when (
-                ex is AutoMapperConfigurationException
-                || ex is AutoMapperMappingException
-            )
-            {
-                return StatusCode(Status502BadGateway, ex.GetMessage());
+                CadModel model = await orderService.GetCadAsync(id).ConfigureAwait(false);
+                
+                byte[] cad = await env.GetCadBytes(model.Name + model.Id, model.CadExtension).ConfigureAwait(false);
+                return model.CadExtension == ".glb"
+                    ? File(cad, "model/gltf-binary", $"{model.Name}.glb")
+                    : File(cad, "application/zip", $"{model.Name}.zip");
             }
             catch (KeyNotFoundException ex)
             {

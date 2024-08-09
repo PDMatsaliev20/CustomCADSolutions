@@ -34,6 +34,7 @@ namespace CustomCADs.Core.Models.Orders
         public bool ShouldBeDelivered { get; set; }
 
         public string? ImagePath { get; set; }
+        public string? ImageExtension => '.' + ImagePath?.Split('.')[^1].ToLower();
 
         public int? CadId { get; set; }
         public CadModel? Cad { get; set; }

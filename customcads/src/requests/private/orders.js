@@ -8,8 +8,8 @@ const GetOrder = async (id) => {
     return await axios.get(`API/Orders/${id}`);
 }
 
-const GetOrderCad = async (id) => {
-    return await axios.get(`API/Orders/GetCad/${id}`);
+const DownloadOrderCad = async (id) => {
+    return await axios.get(`API/Orders/DownloadCad/${id}`, { responseType: 'arraybuffer' });
 }
 
 const PostOrder = async (order) => {
@@ -32,4 +32,4 @@ const DeleteOrder = async (id) => {
     return await axios.delete(`API/Orders/${id}`);
 }
 
-export { GetOrders, GetOrder, GetOrderCad, PostOrder, OrderExisting, PutOrder, PatchOrder, DeleteOrder };
+export { GetOrders, GetOrder, DownloadOrderCad, PostOrder, OrderExisting, PutOrder, PatchOrder, DeleteOrder };

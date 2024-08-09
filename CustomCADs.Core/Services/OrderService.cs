@@ -2,6 +2,7 @@
 using CustomCADs.Core.Contracts;
 using CustomCADs.Core.Mappings;
 using CustomCADs.Core.Models;
+using CustomCADs.Core.Models.Cads;
 using CustomCADs.Core.Models.Orders;
 using CustomCADs.Domain;
 using CustomCADs.Domain.Entities;
@@ -86,6 +87,19 @@ namespace CustomCADs.Core.Services
                 ?? throw new KeyNotFoundException();
 
             OrderModel model = mapper.Map<OrderModel>(order);
+            return model;
+        }
+        
+        public async Task<CadModel> GetCadAsync(int id)
+        {
+            Order? order = await repository.GetByIdAsync<Order>(id).ConfigureAwait(false);
+
+            if (order == null || order.CadId == null)
+            {
+                throw new KeyNotFoundException();
+            }
+
+            CadModel model = mapper.Map<CadModel>(order.Cad);
             return model;
         }
 

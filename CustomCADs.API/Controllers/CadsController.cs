@@ -166,7 +166,7 @@ namespace CustomCADs.API.Controllers
 
                 if (dto.Image != null)
                 {
-                    env.DeleteImage(cad.Name + id + cad.ImageExtension);
+                    env.DeleteFile("images", cad.Name + id, cad.ImageExtension);
                     string imagePath = await env.UploadImageAsync(dto.Image, dto.Name + id + dto.Image.GetFileExtension()).ConfigureAwait(false);
                     await cadService.SetPathsAsync(id, cad.CadPath, imagePath).ConfigureAwait(false);
                 }
@@ -264,8 +264,8 @@ namespace CustomCADs.API.Controllers
                 
                 await cadService.DeleteAsync(id).ConfigureAwait(false);
 
-                env.DeleteImage(imageFileName + imageExtension);
-                env.DeleteCad(cadFileName, cadExtension);
+                env.DeleteFile("images", imageFileName, imageExtension);
+                env.DeleteFile("cads", cadFileName, cadExtension);
                 
                 return NoContent();
             }
