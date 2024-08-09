@@ -1,13 +1,13 @@
-import AuthGuard from '@/routing/auth-guard'
-import HomePage from '@/public/home/home'
-import GalleryPage from '@/public/gallery/gallery'
-import GalleryDetailsPage from '@/public/gallery/gallery-details'
-import PrivacyPolicyPage from '@/public/policy/policy'
-import AboutUsPage from '@/public/about/about'
-import ClientInfoPage from '@/public/info/client'
-import ContributorInfoPage from '@/public/info/contributor'
-import DesignerInfoPage from '@/public/info/designer'
-import { GalleryCad } from '@/requests/public/home'
+import AuthGuard from '@/routing/auth-guard';
+import { GalleryCad } from '@/requests/public/home';
+import HomePage from '@/public/home/home';
+import GalleryPage from '@/public/gallery/gallery';
+import GalleryDetailsPage from '@/public/gallery/gallery-details';
+import PrivacyPolicyPage from '@/public/policy/policy';
+import AboutUsPage from '@/public/about/about';
+import ClientInfoPage from '@/public/info/client';
+import ContributorInfoPage from '@/public/info/contributor';
+import DesignerInfoPage from '@/public/info/designer';
 
 export default {
     element: <AuthGuard auth="public" />,

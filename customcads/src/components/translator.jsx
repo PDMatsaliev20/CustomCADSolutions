@@ -1,7 +1,7 @@
-﻿import i18n from "i18next"
-import { initReactI18next } from "react-i18next"
-import useEnglish from '@/languages/hooks/useEnglish'
-import useBulgarian from '@/languages/hooks/useBulgarian'
+﻿import i18n from 'i18next';
+import { initReactI18next } from 'react-i18next';
+import useEnglish from '@/languages/hooks/useEnglish';
+import useBulgarian from '@/languages/hooks/useBulgarian';
 
 const resources = {
     en: useEnglish(),

@@ -1,4 +1,4 @@
-import axios from '../axios'
+import axios from '../axios';
 
 const GetUsers = async () => {
     return await axios.get('API/Admin/Users');

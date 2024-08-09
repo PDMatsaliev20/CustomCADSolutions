@@ -1,5 +1,5 @@
-import Cad from '@/components/cad'
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next';
+import Cad from '@/components/cad';
 
 function UncheckedCad({ item, onValidate, onReport }) {
     const { t } = useTranslation();

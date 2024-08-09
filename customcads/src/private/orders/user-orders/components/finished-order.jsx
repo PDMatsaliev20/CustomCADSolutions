@@ -1,6 +1,6 @@
-import { useTranslation } from 'react-i18next'
-import { useState } from 'react'
-import { PatchOrder, DownloadOrderCad } from '@/requests/private/orders'
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { PatchOrder, DownloadOrderCad } from '@/requests/private/orders';
 
 function FinishedOrder({ order }) {
     const { t } = useTranslation();

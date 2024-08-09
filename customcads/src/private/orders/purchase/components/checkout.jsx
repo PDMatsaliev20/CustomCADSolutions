@@ -1,6 +1,6 @@
-import { Purchase } from '@/requests/private/payment'
-import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js'
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
+import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import { Purchase } from '@/requests/private/payment';
 
 function CheckoutForm({ id, onSubmit }) {
     const stripe = useStripe();

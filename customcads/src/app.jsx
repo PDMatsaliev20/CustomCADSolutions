@@ -1,12 +1,12 @@
-import AuthContext from '@/components/auth-context'
-import Header from './layout/header/header'
-import Navbar from './layout/navbar/navbar'
-import Footer from './layout/footer/footer'
-import { useState, useEffect } from 'react'
-import { Outlet } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
-import { IsAuthenticated, GetUserRole } from '@/requests/public/identity'
-import './index.css'
+import { useState, useEffect } from 'react';
+import { Outlet } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import AuthContext from '@/components/auth-context';
+import { IsAuthenticated, GetUserRole } from '@/requests/public/identity';
+import Header from '@/layout/header/header';
+import Navbar from '@/layout/navbar/navbar';
+import Footer from '@/layout/footer/footer';
+import './index.css';
 
 function App() {
     const { i18n } = useTranslation();

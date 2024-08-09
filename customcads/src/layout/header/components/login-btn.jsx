@@ -1,6 +1,6 @@
-import HeaderBtn from './header-btn'
-import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import HeaderBtn from './header-btn';
 
 function LoginBtn() {
     const { t } = useTranslation();

@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
-import { CancelOrder } from '@/requests/private/designer'
+import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { CancelOrder } from '@/requests/private/designer';
 
 function BegunOrder({ order, updateParent }) {
     const { t } = useTranslation();

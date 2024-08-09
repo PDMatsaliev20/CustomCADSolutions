@@ -1,7 +1,7 @@
-import AuthGuard from '@/routing/auth-guard'
-import LoginPage from '@/public/login/login'
-import RegisterPage from '@/public/register/register'
-import ChooseRolePage from '@/public/register/choose-role'
+import AuthGuard from '@/routing/auth-guard';
+import LoginPage from '@/public/login/login';
+import RegisterPage from '@/public/register/register';
+import ChooseRolePage from '@/public/register/choose-role';
 
 export default {
     element: <AuthGuard auth="guest" />,

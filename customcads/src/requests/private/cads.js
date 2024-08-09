@@ -1,4 +1,4 @@
-import axios from '../axios'
+import axios from '../axios';
 
 const GetCads = async (searchParams) => {
     return await axios.get(`API/Cads?${searchParams}`);

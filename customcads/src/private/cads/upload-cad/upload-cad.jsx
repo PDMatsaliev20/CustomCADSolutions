@@ -1,12 +1,12 @@
-import useForm from '@/hooks/useForm'
-import validateUploadCad from './validate-upload-cad'
-import cadValidation from '@/constants/data/cad'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useNavigate } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
-import { useState, useEffect } from 'react'
-import { GetCategories } from '@/requests/public/home'
-import { PostCad } from '@/requests/private/cads'
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import useForm from '@/hooks/useForm';
+import { GetCategories } from '@/requests/public/home';
+import { PostCad } from '@/requests/private/cads';
+import cadValidation from '@/constants/data/cad';
+import validateUploadCad from './validate-upload-cad';
 
 function UploadCad() {
     const { t } = useTranslation();

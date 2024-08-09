@@ -1,13 +1,12 @@
-import SearchBar from '@/components/searchbar/searchbar'
-import useObjectToURL from '@/hooks/useObjectToURL'
-import PendingOrder from './components/pending-order'
-import BegunOrder from './components/begun-order'
-import FinishedOrder from './components/finished-order'
-import { DeleteOrder } from '@/requests/private/orders'
-import { useTranslation } from 'react-i18next'
-import { Link, useParams } from 'react-router-dom'
-import { useState, useEffect } from 'react'
-import { GetOrders } from '@/requests/private/orders'
+import { useState, useEffect } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import useObjectToURL from '@/hooks/useObjectToURL';
+import { GetOrders, DeleteOrder } from '@/requests/private/orders';
+import SearchBar from '@/components/searchbar/searchbar';
+import PendingOrder from './components/pending-order';
+import BegunOrder from './components/begun-order';
+import FinishedOrder from './components/finished-order';
 
 function UserOrders() {
     const { t } = useTranslation();

@@ -1,8 +1,8 @@
-import FooterLink from './components/footer-link'
-import FooterHeading from './components/footer-heading'
-import SocialMedia from './components/social-media'
-import { useTranslation } from 'react-i18next'
-import { faTwitter, faInstagram, faFacebook, faGithub } from '@fortawesome/free-brands-svg-icons'
+import { useTranslation } from 'react-i18next';
+import { faTwitter, faInstagram, faFacebook, faGithub } from '@fortawesome/free-brands-svg-icons';
+import FooterLink from './components/footer-link';
+import FooterHeading from './components/footer-heading';
+import SocialMedia from './components/social-media';
 
 function Footer() {
     const { t } = useTranslation();

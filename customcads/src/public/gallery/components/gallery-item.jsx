@@ -1,5 +1,5 @@
-import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 function GalleryItem({ item }) {
     const { t } = useTranslation();

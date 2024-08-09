@@ -1,5 +1,5 @@
-import { useTranslation } from 'react-i18next'
-import { BeginOrder, ReportOrder } from '@/requests/private/designer'
+import { useTranslation } from 'react-i18next';
+import { BeginOrder, ReportOrder } from '@/requests/private/designer';
 
 function PendingOrder({ order, updateParent }) {
     const { t } = useTranslation();

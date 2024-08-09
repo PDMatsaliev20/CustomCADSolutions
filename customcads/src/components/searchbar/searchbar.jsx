@@ -1,9 +1,9 @@
-import InputField from './input-field'
-import SelectField from './select-field'
-import { useState, useEffect } from 'react'
-import { GetCategories, GetSortings } from '@/requests/public/home'
-import { useTranslation } from 'react-i18next'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { GetCategories, GetSortings } from '@/requests/public/home';
+import InputField from './input-field';
+import SelectField from './select-field';
 
 function SearchBar({ setSearch }) {
     const { t } = useTranslation();

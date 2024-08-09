@@ -1,4 +1,4 @@
-import axios from '../axios'
+import axios from '../axios';
 
 const GetPublicKey = async () => {
     return await axios.get(`API/Payment/GetPublicKey`);

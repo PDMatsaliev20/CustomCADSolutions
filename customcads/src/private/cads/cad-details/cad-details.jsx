@@ -1,10 +1,10 @@
-import Cad from '@/components/cad'
-import constants from '@/constants/data/cad'
-import { useTranslation } from 'react-i18next'
-import { useParams, useNavigate, useLoaderData } from 'react-router-dom'
-import { useState, useEffect } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { PutCad, PatchCad, DeleteCad } from '@/requests/private/cads'
+import { useState, useEffect } from 'react';
+import { useParams, useNavigate, useLoaderData } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { PutCad, PatchCad, DeleteCad } from '@/requests/private/cads';
+import constants from '@/constants/data/cad';
+import Cad from '@/components/cad';
 
 function EditCadPage() {
     const { t } = useTranslation();

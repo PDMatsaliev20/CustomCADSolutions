@@ -1,7 +1,7 @@
-import { useTranslation } from 'react-i18next'
-import { useParams, useNavigate, useLoaderData } from 'react-router-dom'
-import { useState, useEffect } from 'react'
-import { PutOrder } from '@/requests/private/orders'
+import { useState, useEffect } from 'react';
+import { useParams, useNavigate, useLoaderData } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { PutOrder } from '@/requests/private/orders';
 
 function OrderDetails() {
     const { t } = useTranslation();

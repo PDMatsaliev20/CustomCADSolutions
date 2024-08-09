@@ -1,5 +1,5 @@
-import userValidation from '@/constants/data/user'
-import useErrors from '@/hooks/useErrors'
+import useErrors from '@/hooks/useErrors';
+import userValidation from '@/constants/data/user';
 
 const useValidateLogin = (user) => {
     const errorMessages = useErrors();

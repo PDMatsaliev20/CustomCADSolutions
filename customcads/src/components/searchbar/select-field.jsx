@@ -1,4 +1,4 @@
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next';
 
 function SelectField({ label, name, value, onInput, defaultOption, langPath, items, mapFunction }) {
     const { t } = useTranslation();

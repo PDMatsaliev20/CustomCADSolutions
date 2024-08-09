@@ -1,11 +1,11 @@
-import AuthContext from '@/components/auth-context'
-import useValidateRegister from './useValidateRegister'
-import userValidation from '@/constants/data/user'
-import useForm from '@/hooks/useForm'
-import { Register } from '@/requests/public/identity'
-import { useContext } from 'react'
-import { Link, useParams, useNavigate } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
+import { useContext } from 'react';
+import { Link, useParams, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import useForm from '@/hooks/useForm';
+import AuthContext from '@/components/auth-context';
+import { Register } from '@/requests/public/identity';
+import userValidation from '@/constants/data/user';
+import useValidateRegister from './useValidateRegister';
 
 function RegisterPage() {
     const { setIsAuthenticated } = useContext(AuthContext);

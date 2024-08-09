@@ -1,5 +1,5 @@
-import Profile from './components/profile'
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next';
+import Profile from './components/profile';
 
 function AboutUsPage() {
 

@@ -1,6 +1,6 @@
-﻿import { useTranslation } from 'react-i18next'
-import { useState } from 'react'
-import HeaderBtn from './header-btn'
+﻿import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import HeaderBtn from './header-btn';
 
 function LanguageSelector() {
     const { t, i18n } = useTranslation();

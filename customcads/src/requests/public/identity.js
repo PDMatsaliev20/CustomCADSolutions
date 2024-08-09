@@ -1,4 +1,4 @@
-import axios from '../axios'
+import axios from '../axios';
 
 const Register = async (role, user) => {
     return await axios.post(`/API/Identity/Register/${role}`, user);

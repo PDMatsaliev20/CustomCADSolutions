@@ -1,4 +1,4 @@
-import axios from '../axios'
+import axios from '../axios';
 
 const GetRoles = async () => {
     return await axios.get('API/Admin/Roles');

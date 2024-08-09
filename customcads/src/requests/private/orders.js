@@ -1,4 +1,4 @@
-import axios from '../axios'
+import axios from '../axios';
 
 const GetOrders = async (status, searchParams) => {
     return await axios.get(`API/Orders?status=${status}&${searchParams}`);

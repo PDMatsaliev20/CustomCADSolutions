@@ -1,6 +1,6 @@
-import orderValidation from '@/constants/data/order'
-import useErrors from '@/hooks/useErrors'
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next';
+import useErrors from '@/hooks/useErrors';
+import orderValidation from '@/constants/data/order';
 
 export default (order) => {
     const { t } = useTranslation();

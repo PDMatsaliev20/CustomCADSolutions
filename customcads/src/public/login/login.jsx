@@ -1,10 +1,10 @@
-import AuthContext from '@/components/auth-context'
-import useValidateLogin from './useValidateLogin'
-import useForm from '@/hooks/useForm'
-import { Login } from '@/requests/public/identity'
-import { useContext } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
+import { useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import useForm from '@/hooks/useForm';
+import AuthContext from '@/components/auth-context';
+import { Login } from '@/requests/public/identity';
+import useValidateLogin from './useValidateLogin';
 
 function LoginPage() {
     const { setIsAuthenticated } = useContext(AuthContext);

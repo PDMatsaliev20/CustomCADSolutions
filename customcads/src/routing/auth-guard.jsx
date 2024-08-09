@@ -1,6 +1,6 @@
-import AuthContext from '@/components/auth-context'
-import { Outlet, Navigate } from 'react-router-dom'
-import { useState, useEffect, useContext } from 'react'
+import { useState, useEffect, useContext } from 'react';
+import { Outlet, Navigate } from 'react-router-dom';
+import AuthContext from '@/components/auth-context';
 
 function AuthGuard({ auth, roles }) {
     const { isAuthenticated, userRole } = useContext(AuthContext);

@@ -1,9 +1,9 @@
-import Spinner from '@/components/spinner'
-import { GetCad } from '@/requests/public/home'
-import * as THREE from 'three'
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react';
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { GetCad } from '@/requests/public/home';
+import Spinner from '@/components/spinner';
 
 function Cad({ cad, isHomeCad }) {
     const mountRef = useRef(null);

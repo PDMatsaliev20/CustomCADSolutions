@@ -1,6 +1,6 @@
-import cadValidation from '@/constants/data/cad'
-import useErrors from '@/hooks/useErrors'
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next';
+import useErrors from '@/hooks/useErrors';
+import cadValidation from '@/constants/data/cad';
 
 export default (cad) => {
     const { t } = useTranslation();

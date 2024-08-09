@@ -1,4 +1,4 @@
-import axios from '../axios'
+import axios from '../axios';
 
 const GetCad = async () => {
     return await axios.get('API/Home/Cad');

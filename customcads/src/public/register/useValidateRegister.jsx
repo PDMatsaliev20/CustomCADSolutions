@@ -1,6 +1,6 @@
-import userValidation from '@/constants/data/user'
-import useErrors from '@/hooks/useErrors'
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next';
+import useErrors from '@/hooks/useErrors';
+import userValidation from '@/constants/data/user';
 
 export default (user) => {
     const { t } = useTranslation();

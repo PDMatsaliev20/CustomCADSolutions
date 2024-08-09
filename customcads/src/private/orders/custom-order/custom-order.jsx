@@ -1,11 +1,11 @@
-import useForm from '@/hooks/useForm'
-import validateCustomOrder from './validate-custom-order'
-import orderValidation from '@/constants/data/order'
-import { useNavigate } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
-import { useState, useEffect } from 'react'
-import { PostOrder } from '@/requests/private/orders'
-import { GetCategories } from '@/requests/public/home'
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import useForm from '@/hooks/useForm';
+import { GetCategories } from '@/requests/public/home';
+import { PostOrder } from '@/requests/private/orders';
+import orderValidation from '@/constants/data/order';
+import validateCustomOrder from './validate-custom-order';
 
 function CustomOrder() {
     const { t } = useTranslation();

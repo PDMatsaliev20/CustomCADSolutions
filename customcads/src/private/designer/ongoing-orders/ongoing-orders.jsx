@@ -1,12 +1,12 @@
-import SearchBar from '@/components/searchbar/searchbar'
-import useObjectToURL from '@/hooks/useObjectToURL'
-import PendingOrder from './components/pending-order'
-import BegunOrder from './components/begun-order'
-import FinishedOrder from './components/finished-order'
-import { Link, useLoaderData } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
-import { useState, useEffect } from 'react'
-import { GetOrdersByStatus } from '@/requests/private/designer'
+import { useState, useEffect } from 'react';
+import { Link, useLoaderData } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import useObjectToURL from '@/hooks/useObjectToURL';
+import { GetOrdersByStatus } from '@/requests/private/designer';
+import SearchBar from '@/components/searchbar/searchbar';
+import PendingOrder from './components/pending-order';
+import BegunOrder from './components/begun-order';
+import FinishedOrder from './components/finished-order';
 
 function OngoingOrders() {
     const { t } = useTranslation();

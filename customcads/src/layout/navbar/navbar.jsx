@@ -1,9 +1,9 @@
-import AuthContext from '@/components/auth-context'
-import GuestNavs from './components/guest-navs'
-import ClientNavs from './components/client-navs'
-import ContributorNavs from './components/contributor-navs'
-import DesignerNavs from './components/designer-navs'
-import { useContext } from 'react'
+import { useContext } from 'react';
+import AuthContext from '@/components/auth-context';
+import GuestNavs from './components/guest-navs';
+import ClientNavs from './components/client-navs';
+import ContributorNavs from './components/contributor-navs';
+import DesignerNavs from './components/designer-navs';
 
 function Navbar() {
     const { isAuthenticated, userRole } = useContext(AuthContext);
