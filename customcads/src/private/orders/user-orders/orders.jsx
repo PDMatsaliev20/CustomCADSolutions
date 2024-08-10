@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import useObjectToURL from '@/hooks/useObjectToURL';
 import { GetOrders, DeleteOrder } from '@/requests/private/orders';
-import SearchBar from '@/components/searchbar/searchbar';
+import SearchBar from '@/components/searchbar';
 import PendingOrder from './components/pending-order';
 import BegunOrder from './components/begun-order';
 import FinishedOrder from './components/finished-order';

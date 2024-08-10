@@ -5,7 +5,7 @@ import useForm from '@/hooks/useForm';
 import AuthContext from '@/contexts/auth-context';
 import { Register } from '@/requests/public/identity';
 import userValidation from '@/constants/data/user';
-import useValidateRegister from './useValidateRegister';
+import useValidateRegister from './register.validate';
 
 function RegisterPage() {
     const { setIsAuthenticated } = useContext(AuthContext);

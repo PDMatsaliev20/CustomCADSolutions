@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import useObjectToURL from '@/hooks/useObjectToURL';
 import { GetCads } from '@/requests/private/cads';
-import SearchBar from '@/components/searchbar/searchbar';
+import SearchBar from '@/components/searchbar';
 import UserCadItem from './components/user-cads-item';
 
 function UserCads() {

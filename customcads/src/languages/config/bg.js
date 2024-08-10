@@ -30,39 +30,37 @@ import uploadCadBg from '@/languages/resources/bg/pages/private/cads/upload-cad.
 import designerCadsBg from '@/languages/resources/bg/pages/private/designer/cads.json';
 import designerOrdersBg from '@/languages/resources/bg/pages/private/designer/orders.json';
 
-export default () => {
-    return {
-        translation: {
-            header: headerBg,
-            navbar: navbarBg,
-            body: {
-                home: homeBg,
-                gallery: galleryBg,
-                about: aboutBg,
-                chooseRole: chooseRoleBg,
-                register: registerBg,
-                login: loginBg,
-                orders: ordersBg,
-                orderDetails: ordersDetailsBg,
-                customOrder: customOrderBg,
-                cads: cadsBg,
-                cadDetails: cadDetailsBg,
-                editCad: editCadBg,
-                uploadCad: uploadCadBg,
-                designerCads: designerCadsBg,
-                designerOrders: designerOrdersBg,
-            },
-            footer: footerBg,
-            common: {
-                labels: labelsBg,
-                errors: errorsBg,
-                searchbar: searchbarBg,
-                roles: rolesBg,
-                categories: categoriesBg,
-                sortings: sortingsBg,
-                statuses: statusesBg,
-                others: othersBg,
-            }
+export default {
+    translation: {
+        header: headerBg,
+        navbar: navbarBg,
+        body: {
+            home: homeBg,
+            gallery: galleryBg,
+            about: aboutBg,
+            chooseRole: chooseRoleBg,
+            register: registerBg,
+            login: loginBg,
+            orders: ordersBg,
+            orderDetails: ordersDetailsBg,
+            customOrder: customOrderBg,
+            cads: cadsBg,
+            cadDetails: cadDetailsBg,
+            editCad: editCadBg,
+            uploadCad: uploadCadBg,
+            designerCads: designerCadsBg,
+            designerOrders: designerOrdersBg,
+        },
+        footer: footerBg,
+        common: {
+            labels: labelsBg,
+            errors: errorsBg,
+            searchbar: searchbarBg,
+            roles: rolesBg,
+            categories: categoriesBg,
+            sortings: sortingsBg,
+            statuses: statusesBg,
+            others: othersBg,
         }
-    };
+    }
 };

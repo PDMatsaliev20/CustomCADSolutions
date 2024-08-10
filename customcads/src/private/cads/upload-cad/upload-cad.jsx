@@ -6,7 +6,7 @@ import useForm from '@/hooks/useForm';
 import { GetCategories } from '@/requests/public/home';
 import { PostCad } from '@/requests/private/cads';
 import cadValidation from '@/constants/data/cad';
-import validateUploadCad from './validate-upload-cad';
+import validateUploadCad from './upload-cad.validate';
 
 function UploadCad() {
     const { t } = useTranslation();

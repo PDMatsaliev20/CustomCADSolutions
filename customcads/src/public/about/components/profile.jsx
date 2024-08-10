@@ -1,6 +1,4 @@
-function Profile({ person }) {
-    const { img, name, role, desc } = person;
-
+function Profile({ person: { img, name, role, desc } }) {
     return (
         <article className="flex gap-x-3 p-2 w-full bg-indigo-200 border border-indigo-500 rounded-sm">
             <div className="min-w-[40%]">   

@@ -5,7 +5,7 @@ import useForm from '@/hooks/useForm';
 import { GetCategories } from '@/requests/public/home';
 import { PostOrder } from '@/requests/private/orders';
 import orderValidation from '@/constants/data/order';
-import validateCustomOrder from './validate-custom-order';
+import validateCustomOrder from './custom-order.validate';
 
 function CustomOrder() {
     const { t } = useTranslation();

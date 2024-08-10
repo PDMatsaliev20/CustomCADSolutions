@@ -1,7 +1,7 @@
 import useErrors from '@/hooks/useErrors';
 import userValidation from '@/constants/data/user';
 
-const useValidateLogin = (user) => {
+export default (user) => {
     const errorMessages = useErrors();
     let errors = {};
 
@@ -24,6 +24,4 @@ const useValidateLogin = (user) => {
     }
 
     return errors;
-};
-
-export default useValidateLogin;
+};;

@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import useForm from '@/hooks/useForm';
 import AuthContext from '@/contexts/auth-context';
 import { Login } from '@/requests/public/identity';
-import useValidateLogin from './useValidateLogin';
+import useValidateLogin from './login.validate';
 
 function LoginPage() {
     const { setIsAuthenticated } = useContext(AuthContext);

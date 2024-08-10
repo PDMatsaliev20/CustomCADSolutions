@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
-const useForm = (initialState, validate) => {
+const useForm = (initialState, useValidation) => {
     const { t } = useTranslation();
     const [values, setValues] = useState(initialState);
     const [touched, setTouched] = useState({});
     const [errors, setErrors] = useState({});
-    const validated = validate(values);
+    const validated = useValidation(values);
 
     useEffect(() => {
         setErrors(validated);

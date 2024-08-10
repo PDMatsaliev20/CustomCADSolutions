@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import useObjectToURL from '@/hooks/useObjectToURL';
 import { GetCadsByStatus, PatchCadStatus } from '@/requests/private/designer';
-import SearchBar from '@/components/searchbar/searchbar';
+import SearchBar from '@/components/searchbar';
 import ContributorCadItem from './components/unchecked-cad';
 
 function UncheckedCads() {

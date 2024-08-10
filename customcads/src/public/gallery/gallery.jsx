@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import useObjectToURL from '@/hooks/useObjectToURL';
 import { Gallery } from '@/requests/public/home';
-import SearchBar from '@/components/searchbar/searchbar';
+import SearchBar from '@/components/searchbar';
 import GalleryItem from './components/gallery-item';
 
 function GalleryPage() {

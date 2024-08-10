@@ -7,7 +7,7 @@ import { GetCategories } from '@/requests/public/home';
 import { PostCad } from '@/requests/private/cads';
 import { FinishOrder } from '@/requests/private/designer';
 import cadValidation from '@/constants/data/cad';
-import validateUploadCad from './validate-complete-order';
+import validateUploadCad from './complete-order.validate';
 
 function CompleteOrder() {
     const { t } = useTranslation();

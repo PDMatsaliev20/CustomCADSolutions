@@ -30,39 +30,37 @@ import uploadCadEn from '@/languages/resources/en/pages/private/cads/upload-cad.
 import designerCadsEn from '@/languages/resources/en/pages/private/designer/cads.json';
 import designerOrdersEn from '@/languages/resources/en/pages/private/designer/orders.json';
 
-export default () => {
-    return {
-        translation: {
-            header: headerEn,
-            navbar: navbarEn,
-            body: {
-                home: homeEn,
-                gallery: galleryEn,
-                about: aboutEn,
-                chooseRole: chooseRoleEn,
-                register: registerEn,
-                login: loginEn,
-                orders: ordersEn,
-                orderDetails: ordersDetailsEn,
-                customOrder: customOrderEn,
-                cads: cadsEn,
-                cadDetails: cadDetailsEn,
-                editCad: editCadEn,
-                uploadCad: uploadCadEn,
-                designerCads: designerCadsEn,
-                designerOrders: designerOrdersEn,
-            },
-            footer: footerEn,
-            common: {
-                labels: labelsEn,
-                errors: errorsEn,
-                searchbar: searchbarEn,
-                roles: rolesEn,
-                categories: categoriesEn,
-                sortings: sortingsEn,
-                statuses: statusesEn,
-                others: othersEn,
-            }
+export default {
+    translation: {
+        header: headerEn,
+        navbar: navbarEn,
+        body: {
+            home: homeEn,
+            gallery: galleryEn,
+            about: aboutEn,
+            chooseRole: chooseRoleEn,
+            register: registerEn,
+            login: loginEn,
+            orders: ordersEn,
+            orderDetails: ordersDetailsEn,
+            customOrder: customOrderEn,
+            cads: cadsEn,
+            cadDetails: cadDetailsEn,
+            editCad: editCadEn,
+            uploadCad: uploadCadEn,
+            designerCads: designerCadsEn,
+            designerOrders: designerOrdersEn,
+        },
+        footer: footerEn,
+        common: {
+            labels: labelsEn,
+            errors: errorsEn,
+            searchbar: searchbarEn,
+            roles: rolesEn,
+            categories: categoriesEn,
+            sortings: sortingsEn,
+            statuses: statusesEn,
+            others: othersEn,
         }
-    };
+    }
 };
