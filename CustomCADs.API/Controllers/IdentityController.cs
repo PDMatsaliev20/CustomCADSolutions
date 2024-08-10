@@ -55,7 +55,9 @@ namespace CustomCADs.API.Controllers
                 await userManager.AddToRoleAsync(user, role).ConfigureAwait(false);
                 await user.SignInAsync(signInManager, GetAuthProps(false)).ConfigureAwait(false);
 
+                Response.Cookies.Append("role", role);
                 Response.Cookies.Append("username", user.UserName);
+
                 return "Welcome!";
             }
             catch (DbUpdateConcurrencyException ex)
@@ -65,6 +67,14 @@ namespace CustomCADs.API.Controllers
             catch (DbUpdateException ex)
             {
                 return BadRequest(ex.GetMessage());
+            }
+            catch (ArgumentNullException)
+            {
+                return NotFound(UserHasNoRole);
+            }
+            catch (InvalidOperationException)
+            {
+                return BadRequest(UserHasRoles);
             }
             catch (Exception ex)
             {
@@ -90,7 +100,10 @@ namespace CustomCADs.API.Controllers
                 }
                 await user.SignInAsync(signInManager, GetAuthProps(model.RememberMe)).ConfigureAwait(false);
 
+                var roles = await userManager.GetRolesAsync(user).ConfigureAwait(false);
+                Response.Cookies.Append("role", roles.Single());
                 Response.Cookies.Append("username", user.UserName!);
+                
                 return "Welcome back!";
             }
             catch (Exception ex)
@@ -107,7 +120,10 @@ namespace CustomCADs.API.Controllers
             try
             {
                 await signInManager.Context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme).ConfigureAwait(false);
+                
                 Response.Cookies.Delete("username");
+                Response.Cookies.Delete("role");
+                
                 return "Bye-bye.";
             }
             catch (Exception ex)
