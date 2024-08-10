@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { useLoaderData, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import AuthContext from '@/components/auth-context';
+import AuthContext from '@/contexts/auth-context';
 import Cad from '@/components/cad';
 
 function GalleryDetailsPage() {

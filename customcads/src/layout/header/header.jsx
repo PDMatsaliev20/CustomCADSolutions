@@ -1,7 +1,7 @@
 ﻿import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import AuthContext from '@/components/auth-context';
+import AuthContext from '@/contexts/auth-context';
 import HeaderBtn from './components/header-btn';
 import LoginBtn from './components/login-btn';
 import AccountBtn from './components/account-btn';

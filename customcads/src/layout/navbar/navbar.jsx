@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import AuthContext from '@/components/auth-context';
+import AuthContext from '@/contexts/auth-context';
 import GuestNavs from './components/guest-navs';
 import ClientNavs from './components/client-navs';
 import ContributorNavs from './components/contributor-navs';
