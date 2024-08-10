@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import useForm from '@/hooks/useForm';
 import AuthContext from '@/contexts/auth-context';
 import { Register } from '@/requests/public/identity';
-import userValidation from '@/constants/data/user';
+import Input from '@/components/input';
 import useValidateRegister from './register.validate';
 
 function RegisterPage() {
@@ -45,81 +45,58 @@ function RegisterPage() {
             </h1>
             <div className="w-7/12 pt-8 pb-2 px-12 mt-8 bg-indigo-400 rounded-md">
                 <form onSubmit={(e) => handleSubmit(e, handleSubmitCallback)} autoComplete="off" noValidate>
-                    <div className="mb-4">
-                        <label htmlFor="username" className="block text-indigo-50">
-                            {t('common.labels.Username')}*
-                        </label>
-                        <input
+                    <div className="mb-2 flex flex-col gap-y-4">
+                        <Input
                             id="username"
-                            type="text"
+                            label={t('common.labels.Username')}
                             name="username"
                             value={user.username}
-                            onChange={handleInput}
+                            onInput={handleInput}
                             onBlur={handleBlur}
-                            className="text-indigo-900 w-full mt-1 p-2 px-4 border border-indigo-300 rounded focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                             placeholder={t("body.register.Your_Username123")}
-                            maxLength={userValidation.username.maxLength}
+                            touched={touched.username}
+                            error={errors.username}
+                            isRequired
                         />
-                        <span className={`${touched.username && errors.username ? 'inline-block' : 'hidden'} text-sm bg-red-700 p-1 rounded text-indigo-100 font-bold`}>
-                            {errors.username}
-                        </span>
-                    </div>
-                    <div className="mb-4">
-                        <label htmlFor="email" className="block text-indigo-50">
-                            {t('common.labels.Email')}*
-                        </label>
-                        <input
+                        <Input
                             id="email"
+                            label={t('common.labels.Email')}
                             type="email"
                             name="email"
                             value={user.email}
-                            onChange={handleInput}
+                            onInput={handleInput}
                             onBlur={handleBlur}
-                            className="text-indigo-900 w-full  mt-1 p-2 px-4 border border-indigo-300 rounded focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                             placeholder={t("body.register.your@email.com")}
-                            maxLength={userValidation.email.maxLength}
+                            touched={touched.email}
+                            error={errors.email}
+                            isRequired
                         />
-                        <span className={`${touched.email && errors.email ? 'inline-block' : 'hidden'} text-sm bg-red-700 p-1 rounded text-indigo-100 font-bold`}>
-                            {errors.email}
-                        </span>
-                    </div>
-                    <div className="mb-4">
-                        <label htmlFor="password" className="block text-indigo-50">
-                            {t('common.labels.Password')}*
-                        </label>
-                        <input
+                        <Input
                             id="password"
+                            label={t('common.labels.Password')}
                             type="password"
                             name="password"
                             value={user.password}
-                            onChange={handleInput}
+                            onInput={handleInput}
                             onBlur={handleBlur}
-                            className="text-indigo-900 w-full mt-1 p-2 px-4 border border-indigo-300 rounded focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                            placeholder={t("body.register.your_sercret_password_123")}
-                            maxLength={userValidation.password.maxLength}
+                            placeholder={t("body.register.your_secret_password_123")}
+                            touched={touched.password}
+                            error={errors.password}
+                            isRequired
                         />
-                        <span className={`${touched.password && errors.password ? 'inline-block' : 'hidden'} text-sm bg-red-700 p-1 rounded text-indigo-100 font-bold`}>
-                            {errors.password}
-                        </span>
-                    </div>
-                    <div className="mb-2">
-                        <label htmlFor="confirmPassword" className="block text-indigo-50">
-                            {t('common.labels.Confirm Password')}*
-                        </label>
-                        <input
+                         <Input
                             id="confirmPassword"
+                            label={t('common.labels.Confirm Password')}
                             type="password"
                             name="confirmPassword"
                             value={user.confirmPassword}
-                            onChange={handleInput}
+                            onInput={handleInput}
                             onBlur={handleBlur}
-                            className="text-indigo-900 w-full  mt-1 p-2 px-4 border border-indigo-300 rounded focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                            placeholder={t("body.register.your_sercret_password_123")}
-                            maxLength={userValidation.password.maxLength}
+                            placeholder={t("body.register.your_secret_password_123")}
+                            touched={touched.confirmPassword}
+                            error={errors.confirmPassword}
+                            isRequired
                         />
-                        <span className={`${touched.confirmPassword && errors.confirmPassword ? 'inline-block' : 'hidden'} text-sm bg-red-700 p-1 rounded text-indigo-100 font-bold`}>
-                            {errors.confirmPassword}
-                        </span>
                     </div>
                     <div className="basis-full py-4 flex justify-center items-center gap-3 text-indigo-50">
                         <button

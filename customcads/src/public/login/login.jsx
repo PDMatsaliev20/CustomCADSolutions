@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import useForm from '@/hooks/useForm';
 import AuthContext from '@/contexts/auth-context';
 import { Login } from '@/requests/public/identity';
+import Input from '@/components/input';
 import useValidateLogin from './login.validate';
 
 function LoginPage() {
@@ -37,45 +38,32 @@ function LoginPage() {
             </h1>
             <div className="w-6/12 px-12 pt-8 pb-6 bg-indigo-400 rounded-lg">
                 <form onSubmit={(e) => handleSubmit(e, handleSubmitCallback)} noValidate>
-                    <div className="mb-4">
-                        <label htmlFor="username" className="block text-indigo-50">
-                            {t('common.labels.Username')}*
-                        </label>
-                        <input
+                    <div className="mb-4 flex flex-col gap-y-4">
+                        <Input
                             id="username"
-                            type="text"
+                            label={t('common.labels.Username')}
                             name="username"
                             value={user.username}
                             onInput={handleInput}
                             onBlur={handleBlur}
-                            className="text-indigo-900 w-full mt-1 p-2 px-4 border border-indigo-300 rounded focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                            placeholder={t("body.login.Your_Username123")}
-                            required
+                            placeholder={t('body.login.Your_Username123')}
+                            touched={touched.username} 
+                            error={errors.username} 
+                            isRequired
                         />
-                        <span className={`${touched.username && errors.username ? 'inline-block' : 'hidden'} mt-1 text-sm bg-red-700 p-1 rounded text-indigo-100 font-bold`}
-                        >
-                            {errors.username}
-                        </span>
-                    </div>
-                    <div className="mb-4">
-                        <label htmlFor="password" className="block text-indigo-50">
-                            {t('common.labels.Password')}*
-                        </label>
-                        <input
+                        <Input
                             id="password"
+                            label={t('common.labels.Password')}
                             type="password"
                             name="password"
                             value={user.password}
                             onInput={handleInput}
                             onBlur={handleBlur}
-                            className="text-indigo-900 w-full mt-1 p-2 px-4 border border-indigo-300 rounded focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                            required
-                            placeholder={t("body.login.your_sercret_password_123")}
+                            placeholder={t('body.login.your_secret_password_123')}
+                            touched={touched.password} 
+                            error={errors.password} 
+                            isRequired
                         />
-                        <span className={`${touched.password && errors.password ? 'inline-block' : 'hidden'} mt-1 text-sm bg-red-700 p-1 rounded text-indigo-100 font-bold`}
-                        >
-                            {errors.password}
-                        </span>
                     </div>
                     <div className="flex justify-between items-center">
                         <div className="flex items-center">

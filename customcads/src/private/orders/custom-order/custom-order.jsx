@@ -4,7 +4,9 @@ import { useTranslation } from 'react-i18next';
 import useForm from '@/hooks/useForm';
 import { GetCategories } from '@/requests/public/home';
 import { PostOrder } from '@/requests/private/orders';
-import orderValidation from '@/constants/data/order';
+import Input from '@/components/input';
+import Select from '@/components/select';
+import TextArea from '@/components/textarea';
 import validateCustomOrder from './custom-order.validate';
 
 function CustomOrder() {
@@ -24,7 +26,7 @@ function CustomOrder() {
     useEffect(() => {
         fetchCategories();
     }, []);
-    
+
     const handleSubmitCallback = async () => {
         try {
             await PostOrder(order);
@@ -34,57 +36,53 @@ function CustomOrder() {
         }
     };
 
+    const categoryMap = (category) =>
+        <option key={category.id} value={category.id}>
+            {t(`common.categories.${category.name}`)}
+        </option>;
+
     return (
         <div className="flex flex-col gap-y-8 mt-4">
             <h1 className="text-4xl text-center text-indigo-950 font-bold">{t('body.customOrder.Title')}</h1>
             <form onSubmit={(e) => handleSubmit(e, handleSubmitCallback)} autoComplete="off" noValidate>
                 <div className="w-7/12 mx-auto flex flex-wrap items-start gap-x-4 gap-y-4 bg-indigo-700 py-8 px-10 rounded-xl">
                     <div className="basis-1/2 flex flex-wrap">
-                        <label htmlFor="name" className="basis-full text-indigo-50">
-                            {t('common.labels.Name')}*
-                        </label>
-                        <input
-                            type="text"
+                        <Input
                             id="name"
+                            label={t('common.labels.Name')}
                             name="name"
                             value={order.name}
                             onInput={handleInput}
                             onBlur={handleBlur}
-                            className="w-full rounded bg-indigo-50 text-indigo-900 focus:outline-none p-2"
-                            placeholder={t("body.customOrder.NamePlaceholder")}
-                            maxLength={orderValidation.name.maxLength}
+                            placeholder={t('body.customOrder.NamePlaceholder')}
+                            className="inline-block w-full min-h-10 rounded bg-indigo-50 text-indigo-900 focus:outline-none p-2"
+                            touched={touched.name}
+                            error={errors.name}
+                            isRequired
                         />
-                        <span className={`${touched.name && errors.name ? 'inline-block' : 'hidden'} text-sm bg-red-700 p-1 rounded text-indigo-100 font-bold mt-1`}>
-                            {errors.name}
-                        </span>
                     </div>
-                    <div className="basis-1/3 grow flex flex-wrap">
-                        <label htmlFor="category" className="basis-full text-indigo-50">
-                            {t('common.labels.Category')}*
-                        </label>
-                        <select
+                    <div className="basis-1/3 grow flex flex-wrap text-indigo-50">
+                        <Select
                             id="category"
+                            label={t('common.labels.Category')}
                             name="categoryId"
                             value={order.category}
                             onInput={handleInput}
                             onBlur={handleBlur}
+                            items={categories}
+                            defaultOption={t('common.categories.None')}
+                            onMap={categoryMap}
                             className="inline-block w-full min-h-10 rounded bg-indigo-50 text-indigo-900 focus:outline-none p-2"
-                        >
-                            <option value={''}>{t(`common.categories.None`)}</option>
-                            {categories.map(category =>
-                                <option key={category.id} value={category.id}>{t(`common.categories.${category.name}`)}</option>
-                            )}
-                        </select>
-                        <span className={`${touched.categoryId && errors.categoryId ? 'inline-block' : 'hidden'} text-sm bg-red-700 p-1 rounded text-indigo-100 font-bold`}>
-                            {errors.categoryId}
-                        </span>
+                            touched={touched.categoryId}
+                            error={errors.categoryId}
+                            isRequired
+                        />
                     </div>
                     <div className="basis-full flex flex-wrap">
-                        <label htmlFor="description" className="basis-full text-indigo-50">
-                            {t('common.labels.Description')}*
-                        </label>
-                        <textarea
+                        <TextArea
                             id="description"
+                            label={t('common.labels.Description')}
+                            isRequired
                             name="description"
                             value={order.description}
                             onInput={handleInput}
@@ -92,10 +90,9 @@ function CustomOrder() {
                             className="w-full rounded bg-indigo-50 text-indigo-900 focus:outline-none p-2"
                             placeholder={t('body.customOrder.DescriptionPlaceholder')}
                             rows={3}
+                            touched={touched.description}
+                            error={errors.description}
                         />
-                        <span className={`${touched.description && errors.description ? 'inline-block' : 'hidden'} text-sm bg-red-700 p-1 rounded text-indigo-100 font-bold mt-1`}>
-                            {errors.description}
-                        </span>
                     </div>
                     <div className="basis-full flex gap-x-1">
                         <input
@@ -111,7 +108,7 @@ function CustomOrder() {
                         </label>
                     </div>
                     <div className="basis-full flex justify-center">
-                        <button className="bg-indigo-200 text-indigo-800 rounded py-2 px-4">
+                        <button className="bg-indigo-200 text-indigo-800 rounded py-2 px-8">
                             {t('body.customOrder.Order')}
                         </button>
                     </div>

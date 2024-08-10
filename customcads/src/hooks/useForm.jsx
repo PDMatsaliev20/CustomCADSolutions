@@ -39,12 +39,18 @@ const useForm = (initialState, useValidation) => {
 
     const handleSubmit = async (e, callback) => {
         e.preventDefault();
-        const validationErrors = validated;
-        setErrors(validationErrors);
+        setErrors(validated);
 
-        if (Object.keys(validationErrors).length === 0) {
+        if (Object.keys(validated).length === 0) {
             await callback();
-        } else alert(t('common.errors.Invalid data'));
+        } else {
+            const fields = Object.keys(initialState);
+            let newTouched = { ...touched };
+            fields.forEach(state => newTouched = { ...newTouched, [state]: true });
+            setTouched(newTouched);
+
+            alert(t('common.errors.Invalid data'));
+        }
     };
 
     return {
