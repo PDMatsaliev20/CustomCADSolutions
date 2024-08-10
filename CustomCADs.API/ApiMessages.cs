@@ -7,6 +7,7 @@
         public const string ForbiddenAccess = "Not allowed to modify another User's resources.";
         public const string ForbiddenPatch = "Not allowed to patch field {0}.";
         public const string ForbiddenRoleRegister = "You must apply to either be a Client or a Contributor.";
+        public const string InvalidRole = "Invalid role - you must choose from [{0}].";
         public const string InvalidStatus = "Invalid status - you must choose from [{0}].";
         public const string InvalidLogin = "Invalid Username or Password.";
         public const string UnauthenticatedUser = "User not authenticated.";

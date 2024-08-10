@@ -13,6 +13,7 @@ using static CustomCADs.Domain.DataConstants;
 namespace CustomCADs.API.Controllers.Admin
 {
     using static StatusCodes;
+    using static ApiMessages;
 
     [ApiController]
     [Route("API/Admin/[controller]")]
@@ -57,11 +58,11 @@ namespace CustomCADs.API.Controllers.Admin
             }
             catch (ArgumentNullException)
             {
-                return NotFound("User has no role.");
+                return NotFound(UserHasNoRole);
             }
             catch (InvalidOperationException)
             {
-                return BadRequest("User has more than one role.");
+                return BadRequest(UserHasRoles);
             }
             catch (Exception ex)
             {
@@ -80,7 +81,7 @@ namespace CustomCADs.API.Controllers.Admin
             AppUser? user = await userManager.FindByNameAsync(name).ConfigureAwait(false);
             if (user == null)
             {
-                return NotFound("User not found.");
+                return NotFound(string.Format(ApiMessages.NotFound, "User"));
             }
 
             try
@@ -101,11 +102,11 @@ namespace CustomCADs.API.Controllers.Admin
             }
             catch (ArgumentNullException)
             {
-                return StatusCode(Status500InternalServerError, "User has no role.");
+                return StatusCode(Status500InternalServerError, UserHasNoRole);
             }
             catch (InvalidOperationException)
             {
-                return StatusCode(Status500InternalServerError, "User has more than one role.");
+                return StatusCode(Status500InternalServerError, UserHasRoles);
             }
             catch (Exception ex)
             {
@@ -122,12 +123,12 @@ namespace CustomCADs.API.Controllers.Admin
         {
             if (string.IsNullOrWhiteSpace(username))
             {
-                return BadRequest("Username can't be empty.");
+                return BadRequest(string.Format(IsRequired, "Username"));
             }
 
             if (!await roleManager.RoleExistsAsync(role))
             {
-                return BadRequest($"You must choose a role from [{string.Join(", ", roleManager.Roles)}]");
+                return BadRequest(string.Format(InvalidRole, string.Join(", ", roleManager.Roles)));
             }
 
             try
@@ -166,13 +167,13 @@ namespace CustomCADs.API.Controllers.Admin
         {
             if (string.IsNullOrWhiteSpace(username))
             {
-                return BadRequest("Username can't empty.");
+                return BadRequest(string.Format(IsRequired, "Username"));
             }
 
             string? modifiedForbiddenField = patchUser.CheckForBadChanges("/id", "/accessFailedCount", "/emailConfirmed", "/phoneNumberConfirmed", "/normalizedName", "/normalizedEmail", "/concurrencyStamp", "/securityStamp", "/lockoutEnabled", "/lockoutEnd", "/passwordHash", "/twoFactorEnabled");
             if (modifiedForbiddenField != null)
             {
-                return BadRequest($"You're not allowed to edit {modifiedForbiddenField}");
+                return BadRequest(string.Format(ForbiddenPatch, modifiedForbiddenField));
             }
             
             try
@@ -180,14 +181,14 @@ namespace CustomCADs.API.Controllers.Admin
                 AppUser? user = await userManager.FindByNameAsync(username).ConfigureAwait(false);
                 if (user == null)
                 {
-                    return NotFound("User not found.");
+                    return NotFound(string.Format(ApiMessages.NotFound, "User"));
                 }
 
                 if (!string.IsNullOrWhiteSpace(newRole))
                 {
                     if (!await roleManager.RoleExistsAsync(newRole).ConfigureAwait(false))
                     {
-                        return BadRequest($"You must choose a role from [{string.Join(", ", roleManager.Roles)}]");
+                        return BadRequest(string.Format(InvalidRole, string.Join(", ", roleManager.Roles)));
                     }
                     IList<string> roles = await userManager.GetRolesAsync(user).ConfigureAwait(false);
 
@@ -208,11 +209,11 @@ namespace CustomCADs.API.Controllers.Admin
             }
             catch (ArgumentNullException)
             {
-                return StatusCode(Status500InternalServerError, "User has no role.");
+                return StatusCode(Status500InternalServerError, UserHasNoRole);
             }
             catch (InvalidOperationException)
             {
-                return StatusCode(Status500InternalServerError, "User has more than one role.");
+                return StatusCode(Status500InternalServerError, UserHasRoles);
             }
             catch (Exception ex)
             {
@@ -231,7 +232,7 @@ namespace CustomCADs.API.Controllers.Admin
                 AppUser? user = await userManager.FindByNameAsync(username).ConfigureAwait(false);
                 if (user == null) 
                 {
-                    return NotFound("User not found.");
+                    return NotFound(string.Format(ApiMessages.NotFound, "User"));
                 }
 
                 await userManager.DeleteAsync(user).ConfigureAwait(false);

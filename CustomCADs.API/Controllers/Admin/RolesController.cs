@@ -13,6 +13,7 @@ using static CustomCADs.Domain.DataConstants;
 namespace CustomCADs.API.Controllers.Admin
 {
     using static StatusCodes;
+    using static ApiMessages;
 
     [ApiController]
     [Route("API/Admin/[controller]")]
@@ -61,7 +62,9 @@ namespace CustomCADs.API.Controllers.Admin
             {
                 AppRole? role = await roleManager.FindByNameAsync(name).ConfigureAwait(false);
 
-                return role == null ? NotFound("Role not found.") : mapper.Map<RoleDTO>(role);
+                return role == null 
+                    ? NotFound(string.Format(ApiMessages.NotFound, "Role"))
+                    : mapper.Map<RoleDTO>(role);
             }
             catch (Exception ex) when (
                 ex is AutoMapperConfigurationException
@@ -85,7 +88,7 @@ namespace CustomCADs.API.Controllers.Admin
         {
             if (string.IsNullOrWhiteSpace(name))
             {
-                return BadRequest("Name can't empty.");
+                return BadRequest(string.Format(IsRequired, "Name"));
             }
             
             try
@@ -122,13 +125,13 @@ namespace CustomCADs.API.Controllers.Admin
         {
             if (string.IsNullOrWhiteSpace(name))
             {
-                return BadRequest("Name can't empty.");
+                return BadRequest(string.Format(IsRequired, "Name"));
             }
 
             string? modifiedForbiddenField = patchRole.CheckForBadChanges("/id", "/normalizedName", "/concurrencyStamp");
             if (modifiedForbiddenField != null)
             {
-                return BadRequest($"You're not allowed to edit {modifiedForbiddenField}");
+                return BadRequest(string.Format(ForbiddenPatch, modifiedForbiddenField));
             }
 
             try
@@ -167,7 +170,7 @@ namespace CustomCADs.API.Controllers.Admin
                 AppRole? role = await roleManager.FindByNameAsync(name).ConfigureAwait(false);
                 if (role == null)
                 {
-                    return NotFound("Role not found.");
+                    return NotFound(string.Format(ApiMessages.NotFound, "Role"));
                 }
 
                 await roleManager.DeleteAsync(role).ConfigureAwait(false);
