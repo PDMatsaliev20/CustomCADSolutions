@@ -78,6 +78,5 @@ namespace CustomCADs.Core.Contracts
         /// <returns>A Task object that represents the asynchronous Save Changes operation after the deletion.</returns>
         /// <exception cref="KeyNotFoundException">if no Category with the given id exists.</exception>
         Task DeleteAsync(int id);
-        IList<string> ValidateEntity(CadModel entity);
     }
 }

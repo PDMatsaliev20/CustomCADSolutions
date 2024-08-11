@@ -49,5 +49,19 @@ namespace CustomCADs.Core.Models.Orders
         [Required(ErrorMessage = RequiredErrorMessage)]
         public string BuyerId { get; set; } = null!;
         public AppUser Buyer { get; set; } = null!;
+        
+        public bool Validate(out IList<string> errors)
+        {
+            List<ValidationResult> validationResults = [];
+            errors = [];
+
+            if (!Validator.TryValidateObject(this, new(this), validationResults, true))
+            {
+                errors = validationResults.Select(result => result.ErrorMessage ?? string.Empty).ToList();
+                return true;
+            }
+
+            return false;
+        }
     }
 }

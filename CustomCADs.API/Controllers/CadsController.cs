@@ -206,7 +206,7 @@ namespace CustomCADs.API.Controllers
         [ProducesResponseType(Status500InternalServerError)]
         public async Task<ActionResult> PatchCadAsync(int id, [FromBody] JsonPatchDocument<CadModel> patchCad)
         {
-            string? modifiedForbiddenField = patchCad.CheckForBadChanges("/id", "/cadExtension", "/imageExtension", "/isFolder", "/imagePath", "/cadPath", "/status", "/creationDate", "/creatorId", "/category", "/creator", "/orders");
+            string? modifiedForbiddenField = patchCad.CheckForBadChanges("/id", "/imagePath", "/cadPath", "/status", "/creationDate", "/creatorId", "/category", "/creator", "/orders");
             if (modifiedForbiddenField != null)
             {
                 return BadRequest(string.Format(ForbiddenPatch, modifiedForbiddenField));
@@ -218,13 +218,13 @@ namespace CustomCADs.API.Controllers
 
                 string? error = null;
                 patchCad.ApplyTo(model, p => error = p.ErrorMessage);
-                if (error != null)
+                if (!string.IsNullOrEmpty(error))
                 {
                     return BadRequest(error);
                 }
 
-                IList<string> errors = cadService.ValidateEntity(model);
-                if (errors.Any())
+                bool isValid = model.Validate(out IList<string> errors);
+                if (!isValid)
                 {
                     return BadRequest(string.Join("; ", errors));
                 }

@@ -9,7 +9,6 @@ using CustomCADs.Domain.Entities;
 using CustomCADs.Domain.Entities.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using System.ComponentModel.DataAnnotations;
 using System.Linq.Expressions;
 
 namespace CustomCADs.Core.Services
@@ -105,18 +104,7 @@ namespace CustomCADs.Core.Services
 
         public async Task<bool> ExistsByIdAsync(int id)
             => await repository.GetByIdAsync<Order>(id).ConfigureAwait(false) != null;
-
-        public IList<string> ValidateEntity(OrderModel model)
-        {
-            List<ValidationResult> validationResults = [];
-            if (!Validator.TryValidateObject(model, new(model), validationResults, true))
-            {
-                return validationResults.Select(result => result.ErrorMessage ?? string.Empty).ToList();
-            }
-
-            return [];
-        }
-
+        
         public async Task<int> CreateAsync(OrderModel model)
         {
             Order order = mapper.Map<Order>(model);

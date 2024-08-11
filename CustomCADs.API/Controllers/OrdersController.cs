@@ -251,13 +251,13 @@ namespace CustomCADs.API.Controllers
 
                 string? error = null;
                 patchOrder.ApplyTo(model, p => error = p.ErrorMessage);
-                if (error != null)
+                if (!string.IsNullOrEmpty(error))
                 {
                     return BadRequest(error);
                 }
 
-                IList<string> errors = orderService.ValidateEntity(model);
-                if (errors.Any())
+                bool isValid = model.Validate(out IList<string> errors);
+                if (!isValid)
                 {
                     return BadRequest(string.Join("; ", errors));
                 }

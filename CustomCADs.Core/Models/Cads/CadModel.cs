@@ -52,5 +52,18 @@ namespace CustomCADs.Core.Models.Cads
         public AppUser Creator { get; set; } = null!;
 
         public ICollection<OrderModel> Orders { get; set; } = new List<OrderModel>();
+        
+        public bool Validate(out IList<string> errors)
+        {
+            errors = [];
+            List<ValidationResult> validationResults = [];
+            
+            if (!Validator.TryValidateObject(this, new(this), validationResults, true))
+            {
+                errors = validationResults.Select(result => result.ErrorMessage ?? string.Empty).ToList();
+                return false;
+            }
+            return true;
+        }
     }
 }
