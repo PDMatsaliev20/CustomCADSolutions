@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import usePagination from '@/hooks/usePagination';
 import objectToUrl from '@/utils/object-to-url';
 import { GetOrders, DeleteOrder } from '@/requests/private/orders';
 import SearchBar from '@/components/searchbar';
+import Pagination from '@/components/pagination';
 import PendingOrder from './components/pending-order';
 import BegunOrder from './components/begun-order';
 import FinishedOrder from './components/finished-order';
@@ -13,10 +15,13 @@ function UserOrders() {
     const [orders, setOrders] = useState([]);
     const { status } = useParams();
     const [search, setSearch] = useState({ name: '', category: '', sorting: '' });
+    const [total, setTotal] = useState(0);
+    const { page, limit, handlePageChange } = usePagination(total, 12);
 
     useEffect(() => {
         fetchOrders();
-    }, [search, status]);
+        document.documentElement.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    }, [status, search, page]);
 
     const handleDelete = async (id) => {
         if (confirm(t('private.orders.alert_delete'))) {
@@ -70,14 +75,23 @@ function UserOrders() {
                     {orders.filter(o => o.status.toLowerCase() === status.toLowerCase()).map(order =>
                         <li key={order.id} className="col-span-6">{chooseOrder(order)}</li>)}
                 </ul>}
+            <div className="basis-full">
+                <Pagination
+                    page={page}
+                    limit={limit}
+                    onPageChange={handlePageChange}
+                    total={total}
+                />
+            </div>
         </div>
     );
 
     async function fetchOrders() {
-        const requestSearchParams = objectToUrl({ ...search });
+        const requestSearchParams = objectToUrl({ ...search, page, limit });
         try {
-            const { data: { orders } } = await GetOrders(status, requestSearchParams);
+            const { data: { orders, count } } = await GetOrders(status, requestSearchParams);
             setOrders(orders);
+            setTotal(count);
         } catch (e) {
             console.error(e);
         }

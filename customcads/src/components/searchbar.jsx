@@ -40,7 +40,7 @@ function SearchBar({ setSearch }) {
         </option>;
 
     return (
-        <div className="basis-full bg-indigo-400 py-8 rounded-lg border-2 border-indigo-600 shadow shadow-indigo-600">
+        <div className="basis-full bg-indigo-400 py-8 rounded-lg border-2 border-indigo-600 shadow-2xl shadow-indigo-400">
             <form onSubmit={handleSearch} method="get" autoComplete="off">
                 <div className="flex flex-wrap justify-center items-center gap-y-5">
                     <div className="basis-full flex justify-evenly">

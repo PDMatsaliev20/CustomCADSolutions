@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Link, useLoaderData } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import usePagination from '@/hooks/usePagination';
 import objectToUrl from '@/utils/object-to-url';
 import { GetOrdersByStatus } from '@/requests/private/designer';
 import SearchBar from '@/components/searchbar';
+import Pagination from '@/components/pagination';
 import PendingOrder from './components/pending-order';
 import BegunOrder from './components/begun-order';
 import FinishedOrder from './components/finished-order';
@@ -13,10 +15,13 @@ function OngoingOrders() {
     const { status } = useLoaderData();
     const [orders, setOrders] = useState([]);
     const [search, setSearch] = useState({ name: '', category: '', owner: '', sorting: '' });
+    const [total, setTotal] = useState(0);
+    const { page, limit, handlePageChange } = usePagination(total, 12);
 
     useEffect(() => {
         fetchOrders();
-    }, [status, search]);
+        document.documentElement.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    }, [status, search, page]);
 
     const updateOrders = (id) => {
         setOrders(orders => orders.filter(order => order.id !== id));
@@ -64,13 +69,22 @@ function OngoingOrders() {
                         <li key={order.id}>{chooseOrder(order)}</li>
                     )}
                 </ul>}
+            <div className="basis-full">
+                <Pagination
+                    page={page}
+                    limit={limit}
+                    onPageChange={handlePageChange}
+                    total={total}
+                />
+            </div>
         </div>
     );
     async function fetchOrders() {
         const requestSearchParams = objectToUrl({ ...search });
         try {
-            const { data: { orders } } = await GetOrdersByStatus(status, requestSearchParams);
+            const { data: { orders, count } } = await GetOrdersByStatus(status, requestSearchParams);
             setOrders(orders);
+            setTotal(count);
         } catch (e) {
             console.error(e);
         }

@@ -3,8 +3,6 @@ import { useParams, useNavigate, useLoaderData } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { PutCad, PatchCad, DeleteCad } from '@/requests/private/cads';
-import constants from '@/constants/data/cad';
-import FileInput from '@/components/file-input';
 import Cad from '@/components/cad';
 
 function EditCadPage() {
@@ -155,7 +153,6 @@ function EditCadPage() {
                             value={cad.name}
                             onInput={handleInput}
                             className="grow bg-indigo-200 text-indigo-700 text-3xl text-center fontextrabold focus:outline-none py-2 rounded-xl border-4 border-indigo-400 shadow-lg shadow-indigo-900"
-                            maxLength={constants.name.maxLength}
                         />
                         <label htmlFor="price" className="basis-2/12 flex gap-x-1 items-center bg-indigo-200 text-indigo-700 rounded-xl px-2 py-2 border-4 border-indigo-300 shadow-md shadow-indigo-950">
                             <input
