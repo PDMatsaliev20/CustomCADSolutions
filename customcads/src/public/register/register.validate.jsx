@@ -8,7 +8,7 @@ export default (user) => {
     let errors = {};
 
     const username = user.username.trim();
-    const usernameLabel = t('common.labels.Username');
+    const usernameLabel = t('common.labels.username');
     const { isRequired: usernameIsRequired, minLength: usernameMinLength, maxLength: usernameMaxLength } = userValidation.username;
 
     if (usernameIsRequired && !username) {
@@ -18,7 +18,7 @@ export default (user) => {
     }
 
     const email = user.email.trim();
-    const emailLabel = t('common.labels.Email');
+    const emailLabel = t('common.labels.email');
     const { isRequired: emailIsRequired, minLength: emailMinLength, maxLength: emailMaxLength, regex: emailRegex } = userValidation.email;
 
     if (emailIsRequired && !email) {
@@ -36,7 +36,7 @@ export default (user) => {
     }
 
     const password = user.password.trim();
-    const passwordLabel = t('common.labels.Password');
+    const passwordLabel = t('common.labels.password');
     const { isRequired: passwordIsRequired, minLength: passwordMinLength, maxLength: passwordMaxLength } = userValidation.password;
 
     if (passwordIsRequired && !password) {
@@ -46,13 +46,13 @@ export default (user) => {
     }
 
     const confirmPassword = user.confirmPassword.trim();
-    const confirmPasswordLabel = t('common.labels.Confirm Password');
+    const confirmPasswordLabel = t('common.labels.confirm_password');
     const { isRequired: confirmPasswordIsRequired } = userValidation.confirmPassword;
 
     if (confirmPasswordIsRequired && !confirmPassword) {
         errors.confirmPassword = errorMessages.required(confirmPasswordLabel);
     } else if (confirmPassword !== user.password.trim()) {
-        errors.confirmPassword = t('common.errors.Passwords must be equal!');
+        errors.confirmPassword = t('common.errors.equal');
     }
 
     return errors;

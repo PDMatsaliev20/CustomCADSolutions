@@ -11,6 +11,7 @@
         public string Category { get; set; } = null!;
         public string? ImagePath { get; set; } 
         public string? DesignerName { get; set; }
+        public string? DesignerEmail { get; set; }
         public string BuyerName { get; set; } = null!;
         public int? CadId { get; set; }
     }

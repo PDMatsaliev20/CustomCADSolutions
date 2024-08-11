@@ -24,9 +24,9 @@ function FinishedOrder({ order }) {
                 default: console.error('Unsupported MIME type.'); return;
             }
 
-            document.body.appendChild(link);
+            document.private.appendChild(link);
             link.click();
-            document.body.removeChild(link);
+            document.private.removeChild(link);
             
             window.URL.revokeObjectURL(url);
 
@@ -45,9 +45,9 @@ function FinishedOrder({ order }) {
             await PatchOrder(order.id, [flipShouldBeDelivered]);
 
             if (shouldBeDelivered) {
-                alert(t('body.orders.Alert Cancel'));
+                alert(t('private.orders.alert_cancel'));
             } else {
-                alert(t('body.orders.Alert Delivery'));
+                alert(t('private.orders.alert_delivery'));
             }
             setShouldBeDelivered(shouldBeDelivered => !shouldBeDelivered);
         } catch (e) {
@@ -65,21 +65,21 @@ function FinishedOrder({ order }) {
                     <button onClick={handleDownload}
                         className="basis-6/12 bg-indigo-700 border border-indigo-500 p-2 rounded text-center text-indigo-50 hover:opacity-70 hover:border-transparent"
                     >
-                        {t('body.orders.Download')}
+                        {t('private.orders.download')}
                     </button>
                     <button onClick={handleRequest}
                         className="basis-5/12 bg-indigo-100 border border-indigo-600 p-2 rounded text-center text-indigo-950 hover:bg-rose-500 hover:border-transparent hover:text-indigo-50">
                         {
                             shouldBeDelivered
-                            ? t('body.orders.Cancel Request') 
-                            : t('body.orders.Request')
+                            ? t('private.orders.cancel_request') 
+                            : t('private.orders.request')
                         }
                     </button>
                 </div>
             </section>
             <hr className="border-t-2 border-indigo-800" />
             <div className="text-indigo-800 text-center">
-                <span className="font-semibold">{t('body.orders.Ordered on')}</span>
+                <span className="font-semibold">{t('private.orders.ordered_on')}</span>
                 <time dateTime={machineReadableDateTime} className="italic">
                     {order.orderDate}
                 </time>

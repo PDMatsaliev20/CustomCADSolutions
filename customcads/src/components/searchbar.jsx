@@ -47,7 +47,7 @@ function SearchBar({ setSearch }) {
                         <div className="basis-1/4 bg-indigo-200 text-indigo-800 border border-indigo-900 py-2 rounded-md text-center">
                             <Select
                                 id="category"
-                                label={t('common.searchbar.Category')}
+                                label={t('common.searchbar.category')}
                                 name="category"
                                 value={copySearch.category}
                                 onInput={handleInput}
@@ -63,7 +63,7 @@ function SearchBar({ setSearch }) {
                                 type="search"
                                 value={copySearch.name}
                                 onInput={handleInput}
-                                placeholder={t('common.searchbar.Search Name')}
+                                placeholder={t('common.searchbar.search_name')}
                                 className="w-full h-full bg-inherit text-inherit text-center focus:outline-none"
                             />
                             <button>
@@ -73,7 +73,7 @@ function SearchBar({ setSearch }) {
                         <div className="basis-1/4 bg-indigo-200 text-indigo-800 border border-indigo-900 py-2 rounded-md text-center">
                             <Select
                                 id="sorting"
-                                label={t('common.searchbar.Sort by')}
+                                label={t('common.searchbar.sort_by')}
                                 name="sorting"
                                 value={copySearch.sorting}
                                 onInput={handleInput}

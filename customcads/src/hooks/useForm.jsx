@@ -49,7 +49,7 @@ const useForm = (initialState, useValidation) => {
             fields.forEach(state => newTouched = { ...newTouched, [state]: true });
             setTouched(newTouched);
 
-            alert(t('common.errors.Invalid data'));
+            alert(t('common.errors.invalid_data'));
         }
     };
 

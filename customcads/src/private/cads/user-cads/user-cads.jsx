@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import useObjectToURL from '@/hooks/useObjectToURL';
+import objectToUrl from '@/utils/object-to-url';
 import { GetCads } from '@/requests/private/cads';
 import SearchBar from '@/components/searchbar';
 import UserCadItem from './components/user-cads-item';
@@ -17,12 +17,12 @@ function UserCads() {
     return (
         <div className="flex flex-col gap-y-8 mb-8">
             <h1 className="text-4xl text-center text-indigo-950 font-bold">
-                {t('body.cads.Title')}
+                {t('private.cads.title')}
             </h1>
             <section className="flex flex-wrap justify-center gap-y-8">
                 <SearchBar setSearch={setSearch} />
                 {!cads.length
-                    ? <p className="text-lg text-indigo-900 text-center font-bold">{t('body.cads.No cads')}</p>
+                    ? <p className="text-lg text-indigo-900 text-center font-bold">{t('private.cads.no_cads')}</p>
                     : <ul className="basis-full grid grid-cols-3 gap-12">
                         {cads.map(cad => <UserCadItem key={cad.id} item={cad} />)}
                     </ul>}
@@ -31,7 +31,7 @@ function UserCads() {
     );
 
     async function fetchCads() {
-        const requestSearchParams = useObjectToURL({ ...search });
+        const requestSearchParams = objectToUrl({ ...search });
         try {
             const { data: { cads } } = await GetCads(requestSearchParams);
             setCads(cads);

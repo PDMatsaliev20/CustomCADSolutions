@@ -12,7 +12,7 @@ function GalleryDetailsPage() {
     
     const handleBuy = async () => {
         if (userRole !== 'Client') {
-            alert('Gotta be a Client baby');
+            alert(t('public.gallery.alert_order'));
             return;
         }
         navigate(`/purchase/${loadedCad.id}`);
@@ -47,18 +47,18 @@ function GalleryDetailsPage() {
                         <button onClick={handleBuy}
                             className="self-center bg-indigo-700 py-2 px-4 rounded hover:font-extrabold focus:outline-none active:opacity-80"
                         >
-                            {t('body.gallery.Buy')}
+                            {t('public.gallery.buy')}
                         </button>
                     </div>
                 </section>
                 <hr className="border-t-4 border-indigo-700" />
                 <footer className="px-4 py-2 flex justify-between">
                     <div className="flex gap-x-2 items-center">
-                        <span className="italic">{t('body.gallery.Uploaded by')} </span>
+                        <span className="italic">{t('public.gallery.uploaded_by')} </span>
                         <span className="font-bold text-lg">{loadedCad.creatorName}</span>
                     </div>
                     <div className="flex gap-x-2 items-center">
-                        <span className="italic">{t('body.gallery.Uploaded on')}</span>
+                        <span className="italic">{t('public.gallery.uploaded_on')}</span>
                         <span className="font-bold text-lg">{loadedCad.creationDate}</span>
                     </div>
                 </footer>

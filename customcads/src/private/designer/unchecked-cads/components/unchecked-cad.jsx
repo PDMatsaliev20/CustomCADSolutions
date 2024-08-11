@@ -5,13 +5,13 @@ function UncheckedCad({ item, onValidate, onReport }) {
     const { t } = useTranslation();
 
     const handleValidate = () => {
-        if (confirm(t('body.designerCads.Confirm Validate'))) {
+        if (confirm(t('private.designer.confirm_validate'))) {
             onValidate();
         }
     };
 
     const handleReport = () => {
-        if (confirm(t('body.designerCads.Confirm Report'))) {
+        if (confirm(t('private.designer.confirm_report'))) {
             onReport();
         }
     };
@@ -28,16 +28,16 @@ function UncheckedCad({ item, onValidate, onReport }) {
                 <button onClick={handleValidate}
                     className="basis-5/12 bg-indigo-700 text-center text-indigo-50 py-2 rounded-md hover:opacity-70 border"
                 >
-                    {t('body.designerCads.Validate')}
+                    {t('private.designer.validate')}
                 </button>
                 <button onClick={handleReport}
                     className="basis-5/12 bg-indigo-50 py-2 rounded-md hover:text-indigo-50 hover:bg-red-500 border border-indigo-700"
                 >
-                    {t('body.designerCads.Report')}
+                    {t('private.designer.report')}
                 </button>
             </div>
             <p className="basis-full text-center text-lg text-indigo-900 font-semibold">
-                {t('body.designerCads.Uploaded by')} '{item.creatorName}'
+                {t('private.designer.uploaded_by')} '{item.creatorName}'
             </p>
         </li>
     );

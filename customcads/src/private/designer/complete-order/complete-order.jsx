@@ -52,7 +52,7 @@ function CompleteOrder() {
             <form onSubmit={(e) => handleSubmit(e, handleSubmitCallback)} autoComplete="off" noValidate>
                 <div className="flex flex-col gap-y-4">
                     <div className="flex justify-center items-center gap-x-4">
-                        <h1 className="text-4xl text-center text-indigo-950 font-bold">{t('body.uploadCad.Title')}*:</h1>
+                        <h1 className="text-4xl text-center text-indigo-950 font-bold">{t('private.designer.finish-order_title')}*:</h1>
                         <UploadCadBtn
                             id="file"
                             icon="arrow-up-from-bracket"
@@ -62,18 +62,18 @@ function CompleteOrder() {
                             onInput={handleFileUpload}
                         />
                     </div>
-                    <div className="w-8/12 mx-auto flex flex-wrap items-rt gap-y-4 gap-x-8 bg-indigo-700 py-8 px-12 rounded-xl">
-                        <div className="basis-8/12 flex flex-wrap">
+                    <div className="w-8/12 mx-auto flex flex-wrap gap-y-4 gap-x-8 bg-indigo-700 py-8 px-12 rounded-xl">
+                        <div className="basis-8/12">
                             <Input
                                 id="name"
-                                label={t('common.labels.Name')}
+                                label={t('common.labels.name')}
                                 isRequired
                                 name="name"
                                 value={cad.name}
                                 onInput={handleInput}
                                 onBlur={handleBlur}
                                 className="w-full rounded bg-indigo-50 text-indigo-900 focus:outline-none p-2"
-                                placeholder={t("body.uploadCad.NamePlaceholder")}
+                                placeholder={t("common.placeholders.cad_name")}
                                 touched={touched.name}
                                 error={errors.name}
                             />
@@ -82,7 +82,7 @@ function CompleteOrder() {
                             <FileInput
                                 id="image"
                                 icon="arrow-up-from-bracket"
-                                label={t('common.labels.Image')}
+                                label={t('common.labels.image')}
                                 isRequired
                                 file={cad.image}
                                 accept=".jpg,.png"
@@ -90,10 +90,10 @@ function CompleteOrder() {
                                 onInput={handleFileUpload}
                             />
                         </div>
-                        <div className="basis-5/12 text-indigo-50 grow flex flex-wrap items-start gap-y-4">
+                        <div className="basis-5/12 grow text-indigo-50">
                             <Select
                                 id="category"
-                                label={t('common.labels.Category')}
+                                label={t('common.labels.category')}
                                 isRequired
                                 name="categoryId"
                                 value={cad.category}
@@ -101,7 +101,7 @@ function CompleteOrder() {
                                 onBlur={handleBlur}
                                 className="w-full rounded bg-indigo-50 text-indigo-900 focus:outline-none p-2"
                                 items={categories}
-                                defaultValue={t('common.categories.None')}
+                                defaultOption={t('common.categories.None')}
                                 onMap={categoryMap}
                                 touched={touched.categoryId}
                                 error={errors.categoryId}
@@ -110,14 +110,14 @@ function CompleteOrder() {
                         <div className="basis-5/12 grow flex flex-wrap items-start">
                             <Input
                                 id="price"
-                                label={t('common.labels.Price')}
+                                label={t('common.labels.price')}
                                 isRequired
                                 type="number"
                                 name="price"
                                 value={cad.price}
                                 onInput={handleInput}
                                 onBlur={handleBlur}
-                                placeholder={t("body.uploadCad.PricePlaceholder")}
+                                placeholder={t("private.designer.PricePlaceholder")}
                                 className="w-full rounded bg-indigo-50 text-indigo-900 focus:outline-none p-2"
                                 touched={touched.price}
                                 error={errors.price}
@@ -126,14 +126,14 @@ function CompleteOrder() {
                         <div className="basis-full flex flex-wrap">
                             <TextArea
                                 id="description"
-                                label={t('common.labels.Description')}
+                                label={t('common.labels.description')}
                                 isRequired
                                 name="description"
                                 value={cad.description}
                                 onInput={handleInput}
                                 onBlur={handleBlur}
                                 className="w-full rounded bg-indigo-50 text-indigo-900 focus:outline-none p-2"
-                                placeholder={t('body.customOrder.DescriptionPlaceholder')}
+                                placeholder={t('common.placeholders.cad_description')}
                                 rows={3}
                                 touched={touched.description}
                                 error={errors.description}
@@ -141,7 +141,7 @@ function CompleteOrder() {
                         </div>
                         <div className="mt-1 basis-full flex justify-center">
                             <button className="bg-indigo-200 text-indigo-800 rounded py-2 px-6">
-                                {t('body.uploadCad.Upload')}
+                                {t('private.designer.upload')}
                             </button>
                         </div>
                     </div>

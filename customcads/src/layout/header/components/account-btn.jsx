@@ -34,7 +34,7 @@ export default function AccountBtn() {
                     <div className="my-4 flex flex-col gap-y-4">
                         <MenuItem as="div" className="basis-full">
                             <span className="italic font-bold">
-                                {`${t('header.Role')} ${t(`common.roles.${userRole}`)}`}
+                                {`${t('header.role')} ${t(`common.roles.${userRole}`)}`}
                             </span>
                         </MenuItem>
 
@@ -43,7 +43,7 @@ export default function AccountBtn() {
                         <div>
                             <MenuItem as="div" className="basis-full">
                                 <button className="font-bold text-indigo-900 bg-indigo-200 py-2 px-5 rounded border border-indigo-700 shadow shadow-indigo-800" onClick={handleLogout}>
-                                    {t('header.Log out')}
+                                    {t('header.log_out')}
                                 </button>
                             </MenuItem>
                         </div>

@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { PutCad, PatchCad, DeleteCad } from '@/requests/private/cads';
 import constants from '@/constants/data/cad';
+import FileInput from '@/components/file-input';
 import Cad from '@/components/cad';
 
 function EditCadPage() {
@@ -98,7 +99,7 @@ function EditCadPage() {
     };
 
     const handleDelete = async () => {
-        if (confirm(t('body.cads.Confirmation'))) {
+        if (confirm(t('private.cads.Confirmation'))) {
             try {
                 await DeleteCad(id);
                 navigate('/cads');
@@ -125,7 +126,7 @@ function EditCadPage() {
                     <button type="submit"
                         className="bg-indigo-500 text-indigo-50 font-bold py-3 px-6 rounded-lg border border-indigo-700 shadow shadow-indigo-950"
                     >
-                        {t('body.editCad.Save changes')}
+                        {t('private.cads.save_changes')}
                     </button>
                 </div>
             </div>
@@ -171,9 +172,9 @@ function EditCadPage() {
                     <hr className="border-t-2 border-indigo-700" />
                     <section className="m-4 flex flex-wrap gap-y-1 bg-indigo-200 rounded-xl border-2 border-indigo-700 shadow-lg shadow-indigo-900 px-4 py-4">
                         <label htmlFor="description" className="w-full flex justify-between text-indigo-900 text-lg font-bold">
-                            <span>{t('body.editCad.Description')}</span>
+                            <span>{t('common.labels.description')}</span>
                             <sub className="opacity-50 text-indigo-950 font-thin">
-                                {t('body.editCad.you can edit the name, description, category and price')}
+                                {t('private.cads.hint')}
                             </sub>
                         </label>
                         <textarea
@@ -191,7 +192,7 @@ function EditCadPage() {
                     <footer className="px-4 py-3 basis-full flex justify-between items-center">
                         <div className="flex justify-center">
                             <label htmlFor="image" className="flex justify-around gap-x-4 items-center bg-indigo-300 px-4 py-1 rounded-md shadow-lg shadow-indigo-900">
-                                <p className="text-indigo-50 font-bold">{t('common.labels.Image')}</p>
+                                <p className="text-indigo-50 font-bold">{t('common.labels.image')}</p>
                                 <div className="flex justify-center gap-x-4 bg-indigo-700 rounded-xl py-2 px-4 border-2 border-indigo-400">
                                     <FontAwesomeIcon icon="arrow-up-from-bracket" className="text-xl text-indigo-100" />
                                     <div className={`${cad.image ? 'font-bold flex items-center' : 'hidden'}`}>
@@ -201,7 +202,7 @@ function EditCadPage() {
                             </label>
                             <input
                                 type="file"
-                                accept=".jpg, .png"
+                                accept=".jpg,.png"
                                 id="image"
                                 name="image"
                                 onInput={handleFileUpload}
@@ -209,7 +210,7 @@ function EditCadPage() {
                             />
                         </div>
                         <div>
-                            <span className="font-semibold">{t('body.editCad.Created on')}</span>
+                            <span className="font-semibold">{t('private.cads.created_on')}</span>
                             <time dateTime={loadedCad.creationDate.replaceAll('.', '-')} className="italic">
                                 {loadedCad.creationDate}
                             </time>
@@ -219,7 +220,7 @@ function EditCadPage() {
                             onClick={handleDelete}
                             className="basis-2/12 text-indigo-950 bg-indigo-200 py-2 rounded-md hover:text-indigo-50 hover:bg-red-500 border-2 border-indigo-700"
                         >
-                            {t('body.cads.Delete')}
+                            {t('private.cads.delete')}
                         </button>
                     </footer>
                 </div>

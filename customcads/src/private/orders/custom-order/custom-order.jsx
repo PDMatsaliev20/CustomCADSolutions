@@ -43,18 +43,18 @@ function CustomOrder() {
 
     return (
         <div className="flex flex-col gap-y-8 mt-4">
-            <h1 className="text-4xl text-center text-indigo-950 font-bold">{t('body.customOrder.Title')}</h1>
+            <h1 className="text-4xl text-center text-indigo-950 font-bold">{t('private.orders.custom-order_title')}</h1>
             <form onSubmit={(e) => handleSubmit(e, handleSubmitCallback)} autoComplete="off" noValidate>
                 <div className="w-7/12 mx-auto flex flex-wrap items-start gap-x-4 gap-y-4 bg-indigo-700 py-8 px-10 rounded-xl">
                     <div className="basis-1/2 flex flex-wrap">
                         <Input
                             id="name"
-                            label={t('common.labels.Name')}
+                            label={t('common.labels.name')}
                             name="name"
                             value={order.name}
                             onInput={handleInput}
                             onBlur={handleBlur}
-                            placeholder={t('body.customOrder.NamePlaceholder')}
+                            placeholder={t('common.placeholders.order_name')}
                             className="inline-block w-full min-h-10 rounded bg-indigo-50 text-indigo-900 focus:outline-none p-2"
                             touched={touched.name}
                             error={errors.name}
@@ -64,7 +64,7 @@ function CustomOrder() {
                     <div className="basis-1/3 grow flex flex-wrap text-indigo-50">
                         <Select
                             id="category"
-                            label={t('common.labels.Category')}
+                            label={t('common.labels.category')}
                             name="categoryId"
                             value={order.category}
                             onInput={handleInput}
@@ -81,14 +81,14 @@ function CustomOrder() {
                     <div className="basis-full flex flex-wrap">
                         <TextArea
                             id="description"
-                            label={t('common.labels.Description')}
+                            label={t('common.labels.description')}
                             isRequired
                             name="description"
                             value={order.description}
                             onInput={handleInput}
                             onBlur={handleBlur}
                             className="w-full rounded bg-indigo-50 text-indigo-900 focus:outline-none p-2"
-                            placeholder={t('body.customOrder.DescriptionPlaceholder')}
+                            placeholder={t('common.placeholders.order_description')}
                             rows={3}
                             touched={touched.description}
                             error={errors.description}
@@ -104,12 +104,12 @@ function CustomOrder() {
                             onBlur={handleBlur}
                         />
                         <label htmlFor="delivery" className="text-indigo-50 font-bold">
-                            {t('common.labels.Delivery')}
+                            {t('common.labels.delivery')}
                         </label>
                     </div>
                     <div className="basis-full flex justify-center">
                         <button className="bg-indigo-200 text-indigo-800 rounded py-2 px-8">
-                            {t('body.customOrder.Order')}
+                            {t('private.orders.order')}
                         </button>
                     </div>
                 </div>

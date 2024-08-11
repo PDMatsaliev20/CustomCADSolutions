@@ -11,7 +11,7 @@ function UserCadItem({ item }) {
                 <img src={item.imagePath} className="w-full h-full" />
             </Link>
             <p className="basis-full text-center text-lg text-indigo-900 font-semibold">
-                {t('body.cads.Uploaded on')} '{item.creationDate}'
+                {t('private.cads.uploaded_on')} '{item.creationDate}'
             </p>
         </li>   
     );

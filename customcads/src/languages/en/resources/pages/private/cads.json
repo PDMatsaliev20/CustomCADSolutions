@@ -1,0 +1,14 @@
+{
+  "title": "Your 3D Models",
+  "uploaded_on": "Uploaded on: ",
+  "edit": "Edit",
+  "delete": "Delete",
+  "confirmation": "Are you sure you want to delete this 3D Model?",
+  "no_cads": "No uploaded 3D Models yet.",
+  "upload-cad_title": "Upload Your 3D Model",
+  "upload": "Upload",
+  "hint": "(you can edit the name, description, category and price)",
+  "created_by": "Created by: ",
+  "created_on": "Created on: ",
+  "save_changes": "Save changes"
+}

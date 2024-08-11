@@ -8,7 +8,7 @@ export default (order) => {
     let errors = {};
 
     const name = order.name.trim();
-    const nameLabel = t('common.labels.Name');
+    const nameLabel = t('common.labels.name');
     const { isRequired: nameIsRequired, minLength: nameMinLength, maxLength: nameMaxLength } = orderValidation.name;
 
     if (nameIsRequired && !name) {
@@ -18,7 +18,7 @@ export default (order) => {
     }
 
     const description = order.description.trim();
-    const descriptionLabel = t('common.labels.Description');
+    const descriptionLabel = t('common.labels.description');
     const { isRequired: descriptionIsRequired, minLength: descriptionMinLength, maxLength: descriptionMaxLength } = orderValidation.description;
 
     if (descriptionIsRequired && !description) {
@@ -28,7 +28,7 @@ export default (order) => {
     } 
 
     const categoryId = order.categoryId;
-    const categoryLabel = t('common.labels.Category');
+    const categoryLabel = t('common.labels.category');
     const { isRequired: categoryIdIsRequired } = orderValidation.categoryId;
 
     if (categoryIdIsRequired && !categoryId) {

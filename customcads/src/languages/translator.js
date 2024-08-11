@@ -1,7 +1,7 @@
 ﻿import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import en from '@/languages/config/en';
-import bg from '@/languages/config/bg';
+import en from './en/resources';
+import bg from './bg/resources';
 
 i18n.use(initReactI18next)
     .init({

@@ -7,7 +7,7 @@ function LoginBtn() {
 
     return (
         <Link to="/login">
-            <HeaderBtn icon="user-secret" iconOrder="2" text={t("header.Login")} />
+            <HeaderBtn icon="user-secret" iconOrder="2" text={t("header.login")} />
         </Link>
     )
 }

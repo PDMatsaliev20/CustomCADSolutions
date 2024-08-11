@@ -16,10 +16,10 @@ function Header() {
             <ul className="flex justify-between items-center mx-5">
                 <li className="basis-1/3 flex justify-start items-center gap-x-6">
                     <Link to="/home" className="hover:no-underline">
-                        <HeaderBtn icon="home" text={t("header.Home")} orderReversed />
+                        <HeaderBtn icon="home" text={t("header.home")} orderReversed />
                     </Link>
                     <Link to="/gallery" className="hover:no-underline">
-                        <HeaderBtn icon="basket-shopping" text={t("header.Gallery")} orderReversed />
+                        <HeaderBtn icon="basket-shopping" text={t("header.gallery")} orderReversed />
                     </Link>
                 </li>
                 <li className="basis-1/3 flex justify-center">

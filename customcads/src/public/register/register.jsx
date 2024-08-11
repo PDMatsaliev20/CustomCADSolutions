@@ -41,58 +41,58 @@ function RegisterPage() {
     return (
         <section className="flex flex-col gap-y-4 items-center">
             <h1 className="text-4xl text-center text-indigo-950 font-bold">
-                {t('body.register.Register as a')} {role == 'client' ? t('common.roles.Client') : t('common.roles.Contributor')}
+                {t('public.register.register_title')} {role.toLowerCase() == 'client' ? t('common.roles.Client') : t('common.roles.Contributor')}
             </h1>
             <div className="w-7/12 pt-8 pb-2 px-12 mt-8 bg-indigo-400 rounded-md">
                 <form onSubmit={(e) => handleSubmit(e, handleSubmitCallback)} autoComplete="off" noValidate>
                     <div className="mb-2 flex flex-col gap-y-4">
                         <Input
                             id="username"
-                            label={t('common.labels.Username')}
+                            label={t('common.labels.username')}
                             name="username"
                             value={user.username}
                             onInput={handleInput}
                             onBlur={handleBlur}
-                            placeholder={t("body.register.Your_Username123")}
+                            placeholder={t("common.placeholders.username")}
                             touched={touched.username}
                             error={errors.username}
                             isRequired
                         />
                         <Input
                             id="email"
-                            label={t('common.labels.Email')}
+                            label={t('common.labels.email')}
                             type="email"
                             name="email"
                             value={user.email}
                             onInput={handleInput}
                             onBlur={handleBlur}
-                            placeholder={t("body.register.your@email.com")}
+                            placeholder={t("common.placeholders.email")}
                             touched={touched.email}
                             error={errors.email}
                             isRequired
                         />
                         <Input
                             id="password"
-                            label={t('common.labels.Password')}
+                            label={t('common.labels.password')}
                             type="password"
                             name="password"
                             value={user.password}
                             onInput={handleInput}
                             onBlur={handleBlur}
-                            placeholder={t("body.register.your_secret_password_123")}
+                            placeholder={t("common.placeholders.password")}
                             touched={touched.password}
                             error={errors.password}
                             isRequired
                         />
                          <Input
                             id="confirmPassword"
-                            label={t('common.labels.Confirm Password')}
+                            label={t('common.labels.confirm_password')}
                             type="password"
                             name="confirmPassword"
                             value={user.confirmPassword}
                             onInput={handleInput}
                             onBlur={handleBlur}
-                            placeholder={t("body.register.your_secret_password_123")}
+                            placeholder={t("common.placeholders.password")}
                             touched={touched.confirmPassword}
                             error={errors.confirmPassword}
                             isRequired
@@ -103,25 +103,25 @@ function RegisterPage() {
                             type="submit"
                             className="bg-indigo-600 text-indigo-50 font-bold py-2 px-4 rounded hover:bg-indigo-700"
                         >
-                            {t('body.register.Register')}
+                            {t('public.register.register')}
                         </button>
                     </div>
                 </form>
             </div>
             <section className="flex gap-x-4">
                 <div className="text-center">
-                    <p className="text-indigo-950" >{t('body.register.Already have an account')}</p>
+                    <p className="text-indigo-950" >{t('public.register.go_to_login')}</p>
                     <Link to="/login" className="text-center font-semibold text-indigo-700">
-                        {t('body.register.Log in')}
+                        {t('public.register.login')}
                     </Link>
                 </div>
                 <div className="text-center">
                     <p className="text-indigo-950">
-                        <span>{t('body.register.Want to be')}</span>
+                        <span>{t('public.register.want')}</span>
                         <span className="font-bold"> {isClient ? t('common.roles.Contributor') : t('common.roles.Client')}?</span>
                     </p>
                     <Link to={isClient ? '/register/contributor' : '/register/client'} className="text-center font-semibold text-indigo-700">
-                        {t('body.register.Switch roles')}
+                        {t('public.register.switch')}
                     </Link>
                 </div>
             </section>

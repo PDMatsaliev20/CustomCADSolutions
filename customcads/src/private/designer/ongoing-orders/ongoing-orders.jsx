@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useLoaderData } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import useObjectToURL from '@/hooks/useObjectToURL';
+import objectToUrl from '@/utils/object-to-url';
 import { GetOrdersByStatus } from '@/requests/private/designer';
 import SearchBar from '@/components/searchbar';
 import PendingOrder from './components/pending-order';
@@ -39,26 +39,26 @@ function OngoingOrders() {
                             to="/designer/orders/pending"
                             className={`basis-1/3 bg-indigo-300 py-4 hover:no-underline ${status === 'Pending' ? 'font-extrabold bg-indigo-500 text-indigo-50' : ''}`}
                         >
-                            {t('body.designerOrders.Pending Title')}
+                            {t('private.designer.pending_title')}
                         </Link>
                         <Link
                             to="/designer/orders/begun"
                             className={`basis-1/3 bg-indigo-300 py-4 border-x-2 border-indigo-600 hover:no-underline ${status === 'Begun' ? 'font-extrabold bg-indigo-500 text-indigo-50' : ''}`}
                         >
-                            {t('body.designerOrders.Begun Title')}
+                            {t('private.designer.begun_title')}
                         </Link>
                         <Link
                             to="/designer/orders/finished"
                             className={`basis-1/3 bg-indigo-300 py-4 hover:no-underline ${status === 'Finished' ? 'font-extrabold bg-indigo-500 text-indigo-50' : ''}`}
                         >
-                            {t('body.designerOrders.Finished Title')}
+                            {t('private.designer.finished_title')}
                         </Link>
                     </div>
                 </h2>
                 <SearchBar setSearch={setSearch} />
             </div>
             {!orders.length ?
-                <p className="basis-full text-lg text-indigo-900 text-center font-bold">{t('body.designerOrders.No orders')}</p>
+                <p className="basis-full text-lg text-indigo-900 text-center font-bold">{t('private.designer.no_orders')}</p>
                 : <ul className="basis-full grid grid-cols-3 gap-y-8 gap-x-[5%]">
                     {orders.map(order =>
                         <li key={order.id}>{chooseOrder(order)}</li>
@@ -67,7 +67,7 @@ function OngoingOrders() {
         </div>
     );
     async function fetchOrders() {
-        const requestSearchParams = useObjectToURL({ ...search });
+        const requestSearchParams = objectToUrl({ ...search });
         try {
             const { data: { orders } } = await GetOrdersByStatus(status, requestSearchParams);
             setOrders(orders);

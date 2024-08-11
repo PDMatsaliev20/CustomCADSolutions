@@ -12,7 +12,7 @@ function GalleryItem({ item }) {
                     <img src={item.imagePath} className="w-full h-full" />
                 </div>
             </Link>
-            <p className="basis-full text-center text-lg font-semibold">{t('body.gallery.by')} '{item.creatorName}'</p>
+            <p className="basis-full text-center text-lg font-semibold">{t('public.gallery.by')} '{item.creatorName}'</p>
         </li>
     );
 }

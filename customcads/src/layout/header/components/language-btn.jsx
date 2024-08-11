@@ -18,7 +18,7 @@ function LanguageSelector() {
         i18n.changeLanguage(languages[languageIndex]);
     };
 
-    return <HeaderBtn onClick={handleClick} icon="globe" iconOrder="1" text={t("header.Language")} />;
+    return <HeaderBtn onClick={handleClick} icon="globe" iconOrder="1" text={t("header.language")} />;
 }
 
 export default LanguageSelector;

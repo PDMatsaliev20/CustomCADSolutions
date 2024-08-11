@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import useObjectToURL from '@/hooks/useObjectToURL';
+import objectToUrl from '@/utils/object-to-url';
 import { GetOrders, DeleteOrder } from '@/requests/private/orders';
 import SearchBar from '@/components/searchbar';
 import PendingOrder from './components/pending-order';
@@ -19,7 +19,7 @@ function UserOrders() {
     }, [search, status]);
 
     const handleDelete = async (id) => {
-        if (confirm(t('body.orders.Alert Delete'))) {
+        if (confirm(t('private.orders.alert_delete'))) {
             try {
                 await DeleteOrder(id);
                 fetchOrders();
@@ -46,26 +46,26 @@ function UserOrders() {
                             to="/orders/pending"
                             className={`basis-1/3 bg-indigo-300 py-4 hover:no-underline ${status === 'pending' ? 'font-extrabold bg-indigo-500 text-indigo-50' : ''}`}
                         >
-                            {t('body.orders.pending_title')}
+                            {t('private.orders.pending_title')}
                         </Link>
                         <Link
                             to="/orders/begun"
                             className={`basis-1/3 bg-indigo-300 py-4 border-x-2 border-indigo-700 hover:no-underline ${status === 'begun' ? 'font-extrabold bg-indigo-500 text-indigo-50' : ''}`}
                         >
-                            {t('body.orders.begun_title')}
+                            {t('private.orders.begun_title')}
                         </Link>
                         <Link
                             to="/orders/finished"
                             className={`basis-1/3 bg-indigo-300 py-4 hover:no-underline ${status === 'finished' ? 'font-extrabold bg-indigo-500 text-indigo-50' : ''}`}
                         >
-                            {t('body.orders.finished_title')}
+                            {t('private.orders.finished_title')}
                         </Link>
                     </div>
                 </h2>
                 <SearchBar setSearch={setSearch} />
             </div>
             {!orders.length ?
-                <p className="text-lg text-indigo-900 text-center font-bold">{t('body.orders.No orders')}</p>
+                <p className="text-lg text-indigo-900 text-center font-bold">{t('private.orders.No orders')}</p>
                 : <ul className="basis-full grid grid-cols-12 gap-x-16 gap-y-12">
                     {orders.filter(o => o.status.toLowerCase() === status.toLowerCase()).map(order =>
                         <li key={order.id} className="col-span-6">{chooseOrder(order)}</li>)}
@@ -74,7 +74,7 @@ function UserOrders() {
     );
 
     async function fetchOrders() {
-        const requestSearchParams = useObjectToURL({ ...search });
+        const requestSearchParams = objectToUrl({ ...search });
         try {
             const { data: { orders } } = await GetOrders(status, requestSearchParams);
             setOrders(orders);

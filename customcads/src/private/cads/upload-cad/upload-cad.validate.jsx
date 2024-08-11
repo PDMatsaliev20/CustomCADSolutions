@@ -8,7 +8,7 @@ export default (cad) => {
     let errors = {};
 
     const name = cad.name.trim();
-    const nameLabel = t('common.labels.Name');
+    const nameLabel = t('common.labels.name');
     const { isRequired: nameIsRequired, minLength: nameMinLength, maxLength: nameMaxLength } = cadValidation.name;
     if (nameIsRequired && !name) {
         errors.name = errorMessages.required(nameLabel);
@@ -17,7 +17,7 @@ export default (cad) => {
     }
 
     const description = cad.description.trim();
-    const descriptionLabel = t('common.labels.Description');
+    const descriptionLabel = t('common.labels.description');
     const { isRequired: descriptionIsRequired, minLength: descriptionMinLength, maxLength: descriptionMaxLength } = cadValidation.description;
 
     if (descriptionIsRequired && !description) {
@@ -27,7 +27,7 @@ export default (cad) => {
     } 
 
     const categoryId = cad.categoryId;
-    const categoryLabel = t('common.labels.Category');
+    const categoryLabel = t('common.labels.category');
     const { isRequired: categoryIdIsRequired } = cadValidation.categoryId;
 
     if (categoryIdIsRequired && !categoryId) {
@@ -35,7 +35,7 @@ export default (cad) => {
     }
 
     const price = cad.price;
-    const priceLabel = t('common.labels.Price');
+    const priceLabel = t('common.labels.price');
     const { isRequired: priceIsRequired, min: priceMinVal, max: priceMaxVal } = cadValidation.price;
 
     if (priceIsRequired && !price) {
@@ -45,7 +45,7 @@ export default (cad) => {
     }
 
     const file = cad.file;
-    const fileLabel = t('common.labels.3D Model');
+    const fileLabel = t('common.labels.cad');
     const { isRequired: fileIsRequired } = cadValidation.file;
 
     if (fileIsRequired && !file) {
@@ -53,7 +53,7 @@ export default (cad) => {
     }
 
     const image = cad.image;
-    const imageLabel = t('common.labels.Image');
+    const imageLabel = t('common.labels.image');
     const { isRequired: imageIsRequired } = cadValidation.image;
 
     if (imageIsRequired && !image) {

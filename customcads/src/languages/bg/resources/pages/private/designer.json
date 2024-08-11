@@ -1,0 +1,22 @@
+{
+  "unchecked-cads_title": "3D Модели за Проверка",
+  "validate": "Одобри",
+  "report": "Докладвай",
+  "uploaded_by": "Качено от:",
+  "confirm_validate": "Сигурни ли сте, че искате да одобрите този 3D Модел?",
+  "confirm_cad_report": "Сигурни ли сте, че искате да докладвате този 3D Модел?",
+  "no_cads": "Все още няма качени 3D Модели.",
+  "pending_title": "Поръчки за Започване",
+  "begun_title": "Поръчки за Завършване",
+  "finished_title": "Поръчки за Доставяне",
+  "ordered_on": "Ordered on:",
+  "accept": "Приеми",
+  "complete": "Завърши",
+  "cancel": "Откажи",
+  "upload": "Upload",
+  "finish-order_title": "Complete the Order",
+  "deliver": "Достави",
+  "dismiss": "Откажи",
+  "no_orders": "Няма поръчки тук.",
+  "confirm_order_report": "Сигурни ли сте, че искате да докладвате тази поръчка?"
+}

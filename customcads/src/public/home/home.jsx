@@ -6,30 +6,30 @@ import BtnLink from './components/btn-link';
 function HomePage() {
     const { t } = useTranslation();
 
-    const customerParent = { path: '/register/client', content: t('body.home.Register1Btn') };
+    const customerParent = { path: '/register/client', content: t('common.roles.Client') };
     const customerChildren = [
-        { id: 1, path: '/orders/gallery', content: t("body.home.SubRegister1Btn1") },
-        { id: 2, path: '/orders/custom', content: t("body.home.SubRegister1Btn2") },
+        { id: 1, path: '/orders/gallery', content: t("public.home.client_action_1") },
+        { id: 2, path: '/orders/custom', content: t("public.home.client_action_2") },
     ];
 
-    const contributorParent = { path: '/register/contributor', content: t('body.home.Register2Btn') };
+    const contributorParent = { path: '/register/contributor', content: t('common.roles.Contributor') };
     const contributorChildren = [
-        { id: 3, path: 'cads/upload', content: t("body.home.SubRegister2Btn1") },
-        { id: 4, path: 'cads/sell', content: t("body.home.SubRegister2Btn2") },
+        { id: 3, path: 'cads/upload', content: t("public.home.contributor_action_1") },
+        { id: 4, path: 'cads/sell', content: t("public.home.contributor_action_2") },
     ];
 
     return (
         <>
             <section className="flex justify-between items-center">
                 <article className="h-full basis-8/12 shrink-0 flex flex-wrap items-center gap-y-8 text-center">
-                    <h1 className="basis-full text-5xl font-bold italic">{t('body.home.Title')}</h1>
+                    <h1 className="basis-full text-5xl font-bold italic">{t('public.home.title')}</h1>
                     <span className="basis-full flex flex-col gap-y-3">
-                        <span className="text-2xl ">{t('body.home.Subtitle')}</span>
-                        <span className="text-lg italic">{t('body.home.Hint')}</span>
+                        <span className="text-2xl ">{t('public.home.subtitle')}</span>
+                        <span className="text-lg italic">{t('public.home.hint')}</span>
                     </span>
                     <div className="basis-full flex justify-center gap-x-5">
-                        <BtnLink to="/register/client" text={t('body.home.BuyBtn')} />
-                        <BtnLink to="/register/contributor" text={t('body.home.SellBtn')} />
+                        <BtnLink to="/register/client" text={t('public.home.buy_btn')} />
+                        <BtnLink to="/register/contributor" text={t('public.home.sell_btn')} />
                     </div>
                 </article>
                 <aside className="grow h-96">
@@ -39,7 +39,7 @@ function HomePage() {
 
             <hr className="border-t border-black" />
 
-            <h3 className="text-4xl text-center mt-8 font-semibold">{t('body.home.Title2')}</h3>
+            <h3 className="text-4xl text-center mt-8 font-semibold">{t('public.home.title_2')}</h3>
             <section className="my-10">
                 <article className="flex justify-evenly items-center gap-5">
                     <Path parent={customerParent} children={customerChildren} />

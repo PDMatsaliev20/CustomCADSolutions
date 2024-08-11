@@ -1,0 +1,22 @@
+{
+  "unchecked-cads_title": "3D Models to Check",
+  "validate": "Validate",
+  "report": "Report",
+  "uploaded_by": "Uploaded by:",
+  "confirm_validate": "Are you sure you want to validate this 3D Model?",
+  "confirm_cad_report": "Are you sure you want to report this 3D Model?",
+  "no_cads": "No uploaded 3D Models yet.",
+  "pending_title": "Orders to Begin",
+  "begun_title": "Orders to Finish",
+  "finished_title": "Orders to Deliver",
+  "ordered_on": "Ordered on:",
+  "accept": "Accept",
+  "complete": "Complete",
+  "cancel": "Cancel",
+  "upload": "Upload",
+  "finish-order_title": "Complete the Order",
+  "deliver": "Deliver",
+  "dismiss": "Dismiss",
+  "no_orders": "No orders yet here.",
+  "confirm_order_report": "Are you sure you want to report this order?"
+}

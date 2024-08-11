@@ -27,39 +27,42 @@ function LoginPage() {
             setIsAuthenticated(true);
             navigate("/");
         } catch (e) {
-            alert(e.response.data);
+            if (e.response.data === 'Invalid Username or Password.') {
+                alert(t('common.errors.sign_in_error'));
+            }
+            console.error(e);
         }
     }
 
     return (
         <section className="flex flex-col gap-y-4 items-center">
             <h1 className="my-6 text-4xl text-center font-bold ">
-                {t('body.login.Log in to your existing account')}
+                {t('public.login.title')}
             </h1>
             <div className="w-6/12 px-12 pt-8 pb-6 bg-indigo-400 rounded-lg">
                 <form onSubmit={(e) => handleSubmit(e, handleSubmitCallback)} noValidate>
                     <div className="mb-4 flex flex-col gap-y-4">
                         <Input
                             id="username"
-                            label={t('common.labels.Username')}
+                            label={t('common.labels.username')}
                             name="username"
                             value={user.username}
                             onInput={handleInput}
                             onBlur={handleBlur}
-                            placeholder={t('body.login.Your_Username123')}
+                            placeholder={t('common.placeholders.username')}
                             touched={touched.username} 
                             error={errors.username} 
                             isRequired
                         />
                         <Input
                             id="password"
-                            label={t('common.labels.Password')}
+                            label={t('common.labels.password')}
                             type="password"
                             name="password"
                             value={user.password}
                             onInput={handleInput}
                             onBlur={handleBlur}
-                            placeholder={t('body.login.your_secret_password_123')}
+                            placeholder={t('common.placeholders.password')}
                             touched={touched.password} 
                             error={errors.password} 
                             isRequired
@@ -73,10 +76,10 @@ function LoginPage() {
                                 value={user.rememberMe}
                                 onInput={handleInput}
                             />
-                            <label className="ms-1 text-indigo-50">{t('body.login.Remember me')}</label>
+                            <label className="ms-1 text-indigo-50">{t('public.login.remember_me')}</label>
                         </div>
                         <div>
-                            <Link to="#" className="text-indigo-800">{t('body.login.Forgot password')}</Link>
+                            <Link to="#" className="text-indigo-800">{t('public.login.forgot_password')}</Link>
                         </div>
                     </div>
                     <div className="pt-2 flex justify-center">
@@ -84,16 +87,16 @@ function LoginPage() {
                             type="submit"
                             className="bg-indigo-600 text-indigo-50 py-2 px-4 rounded hover:bg-indigo-700"
                         >
-                            {t('body.login.Log in')}
+                            {t('public.login.log_in')}
                         </button>
                     </div>
                 </form>
             </div>
             <section className="">
                 <button className="">
-                    <p>{t("body.login.Don't have an account yet")}</p>
+                    <p>{t("public.login.go_to_register")}</p>
                     <Link to="/register" className="text-center font-semibold text-indigo-700">
-                        {t('body.login.Register')}
+                        {t('public.login.register')}
                     </Link>
                 </button>
             </section>
