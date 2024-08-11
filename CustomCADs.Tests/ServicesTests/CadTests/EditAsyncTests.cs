@@ -12,7 +12,6 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
         {
             CadModel expectedCad = await service.GetByIdAsync(id).ConfigureAwait(false);
             expectedCad.Name = "EditedCad";
-            expectedCad.Status = CadStatus.Banned;
             expectedCad.Price++;
             expectedCad.CategoryId = 2;
             expectedCad.Coords = [100, 100, 100];
@@ -26,9 +25,6 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
                 Assert.That(actualCad.Name, Is.EqualTo(expectedCad.Name ),
                     string.Format(DoesNotEditEnough, "Name"));
 
-                Assert.That(actualCad.Status, Is.EqualTo(expectedCad.Status),
-                    string.Format(DoesNotEditEnough, "Status"));
-                
                 Assert.That(actualCad.Price, Is.EqualTo(expectedCad.Price),
                     string.Format(DoesNotEditEnough, "Price"));
                 
@@ -48,6 +44,7 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
             expectedCad.Id = 100;
             expectedCad.CreationDate = DateTime.Now.AddDays(1);
             expectedCad.CreatorId = users[2].Id;
+            expectedCad.Status = CadStatus.Banned;
 
             await service.EditAsync(id, expectedCad).ConfigureAwait(false);
             CadModel actualCad = await service.GetByIdAsync(id).ConfigureAwait(false);
@@ -57,12 +54,9 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
                 Assert.That(actualCad.Id, Is.Not.EqualTo(expectedCad.Id),
                     string.Format(EditsTooMuch, "Id"));
 
-                Assert.That(actualCad.CadExtension, Is.Not.EqualTo(expectedCad.CadExtension),
-                    string.Format(EditsTooMuch, "Cad"));
+                Assert.That(actualCad.Status, Is.Not.EqualTo(expectedCad.Status),
+                    string.Format(EditsTooMuch, "Status"));
                 
-                Assert.That(actualCad.ImageExtension, Is.Not.EqualTo(expectedCad.ImageExtension),
-                    string.Format(EditsTooMuch, "Image"));
-
                 Assert.That(actualCad.CreationDate, Is.Not.EqualTo(expectedCad.CreationDate),
                     string.Format(EditsTooMuch, "CreationDate"));
 

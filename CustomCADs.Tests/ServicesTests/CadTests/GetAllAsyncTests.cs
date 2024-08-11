@@ -107,25 +107,27 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
         [TestCase(3, 3)]
         [TestCase(1, 2)]
         [TestCase(4, 2)]
-        public async Task Test_ReturnsCorrectlyWithPagination(int currentPage, int cadsPerPage)
+        public async Task Test_ReturnsCorrectlyWithPagination(int page, int limit)
         {
             int[] expectedCadIds = this.cads
                 .OrderBy(c => c.Id)
-                .Skip((currentPage - 1) * cadsPerPage)
-                .Take(cadsPerPage)
+                .Skip((page - 1) * limit)
+                .Take(limit)
                 .Select(c => c.Id)
                 .ToArray();
 
-            PaginationModel pagination = new() { Page = currentPage, Limit = cadsPerPage };
+            PaginationModel pagination = new() { Page = page, Limit = limit };
             CadResult result = await service.GetAllAsync(new(), new(), pagination).ConfigureAwait(false);
             int[] actualCadIds = result.Cads.Select(c => c.Id).ToArray();
 
             Assert.That(actualCadIds, Is.EqualTo(expectedCadIds),
-                string.Format(IncorrectPaging, currentPage));
+                string.Format(IncorrectPaging, page));
         }
 
         [TestCase(Sorting.Newest)]
+        [TestCase(Sorting.Oldest)]
         [TestCase(Sorting.Alphabetical)]
+        [TestCase(Sorting.Unalphabetical)]
         [TestCase(Sorting.Category)]
         public async Task Test_ReturnsCorrectlyWithSorting(Sorting sorting)
         {
@@ -139,13 +141,7 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
                 _ => cads.OrderBy(c => c.Id),
             }).Select(c => c.Id);
 
-            CadResult result = await service.GetAllAsync(new(), new()
-            {
-                Sorting = sorting.ToString()
-            }, new()
-            {
-                Limit = 8
-            }).ConfigureAwait(false);
+            CadResult result = await service.GetAllAsync(new(), new() { Sorting = sorting.ToString() }, new()).ConfigureAwait(false);
             var actualSort = result.Cads.Select(c => c.Id);
 
             Assert.That(actualSort, Is.EqualTo(expectedSort),

@@ -16,7 +16,7 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
             Assert.Multiple(() =>
             {
                 Assert.That(actualNoneCount, Is.EqualTo(expectedNoneCount),
-                    (CountedWrong));
+                    CountedWrong);
 
                 Assert.That(actualAllCount, Is.EqualTo(expectedAllCount),
                     CountedWrong);

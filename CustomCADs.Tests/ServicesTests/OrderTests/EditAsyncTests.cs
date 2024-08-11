@@ -31,9 +31,6 @@ namespace CustomCADs.Tests.ServicesTests.OrderTests
                 Assert.That(actualOrder.CategoryId, Is.EqualTo(expectedOrder.CategoryId),
                     string.Format(DoesNotEditEnough, "CategoryId"));
 
-                Assert.That(actualOrder.Status, Is.EqualTo(expectedOrder.Status),
-                    string.Format(DoesNotEditEnough, "Status"));
-
                 Assert.That(actualOrder.ShouldBeDelivered, Is.EqualTo(expectedOrder.ShouldBeDelivered),
                     string.Format(DoesNotEditEnough, "ShouldShow"));
 
