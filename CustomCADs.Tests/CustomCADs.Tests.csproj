@@ -26,6 +26,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CustomCADs.Core\CustomCADs.Core.csproj" />
+    <ProjectReference Include="..\CustomCADs.Infrastructure\CustomCADs.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

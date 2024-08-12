@@ -5,14 +5,20 @@ VisualStudioVersion = 17.8.34316.72
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomCADs.Core", "CustomCADs.Core\CustomCADs.Core.csproj", "{80B4560A-B2CC-438B-90C6-62FE1CDEC197}"
 	ProjectSection(ProjectDependencies) = postProject
-		{FD68ACFD-29B1-4F52-A7C9-5203DF60FE7C} = {FD68ACFD-29B1-4F52-A7C9-5203DF60FE7C}
+		{CBBE6C1C-CE41-4960-956C-BFE5765F3FFC} = {CBBE6C1C-CE41-4960-956C-BFE5765F3FFC}
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomCADs.Infrastructure", "CustomCADs.Infrastructure\CustomCADs.Infrastructure.csproj", "{FD68ACFD-29B1-4F52-A7C9-5203DF60FE7C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomCADs.App", "CustomCADs.App\CustomCADs.App.csproj", "{83A353B2-5F7E-495C-B411-6EBC003AB58C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FD68ACFD-29B1-4F52-A7C9-5203DF60FE7C} = {FD68ACFD-29B1-4F52-A7C9-5203DF60FE7C}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomCADs.API", "CustomCADs.API\CustomCADs.API.csproj", "{2E7298D5-E4D2-4844-83FD-0467955C6C8B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FD68ACFD-29B1-4F52-A7C9-5203DF60FE7C} = {FD68ACFD-29B1-4F52-A7C9-5203DF60FE7C}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomCADs.Tests", "CustomCADs.Tests\CustomCADs.Tests.csproj", "{7E65E744-A597-4042-A11F-9CC04B404E9D}"
 EndProject
