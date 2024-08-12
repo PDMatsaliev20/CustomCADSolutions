@@ -34,7 +34,7 @@ function RegisterPage() {
             setIsAuthenticated(true);
             navigate("/");
         } catch (e) {
-            alert(e.response.data);
+            console.log(e);
         }
     }
 

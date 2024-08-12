@@ -321,12 +321,32 @@ namespace CustomCADs.API.Controllers
         [HttpGet("DownloadCad/{id}")]
         [Produces("model/gltf-binary", "application/zip")]
         [ProducesResponseType(Status200OK)]
+        [ProducesResponseType(Status400BadRequest)]
+        [ProducesResponseType(Status403Forbidden)]
         [ProducesResponseType(Status404NotFound)]
         [ProducesResponseType(Status500InternalServerError)]
         public async Task<ActionResult> DownloadCad(int id)
         {
             try
             {
+                bool orderExists = await orderService.ExistsByIdAsync(id).ConfigureAwait(false);
+                if (!orderExists)
+                {
+                    return NotFound();
+                }
+
+                bool orderHasCad = await orderService.HasCadAsync(id).ConfigureAwait(false);
+                if (!orderHasCad)
+                {
+                    return BadRequest();
+                }
+
+                bool userOwnsOrder = await orderService.CheckOwnership(id, User.Identity!.Name!);
+                if (!userOwnsOrder)
+                {
+                    return StatusCode(403);
+                }
+
                 CadModel model = await orderService.GetCadAsync(id).ConfigureAwait(false);
                 
                 byte[] cad = await env.GetCadBytes(model.Name + model.Id, model.CadExtension).ConfigureAwait(false);

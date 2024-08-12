@@ -24,12 +24,11 @@ function FinishedOrder({ order }) {
                 default: console.error('Unsupported MIME type.'); return;
             }
 
-            document.private.appendChild(link);
+            document.body.appendChild(link);
             link.click();
-            document.private.removeChild(link);
+            document.body.removeChild(link);
             
             window.URL.revokeObjectURL(url);
-
         } catch (error) {
             console.error('Failed to download the file', error);
         }

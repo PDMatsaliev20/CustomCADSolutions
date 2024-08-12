@@ -44,7 +44,8 @@ function Pagination({ page, onPageChange, limit, total }) {
                 <p>
                     <span>{t('common.pagination.showing')} </span>
                     <span>
-                        {(page - 1) * limit + 1}-{page * limit < total ? page * limit : total}
+                        {total === 0 ? '0-0'
+                            : `${(page - 1) * limit + 1}-${page * limit < total ? page * limit : total}`}
                     </span>
                     <span> {t('common.pagination.of')} </span>
                     <span>{total} </span>

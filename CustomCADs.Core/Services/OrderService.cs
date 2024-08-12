@@ -105,6 +105,20 @@ namespace CustomCADs.Core.Services
         public async Task<bool> ExistsByIdAsync(int id)
             => await repository.GetByIdAsync<Order>(id).ConfigureAwait(false) != null;
         
+        public async Task<bool> HasCadAsync(int id)
+        {
+            Order? order = await repository.GetByIdAsync<Order>(id).ConfigureAwait(false)
+                ?? throw new KeyNotFoundException();
+            return order.CadId != null;
+        }
+        
+        public async Task<bool> CheckOwnership(int id, string username)
+        {
+            Order? order = await repository.GetByIdAsync<Order>(id).ConfigureAwait(false)
+                ?? throw new KeyNotFoundException();
+            return order.Buyer.UserName == username;
+        }
+
         public async Task<int> CreateAsync(OrderModel model)
         {
             Order order = mapper.Map<Order>(model);

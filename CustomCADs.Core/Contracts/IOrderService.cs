@@ -88,5 +88,22 @@ namespace CustomCADs.Core.Contracts
         /// <returns>A Task object that represents the asynchronous Save Changes operation after the deletion.</returns>
         /// <exception cref="KeyNotFoundException">if no Order with the given id exists.</exception>
         Task DeleteAsync(int id);
+
+        /// <summary>
+        ///     Checks if an Order has a CadId property.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Whether it does or not.</returns>
+        /// <exception cref="KeyNotFoundException">if no Order with the given id exists.</exception>/// <summary>
+        Task<bool> HasCadAsync(int id);
+
+        /// <summary>
+        ///     Checks if an Order's Buyer is the given.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="username"></param>
+        /// <returns>Whether it is or not.</returns>
+        /// <exception cref="KeyNotFoundException">if no Order with the given id exists.</exception>
+        Task<bool> CheckOwnership(int id, string username);
     }
 }

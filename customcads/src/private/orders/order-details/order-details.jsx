@@ -39,7 +39,7 @@ function OrderDetails() {
         }));
 
         if (JSON.stringify(originalOrder) !== JSON.stringify(newOrder)) {
-                setIsEditing(true);
+            setIsEditing(true);
         } else {
             setIsEditing(false);
         }
@@ -50,10 +50,8 @@ function OrderDetails() {
         const body = { name: order.name, description: order.description, categoryId: order.categoryId };
 
         try {
-            const response= await PutOrder(id, body);
-            if ((100 < response.status) && (response.status < 300)) {
-                navigate(`/orders/${status}`);
-            }
+            await PutOrder(id, body);
+            navigate(`/orders/${status}`);
         } catch (e) {
             console.error(e);
         }
@@ -96,7 +94,7 @@ function OrderDetails() {
                                 <span>{t('private.orders.description')}</span>
                                 <sub className="opacity-50 text-indigo-950 font-thin">
                                     {t('private.orders.hint')}
-                                </sub>  
+                                </sub>
                             </label>
                             <textarea
                                 id="description"

@@ -1,6 +1,6 @@
 import axios from '../axios';
 
-const GetCad = async () => {
+const GetHomeCad = async () => {
     return await axios.get('API/Home/Cad');
 };
 
@@ -20,4 +20,4 @@ const GetSortings = async () => {
     return await axios.get('API/Home/Sortings');
 };
 
-export { GetCad, Gallery, GalleryCad, GetCategories, GetSortings };
+export { GetHomeCad, Gallery, GalleryCad, GetCategories, GetSortings };

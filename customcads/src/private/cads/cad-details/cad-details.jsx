@@ -30,7 +30,7 @@ function EditCadPage() {
 
         const sendTrackChangesEvent = () => window.dispatchEvent(new CustomEvent("TrackChanges"));
 
-        const savePosition = (e) => {
+        const savePosition = async (e) => {
             const { coords, panCoords } = e.detail;
 
             try {
@@ -43,7 +43,7 @@ function EditCadPage() {
                     op: "replace",
                     value: panCoords
                 }
-                PatchCad(id, [updateCoords, updatePanCoords]);
+            await PatchCad(id, [updateCoords, updatePanCoords]);
                 setIsChanged(false);
 
                 setTimeout(sendTrackChangesEvent, 1500);
@@ -97,7 +97,7 @@ function EditCadPage() {
     };
 
     const handleDelete = async () => {
-        if (confirm(t('private.cads.Confirmation'))) {
+        if (confirm(t('private.cads.confirmation'))) {
             try {
                 await DeleteCad(id);
                 navigate('/cads');

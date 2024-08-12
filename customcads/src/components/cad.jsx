@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { GetCad } from '@/requests/public/home';
+import { GetHomeCad } from '@/requests/public/home';
 import Spinner from '@/components/spinner';
 
 function Cad({ cad, isHomeCad }) {
@@ -144,8 +144,8 @@ function Cad({ cad, isHomeCad }) {
 
     async function fetchHomeCad() {
         try {
-            const { data } = await GetCad();
-            setModel(data);
+            const { data } = await GetHomeCad();
+        setModel(data);
 
         } catch (error) {
             console.error('Error fetching CAD:', error);
