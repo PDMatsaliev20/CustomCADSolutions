@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34316.72
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomCADs.Core", "CustomCADs.Core\CustomCADs.Core.csproj", "{80B4560A-B2CC-438B-90C6-62FE1CDEC197}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomCADs.Application", "CustomCADs.Application\CustomCADs.Application.csproj", "{80B4560A-B2CC-438B-90C6-62FE1CDEC197}"
 	ProjectSection(ProjectDependencies) = postProject
 		{CBBE6C1C-CE41-4960-956C-BFE5765F3FFC} = {CBBE6C1C-CE41-4960-956C-BFE5765F3FFC}
 	EndProjectSection

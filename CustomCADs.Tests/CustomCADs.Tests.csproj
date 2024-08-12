@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -25,7 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CustomCADs.Core\CustomCADs.Core.csproj" />
+    <ProjectReference Include="..\CustomCADs.Application\CustomCADs.Application.csproj" />
     <ProjectReference Include="..\CustomCADs.Infrastructure\CustomCADs.Infrastructure.csproj" />
   </ItemGroup>
 
