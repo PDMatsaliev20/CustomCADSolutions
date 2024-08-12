@@ -28,8 +28,9 @@ namespace CustomCADs.API.Controllers
         public ActionResult<string> GetPublicKey() => stripeService.GetPublicKey();
 
         [HttpPost("Purchase/{id}")]
-        [ProducesResponseType(Status201Created)]
-        [ProducesResponseType(Status404NotFound)]
+        [ProducesResponseType(Status200OK)]
+        [ProducesResponseType(Status400BadRequest)]
+        [ProducesResponseType(Status500InternalServerError)]
         public async Task<ActionResult> Purchase(int id, string paymentMethodId)
         {
             try
@@ -43,42 +44,24 @@ namespace CustomCADs.API.Controllers
                     Buyer = User.Identity!.Name!,
                 }).ConfigureAwait(false);
 
-                switch (paymentIntent.Status)
+                return paymentIntent.Status switch
                 {
-                    case "succeeded": return Ok(SuccessfulPayment);
-                    case "processing": return Ok(ProcessingPayment);
-                    case "canceled": return BadRequest(CanceledPayment);
-                    case "requires_payment_method": return BadRequest(FailedPaymentMethod);
-
-                    case "requires_action":
-                        return BadRequest(new
-                        {
-                            Message = FailedPayment,
-                            paymentIntent.ClientSecret
-                        });
-
-                    case "requires_capture":
-                        PaymentIntent capturedIntent = await stripeService.CapturePaymentAsync(paymentIntent.Id);
-                        return capturedIntent.Status != "succeeded"
-                            ? BadRequest(FailedPaymentCapture)
-                            : Ok(SuccessfulPayment);
-
-                    default: return BadRequest(string.Format(UnhandledPayment, paymentIntent.Status));
-                }
+                    "succeeded" => Ok(SuccessfulPayment),
+                    "processing" => Ok(ProcessingPayment),
+                    "canceled" => BadRequest(CanceledPayment),
+                    "requires_payment_method" => BadRequest(FailedPaymentMethod),
+                    "requires_action" => BadRequest(new { Message = FailedPayment, paymentIntent.ClientSecret }),
+                    "requires_capture" =>
+                        (await stripeService.CapturePaymentAsync(paymentIntent.Id)).Status == "succeeded"
+                            ? Ok(SuccessfulPayment)
+                            : BadRequest(FailedPaymentCapture),
+                    _ => BadRequest(string.Format(UnhandledPayment, paymentIntent.Status))
+                };
             }
             catch (Exception ex)
             {
                 return StatusCode(Status500InternalServerError, ex.GetMessage());
             }
-        }
-
-        [HttpPost("CapturePayment/{id}")]
-        public async Task<IActionResult> CapturePayment(string id)
-        {
-            PaymentIntent paymentIntent = await stripeService.CapturePaymentAsync(id);
-            return paymentIntent.Status == "succeeded"
-                ? Ok(SuccessfulPaymentCapture)
-                : BadRequest(FailedPaymentCapture);
         }
     }
 }

@@ -14,16 +14,16 @@ function CheckoutForm({ id, onSubmit }) {
         setProcessing(true);
 
         const card = elements.getElement(CardElement);
-
+        
         const { error, paymentMethod } = await stripe.createPaymentMethod({ type: 'card', card, });
         if (error) {
             setError(error);
-            setProccessing(false);
+            setProcessing(false);
             return;
         }
 
         const { data, status } = await Purchase(id, paymentMethod.id);
-        if (status === 404) {
+        if (status === 400) {
             if (data.clientSecret) {
                 const { error: confirmError } = await stripe.confirmCardPayment(data.clientSecret);
                 if (confirmError) {

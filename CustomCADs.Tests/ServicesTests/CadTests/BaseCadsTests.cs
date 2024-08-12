@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using CustomCADs.Core.Contracts;
 using CustomCADs.Core.Mappings;
-using CustomCADs.Core.Models;
 using CustomCADs.Core.Models.Cads;
 using CustomCADs.Core.Services;
 using CustomCADs.Domain;

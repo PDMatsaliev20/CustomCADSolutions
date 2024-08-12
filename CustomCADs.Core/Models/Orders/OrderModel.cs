@@ -3,7 +3,6 @@ using CustomCADs.Domain.Entities;
 using CustomCADs.Domain.Entities.Enums;
 using CustomCADs.Domain.Entities.Identity;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using static CustomCADs.Domain.DataConstants;
 using static CustomCADs.Domain.DataConstants.OrderConstants;
 

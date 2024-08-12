@@ -1,16 +1,16 @@
 ﻿using CustomCADs.Core.Contracts;
 using CustomCADs.Core.Services;
 using CustomCADs.Domain;
-using CustomCADs.Infrastructure.Data;
 using CustomCADs.Domain.Entities.Identity;
+using CustomCADs.Infrastructure.Data;
+using CustomCADs.Infrastructure.Payment;
+using CustomCADs.Infrastructure.Payment.Contracts;
+using CustomCADs.Infrastructure.Payment.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.StaticFiles;
-using CustomCADs.Infrastructure.Payment;
+using Microsoft.EntityFrameworkCore;
 using Stripe;
-using CustomCADs.Infrastructure.Payment.Services;
-using CustomCADs.Infrastructure.Payment.Contracts;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -118,7 +118,7 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 ContentTypeProvider = new FileExtensionContentTypeProvider()
                 {
-                    Mappings = 
+                    Mappings =
                     {
                         [".glb"] = "model/gltf-binary",
                         [".gltf"] = "model/gltf+json"

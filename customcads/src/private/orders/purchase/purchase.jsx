@@ -43,8 +43,12 @@ function PurchasePage() {
     );
 
     async function fetchPublicKey() {
-        const { data } = await GetPublicKey();
-        setPk(data);
+        try {
+            const { data } = await GetPublicKey();
+            setPk(data);
+        } catch (e) {
+            console.error(e);
+        }
     }
 }
 
