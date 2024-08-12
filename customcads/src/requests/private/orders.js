@@ -13,7 +13,7 @@ const DownloadOrderCad = async (id) => {
 }
 
 const PostOrder = async (order) => {
-    return await axios.post('API/Orders', order);
+    return await axios.post('API/Orders', order, { headers: { 'Content-Type': 'multipart/form-data' } });
 }
 
 const OrderExisting = async (id, order) => {
@@ -21,7 +21,7 @@ const OrderExisting = async (id, order) => {
 }
 
 const PutOrder = async (id, order) => {
-    return await axios.put(`API/Orders/${id}`, order);
+    return await axios.put(`API/Orders/${id}`, order, { headers: { 'Content-Type': 'multipart/form-data' } });
 }
 
 const PatchOrder = async (id, operations) => {

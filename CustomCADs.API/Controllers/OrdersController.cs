@@ -189,12 +189,12 @@ namespace CustomCADs.API.Controllers
         }
 
         [HttpPut("{id}")]
-        [Consumes("application/json")]
+        [Consumes("multipart/form-data")]   
         [ProducesResponseType(Status204NoContent)]
         [ProducesResponseType(Status403Forbidden)]
         [ProducesResponseType(Status404NotFound)]
         [ProducesResponseType(Status500InternalServerError)]
-        public async Task<ActionResult> PutOrderAsync(int id, OrderImportDTO dto)
+        public async Task<ActionResult> PutOrderAsync(int id, [FromForm] OrderImportDTO dto)
         {
             try
             {
