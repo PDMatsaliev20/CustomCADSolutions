@@ -23,6 +23,7 @@ import searchbar from './resources/common/searchbar.json';
 import pagination from './resources/common/pagination.json';
 import roles from './resources/common/roles.json';
 import categories from './resources/common/categories.json';
+import http from './resources/common/http.json';
 import sortings from './resources/common/sortings.json';
 import statuses from './resources/common/statuses.json';
 import others from './resources/common/others.json';
@@ -51,6 +52,7 @@ export default {
             roles,
             categories,
             sortings,
+            http,
             statuses,
             others,
         }

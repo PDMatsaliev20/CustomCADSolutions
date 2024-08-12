@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
-import { Outlet, Navigate } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import AuthContext from '@/contexts/auth-context';
+import ErrorPage from '@/components/error-page';
 
 function AuthGuard({ auth, roles }) {
     const { isAuthenticated, userRole } = useContext(AuthContext);
@@ -8,12 +9,12 @@ function AuthGuard({ auth, roles }) {
     
     useEffect(() => {
         if (auth === 'guest' && isAuthenticated) {
-            setResponse(<Navigate to="/home" replace />);
+            setResponse(<ErrorPage status={400} />);
         } else if (auth === 'private') {
             if (!isAuthenticated) {
-                setResponse(<Navigate to="/login" replace />);
+                setResponse(<ErrorPage status={401} />);
             } else if (roles && userRole && !roles.includes(userRole)) {
-                setResponse(<Navigate to="/home" replace />);
+                setResponse(<ErrorPage status={403} />);
             }
         } else {
             setResponse(<Outlet />);

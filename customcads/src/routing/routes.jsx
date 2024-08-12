@@ -1,3 +1,4 @@
+import ErrorPage from '@/components/error-page';
 import App from '@/app';
 import publicRoutes from './users/public';
 import guestRoutes from './users/guest';
@@ -14,6 +15,7 @@ const userRoutes = {
         clientRoutes,
         contributorRoutes,
         designerRoutes,
+        { path: '*', element: <ErrorPage status={404} /> },
     ]
 };
 

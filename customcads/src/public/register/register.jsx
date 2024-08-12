@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import useForm from '@/hooks/useForm';
 import AuthContext from '@/contexts/auth-context';
 import { Register } from '@/requests/public/identity';
+import ErrorPage from '@/components/error-page';
 import Input from '@/components/input';
 import useValidateRegister from './register.validate';
 
@@ -12,7 +13,7 @@ function RegisterPage() {
     const navigate = useNavigate();
     const { t } = useTranslation();
     const { role } = useParams();
-
+    
     const {
         values: user,
         touched,
@@ -25,7 +26,7 @@ function RegisterPage() {
     const isClient = role.toLowerCase() === "client";
     const isContributor = role.toLowerCase() === "contributor";
     if (!(isClient || isContributor)) {
-        return <p className="text-4xl text-center font-bold">Can't do that, sorry</p>;
+        return <ErrorPage status={400} img="src/assets/errors/az.png" />;
     }
 
     const handleSubmitCallback = async () => {
