@@ -1,9 +1,9 @@
 import AuthGuard from '@/routing/auth-guard';
 import { GetCategories } from '@/requests/public/home';
 import { GetCad } from '@/requests/private/cads';
-import UserCadsPage from '@/private/cads/user-cads/user-cads';
-import CadDetailsPage from '@/private/cads/cad-details/cad-details';
-import UploadCadPage from '@/private/cads/upload-cad/upload-cad';
+import UserCadsPage from '@/pages/private/cads/user-cads/user-cads';
+import CadDetailsPage from '@/pages/private/cads/cad-details/cad-details';
+import UploadCadPage from '@/pages/private/cads/upload-cad/upload-cad';
 
 export default {
     element: <AuthGuard auth="private" roles={['Contributor', 'Designer']} />,

@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useLoaderData } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import usePagination from '@/hooks/usePagination';
 import objectToUrl from '@/utils/object-to-url';
 import { GetOrders, DeleteOrder } from '@/requests/private/orders';
 import SearchBar from '@/components/searchbar';
 import Pagination from '@/components/pagination';
+import ErrorPage from '@/components/error-page';
 import PendingOrder from './components/pending-order';
 import BegunOrder from './components/begun-order';
 import FinishedOrder from './components/finished-order';
@@ -13,10 +14,18 @@ import FinishedOrder from './components/finished-order';
 function UserOrders() {
     const { t } = useTranslation();
     const [orders, setOrders] = useState([]);
-    const { status } = useParams();
+    const { status } = useLoaderData();
     const [search, setSearch] = useState({ name: '', category: '', sorting: '' });
     const [total, setTotal] = useState(0);
     const { page, limit, handlePageChange } = usePagination(total, 12);
+
+    const isPending = status === 'Pending';
+    const isBegun = status === 'Begun';
+    const isFinished = status === 'Finished';
+
+    if (!(isPending || isBegun || isFinished)) {
+        return <ErrorPage status={404} />
+    }
 
     useEffect(() => {
         fetchOrders();
@@ -35,11 +44,9 @@ function UserOrders() {
     };
 
     const chooseOrder = (order) => {
-        switch (status.toLowerCase()) {
-            case 'pending': return <PendingOrder order={order} onDelete={() => handleDelete(order.id)} />;
-            case 'begun': return <BegunOrder order={order} onDelete={() => handleDelete(order.id)} />;
-            case 'finished': return <FinishedOrder order={order} />;
-        }
+        if (isPending) return <PendingOrder order={order} onDelete={() => handleDelete(order.id)} />;
+        if (isBegun) return <BegunOrder order={order} onDelete={() => handleDelete(order.id)} />;
+        if (isFinished) return <FinishedOrder order={order} />;
     };
 
     return (
@@ -49,19 +56,19 @@ function UserOrders() {
                     <div className="flex justify-between items-center rounded-t-xl border-4 border-indigo-700 overflow-hidden bg-indigo-500 text-center font-bold">
                         <Link
                             to="/orders/pending"
-                            className={`basis-1/3 bg-indigo-300 py-4 hover:no-underline ${status === 'pending' ? 'font-extrabold bg-indigo-500 text-indigo-50' : ''}`}
+                            className={`basis-1/3 bg-indigo-300 py-4 hover:no-underline ${isPending ? 'font-extrabold bg-indigo-500 text-indigo-50' : ''}`}
                         >
                             {t('private.orders.pending_title')}
                         </Link>
                         <Link
                             to="/orders/begun"
-                            className={`basis-1/3 bg-indigo-300 py-4 border-x-2 border-indigo-700 hover:no-underline ${status === 'begun' ? 'font-extrabold bg-indigo-500 text-indigo-50' : ''}`}
+                            className={`basis-1/3 bg-indigo-300 py-4 border-x-2 border-indigo-700 hover:no-underline ${isBegun ? 'font-extrabold bg-indigo-500 text-indigo-50' : ''}`}
                         >
                             {t('private.orders.begun_title')}
                         </Link>
                         <Link
                             to="/orders/finished"
-                            className={`basis-1/3 bg-indigo-300 py-4 hover:no-underline ${status === 'finished' ? 'font-extrabold bg-indigo-500 text-indigo-50' : ''}`}
+                            className={`basis-1/3 bg-indigo-300 py-4 hover:no-underline ${isFinished ? 'font-extrabold bg-indigo-500 text-indigo-50' : ''}`}
                         >
                             {t('private.orders.finished_title')}
                         </Link>
