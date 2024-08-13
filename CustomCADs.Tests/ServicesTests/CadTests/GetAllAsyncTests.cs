@@ -110,7 +110,7 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
         public async Task Test_ReturnsCorrectlyWithPagination(int page, int limit)
         {
             int[] expectedCadIds = this.cads
-                .OrderBy(c => c.Id)
+                .OrderByDescending(c => c.Id)
                 .Skip((page - 1) * limit)
                 .Take(limit)
                 .Select(c => c.Id)
