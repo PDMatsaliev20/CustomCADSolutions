@@ -58,12 +58,12 @@ namespace CustomCADs.Core.Services
 
             allCads = search.Sorting.ToLower() switch
             {
-                "newest" => allCads.OrderBy(c => c.CreationDate),
-                "oldest" => allCads.OrderByDescending(c => c.CreationDate),
+                "newest" => allCads.OrderByDescending(c => c.CreationDate),
+                "oldest" => allCads.OrderBy(c => c.CreationDate),
                 "alphabetical" => allCads.OrderBy(c => c.Name),
                 "unalphabetical" => allCads.OrderByDescending(c => c.Name),
                 "category" => allCads.OrderBy(m => m.Category.Name),
-                _ => allCads.OrderBy(c => c.Id),
+                _ => allCads.OrderByDescending(c => c.Id),
             };
 
             Cad[] cads = await allCads

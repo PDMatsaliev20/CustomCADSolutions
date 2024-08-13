@@ -57,12 +57,12 @@ namespace CustomCADs.Core.Services
             }
             dbOrders = search.Sorting.ToLower() switch
             {
-                "newest" => dbOrders.OrderBy(o => o.OrderDate),
-                "oldest" => dbOrders.OrderByDescending(o => o.OrderDate),
+                "newest" => dbOrders.OrderByDescending(o => o.OrderDate),
+                "oldest" => dbOrders.OrderBy(o => o.OrderDate),
                 "alphabetical" => dbOrders.OrderBy(o => o.Name),
                 "unalphabetical" => dbOrders.OrderByDescending(o => o.Name),
                 "category" => dbOrders.OrderBy(o => o.Category.Name),
-                _ => dbOrders.OrderBy(o => o.Id)
+                _ => dbOrders.OrderByDescending(o => o.Id)
             };
 
             // Pagination

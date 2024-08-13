@@ -133,8 +133,8 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
         {
             var expectedSort = (sorting switch
             {
-                Sorting.Newest => cads.OrderBy(c => c.CreationDate),
-                Sorting.Oldest => cads.OrderByDescending(c => c.CreationDate),
+                Sorting.Newest => cads.OrderByDescending(c => c.CreationDate),
+                Sorting.Oldest => cads.OrderBy(c => c.CreationDate),
                 Sorting.Alphabetical => cads.OrderBy(c => c.Name),
                 Sorting.Unalphabetical => cads.OrderByDescending(c => c.Name),
                 Sorting.Category => cads.OrderBy(m => m.Category.Name),
