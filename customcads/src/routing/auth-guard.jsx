@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom';
 import AuthContext from '@/contexts/auth-context';
 import ErrorPage from '@/components/error-page';
 
-function AuthGuard({ auth, roles }) {
+function AuthGuard({ auth, role }) {
     const { isAuthenticated, userRole } = useContext(AuthContext);
     const [response, setResponse] = useState(<Outlet />);
     
@@ -13,13 +13,17 @@ function AuthGuard({ auth, roles }) {
         } else if (auth === 'private') {
             if (!isAuthenticated) {
                 setResponse(<ErrorPage status={401} />);
-            } else if (roles && userRole && !roles.includes(userRole)) {
-                setResponse(<ErrorPage status={403} />);
+            } else if (userRole) {
+                if (role !== userRole) {
+                    setResponse(<ErrorPage status={403} />);
+                } else {
+                    setResponse(<Outlet />);
+                }
             }
         } else {
             setResponse(<Outlet />);
         }
-    }, [auth, roles, isAuthenticated, userRole]);
+    }, [auth, role, isAuthenticated, userRole]);
 
     return response;
 }

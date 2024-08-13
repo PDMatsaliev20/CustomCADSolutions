@@ -9,13 +9,13 @@ import LanguageBtn from './components/language-btn';
 
 function Header() {
     const { t } = useTranslation();
-    const { isAuthenticated } = useContext(AuthContext);
-
+    const { isAuthenticated, userRole } = useContext(AuthContext);
+    
     return (
         <header className="bg-indigo-200 border-b border-indigo-700 rounded-b-lg py-4">
             <ul className="flex justify-between items-center mx-5">
                 <li className="basis-1/3 flex justify-start items-center gap-x-6">
-                    <Link to="/home" className="hover:no-underline">
+                    <Link to={!isAuthenticated ? '/' : `/${userRole.toLowerCase()}`} className="hover:no-underline">
                         <HeaderBtn icon="home" text={t("header.home")} orderReversed />
                     </Link>
                     <Link to="/gallery" className="hover:no-underline">

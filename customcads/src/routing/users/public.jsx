@@ -4,6 +4,8 @@ import GalleryPage from '@/pages/public/gallery/gallery';
 import GalleryDetailsPage from '@/pages/public/gallery-details/gallery-details';
 import PrivacyPolicyPage from '@/pages/public/policy/policy';
 import AboutUsPage from '@/pages/public/about/about';
+import RoleInfoPage from '@/pages/guest/role-info/role-info';
+import capitalize from '@/utils/capitalize';
 
 export default {
     element: <AuthGuard auth="public" />,
@@ -33,5 +35,13 @@ export default {
             path: '/policy',
             element: <PrivacyPolicyPage />
         },
+        {
+            path: '/info/:role',
+            element: <RoleInfoPage />,
+            loader: async ({ params }) => {
+                const { role } = params;
+                return { role: capitalize(role) };
+            }
+        }
     ]
 };

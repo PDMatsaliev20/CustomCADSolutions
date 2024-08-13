@@ -36,7 +36,7 @@ function CompleteOrder() {
         try {
             const { data } = await PostCad(cad);
             await FinishOrder(id, data.id);
-            navigate(`/cads/${data.id}`);
+            navigate(`/designer/cads/${data.id}`);
         } catch (e) {
             console.error(e);
         }

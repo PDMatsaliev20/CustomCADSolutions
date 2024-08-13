@@ -29,7 +29,7 @@ function OrderDetails() {
 
     const handleInput = (e) => {
         if (order.status !== 'Pending') {
-            alert(t('private.orders.Warning'));
+            alert(t('private.orders.warning'));
             return;
         }
         const newOrder = { ...order, [e.target.name]: e.target.value.trim() };
@@ -48,10 +48,11 @@ function OrderDetails() {
     const handleFormSubmit = async (e) => {
         e.preventDefault();
         const body = { name: order.name, description: order.description, categoryId: order.categoryId };
-
+        
         try {
             await PutOrder(id, body);
-            navigate(`/orders/${status}`);
+            setIsEditing(false);
+            navigate('');
         } catch (e) {
             console.error(e);
         }

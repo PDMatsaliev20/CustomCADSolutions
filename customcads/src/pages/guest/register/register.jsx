@@ -6,6 +6,7 @@ import AuthContext from '@/contexts/auth-context';
 import { Register } from '@/requests/public/identity';
 import ErrorPage from '@/components/error-page';
 import Input from '@/components/input';
+import { getCookie } from '@/utils/cookie-manager';
 import useValidateRegister from './register.validate';
 
 function RegisterPage() {
@@ -33,7 +34,7 @@ function RegisterPage() {
         try {
             await Register(user, isClient ? 'Client' : 'Contributor');
             setIsAuthenticated(true);
-            navigate("/");
+            navigate(`/${getCookie('role').toLowerCase()}`);
         } catch (e) {
             console.log(e);
         }

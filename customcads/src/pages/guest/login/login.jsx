@@ -5,6 +5,7 @@ import useForm from '@/hooks/useForm';
 import AuthContext from '@/contexts/auth-context';
 import { Login } from '@/requests/public/identity';
 import Input from '@/components/input';
+import { getCookie } from '@/utils/cookie-manager';
 import useValidateLogin from './login.validate';
 
 function LoginPage() {
@@ -25,7 +26,7 @@ function LoginPage() {
         try {
             await Login(user);
             setIsAuthenticated(true);
-            navigate("/");
+            navigate(`/${getCookie('role').toLowerCase()}`);
         } catch (e) {
             if (e.response.data === 'Invalid Username or Password.') {
                 alert(t('common.errors.sign_in_error'));

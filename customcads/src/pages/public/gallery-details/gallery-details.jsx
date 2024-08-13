@@ -15,7 +15,7 @@ function GalleryDetailsPage() {
             alert(t('public.gallery.alert_order'));
             return;
         }
-        navigate(`/purchase/${loadedCad.id}`);
+        navigate(`/client/purchase/${loadedCad.id}`);
     }
 
     return (

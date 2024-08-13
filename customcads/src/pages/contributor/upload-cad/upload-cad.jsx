@@ -33,7 +33,7 @@ function UploadCad() {
     const handleSubmitCallback = async () => {
         try {
             await PostCad(cad);
-            navigate("/cads");
+            navigate("/contributor/cads");
         } catch (e) {
             console.error(e);
         }

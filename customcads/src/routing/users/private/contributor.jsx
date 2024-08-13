@@ -1,19 +1,24 @@
 import AuthGuard from '@/routing/auth-guard';
 import { GetCategories } from '@/requests/public/home';
 import { GetCad } from '@/requests/private/cads';
-import UserCadsPage from '@/pages/private/cads/user-cads/user-cads';
-import CadDetailsPage from '@/pages/private/cads/cad-details/cad-details';
-import UploadCadPage from '@/pages/private/cads/upload-cad/upload-cad';
+import ContributorHomePage from '@/pages/contributor/contributor-home/contributor-home';
+import UserCadsPage from '@/pages/contributor/user-cads/user-cads';
+import CadDetailsPage from '@/pages/contributor/cad-details/cad-details';
+import UploadCadPage from '@/pages/contributor/upload-cad/upload-cad';
 
 export default {
-    element: <AuthGuard auth="private" roles={['Contributor', 'Designer']} />,
+    path: '/contributor',
+    element: <AuthGuard auth="private" role="Contributor" />,
     children: [
         {
-            path: '/cads',
+            element: <ContributorHomePage />
+        },
+        {
+            path: 'cads',
             element: <UserCadsPage />
         },
         {
-            path: '/cads/:id',
+            path: 'cads/:id',
             element: <CadDetailsPage />,
             loader: async ({ params }) => {
                 const { id } = params;
@@ -28,7 +33,7 @@ export default {
             }
         },
         {
-            path: '/cads/upload',
+            path: 'cads/upload',
             element: <UploadCadPage />
         },
     ]

@@ -22,7 +22,7 @@ function BegunOrder({ order, updateParent }) {
             <section className="grow py-3 px-2 flex flex-col gap-y-6">
                 <p className="grow text-indigo-900 text-center text-lg line-clamp-4">{order.description}</p>
                 <div className="min-h-10 flex justify-around text-indigo-50 font-bold">
-                    <Link to={`/designer/orders/complete/${order.id}`}
+                    <Link to={`/designer/orders/${order.id}/complete`}
                         className="basis-5/12 bg-indigo-700 border border-indigo-500 p-2 rounded text-center text-indigo-50 hover:opacity-70 hover:border-transparent"
                     >
                         {t('private.designer.complete')}

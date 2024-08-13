@@ -30,7 +30,7 @@ function CustomOrder() {
     const handleSubmitCallback = async () => {
         try {
             await PostOrder(order);
-            navigate("/orders/pending");
+            navigate("/client/orders/pending");
         } catch (e) {
             console.error(e);
         }
