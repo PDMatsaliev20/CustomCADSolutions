@@ -40,20 +40,17 @@ function OngoingOrders() {
             <div className="basis-full flex flex-col gap-y-[1px]">
                 <h2 className="px-4 basis-full text-3xl text-indigo-950">
                     <div className="flex justify-between items-center rounded-t-xl border-4 border-indigo-600 overflow-hidden bg-indigo-500 text-center font-bold">
-                        <Link
-                            to="/designer/orders/pending"
+                        <Link to="/designer/orders/pending"
                             className={`basis-1/3 bg-indigo-300 py-4 hover:no-underline ${status === 'Pending' ? 'font-extrabold bg-indigo-500 text-indigo-50' : ''}`}
                         >
                             {t('private.designer.pending_title')}
                         </Link>
-                        <Link
-                            to="/designer/orders/begun"
+                        <Link to="/designer/orders/begun"
                             className={`basis-1/3 bg-indigo-300 py-4 border-x-2 border-indigo-600 hover:no-underline ${status === 'Begun' ? 'font-extrabold bg-indigo-500 text-indigo-50' : ''}`}
                         >
                             {t('private.designer.begun_title')}
                         </Link>
-                        <Link
-                            to="/designer/orders/finished"
+                        <Link to="/designer/orders/finished"
                             className={`basis-1/3 bg-indigo-300 py-4 hover:no-underline ${status === 'Finished' ? 'font-extrabold bg-indigo-500 text-indigo-50' : ''}`}
                         >
                             {t('private.designer.finished_title')}

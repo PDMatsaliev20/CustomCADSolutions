@@ -1,30 +1,32 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { Purchase } from '@/requests/private/payment';
 
 function CheckoutForm({ id, onSubmit }) {
     const stripe = useStripe();
     const elements = useElements();
+    const { t } = useTranslation();
 
     const [awaitingState, processingState, successState, errorState] = ['awaiting', 'processing', 'success', 'error'];
     const [status, setStatus] = useState(awaitingState);
     const [error, setError] = useState(null);
-    const [btnMsg, setBtnMsg] = useState('Pay');
 
+    let btnMesg = t('private.orders.purchase');
     useEffect(() => {
         switch (status) {
             case awaitingState:
             case errorState:
-                setBtnMsg('Purchase');
+                btnMesg = t('private.orders.purchase');
                 break;
 
             case processingState:
-                setBtnMsg('Processing...');
+                btnMesg = t('private.orders.processing');
                 break;
 
             case successState:
-                setBtnMsg('Paid!');
+                btnMesg = t('private.orders.paid');
                 break;
         }
     }, [status]);
@@ -84,7 +86,7 @@ function CheckoutForm({ id, onSubmit }) {
                             disabled={!stripe || status === processingState || status === successState}
                             className="min-w-[50%] bg-indigo-500 text-xl text-indigo-50 font-bold py-3 rounded-lg disabled:bg-indigo-900 disabled:cursor-not-allowed"
                         >
-                            {btnMsg}
+                            {btnMesg}
                         </button>
                     </div>
                 </div>

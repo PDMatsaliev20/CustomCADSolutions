@@ -1,5 +1,12 @@
 {
   "Pending": "Предстояща",
+  "Pending_plural": "Предстоящи",
   "Begun": "Започната",
-  "Finished": "Завършена"
+  "Begun_plural": "Започнати",
+  "Finished": "Завършена",
+  "Finished_plural": "Завършени",
+  "Reported": "Докладвана",
+  "Reported_plural": "Докладвани",
+  "Removed": "Премахната",
+  "Removed_plural": "Премахнати"
 }

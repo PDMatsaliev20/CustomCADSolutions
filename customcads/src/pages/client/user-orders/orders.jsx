@@ -54,20 +54,17 @@ function UserOrders() {
             <div className="basis-full flex flex-col gap-y-[0.4px]"> 
                 <h2 className="px-4 text-2xl text-indigo-950">
                     <div className="flex justify-between items-center rounded-t-xl border-4 border-indigo-700 overflow-hidden bg-indigo-500 text-center font-bold">
-                        <Link
-                            to="/orders/pending"
+                        <Link to="/client/orders/pending"
                             className={`basis-1/3 bg-indigo-300 py-4 hover:no-underline ${isPending ? 'font-extrabold bg-indigo-500 text-indigo-50' : ''}`}
                         >
                             {t('private.orders.pending_title')}
                         </Link>
-                        <Link
-                            to="/orders/begun"
+                        <Link to="/client/orders/begun"
                             className={`basis-1/3 bg-indigo-300 py-4 border-x-2 border-indigo-700 hover:no-underline ${isBegun ? 'font-extrabold bg-indigo-500 text-indigo-50' : ''}`}
                         >
                             {t('private.orders.begun_title')}
                         </Link>
-                        <Link
-                            to="/orders/finished"
+                        <Link to="/client/orders/finished"
                             className={`basis-1/3 bg-indigo-300 py-4 hover:no-underline ${isFinished ? 'font-extrabold bg-indigo-500 text-indigo-50' : ''}`}
                         >
                             {t('private.orders.finished_title')}

@@ -1,4 +1,7 @@
 {
+  "home_title": "Your Dashboard",
+  "home_subtitle_1": "Recent Orders",
+  "home_subtitle_2": "Statistics",
   "pending_title": "Pending Orders",
   "begun_title": "Begun Orders",
   "finished_title": "Finished Orders",
@@ -23,5 +26,9 @@
   "save_changes": "Save changes",
   "warning": "Can't edit an Order that's already Begun or Finished",
   "custom-order_title": "Describe Your Custom 3D Model",
-  "order": "Send Order"
+  "order": "Send Order",
+  "purchase_title": "Purchase your dream 3D Model!",
+  "purchase": "Purchase",
+  "processing": "Processing...",
+  "paid": "Paid!"
 }

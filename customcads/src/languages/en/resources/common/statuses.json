@@ -1,5 +1,12 @@
 {
   "Pending": "Pending",
+  "Pending_plural": "Pending",
   "Begun": "Begun",
-  "Finished": "Finished"
+  "Begun_plural": "Begun",
+  "Finished": "Finished",
+  "Finished_plural": "Finished",
+  "Reported": "Reported",
+  "Reported_plural": "Reported",
+  "Removed": "Removed",
+  "Removed_plural": "Removed"
 }

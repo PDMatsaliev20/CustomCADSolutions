@@ -1,20 +1,25 @@
 import { useLoaderData } from 'react-router-dom';
+import { useTranslation } from 'react-i18next'
 import RecentOrder from './components/recent-order';
+import OrdersCount from './components/orders-count';
 
 function ClientHome() {
+    const { t } = useTranslation();
     const { loadedOrders: recentOrders, loadedCounts: counts } = useLoaderData();
 
     return (
         <div className="flex flex-col gap-y-6 my-2">
             <div>
                 <h1 className="text-3xl text-center text-indigo-950 font-bold">
-                    Your Dashboard
+                    {t('private.orders.home_title')}
                 </h1>
                 <hr className="mt-2 border-2 border-indigo-700" />
             </div>
             <div className="flex flex-wrap gap-x-8">
                 <div className="basis-1/3 grow flex flex-col gap-y-4">
-                    <h2 className="text-2xl text-indigo-950 text-center font-bold">Recent Orders</h2>
+                    <h2 className="text-2xl text-indigo-950 text-center font-bold">
+                        {t('private.orders.home_subtitle_1')}
+                    </h2>
                     <ol className="grid grid-rows-5 gap-y-3 border-4 border-indigo-500 pt-3 pb-6 px-8 rounded-2xl bg-indigo-100">
                         <li key={0} className="px-2 pb-2 border-b-2 border-indigo-900 rounded">
                             <div className="flex items-center gap-x-4 font-bold">
@@ -32,23 +37,15 @@ function ClientHome() {
                     </ol>
                 </div>
                 <div className="min-h-full basis-1/4 flex flex-col gap-y-4">
-                    <h2 className="text-2xl text-indigo-950 text-center font-bold">Orders Statistics</h2>
+                    <h2 className="text-2xl text-indigo-950 text-center font-bold">
+                        {t('private.orders.home_subtitle_2')}
+                    </h2>
                     <ul className="basis-full flex flex-col justify-items-center items-between border-4 border-indigo-500 rounded-2xl overflow-hidden bg-indigo-100 text-xl italic">
-                        <li className="grow flex items-center justify-center border-b-2 border-indigo-400">
-                            Pending - {counts.pending}
-                        </li>
-                        <li className="grow flex items-center justify-center border-y-2 border-indigo-400">
-                            Begun - {counts.begun}
-                        </li>
-                        <li className="grow flex items-center justify-center border-y-2 border-indigo-400">
-                            Finished - {counts.finished}
-                        </li>
-                        <li className="grow flex items-center justify-center border-y-2 border-indigo-400">
-                            Reported - {counts.reported}
-                        </li>
-                        <li className="grow flex items-center justify-center border-t-2 border-indigo-400">
-                            Removed - {counts.removed}
-                        </li>
+                        <OrdersCount text={`${t('common.statuses.Pending_plural')} - ${counts.pending}`} />
+                        <OrdersCount text={`${t('common.statuses.Begun_plural')} - ${counts.begun}`} />
+                        <OrdersCount text={`${t('common.statuses.Finished_plural')} - ${counts.finished}`} />                        
+                        <OrdersCount text={`${t('common.statuses.Reported_plural')} - ${counts.reported}`} />                        
+                        <OrdersCount text={`${t('common.statuses.Removed_plural')} - ${counts.removed}`} />                        
                     </ul>
                 </div>
             </div>
