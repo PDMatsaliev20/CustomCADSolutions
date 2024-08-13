@@ -1,5 +1,6 @@
 import AuthGuard from '@/routing/auth-guard';
 import { GalleryCad } from '@/requests/public/home';
+import HomePage from '@/pages/public/home/home';
 import GalleryPage from '@/pages/public/gallery/gallery';
 import GalleryDetailsPage from '@/pages/public/gallery-details/gallery-details';
 import PrivacyPolicyPage from '@/pages/public/policy/policy';
@@ -10,6 +11,10 @@ import capitalize from '@/utils/capitalize';
 export default {
     element: <AuthGuard auth="public" />,
     children: [
+        {
+            path: "/",
+            element: <HomePage />
+        },
         {
             path: '/gallery',
             element: <GalleryPage />

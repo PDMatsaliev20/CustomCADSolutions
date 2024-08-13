@@ -1,10 +1,18 @@
+import { useContext } from 'react';
+import { Navigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import AuthContext from '@/contexts/auth-context';
 import Cad from '@/components/cad';
 import Path from './components/path';
 import BtnLink from './components/btn-link';
 
 function HomePage() {
     const { t } = useTranslation();
+    const { isAuthenticated, userRole } = useContext(AuthContext);
+
+    if (isAuthenticated) {
+        return <Navigate to={`/${userRole.toLowerCase()}`} />;
+    }
 
     const customerParent = { path: '/register/client', content: t('common.roles.Client') };
     const customerChildren = [
