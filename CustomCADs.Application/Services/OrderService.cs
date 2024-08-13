@@ -104,6 +104,8 @@ namespace CustomCADs.Core.Services
 
         public async Task<bool> ExistsByIdAsync(int id)
             => await repository.GetByIdAsync<Order>(id).ConfigureAwait(false) != null;
+        public int Count(Func<OrderModel, bool> predicate)
+            =>  repository.Count<Order>(cad => predicate(mapper.Map<OrderModel>(cad)));
         
         public async Task<bool> HasCadAsync(int id)
         {

@@ -1,6 +1,6 @@
 import AuthGuard from '@/routing/auth-guard';
 import { GetCategories } from '@/requests/public/home';
-import { GetOrder } from '@/requests/private/orders';
+import { GetRecentOrders, GetOrder, GetOrdersCounts } from '@/requests/private/orders';
 import ClientHomePage from '@/pages/client/client-home/client-home';
 import UserOrdersPage from '@/pages/client/user-orders/orders';
 import OrderDetailsPage from '@/pages/client/order-details/order-details';
@@ -14,6 +14,12 @@ export default {
     children: [
         {
             path: '',
+            element: <ClientHomePage />,
+            loader: async () => {
+                const { data: { orders } } = await GetRecentOrders();
+                const { data: loadedCounts } = await GetOrdersCounts();
+                return { loadedOrders: orders, loadedCounts };
+            }
         },
         {
             path: 'orders/:status',

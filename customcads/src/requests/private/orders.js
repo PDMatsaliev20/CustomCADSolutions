@@ -4,6 +4,14 @@ const GetOrders = async (status, searchParams) => {
     return await axios.get(`API/Orders?status=${status}&${searchParams}`);
 }
 
+const GetRecentOrders = async () => {
+    return await axios.get(`API/Orders/Recent`);
+}
+
+const GetOrdersCounts = async () => {
+    return await axios.get(`API/Orders/Counts`);
+}
+
 const GetOrder = async (id) => {
     return await axios.get(`API/Orders/${id}`);
 }
@@ -32,4 +40,4 @@ const DeleteOrder = async (id) => {
     return await axios.delete(`API/Orders/${id}`);
 }
 
-export { GetOrders, GetOrder, DownloadOrderCad, PostOrder, OrderExisting, PutOrder, PatchOrder, DeleteOrder };
+export { GetOrders, GetRecentOrders, GetOrdersCounts, GetOrder, DownloadOrderCad, PostOrder, OrderExisting, PutOrder, PatchOrder, DeleteOrder };

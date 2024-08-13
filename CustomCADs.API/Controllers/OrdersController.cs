@@ -65,6 +65,51 @@ namespace CustomCADs.API.Controllers
                 return StatusCode(Status500InternalServerError, ex.GetMessage());
             }
         }
+        
+        [HttpGet("Recent")]
+        [Produces("application/json")]
+        [ProducesResponseType(Status200OK)]
+        [ProducesResponseType(Status500InternalServerError)]
+        [ProducesResponseType(Status502BadGateway)]
+        public async Task<ActionResult<OrderResultDTO>> GetRecentOrdersAsync()
+        {
+            try
+            {
+                OrderQuery query = new() { Buyer = User.Identity!.Name };
+                SearchModel search = new() { Sorting = nameof(Sorting.Newest) };
+                PaginationModel pagination = new() { Page = 1, Limit = 5 };
+
+                OrderResult result = await orderService.GetAllAsync(query, search, pagination)
+                    .ConfigureAwait(false);
+                return mapper.Map<OrderResultDTO>(result);
+            }
+            catch (Exception ex) when (
+                ex is AutoMapperConfigurationException
+                || ex is AutoMapperMappingException
+            )
+            {
+                return StatusCode(Status502BadGateway, ex.GetMessage());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(Status500InternalServerError, ex.GetMessage());
+            }
+        }
+
+        [HttpGet("Counts")]
+        [ProducesResponseType(Status200OK)]
+        [ProducesResponseType(Status500InternalServerError)]
+
+        public ActionResult<dynamic> CountOrdersAsync()
+        {
+            int pendingOrdersCount = orderService.Count(o => o.Status == OrderStatus.Pending);
+            int begunOrdersCount = orderService.Count(o => o.Status == OrderStatus.Begun);
+            int finishedOrdersCount = orderService.Count(o => o.Status == OrderStatus.Finished);
+            int reportedOrdersCount = orderService.Count(o => o.Status == OrderStatus.Removed);
+            int removedOrdersCount = orderService.Count(o => o.Status == OrderStatus.Removed);
+
+            return new { pending = pendingOrdersCount, begun = begunOrdersCount, finished = finishedOrdersCount, reported = reportedOrdersCount, removed = removedOrdersCount };
+        }
 
         [HttpGet("{id}")]
         [Produces("application/json")]

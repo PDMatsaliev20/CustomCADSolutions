@@ -35,6 +35,13 @@ namespace CustomCADs.Core.Contracts
         ///</summary>
         /// <exception cref="KeyNotFoundException">if no Order with the given id exists.</exception>
         Task<bool> ExistsByIdAsync(int id);
+        
+        /// <summary>
+        ///     Counts the Orders filtered by the predicate.
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <returns>An integer holding the result.</returns>
+        int Count(Func<OrderModel, bool> predicate);
 
         /// <summary>
         ///     Creates the specified Order in the Orders table.
