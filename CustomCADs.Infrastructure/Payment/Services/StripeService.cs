@@ -11,14 +11,22 @@ namespace CustomCADs.Infrastructure.Payment.Services
 
         public string GetPublicKey() => keys.TestPublishableKey;
 
-        public async Task<PaymentIntent> CapturePaymentAsync(string paymentIntentId)
-            => await paymentIntentService.CaptureAsync(paymentIntentId).ConfigureAwait(false);
+        public async Task<PaymentResult> CapturePaymentAsync(string paymentIntentId)
+        {
+            PaymentIntent paymentIntent = await paymentIntentService.CaptureAsync(paymentIntentId).ConfigureAwait(false);
+            return new() 
+            { 
+                Id = paymentIntent.Id,
+                ClientSecret = paymentIntent.ClientSecret,
+                Status = paymentIntent.Status,
+            };
+        }
 
-        public async Task<PaymentIntent> ProcessPayment(string paymentMethodId, PurchaseInfo purchase)
+        public async Task<PaymentResult> ProcessPayment(string paymentMethodId, PurchaseInfo purchase)
         {
             StripeConfiguration.ApiKey = keys.TestSecretKey;
 
-            return await paymentIntentService.CreateAsync(new()
+            PaymentIntent paymentIntent = await paymentIntentService.CreateAsync(new()
             {
                 Amount = Convert.ToInt64(purchase.Price * 100),
                 Currency = "USD",
@@ -31,6 +39,13 @@ namespace CustomCADs.Infrastructure.Payment.Services
                     AllowRedirects = "never"
                 }
             }).ConfigureAwait(false);
+
+            return new()
+            {
+                Id = paymentIntent.Id,
+                ClientSecret = paymentIntent.ClientSecret,
+                Status = paymentIntent.Status,
+            };
         }
     }
 }

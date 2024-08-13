@@ -4,9 +4,9 @@ using CustomCADs.API.Mappings;
 using CustomCADs.Core.Contracts;
 using CustomCADs.Core.Models.Cads;
 using CustomCADs.Infrastructure.Payment.Contracts;
+using CustomCADs.Infrastructure.Payment.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Stripe;
 using static CustomCADs.Domain.DataConstants.RoleConstants;
 
 namespace CustomCADs.API.Controllers
@@ -36,7 +36,7 @@ namespace CustomCADs.API.Controllers
             try
             {
                 CadModel cad = await cadService.GetByIdAsync(id).ConfigureAwait(false);
-                PaymentIntent paymentIntent = await stripeService.ProcessPayment(paymentMethodId, new()
+                PaymentResult paymentIntent = await stripeService.ProcessPayment(paymentMethodId, new()
                 {
                     Product = cad.Name,
                     Price = cad.Price,
