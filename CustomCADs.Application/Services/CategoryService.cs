@@ -22,11 +22,6 @@ namespace CustomCADs.Core.Services
             return models;
         }
 
-        public async Task<IEnumerable<string>> GetAllNamesAsync()
-        {
-            return await repository.All<Category>().Select(c => c.Name).ToArrayAsync().ConfigureAwait(false);
-        }
-
         public async Task<CategoryModel> GetByIdAsync(int id)
         {
             Category entity = await repository.GetByIdAsync<Category>(id).ConfigureAwait(false)

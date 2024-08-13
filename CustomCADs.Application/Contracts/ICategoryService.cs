@@ -11,12 +11,6 @@ namespace CustomCADs.Core.Contracts
         Task<IEnumerable<CategoryModel>> GetAllAsync();
 
         /// <summary>
-        ///     Pulls all Category names from the database
-        /// </summary>
-        /// <returns>A Task object that represents the Category names</returns>
-        Task<IEnumerable<string>> GetAllNamesAsync();
-
-        /// <summary>
         ///     Searches for a Category by the given id
         /// </summary>
         /// <param name="id"></param>
