@@ -13,7 +13,7 @@ export default {
     element: <AuthGuard auth="private" role="Client" />,
     children: [
         {
-            element: <ClientHomePage />
+            path: '',
         },
         {
             path: 'orders/:status',

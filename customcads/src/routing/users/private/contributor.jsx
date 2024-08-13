@@ -11,6 +11,7 @@ export default {
     element: <AuthGuard auth="private" role="Contributor" />,
     children: [
         {
+            path: '',
             element: <ContributorHomePage />
         },
         {

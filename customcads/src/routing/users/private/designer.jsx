@@ -13,6 +13,7 @@ export default {
     element: <AuthGuard auth="private" role="Designer" />,
     children: [
         {
+            path: '',
             element: <DesignerHomePage />
         },
         {

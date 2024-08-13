@@ -17,7 +17,7 @@ namespace CustomCADs.API.Controllers
     [Authorize(Roles = Client)]
     [ApiController]
     [Route("API/[controller]")]
-    public class PaymentController(IStripeService stripeService, ICadService cadService, IOrderService orderService) : ControllerBase
+    public class PaymentController(IStripeService stripeService, ICadService cadService) : ControllerBase
     {
         private readonly string createdAtReturnAction = nameof(OrdersController.GetOrderAsync).Replace("Async", "");
         private readonly IMapper mapper = new MapperConfiguration(opt =>
