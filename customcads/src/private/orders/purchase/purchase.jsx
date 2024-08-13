@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import { GetPublicKey } from '@/requests/private/payment';
@@ -11,7 +11,6 @@ function PurchasePage() {
     const [pk, setPk] = useState();
     const [stripePromise, setStripePromise] = useState();
     const { id } = useParams();
-    const navigate = useNavigate();
 
     useEffect(() => {
         fetchPublicKey();
@@ -24,9 +23,8 @@ function PurchasePage() {
     }, [pk]);
 
     const handlePurchase = async () => {
-        try {            
+        try {
             await OrderExisting(id);
-            navigate('/orders/finished');
         } catch (e) {
             console.error(e);
         }
@@ -34,11 +32,17 @@ function PurchasePage() {
 
     return (
         <>
-            {stripePromise
-                ? <Elements stripe={stripePromise}>
-                    <CheckoutForm id={id} onSubmit={handlePurchase} />
-                </Elements>
-                : <Spinner />}
+            {!stripePromise ? <Spinner />
+                : <div className="min-h-96 flex place-content-center mt-8">
+                    <div className="basis-full flex flex-wrap items-center gap-y-4">
+                        <h1 className="basis-full text-4xl text-center text-indigo-900 font-bold">Purchase your desired 3D Model!</h1>
+                        <div className="h-4/6 basis-full">
+                            <Elements stripe={stripePromise}>
+                                <CheckoutForm id={id} onSubmit={handlePurchase} />
+                            </Elements>
+                        </div>
+                    </div>
+                </div>}
         </>
     );
 

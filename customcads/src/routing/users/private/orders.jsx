@@ -29,12 +29,12 @@ export default {
             }
         },
         {
-            path: '/purchase/:id',
-            element: <PurchasePage />
-        },
-        {
             path: '/orders/custom',
             element: <CustomOrderPage />
+        },
+        {
+            path: '/purchase/:id',
+            element: <PurchasePage />
         },
     ]
 };
