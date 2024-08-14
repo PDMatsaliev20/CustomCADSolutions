@@ -14,6 +14,7 @@
         public const string UserHasNoRole = "User has no role.";
         public const string UserHasRoles = "User has more than one role.";
         public const string OrderHasNoCad = "Order has no associated Cad.";
+        public const string ModifiedOrderNotPending = "You cannot modify an Order that isn't Pending";
         public const string CadPurchasedMessage = "3D Model from the Gallery with id: {0}";
         public const string SuccessfulPayment = "Payment was successful.";
         public const string CanceledPayment = "Payment was canceled. Please try again or use a different payment method.";

@@ -67,7 +67,7 @@ namespace CustomCADs.API.Controllers
         {
             CadQuery query = new() { Creator = User.Identity!.Name };
             SearchModel search = new() { Sorting = nameof(Sorting.Newest) };
-            PaginationModel pagination = new() { Limit = 5 };
+            PaginationModel pagination = new() { Limit = 4 };
 
             try
             {
@@ -96,19 +96,15 @@ namespace CustomCADs.API.Controllers
         {
             try
             {
-                int uncheckedCounts = cadService.Count(c => c.Status == CadStatus.Unchecked);
-                int validatedCounts = cadService.Count(c => c.Status == CadStatus.Validated);
-                int reportedCounts = cadService.Count(c => c.Status == CadStatus.Reported);
-                int bannedCounts = cadService.Count(c => c.Status == CadStatus.Banned);
+                bool predicate(CadModel cad, CadStatus s)
+                    => cad.Status == s && cad.Creator.UserName == User.Identity!.Name;
 
-                return new { Unchecked = uncheckedCounts, validated = validatedCounts, reported = reportedCounts, banned = bannedCounts };
-            }
-            catch (Exception ex) when (
-                ex is AutoMapperConfigurationException
-                || ex is AutoMapperMappingException
-            )
-            {
-                return StatusCode(Status502BadGateway, ex.GetMessage());
+                int uncheckedCadsCounts = cadService.Count(c => predicate(c, CadStatus.Unchecked));
+                int validatedCadsCounts = cadService.Count(c => predicate(c, CadStatus.Validated));
+                int reportedCadsCounts = cadService.Count(c => predicate(c, CadStatus.Reported));
+                int bannedCadsCounts = cadService.Count(c => predicate(c, CadStatus.Banned));
+
+                return new { Unchecked = uncheckedCadsCounts, validated = validatedCadsCounts, reported = reportedCadsCounts, banned = bannedCadsCounts };
             }
             catch (Exception ex)
             {
@@ -119,6 +115,7 @@ namespace CustomCADs.API.Controllers
         [HttpGet("{id}")]
         [Produces("application/json")]
         [ProducesResponseType(Status200OK)]
+        [ProducesResponseType(Status403Forbidden)]
         [ProducesResponseType(Status404NotFound)]
         [ProducesResponseType(Status500InternalServerError)]
         [ProducesResponseType(Status502BadGateway)]
@@ -127,6 +124,12 @@ namespace CustomCADs.API.Controllers
             try
             {
                 CadModel model = await cadService.GetByIdAsync(id).ConfigureAwait(false);
+
+                if (model.Creator.UserName != User.Identity!.Name)
+                {
+                    return StatusCode(403, ForbiddenAccess);
+                }
+
                 return mapper.Map<CadGetDTO>(model);
             }
             catch (KeyNotFoundException)
@@ -219,7 +222,7 @@ namespace CustomCADs.API.Controllers
 
                 if (User.Identity!.Name != cad.Creator.UserName)
                 {
-                    return Forbid(ForbiddenAccess);
+                    return StatusCode(403, ForbiddenAccess);
                 }
 
                 if (dto.Image != null)
@@ -259,6 +262,7 @@ namespace CustomCADs.API.Controllers
         [Consumes("application/json")]
         [ProducesResponseType(Status204NoContent)]
         [ProducesResponseType(Status400BadRequest)]
+        [ProducesResponseType(Status403Forbidden)]
         [ProducesResponseType(Status404NotFound)]
         [ProducesResponseType(Status409Conflict)]
         [ProducesResponseType(Status500InternalServerError)]
@@ -273,6 +277,11 @@ namespace CustomCADs.API.Controllers
             try
             {
                 CadModel model = await cadService.GetByIdAsync(id).ConfigureAwait(false);
+
+                if (model.Creator.UserName != User.Identity!.Name)
+                {
+                    return StatusCode(403, ForbiddenAccess);
+                }
 
                 string? error = null;
                 patchCad.ApplyTo(model, p => error = p.ErrorMessage);
@@ -311,12 +320,19 @@ namespace CustomCADs.API.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(Status204NoContent)]
         [ProducesResponseType(Status400BadRequest)]
+        [ProducesResponseType(Status403Forbidden)]
         [ProducesResponseType(Status404NotFound)]
         public async Task<ActionResult> DeleteCadAsync(int id)
         {   
             try
             {
                 CadModel model = await cadService.GetByIdAsync(id).ConfigureAwait(false);
+
+                if (model.Creator.UserName != User.Identity!.Name)
+                {
+                    return StatusCode(403, ForbiddenAccess);
+                }
+
                 string cadFileName = model.Name + id, cadExtension = model.CadExtension,
                 imageFileName = model.Name + id, imageExtension = model.ImageExtension;
                 

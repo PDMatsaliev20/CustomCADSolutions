@@ -65,7 +65,7 @@ namespace CustomCADs.API.Controllers
                 return StatusCode(Status500InternalServerError, ex.GetMessage());
             }
         }
-        
+
         [HttpGet("Recent")]
         [Produces("application/json")]
         [ProducesResponseType(Status200OK)]
@@ -99,21 +99,31 @@ namespace CustomCADs.API.Controllers
         [HttpGet("Counts")]
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status500InternalServerError)]
-
         public ActionResult<dynamic> CountOrdersAsync()
         {
-            int pendingOrdersCount = orderService.Count(o => o.Status == OrderStatus.Pending);
-            int begunOrdersCount = orderService.Count(o => o.Status == OrderStatus.Begun);
-            int finishedOrdersCount = orderService.Count(o => o.Status == OrderStatus.Finished);
-            int reportedOrdersCount = orderService.Count(o => o.Status == OrderStatus.Removed);
-            int removedOrdersCount = orderService.Count(o => o.Status == OrderStatus.Removed);
+            try
+            {
+                bool predicate(OrderModel o, OrderStatus s)
+                    => o.Status == s && o.Buyer.UserName == User.Identity!.Name;
 
-            return new { pending = pendingOrdersCount, begun = begunOrdersCount, finished = finishedOrdersCount, reported = reportedOrdersCount, removed = removedOrdersCount };
+                int pendingOrdersCount = orderService.Count(o => predicate(o, OrderStatus.Pending));
+                int begunOrdersCount = orderService.Count(o => predicate(o, OrderStatus.Begun));
+                int finishedOrdersCount = orderService.Count(o => predicate(o, OrderStatus.Finished));
+                int reportedOrdersCount = orderService.Count(o => predicate(o, OrderStatus.Removed));
+                int removedOrdersCount = orderService.Count(o => predicate(o, OrderStatus.Removed));
+
+                return new { pending = pendingOrdersCount, begun = begunOrdersCount, finished = finishedOrdersCount, reported = reportedOrdersCount, removed = removedOrdersCount };
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(Status500InternalServerError, ex.GetMessage());
+            }
         }
 
         [HttpGet("{id}")]
         [Produces("application/json")]
         [ProducesResponseType(Status200OK)]
+        [ProducesResponseType(Status403Forbidden)]
         [ProducesResponseType(Status404NotFound)]
         [ProducesResponseType(Status500InternalServerError)]
         [ProducesResponseType(Status502BadGateway)]
@@ -122,6 +132,12 @@ namespace CustomCADs.API.Controllers
             try
             {
                 OrderModel order = await orderService.GetByIdAsync(id).ConfigureAwait(false);
+
+                if (order.Buyer.UserName != User.Identity!.Name)
+                {
+                    return StatusCode(403, ForbiddenAccess);
+                }
+
                 return mapper.Map<OrderExportDTO>(order);
             }
             catch (KeyNotFoundException ex)
@@ -145,6 +161,8 @@ namespace CustomCADs.API.Controllers
         [Consumes("multipart/form-data")]
         [Produces("application/json")]
         [ProducesResponseType(Status201Created)]
+        [ProducesResponseType(Status400BadRequest)]
+        [ProducesResponseType(Status409Conflict)]
         [ProducesResponseType(Status500InternalServerError)]
         [ProducesResponseType(Status502BadGateway)]
         public async Task<ActionResult> PostOrderAsync([FromForm] OrderImportDTO dto)
@@ -233,7 +251,7 @@ namespace CustomCADs.API.Controllers
         }
 
         [HttpPut("{id}")]
-        [Consumes("multipart/form-data")]   
+        [Consumes("multipart/form-data")]
         [ProducesResponseType(Status204NoContent)]
         [ProducesResponseType(Status403Forbidden)]
         [ProducesResponseType(Status404NotFound)]
@@ -246,7 +264,12 @@ namespace CustomCADs.API.Controllers
 
                 if (User.GetId() != order.BuyerId)
                 {
-                    return Forbid(ForbiddenAccess);
+                    return StatusCode(403, ForbiddenAccess);
+                }
+
+                if (order.Status != OrderStatus.Pending)
+                {
+                    return BadRequest(ModifiedOrderNotPending);
                 }
 
                 order.Name = dto.Name;
@@ -278,6 +301,7 @@ namespace CustomCADs.API.Controllers
         [Consumes("application/json")]
         [ProducesResponseType(Status204NoContent)]
         [ProducesResponseType(Status400BadRequest)]
+        [ProducesResponseType(Status403Forbidden)]
         [ProducesResponseType(Status404NotFound)]
         [ProducesResponseType(Status409Conflict)]
         [ProducesResponseType(Status500InternalServerError)]
@@ -292,6 +316,11 @@ namespace CustomCADs.API.Controllers
             try
             {
                 OrderModel model = await orderService.GetByIdAsync(id).ConfigureAwait(false);
+
+                if (model.Buyer.UserName != User.Identity!.Name)
+                {
+                    return StatusCode(403, ForbiddenAccess);
+                }
 
                 string? error = null;
                 patchOrder.ApplyTo(model, p => error = p.ErrorMessage);
@@ -329,6 +358,7 @@ namespace CustomCADs.API.Controllers
 
         [HttpDelete("{id}")]
         [ProducesResponseType(Status204NoContent)]
+        [ProducesResponseType(Status403Forbidden)]
         [ProducesResponseType(Status404NotFound)]
         [ProducesResponseType(Status500InternalServerError)]
         public async Task<ActionResult> DeleteOrderAsync(int id)
@@ -336,6 +366,12 @@ namespace CustomCADs.API.Controllers
             try
             {
                 OrderModel model = await orderService.GetByIdAsync(id).ConfigureAwait(false);
+
+                if (model.Buyer.UserName != User.Identity!.Name)
+                {
+                    return StatusCode(403, ForbiddenAccess);
+                }
+
                 if (string.IsNullOrEmpty(model.ImagePath))
                 {
                     env.DeleteFile("orders", model.Name + model.Id, model.ImageExtension!);
@@ -376,23 +412,23 @@ namespace CustomCADs.API.Controllers
                 bool orderExists = await orderService.ExistsByIdAsync(id).ConfigureAwait(false);
                 if (!orderExists)
                 {
-                    return NotFound();
+                    return NotFound(string.Format(ApiMessages.NotFound, "Order"));
                 }
 
                 bool orderHasCad = await orderService.HasCadAsync(id).ConfigureAwait(false);
                 if (!orderHasCad)
                 {
-                    return BadRequest();
+                    return BadRequest(OrderHasNoCad);
                 }
 
                 bool userOwnsOrder = await orderService.CheckOwnership(id, User.Identity!.Name!);
                 if (!userOwnsOrder)
                 {
-                    return StatusCode(403);
+                    return StatusCode(403, ForbiddenAccess);
                 }
 
                 CadModel model = await orderService.GetCadAsync(id).ConfigureAwait(false);
-                
+
                 byte[] cad = await env.GetCadBytes(model.Name + model.Id, model.CadExtension).ConfigureAwait(false);
                 return model.CadExtension == ".glb"
                     ? File(cad, "model/gltf-binary", $"{model.Name}.glb")
