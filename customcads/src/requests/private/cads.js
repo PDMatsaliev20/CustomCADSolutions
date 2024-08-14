@@ -4,6 +4,14 @@ const GetCads = async (searchParams) => {
     return await axios.get(`API/Cads?${searchParams}`);
 }
 
+const GetRecentCads = async () => {
+    return await axios.get(`API/Cads/Recents`);
+}
+
+const GetCadsCounts = async () => {
+    return await axios.get(`API/Cads/Counts`);
+}
+
 const GetCad = async (id) => {
     return await axios.get(`API/Cads/${id}`);
 }
@@ -24,4 +32,4 @@ const DeleteCad = async (id) => {
     return await axios.delete(`API/Cads/${id}`);
 }
 
-export { GetCads, GetCad, PostCad, PutCad, PatchCad, DeleteCad };
+export { GetCads, GetRecentCads, GetCadsCounts, GetCad, PostCad, PutCad, PatchCad, DeleteCad };

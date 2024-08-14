@@ -8,5 +8,11 @@
   "Reported": "Докладвана",
   "Reported_plural": "Докладвани",
   "Removed": "Премахната",
-  "Removed_plural": "Премахнати"
+  "Removed_plural": "Премахнати",
+  "Unchecked": "Непроверен",
+  "Unchecked_plural": "Непроверени",
+  "Validated": "Одобрен",
+  "Validated_plural": "Одобрени",
+  "Banned": "Отстранен",
+  "Banned_plural": "Отстранени"
 }

@@ -9,5 +9,8 @@
   "price": "Price",
   "cad": "3D Model",
   "image": "Image",
-  "delivery": "I want the order to be delivered"
+  "delivery": "I want the order to be delivered",
+  "status": "Status",
+  "order_date": "Order Date",
+  "upload_date": "Upload Date"
 }

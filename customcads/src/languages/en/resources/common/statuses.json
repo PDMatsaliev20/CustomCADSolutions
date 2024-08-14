@@ -8,5 +8,11 @@
   "Reported": "Reported",
   "Reported_plural": "Reported",
   "Removed": "Removed",
-  "Removed_plural": "Removed"
+  "Removed_plural": "Removed",
+  "Unchecked": "Unchecked",
+  "Unchecked_plural": "Unchecked",
+  "Validated": "Validated",
+  "Validated_plural": "Validated",
+  "Banned": "Banned",
+  "Banned_plural": "Banned"
 }

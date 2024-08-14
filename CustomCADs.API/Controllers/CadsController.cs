@@ -57,6 +57,64 @@ namespace CustomCADs.API.Controllers
                 return StatusCode(Status500InternalServerError, ex.GetMessage());
             }
         }
+        
+        [HttpGet("Recents")]
+        [Produces("application/json")]
+        [ProducesResponseType(Status200OK)]
+        [ProducesResponseType(Status500InternalServerError)]
+        [ProducesResponseType(Status502BadGateway)]
+        public async Task<ActionResult<CadQueryResultDTO>> GetRecentCadsAsync()
+        {
+            CadQuery query = new() { Creator = User.Identity!.Name };
+            SearchModel search = new() { Sorting = nameof(Sorting.Newest) };
+            PaginationModel pagination = new() { Limit = 5 };
+
+            try
+            {
+                CadResult result = await cadService.GetAllAsync(query, search, pagination).ConfigureAwait(false);
+                return mapper.Map<CadQueryResultDTO>(result);
+            }
+            catch (Exception ex) when (
+                ex is AutoMapperConfigurationException
+                || ex is AutoMapperMappingException
+            )
+            {
+                return StatusCode(Status502BadGateway, ex.GetMessage());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(Status500InternalServerError, ex.GetMessage());
+            }
+        }
+        
+        [HttpGet("Counts")]
+        [Produces("application/json")]
+        [ProducesResponseType(Status200OK)]
+        [ProducesResponseType(Status500InternalServerError)]
+        [ProducesResponseType(Status502BadGateway)]
+        public ActionResult<dynamic> GetCadsCountsAsync()
+        {
+            try
+            {
+                int uncheckedCounts = cadService.Count(c => c.Status == CadStatus.Unchecked);
+                int validatedCounts = cadService.Count(c => c.Status == CadStatus.Validated);
+                int reportedCounts = cadService.Count(c => c.Status == CadStatus.Reported);
+                int bannedCounts = cadService.Count(c => c.Status == CadStatus.Banned);
+
+                return new { Unchecked = uncheckedCounts, validated = validatedCounts, reported = reportedCounts, banned = bannedCounts };
+            }
+            catch (Exception ex) when (
+                ex is AutoMapperConfigurationException
+                || ex is AutoMapperMappingException
+            )
+            {
+                return StatusCode(Status502BadGateway, ex.GetMessage());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(Status500InternalServerError, ex.GetMessage());
+            }
+        }
 
         [HttpGet("{id}")]
         [Produces("application/json")]

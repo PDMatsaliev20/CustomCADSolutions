@@ -1,6 +1,6 @@
 import AuthGuard from '@/routing/auth-guard';
 import { GetCategories } from '@/requests/public/home';
-import { GetCad } from '@/requests/private/cads';
+import { GetRecentCads, GetCad, GetCadsCounts } from '@/requests/private/cads';
 import ContributorHomePage from '@/pages/contributor/contributor-home/contributor-home';
 import UserCadsPage from '@/pages/contributor/user-cads/user-cads';
 import CadDetailsPage from '@/pages/contributor/cad-details/cad-details';
@@ -12,7 +12,13 @@ export default {
     children: [
         {
             path: '',
-            element: <ContributorHomePage />
+            element: <ContributorHomePage />,
+            loader: async () => {
+                const { data: { cads } } = await GetRecentCads();
+                const { data: loadedCounts } = await GetCadsCounts();
+
+                return { loadedCads: cads, loadedCounts };
+            }
         },
         {
             path: 'cads',
