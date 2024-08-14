@@ -61,9 +61,9 @@ namespace CustomCADs.Core.Models.Cads
             if (!Validator.TryValidateObject(this, new(this), validationResults, true))
             {
                 errors = validationResults.Select(result => result.ErrorMessage ?? string.Empty).ToList();
-                return true;
+                return false;
             }
-            return false;
+            return true;
         }
     }
 }

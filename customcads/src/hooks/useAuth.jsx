@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { IsAuthenticated, GetUserRole } from '@/requests/public/identity';
+import { IsAuthenticated } from '@/requests/public/identity';
 import { getCookie } from '@/utils/cookie-manager'
 
 function useAuth() {
@@ -12,7 +12,9 @@ function useAuth() {
         if (isAuthenticated) {
             setUsername(getCookie('username'));
             setUserRole(getCookie('role'));
-            checkUserAuthorization();
+        } else {
+            setUsername('');
+            setUserRole('');
         }
     }, [isAuthenticated]);
 
@@ -27,16 +29,6 @@ function useAuth() {
             } else {
                 setIsAuthenticated(false);
             }
-        }
-        catch (e) {
-            console.error(e);
-        }
-    }
-
-    async function checkUserAuthorization() {
-        try {
-            const { data } = await GetUserRole();
-            setUserRole(data);
         }
         catch (e) {
             console.error(e);
