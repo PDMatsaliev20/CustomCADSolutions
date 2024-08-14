@@ -16,14 +16,8 @@ namespace CustomCADs.API.Controllers
 
     [ApiController]
     [Route("API/[controller]")]
-    public class HomeController(ICadService cadService, ICategoryService categoryService) : ControllerBase
+    public class HomeController(ICadService cadService, ICategoryService categoryService, IMapper mapper) : ControllerBase
     {
-        private readonly IMapper mapper = new MapperConfiguration(cfg =>
-        {
-            cfg.AddProfile<OtherApiProfile>();
-            cfg.AddProfile<CadApiProfile>();
-        }).CreateMapper();
-
         [HttpGet("/AccessDenied")]
         [ProducesResponseType(Status403Forbidden)]
         public ActionResult AccessDenied() => StatusCode(Status403Forbidden, "Access Denied");

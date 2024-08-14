@@ -16,7 +16,7 @@ namespace CustomCADs.Tests.ServicesTests.OrderTests
     {
         private IRepository repository;
         private readonly IMapper mapper = new MapperConfiguration(cfg =>
-                cfg.AddProfile<OrderCoreProfile>())
+                cfg.AddProfile<OrderProfile>())
             .CreateMapper();
 
         protected IOrderService service;
@@ -55,7 +55,7 @@ namespace CustomCADs.Tests.ServicesTests.OrderTests
             }).ConfigureAwait(false);
             await repository.SaveChangesAsync().ConfigureAwait(false);
 
-            this.service = new OrderService(repository);
+            this.service = new OrderService(repository, mapper);
         }
 
         [SetUp]

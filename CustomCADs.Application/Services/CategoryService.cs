@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using CustomCADs.Core.Contracts;
-using CustomCADs.Core.Mappings;
 using CustomCADs.Core.Models;
 using CustomCADs.Domain;
 using CustomCADs.Domain.Entities;
@@ -9,12 +8,8 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace CustomCADs.Core.Services
 {
-    public class CategoryService(IRepository repository) : ICategoryService
+    public class CategoryService(IRepository repository, IMapper mapper) : ICategoryService
     {
-        private readonly IMapper mapper = new MapperConfiguration(cfg
-                    => cfg.AddProfile<CategoryCoreProfile>())
-                .CreateMapper();
-
         public async Task<IEnumerable<CategoryModel>> GetAllAsync()
         {
             Category[] entities = await repository.All<Category>().ToArrayAsync().ConfigureAwait(false);

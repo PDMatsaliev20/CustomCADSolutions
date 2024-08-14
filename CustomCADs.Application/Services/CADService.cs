@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using CustomCADs.Core.Contracts;
-using CustomCADs.Core.Mappings;
 using CustomCADs.Core.Models;
 using CustomCADs.Core.Models.Cads;
 using CustomCADs.Domain;
@@ -13,15 +12,8 @@ using System.Linq.Expressions;
 
 namespace CustomCADs.Core.Services
 {
-    public class CadService(IRepository repository) : ICadService
+    public class CadService(IRepository repository, IMapper mapper) : ICadService
     {
-        private readonly IMapper mapper = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile<CategoryCoreProfile>();
-                cfg.AddProfile<CadCoreProfile>();
-                cfg.AddProfile<OrderCoreProfile>();
-            }).CreateMapper();
-
         public async Task<CadResult> GetAllAsync(CadQuery query, SearchModel search, PaginationModel pagination, Expression<Func<Cad, bool>>? customFilter = null)
         {
             IQueryable<Cad> allCads = repository.All<Cad>();

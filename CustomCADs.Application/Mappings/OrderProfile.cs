@@ -4,9 +4,9 @@ using CustomCADs.Domain.Entities;
 
 namespace CustomCADs.Core.Mappings
 {
-    public class OrderCoreProfile : Profile
+    public class OrderProfile : Profile
     {
-        public OrderCoreProfile()
+        public OrderProfile()
         {
             EntityToModel();
             ModelToEntity();

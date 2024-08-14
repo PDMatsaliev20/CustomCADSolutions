@@ -4,9 +4,9 @@ using CustomCADs.Domain.Entities;
 
 namespace CustomCADs.Core.Mappings
 {
-    public class CategoryCoreProfile : Profile
+    public class CategoryProfile : Profile
     {
-        public CategoryCoreProfile()
+        public CategoryProfile()
         {
             EntityToModel();
             ModelToEntity();

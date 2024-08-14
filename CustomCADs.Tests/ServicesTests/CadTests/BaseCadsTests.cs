@@ -18,8 +18,8 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
         private IRepository repository;
         private readonly IMapper mapper = new MapperConfiguration(cfg =>
             {
-                cfg.AddProfile<CadCoreProfile>();
-                cfg.AddProfile<CategoryCoreProfile>();
+                cfg.AddProfile<CadProfile>();
+                cfg.AddProfile<CategoryProfile>();
             }).CreateMapper();
 
         protected ICadService service;
@@ -66,7 +66,7 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
             await repository.AddRangeAsync(categories).ConfigureAwait(false);
             await repository.SaveChangesAsync();
 
-            this.service = new CadService(repository);
+            this.service = new CadService(repository, mapper);
         }
 
         [SetUp]

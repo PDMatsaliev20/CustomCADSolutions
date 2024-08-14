@@ -22,15 +22,9 @@ namespace CustomCADs.API.Controllers
     [Authorize(Roles = Client)]
     [ApiController]
     [Route("API/[controller]")]
-    public class OrdersController(IOrderService orderService, ICadService cadService, IWebHostEnvironment env) : ControllerBase
+    public class OrdersController(IOrderService orderService, ICadService cadService, IWebHostEnvironment env, IMapper mapper) : ControllerBase
     {
         private readonly string createdAtReturnAction = nameof(GetOrderAsync).Replace("Async", "");
-        private readonly IMapper mapper = new MapperConfiguration(cfg =>
-        {
-            cfg.AddProfile<OrderApiProfile>();
-            cfg.AddProfile<CadApiProfile>();
-            cfg.AddProfile<OtherApiProfile>();
-        }).CreateMapper();
 
         [HttpGet]
         [Produces("application/json")]

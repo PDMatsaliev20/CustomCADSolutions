@@ -20,9 +20,6 @@ namespace CustomCADs.API.Controllers
     public class PaymentController(IStripeService stripeService, ICadService cadService) : ControllerBase
     {
         private readonly string createdAtReturnAction = nameof(OrdersController.GetOrderAsync).Replace("Async", "");
-        private readonly IMapper mapper = new MapperConfiguration(opt =>
-            opt.AddProfile<OrderApiProfile>()
-        ).CreateMapper();
 
         [HttpGet("GetPublicKey")]
         public ActionResult<string> GetPublicKey() => stripeService.GetPublicKey();

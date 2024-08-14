@@ -21,15 +21,10 @@ namespace CustomCADs.API.Controllers
     [Authorize(Roles = $"{Contributor},{Designer}")]
     [ApiController]
     [Route("API/[controller]")]
-    public class CadsController(ICadService cadService, IWebHostEnvironment env) : ControllerBase
+    public class CadsController(ICadService cadService, IWebHostEnvironment env, IMapper mapper) : ControllerBase
     {
         private readonly string createdAtReturnAction = nameof(GetCadAsync).Replace("Async", "");
-        private readonly IMapper mapper = new MapperConfiguration(cfg =>
-        {
-            cfg.AddProfile<OtherApiProfile>();
-            cfg.AddProfile<CadApiProfile>();
-        }).CreateMapper();
-
+        
         [HttpGet]
         [Produces("application/json")]
         [ProducesResponseType(Status200OK)]

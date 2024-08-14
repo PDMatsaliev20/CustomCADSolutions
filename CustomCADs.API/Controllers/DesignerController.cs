@@ -20,15 +20,8 @@ namespace CustomCADs.API.Controllers
     [ApiController]
     [Route("API/[controller]")]
     [Authorize(Designer)]
-    public class DesignerController(ICadService cadService, IOrderService orderService) : ControllerBase
+    public class DesignerController(ICadService cadService, IOrderService orderService, IMapper mapper) : ControllerBase
     {
-        private readonly IMapper mapper = new MapperConfiguration(cfg =>
-        {
-            cfg.AddProfile<OrderApiProfile>();
-            cfg.AddProfile<CadApiProfile>();
-            cfg.AddProfile<OtherApiProfile>();
-        }).CreateMapper();
-
         [HttpGet("Cads")]
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status500InternalServerError)]

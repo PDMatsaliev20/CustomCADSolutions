@@ -1,4 +1,5 @@
 ﻿using CustomCADs.Core.Contracts;
+using CustomCADs.Core.Mappings;
 using CustomCADs.Core.Services;
 using CustomCADs.Domain;
 using CustomCADs.Domain.Entities.Identity;
@@ -52,6 +53,12 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<ICadService, CadService>();
             services.AddScoped<ICategoryService, CategoryService>();
+        }
+
+        public static IServiceCollection AddApplicationAutoMapper(this IServiceCollection services)
+        {
+            services.AddAutoMapper(typeof(CategoryProfile), typeof(CadProfile), typeof(OrderProfile));
+            return services;
         }
 
         public static void AddJsonAndXml(this IMvcBuilder mvc)

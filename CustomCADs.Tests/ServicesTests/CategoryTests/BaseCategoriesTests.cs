@@ -14,7 +14,7 @@ namespace CustomCADs.Tests.ServicesTests.CategoryTests
     {
         private IRepository repository;
         private readonly IMapper mapper = new MapperConfiguration(cfg => 
-                cfg.AddProfile<CategoryCoreProfile>())
+                cfg.AddProfile<CategoryProfile>())
             .CreateMapper();
 
         protected ICategoryService service;
@@ -34,7 +34,7 @@ namespace CustomCADs.Tests.ServicesTests.CategoryTests
                 .UseInMemoryDatabase("CadCategoriesContext").Options;
 
             this.repository = new Repository(new(options));
-            this.service = new CategoryService(repository);
+            this.service = new CategoryService(repository, mapper);
         }
 
         [SetUp]

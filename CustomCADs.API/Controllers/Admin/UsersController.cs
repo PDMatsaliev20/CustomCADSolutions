@@ -18,13 +18,9 @@ namespace CustomCADs.API.Controllers.Admin
     [ApiController]
     [Route("API/Admin/[controller]")]
     [Authorize(Roles = RoleConstants.Admin)]
-    public class UsersController(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager) : ControllerBase
+    public class UsersController(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, IMapper mapper) : ControllerBase
     {
         private readonly string createdAtReturnAction = nameof(GetUserAsync).Replace("Async", "");
-        private readonly IMapper mapper = new MapperConfiguration(opt
-                => opt.AddProfile<IdentityApiProfile>())
-            .CreateMapper();
-
         [HttpGet]
         [Produces("application/json")]
         [ProducesResponseType(Status200OK)]
