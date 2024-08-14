@@ -12,6 +12,10 @@ const GetOrdersByStatus = async (status, searchParams) => {
     return await axios.get(`API/Designer/Orders?status=${status}&${searchParams}`);
 };
 
+const GetRecentFinishedOrders = async () => {
+    return await axios.get('API/Designer/Orders/Recent');
+};
+
 const BeginOrder = async (id) => {
     return await axios.patch(`API/Designer/Orders/Begin/${id}`);
 };
@@ -28,4 +32,4 @@ const FinishOrder = async (id, cadId) => {
     return await axios.patch(`API/Designer/Orders/Finish/${id}?cadId=${cadId}`);
 };
 
-export { GetCadsByStatus, PatchCadStatus, GetOrdersByStatus, BeginOrder, ReportOrder, CancelOrder, FinishOrder };
+export { GetCadsByStatus, PatchCadStatus, GetOrdersByStatus, GetRecentFinishedOrders, BeginOrder, ReportOrder, CancelOrder, FinishOrder };

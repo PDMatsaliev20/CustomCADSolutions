@@ -118,6 +118,36 @@ namespace CustomCADs.API.Controllers
                 return StatusCode(Status500InternalServerError, ex.GetMessage());
             }
         }
+        
+        [HttpGet("Orders/Recent")]
+        [ProducesResponseType(Status200OK)]
+        [ProducesResponseType(Status500InternalServerError)]
+        [ProducesResponseType(Status502BadGateway)]
+        public async Task<ActionResult<OrderResultDTO>> GetRecentOrdersAsync()
+        {
+            try
+            {
+                OrderQuery query = new() { Status = OrderStatus.Finished };
+                SearchModel search = new() { Sorting = "newest" };
+                PaginationModel pagination = new() { Limit = 4 };
+
+                OrderResult result = await orderService.GetAllAsync(query, search, pagination,
+                    o => o.DesignerId == User.GetId()).ConfigureAwait(false);
+                
+                return mapper.Map<OrderResultDTO>(result);
+            }
+            catch (Exception ex) when (
+                ex is AutoMapperConfigurationException
+                || ex is AutoMapperMappingException
+            )
+            {
+                return StatusCode(Status502BadGateway, ex.GetMessage());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(Status500InternalServerError, ex.GetMessage());
+            }
+        }
 
         [HttpPatch("Orders/Begin/{id}")]
         [ProducesResponseType(Status204NoContent)]
