@@ -1,4 +1,6 @@
 import AuthGuard from '@/routing/auth-guard';
+import { GetCategories } from '@/requests/public/home';
+import { GetCad } from '@/requests/private/cads';
 import DesignerHomePage from '@/pages/designer/designer-home/designer-home';
 import UserCadsPage from '@/pages/contributor/user-cads/user-cads';
 import CadDetailsPage from '@/pages/contributor/cad-details/cad-details';
@@ -29,7 +31,7 @@ export default {
                     const categoriesRes = await GetCategories();
                     const cadRes = await GetCad(id);
 
-                    return { loadedCategories: categoriesRes.data, loadedCad: cadRes.data };
+                    return { id, loadedCategories: categoriesRes.data, loadedCad: cadRes.data };
                 } catch (e) {
                     console.error(e);
                 }

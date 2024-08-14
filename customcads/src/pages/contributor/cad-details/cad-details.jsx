@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate, useLoaderData } from 'react-router-dom';
+import { useNavigate, useLoaderData } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { PutCad, PatchCad, DeleteCad } from '@/requests/private/cads';
@@ -7,8 +7,7 @@ import Cad from '@/components/cad';
 
 function EditCadPage() {
     const { t } = useTranslation();
-    const { id } = useParams();
-    const { loadedCategories, loadedCad } = useLoaderData();
+    const { id, loadedCategories, loadedCad } = useLoaderData();
     const navigate = useNavigate();
     const [cad, setCad] = useState({ name: '', description: '', categoryId: 0, price: 0, image: null });
     const [isEditing, setIsEditing] = useState(false);
