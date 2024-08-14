@@ -1,4 +1,5 @@
 import AuthGuard from '@/routing/auth-guard';
+import HomePage from '@/pages/guest/home/home';
 import LoginPage from '@/pages/guest/login/login';
 import RegisterPage from '@/pages/guest/register/register';
 import ChooseRolePage from '@/pages/guest/register/choose-role';
@@ -6,6 +7,10 @@ import ChooseRolePage from '@/pages/guest/register/choose-role';
 export default {
     element: <AuthGuard auth="guest" />,
     children: [
+        {
+            path: "/",
+            element: <HomePage />
+        },
         {
             path: "/login",
             element: <LoginPage />

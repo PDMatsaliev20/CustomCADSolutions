@@ -8,7 +8,7 @@ function RoleInfo() {
         case 'Client': break;
         case 'Contributor': break;
         case 'Designer': break;
-        default: return <ErrorPage status={400} />;
+        default: return <ErrorPage status={404} />;
     }
 
     return (
