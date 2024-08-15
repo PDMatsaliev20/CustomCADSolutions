@@ -47,7 +47,7 @@ function UncheckedCads() {
                             }
                         </ul>}
                 </section>
-                <div className="basis-full">
+                <div className="basis-full" hidden={!cads.length}>
                     <Pagination
                         page={page}
                         limit={limit}

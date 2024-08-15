@@ -10,7 +10,7 @@ const useForm = (initialState, useValidation) => {
 
     useEffect(() => {
         setErrors(validated);
-    }, [values]);
+    }, [values, validated]);
 
     const handleInput = (e) => {
         const { name, value } = e.target;

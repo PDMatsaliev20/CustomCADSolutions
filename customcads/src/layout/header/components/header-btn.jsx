@@ -1,9 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-function LongBtn({ icon, text, orderReversed, onClick }) {
+function HeaderBtn({ icon, text, orderReversed, onClick }) {
     return (
-        <button onClick={onClick} className="bg-indigo-100 rounded-full border-4 border-indigo-300 shadow-md shadow-indigo-700">
-            <div className={`flex ${orderReversed && 'flex-row-reverse'} items-end gap-x-2 px-4 py-3 text-indigo-600`}>
+        <button onClick={onClick} className="bg-indigo-100 rounded-full border-4 border-indigo-300 shadow-md shadow-indigo-700 hover:bg-indigo-50 active:bg-indigo-200 active:border-indigo-400">
+            <div className={`flex ${orderReversed && 'flex-row-reverse'} items-end gap-x-2 px-4 py-3 text-indigo-600 active:text-indigo-700`}>
                 <span className="flex font-bold text-lg mx-1">{text}</span>
                 <FontAwesomeIcon icon={icon} className="text-3xl" />
             </div>
@@ -11,4 +11,4 @@ function LongBtn({ icon, text, orderReversed, onClick }) {
     );
 }
 
-export default LongBtn;
+export default HeaderBtn;

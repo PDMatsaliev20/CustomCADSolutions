@@ -1,10 +1,10 @@
-function Profile({ person: { img, name, role, desc } }) {
+function Profile({ person: { img, name, role, desc, contact } }) {
     return (
-        <article className="flex gap-x-3 p-2 w-full bg-indigo-200 border border-indigo-500 rounded-sm">
-            <div className="min-w-[40%]">   
-                <img src={img} className="w-full h-auto" />
+        <article className="flex flex-wrap gap-x-3 p-2 w-full bg-indigo-200 border border-indigo-500 rounded-sm">
+            <div className="h-40 asis-1/6">
+                <img src={img} className="w-auto h-full rounded-xl" />
             </div>
-            <div>
+            <div className="basis-5/6 grow flex flex-col justify-between">
                 <details open>
                     <summary>
                         <span className="text-xl font-bold">{name}</span>
@@ -12,6 +12,9 @@ function Profile({ person: { img, name, role, desc } }) {
                     </summary>
                     <p>{desc}</p>
                 </details>
+                <p className="underline underline-offset-4">Preferred Personal Contact:
+                    <span className="font-bold"> {contact}</span>
+                </p>
             </div>
         </article>
     );

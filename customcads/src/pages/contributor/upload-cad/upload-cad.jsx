@@ -4,11 +4,11 @@ import { useTranslation } from 'react-i18next';
 import useForm from '@/hooks/useForm';
 import { GetCategories } from '@/requests/public/home';
 import { PostCad } from '@/requests/private/cads';
-import UploadCadBtn from '@/components/upload-cad-btn';
-import FileInput from '@/components/file-input';
-import Input from '@/components/input';
-import Select from '@/components/select';
-import TextArea from '@/components/textarea';
+import UploadCadBtn from '@/components/fields/upload-cad-btn';
+import FileInput from '@/components/fields/file-input';
+import Input from '@/components/fields/input';
+import Select from '@/components/fields/select';
+import TextArea from '@/components/fields/textarea';
 import validateUploadCad from './upload-cad.validate';
 
 function UploadCad() {

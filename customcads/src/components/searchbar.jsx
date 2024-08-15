@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { GetCategories, GetSortings } from '@/requests/public/home';
-import Input from './input';
-import Select from './select';
+import Input from './fields/input';
+import Select from './fields/select';
 
 function SearchBar({ setSearch }) {
     const { t } = useTranslation();
@@ -40,7 +40,7 @@ function SearchBar({ setSearch }) {
         </option>;
 
     return (
-        <div className="basis-full bg-indigo-400 py-8 rounded-lg border-2 border-indigo-600 shadow-2xl shadow-indigo-400">
+        <div className="basis-full bg-indigo-400 py-8 rounded-lg border-2 border-indigo-600 shadow-xl shadow-indigo-300">
             <form onSubmit={handleSearch} method="get" autoComplete="off">
                 <div className="flex flex-wrap justify-center items-center gap-y-5">
                     <div className="basis-full flex justify-evenly">

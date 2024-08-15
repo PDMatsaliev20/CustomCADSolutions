@@ -5,7 +5,7 @@ import useForm from '@/hooks/useForm';
 import AuthContext from '@/contexts/auth-context';
 import { Register } from '@/requests/public/identity';
 import ErrorPage from '@/components/error-page';
-import Input from '@/components/input';
+import Input from '@/components/fields/input';
 import { getCookie } from '@/utils/cookie-manager';
 import useValidateRegister from './register.validate';
 
@@ -27,7 +27,7 @@ function RegisterPage() {
     const isClient = role.toLowerCase() === "client";
     const isContributor = role.toLowerCase() === "contributor";
     if (!(isClient || isContributor)) {
-        return <ErrorPage status={400} img="src/assets/errors/az.png" />;
+        return <ErrorPage status={404} />;
     }
 
     const handleSubmitCallback = async () => {
@@ -59,6 +59,7 @@ function RegisterPage() {
                             touched={touched.username}
                             error={errors.username}
                             isRequired
+                            className="text-indigo-900 w-full mt-1 p-2 px-4 border-2 border-indigo-300 rounded focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                         />
                         <Input
                             id="email"
@@ -72,6 +73,7 @@ function RegisterPage() {
                             touched={touched.email}
                             error={errors.email}
                             isRequired
+                            className="text-indigo-900 w-full mt-1 p-2 px-4 border-2 border-indigo-300 rounded focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                         />
                         <Input
                             id="password"
@@ -85,6 +87,7 @@ function RegisterPage() {
                             touched={touched.password}
                             error={errors.password}
                             isRequired
+                            className="text-indigo-900 w-full mt-1 p-2 px-4 border-2 border-indigo-300 rounded focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                         />
                          <Input
                             id="confirmPassword"
@@ -98,6 +101,7 @@ function RegisterPage() {
                             touched={touched.confirmPassword}
                             error={errors.confirmPassword}
                             isRequired
+                            className="text-indigo-900 w-full mt-1 p-2 px-4 border-2 border-indigo-300 rounded focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                         />
                     </div>
                     <div className="basis-full py-4 flex justify-center items-center gap-3 text-indigo-50">
@@ -115,15 +119,6 @@ function RegisterPage() {
                     <p className="text-indigo-950" >{t('public.register.go_to_login')}</p>
                     <Link to="/login" className="text-center font-semibold text-indigo-700">
                         {t('public.register.login')}
-                    </Link>
-                </div>
-                <div className="text-center">
-                    <p className="text-indigo-950">
-                        <span>{t('public.register.want')}</span>
-                        <span className="font-bold"> {isClient ? t('common.roles.Contributor') : t('common.roles.Client')}?</span>
-                    </p>
-                    <Link to={isClient ? '/register/contributor' : '/register/client'} className="text-center font-semibold text-indigo-700">
-                        {t('public.register.switch')}
                     </Link>
                 </div>
             </section>

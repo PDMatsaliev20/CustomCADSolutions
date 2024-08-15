@@ -1,58 +1,66 @@
 import { useLoaderData, Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import ErrorPage from '@/components/error-page';
 
 function RoleInfo() {
+    const { t } = useTranslation();
     const { role } = useLoaderData();
 
     let abilities;
     let guide;
     switch (role) {
         case 'Client':
-            abilities = ['Purchase any 3D Model from our Gallery', 'Order a Custom 3D Model', 'Track, Modify and Delete your Orders'];
-            guide = ['Visit THIS page: ', 'Provide the necessary info', 'Enjoy the experience!'];
+            abilities = [t('public.role.client_ability_1'), t('public.role.client_ability_2'), t('public.role.client_ability_3')];
+            guide = [t('public.role.guide_1'), t('public.role.guide_2'), t('public.role.enjoy')];
             break;
 
         case 'Contributor':
-            abilities = ['Upload your 3D Models to our Gallery', 'Get 85% of the profit earned', 'Track, Modify and Delete your 3D Models'];
-            guide = ['Visit THIS page: ', 'Provide the necessary info', 'Enjoy the experience!'];
+            abilities = [t('public.role.contributor_ability_1'), t('public.role.contributor_ability_2'), t('public.role.contributor_ability_3')];
+            guide = [t('public.role.guide_1'), t('public.role.guide_2'), t('public.role.enjoy')];
             break;
 
         case 'Designer':
-            abilities = ['Become a part of our lovely team of 3D Designers', 'Validate Contributor\'s 3D Models', 'Take on and Complete Clients\' Orders', 'Upload your own 3D Models directly to our Gallery', 'Get 100% of the profit earned + your monthly salary'];
-            guide = ['Email us HERE: ', 'Express your desire to join our team', 'Provide relevant experience', 'Make it through an interview', 'Enjoy the experience!'];
+            abilities = [t('public.role.designer_ability_1'), t('public.role.designer_ability_2'), t('public.role.designer_ability_3'), t('public.role.designer_ability_4'), t('public.role.designer_ability_5')];
+            guide = [t('public.role.designer_guide_1'), t('public.role.designer_guide_2'), t('public.role.designer_guide_3'), t('public.role.designer_guide_4'), t('public.role.enjoy')];
             break;
 
         default: return <ErrorPage status={404} />;
     }
 
     return (
-        <div className="flex flex-col gap-y-8">
+        <div className="mt-5 flex flex-col gap-y-10">
             <h1 className="text-3xl text-indigo-900 text-center font-bold">
-                <span>Learn about being a </span>
-                <span className="text-indigo-800 font-extrabold">{role}</span>!
+                <span>{t('public.role.title')} </span>
+                <Link to={`/register/${role.toLowerCase()}`} className="text-indigo-800 font-extrabold">
+                    {t(`common.roles.${role}`)}
+                </Link>!
                 <span hidden={role !== 'Designer'}>
                     <Link to="/about" className="block text-sm">
-                        (click here if you're interested in a software development position)
+                        {t('public.role.software')}
                     </Link>
                 </span>
             </h1>
             <div className="text-indigo-900">
                 <ol className="list-decimal text-lg flex justify-evenly">
-                    <li className="text-2xl">
-                        <p className="font-bold">What can I do?</p>
-                        <span>
-                            <p className="text-xl italic">When you're a {role}, you can:</p>
+                    <li className="text-2xl list-inside px-8 py-8 rounded-lg bg-indigo-100 border-4 border-indigo-800 shadow-lg shadow-indigo-400">
+                        <span className="font-bold">{t('public.role.subtitle_1')}?</span>
+                        <span className="mt-4 flex flex-col gap-y-2">
+                            <p className="text-xl italic">
+                                {t('public.role.when')} {t(`common.roles.${role}`)}, {t('public.role.can')}:
+                            </p>
                             <ul className="text-lg ps-8 list-disc">
                                 {abilities.map((ability, i) => <li key={i}>{ability}</li>)}
                             </ul>
                         </span>
                     </li>
-                    <li className="text-2xl">
-                        <p className="font-bold">How do I become one?</p>
-                        <span>
-                            <p className="text-xl italic">To become a {role}, you must:</p>
+                    <li className="text-2xl list-inside px-8 py-8 rounded-lg bg-indigo-100 border-4 border-indigo-800 shadow-lg shadow-indigo-400">
+                        <span className="font-bold">{t('public.role.subtitle_2')}?</span>
+                        <span className="mt-4 flex flex-col gap-y-2">
+                            <p className="text-xl italic">
+                                {t('public.role.to')} {t(`common.roles.${role}`)}, {t('public.role.must')}:
+                            </p>
                             <ol className="text-lg ps-8 list-decimal">
-                                <li>                                    
+                                <li>
                                     <Link to={role === 'Designer' ? 'mailto:customcadsolutions222@gmail.com' : `/register/${role}`}>{guide[0]}</Link>
                                 </li>
                                 {guide.filter((_, i) => i !== 0).map((step, i) => <li key={i}>{step}</li>)}

@@ -4,9 +4,9 @@ import { useTranslation } from 'react-i18next';
 import useForm from '@/hooks/useForm';
 import { GetCategories } from '@/requests/public/home';
 import { PostOrder } from '@/requests/private/orders';
-import Input from '@/components/input';
-import Select from '@/components/select';
-import TextArea from '@/components/textarea';
+import Input from '@/components/fields/input';
+import Select from '@/components/fields/select';
+import TextArea from '@/components/fields/textarea';
 import validateCustomOrder from './custom-order.validate';
 
 function CustomOrder() {

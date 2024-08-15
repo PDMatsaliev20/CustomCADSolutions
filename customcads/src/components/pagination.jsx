@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
-import ArrowBtn from './arrow-btn';
-import PageNum from './page-num';
+import ArrowBtn from './pagination/arrow-btn';
+import PageNum from './pagination/page-num';
 
 function Pagination({ page, onPageChange, limit, total }) {
     const { t } = useTranslation();
@@ -27,7 +27,7 @@ function Pagination({ page, onPageChange, limit, total }) {
     }
 
     return (
-        <div className="flex items-center justify-between px-4 py-8 bg-indigo-100 text-indigo-900 font-bold rounded-lg border-2 border-indigo-400 shadow-2xl shadow-indigo-500 sm:px-6">
+        <div className="flex items-center justify-between px-4 py-8 bg-indigo-100 text-indigo-900 font-bold rounded-lg border-2 border-indigo-400 shadow-xl shadow-indigo-300 sm:px-6">
             <div className="flex flex-1 justify-between sm:hidden">
                 <button onClick={handlePrevious}
                     className="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"

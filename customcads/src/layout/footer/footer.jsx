@@ -8,7 +8,7 @@ function Footer() {
     const { t } = useTranslation();
 
     return (
-        <footer className="justify-self-end py-4 border-t-2 border-indigo-300 rounded-t-lg bg-indigo-100 shadow-indigo-800 shadow-[bg-white_0_0_1em_0]">
+        <footer className="justify-self-end py-4 text-indigo-900 border-t-2 border-indigo-300 rounded-t-lg bg-indigo-100 shadow-indigo-800 shadow-[bg-white_0_0_1em_0]">
             <div className="flex justify-evenly items-center">
                 <section className="flex gap-6 underline-offset-4">
                     <FooterLink to="/policy" text={t('footer.element_1')} />

@@ -14,7 +14,7 @@ function Field({ id, label, isRequired, type = "text", name, value, onInput, onB
                 onBlur={onBlur}
                 className={className || "text-indigo-900 w-full mt-1 p-2 px-4 border border-indigo-300 rounded focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"}
             />
-            <span className={`${touched && error ? 'inline-block' : 'hidden'} h-full text-sm bg-red-700 p-1 rounded text-indigo-100 font-bold`}>
+            <span className={`${touched && error ? 'inline-block' : 'hidden'} text-sm bg-red-700 p-1 rounded text-indigo-100 font-bold`}>
                 {error}
             </span>
         </div>

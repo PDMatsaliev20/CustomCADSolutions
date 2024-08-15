@@ -1,3 +1,7 @@
+button:focus, a:focus {
+    outline: none;
+}
+
 .hide-spinner::-webkit-outer-spin-button,
 .hide-spinner::-webkit-inner-spin-button {
     -webkit-appearance: none;

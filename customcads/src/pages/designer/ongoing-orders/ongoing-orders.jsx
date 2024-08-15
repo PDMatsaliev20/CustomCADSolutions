@@ -37,9 +37,9 @@ function OngoingOrders() {
 
     return (
         <div className="flex flex-wrap justify-center gap-y-12 mt-4 mb-8">
-            <div className="basis-full flex flex-col gap-y-[1px]">
+            <div className="basis-full flex flex-col">
                 <h2 className="px-4 basis-full text-3xl text-indigo-950">
-                    <div className="flex justify-between items-center rounded-t-xl border-4 border-indigo-600 overflow-hidden bg-indigo-500 text-center font-bold">
+                    <div className="flex justify-between items-center rounded-t-xl border-t-4 border-x-4 border-b border-indigo-600 overflow-hidden bg-indigo-500 text-center font-bold">
                         <Link to="/designer/orders/pending"
                             className={`basis-1/3 bg-indigo-300 py-4 hover:no-underline ${status === 'Pending' ? 'font-extrabold bg-indigo-500 text-indigo-50' : ''}`}
                         >
@@ -66,7 +66,7 @@ function OngoingOrders() {
                         <li key={order.id}>{chooseOrder(order)}</li>
                     )}
                 </ul>}
-            <div className="basis-full">
+            <div className="basis-full" hidden={!orders.length}>
                 <Pagination
                     page={page}
                     limit={limit}

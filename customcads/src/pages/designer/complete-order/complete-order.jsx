@@ -5,11 +5,11 @@ import useForm from '@/hooks/useForm';
 import { GetCategories } from '@/requests/public/home';
 import { PostCad } from '@/requests/private/cads';
 import { FinishOrder } from '@/requests/private/designer';
-import UploadCadBtn from '@/components/upload-cad-btn';
-import FileInput from '@/components/file-input';
-import Input from '@/components/input';
-import TextArea from '@/components/textarea';
-import Select from '@/components/select';
+import UploadCadBtn from '@/components/fields/upload-cad-btn';
+import FileInput from '@/components/fields/file-input';
+import Input from '@/components/fields/input';
+import TextArea from '@/components/fields/textarea';
+import Select from '@/components/fields/select';
 import validateUploadCad from './complete-order.validate';
 
 function CompleteOrder() {

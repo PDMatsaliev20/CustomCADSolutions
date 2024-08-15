@@ -79,7 +79,7 @@ function UserOrders() {
                     {orders.filter(o => o.status.toLowerCase() === status.toLowerCase()).map(order =>
                         <li key={order.id} className="col-span-6">{chooseOrder(order)}</li>)}
                 </ul>}
-            <div className="basis-full">
+            <div className="basis-full" hidden={!orders.length}>
                 <Pagination
                     page={page}
                     limit={limit}

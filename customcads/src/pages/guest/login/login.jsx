@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import useForm from '@/hooks/useForm';
 import AuthContext from '@/contexts/auth-context';
 import { Login } from '@/requests/public/identity';
-import Input from '@/components/input';
+import Input from '@/components/fields/input';
 import { getCookie } from '@/utils/cookie-manager';
 import useValidateLogin from './login.validate';
 
@@ -54,6 +54,7 @@ function LoginPage() {
                             touched={touched.username} 
                             error={errors.username} 
                             isRequired
+                            className="text-indigo-900 w-full mt-1 p-2 px-4 border-2 border-indigo-300 rounded focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                         />
                         <Input
                             id="password"
@@ -67,6 +68,7 @@ function LoginPage() {
                             touched={touched.password} 
                             error={errors.password} 
                             isRequired
+                            className="text-indigo-900 w-full mt-1 p-2 px-4 border-2 border-indigo-300 rounded focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                         />
                     </div>
                     <div className="flex justify-between items-center">
@@ -80,7 +82,9 @@ function LoginPage() {
                             <label className="ms-1 text-indigo-50">{t('public.login.remember_me')}</label>
                         </div>
                         <div>
-                            <Link to="#" className="text-indigo-800">{t('public.login.forgot_password')}</Link>
+                            <Link to="#" className="text-indigo-900 font-bold underline-offset-2 underline hover:italic">
+                                {t('public.login.forgot_password')}
+                            </Link>
                         </div>
                     </div>
                     <div className="pt-2 flex justify-center">
@@ -96,7 +100,7 @@ function LoginPage() {
             <section className="">
                 <button className="">
                     <p>{t("public.login.go_to_register")}</p>
-                    <Link to="/register" className="text-center font-semibold text-indigo-700">
+                    <Link to="/register" className="text-center font-bold text-indigo-700">
                         {t('public.login.register')}
                     </Link>
                 </button>

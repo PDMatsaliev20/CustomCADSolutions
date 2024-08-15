@@ -23,7 +23,7 @@ function ErrorPage({ status }) {
         case 403:
             text = t("common.http.403");
             src = "/src/assets/errors/nikola.png";
-            link = <Link to={`/info/${userRole}`}>{t('common.http.authorize')}</Link>;
+            link = <Link to={`/info/${userRole.toLowerCase()}`}>{t('common.http.authorize')}</Link>;
             break;
 
         case 404:

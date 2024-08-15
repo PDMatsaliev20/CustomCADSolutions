@@ -5,7 +5,7 @@ import objectToUrl from '@/utils/object-to-url';
 import { GetCads } from '@/requests/private/cads';
 import SearchBar from '@/components/searchbar';
 import Pagination from '@/components/pagination';
-import UserCadItem from './components/user-cads-item';
+import UserCadItem from './components/cads-item';
 
 function UserCads() {
     const { t } = useTranslation();
@@ -32,7 +32,7 @@ function UserCads() {
                         {cads.map(cad => <UserCadItem key={cad.id} item={cad} />)}
                     </ul>}
             </section>
-            <div className="basis-full">
+            <div className="basis-full" hidden={!cads.length}>
                 <Pagination
                     page={page}
                     limit={limit}

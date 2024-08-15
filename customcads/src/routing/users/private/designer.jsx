@@ -3,7 +3,7 @@ import { GetCategories } from '@/requests/public/home';
 import { GetCad, GetRecentCads } from '@/requests/private/cads';
 import { GetRecentFinishedOrders } from '@/requests/private/designer';
 import DesignerHomePage from '@/pages/designer/designer-home/designer-home';
-import UserCadsPage from '@/pages/contributor/user-cads/user-cads';
+import UserCadsPage from '@/pages/contributor/user-cads/cads';
 import CadDetailsPage from '@/pages/contributor/cad-details/cad-details';
 import UploadCadPage from '@/pages/contributor/upload-cad/upload-cad';
 import OngoingOrders from '@/pages/designer/ongoing-orders/ongoing-orders';

@@ -1,12 +1,11 @@
 {
   "title": "About Us and Our Team:",
   "web-dev_name": "Ivan Angelov",
-  "web-dev_role": "Co-founder, Web Developer",
+  "web-dev_role": "Co-founder, Web Developer, Hosting manager",
   "web-dev_info": "With multiple years of expirience at the humble age of 17, this young man single-handedly designed, built and manages everything about this app, from the database to the back-end and front-end, and soon the deployment of this web app to the world-wide web.",
   "3D-designer_name": "Boris Kolev",
-  "3D-designer_role": "Co-founder, 3D Designer",
+  "3D-designer_role": "Co-founder, 3D Designer, Business Manager",
   "3D-designer_info": "A natural at coming up with and crafting 3D models that comply with international standards, this handsome adult is solely responsible for filling up our entire storage with 3D models, be it by answering the custom orders or just publishing his own projects.",
   "want_to_join": "Want to join our team?",
-  "looking_for": "We're looking for (junior) web developers and 3d designers",
   "email": "Email us HERE"
 }

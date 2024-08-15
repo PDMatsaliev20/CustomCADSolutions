@@ -27,7 +27,7 @@ function ArrowBtn({ text, type, onClick }) {
 
     return (
         <button onClick={onClick}
-            className={`relative inline-flex items-center ${rounded} px-4 py-2 ring-1 ring-inset ring-indigo-600 hover:bg-indigo-300 focus:z-20 focus:outline-offset-0`}
+            className={`relative inline-flex items-center ${rounded} px-4 py-2 ring-1 ring-inset ring-indigo-600 hover:bg-indigo-200 active:bg-indigo-300`}
         >
             <span className="sr-only">{text}</span>
             <FontAwesomeIcon icon={icon} className="text-indigo-800" />

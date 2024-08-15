@@ -9,6 +9,7 @@ import gallery from './resources/pages/public/gallery.json';
 import about from './resources/pages/public/about.json';
 import register from './resources/pages/public/register.json';
 import login from './resources/pages/public/login.json';
+import role from './resources/pages/public/role.json';
 
 // Private
 import orders from './resources/pages/private/orders.json';
@@ -36,6 +37,7 @@ export default {
             about,
             register,
             login,
+            role,
         },
         private: {
             orders,

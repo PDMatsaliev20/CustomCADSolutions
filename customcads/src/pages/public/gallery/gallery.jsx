@@ -31,7 +31,7 @@ function GalleryPage() {
                             {cads.map(cad => <GalleryItem key={cad.id} item={cad} />)}
                         </ul>}
                 </section>
-                <div className="basis-full">
+                <div className="basis-full" hidden={!cads.length}>
                     <Pagination
                         page={page}
                         limit={limit}
