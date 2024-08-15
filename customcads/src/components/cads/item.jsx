@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
-function GalleryItem({ item }) {
+function GalleryItem({ item, by, on }) {
     const { t } = useTranslation();
 
     return (
@@ -12,7 +12,10 @@ function GalleryItem({ item }) {
                     <img src={item.imagePath} className="w-full h-full" />
                 </div>
             </Link>
-            <p className="basis-full text-center text-lg font-semibold">{t('public.gallery.by')} '{item.creatorName}'</p>
+            <p className="basis-full text-center text-indigo-950 font-semibold">
+                {by && `${t('public.gallery.by')} '${item.creatorName}'`}
+                {on && `${t('private.cads.on')} '${item.creationDate}'`}
+            </p>
         </li>
     );
 }

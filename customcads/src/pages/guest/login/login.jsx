@@ -26,7 +26,9 @@ function LoginPage() {
         try {
             await Login(user);
             setIsAuthenticated(true);
-            navigate(`/${getCookie('role').toLowerCase()}`);
+
+            const role = getCookie('role');
+            navigate(`/${role.toLowerCase()}`);
         } catch (e) {
             if (e.response.data === 'Invalid Username or Password.') {
                 alert(t('common.errors.sign_in_error'));
@@ -40,7 +42,7 @@ function LoginPage() {
             <h1 className="my-6 text-4xl text-center font-bold ">
                 {t('public.login.title')}
             </h1>
-            <div className="w-6/12 px-12 pt-8 pb-6 bg-indigo-400 rounded-lg">
+            <div className="w-6/12 px-12 pt-8 pb-6 bg-indigo-400 rounded-lg border-2 border-indigo-600 shadow-md shadow-indigo-500">
                 <form onSubmit={(e) => handleSubmit(e, handleSubmitCallback)} noValidate>
                     <div className="mb-4 flex flex-col gap-y-4">
                         <Input
@@ -68,7 +70,7 @@ function LoginPage() {
                             touched={touched.password} 
                             error={errors.password} 
                             isRequired
-                            className="text-indigo-900 w-full mt-1 p-2 px-4 border-2 border-indigo-300 rounded focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                            className="text-indigo-900 w-full mt-1 p-2 px-4 rounded border-2 border-indigo-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                         />
                     </div>
                     <div className="flex justify-between items-center">

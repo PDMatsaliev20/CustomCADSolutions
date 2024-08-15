@@ -3,7 +3,7 @@ import { useNavigate, useLoaderData } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { PutCad, PatchCad, DeleteCad } from '@/requests/private/cads';
-import Cad from '@/components/cad';
+import ThreeJS from '@/components/cads/three';
 
 function EditCadPage() {
     const { t } = useTranslation();
@@ -99,7 +99,7 @@ function EditCadPage() {
         if (confirm(t('private.cads.confirmation'))) {
             try {
                 await DeleteCad(id);
-                navigate('/cads');
+                navigate('../cads');
             } catch (e) {
                 console.error(e);
             }
@@ -113,7 +113,7 @@ function EditCadPage() {
                     <button type="button" onClick={() => window.dispatchEvent(new CustomEvent('SendPosition'))}
                         className="bg-indigo-500 text-indigo-50 font-bold py-3 px-6 rounded-lg border border-indigo-700 shadow shadow-indigo-950"
                     >
-                        {t('Update Position')}
+                        {t('private.cads.update_position')}
                     </button>
                 </div>
                 <div className="flex justify-center items-center gap-x-8">
@@ -130,7 +130,7 @@ function EditCadPage() {
             <div className="flex bg-indigo-300 rounded-md overflow-hidden border-4 border-indigo-700 shadow-lg shadow-indigo-400">
                 <div className="flex justify-center items-center px-8">
                     <div className="bg-indigo-200 w-80 h-80 rounded-xl">
-                        <Cad cad={loadedCad} />
+                        <ThreeJS cad={loadedCad} />
                     </div>
                 </div>
                 <div className="grow bg-indigo-500 text-indigo-50 flex flex-col">

@@ -1,0 +1,10 @@
+{
+  "username": "Your_Username123",
+  "email": "your@email.com",
+  "password": "your_secret_password_123",
+  "order_name": "CAD По Поръчка",
+  "order_description": "CAD, Който Е Изработен По Поръчка",
+  "cad_name": "Моят Нов 3D Модел",
+  "cad_description": "Дългото Описание На 3D Модела Ми",
+  "cad_price": "999$"
+}

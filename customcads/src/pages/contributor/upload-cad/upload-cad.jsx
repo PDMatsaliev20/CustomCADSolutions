@@ -1,9 +1,11 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect, useContext } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import AuthContext from '@/contexts/auth-context';
 import useForm from '@/hooks/useForm';
 import { GetCategories } from '@/requests/public/home';
 import { PostCad } from '@/requests/private/cads';
+import { FinishOrder } from '@/requests/private/designer';
 import UploadCadBtn from '@/components/fields/upload-cad-btn';
 import FileInput from '@/components/fields/file-input';
 import Input from '@/components/fields/input';
@@ -13,7 +15,9 @@ import validateUploadCad from './upload-cad.validate';
 
 function UploadCad() {
     const { t } = useTranslation();
+    const { id } = useParams();
     const navigate = useNavigate();
+    const { userRole } = useContext(AuthContext);
     const [categories, setCategories] = useState([]);
 
     const {
@@ -32,8 +36,15 @@ function UploadCad() {
 
     const handleSubmitCallback = async () => {
         try {
-            await PostCad(cad);
-            navigate("/contributor/cads");
+            const { data } = await PostCad(cad);
+            if (userRole === 'Designer') {
+                if (id) {
+                    await FinishOrder(id, data.id);
+                }
+                navigate(`/designer/cads/${data.id}`);
+            } else {
+                navigate('/contributor/cads');
+            }
         } catch (e) {
             console.error(e);
         }
@@ -48,7 +59,7 @@ function UploadCad() {
         <div className="my-2">
             <form onSubmit={(e) => handleSubmit(e, handleSubmitCallback)} autoComplete="off" noValidate>
                 <div className="flex flex-col gap-y-4">
-                    <div className="flex justify-center items-center gap-x-4">
+                    <div className="flex justify-center items-center gap-x-4 ">
                         <h1 className="text-4xl text-center text-indigo-950 font-bold">{t('private.cads.upload-cad_title')}*:</h1>
                         <UploadCadBtn
                             id="file"
@@ -59,8 +70,8 @@ function UploadCad() {
                             onInput={handleFileUpload}
                         />
                     </div>
-                    <div className="w-8/12 mx-auto flex flex-wrap gap-y-4 gap-x-8 bg-indigo-700 py-8 px-12 rounded-xl">
-                        <div className="basis-8/12">
+                    <div className="w-8/12 mx-auto flex flex-wrap gap-y-4 gap-x-8 bg-indigo-700 py-8 px-12 rounded-xl  border-4 border-indigo-500 shadow-md shadow-indigo-700">
+                        <div className="basis-full">
                             <Input
                                 id="name"
                                 label={t('common.labels.name')}
@@ -69,22 +80,10 @@ function UploadCad() {
                                 value={cad.name}
                                 onInput={handleInput}
                                 onBlur={handleBlur}
-                                className="w-full rounded bg-indigo-50 text-indigo-900 focus:outline-none p-2"
+                                className="w-full rounded bg-indigo-50 text-indigo-900 p-2 border-2 focus:outline-none focus:border-indigo-300"
                                 placeholder={t("common.placeholders.cad_name")}
                                 touched={touched.name}
                                 error={errors.name}
-                            />
-                        </div>
-                        <div className="w-2/12">
-                            <FileInput
-                                id="image"
-                                icon="arrow-up-from-bracket"
-                                label={t('common.labels.image')}
-                                isRequired
-                                file={cad.image}
-                                accept=".jpg,.png"
-                                name="image"
-                                onInput={handleFileUpload}
                             />
                         </div>
                         <div className="basis-5/12 grow text-indigo-50">
@@ -96,7 +95,7 @@ function UploadCad() {
                                 value={cad.category}
                                 onInput={handleInput}
                                 onBlur={handleBlur}
-                                className="w-full rounded bg-indigo-50 text-indigo-900 focus:outline-none p-2"
+                                className="w-full rounded bg-indigo-50 text-indigo-900 p-2 border-2 focus:outline-none focus:border-indigo-300"
                                 items={categories}
                                 defaultOption={t('common.categories.None')}
                                 onMap={categoryMap}
@@ -114,8 +113,8 @@ function UploadCad() {
                                 value={cad.price}
                                 onInput={handleInput}
                                 onBlur={handleBlur}
-                                placeholder={t("private.cads.PricePlaceholder")}
-                                className="w-full rounded bg-indigo-50 text-indigo-900 focus:outline-none p-2"
+                                placeholder={t("common.placeholders.cad_price")}
+                                className="w-full rounded bg-indigo-50 text-indigo-900 p-2 border-2 focus:outline-none focus:border-indigo-300"
                                 touched={touched.price}
                                 error={errors.price}
                             />
@@ -129,18 +128,30 @@ function UploadCad() {
                                 value={cad.description}
                                 onInput={handleInput}
                                 onBlur={handleBlur}
-                                className="w-full rounded bg-indigo-50 text-indigo-900 focus:outline-none p-2"
+                                className="w-full rounded bg-indigo-50 text-indigo-900 p-2 border-2 focus:outline-none focus:border-indigo-300"
                                 placeholder={t('common.placeholders.cad_description')}
                                 rows={3}
                                 touched={touched.description}
                                 error={errors.description}
                             />
                         </div>
-                        <div className="mt-1 basis-full flex justify-center">
-                            <button className="bg-indigo-200 text-indigo-800 rounded py-2 px-6">
-                                {t('private.cads.upload')}
-                            </button>
+                        <div className="basis-full flex justify-center">
+                            <FileInput
+                                id="image"
+                                icon="arrow-up-from-bracket"
+                                label={t('common.labels.image')}
+                                isRequired
+                                file={cad.image}
+                                accept=".jpg,.png"
+                                name="image"
+                                onInput={handleFileUpload}
+                            />
                         </div>
+                    </div>
+                    <div className="mt-1 basis-full flex justify-center">
+                        <button className="bg-indigo-200 text-indigo-800 rounded py-2 px-6 border-2 border-indigo-500">
+                            {t('private.cads.upload')}
+                        </button>
                     </div>
                 </div>
             </form>

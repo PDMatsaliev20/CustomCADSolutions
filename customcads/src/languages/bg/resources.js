@@ -21,6 +21,7 @@ import labels from './resources/common/labels.json';
 import errors from './resources/common/errors.json';
 import searchbar from './resources/common/searchbar.json';
 import pagination from './resources/common/pagination.json';
+import placeholders from './resources/common/placeholders.json';
 import roles from './resources/common/roles.json';
 import categories from './resources/common/categories.json';
 import sortings from './resources/common/sortings.json';
@@ -49,6 +50,7 @@ export default {
             errors,
             searchbar,
             pagination,
+            placeholders,
             roles,
             categories,
             sortings,

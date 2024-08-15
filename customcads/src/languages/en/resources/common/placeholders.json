@@ -2,9 +2,9 @@
   "username": "Your_Username123",
   "email": "your@email.com",
   "password": "your_secret_password_123",
-  "order_name": "Your Order's Name",
-  "order_description": "The Lengthy Description Of Your Order",
-  "cad_name": "Your 3D Model's Name",
-  "cad_description": "The Lengthy Description Of Your 3D Model",
+  "order_name": "A Custom CAD",
+  "order_description": "A CAD Which Is Customly Crafted",
+  "cad_name": "My New 3D Model",
+  "cad_description": "The Lengthy Description Of My 3D Model",
   "cad_price": "999$"
 }

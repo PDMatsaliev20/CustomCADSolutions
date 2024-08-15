@@ -44,7 +44,7 @@ function SearchBar({ setSearch }) {
             <form onSubmit={handleSearch} method="get" autoComplete="off">
                 <div className="flex flex-wrap justify-center items-center gap-y-5">
                     <div className="basis-full flex justify-evenly">
-                        <div className="basis-1/4 bg-indigo-200 text-indigo-800 border border-indigo-900 py-2 rounded-md text-center">
+                        <div className="basis-1/4 bg-indigo-200 text-indigo-800 border border-indigo-700 py-2 rounded-md text-center">
                             <Select
                                 id="category"
                                 label={t('common.searchbar.category')}
@@ -57,7 +57,7 @@ function SearchBar({ setSearch }) {
                                 className="bg-indigo-50 border border-indigo-700 text-indigo-900 py-2 px-1 pe-2 rounded-md focus:outline-none"
                             />
                         </div>
-                        <div className="basis-1/4 bg-indigo-100 rounded-md overflow-hidden flex gap-x-2 items-center px-3 py-2">
+                        <div className="basis-1/4 bg-indigo-100 rounded-md overflow-hidden flex gap-x-2 items-center px-3 py-2 border border-indigo-700">
                             <Input
                                 name="name"
                                 type="search"
@@ -70,7 +70,7 @@ function SearchBar({ setSearch }) {
                                 <FontAwesomeIcon icon="search" className="text-lg mt-1 text-indigo-600" />
                             </button>
                         </div>
-                        <div className="basis-1/4 bg-indigo-200 text-indigo-800 border border-indigo-900 py-2 rounded-md text-center">
+                        <div className="basis-1/4 bg-indigo-200 text-indigo-800 border border-indigo-700 py-2 rounded-md text-center">
                             <Select
                                 id="sorting"
                                 label={t('common.searchbar.sort_by')}

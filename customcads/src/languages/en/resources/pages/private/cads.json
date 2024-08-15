@@ -3,7 +3,7 @@
   "home_subtitle_1": "Recent 3D Models",
   "home_subtitle_2": "Statistics",
   "title": "Your 3D Models",
-  "uploaded_on": "Uploaded on: ",
+  "on": "on: ",
   "edit": "Edit",
   "delete": "Delete",
   "confirmation": "Are you sure you want to delete this 3D Model?",
@@ -13,5 +13,6 @@
   "hint": "(you can edit the name, description, category and price)",
   "created_by": "Created by: ",
   "created_on": "Created on: ",
-  "save_changes": "Save changes"
+  "save_changes": "Save changes",
+  "update_position": "Update Position"
 }

@@ -5,7 +5,7 @@ import objectToUrl from '@/utils/object-to-url';
 import { GetCads } from '@/requests/private/cads';
 import SearchBar from '@/components/searchbar';
 import Pagination from '@/components/pagination';
-import UserCadItem from './components/cads-item';
+import UserCadItem from '@/components/cads/item';
 
 function UserCads() {
     const { t } = useTranslation();
@@ -29,7 +29,7 @@ function UserCads() {
                 {!cads.length
                     ? <p className="text-lg text-indigo-900 text-center font-bold">{t('private.cads.no_cads')}</p>
                     : <ul className="basis-full grid grid-cols-3 gap-12">
-                        {cads.map(cad => <UserCadItem key={cad.id} item={cad} />)}
+                        {cads.map(cad => <UserCadItem key={cad.id} item={cad} on />)}
                     </ul>}
             </section>
             <div className="basis-full" hidden={!cads.length}>

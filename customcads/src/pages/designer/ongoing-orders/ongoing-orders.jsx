@@ -6,6 +6,7 @@ import objectToUrl from '@/utils/object-to-url';
 import { GetOrdersByStatus } from '@/requests/private/designer';
 import SearchBar from '@/components/searchbar';
 import Pagination from '@/components/pagination';
+import Tab from '@/components/tab';
 import PendingOrder from './components/pending-order';
 import BegunOrder from './components/begun-order';
 import FinishedOrder from './components/finished-order';
@@ -40,21 +41,9 @@ function OngoingOrders() {
             <div className="basis-full flex flex-col">
                 <h2 className="px-4 basis-full text-3xl text-indigo-950">
                     <div className="flex justify-between items-center rounded-t-xl border-t-4 border-x-4 border-b border-indigo-600 overflow-hidden bg-indigo-500 text-center font-bold">
-                        <Link to="/designer/orders/pending"
-                            className={`basis-1/3 bg-indigo-300 py-4 hover:no-underline ${status === 'Pending' ? 'font-extrabold bg-indigo-500 text-indigo-50' : ''}`}
-                        >
-                            {t('private.designer.pending_title')}
-                        </Link>
-                        <Link to="/designer/orders/begun"
-                            className={`basis-1/3 bg-indigo-300 py-4 border-x-2 border-indigo-600 hover:no-underline ${status === 'Begun' ? 'font-extrabold bg-indigo-500 text-indigo-50' : ''}`}
-                        >
-                            {t('private.designer.begun_title')}
-                        </Link>
-                        <Link to="/designer/orders/finished"
-                            className={`basis-1/3 bg-indigo-300 py-4 hover:no-underline ${status === 'Finished' ? 'font-extrabold bg-indigo-500 text-indigo-50' : ''}`}
-                        >
-                            {t('private.designer.finished_title')}
-                        </Link>
+                        <Tab position="start" to="/designer/orders/pending" text={t('private.designer.pending_title')} isActive={status === 'Pending'} />
+                        <Tab position="middle" to="/designer/orders/begun" text={t('private.designer.begun_title')} isActive={status === 'Begun'} />
+                        <Tab position="end" to="/designer/orders/finished" text={t('private.designer.finished_title')} isActive={status === 'Finished'} />
                     </div>
                 </h2>
                 <SearchBar setSearch={setSearch} />

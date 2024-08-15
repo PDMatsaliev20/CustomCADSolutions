@@ -5,7 +5,7 @@ import objectToUrl from '@/utils/object-to-url';
 import { Gallery } from '@/requests/public/home';
 import SearchBar from '@/components/searchbar';
 import Pagination from '@/components/pagination';
-import GalleryItem from './components/gallery-item';
+import GalleryItem from '@/components/cads/item';
 
 function GalleryPage() {
     const { t } = useTranslation();
@@ -28,7 +28,7 @@ function GalleryPage() {
                     {!cads.length
                         ? <p className="text-lg text-indigo-900 text-center font-bold">{t('public.gallery.no_cads')}</p>
                         : <ul className="grid grid-cols-3 gap-y-12 gap-x-10">
-                            {cads.map(cad => <GalleryItem key={cad.id} item={cad} />)}
+                            {cads.map(cad => <GalleryItem key={cad.id} item={cad} by />)}
                         </ul>}
                 </section>
                 <div className="basis-full" hidden={!cads.length}>

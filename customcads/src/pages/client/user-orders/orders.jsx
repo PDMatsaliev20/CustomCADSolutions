@@ -7,6 +7,7 @@ import { GetOrders, DeleteOrder } from '@/requests/private/orders';
 import SearchBar from '@/components/searchbar';
 import Pagination from '@/components/pagination';
 import ErrorPage from '@/components/error-page';
+import Tab from '@/components/tab';
 import PendingOrder from './components/pending-order';
 import BegunOrder from './components/begun-order';
 import FinishedOrder from './components/finished-order';
@@ -51,24 +52,12 @@ function UserOrders() {
 
     return (
         <div className="flex flex-wrap justify-center gap-y-8 mt-4 mb-8">
-            <div className="basis-full flex flex-col gap-y-[0.4px]"> 
+            <div className="basis-full flex flex-col"> 
                 <h2 className="px-4 text-2xl text-indigo-950">
-                    <div className="flex justify-between items-center rounded-t-xl border-4 border-indigo-700 overflow-hidden bg-indigo-500 text-center font-bold">
-                        <Link to="/client/orders/pending"
-                            className={`basis-1/3 bg-indigo-300 py-4 hover:no-underline ${isPending ? 'font-extrabold bg-indigo-500 text-indigo-50' : ''}`}
-                        >
-                            {t('private.orders.pending_title')}
-                        </Link>
-                        <Link to="/client/orders/begun"
-                            className={`basis-1/3 bg-indigo-300 py-4 border-x-2 border-indigo-700 hover:no-underline ${isBegun ? 'font-extrabold bg-indigo-500 text-indigo-50' : ''}`}
-                        >
-                            {t('private.orders.begun_title')}
-                        </Link>
-                        <Link to="/client/orders/finished"
-                            className={`basis-1/3 bg-indigo-300 py-4 hover:no-underline ${isFinished ? 'font-extrabold bg-indigo-500 text-indigo-50' : ''}`}
-                        >
-                            {t('private.orders.finished_title')}
-                        </Link>
+                    <div className="flex justify-between items-center rounded-t-xl border-4 border-b border-indigo-700 overflow-hidden bg-indigo-500 text-center font-bold">
+                        <Tab to="/client/orders/pending" position='start' text={t('private.orders.pending_title')} isActive={isPending} />
+                        <Tab to="/client/orders/begun" position='middle' text={t('private.orders.begun_title')} isActive={isBegun} />
+                        <Tab to="/client/orders/finished" position='end' text={t('private.orders.finished_title')} isActive={isFinished} />
                     </div>
                 </h2>
                 <SearchBar setSearch={setSearch} />

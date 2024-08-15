@@ -45,7 +45,7 @@ function RegisterPage() {
             <h1 className="text-4xl text-center text-indigo-950 font-bold">
                 {t('public.register.register_title')} {role.toLowerCase() == 'client' ? t('common.roles.Client') : t('common.roles.Contributor')}
             </h1>
-            <div className="w-7/12 pt-8 pb-2 px-12 mt-8 bg-indigo-400 rounded-md">
+            <div className="w-7/12 pt-8 pb-2 px-12 mt-8 bg-indigo-400 rounded-md border-2 border-indigo-600 shadow-md shadow-indigo-500">
                 <form onSubmit={(e) => handleSubmit(e, handleSubmitCallback)} autoComplete="off" noValidate>
                     <div className="mb-2 flex flex-col gap-y-4">
                         <Input

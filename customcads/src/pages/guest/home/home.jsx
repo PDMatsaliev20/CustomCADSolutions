@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import Cad from '@/components/cad';
+import Cad from '@/components/cads/cad';
 import BtnLink from './components/btn-link';
 
 function HomePage() {
@@ -19,7 +19,7 @@ function HomePage() {
                         <BtnLink to="/register/contributor" text={t('public.home.sell_btn')} />
                     </div>
                 </article>
-                <aside className="grow h-96 rounded-3xl overflow-hidden bg-indigo-100 border-2 border-indigo-500 shadow-md shadow-indigo-700 hover:bg-indigo-200 active:bg-indigo-300">
+                <aside className="grow h-96">
                     <Cad isHomeCad />
                 </aside>
             </section>

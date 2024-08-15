@@ -17,7 +17,7 @@ function ChooseRole() {
     const handleContributor = () => setRole('contributor');
 
     return (
-            <section className="my-8 mx-auto w-7/12 pt-16 pb-12 bg-indigo-200 border-2 border-indigo-500 rounded-2xl shadow-xl shadow-indigo-300">
+            <section className="my-8 mx-auto w-7/12 pt-16 pb-12 bg-indigo-200 border-2 border-indigo-400 rounded-2xl shadow-xl shadow-indigo-300">
                 <h2 className="font-bold text-4xl text-center">{t('public.register.choose-role_title')}</h2>
                 <div className="mt-10 flex justify-center">
                     <form onSubmit={handleSubmit} >

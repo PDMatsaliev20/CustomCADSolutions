@@ -42,10 +42,10 @@ function CustomOrder() {
         </option>;
 
     return (
-        <div className="flex flex-col gap-y-8 mt-4">
+        <div className="flex flex-col gap-y-8 mt-2">
             <h1 className="text-4xl text-center text-indigo-950 font-bold">{t('private.orders.custom-order_title')}</h1>
             <form onSubmit={(e) => handleSubmit(e, handleSubmitCallback)} autoComplete="off" noValidate>
-                <div className="w-7/12 mx-auto flex flex-wrap items-start gap-x-4 gap-y-4 bg-indigo-700 py-8 px-10 rounded-xl">
+                <div className="w-7/12 mx-auto flex flex-wrap items-start gap-x-4 gap-y-4 bg-indigo-700 py-8 px-10 rounded-xl border-4 border-indigo-500 shadow-lg shadow-indigo-700">
                     <div className="basis-1/2 flex flex-wrap">
                         <Input
                             id="name"
@@ -55,7 +55,7 @@ function CustomOrder() {
                             onInput={handleInput}
                             onBlur={handleBlur}
                             placeholder={t('common.placeholders.order_name')}
-                            className="inline-block w-full min-h-10 rounded bg-indigo-50 text-indigo-900 focus:outline-none p-2"
+                            className="inline-block w-full min-h-10 px-3 rounded bg-indigo-50 text-indigo-900 border-2 focus:outline-none focus:border-indigo-300"
                             touched={touched.name}
                             error={errors.name}
                             isRequired
@@ -72,7 +72,7 @@ function CustomOrder() {
                             items={categories}
                             defaultOption={t('common.categories.None')}
                             onMap={categoryMap}
-                            className="inline-block w-full min-h-10 rounded bg-indigo-50 text-indigo-900 focus:outline-none p-2"
+                            className="inline-block w-full min-h-10 rounded bg-indigo-50 text-indigo-900 p-2 border-2 focus:outline-none focus:border-indigo-300"
                             touched={touched.categoryId}
                             error={errors.categoryId}
                             isRequired
@@ -87,7 +87,7 @@ function CustomOrder() {
                             value={order.description}
                             onInput={handleInput}
                             onBlur={handleBlur}
-                            className="w-full rounded bg-indigo-50 text-indigo-900 focus:outline-none p-2"
+                            className="w-full rounded bg-indigo-50 text-indigo-900 p-2 border-2 focus:outline-none focus:border-indigo-300"
                             placeholder={t('common.placeholders.order_description')}
                             rows={3}
                             touched={touched.description}
@@ -107,11 +107,11 @@ function CustomOrder() {
                             {t('common.labels.delivery')}
                         </label>
                     </div>
-                    <div className="basis-full flex justify-center">
-                        <button className="bg-indigo-200 text-indigo-800 rounded py-2 px-8">
-                            {t('private.orders.order')}
-                        </button>
-                    </div>
+                </div>
+                <div className="mt-6 basis-full flex justify-center">
+                    <button className="bg-indigo-200 text-indigo-800 rounded py-2 px-8 border-2 border-indigo-500">
+                        {t('private.orders.order')}
+                    </button>
                 </div>
             </form>
         </div>

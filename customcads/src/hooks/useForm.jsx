@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 const useForm = (initialState, useValidation) => {
-    const { t } = useTranslation();
+    const { t, i18n: { language } } = useTranslation();
     const [values, setValues] = useState(initialState);
     const [touched, setTouched] = useState({});
     const [errors, setErrors] = useState({});
@@ -10,7 +10,7 @@ const useForm = (initialState, useValidation) => {
 
     useEffect(() => {
         setErrors(validated);
-    }, [values, validated]);
+    }, [values, language]);
 
     const handleInput = (e) => {
         const { name, value } = e.target;

@@ -5,7 +5,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GetHomeCad } from '@/requests/public/home';
 import Spinner from '@/components/spinner';
 
-function Cad({ cad, isHomeCad }) {
+function ThreeJS({ cad, isHomeCad }) {
     const mountRef = useRef(null);
     const isTouchedRef = useRef(false);
     const [model, setModel] = useState({});
@@ -153,4 +153,4 @@ function Cad({ cad, isHomeCad }) {
     }
 }
 
-export default Cad;
+export default ThreeJS;

@@ -20,7 +20,7 @@
         "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy"
       }
     },
-    "CustomCADs (SPA)": {
+    "CustomCADs (API + SPA)": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,

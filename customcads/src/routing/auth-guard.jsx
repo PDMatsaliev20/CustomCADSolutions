@@ -8,8 +8,10 @@ function AuthGuard({ auth, role }) {
     const [response, setResponse] = useState(<Outlet />);
     
     useEffect(() => {
-        if (auth === 'guest' && isAuthenticated && userRole) {
-            setResponse(<Navigate to={`/${userRole.toLowerCase()}`} />);
+        if (auth === 'guest' && isAuthenticated) {
+            if (userRole) {
+                setResponse(<Navigate to={`/${userRole.toLowerCase()}`} />);
+            }
         } else if (auth === 'private') {
             if (!isAuthenticated) {
                 setResponse(<ErrorPage status={401} />);
@@ -23,7 +25,7 @@ function AuthGuard({ auth, role }) {
         } else {
             setResponse(<Outlet />);
         }
-    }, [auth, role, isAuthenticated, userRole]);
+    }, [auth, role]);
 
     return response;
 }

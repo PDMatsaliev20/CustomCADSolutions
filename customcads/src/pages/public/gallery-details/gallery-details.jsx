@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { useLoaderData, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import AuthContext from '@/contexts/auth-context';
-import Cad from '@/components/cad';
+import ThreeJS from '@/components/cads/three';
 
 function GalleryDetailsPage() {
     const { t } = useTranslation();
@@ -22,7 +22,7 @@ function GalleryDetailsPage() {
         <div className="flex bg-indigo-300 rounded-md overflow-hidden border-2 border-indigo-600 shadow-lg shadow-indigo-400">
             <div className="flex justify-center items-center px-8">
                 <div className="bg-indigo-200 w-96 h-96 rounded-xl">
-                    <Cad cad={loadedCad} />
+                    <ThreeJS cad={loadedCad} />
                 </div>
             </div>
             <div className="grow bg-indigo-500 text-indigo-50 flex flex-col">
