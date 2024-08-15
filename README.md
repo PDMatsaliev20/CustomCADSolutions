@@ -107,5 +107,3 @@ I'm developing it by myself, but I have a **partner** (also friend and classmate
 ## Contacts
 For questions, feedback or interests, feel free to can contact me at:
 - **GMAIL**: [ivanangelov414@gmail.com](mailto:ivanangelov414@gmail.com)
-- **PHONE NUM**: +359440400
-- **INSTAGRAM**: [@ivan_ivchos_angelov](https://www.instagram.com/ivan_ivchos_angelov/)
