@@ -24,7 +24,7 @@ function Header() {
                 </li>
                 <li className="basis-1/3 flex justify-center">
                     <Link to="/about" className="w-80">
-                        <img src="/src/assets/logo.png" className="w-full h-auto hover:opacity-60 active:opacity-80" />
+                        <img src="/logo.png" className="w-full h-auto hover:opacity-60 active:opacity-80" />
                     </Link>
                 </li>
                 <li className="basis-1/3 flex justify-end items-center gap-x-4">

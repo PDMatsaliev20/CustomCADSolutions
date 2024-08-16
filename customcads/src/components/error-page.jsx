@@ -11,29 +11,29 @@ function ErrorPage({ status }) {
     switch (status) {
         case 400:
             text = t("common.http.400");
-            src = "/src/assets/errors/az.png";
+            src = "/errors/az.png";
             break;
 
         case 401:
             text = t("common.http.401");
-            src = "/src/assets/errors/doggo.png";
+            src = "/errors/doggo.png";
             link = <Link to="/login">{t('common.http.authenticate')}</Link>;
             break;
 
         case 403:
             text = t("common.http.403");
-            src = "/src/assets/errors/nikola.png";
+            src = "/errors/nikola.png";
             link = <Link to={`/info/${userRole.toLowerCase()}`}>{t('common.http.authorize')}</Link>;
             break;
 
         case 404:
             text = t("common.http.404");
-            src = "/src/assets/errors/mickey.png";
+            src = "/errors/mickey.png";
             break;
 
         default:
             text = t('common.http.general');
-            src = "/src/assets/errors/cowabunga.png";
+            src = "/errors/cowabunga.png";
             break;
     }
 

@@ -6,7 +6,7 @@ function AboutUsPage() {
     const { t } = useTranslation();
 
     const ivcho = {
-        img: '/src/assets/engineer.jpg',
+        img: '/about/engineer.jpg',
         name: t('public.about.web-dev_name'),
         role: t('public.about.web-dev_role'),
         desc: t('public.about.web-dev_info'),
@@ -14,7 +14,7 @@ function AboutUsPage() {
     };
 
     const borko = {
-        img: '/src/assets/designer.jpg',
+        img: '/about/designer.jpg',
         name: t('public.about.3D-designer_name'),
         role: t('public.about.3D-designer_role'),
         desc: t('public.about.3D-designer_info'),
