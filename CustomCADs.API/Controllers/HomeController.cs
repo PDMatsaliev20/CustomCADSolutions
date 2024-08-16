@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using CustomCADs.API.Helpers;
-using CustomCADs.API.Mappings;
 using CustomCADs.API.Models.Cads;
 using CustomCADs.API.Models.Others;
 using CustomCADs.API.Models.Queries;

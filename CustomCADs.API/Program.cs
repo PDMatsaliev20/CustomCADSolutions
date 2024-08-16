@@ -34,6 +34,9 @@ app.UseAuthentication();
 app.UseAuthorization();
 await app.Services.UseRolesAsync(roles).ConfigureAwait(false);
 
+string[] categories = ["Animals", "Characters", "Electronics", "Fashion", "Furniture", "Nature", "Science", "Sports", "Toys", "Vehicles", "Others"];
+await app.Services.UseCategoriesAsync(categories).ConfigureAwait(false);
+
 Dictionary<string, string> users = new()
 {
     [Admin] = "NinjataBG",

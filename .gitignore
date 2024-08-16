@@ -401,3 +401,7 @@ FodyWeavers.xsd
 **/wwwroot/files/cads
 **/wwwroot/files/orders
 **/wwwroot/files/images
+
+# Production
+appsettings.Production.json
+.env.production

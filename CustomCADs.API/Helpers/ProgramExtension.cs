@@ -1,5 +1,6 @@
 ﻿using CustomCADs.Core.Contracts;
 using CustomCADs.Core.Mappings;
+using CustomCADs.Core.Models;
 using CustomCADs.Core.Services;
 using CustomCADs.Domain;
 using CustomCADs.Domain.Entities.Identity;
@@ -20,7 +21,7 @@ namespace Microsoft.Extensions.DependencyInjection
         public static void AddCadContext(this IServiceCollection services, IConfiguration config)
         {
             string connectionString = config.GetConnectionString("RealConnection")
-                ?? throw new KeyNotFoundException("Could not find connection string 'RealConnection'.");
+                    ?? throw new KeyNotFoundException("Could not find connection string 'RealConnection'.");
             services.AddDbContext<CadContext>(options => options.UseSqlServer(connectionString));
             services.AddScoped<IRepository, Repository>();
         }
@@ -148,6 +149,20 @@ namespace Microsoft.Extensions.DependencyInjection
                 }
             }
         }
+        
+        public static async Task UseCategoriesAsync(this IServiceProvider service, string[] categories)
+        {
+            using IServiceScope scope = service.CreateScope();
+            var categoryService = scope.ServiceProvider.GetRequiredService<ICategoryService>();
+            foreach (string category in categories)
+            {
+                IEnumerable<CategoryModel> existingCategoreis = await categoryService.GetAllAsync().ConfigureAwait(false);
+                if (!existingCategoreis.Select(c => c.Name).Contains(category))
+                {
+                    await categoryService.CreateAsync(new CategoryModel() { Name = category });
+                }
+            }
+        }
 
         public static async Task UseAppUsers(this IServiceProvider service, IConfiguration config, Dictionary<string, string> users)
         {
@@ -160,10 +175,11 @@ namespace Microsoft.Extensions.DependencyInjection
                 string role = user.Key;
                 string username = user.Value;
                 string email = $"user{i++}@mail.com";
-                string password = config[$"Passwords:{role}"]
-                    ?? throw new KeyNotFoundException($"No password found for {role}");
-
-                await userManager.AddUserAsync(username, email, password, role);
+                string? password = config[$"Passwords:{role}"];
+                if (password != null)
+                {
+                    await userManager.AddUserAsync(username, email, password, role);
+                }
             }
         }
 
