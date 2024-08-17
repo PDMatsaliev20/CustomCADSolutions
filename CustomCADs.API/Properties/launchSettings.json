@@ -11,7 +11,7 @@
       "dotnetRunMessages": true,
       "applicationUrl": "http://localhost:5034"
     },
-    "Dev CustomCADs (API + SPA)": {
+    "Development (API + SPA)": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",
@@ -22,7 +22,7 @@
       "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:7127;http://localhost:5034"
     },
-    "Dev CustomCADs (API)": {
+    "Development (API)": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",
@@ -32,10 +32,8 @@
       "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:7127;http://localhost:5034"
     },
-    "Prod CustomCADs (API + SPA)": {
+    "Production (API + SPA)": {
       "commandName": "Project",
-      "launchBrowser": true,
-      "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Production",
         "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy"
@@ -43,10 +41,8 @@
       "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:7127;http://localhost:5034"
     },
-    "Prod CustomCADs (API)": {
+    "Production (API)": {
       "commandName": "Project",
-      "launchBrowser": true,
-      "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Production"
       },

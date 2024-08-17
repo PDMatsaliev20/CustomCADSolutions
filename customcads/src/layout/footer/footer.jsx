@@ -20,7 +20,7 @@ function Footer() {
                 <section className="italic flex gap-x-3">
                     <span>{t('footer.element_3')}</span>
                     <div className="inline-flex gap-x-2">
-                        <SocialMedia link="https://www.instagram.com/customcadsolutions" icon={faInstagram} />
+                        <SocialMedia link="https://www.instagram.com/custom_cads" icon={faInstagram} />
                         <SocialMedia link="https://twitter.com/customcads/" icon={faTwitter} />
                         <SocialMedia link="#" icon={faFacebook} />
                         <SocialMedia link="https://github.com/NinjataWRLD/CustomCADSolutions/" icon={faGithub} />

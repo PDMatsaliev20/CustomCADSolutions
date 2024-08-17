@@ -192,7 +192,7 @@ function PrivacyPolicyPage() {
                                 <p>By email: <a href="/cdn-cgi/l/email-protection" className="__cf_email__" data-cfemail="32514741465d5f515356415d5e47465b5d5c4172555f535b5e1c515d5f">[email&#160;protected]</a></p>
                             </li>
                             <li>
-                                <p>By visiting this page on our website: <a href="https://www.customcads.com/about" rel="external nofollow noopener" target="_blank">https://www.customcads.com/about</a></p>
+                                <p>By visiting this page on our website: <a href="https://customcads.onrender.com/about" rel="external nofollow noopener" target="_blank">https://customcads.onrender.com/about</a></p>
                             </li>
                         </ul>
                     </div>

@@ -21,6 +21,8 @@ WebApplication app = builder.Build();
 app.UseDefaultFiles();
 app.UseStaticFilesAndCads();
 
+await app.Services.UseCategoriesAsync().ConfigureAwait(false);
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -34,17 +36,17 @@ app.UseAuthentication();
 app.UseAuthorization();
 await app.Services.UseRolesAsync(roles).ConfigureAwait(false);
 
-string[] categories = ["Animals", "Characters", "Electronics", "Fashion", "Furniture", "Nature", "Science", "Sports", "Toys", "Vehicles", "Others"];
-await app.Services.UseCategoriesAsync(categories).ConfigureAwait(false);
-
-Dictionary<string, string> users = new()
+if (app.Environment.IsDevelopment())
 {
-    [Admin] = "NinjataBG",
-    [Designer] = "Designer",
-    [Contributor] = "Contributor",
-    [Client] = "Client",
-};
-await app.Services.UseAppUsers(app.Configuration, users).ConfigureAwait(false);
+    await app.Services.UseAppUsers(app.Configuration, new()
+    {
+        [Admin] = "NinjataBG",
+        [Designer] = "Designer",
+        [Contributor] = "Contributor",
+        [Client] = "Client",
+    }).ConfigureAwait(false);
+}
 
 app.MapControllers();
+app.MapFallbackToFile("index.html");
 await app.RunAsync().ConfigureAwait(false);

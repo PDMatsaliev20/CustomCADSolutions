@@ -1,43 +1,43 @@
 import axios from '../axios';
 
 const GetOrders = async (status, searchParams) => {
-    return await axios.get(`API/Orders?status=${status}&${searchParams}`);
+    return await axios.get(`/API/Orders?status=${status}&${searchParams}`);
 }
 
 const GetRecentOrders = async () => {
-    return await axios.get(`API/Orders/Recent`);
+    return await axios.get(`/API/Orders/Recent`);
 }
 
 const GetOrdersCounts = async () => {
-    return await axios.get(`API/Orders/Counts`);
+    return await axios.get(`/API/Orders/Counts`);
 }
 
 const GetOrder = async (id) => {
-    return await axios.get(`API/Orders/${id}`);
+    return await axios.get(`/API/Orders/${id}`);
 }
 
 const DownloadOrderCad = async (id) => {
-    return await axios.get(`API/Orders/DownloadCad/${id}`, { responseType: 'arraybuffer' });
+    return await axios.get(`/API/Orders/DownloadCad/${id}`, { responseType: 'arraybuffer' });
 }
 
 const PostOrder = async (order) => {
-    return await axios.post('API/Orders', order, { headers: { 'Content-Type': 'multipart/form-data' } });
+    return await axios.post('/API/Orders', order, { headers: { 'Content-Type': 'multipart/form-data' } });
 }
 
 const OrderExisting = async (id, order) => {
-    return await axios.post(`API/Orders/${id}`, order);
+    return await axios.post(`/API/Orders/${id}`, order);
 }
 
 const PutOrder = async (id, order) => {
-    return await axios.put(`API/Orders/${id}`, order, { headers: { 'Content-Type': 'multipart/form-data' } });
+    return await axios.put(`/API/Orders/${id}`, order, { headers: { 'Content-Type': 'multipart/form-data' } });
 }
 
 const PatchOrder = async (id, operations) => {
-    return await axios.patch(`API/Orders/${id}`, operations);
+    return await axios.patch(`/API/Orders/${id}`, operations);
 }
 
 const DeleteOrder = async (id) => {
-    return await axios.delete(`API/Orders/${id}`);
+    return await axios.delete(`/API/Orders/${id}`);
 }
 
 export { GetOrders, GetRecentOrders, GetOrdersCounts, GetOrder, DownloadOrderCad, PostOrder, OrderExisting, PutOrder, PatchOrder, DeleteOrder };

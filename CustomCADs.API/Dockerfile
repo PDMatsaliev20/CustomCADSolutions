@@ -54,4 +54,9 @@ RUN dotnet publish "./CustomCADs.API.csproj" -c $BUILD_CONFIGURATION -o /app/pub
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+
+USER root
+RUN mkdir -p /app/wwwroot/files && chmod -R 777 /app/wwwroot/files
+USER app
+
 ENTRYPOINT ["dotnet", "CustomCADs.API.dll"]

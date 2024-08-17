@@ -1,4 +1,8 @@
+import { useTranslation } from 'react-i18next';
+
 function Profile({ person: { img, name, role, desc, contact } }) {
+    const { t } = useTranslation();
+
     return (
         <article className="flex flex-wrap gap-x-3 p-2 w-full bg-indigo-200 border border-indigo-500 rounded-sm">
             <div className="h-40 asis-1/6">
@@ -12,7 +16,8 @@ function Profile({ person: { img, name, role, desc, contact } }) {
                     </summary>
                     <p>{desc}</p>
                 </details>
-                <p className="underline underline-offset-4">Preferred Personal Contact:
+                <p className="underline underline-offset-4">
+                    {t('public.about.preferred')}
                     <span className="font-bold"> {contact}</span>
                 </p>
             </div>

@@ -32,7 +32,7 @@ function RegisterPage() {
 
     const handleSubmitCallback = async () => {
         try {
-            await Register(user, isClient ? 'Client' : 'Contributor');
+            await Register(isClient ? 'Client' : 'Contributor', user);
             setIsAuthenticated(true);
             navigate(`/${getCookie('role').toLowerCase()}`);
         } catch (e) {

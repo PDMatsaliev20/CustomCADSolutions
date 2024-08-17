@@ -33,7 +33,9 @@ function ClientHome() {
                                 </div>
                             </div>
                         </li>
-                        {recentOrders.map(order => <li key={order.id}><RecentItem item={{ ...order, date: order.orderDate}} /></li>)}
+                        {recentOrders.map(order => <li key={order.id}>
+                            <RecentItem to={`/client/orders/${order.id}`} item={{ ...order, date: order.orderDate }} />
+                        </li>)}
                     </ol>
                 </div>
                 <div className="min-h-full basis-1/4 flex flex-col gap-y-4">

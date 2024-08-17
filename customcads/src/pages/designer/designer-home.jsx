@@ -32,7 +32,9 @@ function DesignerHome() {
                                 </div>
                             </div>
                         </li>
-                        {recentCads.map(cad => <li key={cad.id}><RecentItem item={{ ...cad, category: cad.category.name, date: cad.creationDate }} /></li>)}
+                        {recentCads.map(cad => <li key={cad.id}>
+                            <RecentItem to={`/contributor/cads/${cad.id}`} item={{ ...cad, category: cad.category.name, date: cad.creationDate }} />
+                        </li>)}
                     </ol>
                 </div>
                 <div className="min-h-full basis-1/3 grow flex flex-col gap-y-4">
@@ -52,7 +54,9 @@ function DesignerHome() {
                                 </div>
                             </div>
                         </li>
-                        {recentOrders.map(order => <li key={order.id}><RecentItem item={{ ...order, date: order.orderDate }} /></li>)}
+                        {recentOrders.map(order => <li key={order.id}>
+                            <RecentItem to={`/client/orders/${order.id}`} item={{ ...order, date: order.orderDate }} />
+                        </li>)}
                     </ol>
                 </div>
             </div>
