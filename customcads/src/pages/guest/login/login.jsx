@@ -1,15 +1,14 @@
-import { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '@/contexts/auth-context';
 import useForm from '@/hooks/useForm';
-import AuthContext from '@/contexts/auth-context';
 import { Login } from '@/requests/public/identity';
 import Input from '@/components/fields/input';
 import { getCookie } from '@/utils/cookie-manager';
 import useValidateLogin from './login.validate';
 
 function LoginPage() {
-    const { setIsAuthenticated } = useContext(AuthContext);
+    const { setIsAuthenticated } = useAuth();
     const navigate = useNavigate();
     const { t } = useTranslation();
 

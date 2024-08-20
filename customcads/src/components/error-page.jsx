@@ -1,10 +1,9 @@
-import AuthContext from '@/contexts/auth-context';
-import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '@/contexts/auth-context';
 
 function ErrorPage({ status }) {
-    const { userRole } = useContext(AuthContext);
+    const { userRole } = useAuth();
     const { t } = useTranslation();
 
     let text, src, link;

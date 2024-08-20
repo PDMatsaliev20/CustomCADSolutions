@@ -1,12 +1,11 @@
-import { useContext } from 'react';
 import { useLoaderData, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import AuthContext from '@/contexts/auth-context';
+import { useAuth } from '@/contexts/auth-context';
 import ThreeJS from '@/components/cads/three';
 
 function GalleryDetailsPage() {
     const { t } = useTranslation();
-    const { userRole } = useContext(AuthContext);
+    const { userRole } = useAuth();
     const { loadedCad } = useLoaderData();
     const navigate = useNavigate();
     

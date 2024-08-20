@@ -1,7 +1,6 @@
-﻿import { useContext } from 'react';
-import { Link } from 'react-router-dom';
+﻿import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import AuthContext from '@/contexts/auth-context';
+import { useAuth } from '@/contexts/auth-context';
 import HeaderBtn from './components/header-btn';
 import LoginBtn from './components/login-btn';
 import AccountBtn from './components/account-btn';
@@ -9,7 +8,7 @@ import LanguageBtn from './components/language-btn';
 
 function Header() {
     const { t } = useTranslation();
-    const { isAuthenticated, userRole } = useContext(AuthContext);
+    const { isAuthenticated, userRole } = useAuth();
     
     return (
         <header className="bg-indigo-200 border-b border-indigo-700 rounded-b-lg py-4">

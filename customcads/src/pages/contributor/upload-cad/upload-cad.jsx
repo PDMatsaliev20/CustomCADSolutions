@@ -1,7 +1,7 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import AuthContext from '@/contexts/auth-context';
+import { useAuth } from '@/contexts/auth-context';
 import useForm from '@/hooks/useForm';
 import { GetCategories } from '@/requests/public/home';
 import { PostCad } from '@/requests/private/cads';
@@ -17,7 +17,7 @@ function UploadCad() {
     const { t } = useTranslation();
     const { id } = useParams();
     const navigate = useNavigate();
-    const { userRole } = useContext(AuthContext);
+    const { userRole } = useAuth();
     const [categories, setCategories] = useState([]);
 
     const {

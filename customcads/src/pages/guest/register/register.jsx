@@ -1,8 +1,7 @@
-import { useContext } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '@/contexts/auth-context';
 import useForm from '@/hooks/useForm';
-import AuthContext from '@/contexts/auth-context';
 import { Register } from '@/requests/public/identity';
 import ErrorPage from '@/components/error-page';
 import Input from '@/components/fields/input';
@@ -10,7 +9,7 @@ import { getCookie } from '@/utils/cookie-manager';
 import useValidateRegister from './register.validate';
 
 function RegisterPage() {
-    const { setIsAuthenticated } = useContext(AuthContext);
+    const { setIsAuthenticated } = useAuth();
     const navigate = useNavigate();
     const { t } = useTranslation();
     const { role } = useParams();

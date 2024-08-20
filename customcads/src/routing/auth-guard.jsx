@@ -1,10 +1,10 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import { Outlet, Navigate } from 'react-router-dom';
-import AuthContext from '@/contexts/auth-context';
+import { useAuth } from '@/contexts/auth-context';
 import ErrorPage from '@/components/error-page';
 
 function AuthGuard({ auth, role }) {
-    const { isAuthenticated, userRole } = useContext(AuthContext);
+    const { isAuthenticated, userRole } = useAuth();
     const [response, setResponse] = useState(<Outlet />);
     
     useEffect(() => {        
