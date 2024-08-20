@@ -34,7 +34,12 @@ function ClientHome() {
                             </div>
                         </li>
                         {recentOrders.map(order => <li key={order.id}>
-                            <RecentItem to={`/client/orders/${order.id}`} item={{ ...order, date: order.orderDate }} />
+                            <RecentItem
+                                to={order.status.toLowerCase() === 'pending'
+                                    ? `/client/orders/pending/${order.id}`
+                                    : `/client/orders/${order.status.toLowerCase()}`}
+                                item={{ ...order, date: order.orderDate }}
+                            />
                         </li>)}
                     </ol>
                 </div>

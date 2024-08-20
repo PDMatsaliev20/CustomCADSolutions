@@ -1,3 +1,4 @@
+import { Navigate } from 'react-router-dom';
 import AuthGuard from '@/routing/auth-guard';
 import { GetCategories } from '@/requests/public/home';
 import { GetCad, GetRecentCads } from '@/requests/private/cads';
@@ -16,6 +17,10 @@ export default {
     children: [
         {
             path: '',
+            element: <Navigate to="home" />
+        },
+        {
+            path: 'home',
             element: <DesignerHomePage />,
             loader: async () => {
                 const { data: { cads } } = await GetRecentCads();
@@ -36,7 +41,7 @@ export default {
                 try {
                     const categoriesRes = await GetCategories();
                     const cadRes = await GetCad(id);
-                    
+
                     return { id, loadedCategories: categoriesRes.data, loadedCad: cadRes.data };
                 } catch (e) {
                     console.error(e);

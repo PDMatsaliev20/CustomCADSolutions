@@ -1,3 +1,4 @@
+import { Navigate } from 'react-router-dom';
 import AuthGuard from '@/routing/auth-guard';
 import { GetCategories } from '@/requests/public/home';
 import { GetRecentOrders, GetOrder, GetOrdersCounts } from '@/requests/private/orders';
@@ -14,6 +15,10 @@ export default {
     children: [
         {
             path: '',
+            element: <Navigate to="home" />
+        },
+        {
+            path: 'home',
             element: <ClientHomePage />,
             loader: async () => {
                 const { data: { orders } } = await GetRecentOrders();

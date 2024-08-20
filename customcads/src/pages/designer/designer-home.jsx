@@ -33,7 +33,7 @@ function DesignerHome() {
                             </div>
                         </li>
                         {recentCads.map(cad => <li key={cad.id}>
-                            <RecentItem to={`/contributor/cads/${cad.id}`} item={{ ...cad, category: cad.category.name, date: cad.creationDate }} />
+                            <RecentItem to={`/designer/cads/${cad.id}`} item={{ ...cad, category: cad.category.name, date: cad.creationDate }} />
                         </li>)}
                     </ol>
                 </div>
@@ -55,7 +55,7 @@ function DesignerHome() {
                             </div>
                         </li>
                         {recentOrders.map(order => <li key={order.id}>
-                            <RecentItem to={`/client/orders/${order.id}`} item={{ ...order, date: order.orderDate }} />
+                            <RecentItem to={`/designer/cads/${order.cadId}`} item={{ ...order, date: order.orderDate }} />
                         </li>)}
                     </ol>
                 </div>

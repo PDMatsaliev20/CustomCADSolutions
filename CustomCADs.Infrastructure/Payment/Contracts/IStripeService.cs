@@ -1,5 +1,4 @@
 ﻿using CustomCADs.Infrastructure.Payment.DTOs;
-using Stripe;
 
 namespace CustomCADs.Infrastructure.Payment.Contracts
 {

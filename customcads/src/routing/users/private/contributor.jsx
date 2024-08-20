@@ -1,3 +1,4 @@
+import { Navigate } from 'react-router-dom';
 import AuthGuard from '@/routing/auth-guard';
 import { GetCategories } from '@/requests/public/home';
 import { GetRecentCads, GetCad, GetCadsCounts } from '@/requests/private/cads';
@@ -12,6 +13,10 @@ export default {
     children: [
         {
             path: '',
+            element: <Navigate to="home" />
+        },
+        {
+            path: 'home',
             element: <ContributorHomePage />,
             loader: async () => {
                 const { data: { cads } } = await GetRecentCads();

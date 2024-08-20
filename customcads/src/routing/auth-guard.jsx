@@ -7,10 +7,10 @@ function AuthGuard({ auth, role }) {
     const { isAuthenticated, userRole } = useContext(AuthContext);
     const [response, setResponse] = useState(<Outlet />);
     
-    useEffect(() => {
+    useEffect(() => {        
         if (auth === 'guest' && isAuthenticated) {
             if (userRole) {
-                setResponse(<Navigate to={`/${userRole.toLowerCase()}`} />);
+                setResponse(<Navigate to={`/${userRole.toLowerCase()}/home`} />);
             }
         } else if (auth === 'private') {
             if (!isAuthenticated) {

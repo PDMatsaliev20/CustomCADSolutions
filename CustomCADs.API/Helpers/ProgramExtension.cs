@@ -155,9 +155,9 @@ namespace Microsoft.Extensions.DependencyInjection
             using IServiceScope scope = service.CreateScope();
             var categoryService = scope.ServiceProvider.GetRequiredService<ICategoryService>();
 
+            IEnumerable<CategoryModel> existingCategoreis = await categoryService.GetAllAsync().ConfigureAwait(false);
             foreach (string category in new string[] { "Animals", "Characters", "Electronics", "Fashion", "Furniture", "Nature", "Science", "Sports", "Toys", "Vehicles", "Others"})
             {
-                IEnumerable<CategoryModel> existingCategoreis = await categoryService.GetAllAsync().ConfigureAwait(false);
                 if (!existingCategoreis.Select(c => c.Name).Contains(category))
                 {
                     await categoryService.CreateAsync(new CategoryModel() { Name = category });
