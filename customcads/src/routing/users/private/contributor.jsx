@@ -8,15 +8,10 @@ import CadDetailsPage from '@/pages/contributor/cad-details/cad-details';
 import UploadCadPage from '@/pages/contributor/upload-cad/upload-cad';
 
 export default {
-    path: '/contributor',
     element: <AuthGuard auth="private" role="Contributor" />,
     children: [
         {
-            path: '',
-            element: <Navigate to="home" />
-        },
-        {
-            path: 'home',
+            path: '/contributor',
             element: <ContributorHomePage />,
             loader: async () => {
                 try {
@@ -26,16 +21,20 @@ export default {
                     return { loadedCads: cads, loadedCounts };
                 } catch (e) {
                     console.error(e);
-                    return { loadedCads: [], loadedCounts: { } };
+                    switch (e.response.status) {
+                        case 401: return { error: true, unauthenticated: true }; break;
+                        case 403: return { error: true, unauthorized: true }; break;
+                        default: return { error: true }; break;
+                    }
                 }
             }
         },
         {
-            path: 'cads',
+            path: '/contributor/cads',
             element: <UserCadsPage />
         },
         {
-            path: 'cads/:id',
+            path: '/contributor/cads/:id',
             element: <CadDetailsPage />,
             loader: async ({ params }) => {
                 const { id } = params;
@@ -52,7 +51,7 @@ export default {
             }
         },
         {
-            path: 'cads/upload',
+            path: '/contributor/cads/upload',
             element: <UploadCadPage />
         },
     ]

@@ -2,10 +2,23 @@ import { useLoaderData } from 'react-router-dom';
 import { useTranslation } from 'react-i18next'
 import RecentItem from '@/components/dashboard/recent-item';
 import CadsCount from '@/components/dashboard/count-item';
+import ErrorPage from '@/components/error-page';
 
 function ContributorHome() {
     const { t } = useTranslation();
-    const { loadedCads: recentCads, loadedCounts: counts } = useLoaderData();
+    const loaderData = useLoaderData();
+    if (loaderData.error) {
+        const { unauthenticated, unauthorized } = loaderData;
+        if (unauthenticated) {
+            return <ErrorPage status={401} />;
+        } else if (unauthorized) {
+            return <ErrorPage status={403} />;
+        } else {
+            return <ErrorPage status={400} />;
+        }
+    }
+
+    const { loadedCads: recentCads, loadedCounts: counts } = loaderData;
 
     return (
         <div className="flex flex-col gap-y-6 my-2">

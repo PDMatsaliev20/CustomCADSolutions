@@ -10,7 +10,7 @@ function AuthGuard({ auth, role }) {
     useEffect(() => {        
         if (auth === 'guest' && isAuthenticated) {
             if (userRole) {
-                setResponse(<Navigate to={`/${userRole.toLowerCase()}/home`} />);
+                setResponse(<ErrorPage status={400} />);
             }
         } else if (auth === 'private') {
             if (!isAuthenticated) {

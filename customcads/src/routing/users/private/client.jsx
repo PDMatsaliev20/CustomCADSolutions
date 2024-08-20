@@ -10,15 +10,10 @@ import CustomOrderPage from '@/pages/client/custom-order/custom-order';
 import capitalize from '@/utils/capitalize';
 
 export default {
-    path: '/client',
     element: <AuthGuard auth="private" role="Client" />,
     children: [
         {
-            path: '',
-            element: <Navigate to="home" />
-        },
-        {
-            path: 'home',
+            path: '/client',
             element: <ClientHomePage />,
             loader: async () => {
                 try {
@@ -27,17 +22,21 @@ export default {
                     return { loadedOrders: orders, loadedCounts };
                 } catch (e) {
                     console.error(e);
-                    return { loadedOrders: [], loadedCounts: { } };
+                    switch (e.response.status) {
+                        case 401: return { error: true, unauthenticated: true }; break;
+                        case 403: return { error: true, unauthorized: true }; break;
+                        default: return { error: true }; break;
+                    }
                 }
             }
         },
         {
-            path: 'orders/:status',
+            path: '/client/orders/:status',
             element: <UserOrdersPage />,
             loader: async ({ params }) => ({ status: capitalize(params.status) })
         },
         {
-            path: 'orders/:status/:id',
+            path: '/client/orders/:status/:id',
             element: <OrderDetailsPage />,
             loader: async ({ params }) => {
                 const { id } = params;
@@ -53,11 +52,11 @@ export default {
             }
         },
         {
-            path: 'orders/custom',
+            path: '/client/orders/custom',
             element: <CustomOrderPage />
         },
         {
-            path: 'purchase/:id',
+            path: '/client/purchase/:id',
             element: <PurchasePage />
         },
     ]

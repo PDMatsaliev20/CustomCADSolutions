@@ -17,10 +17,6 @@ namespace CustomCADs.API.Controllers
     [Route("API/[controller]")]
     public class HomeController(ICadService cadService, ICategoryService categoryService, IMapper mapper) : ControllerBase
     {
-        [HttpGet("/AccessDenied")]
-        [ProducesResponseType(Status403Forbidden)]
-        public ActionResult AccessDenied() => StatusCode(Status403Forbidden, "Access Denied");
-
         [HttpGet("Cad")]
         [ProducesResponseType(Status200OK)]
         public ActionResult<CadGetDTO> GetHomeCadAsync()

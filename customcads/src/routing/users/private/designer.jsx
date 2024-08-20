@@ -12,15 +12,10 @@ import UncheckedCads from '@/pages/designer/unchecked-cads/unchecked-cads';
 import capitalize from '@/utils/capitalize';
 
 export default {
-    path: '/designer',
     element: <AuthGuard auth="private" role="Designer" />,
     children: [
         {
-            path: '',
-            element: <Navigate to="home" />
-        },
-        {
-            path: 'home',
+            path: '/designer',
             element: <DesignerHomePage />,
             loader: async () => {
                 try {
@@ -30,16 +25,20 @@ export default {
                     return { loadedCads: cads, loadedOrders: orders };
                 } catch (e) {
                     console.error(e);
-                    return { loadedCads: [], loadedOrders: [] };
+                    switch (e.response.status) {
+                        case 401: return { error: true, unauthenticated: true }; break;
+                        case 403: return { error: true, unauthorized: true }; break;
+                        default: return { error: true }; break;
+                    }
                 }
             }
         },
         {
-            path: 'cads',
+            path: '/designer/cads',
             element: <UserCadsPage />
         },
         {
-            path: 'cads/:id',
+            path: '/designer/cads/:id',
             element: <CadDetailsPage />,
             loader: async ({ params }) => {
                 const { id } = params;
@@ -55,19 +54,19 @@ export default {
             }
         },
         {
-            path: 'cads/upload',
+            path: '/designer/cads/upload',
             element: <UploadCadPage />
         },
         {
-            path: 'cads/upload/:id',
+            path: '/designer/cads/upload/:id',
             element: <UploadCadPage />
         },
         {
-            path: 'cads/unchecked',
+            path: '/designer/cads/unchecked',
             element: <UncheckedCads />
         },
         {
-            path: 'orders/:status',
+            path: '/designer/orders/:status',
             element: <OngoingOrders />,
             loader: async ({ params }) => ({ status: capitalize(params.status) })
         },
