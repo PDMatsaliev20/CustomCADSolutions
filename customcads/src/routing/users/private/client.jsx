@@ -21,9 +21,14 @@ export default {
             path: 'home',
             element: <ClientHomePage />,
             loader: async () => {
-                const { data: { orders } } = await GetRecentOrders();
-                const { data: loadedCounts } = await GetOrdersCounts();
-                return { loadedOrders: orders, loadedCounts };
+                try {
+                    const { data: { orders } } = await GetRecentOrders();
+                    const { data: loadedCounts } = await GetOrdersCounts();
+                    return { loadedOrders: orders, loadedCounts };
+                } catch (e) {
+                    console.error(e);
+                    return { loadedOrders: [], loadedCounts: { } };
+                }
             }
         },
         {
@@ -43,6 +48,7 @@ export default {
                     return { loadedCategories: categories.data, loadedOrder: orderRes.data };
                 } catch (e) {
                     console.error(e);
+                    return { loadedCategories: [], loadedOrder: {} };
                 }
             }
         },

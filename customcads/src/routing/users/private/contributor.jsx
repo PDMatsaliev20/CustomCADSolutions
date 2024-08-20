@@ -19,10 +19,15 @@ export default {
             path: 'home',
             element: <ContributorHomePage />,
             loader: async () => {
-                const { data: { cads } } = await GetRecentCads();
-                const { data: loadedCounts } = await GetCadsCounts();
+                try {
+                    const { data: { cads } } = await GetRecentCads();
+                    const { data: loadedCounts } = await GetCadsCounts();
 
-                return { loadedCads: cads, loadedCounts };
+                    return { loadedCads: cads, loadedCounts };
+                } catch (e) {
+                    console.error(e);
+                    return { loadedCads: [], loadedCounts: { } };
+                }
             }
         },
         {
@@ -41,6 +46,8 @@ export default {
                     return { id, loadedCategories: categoriesRes.data, loadedCad: cadRes.data };
                 } catch (e) {
                     console.error(e);
+                    return {
+                        id, loadedCategories: [], loadedCad: {} };
                 }
             }
         },

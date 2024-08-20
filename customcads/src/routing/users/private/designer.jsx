@@ -23,10 +23,15 @@ export default {
             path: 'home',
             element: <DesignerHomePage />,
             loader: async () => {
-                const { data: { cads } } = await GetRecentCads();
-                const { data: { orders } } = await GetRecentFinishedOrders();
+                try {
+                    const { data: { cads } } = await GetRecentCads();
+                    const { data: { orders } } = await GetRecentFinishedOrders();
 
-                return { loadedCads: cads, loadedOrders: orders };
+                    return { loadedCads: cads, loadedOrders: orders };
+                } catch (e) {
+                    console.error(e);
+                    return { loadedCads: [], loadedOrders: [] };
+                }
             }
         },
         {
@@ -45,6 +50,7 @@ export default {
                     return { id, loadedCategories: categoriesRes.data, loadedCad: cadRes.data };
                 } catch (e) {
                     console.error(e);
+                    return { id, loadedCategories: [], loadedCad: [] };
                 }
             }
         },
