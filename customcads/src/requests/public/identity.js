@@ -16,4 +16,8 @@ const IsAuthenticated = async () => {
     return await axios.get('/API/Identity/IsAuthenticated');
 };
 
-export { Register, Login, Logout, IsAuthenticated };
+const GetUserRole = async () => {
+    return await axios.get('/API/Identity/GetUserRole');
+};
+
+export { Register, Login, Logout, IsAuthenticated, GetUserRole };

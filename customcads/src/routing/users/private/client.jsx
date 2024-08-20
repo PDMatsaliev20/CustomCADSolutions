@@ -1,4 +1,3 @@
-import { Navigate } from 'react-router-dom';
 import AuthGuard from '@/routing/auth-guard';
 import { GetCategories } from '@/requests/public/home';
 import { GetRecentOrders, GetOrder, GetOrdersCounts } from '@/requests/private/orders';
@@ -19,6 +18,7 @@ export default {
                 try {
                     const { data: { orders } } = await GetRecentOrders();
                     const { data: loadedCounts } = await GetOrdersCounts();
+
                     return { loadedOrders: orders, loadedCounts };
                 } catch (e) {
                     console.error(e);

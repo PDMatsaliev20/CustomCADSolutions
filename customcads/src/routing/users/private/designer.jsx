@@ -1,4 +1,3 @@
-import { Navigate } from 'react-router-dom';
 import AuthGuard from '@/routing/auth-guard';
 import { GetCategories } from '@/requests/public/home';
 import { GetCad, GetRecentCads } from '@/requests/private/cads';
