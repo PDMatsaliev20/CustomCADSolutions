@@ -2,6 +2,8 @@
 
 namespace CustomCADs.API.Helpers
 {
+    using static ApiMessages;
+
     public static class FileManager
     {
         public static string GetFileExtension(this IFormFile file)
@@ -15,54 +17,69 @@ namespace CustomCADs.API.Helpers
 
         public static async Task<string> UploadOrderAsync(this IWebHostEnvironment env, IFormFile image, string fileName)
         {
-            if (image != null && image.Length != 0)
+            ArgumentNullException.ThrowIfNull(image, nameof(image));
+            if (image.Length == 0)
             {
-                string a = env.WebRootPath;
-                string b = GetRelativePath("orders", fileName);
-                string c = Path.Combine(a, b);
-                using FileStream stream = new(env.GetPath("orders", fileName), FileMode.Create);
-                await image.CopyToAsync(stream).ConfigureAwait(false);
-
-                return GetRelativePath("orders", fileName);
+                throw new ArgumentException(InvalidSize, nameof(image.Length));
             }
-            else throw new ArgumentNullException();
+
+            string a = env.WebRootPath;
+            string b = GetRelativePath("orders", fileName);
+            string c = Path.Combine(a, b);
+            using FileStream stream = new(env.GetPath("orders", fileName), FileMode.Create);
+            await image.CopyToAsync(stream).ConfigureAwait(false);
+
+            return GetRelativePath("orders", fileName);
         }
 
         public static async Task<string> UploadImageAsync(this IWebHostEnvironment env, IFormFile image, string fileName)
         {
-            if (image != null && image.Length != 0)
+            ArgumentNullException.ThrowIfNull(image, nameof(image));
+            if (image.Length != 0)
             {
-                using FileStream stream = new(env.GetPath("images", fileName), FileMode.Create);
-                await image.CopyToAsync(stream).ConfigureAwait(false);
-
-                return GetRelativePath("images", fileName);
+                throw new ArgumentException(InvalidSize, nameof(image.Length));
             }
-            else throw new ArgumentNullException();
+
+            using FileStream stream = new(env.GetPath("images", fileName), FileMode.Create);
+            await image.CopyToAsync(stream).ConfigureAwait(false);
+
+            return GetRelativePath("images", fileName);
         }
 
         public static async Task<string> UploadCadAsync(this IWebHostEnvironment env, IFormFile cad, string name, string extension)
         {
+            ArgumentNullException.ThrowIfNull(cad, nameof(cad));
             if (cad.Length != 0)
             {
-                string uploadedFilePath = env.GetPath("cads", $"{name}{extension}");
-                using (FileStream stream = new(uploadedFilePath, FileMode.Create))
-                {
-                    await cad.CopyToAsync(stream).ConfigureAwait(false);
-                }
-
-                if (cad.GetFileExtension() == ".zip" && cad.IsValidZipFile())
-                {
-                    string extractedFolderPath = env.GetPath("cads", $"{name}");
-                    SafeExtractZipFile(cad, extractedFolderPath);
-
-                    ZipFile.ExtractToDirectory(uploadedFilePath, extractedFolderPath);
-                    File.Delete(uploadedFilePath);
-                    return GetRelativeCadPathFromFolder(extractedFolderPath, ["gltf"])
-                           ?? throw new ArgumentNullException("No CAD in the folder.");
-                }
-                return GetRelativePath("cads", name + extension);
+                throw new ArgumentException(InvalidSize, nameof(cad.Length));
             }
-            else throw new ArgumentNullException("Empty file.");
+
+            string uploadedFilePath = env.GetPath("cads", $"{name}{extension}");
+            using (FileStream stream = new(uploadedFilePath, FileMode.Create))
+            {
+                await cad.CopyToAsync(stream).ConfigureAwait(false);
+            }
+
+            if (cad.GetFileExtension() != ".zip")
+            {
+                return GetRelativePath("cads", name + extension);                
+            }
+
+            if (!cad.IsValidZipFile())
+            {
+                throw new ArgumentException(InvalidZip, nameof(cad));
+            }
+
+            string extractedFolderPath = env.GetPath("cads", $"{name}");
+            SafeExtractZipFile(cad, extractedFolderPath);
+
+            ZipFile.ExtractToDirectory(uploadedFilePath, extractedFolderPath);
+            File.Delete(uploadedFilePath);
+
+            string? relativePath = GetRelativeCadPathFromFolder(extractedFolderPath, ["gltf"]);
+            ArgumentNullException.ThrowIfNull(relativePath, nameof(relativePath));
+
+            return relativePath;
         }
 
         private static string? GetRelativeCadPathFromFolder(string folder, string[] extensionsToSearch)

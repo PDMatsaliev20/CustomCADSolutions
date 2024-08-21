@@ -10,6 +10,8 @@
         public const string InvalidRole = "Invalid role - you must choose from [{0}].";
         public const string InvalidStatus = "Invalid status - you must choose from [{0}].";
         public const string InvalidLogin = "Invalid Username or Password.";
+        public const string InvalidSize = "Size must not be 0";
+        public const string InvalidZip = "Zip is not valid";
         public const string UnauthenticatedUser = "User not authenticated.";
         public const string UserHasNoRole = "User has no role.";
         public const string UserHasRoles = "User has more than one role.";
