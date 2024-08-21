@@ -50,7 +50,7 @@ namespace CustomCADs.API.Helpers
                     await cad.CopyToAsync(stream).ConfigureAwait(false);
                 }
 
-                if (cad.GetFileExtension() == ".zip" && IsValidZipFile(cad))
+                if (cad.GetFileExtension() == ".zip" && cad.IsValidZipFile())
                 {
                     string extractedFolderPath = env.GetPath("cads", $"{name}");
                     SafeExtractZipFile(cad, extractedFolderPath);
@@ -83,7 +83,7 @@ namespace CustomCADs.API.Helpers
             return null;
         }
 
-        public static bool IsValidZipFile(IFormFile file)
+        public static bool IsValidZipFile(this IFormFile file)
         {
             try
             {
@@ -145,8 +145,11 @@ namespace CustomCADs.API.Helpers
         {
             switch (folder)
             {
-                case "orders": break;
-                case "images": break;
+                case "orders":
+                case "images":
+                    File.Delete(env.GetPath(folder, name + extension));
+                    break;
+
                 case "cads":
                     switch (extension)
                     {

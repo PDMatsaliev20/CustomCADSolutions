@@ -163,14 +163,14 @@ namespace Microsoft.Extensions.DependencyInjection
                 }
             }
         }
-        
+
         public static async Task UseCategoriesAsync(this IServiceProvider service)
         {
             using IServiceScope scope = service.CreateScope();
             var categoryService = scope.ServiceProvider.GetRequiredService<ICategoryService>();
 
             IEnumerable<CategoryModel> existingCategoreis = await categoryService.GetAllAsync().ConfigureAwait(false);
-            foreach (string category in new string[] { "Animals", "Characters", "Electronics", "Fashion", "Furniture", "Nature", "Science", "Sports", "Toys", "Vehicles", "Others"})
+            foreach (string category in new string[] { "Animals", "Characters", "Electronics", "Fashion", "Furniture", "Nature", "Science", "Sports", "Toys", "Vehicles", "Others" })
             {
                 if (!existingCategoreis.Select(c => c.Name).Contains(category))
                 {
@@ -200,21 +200,18 @@ namespace Microsoft.Extensions.DependencyInjection
 
         private static async Task AddUserAsync(this UserManager<AppUser> userManager, string username, string email, string password, string role)
         {
-            if (await userManager.FindByNameAsync(username) == null)
+            if (await userManager.FindByEmailAsync(email) == null)
             {
-                if (await userManager.FindByEmailAsync(email) == null)
+                AppUser user = new()
                 {
-                    AppUser user = new()
-                    {
-                        UserName = username,
-                        Email = email,
-                    };
+                    UserName = username,
+                    Email = email,
+                };
 
-                    var result = await userManager.CreateAsync(user, password);
-                    if (result.Succeeded)
-                    {
-                        await userManager.AddToRoleAsync(user, role);
-                    }
+                var result = await userManager.CreateAsync(user, password);
+                if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(user, role);
                 }
             }
         }

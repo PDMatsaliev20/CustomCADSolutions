@@ -23,7 +23,9 @@ namespace CustomCADs.API.Mappings
             .ForMember(export => export.CreatorName, opt =>
                 opt.MapFrom(model => model.Creator.UserName))
             .ForMember(export => export.Status, opt => 
-                opt.MapFrom(model => model.Status.ToString()));
+                opt.MapFrom(model => model.Status.ToString()))
+            .ForMember(export => export.OrdersCount, opt => 
+                opt.MapFrom(model => model.Orders.Count));
 
         public void QueryResultToDTO() => CreateMap<CadResult, CadQueryResultDTO>();
         

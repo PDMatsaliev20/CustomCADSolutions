@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using CustomCADs.API.Helpers;
-using CustomCADs.API.Mappings;
 using CustomCADs.API.Models.Queries;
 using CustomCADs.Core.Contracts;
 using CustomCADs.Core.Models;
@@ -205,6 +204,12 @@ namespace CustomCADs.API.Controllers
         {
             try
             {
+                OrderModel model = await orderService.GetByIdAsync(id).ConfigureAwait(false);
+                if (model.DesignerId != User.GetId())
+                {
+                    return Forbid(ForbiddenAccess);
+                }
+
                 await orderService.CancelAsync(id).ConfigureAwait(false);
                 return NoContent();
             }
@@ -237,6 +242,12 @@ namespace CustomCADs.API.Controllers
                 if (!await cadService.ExistsByIdAsync(cadId).ConfigureAwait(false))
                 {
                     throw new KeyNotFoundException();
+                }
+
+                OrderModel model = await orderService.GetByIdAsync(id).ConfigureAwait(false);
+                if (model.DesignerId != User.GetId())
+                {
+                    return Forbid(ForbiddenAccess);
                 }
 
                 await orderService.CompleteAsync(id, cadId).ConfigureAwait(false);

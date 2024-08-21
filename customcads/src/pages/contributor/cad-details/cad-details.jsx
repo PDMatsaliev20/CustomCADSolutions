@@ -3,9 +3,11 @@ import { useNavigate, useLoaderData } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { PutCad, PatchCad, DeleteCad } from '@/requests/private/cads';
+import { useAuth } from '@/contexts/auth-context';
 import ThreeJS from '@/components/cads/three';
 
 function EditCadPage() {
+    const { userRole } = useAuth();
     const { t } = useTranslation();
     const { id, loadedCategories, loadedCad } = useLoaderData();
     const navigate = useNavigate();
@@ -99,7 +101,7 @@ function EditCadPage() {
         if (confirm(t('private.cads.confirmation'))) {
             try {
                 await DeleteCad(id);
-                navigate('../cads');
+                navigate(`/${userRole.toLowerCase()}/cads`);
             } catch (e) {
                 console.error(e);
             }

@@ -16,6 +16,7 @@ namespace CustomCADs.API.Models.Cads
         public double[] PanCoords { get; set; } = [];
         public int Fov { get; set; } = 90;
         public string Status { get; set; } = null!;
+        public int OrdersCount { get; set; }
         public CategoryDTO Category { get; set; } = null!;
     }
 }
