@@ -1,10 +1,10 @@
-﻿using CustomCADs.Core.Models;
-using CustomCADs.Core.Models.Cads;
+﻿using CustomCADs.Application.Models;
+using CustomCADs.Application.Models.Cads;
 using CustomCADs.Domain.Entities;
 using CustomCADs.Domain.Entities.Enums;
 using System.Linq.Expressions;
 
-namespace CustomCADs.Core.Contracts
+namespace CustomCADs.Application.Contracts
 {
     public interface ICadService
     {

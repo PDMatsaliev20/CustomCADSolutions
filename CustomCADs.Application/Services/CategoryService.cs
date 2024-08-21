@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
-using CustomCADs.Core.Contracts;
-using CustomCADs.Core.Models;
+using CustomCADs.Application.Contracts;
+using CustomCADs.Application.Models;
 using CustomCADs.Domain;
 using CustomCADs.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
-namespace CustomCADs.Core.Services
+namespace CustomCADs.Application.Services
 {
     public class CategoryService(IRepository repository, IMapper mapper) : ICategoryService
     {

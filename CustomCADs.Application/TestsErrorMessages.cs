@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Core
+﻿namespace CustomCADs.Application
 {
     public static class TestsErrorMessages
     {

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using CustomCADs.API.Models.Others;
-using CustomCADs.Core.Models;
+using CustomCADs.Application.Models;
 namespace CustomCADs.API.Mappings
 {
     public class OtherApiProfile : Profile

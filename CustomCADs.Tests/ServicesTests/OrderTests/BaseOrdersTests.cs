@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using CustomCADs.Core.Contracts;
-using CustomCADs.Core.Mappings;
-using CustomCADs.Core.Models.Orders;
-using CustomCADs.Core.Services;
+using CustomCADs.Application.Contracts;
+using CustomCADs.Application.Mappings;
+using CustomCADs.Application.Models.Orders;
+using CustomCADs.Application.Services;
 using CustomCADs.Domain;
 using CustomCADs.Domain.Entities;
 using CustomCADs.Domain.Entities.Identity;

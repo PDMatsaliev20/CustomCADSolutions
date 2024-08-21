@@ -1,10 +1,10 @@
-﻿using CustomCADs.Core.Models.Orders;
+﻿using CustomCADs.Application.Models.Orders;
 using CustomCADs.Domain.Entities.Enums;
 using CustomCADs.Domain.Entities.Identity;
 using System.ComponentModel.DataAnnotations;
 using static CustomCADs.Domain.DataConstants;
 
-namespace CustomCADs.Core.Models.Cads
+namespace CustomCADs.Application.Models.Cads
 {
     public class CadModel
     {

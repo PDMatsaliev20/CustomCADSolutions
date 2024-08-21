@@ -1,6 +1,6 @@
 ﻿using CustomCADs.Domain.Entities.Enums;
 
-namespace CustomCADs.Core.Models.Cads
+namespace CustomCADs.Application.Models.Cads
 {
     public class CadQuery
     {

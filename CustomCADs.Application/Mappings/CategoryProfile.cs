@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using CustomCADs.Core.Models;
+using CustomCADs.Application.Models;
 using CustomCADs.Domain.Entities;
 
-namespace CustomCADs.Core.Mappings
+namespace CustomCADs.Application.Mappings
 {
     public class CategoryProfile : Profile
     {

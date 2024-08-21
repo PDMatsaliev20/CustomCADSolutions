@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using CustomCADs.Core.Models.Orders;
+using CustomCADs.Application.Models.Orders;
 using CustomCADs.Domain.Entities;
 
-namespace CustomCADs.Core.Mappings
+namespace CustomCADs.Application.Mappings
 {
     public class OrderProfile : Profile
     {

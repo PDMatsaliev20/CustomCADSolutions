@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using CustomCADs.API.Helpers;
 using CustomCADs.API.Models.Queries;
-using CustomCADs.Core.Contracts;
-using CustomCADs.Core.Models;
-using CustomCADs.Core.Models.Cads;
-using CustomCADs.Core.Models.Orders;
+using CustomCADs.Application.Contracts;
+using CustomCADs.Application.Models;
+using CustomCADs.Application.Models.Cads;
+using CustomCADs.Application.Models.Orders;
 using CustomCADs.Domain.Entities.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

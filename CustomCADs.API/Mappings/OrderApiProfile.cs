@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using CustomCADs.API.Models.Orders;
 using CustomCADs.API.Models.Queries;
-using CustomCADs.Core.Models.Orders;
+using CustomCADs.Application.Models.Orders;
 
 namespace CustomCADs.API.Mappings
 {

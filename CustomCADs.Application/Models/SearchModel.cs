@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Core.Models
+﻿namespace CustomCADs.Application.Models
 {
     public class SearchModel
     {

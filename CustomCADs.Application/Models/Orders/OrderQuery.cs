@@ -1,6 +1,6 @@
 ﻿using CustomCADs.Domain.Entities.Enums;
 
-namespace CustomCADs.Core.Models.Orders
+namespace CustomCADs.Application.Models.Orders
 {
     public class OrderQuery
     {

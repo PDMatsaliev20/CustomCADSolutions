@@ -1,6 +1,6 @@
-﻿using CustomCADs.Core.Models;
+﻿using CustomCADs.Application.Models;
 
-namespace CustomCADs.Core.Contracts
+namespace CustomCADs.Application.Contracts
 {
     public interface ICategoryService
     {

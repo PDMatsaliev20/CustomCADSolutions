@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using CustomCADs.API.Helpers;
 using CustomCADs.API.Mappings;
-using CustomCADs.Core.Contracts;
-using CustomCADs.Core.Models.Cads;
+using CustomCADs.Application.Contracts;
+using CustomCADs.Application.Models.Cads;
 using CustomCADs.Infrastructure.Payment.Contracts;
 using CustomCADs.Infrastructure.Payment.DTOs;
 using Microsoft.AspNetCore.Authorization;

@@ -1,7 +1,7 @@
-﻿using CustomCADs.Core.Contracts;
-using CustomCADs.Core.Mappings;
-using CustomCADs.Core.Models;
-using CustomCADs.Core.Services;
+﻿using CustomCADs.Application.Contracts;
+using CustomCADs.Application.Mappings;
+using CustomCADs.Application.Models;
+using CustomCADs.Application.Services;
 using CustomCADs.Domain;
 using CustomCADs.Domain.Entities.Identity;
 using CustomCADs.Infrastructure.Data;

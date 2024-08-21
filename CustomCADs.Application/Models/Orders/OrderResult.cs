@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Core.Models.Orders
+﻿namespace CustomCADs.Application.Models.Orders
 {
     public class OrderResult
     {

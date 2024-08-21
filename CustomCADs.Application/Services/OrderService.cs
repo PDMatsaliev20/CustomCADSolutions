@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using CustomCADs.Core.Contracts;
-using CustomCADs.Core.Models;
-using CustomCADs.Core.Models.Cads;
-using CustomCADs.Core.Models.Orders;
+using CustomCADs.Application.Contracts;
+using CustomCADs.Application.Models;
+using CustomCADs.Application.Models.Cads;
+using CustomCADs.Application.Models.Orders;
 using CustomCADs.Domain;
 using CustomCADs.Domain.Entities;
 using CustomCADs.Domain.Entities.Enums;
@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Linq.Expressions;
 
-namespace CustomCADs.Core.Services
+namespace CustomCADs.Application.Services
 {
     public class OrderService(IRepository repository, IMapper mapper) : IOrderService
     {

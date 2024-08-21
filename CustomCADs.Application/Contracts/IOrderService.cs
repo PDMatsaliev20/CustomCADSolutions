@@ -1,10 +1,10 @@
-﻿using CustomCADs.Core.Models;
-using CustomCADs.Core.Models.Cads;
-using CustomCADs.Core.Models.Orders;
+﻿using CustomCADs.Application.Models;
+using CustomCADs.Application.Models.Cads;
+using CustomCADs.Application.Models.Orders;
 using CustomCADs.Domain.Entities;
 using System.Linq.Expressions;
 
-namespace CustomCADs.Core.Contracts
+namespace CustomCADs.Application.Contracts
 {
     public interface IOrderService
     {

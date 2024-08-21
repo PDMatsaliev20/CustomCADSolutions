@@ -1,5 +1,5 @@
-﻿using CustomCADs.Core.Models;
-using static CustomCADs.Core.TestsErrorMessages;
+﻿using CustomCADs.Application.Models;
+using static CustomCADs.Application.TestsErrorMessages;
 
 namespace CustomCADs.Tests.ServicesTests.CategoryTests
 {

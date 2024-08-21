@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CustomCADs.Core.Models
+namespace CustomCADs.Application.Models
 {
     public class PaginationModel
     {

@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using CustomCADs.Core.Models.Cads;
+using CustomCADs.Application.Models.Cads;
 using CustomCADs.Domain.Entities;
 
-namespace CustomCADs.Core.Mappings
+namespace CustomCADs.Application.Mappings
 {
     public class CadProfile : Profile
     {

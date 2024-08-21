@@ -1,4 +1,4 @@
-﻿using CustomCADs.Core.Models.Cads;
+﻿using CustomCADs.Application.Models.Cads;
 using CustomCADs.Domain.Entities;
 using CustomCADs.Domain.Entities.Enums;
 using CustomCADs.Domain.Entities.Identity;
@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using static CustomCADs.Domain.DataConstants;
 using static CustomCADs.Domain.DataConstants.OrderConstants;
 
-namespace CustomCADs.Core.Models.Orders
+namespace CustomCADs.Application.Models.Orders
 {
     public class OrderModel
     {
