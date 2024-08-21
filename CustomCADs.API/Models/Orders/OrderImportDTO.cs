@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using static CustomCADs.Domain.DataConstants;
 using static CustomCADs.Domain.DataConstants.OrderConstants;
-using static CustomCADs.Domain.DataConstants.CategoryConstants;
 
 namespace CustomCADs.API.Models.Orders
 {
@@ -16,7 +15,8 @@ namespace CustomCADs.API.Models.Orders
         public string Description { get; set; } = null!;
 
         [Required(ErrorMessage = RequiredErrorMessage)]
-        [Range(IdMin, IdMax, ErrorMessage = RangeErrorMessage)]
+        [AllowedValues(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
+            ErrorMessage = "Existing Categories have IDs: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]")]
         public int CategoryId { get; set; }
 
         [Required(ErrorMessage = RequiredErrorMessage)]

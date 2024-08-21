@@ -6,12 +6,6 @@
         public const string LengthErrorMessage = "{0} length must be between {2} and {1} characters";
         public const string RangeErrorMessage = "{0} must be between {2} and {1}";
 
-        public class CategoryConstants
-        {
-            public const int IdMin = 1;
-            public const int IdMax = 11;
-        }
-
         public class CadConstants
         {
 

@@ -45,6 +45,8 @@ namespace CustomCADs.Core.Models.Cads
         public int CategoryId { get; set; }
 
         [Required(ErrorMessage = RequiredErrorMessage)]
+        [AllowedValues(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
+            ErrorMessage = "Existing Categories have IDs: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]")]
         public string CreatorId { get; set; } = null!;
 
         public CategoryModel Category { get; set; } = null!;
