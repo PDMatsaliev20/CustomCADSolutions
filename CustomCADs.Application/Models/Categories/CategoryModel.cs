@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Application.Models
+﻿namespace CustomCADs.Application.Models.Categories
 {
     public class CategoryModel
     {

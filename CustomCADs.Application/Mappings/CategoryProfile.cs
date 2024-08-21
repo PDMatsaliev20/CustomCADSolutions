@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using CustomCADs.Application.Models;
+using CustomCADs.Application.Models.Categories;
 using CustomCADs.Domain.Entities;
 
 namespace CustomCADs.Application.Mappings

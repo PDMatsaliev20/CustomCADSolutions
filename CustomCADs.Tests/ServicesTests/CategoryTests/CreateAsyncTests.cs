@@ -1,4 +1,4 @@
-﻿using CustomCADs.Application.Models;
+﻿using CustomCADs.Application.Models.Categories;
 using static CustomCADs.Application.TestsErrorMessages;
 
 namespace CustomCADs.Tests.ServicesTests.CategoryTests

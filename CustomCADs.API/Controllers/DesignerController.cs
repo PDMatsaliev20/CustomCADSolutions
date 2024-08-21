@@ -2,9 +2,9 @@
 using CustomCADs.API.Helpers;
 using CustomCADs.API.Models.Queries;
 using CustomCADs.Application.Contracts;
-using CustomCADs.Application.Models;
 using CustomCADs.Application.Models.Cads;
 using CustomCADs.Application.Models.Orders;
+using CustomCADs.Application.Models.Utilities;
 using CustomCADs.Domain.Entities.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Infrastructure.Payment.DTOs
+﻿namespace CustomCADs.Application.DTOs.Payment
 {
     public class PaymentResult
     {

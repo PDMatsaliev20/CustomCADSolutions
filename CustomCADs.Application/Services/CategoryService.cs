@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using CustomCADs.Application.Contracts;
-using CustomCADs.Application.Models;
+using CustomCADs.Application.Models.Categories;
 using CustomCADs.Domain;
 using CustomCADs.Domain.Entities;
 using Microsoft.EntityFrameworkCore;

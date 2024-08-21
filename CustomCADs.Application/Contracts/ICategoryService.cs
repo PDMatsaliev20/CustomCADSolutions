@@ -1,4 +1,4 @@
-﻿using CustomCADs.Application.Models;
+﻿using CustomCADs.Application.Models.Categories;
 
 namespace CustomCADs.Application.Contracts
 {

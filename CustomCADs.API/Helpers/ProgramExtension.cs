@@ -1,13 +1,11 @@
 ﻿using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Mappings;
-using CustomCADs.Application.Models;
+using CustomCADs.Application.Models.Categories;
 using CustomCADs.Application.Services;
 using CustomCADs.Domain;
 using CustomCADs.Domain.Entities.Identity;
 using CustomCADs.Infrastructure.Data;
 using CustomCADs.Infrastructure.Payment;
-using CustomCADs.Infrastructure.Payment.Contracts;
-using CustomCADs.Infrastructure.Payment.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.StaticFiles;
@@ -45,7 +43,7 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             services.Configure<StripeKeys>(config.GetSection("Stripe"));
             services.AddScoped<PaymentIntentService>();
-            services.AddScoped<IStripeService, StripeService>();
+            services.AddScoped<IPaymentService, StripeService>();
             return services;
         }
 

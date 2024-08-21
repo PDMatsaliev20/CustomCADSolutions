@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Infrastructure.Payment.DTOs
+﻿namespace CustomCADs.Application.Models.Payment
 {
     public class PurchaseInfo
     {
@@ -6,6 +6,5 @@
         public decimal Price { get; set; }
         public string Buyer { get; set; } = null!;
         public string Seller { get; set; } = null!;
-
     }
 }

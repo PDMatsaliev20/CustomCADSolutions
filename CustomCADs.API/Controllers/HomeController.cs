@@ -4,8 +4,9 @@ using CustomCADs.API.Models.Cads;
 using CustomCADs.API.Models.Others;
 using CustomCADs.API.Models.Queries;
 using CustomCADs.Application.Contracts;
-using CustomCADs.Application.Models;
 using CustomCADs.Application.Models.Cads;
+using CustomCADs.Application.Models.Categories;
+using CustomCADs.Application.Models.Utilities;
 using CustomCADs.Domain.Entities.Enums;
 using Microsoft.AspNetCore.Mvc;
 

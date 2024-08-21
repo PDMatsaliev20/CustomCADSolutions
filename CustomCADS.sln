@@ -9,6 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomCADs.Application", "C
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomCADs.Infrastructure", "CustomCADs.Infrastructure\CustomCADs.Infrastructure.csproj", "{FD68ACFD-29B1-4F52-A7C9-5203DF60FE7C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{80B4560A-B2CC-438B-90C6-62FE1CDEC197} = {80B4560A-B2CC-438B-90C6-62FE1CDEC197}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomCADs.API", "CustomCADs.API\CustomCADs.API.csproj", "{2E7298D5-E4D2-4844-83FD-0467955C6C8B}"
 	ProjectSection(ProjectDependencies) = postProject

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Mappings;
-using CustomCADs.Application.Models;
+using CustomCADs.Application.Models.Categories;
 using CustomCADs.Application.Services;
 using CustomCADs.Domain;
 using CustomCADs.Domain.Entities;

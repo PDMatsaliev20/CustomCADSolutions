@@ -1,10 +1,7 @@
-﻿using AutoMapper;
-using CustomCADs.API.Helpers;
-using CustomCADs.API.Mappings;
+﻿using CustomCADs.API.Helpers;
 using CustomCADs.Application.Contracts;
+using CustomCADs.Application.DTOs.Payment;
 using CustomCADs.Application.Models.Cads;
-using CustomCADs.Infrastructure.Payment.Contracts;
-using CustomCADs.Infrastructure.Payment.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static CustomCADs.Domain.DataConstants.RoleConstants;
@@ -17,7 +14,7 @@ namespace CustomCADs.API.Controllers
     [Authorize(Roles = Client)]
     [ApiController]
     [Route("API/[controller]")]
-    public class PaymentController(IStripeService stripeService, ICadService cadService) : ControllerBase
+    public class PaymentController(IPaymentService stripeService, ICadService cadService) : ControllerBase
     {
         private readonly string createdAtReturnAction = nameof(OrdersController.GetOrderAsync).Replace("Async", "");
 

@@ -1,11 +1,12 @@
-﻿using CustomCADs.Infrastructure.Payment.Contracts;
-using CustomCADs.Infrastructure.Payment.DTOs;
+﻿using CustomCADs.Application.Contracts;
+using CustomCADs.Application.DTOs.Payment;
+using CustomCADs.Application.Models.Payment;
 using Microsoft.Extensions.Options;
 using Stripe;
 
-namespace CustomCADs.Infrastructure.Payment.Services
+namespace CustomCADs.Infrastructure.Payment
 {
-    public class StripeService(IOptions<StripeKeys> options, PaymentIntentService paymentIntentService) : IStripeService
+    public class StripeService(IOptions<StripeKeys> options, PaymentIntentService paymentIntentService) : IPaymentService
     {
         public readonly StripeKeys keys = options.Value;
 
@@ -14,8 +15,8 @@ namespace CustomCADs.Infrastructure.Payment.Services
         public async Task<PaymentResult> CapturePaymentAsync(string paymentIntentId)
         {
             PaymentIntent paymentIntent = await paymentIntentService.CaptureAsync(paymentIntentId).ConfigureAwait(false);
-            return new() 
-            { 
+            return new()
+            {
                 Id = paymentIntent.Id,
                 ClientSecret = paymentIntent.ClientSecret,
                 Status = paymentIntent.Status,

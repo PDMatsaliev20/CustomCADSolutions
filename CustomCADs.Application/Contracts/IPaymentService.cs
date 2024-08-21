@@ -1,8 +1,9 @@
-﻿using CustomCADs.Infrastructure.Payment.DTOs;
+﻿using CustomCADs.Application.DTOs.Payment;
+using CustomCADs.Application.Models.Payment;
 
-namespace CustomCADs.Infrastructure.Payment.Contracts
+namespace CustomCADs.Application.Contracts
 {
-    public interface IStripeService
+    public interface IPaymentService
     {
         string GetPublicKey();
         Task<PaymentResult> CapturePaymentAsync(string paymentIntentId);
