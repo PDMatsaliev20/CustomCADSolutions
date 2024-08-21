@@ -59,36 +59,6 @@ namespace CustomCADs.Application.Contracts
         Task EditAsync(int id, OrderModel entity);
 
         /// <summary>
-        ///     Sets the Order's Status to Begun and DesignerId from null to the given designerId.
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="designerId"></param>
-        /// <returns>A Task object that represents the asynchronous Save Changes operation after the edit.</returns>
-        Task BeginAsync(int id, string designerId);
-
-        /// <summary>
-        ///     Sets the Order's Status to Reported.
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        Task ReportAsync(int id);
-
-        /// <summary>
-        ///     Sets the Order's Status to Pending and DesignerId from the given designerId to null.
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns>A Task object that represents the asynchronous Save Changes operation after the edit.</returns>
-        Task CancelAsync(int id);
-        
-        /// <summary>
-        ///     Sets the Order's Status to Finished and CadId from null to the given cadId.
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="cadId"></param>
-        /// <returns>A Task object that represents the asynchronous Save Changes operation after the edit.</returns>
-        Task CompleteAsync(int id, int cadId);
-
-        /// <summary>
         ///     Deletes the Order with the given id.
         /// </summary>
         /// <param name="id"></param>

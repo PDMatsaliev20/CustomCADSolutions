@@ -64,14 +64,6 @@ namespace CustomCADs.Application.Contracts
         Task EditAsync(int id, CadModel model);
 
         /// <summary>
-        ///     Overwrites Cad's Status property with the given.
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="status"></param>
-        /// <returns>A Task object that represents the asynchronous Save Changes operation after the edit.</returns>
-        Task EditStatusAsync(int id, CadStatus status);
-
-        /// <summary>
         ///     Reverts all related Orders to Pending, sets their CadId to null and and deletes the Cad with the given id.
         /// </summary>
         /// <param name="id"></param>

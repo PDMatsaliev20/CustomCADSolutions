@@ -128,15 +128,6 @@ namespace CustomCADs.Application.Services
             await repository.SaveChangesAsync().ConfigureAwait(false);
         }
         
-        public async Task EditStatusAsync(int id, CadStatus status)
-        {
-            Cad cad = await repository.GetByIdAsync<Cad>(id).ConfigureAwait(false)
-                ?? throw new KeyNotFoundException("Model doesn't exist!");
-
-            cad.Status = status;
-            await repository.SaveChangesAsync().ConfigureAwait(false);
-        }
-
         public async Task DeleteAsync(int id)
         {
             IQueryable<Order> orders = repository.All<Order>()

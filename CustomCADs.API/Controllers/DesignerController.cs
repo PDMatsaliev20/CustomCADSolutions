@@ -19,7 +19,7 @@ namespace CustomCADs.API.Controllers
     [ApiController]
     [Route("API/[controller]")]
     [Authorize(Designer)]
-    public class DesignerController(ICadService cadService, IOrderService orderService, IMapper mapper) : ControllerBase
+    public class DesignerController(IDesignerService designerService, IMapper mapper) : ControllerBase
     {
         [HttpGet("Cads")]
         [ProducesResponseType(Status200OK)]
@@ -32,7 +32,7 @@ namespace CustomCADs.API.Controllers
 
             try
             {
-                CadResult result = await cadService.GetAllAsync(query, search, pagination).ConfigureAwait(false);
+                CadResult result = await designerService.GetCadsAsync(search, pagination).ConfigureAwait(false);
                 return mapper.Map<CadQueryResultDTO>(result);
             }
             catch (Exception ex) when (
@@ -55,7 +55,7 @@ namespace CustomCADs.API.Controllers
         {
             try
             {
-                await cadService.EditStatusAsync(id, Enum.Parse<CadStatus>(status)).ConfigureAwait(false);
+                await designerService.EditCadStatusAsync(id, Enum.Parse<CadStatus>(status)).ConfigureAwait(false);
                 return NoContent();
             }
             catch (KeyNotFoundException ex)
@@ -92,10 +92,9 @@ namespace CustomCADs.API.Controllers
 
                 OrderQuery query = new() { Status = Enum.Parse<OrderStatus>(status.Capitalize()) };
                 SearchModel search = new() { Category = category, Name = name, Owner = buyer, Sorting = sorting ?? string.Empty };
-                
-                OrderResult result = await orderService.GetAllAsync(query, search, pagination, 
-                    order => order.Status != OrderStatus.Finished || order.ShouldBeDelivered).ConfigureAwait(false);
-                
+
+                OrderResult result = await designerService.GetOrdersAsync(status, null, search, pagination).ConfigureAwait(false);
+
                 return mapper.Map<OrderResultDTO>(result);
             }
             catch (Exception ex) when (
@@ -123,9 +122,8 @@ namespace CustomCADs.API.Controllers
                 SearchModel search = new() { Sorting = "newest" };
                 PaginationModel pagination = new() { Limit = 4 };
 
-                OrderResult result = await orderService.GetAllAsync(query, search, pagination,
-                    o => o.DesignerId == User.GetId()).ConfigureAwait(false);
-                
+                OrderResult result = await designerService.GetOrdersAsync("finished", User.GetId(), search, pagination);
+
                 return mapper.Map<OrderResultDTO>(result);
             }
             catch (Exception ex) when (
@@ -148,7 +146,7 @@ namespace CustomCADs.API.Controllers
         {
             try
             {
-                await orderService.BeginAsync(id, User.GetId()).ConfigureAwait(false);
+                await designerService.BeginAsync(id, User.GetId()).ConfigureAwait(false);
                 return NoContent();
             }
             catch (KeyNotFoundException ex)
@@ -176,7 +174,7 @@ namespace CustomCADs.API.Controllers
         {
             try
             {
-                await orderService.ReportAsync(id).ConfigureAwait(false);
+                await designerService.ReportAsync(id).ConfigureAwait(false);
                 return NoContent();
             }
             catch (KeyNotFoundException ex)
@@ -204,18 +202,16 @@ namespace CustomCADs.API.Controllers
         {
             try
             {
-                OrderModel model = await orderService.GetByIdAsync(id).ConfigureAwait(false);
-                if (model.DesignerId != User.GetId())
-                {
-                    return Forbid(ForbiddenAccess);
-                }
-
-                await orderService.CancelAsync(id).ConfigureAwait(false);
+                await designerService.CancelAsync(id, User.GetId()).ConfigureAwait(false);
                 return NoContent();
             }
             catch (KeyNotFoundException ex)
             {
                 return NotFound(ex.GetMessage());
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return Forbid(ForbiddenAccess);
             }
             catch (DbUpdateConcurrencyException ex)
             {
@@ -239,23 +235,16 @@ namespace CustomCADs.API.Controllers
         {
             try
             {
-                if (!await cadService.ExistsByIdAsync(cadId).ConfigureAwait(false))
-                {
-                    throw new KeyNotFoundException();
-                }
-
-                OrderModel model = await orderService.GetByIdAsync(id).ConfigureAwait(false);
-                if (model.DesignerId != User.GetId())
-                {
-                    return Forbid(ForbiddenAccess);
-                }
-
-                await orderService.CompleteAsync(id, cadId).ConfigureAwait(false);
+                await designerService.CompleteAsync(id, cadId, User.GetId()).ConfigureAwait(false);
                 return NoContent();
             }
             catch (KeyNotFoundException ex) 
             {
                 return NotFound(ex.GetMessage());
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return Forbid(ForbiddenAccess);
             }
             catch (DbUpdateConcurrencyException ex)
             {
