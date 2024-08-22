@@ -17,7 +17,7 @@ const GetOrder = async (id) => {
 }
 
 const DownloadOrderCad = async (id) => {
-    return await axios.get(`/API/Orders/DownloadCad/${id}`, { responseType: 'arraybuffer' });
+    return await axios.get(`/API/Orders/${id}/DownloadCad`, { responseType: 'arraybuffer' });
 }
 
 const PostOrder = async (order) => {

@@ -70,7 +70,18 @@ namespace Microsoft.Extensions.DependencyInjection
         public static void AddApiConfigurations(this IServiceCollection services)
         {
             services.AddEndpointsApiExplorer();
-            services.AddSwaggerGen();
+            services.AddSwaggerGen(c =>
+            {
+                c.EnableAnnotations();
+                c.SwaggerDoc("v1", new()
+                {
+                    Title = "CustomCADs API",
+                    Description = "An API to Order, Purchase, Upload and Validate 3D Models",
+                    Contact = new() { Name = "Ivan", Email = "ivanangelov414@gmail.com" },
+                    License = new() { Name = "Apache License 2.0", Url= new Uri("https://www.apache.org/licenses/LICENSE-2.0") }
+                });
+                c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "SwaggerAnnotation.xml"));
+            });
         }
 
         public static void AddCorsForReact(this IServiceCollection services)

@@ -14,12 +14,23 @@ namespace CustomCADs.API.Controllers.Admin
     using static StatusCodes;
     using static ApiMessages;
 
+    /// <summary>
+    ///     Admin Controller for managing Users.
+    /// </summary>
+    /// <param name="userManager"></param>
+    /// <param name="roleManager"></param>
+    /// <param name="mapper"></param>
     [ApiController]
     [Route("API/Admin/[controller]")]
     [Authorize(Roles = RoleConstants.Admin)]
     public class UsersController(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, IMapper mapper) : ControllerBase
     {
         private readonly string createdAtReturnAction = nameof(GetUserAsync).Replace("Async", "");
+
+        /// <summary>
+        ///     Gets All Users.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Produces("application/json")]
         [ProducesResponseType(Status200OK)]
@@ -65,6 +76,11 @@ namespace CustomCADs.API.Controllers.Admin
             }
         }
 
+        /// <summary>
+        ///     Gets a User by the specified name.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         [HttpGet("{name}")]
         [Produces("application/json")]
         [ProducesResponseType(Status200OK)]
@@ -109,6 +125,12 @@ namespace CustomCADs.API.Controllers.Admin
             }
         }
 
+        /// <summary>
+        ///     Creates a User with the specified name and role.
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="role"></param>
+        /// <returns></returns>
         [HttpPost("{username}")]
         [ProducesResponseType(Status201Created)]
         [ProducesResponseType(Status400BadRequest)]
@@ -153,6 +175,13 @@ namespace CustomCADs.API.Controllers.Admin
             }
         }
 
+        /// <summary>
+        ///     Updates a User in the traditional way - with an array of operations.
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="patchUser"></param>
+        /// <param name="newRole"></param>
+        /// <returns></returns>
         [HttpPatch("{username}")]
         [ProducesResponseType(Status204NoContent)]
         [ProducesResponseType(Status400BadRequest)]
@@ -216,6 +245,11 @@ namespace CustomCADs.API.Controllers.Admin
             }
         }
 
+        /// <summary>
+        ///     Deletes the User with the specified username.
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
         [HttpDelete("{username}")]
         [ProducesResponseType(Status204NoContent)]
         [ProducesResponseType(Status404NotFound)]

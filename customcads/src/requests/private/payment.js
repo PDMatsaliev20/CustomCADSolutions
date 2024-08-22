@@ -5,7 +5,7 @@ const GetPublicKey = async () => {
 };
 
 const Purchase = async (id, paymentMethodId) => {
-    return await axios.post(`/API/Payment/Purchase/${id}?paymentMethodId=${paymentMethodId}`);
+    return await axios.post(`/API/Payment/${id}/Purchase?paymentMethodId=${paymentMethodId}`);
 };
 
 export { GetPublicKey, Purchase };

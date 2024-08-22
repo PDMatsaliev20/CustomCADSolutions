@@ -1,0 +1,478 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CustomCADs.API</name>
+    </assembly>
+    <members>
+        <member name="T:CustomCADs.API.Controllers.Admin.RolesController">
+            <summary>
+                Admin Controller for managing Roles.
+            </summary>
+            <param name="roleManager"></param>
+            <param name="mapper"></param>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.Admin.RolesController.#ctor(Microsoft.AspNetCore.Identity.RoleManager{CustomCADs.Domain.Identity.AppRole},AutoMapper.IMapper)">
+            <summary>
+                Admin Controller for managing Roles.
+            </summary>
+            <param name="roleManager"></param>
+            <param name="mapper"></param>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.Admin.RolesController.GetRolesAsync">
+            <summary>
+                Gets All Roles
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.Admin.RolesController.GetRoleAsync(System.String)">
+            <summary>
+                Gets a Role by the specified name.
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.Admin.RolesController.PostRoleAsync(System.String,System.String)">
+            <summary>
+                Creates a Role with the specified name.
+            </summary>
+            <param name="name"></param>
+            <param name="description"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.Admin.RolesController.PatchRoleAsync(System.String,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{CustomCADs.Domain.Identity.AppRole})">
+            <summary>
+                Updates a Role in the traditional way - with an array of operations.
+            </summary>
+            <param name="name"></param>
+            <param name="patchRole"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.Admin.RolesController.DeleteRoleAsync(System.String)">
+            <summary>
+                Deletes the Role with the specified name.
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="T:CustomCADs.API.Controllers.Admin.UsersController">
+            <summary>
+                Admin Controller for managing Users.
+            </summary>
+            <param name="userManager"></param>
+            <param name="roleManager"></param>
+            <param name="mapper"></param>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.Admin.UsersController.#ctor(Microsoft.AspNetCore.Identity.UserManager{CustomCADs.Domain.Identity.AppUser},Microsoft.AspNetCore.Identity.RoleManager{CustomCADs.Domain.Identity.AppRole},AutoMapper.IMapper)">
+            <summary>
+                Admin Controller for managing Users.
+            </summary>
+            <param name="userManager"></param>
+            <param name="roleManager"></param>
+            <param name="mapper"></param>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.Admin.UsersController.GetUsersAsync">
+            <summary>
+                Gets All Users.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.Admin.UsersController.GetUserAsync(System.String)">
+            <summary>
+                Gets a User by the specified name.
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.Admin.UsersController.PostUserAsync(System.String,System.String)">
+            <summary>
+                Creates a User with the specified name and role.
+            </summary>
+            <param name="username"></param>
+            <param name="role"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.Admin.UsersController.PatchUserAsync(System.String,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{CustomCADs.Domain.Identity.AppUser},System.String)">
+            <summary>
+                Updates a User in the traditional way - with an array of operations.
+            </summary>
+            <param name="username"></param>
+            <param name="patchUser"></param>
+            <param name="newRole"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.Admin.UsersController.DeleteUserAsync(System.String)">
+            <summary>
+                Deletes the User with the specified username.
+            </summary>
+            <param name="username"></param>
+            <returns></returns>
+        </member>
+        <member name="T:CustomCADs.API.Controllers.CadsController">
+            <summary>
+                Controller for CRUD operations on Cad
+            </summary>
+            <param name="cadService"></param>
+            <param name="env"></param>
+            <param name="mapper"></param>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.CadsController.#ctor(CustomCADs.Application.Contracts.ICadService,Microsoft.AspNetCore.Hosting.IWebHostEnvironment,AutoMapper.IMapper)">
+            <summary>
+                Controller for CRUD operations on Cad
+            </summary>
+            <param name="cadService"></param>
+            <param name="env"></param>
+            <param name="mapper"></param>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.CadsController.GetCadsAsync(System.String,System.String,System.String,System.Int32,System.Int32)">
+            <summary>
+                Queries the User's Cads with the specified parameters.
+            </summary>
+            <param name="sorting"></param>
+            <param name="category"></param>
+            <param name="name"></param>
+            <param name="page"></param>
+            <param name="limit"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.CadsController.GetRecentCadsAsync(System.Int32)">
+            <summary>
+                Gets the User's most recent Cads.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.CadsController.GetCadsCountsAsync">
+            <summary>
+                Gets counts of the User's Cads grouped by their status.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.CadsController.GetCadAsync(System.Int32)">
+            <summary>
+                Gets a Cad by the specified id.
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.CadsController.PostCadAsync(CustomCADs.API.Models.Cads.CadPostDTO)">
+            <summary>
+                Creates a Cad entity in the database, max file size is 300MB.
+            </summary>
+            <param name="import"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.CadsController.PutCadAsync(System.Int32,CustomCADs.API.Models.Cads.CadPutDTO)">
+            <summary>
+                Updates Name, Description, Price CategoryId and optionally Image properties of Cad.
+            </summary>
+            <param name="id"></param>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.CadsController.PatchCadAsync(System.Int32,System.String,CustomCADs.API.Models.Cads.CoordinatesDTO)">
+            <summary>
+                Updates CamCoordinates or PanCoordinates property of Cad.
+            </summary>
+            <param name="id"></param>
+            <param name="type">Must be either Camera or Pan.</param>
+            <param name="coordinates"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.CadsController.DeleteCadAsync(System.Int32)">
+            <summary>
+                Deletes the Cad with the specified id.
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="T:CustomCADs.API.Controllers.DesignerController">
+            <summary>
+                Controller for Updating Status of Cad and Order.
+            </summary>
+            <param name="designerService"></param>
+            <param name="mapper"></param>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.DesignerController.#ctor(CustomCADs.Application.Contracts.IDesignerService,AutoMapper.IMapper)">
+            <summary>
+                Controller for Updating Status of Cad and Order.
+            </summary>
+            <param name="designerService"></param>
+            <param name="mapper"></param>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.DesignerController.GetUncheckedCadsAsync(System.String,System.String,System.String,System.String,System.Int32,System.Int32)">
+            <summary>
+                Gets all Cads with Unchecked status.
+            </summary>
+            <param name="sorting"></param>
+            <param name="category"></param>
+            <param name="name"></param>
+            <param name="creator"></param>
+            <param name="page"></param>
+            <param name="limit"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.DesignerController.UpdateCadStatusAsync(System.Int32,System.String)">
+            <summary>
+                Updates the specified Cad with the specified Status.
+            </summary>
+            <param name="id"></param>
+            <param name="status"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.DesignerController.GetOrdersByStatusAsync(System.String,System.String,System.String,System.String,System.String,System.Int32,System.Int32)">
+            <summary>
+                Gets all Orders with specified status.
+            </summary>
+            <param name="status"></param>
+            <param name="sorting"></param>
+            <param name="category"></param>
+            <param name="name"></param>
+            <param name="buyer"></param>
+            <param name="page"></param>
+            <param name="limit"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.DesignerController.GetRecentOrdersAsync(System.Int32)">
+            <summary>
+                Gets the User's most recent finished Orders.
+            </summary>
+            <param name="limit"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.DesignerController.UpdateOrderStatusAsync(System.Int32,System.String)">
+            <summary>
+                Updates the specified Cad with the specified Status.
+            </summary>
+            <param name="id"></param>
+            <param name="status">Must be Begin, Report or Cancel</param>
+            <returns></returns>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.DesignerController.CompleteOrderAsync(System.Int32,System.Int32)">
+            <summary>
+                Updates the specified Order's Status as Finished and sets its CadId to the specified.
+            </summary>
+            <param name="id"></param>
+            <param name="cadId"></param>
+            <returns></returns>
+        </member>
+        <member name="T:CustomCADs.API.Controllers.HomeController">
+            <summary>
+                Controller for public data.
+            </summary>
+            <param name="cadService"></param>
+            <param name="categoryService"></param>
+            <param name="mapper"></param>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.HomeController.#ctor(CustomCADs.Application.Contracts.ICadService,CustomCADs.Application.Contracts.ICategoryService,AutoMapper.IMapper)">
+            <summary>
+                Controller for public data.
+            </summary>
+            <param name="cadService"></param>
+            <param name="categoryService"></param>
+            <param name="mapper"></param>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.HomeController.GetHomeCadAsync">
+            <summary>
+                Gets the path and coordinates to the 3D Model for the Home Page.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.HomeController.GetGalleryAsync(System.String,System.String,System.String,System.String,System.Int32,System.Int32)">
+            <summary>
+                Queries all Validated 3D Models with the specified parameters.
+            </summary>
+            <param name="sorting"></param>
+            <param name="category"></param>
+            <param name="name"></param>
+            <param name="creator"></param>
+            <param name="page"></param>
+            <param name="limit"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.HomeController.GetGalleryCadAsync(System.Int32)">
+            <summary>
+                Get info about a 3D Model from the Gallery.
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.HomeController.GetCategoriesAsync">
+            <summary>
+                Gets all existing Categories.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.HomeController.GetSortingsAsync">
+            <summary>
+                Gets all existing Sortings.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:CustomCADs.API.Controllers.IdentityController">
+            <summary>
+                Controller for managing Authentication/Authorization and info about the User's Identity.
+            </summary>
+            <param name="userManager"></param>
+            <param name="signInManager"></param>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.IdentityController.#ctor(Microsoft.AspNetCore.Identity.UserManager{CustomCADs.Domain.Identity.AppUser},Microsoft.AspNetCore.Identity.SignInManager{CustomCADs.Domain.Identity.AppUser})">
+            <summary>
+                Controller for managing Authentication/Authorization and info about the User's Identity.
+            </summary>
+            <param name="userManager"></param>
+            <param name="signInManager"></param>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.IdentityController.Register(System.String,CustomCADs.API.Models.Users.UserRegisterModel)">
+            <summary>
+                Creates a new account with the specified parameters for the user and logs into it.
+            </summary>
+            <param name="role"></param>
+            <param name="register"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.IdentityController.Login(CustomCADs.API.Models.Users.UserLoginModel)">
+            <summary>
+                Logs into the account with the specified parameters.
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.IdentityController.Logout">
+            <summary>
+                Logs out of the current account.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.IdentityController.IsAuthenticated">
+            <summary>
+                Gets info about User Authentication.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.IdentityController.GetUserRole">
+            <summary>
+                Gets info about User Authorization.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:CustomCADs.API.Controllers.OrdersController">
+            <summary>
+                Controller for CRUD operations on Order.
+            </summary>
+            <param name="orderService"></param>
+            <param name="cadService"></param>
+            <param name="env"></param>
+            <param name="mapper"></param>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.OrdersController.#ctor(CustomCADs.Application.Contracts.IOrderService,CustomCADs.Application.Contracts.ICadService,Microsoft.AspNetCore.Hosting.IWebHostEnvironment,AutoMapper.IMapper)">
+            <summary>
+                Controller for CRUD operations on Order.
+            </summary>
+            <param name="orderService"></param>
+            <param name="cadService"></param>
+            <param name="env"></param>
+            <param name="mapper"></param>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.OrdersController.GetOrdersAsync(System.String,CustomCADs.Application.Models.Utilities.PaginationModel,System.String,System.String,System.String)">
+            <summary>
+                Queries the User's Orders with the specified parameters.
+            </summary>
+            <param name="status"></param>
+            <param name="pagination"></param>
+            <param name="sorting"></param>
+            <param name="category"></param>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.OrdersController.GetRecentOrdersAsync(System.Int32)">
+            <summary>
+                Gets the User's most recent Orders.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.OrdersController.CountOrdersAsync">
+            <summary>
+                Gets the counts of the User's Orders grouped by their status.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.OrdersController.GetOrderAsync(System.Int32)">
+            <summary>
+                Gets an Order by the specified Id.
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.OrdersController.PostOrderAsync(CustomCADs.API.Models.Orders.OrderImportDTO)">
+            <summary>
+                Creates an Order entity in the database.
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.OrdersController.OrderExistingAsync(System.Int32)">
+            <summary>
+                Creates an Order entity with a Relation to the Cad with the specified id in the database.
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.OrdersController.PutOrderAsync(System.Int32,CustomCADs.API.Models.Orders.OrderImportDTO)">
+            <summary>
+                Updates Name, Description and CategoryId for Orders have a Pending status.
+            </summary>
+            <param name="id"></param>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.OrdersController.PatchOrderAsync(System.Int32,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{CustomCADs.Application.Models.Orders.OrderModel})">
+            <summary>
+                Updates Order in the traditional way - with an array of operations.
+            </summary>
+            <param name="id"></param>
+            <param name="patchOrder"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.OrdersController.DeleteOrderAsync(System.Int32)">
+            <summary>
+                Deletes the Order with the specified id.
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.OrdersController.DownloadCad(System.Int32)">
+            <summary>
+                Downloads the Cad with the specified id, as a .glb or a .zip depending on the way it was uploaded.
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="T:CustomCADs.API.Controllers.PaymentController">
+            <summary>
+                Controller for managing payments on the server.
+            </summary>
+            <param name="paymentService"></param>
+            <param name="cadService"></param>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.PaymentController.#ctor(CustomCADs.Application.Contracts.IPaymentService,CustomCADs.Application.Contracts.ICadService)">
+            <summary>
+                Controller for managing payments on the server.
+            </summary>
+            <param name="paymentService"></param>
+            <param name="cadService"></param>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.PaymentController.GetPublicKey">
+            <summary>
+                Gets the Public Key.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.PaymentController.Purchase(System.Int32,System.String)">
+            <summary>
+                Initializes the Payment Intent and returns a Client Secret if an error occurs.
+            </summary>
+            <param name="id"></param>
+            <param name="paymentMethodId"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

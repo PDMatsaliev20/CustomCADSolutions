@@ -7,8 +7,6 @@ using CustomCADs.Domain;
 using CustomCADs.Domain.Entities;
 using CustomCADs.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace CustomCADs.Application.Services
 {

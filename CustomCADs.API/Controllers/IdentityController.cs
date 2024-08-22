@@ -13,10 +13,21 @@ namespace CustomCADs.API.Controllers
     using static StatusCodes;
     using static ApiMessages;
 
+    /// <summary>
+    ///     Controller for managing Authentication/Authorization and info about the User's Identity.
+    /// </summary>
+    /// <param name="userManager"></param>
+    /// <param name="signInManager"></param>
     [ApiController]
     [Route("API/[controller]")]
     public class IdentityController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager) : ControllerBase
     {
+        /// <summary>
+        ///     Creates a new account with the specified parameters for the user and logs into it.
+        /// </summary>
+        /// <param name="role"></param>
+        /// <param name="register"></param>
+        /// <returns></returns>
         [HttpPost("Register/{role}")]
         [Consumes("application/json")]
         [ProducesResponseType(Status200OK)]
@@ -82,6 +93,11 @@ namespace CustomCADs.API.Controllers
             }
         }
 
+        /// <summary>
+        ///     Logs into the account with the specified parameters.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost("Login")]
         [Consumes("application/json")]
         [ProducesResponseType(Status200OK)]
@@ -112,6 +128,10 @@ namespace CustomCADs.API.Controllers
             }
         }
 
+        /// <summary>
+        ///     Logs out of the current account.
+        /// </summary>
+        /// <returns></returns>
         [HttpPost("Logout")]
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status400BadRequest)]
@@ -132,11 +152,19 @@ namespace CustomCADs.API.Controllers
             }
         }
 
-        [HttpGet("IsAuthenticated")]
+        /// <summary>
+        ///     Gets info about User Authentication.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("Authentication")]
         [ProducesResponseType(Status200OK)]
         public ActionResult<bool> IsAuthenticated() => User.Identity?.IsAuthenticated ?? false;
 
-        [HttpGet("GetUserRole")]
+        /// <summary>
+        ///     Gets info about User Authorization.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("Authorization")]
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status401Unauthorized)]
         [ProducesResponseType (Status500InternalServerError)]

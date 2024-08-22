@@ -11,6 +11,7 @@ string[] roles = [Admin, Designer, Contributor, Client];
 builder.Services.AddAuthWithCookie().AddRoles(roles);
 
 builder.Services.AddAutoMapper(typeof(Program)).AddApplicationAutoMapper();
+builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddControllers().AddJsonAndXml();
 
 builder.Services.AddApiConfigurations();

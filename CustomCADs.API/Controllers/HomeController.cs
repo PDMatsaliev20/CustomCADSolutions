@@ -14,10 +14,20 @@ namespace CustomCADs.API.Controllers
 {
     using static StatusCodes;
 
+    /// <summary>
+    ///     Controller for public data.
+    /// </summary>
+    /// <param name="cadService"></param>
+    /// <param name="categoryService"></param>
+    /// <param name="mapper"></param>
     [ApiController]
     [Route("API/[controller]")]
     public class HomeController(ICadService cadService, ICategoryService categoryService, IMapper mapper) : ControllerBase
     {
+        /// <summary>
+        ///     Gets the path and coordinates to the 3D Model for the Home Page.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("Cad")]
         [ProducesResponseType(Status200OK)]
         public ActionResult<CadGetDTO> GetHomeCadAsync()
@@ -28,15 +38,26 @@ namespace CustomCADs.API.Controllers
                 PanCoords = [0, 6, -3]
             };
 
+        /// <summary>
+        ///     Queries all Validated 3D Models with the specified parameters.
+        /// </summary>
+        /// <param name="sorting"></param>
+        /// <param name="category"></param>
+        /// <param name="name"></param>
+        /// <param name="creator"></param>
+        /// <param name="page"></param>
+        /// <param name="limit"></param>
+        /// <returns></returns>
         [HttpGet("Gallery")]
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status500InternalServerError)]
         [ProducesResponseType(Status502BadGateway)]
-        public async Task<ActionResult<CadQueryResultDTO>> GetGalleryAsync([FromQuery] PaginationModel pagination, string? sorting, string? category, string? name, string? creator)
+        public async Task<ActionResult<CadQueryResultDTO>> GetGalleryAsync(string? sorting, string? category, string? name, string? creator, int page = 1, int limit = 20)
         {
             CadQuery query = new() { Status = CadStatus.Validated };
             SearchModel search = new() { Category = category, Name = name, Owner = creator, Sorting = sorting ?? "" };
-            
+            PaginationModel pagination = new() { Page = page, Limit = limit };
+
             try
             {
                 CadResult result = await cadService.GetAllAsync(query, search, pagination).ConfigureAwait(false);
@@ -55,6 +76,11 @@ namespace CustomCADs.API.Controllers
             }
         }
 
+        /// <summary>
+        ///     Get info about a 3D Model from the Gallery.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("Gallery/{id}")]
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status404NotFound)]
@@ -84,6 +110,10 @@ namespace CustomCADs.API.Controllers
             }
         }
 
+        /// <summary>
+        ///     Gets all existing Categories.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("Categories")]
         [Produces("application/json")]
         [ProducesResponseType(Status200OK)]
@@ -109,6 +139,10 @@ namespace CustomCADs.API.Controllers
             }
         }
 
+        /// <summary>
+        ///     Gets all existing Sortings.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("Sortings")]
         [Produces("application/json")]
         [ProducesResponseType(200)]

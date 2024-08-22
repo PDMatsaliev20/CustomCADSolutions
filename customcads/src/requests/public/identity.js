@@ -13,11 +13,11 @@ const Logout = async () => {
 }
 
 const IsAuthenticated = async () => {
-    return await axios.get('/API/Identity/IsAuthenticated');
+    return await axios.get('/API/Identity/Authentication');
 };
 
 const GetUserRole = async () => {
-    return await axios.get('/API/Identity/GetUserRole');
+    return await axios.get('/API/Identity/Authorized');
 };
 
 export { Register, Login, Logout, IsAuthenticated, GetUserRole };

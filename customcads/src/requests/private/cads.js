@@ -5,7 +5,7 @@ const GetCads = async (searchParams) => {
 }
 
 const GetRecentCads = async () => {
-    return await axios.get(`/API/Cads/Recents`);
+    return await axios.get(`/API/Cads/Recent`);
 }
 
 const GetCadsCounts = async () => {

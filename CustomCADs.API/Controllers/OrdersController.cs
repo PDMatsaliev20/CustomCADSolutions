@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using CustomCADs.API.Helpers;
-using CustomCADs.API.Mappings;
 using CustomCADs.API.Models.Orders;
 using CustomCADs.API.Models.Queries;
 using CustomCADs.Application.Contracts;
@@ -19,6 +18,13 @@ namespace CustomCADs.API.Controllers
     using static StatusCodes;
     using static ApiMessages;
 
+    /// <summary>
+    ///     Controller for CRUD operations on Order.
+    /// </summary>
+    /// <param name="orderService"></param>
+    /// <param name="cadService"></param>
+    /// <param name="env"></param>
+    /// <param name="mapper"></param>
     [Authorize(Roles = Client)]
     [ApiController]
     [Route("API/[controller]")]
@@ -26,6 +32,15 @@ namespace CustomCADs.API.Controllers
     {
         private readonly string createdAtReturnAction = nameof(GetOrderAsync).Replace("Async", "");
 
+        /// <summary>
+        ///     Queries the User's Orders with the specified parameters.
+        /// </summary>
+        /// <param name="status"></param>
+        /// <param name="pagination"></param>
+        /// <param name="sorting"></param>
+        /// <param name="category"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
         [HttpGet]
         [Produces("application/json")]
         [ProducesResponseType(Status200OK)]
@@ -60,18 +75,22 @@ namespace CustomCADs.API.Controllers
             }
         }
 
+        /// <summary>
+        ///     Gets the User's most recent Orders.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("Recent")]
         [Produces("application/json")]
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status500InternalServerError)]
         [ProducesResponseType(Status502BadGateway)]
-        public async Task<ActionResult<OrderResultDTO>> GetRecentOrdersAsync()
+        public async Task<ActionResult<OrderResultDTO>> GetRecentOrdersAsync(int limit = 4)
         {
             try
             {
                 OrderQuery query = new() { Buyer = User.Identity!.Name };
                 SearchModel search = new() { Sorting = nameof(Sorting.Newest) };
-                PaginationModel pagination = new() { Page = 1, Limit = 5 };
+                PaginationModel pagination = new() { Limit = limit };
 
                 OrderResult result = await orderService.GetAllAsync(query, search, pagination)
                     .ConfigureAwait(false);
@@ -90,6 +109,10 @@ namespace CustomCADs.API.Controllers
             }
         }
 
+        /// <summary>
+        ///     Gets the counts of the User's Orders grouped by their status.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("Counts")]
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status500InternalServerError)]
@@ -114,6 +137,11 @@ namespace CustomCADs.API.Controllers
             }
         }
 
+        /// <summary>
+        ///     Gets an Order by the specified Id.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         [Produces("application/json")]
         [ProducesResponseType(Status200OK)]
@@ -151,6 +179,11 @@ namespace CustomCADs.API.Controllers
             }
         }
 
+        /// <summary>
+        ///     Creates an Order entity in the database.
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
         [HttpPost]
         [Consumes("multipart/form-data")]
         [Produces("application/json")]
@@ -199,6 +232,11 @@ namespace CustomCADs.API.Controllers
             }
         }
 
+        /// <summary>
+        ///     Creates an Order entity with a Relation to the Cad with the specified id in the database.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpPost("{id}")]
         [ProducesResponseType(Status201Created)]
         [ProducesResponseType(Status404NotFound)]
@@ -243,7 +281,13 @@ namespace CustomCADs.API.Controllers
                 return StatusCode(Status500InternalServerError, ex.GetMessage());
             }
         }
-
+        
+        /// <summary>
+        ///     Updates Name, Description and CategoryId for Orders have a Pending status.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="dto"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         [Consumes("multipart/form-data")]
         [ProducesResponseType(Status204NoContent)]
@@ -291,6 +335,12 @@ namespace CustomCADs.API.Controllers
             }
         }
 
+        /// <summary>
+        ///     Updates Order in the traditional way - with an array of operations.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="patchOrder"></param>
+        /// <returns></returns>
         [HttpPatch("{id}")]
         [Consumes("application/json")]
         [ProducesResponseType(Status204NoContent)]
@@ -350,6 +400,11 @@ namespace CustomCADs.API.Controllers
             }
         }
 
+        /// <summary>
+        ///     Deletes the Order with the specified id.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         [ProducesResponseType(Status204NoContent)]
         [ProducesResponseType(Status403Forbidden)]
@@ -392,7 +447,12 @@ namespace CustomCADs.API.Controllers
             }
         }
 
-        [HttpGet("DownloadCad/{id}")]
+        /// <summary>
+        ///     Downloads the Cad with the specified id, as a .glb or a .zip depending on the way it was uploaded.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("{id}/DownloadCad")]
         [Produces("model/gltf-binary", "application/zip")]
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status400BadRequest)]

@@ -14,12 +14,22 @@ namespace CustomCADs.API.Controllers.Admin
     using static StatusCodes;
     using static ApiMessages;
 
+    /// <summary>
+    ///     Admin Controller for managing Roles.
+    /// </summary>
+    /// <param name="roleManager"></param>
+    /// <param name="mapper"></param>
     [ApiController]
     [Route("API/Admin/[controller]")]
     [Authorize(Roles = RoleConstants.Admin)]
     public class RolesController(RoleManager<AppRole> roleManager, IMapper mapper) : ControllerBase
     {
         private readonly string createdAtReturnAction = nameof(GetRoleAsync).Replace("Async", "");
+
+        /// <summary>
+        ///     Gets All Roles
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Produces("application/json")]
         [ProducesResponseType(Status200OK)]
@@ -45,6 +55,11 @@ namespace CustomCADs.API.Controllers.Admin
             }
         }
 
+        /// <summary>
+        ///     Gets a Role by the specified name.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         [HttpGet("{name}")]
         [Produces("application/json")]
         [ProducesResponseType(Status200OK)]
@@ -74,6 +89,12 @@ namespace CustomCADs.API.Controllers.Admin
             }
         }
 
+        /// <summary>
+        ///     Creates a Role with the specified name.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="description"></param>
+        /// <returns></returns>
         [HttpPost("{name}")]
         [ProducesResponseType(Status201Created)]
         [ProducesResponseType(Status400BadRequest)]
@@ -111,12 +132,18 @@ namespace CustomCADs.API.Controllers.Admin
             }
         }
 
+        /// <summary>
+        ///     Updates a Role in the traditional way - with an array of operations.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="patchRole"></param>
+        /// <returns></returns>
         [HttpPatch("{name}")]
         [ProducesResponseType(Status204NoContent)]
         [ProducesResponseType(Status400BadRequest)]
         [ProducesResponseType(Status404NotFound)]
         [ProducesResponseType(Status500InternalServerError)]
-        public async Task<ActionResult> PatchUserAsync(string name, [FromBody] JsonPatchDocument<AppRole> patchRole)
+        public async Task<ActionResult> PatchRoleAsync(string name, [FromBody] JsonPatchDocument<AppRole> patchRole)
         {
             if (string.IsNullOrWhiteSpace(name))
             {
@@ -154,6 +181,11 @@ namespace CustomCADs.API.Controllers.Admin
             }
         }
 
+        /// <summary>
+        ///     Deletes the Role with the specified name.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         [HttpDelete("{name}")]
         [ProducesResponseType(Status204NoContent)]
         [ProducesResponseType(Status404NotFound)]

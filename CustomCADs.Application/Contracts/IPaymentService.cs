@@ -7,6 +7,6 @@ namespace CustomCADs.Application.Contracts
     {
         string GetPublicKey();
         Task<PaymentResult> CapturePaymentAsync(string paymentIntentId);
-        Task<PaymentResult> ProcessPayment(string paymentMethod, PurchaseInfo purchase);
+        Task<PaymentResult> InitializePayment(string paymentMethod, PurchaseInfo purchase);
     }
 }

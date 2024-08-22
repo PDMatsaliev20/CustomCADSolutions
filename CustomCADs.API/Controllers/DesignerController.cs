@@ -16,19 +16,34 @@ namespace CustomCADs.API.Controllers
     using static StatusCodes;
     using static ApiMessages;
 
+    /// <summary>
+    ///     Controller for Updating Status of Cad and Order.
+    /// </summary>
+    /// <param name="designerService"></param>
+    /// <param name="mapper"></param>
     [ApiController]
     [Route("API/[controller]")]
     [Authorize(Designer)]
     public class DesignerController(IDesignerService designerService, IMapper mapper) : ControllerBase
     {
+        /// <summary>
+        ///     Gets all Cads with Unchecked status.
+        /// </summary>
+        /// <param name="sorting"></param>
+        /// <param name="category"></param>
+        /// <param name="name"></param>
+        /// <param name="creator"></param>
+        /// <param name="page"></param>
+        /// <param name="limit"></param>
+        /// <returns></returns>
         [HttpGet("Cads")]
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status500InternalServerError)]
         [ProducesResponseType(Status502BadGateway)]
-        public async Task<ActionResult<CadQueryResultDTO>> GetUncheckedCadsAsync([FromQuery] PaginationModel pagination, string? sorting, string? category, string? name, string? creator)
+        public async Task<ActionResult<CadQueryResultDTO>> GetUncheckedCadsAsync(string? sorting, string? category, string? name, string? creator, int page = 1, int limit = 6)
         {
-            CadQuery query = new() { Status = CadStatus.Unchecked };
             SearchModel search = new() { Category = category, Owner = creator, Name = name, Sorting = sorting ?? ""};
+            PaginationModel pagination = new() { Page = page, Limit = limit };
 
             try
             {
@@ -48,7 +63,13 @@ namespace CustomCADs.API.Controllers
             }
         }
 
-        [HttpPatch("Cads/Status/{id}")]
+        /// <summary>
+        ///     Updates the specified Cad with the specified Status.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="status"></param>
+        /// <returns></returns>
+        [HttpPatch("Cads/{id}")]
         [ProducesResponseType(Status204NoContent)]
         [ProducesResponseType(Status404NotFound)]
         public async Task<ActionResult> UpdateCadStatusAsync(int id, string status)
@@ -76,11 +97,22 @@ namespace CustomCADs.API.Controllers
             }
         }
 
+        /// <summary>
+        ///     Gets all Orders with specified status.
+        /// </summary>
+        /// <param name="status"></param>
+        /// <param name="sorting"></param>
+        /// <param name="category"></param>
+        /// <param name="name"></param>
+        /// <param name="buyer"></param>
+        /// <param name="page"></param>
+        /// <param name="limit"></param>
+        /// <returns></returns>
         [HttpGet("Orders")]
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status500InternalServerError)]
         [ProducesResponseType(Status502BadGateway)]
-        public async Task<ActionResult<OrderResultDTO>> GetOrdersByStatusAsync(string status, [FromQuery] PaginationModel pagination, string? sorting, string? category, string? name, string? buyer)
+        public async Task<ActionResult<OrderResultDTO>> GetOrdersByStatusAsync(string status, string? sorting, string? category, string? name, string? buyer, int page = 1, int limit = 20)
         {
             try
             {
@@ -92,6 +124,7 @@ namespace CustomCADs.API.Controllers
 
                 OrderQuery query = new() { Status = Enum.Parse<OrderStatus>(status.Capitalize()) };
                 SearchModel search = new() { Category = category, Name = name, Owner = buyer, Sorting = sorting ?? string.Empty };
+                PaginationModel pagination = new() { Page = page, Limit = limit };
 
                 OrderResult result = await designerService.GetOrdersAsync(status, null, search, pagination).ConfigureAwait(false);
 
@@ -110,17 +143,22 @@ namespace CustomCADs.API.Controllers
             }
         }
         
+        /// <summary>
+        ///     Gets the User's most recent finished Orders.
+        /// </summary>
+        /// <param name="limit"></param>
+        /// <returns></returns>
         [HttpGet("Orders/Recent")]
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status500InternalServerError)]
         [ProducesResponseType(Status502BadGateway)]
-        public async Task<ActionResult<OrderResultDTO>> GetRecentOrdersAsync()
+        public async Task<ActionResult<OrderResultDTO>> GetRecentOrdersAsync(int limit = 4)
         {
             try
             {
                 OrderQuery query = new() { Status = OrderStatus.Finished };
                 SearchModel search = new() { Sorting = "newest" };
-                PaginationModel pagination = new() { Limit = 4 };
+                PaginationModel pagination = new() { Limit = limit };
 
                 OrderResult result = await designerService.GetOrdersAsync("finished", User.GetId(), search, pagination);
 
@@ -139,79 +177,32 @@ namespace CustomCADs.API.Controllers
             }
         }
 
-        [HttpPatch("Orders/Begin/{id}")]
+
+        /// <summary>
+        ///     Updates the specified Cad with the specified Status.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="status">Must be Begin, Report or Cancel</param>
+        /// <returns></returns>
+        [HttpPatch("Orders/{id}")]
         [ProducesResponseType(Status204NoContent)]
         [ProducesResponseType(Status404NotFound)]
-        public async Task<ActionResult> BeginOrderAsync(int id)
+        public async Task<ActionResult> UpdateOrderStatusAsync(int id, string status)
         {
             try
             {
-                await designerService.BeginAsync(id, User.GetId()).ConfigureAwait(false);
+                switch (status.ToLower())
+                {
+                    case "begin": await designerService.BeginAsync(id, User.GetId()); break;
+                    case "report": await designerService.ReportAsync(id); break;
+                    case "cancel": await designerService.CancelAsync(id, User.GetId()); break;
+                    default: return BadRequest(string.Format(InvalidStatus, string.Join(", ", Enum.GetNames<CadStatus>())));
+                }
                 return NoContent();
             }
             catch (KeyNotFoundException ex)
             {
                 return NotFound(ex.GetMessage());
-            }
-            catch (DbUpdateConcurrencyException ex)
-            {
-                return Conflict(ex.GetMessage());
-            }
-            catch (DbUpdateException ex)
-            {
-                return BadRequest(ex.GetMessage());
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(Status500InternalServerError, ex.GetMessage());
-            }
-        }
-        
-        [HttpPatch("Orders/Report/{id}")]
-        [ProducesResponseType(Status204NoContent)]
-        [ProducesResponseType(Status404NotFound)]
-        public async Task<ActionResult> ReportOrderAsync(int id)
-        {
-            try
-            {
-                await designerService.ReportAsync(id).ConfigureAwait(false);
-                return NoContent();
-            }
-            catch (KeyNotFoundException ex)
-            {
-                return NotFound(ex.GetMessage());
-            }
-            catch (DbUpdateConcurrencyException ex)
-            {
-                return Conflict(ex.GetMessage());
-            }
-            catch (DbUpdateException ex)
-            {
-                return BadRequest(ex.GetMessage());
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(Status500InternalServerError, ex.GetMessage());
-            }
-        }
-        
-        [HttpPatch("Orders/Cancel/{id}")]
-        [ProducesResponseType(Status204NoContent)]
-        [ProducesResponseType(Status404NotFound)]
-        public async Task<ActionResult> CancelOrderAsync(int id)
-        {
-            try
-            {
-                await designerService.CancelAsync(id, User.GetId()).ConfigureAwait(false);
-                return NoContent();
-            }
-            catch (KeyNotFoundException ex)
-            {
-                return NotFound(ex.GetMessage());
-            }
-            catch (UnauthorizedAccessException)
-            {
-                return Forbid(ForbiddenAccess);
             }
             catch (DbUpdateConcurrencyException ex)
             {
@@ -227,7 +218,13 @@ namespace CustomCADs.API.Controllers
             }
         }
 
-        [HttpPatch("Orders/Finish/{id}")]
+        /// <summary>
+        ///     Updates the specified Order's Status as Finished and sets its CadId to the specified.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="cadId"></param>
+        /// <returns></returns>
+        [HttpPatch("Orders/{id}/Finish")]
         [ProducesResponseType(Status204NoContent)]
         [ProducesResponseType(Status404NotFound)]
         [ProducesResponseType(Status500InternalServerError)]

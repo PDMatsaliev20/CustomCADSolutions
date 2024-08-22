@@ -23,7 +23,7 @@ namespace CustomCADs.Infrastructure.Payment
             };
         }
 
-        public async Task<PaymentResult> ProcessPayment(string paymentMethodId, PurchaseInfo purchase)
+        public async Task<PaymentResult> InitializePayment(string paymentMethodId, PurchaseInfo purchase)
         {
             StripeConfiguration.ApiKey = keys.TestSecretKey;
 

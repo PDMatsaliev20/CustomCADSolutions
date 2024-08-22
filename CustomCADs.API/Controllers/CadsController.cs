@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using CustomCADs.API.Helpers;
-using CustomCADs.API.Mappings;
 using CustomCADs.API.Models.Cads;
 using CustomCADs.API.Models.Queries;
 using CustomCADs.Application.Contracts;
@@ -8,7 +7,6 @@ using CustomCADs.Application.Models.Cads;
 using CustomCADs.Application.Models.Utilities;
 using CustomCADs.Domain.Enums;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using static CustomCADs.Domain.DataConstants.RoleConstants;
@@ -18,6 +16,12 @@ namespace CustomCADs.API.Controllers
     using static StatusCodes;
     using static ApiMessages;
 
+    /// <summary>
+    ///     Controller for CRUD operations on Cad
+    /// </summary>
+    /// <param name="cadService"></param>
+    /// <param name="env"></param>
+    /// <param name="mapper"></param>
     [Authorize(Roles = $"{Contributor},{Designer}")]
     [ApiController]
     [Route("API/[controller]")]
@@ -25,15 +29,25 @@ namespace CustomCADs.API.Controllers
     {
         private readonly string createdAtReturnAction = nameof(GetCadAsync).Replace("Async", "");
         
+        /// <summary>
+        ///     Queries the User's Cads with the specified parameters.
+        /// </summary>
+        /// <param name="sorting"></param>
+        /// <param name="category"></param>
+        /// <param name="name"></param>
+        /// <param name="page"></param>
+        /// <param name="limit"></param>
+        /// <returns></returns>
         [HttpGet]
         [Produces("application/json")]
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status500InternalServerError)]
         [ProducesResponseType(Status502BadGateway)]
-        public async Task<ActionResult<CadQueryResultDTO>> GetCadsAsync([FromQuery] PaginationModel pagination, string? sorting, string? category, string? name)
+        public async Task<ActionResult<CadQueryResultDTO>> GetCadsAsync(string? sorting, string? category, string? name, int page = 1, int limit = 20)
         {
             CadQuery query = new() { Creator = User.Identity!.Name };
             SearchModel search = new() { Category = category, Name = name, Sorting = sorting ?? "" };
+            PaginationModel pagination = new() { Page = page, Limit = limit };
 
             try
             {
@@ -53,16 +67,20 @@ namespace CustomCADs.API.Controllers
             }
         }
         
-        [HttpGet("Recents")]
+        /// <summary>
+        ///     Gets the User's most recent Cads.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("Recent")]
         [Produces("application/json")]
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status500InternalServerError)]
         [ProducesResponseType(Status502BadGateway)]
-        public async Task<ActionResult<CadQueryResultDTO>> GetRecentCadsAsync()
+        public async Task<ActionResult<CadQueryResultDTO>> GetRecentCadsAsync(int limit = 4)
         {
             CadQuery query = new() { Creator = User.Identity!.Name };
             SearchModel search = new() { Sorting = nameof(Sorting.Newest) };
-            PaginationModel pagination = new() { Limit = 4 };
+            PaginationModel pagination = new() { Limit = limit };
 
             try
             {
@@ -82,12 +100,16 @@ namespace CustomCADs.API.Controllers
             }
         }
         
+        /// <summary>
+        ///     Gets counts of the User's Cads grouped by their status.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("Counts")]
         [Produces("application/json")]
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status500InternalServerError)]
         [ProducesResponseType(Status502BadGateway)]
-        public ActionResult<dynamic> GetCadsCountsAsync()
+        public ActionResult<CadCountsDTO> GetCadsCountsAsync()
         {
             try
             {
@@ -99,7 +121,8 @@ namespace CustomCADs.API.Controllers
                 int reportedCadsCounts = cadService.Count(c => predicate(c, CadStatus.Reported));
                 int bannedCadsCounts = cadService.Count(c => predicate(c, CadStatus.Banned));
 
-                return new { Unchecked = uncheckedCadsCounts, validated = validatedCadsCounts, reported = reportedCadsCounts, banned = bannedCadsCounts };
+                CadCountsDTO counts = new(uncheckedCadsCounts, validatedCadsCounts, reportedCadsCounts, bannedCadsCounts);
+                return counts;
             }
             catch (Exception ex)
             {
@@ -107,6 +130,11 @@ namespace CustomCADs.API.Controllers
             }
         }
 
+        /// <summary>
+        ///     Gets a Cad by the specified id.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         [Produces("application/json")]
         [ProducesResponseType(Status200OK)]
@@ -144,6 +172,11 @@ namespace CustomCADs.API.Controllers
             }
         }
 
+        /// <summary>
+        ///     Creates a Cad entity in the database, max file size is 300MB.
+        /// </summary>
+        /// <param name="import"></param>
+        /// <returns></returns>
         [HttpPost]
         [RequestSizeLimit(300_000_000)]
         [Consumes("multipart/form-data")]
@@ -203,6 +236,12 @@ namespace CustomCADs.API.Controllers
             }
         }
 
+        /// <summary>
+        ///     Updates Name, Description, Price CategoryId and optionally Image properties of Cad.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="dto"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         [Consumes("multipart/form-data")]
         [ProducesResponseType(Status204NoContent)]
@@ -253,6 +292,13 @@ namespace CustomCADs.API.Controllers
             }
         }
 
+        /// <summary>
+        ///     Updates CamCoordinates or PanCoordinates property of Cad.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="type">Must be either Camera or Pan.</param>
+        /// <param name="coordinates"></param>
+        /// <returns></returns>
         [HttpPatch("{id}")]
         [Consumes("application/json")]
         [ProducesResponseType(Status204NoContent)]
@@ -311,6 +357,11 @@ namespace CustomCADs.API.Controllers
             }
         }
 
+        /// <summary>
+        ///     Deletes the Cad with the specified id.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         [ProducesResponseType(Status204NoContent)]
         [ProducesResponseType(Status400BadRequest)]
