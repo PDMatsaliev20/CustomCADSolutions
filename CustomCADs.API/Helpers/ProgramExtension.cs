@@ -2,9 +2,13 @@
 using CustomCADs.Application.Mappings;
 using CustomCADs.Application.Models.Categories;
 using CustomCADs.Application.Services;
-using CustomCADs.Domain;
+using CustomCADs.Domain.Contracts;
+using CustomCADs.Domain.Entities;
 using CustomCADs.Domain.Identity;
 using CustomCADs.Infrastructure.Data;
+using CustomCADs.Infrastructure.Data.Repositories;
+using CustomCADs.Infrastructure.Data.Repositories.Command;
+using CustomCADs.Infrastructure.Data.Repositories.Query;
 using CustomCADs.Infrastructure.Payment;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
@@ -21,7 +25,15 @@ namespace Microsoft.Extensions.DependencyInjection
             string connectionString = config.GetConnectionString("RealConnection")
                     ?? throw new KeyNotFoundException("Could not find connection string 'RealConnection'.");
             services.AddDbContext<CadContext>(options => options.UseSqlServer(connectionString));
-            services.AddScoped<IRepository, Repository>();
+            services.AddScoped<IDbTracker, DbTracker>();            
+
+            services.AddScoped<IQueryRepository<Order>, OrderQueryRepository>();
+            services.AddScoped<IQueryRepository<Cad>, CadQueryRepository>();
+            services.AddScoped<IQueryRepository<Category>, CategoryQueryRepository>();
+
+            services.AddScoped<ICommandRepository<Order>, OrderCommandRepository>();
+            services.AddScoped<ICommandRepository<Cad>, CadCommandRepository>();
+            services.AddScoped<ICommandRepository<Category>, CategoryCommandRepository>();
         }
 
         public static void AddAppIdentity(this IServiceCollection services)

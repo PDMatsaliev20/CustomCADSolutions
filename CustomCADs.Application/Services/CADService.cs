@@ -2,21 +2,24 @@
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Cads;
 using CustomCADs.Application.Models.Utilities;
-using CustomCADs.Domain;
+using CustomCADs.Domain.Contracts;
 using CustomCADs.Domain.Entities;
 using CustomCADs.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Linq.Expressions;
 
 
 namespace CustomCADs.Application.Services
 {
-    public class CadService(IRepository repository, IMapper mapper) : ICadService
+    public class CadService(IDbTracker dbTracker,
+        IQueryRepository<Cad> cadQueries,
+        IQueryRepository<Order> orderQueries, 
+        ICommandRepository<Cad> commands,
+        IMapper mapper) : ICadService
     {
         public async Task<CadResult> GetAllAsync(CadQuery query, SearchModel search, PaginationModel pagination, Expression<Func<Cad, bool>>? customFilter = null)
         {
-            IQueryable<Cad> allCads = repository.All<Cad>();
+            IQueryable<Cad> allCads = cadQueries.GetAll();
 
             // Querying
             if (query.Creator != null)
@@ -74,7 +77,7 @@ namespace CustomCADs.Application.Services
 
         public async Task<CadModel> GetByIdAsync(int id)
         {
-            Cad cad = await repository.GetByIdAsync<Cad>(id).ConfigureAwait(false)
+            Cad cad = await cadQueries.GetByIdAsync(id).ConfigureAwait(false)
                 ?? throw new KeyNotFoundException($"Model with id: {id} doesn't exist");
 
             CadModel model = mapper.Map<CadModel>(cad);
@@ -82,34 +85,34 @@ namespace CustomCADs.Application.Services
         }
 
         public async Task<bool> ExistsByIdAsync(int id)
-            => await repository.GetByIdAsync<Cad>(id).ConfigureAwait(false) != null;
+            => await cadQueries.GetByIdAsync(id).ConfigureAwait(false) != null;
 
         public int Count(Func<CadModel, bool> predicate)
         {
-            return repository.Count<Cad>(cad => predicate(mapper.Map<CadModel>(cad)));
+            return cadQueries.Count(cad => predicate(mapper.Map<CadModel>(cad)));
         }
 
         public async Task SetPathsAsync(int id, string cadPath, string imagePath)
         {
-            Cad cad = await repository.GetByIdAsync<Cad>(id).ConfigureAwait(false)
+            Cad cad = await cadQueries.GetByIdAsync(id).ConfigureAwait(false)
                 ?? throw new KeyNotFoundException("No such Cad exists.");
             
             cad.Paths = new(cadPath, imagePath);
-            await repository.SaveChangesAsync().ConfigureAwait(false);
+            await dbTracker.SaveChangesAsync().ConfigureAwait(false);
         }
 
         public async Task<int> CreateAsync(CadModel model)
         {
             Cad cad = mapper.Map<Cad>(model);
-            int id = await repository.AddAsync<Cad, int>(cad).ConfigureAwait(false);
-            await repository.SaveChangesAsync().ConfigureAwait(false);
+            await commands.AddAsync(cad).ConfigureAwait(false);
+            await dbTracker.SaveChangesAsync().ConfigureAwait(false);
 
-            return id;
+            return cad.Id;
         }
 
         public async Task EditAsync(int id, CadModel model)
         {
-            Cad cad = await repository.GetByIdAsync<Cad>(id).ConfigureAwait(false)
+            Cad cad = await cadQueries.GetByIdAsync(id).ConfigureAwait(false)
                 ?? throw new KeyNotFoundException("Model doesn't exist!");
 
             cad.Name = model.Name;
@@ -120,12 +123,12 @@ namespace CustomCADs.Application.Services
             cad.CamCoordinates = model.CamCoordinates;
             cad.PanCoordinates = model.PanCoordinates;
             
-            await repository.SaveChangesAsync().ConfigureAwait(false);
+            await dbTracker.SaveChangesAsync().ConfigureAwait(false);
         }
         
         public async Task DeleteAsync(int id)
         {
-            IQueryable<Order> orders = repository.All<Order>()
+            IQueryable<Order> orders = orderQueries.GetAll()
                 .Where(o => o.CadId == id);
 
             foreach (Order order in orders)
@@ -137,11 +140,11 @@ namespace CustomCADs.Application.Services
                 order.Cad = null;
             }
 
-            Cad cad = await repository.GetByIdAsync<Cad>(id).ConfigureAwait(false)
+            Cad cad = await cadQueries.GetByIdAsync(id).ConfigureAwait(false)
                 ?? throw new KeyNotFoundException();
 
-            repository.Delete<Cad>(cad);
-            await repository.SaveChangesAsync().ConfigureAwait(false);
+            commands.Delete(cad);
+            await dbTracker.SaveChangesAsync().ConfigureAwait(false);
         }
     }
 }

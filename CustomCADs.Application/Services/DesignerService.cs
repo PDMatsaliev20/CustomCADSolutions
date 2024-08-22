@@ -3,20 +3,23 @@ using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Cads;
 using CustomCADs.Application.Models.Orders;
 using CustomCADs.Application.Models.Utilities;
-using CustomCADs.Domain;
+using CustomCADs.Domain.Contracts;
 using CustomCADs.Domain.Entities;
 using CustomCADs.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace CustomCADs.Application.Services
 {
-    public class DesignerService(IRepository repository, IMapper mapper) : IDesignerService
+    public class DesignerService(IDbTracker dbTracker,
+        IQueryRepository<Cad> cadQueries, 
+        IQueryRepository<Order> orderQueries,
+        IMapper mapper) : IDesignerService
     {
         public async Task<OrderResult> GetOrdersAsync(string status, string? designerId, SearchModel search, PaginationModel pagination)
         {
-            IQueryable<Order> dbOrders = repository.All<Order>();
+            IQueryable<Order> dbOrders = orderQueries.GetAll();
 
-            if (string.IsNullOrWhiteSpace(designerId))
+            if (!string.IsNullOrWhiteSpace(designerId))
             {
                 dbOrders = dbOrders.Where(o => o.DesignerId == designerId);
             }
@@ -68,16 +71,16 @@ namespace CustomCADs.Application.Services
 
         public async Task EditCadStatusAsync(int id, CadStatus status)
         {
-            Cad cad = await repository.GetByIdAsync<Cad>(id).ConfigureAwait(false)
+            Cad cad = await cadQueries.GetByIdAsync(id).ConfigureAwait(false)
                 ?? throw new KeyNotFoundException("Model doesn't exist!");
 
             cad.Status = status;
-            await repository.SaveChangesAsync().ConfigureAwait(false);
+            await dbTracker.SaveChangesAsync().ConfigureAwait(false);
         }
 
         public async Task<CadResult> GetCadsAsync(SearchModel search, PaginationModel pagination)
         {
-            IQueryable<Cad> allCads = repository.All<Cad>().Where(c => c.Status == CadStatus.Unchecked);
+            IQueryable<Cad> allCads = cadQueries.GetAll().Where(c => c.Status == CadStatus.Unchecked);
 
             // Search & Sort
             if (search.Category != null)
@@ -119,27 +122,27 @@ namespace CustomCADs.Application.Services
 
         public async Task BeginAsync(int id, string designerId)
         {
-            Order order = await repository.GetByIdAsync<Order>(id).ConfigureAwait(false)
+            Order order = await orderQueries.GetByIdAsync(id).ConfigureAwait(false)
                 ?? throw new KeyNotFoundException();
 
             order.Status = OrderStatus.Begun;
             order.DesignerId = designerId;
 
-            await repository.SaveChangesAsync().ConfigureAwait(false);
+            await dbTracker.SaveChangesAsync().ConfigureAwait(false);
         }
 
         public async Task ReportAsync(int id)
         {
-            Order order = await repository.GetByIdAsync<Order>(id).ConfigureAwait(false)
+            Order order = await orderQueries.GetByIdAsync(id).ConfigureAwait(false)
             ?? throw new KeyNotFoundException();
 
             order.Status = OrderStatus.Reported;
-            await repository.SaveChangesAsync().ConfigureAwait(false);
+            await dbTracker.SaveChangesAsync().ConfigureAwait(false);
         }
 
         public async Task CancelAsync(int id, string designerId)
         {
-            Order order = await repository.GetByIdAsync<Order>(id).ConfigureAwait(false)
+            Order order = await orderQueries.GetByIdAsync(id).ConfigureAwait(false)
                 ?? throw new KeyNotFoundException();
 
             if (order.DesignerId != designerId)
@@ -150,12 +153,12 @@ namespace CustomCADs.Application.Services
             order.DesignerId = null;
             order.Status = OrderStatus.Pending;
 
-            await repository.SaveChangesAsync().ConfigureAwait(false);
+            await dbTracker.SaveChangesAsync().ConfigureAwait(false);
         }
 
         public async Task CompleteAsync(int id, int cadId, string designerId)
         {
-            Order order = await repository.GetByIdAsync<Order>(id).ConfigureAwait(false)
+            Order order = await orderQueries.GetByIdAsync(id).ConfigureAwait(false)
                 ?? throw new KeyNotFoundException();
 
             if (order.DesignerId != designerId)
@@ -166,8 +169,7 @@ namespace CustomCADs.Application.Services
             order.CadId = cadId;
             order.Status = OrderStatus.Finished;
 
-            await repository.SaveChangesAsync().ConfigureAwait(false);
+            await dbTracker.SaveChangesAsync().ConfigureAwait(false);
         }
-
     }
 }

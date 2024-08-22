@@ -3,19 +3,21 @@ using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Cads;
 using CustomCADs.Application.Models.Orders;
 using CustomCADs.Application.Models.Utilities;
-using CustomCADs.Domain;
+using CustomCADs.Domain.Contracts;
 using CustomCADs.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Linq.Expressions;
 
 namespace CustomCADs.Application.Services
 {
-    public class OrderService(IRepository repository, IMapper mapper) : IOrderService
+    public class OrderService(IDbTracker dbTracker,
+        IQueryRepository<Order> queries,
+        ICommandRepository<Order> commands, 
+        IMapper mapper) : IOrderService
     {
         public async Task<OrderResult> GetAllAsync(OrderQuery query, SearchModel search, PaginationModel pagination, Expression<Func<Order, bool>>? customFilter = null)
         {
-            IQueryable<Order> dbOrders = repository.All<Order>();
+            IQueryable<Order> dbOrders = queries.GetAll();
 
             // Querying
             if (!string.IsNullOrWhiteSpace(query.Buyer))
@@ -73,7 +75,7 @@ namespace CustomCADs.Application.Services
 
         public async Task<OrderModel> GetByIdAsync(int id)
         {
-            Order order = await repository.GetByIdAsync<Order>(id).ConfigureAwait(false)
+            Order order = await queries.GetByIdAsync(id).ConfigureAwait(false)
                 ?? throw new KeyNotFoundException();
 
             OrderModel model = mapper.Map<OrderModel>(order);
@@ -82,7 +84,7 @@ namespace CustomCADs.Application.Services
         
         public async Task<CadModel> GetCadAsync(int id)
         {
-            Order? order = await repository.GetByIdAsync<Order>(id).ConfigureAwait(false);
+            Order? order = await queries.GetByIdAsync(id).ConfigureAwait(false);
 
             if (order == null || order.CadId == null)
             {
@@ -94,20 +96,20 @@ namespace CustomCADs.Application.Services
         }
 
         public async Task<bool> ExistsByIdAsync(int id)
-            => await repository.GetByIdAsync<Order>(id).ConfigureAwait(false) != null;
+            => await queries.GetByIdAsync(id).ConfigureAwait(false) != null;
         public int Count(Func<OrderModel, bool> predicate)
-            =>  repository.Count<Order>(cad => predicate(mapper.Map<OrderModel>(cad)));
+            =>  queries.Count(cad => predicate(mapper.Map<OrderModel>(cad)));
         
         public async Task<bool> HasCadAsync(int id)
         {
-            Order? order = await repository.GetByIdAsync<Order>(id).ConfigureAwait(false)
+            Order? order = await queries.GetByIdAsync(id).ConfigureAwait(false)
                 ?? throw new KeyNotFoundException();
             return order.CadId != null;
         }
         
         public async Task<bool> CheckOwnership(int id, string username)
         {
-            Order? order = await repository.GetByIdAsync<Order>(id).ConfigureAwait(false)
+            Order? order = await queries.GetByIdAsync(id).ConfigureAwait(false)
                 ?? throw new KeyNotFoundException();
             return order.Buyer.UserName == username;
         }
@@ -116,15 +118,15 @@ namespace CustomCADs.Application.Services
         {
             Order order = mapper.Map<Order>(model);
 
-            int id = await repository.AddAsync<Order, int>(order).ConfigureAwait(false);
-            await repository.SaveChangesAsync().ConfigureAwait(false);
+            await commands.AddAsync(order).ConfigureAwait(false);
+            await dbTracker.SaveChangesAsync().ConfigureAwait(false);
 
-            return id;
+            return order.Id;
         }
 
         public async Task EditAsync(int id, OrderModel model)
         {
-            Order order = await repository.GetByIdAsync<Order>(id).ConfigureAwait(false)
+            Order order = await queries.GetByIdAsync(id).ConfigureAwait(false)
                 ?? throw new KeyNotFoundException();
 
             order.Name = model.Name;
@@ -132,16 +134,16 @@ namespace CustomCADs.Application.Services
             order.ShouldBeDelivered = model.ShouldBeDelivered;
             order.CategoryId = model.CategoryId;
 
-            await repository.SaveChangesAsync().ConfigureAwait(false);
+            await dbTracker.SaveChangesAsync().ConfigureAwait(false);
         }
 
         public async Task DeleteAsync(int id)
         {
-            Order order = await repository.GetByIdAsync<Order>(id).ConfigureAwait(false)
+            Order order = await queries.GetByIdAsync(id).ConfigureAwait(false)
                 ?? throw new KeyNotFoundException();
 
-            repository.Delete(order);
-            await repository.SaveChangesAsync().ConfigureAwait(false);
+            commands.Delete(order);
+            await dbTracker.SaveChangesAsync().ConfigureAwait(false);
         }
     }
 }

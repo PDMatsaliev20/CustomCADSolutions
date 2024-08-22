@@ -1,25 +1,27 @@
 ﻿using AutoMapper;
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Categories;
-using CustomCADs.Domain;
+using CustomCADs.Domain.Contracts;
 using CustomCADs.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace CustomCADs.Application.Services
 {
-    public class CategoryService(IRepository repository, IMapper mapper) : ICategoryService
+    public class CategoryService(IDbTracker dbTracker,
+        IQueryRepository<Category> queries, 
+        ICommandRepository<Category> commands, 
+        IMapper mapper) : ICategoryService
     {
         public async Task<IEnumerable<CategoryModel>> GetAllAsync()
         {
-            Category[] entities = await repository.All<Category>().ToArrayAsync().ConfigureAwait(false);
+            Category[] entities = await queries.GetAll().ToArrayAsync().ConfigureAwait(false);
             CategoryModel[] models = mapper.Map<CategoryModel[]>(entities);
             return models;
         }
 
         public async Task<CategoryModel> GetByIdAsync(int id)
         {
-            Category entity = await repository.GetByIdAsync<Category>(id).ConfigureAwait(false)
+            Category entity = await queries.GetByIdAsync(id).ConfigureAwait(false)
                 ?? throw new KeyNotFoundException();
 
             CategoryModel model = mapper.Map<CategoryModel>(entity);
@@ -30,29 +32,29 @@ namespace CustomCADs.Application.Services
         {
             Category entity = mapper.Map<Category>(model);  
             
-            int id = await repository.AddAsync<Category, int>(entity).ConfigureAwait(false);
-            await repository.SaveChangesAsync().ConfigureAwait(false);
+            await commands.AddAsync(entity).ConfigureAwait(false);
+            await dbTracker.SaveChangesAsync().ConfigureAwait(false);
             
-            return id;
+            return entity.Id;
         }
 
         public async Task EditAsync(int id, CategoryModel model)
         {
-            Category entity = await repository.GetByIdAsync<Category>(id).ConfigureAwait(false)
+            Category entity = await queries.GetByIdAsync(id).ConfigureAwait(false)
                 ?? throw new KeyNotFoundException();
 
             entity.Name = model.Name;
 
-            await repository.SaveChangesAsync().ConfigureAwait(false);
+            await dbTracker.SaveChangesAsync().ConfigureAwait(false);
         }
 
         public async Task DeleteAsync(int id)
         {
-            Category entity = await repository.GetByIdAsync<Category>(id).ConfigureAwait(false)
+            Category entity = await queries.GetByIdAsync(id).ConfigureAwait(false)
                 ?? throw new KeyNotFoundException();
 
-            repository.Delete(entity);
-            await repository.SaveChangesAsync().ConfigureAwait(false);
+            commands.Delete(entity);
+            await dbTracker.SaveChangesAsync().ConfigureAwait(false);
         }
     }
 }

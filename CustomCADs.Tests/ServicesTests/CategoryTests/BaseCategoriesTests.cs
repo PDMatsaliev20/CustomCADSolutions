@@ -3,16 +3,19 @@ using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Mappings;
 using CustomCADs.Application.Models.Categories;
 using CustomCADs.Application.Services;
-using CustomCADs.Domain;
 using CustomCADs.Domain.Entities;
 using CustomCADs.Infrastructure.Data;
+using CustomCADs.Infrastructure.Data.Repositories.Command;
+using CustomCADs.Infrastructure.Data.Repositories.Query;
 using Microsoft.EntityFrameworkCore;
 
 namespace CustomCADs.Tests.ServicesTests.CategoryTests
 {
     public class BaseCategoriesTests
     {
-        private IRepository repository;
+        private readonly CadContext context = new(new DbContextOptionsBuilder<CadContext>()
+            .UseInMemoryDatabase("CadCategoriesContext").Options);
+
         private readonly IMapper mapper = new MapperConfiguration(cfg => 
                 cfg.AddProfile<CategoryProfile>())
             .CreateMapper();
@@ -30,27 +33,26 @@ namespace CustomCADs.Tests.ServicesTests.CategoryTests
         [OneTimeSetUp]
         public void OneTimeSetup()
         {
-            var options = new DbContextOptionsBuilder<CadContext>()
-                .UseInMemoryDatabase("CadCategoriesContext").Options;
-
-            this.repository = new Repository(new(options));
-            this.service = new CategoryService(repository, mapper);
+            this.service = new CategoryService(
+                new CategoryQueryRepository(context), 
+                new CategoryCommandRepository(context), 
+                mapper);
         }
 
         [SetUp]
         public async Task Setup()
         {
             Category[] categories = mapper.Map<Category[]>(this.categories);
-            await repository.AddRangeAsync(categories).ConfigureAwait(false);
-            await repository.SaveChangesAsync().ConfigureAwait(false);
+            await context.Categories.AddRangeAsync(categories).ConfigureAwait(false);
+            await context.SaveChangesAsync().ConfigureAwait(false);
         }
 
         [TearDown]
         public async Task TearDown()
         {
-            Category[] allCategories = await repository.All<Category>().ToArrayAsync();
-            repository.DeleteRange(allCategories);
-            await repository.SaveChangesAsync().ConfigureAwait(false);
+            Category[] allCategories = await context.Categories.ToArrayAsync();
+            context.Categories.RemoveRange(allCategories);
+            await context.SaveChangesAsync().ConfigureAwait(false);
         }
     }
 }

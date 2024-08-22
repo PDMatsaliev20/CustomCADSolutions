@@ -3,11 +3,12 @@ using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Mappings;
 using CustomCADs.Application.Models.Cads;
 using CustomCADs.Application.Services;
-using CustomCADs.Domain;
 using CustomCADs.Domain.Entities;
 using CustomCADs.Domain.Enums;
 using CustomCADs.Domain.Identity;
 using CustomCADs.Infrastructure.Data;
+using CustomCADs.Infrastructure.Data.Repositories.Command;
+using CustomCADs.Infrastructure.Data.Repositories.Query;
 using Microsoft.EntityFrameworkCore;
 
 namespace CustomCADs.Tests.ServicesTests.CadTests
@@ -15,7 +16,9 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
     [TestFixture]
     public class BaseCadsTests
     {
-        private IRepository repository;
+        private readonly CadContext context = new(new DbContextOptionsBuilder<CadContext>()
+            .UseInMemoryDatabase("CadCadsContext").Options);
+        
         private readonly IMapper mapper = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile<CadProfile>();
@@ -23,7 +26,7 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
             }).CreateMapper();
 
         protected ICadService service;
-        private Category[] categories =
+        private readonly Category[] categories =
         [
             new() { Id = 1, Name = "Category1" },
             new() { Id = 2, Name = "Category2" },
@@ -55,26 +58,24 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
         [OneTimeSetUp]
         public async Task OneTimeSetup()
         {
-            var options = new DbContextOptionsBuilder<CadContext>()
-                .UseInMemoryDatabase("CadCadsContext").Options;
-
-            this.repository = new Repository(new(options));
-
-            await repository.AddRangeAsync(users).ConfigureAwait(false);
+            await context.Users.AddRangeAsync(users).ConfigureAwait(false);
             SeedCreators();
+            await context.Categories.AddRangeAsync(categories).ConfigureAwait(false);
+            await context.SaveChangesAsync();
 
-            await repository.AddRangeAsync(categories).ConfigureAwait(false);
-            await repository.SaveChangesAsync();
-
-            this.service = new CadService(repository, mapper);
+            service = new CadService(
+                new CadQueryRepository(context),
+                new OrderQueryRepository(context),
+                new CadCommandRepository(context),
+                mapper);
         }
 
         [SetUp]
         public async Task Setup()
         {
             Cad[] allCads = mapper.Map<Cad[]>(cads);
-            await repository.AddRangeAsync<Cad>(allCads).ConfigureAwait(false);
-            await repository.SaveChangesAsync().ConfigureAwait(false);
+            await context.Cads.AddRangeAsync(allCads).ConfigureAwait(false);
+            await context.SaveChangesAsync().ConfigureAwait(false);
             cads = mapper.Map<CadModel[]>(allCads);
         }
 
@@ -82,21 +83,21 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
         public async Task Teardown()
         {
             ClearCadCategories();
-            Cad[] cads = await repository.All<Cad>().ToArrayAsync().ConfigureAwait(false);
-            repository.DeleteRange(cads);
-            await repository.SaveChangesAsync().ConfigureAwait(false);
+            Cad[] cads = await context.Cads.ToArrayAsync().ConfigureAwait(false);
+            context.Cads.RemoveRange(cads);
+            await context.SaveChangesAsync().ConfigureAwait(false);
         }
 
         [OneTimeTearDown]
         public async Task OneTimeTearDown()
         {
-            AppUser[] users = await repository.All<AppUser>().ToArrayAsync().ConfigureAwait(false);
-            repository.DeleteRange(users);
+            AppUser[] users = await context.Users.ToArrayAsync().ConfigureAwait(false);
+            context.Users.RemoveRange(users);
 
-            Category[] categories = await repository.All<Category>().ToArrayAsync().ConfigureAwait(false);
-            repository.DeleteRange(categories);
+            Category[] categories = await context.Categories.ToArrayAsync().ConfigureAwait(false);
+            context.Categories.RemoveRange(categories);
 
-            await repository.SaveChangesAsync().ConfigureAwait(false);
+            await context.SaveChangesAsync().ConfigureAwait(false);
         }
 
         private void SeedCreators()

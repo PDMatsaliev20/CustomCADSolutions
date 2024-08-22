@@ -3,10 +3,11 @@ using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Mappings;
 using CustomCADs.Application.Models.Orders;
 using CustomCADs.Application.Services;
-using CustomCADs.Domain;
 using CustomCADs.Domain.Entities;
 using CustomCADs.Domain.Identity;
 using CustomCADs.Infrastructure.Data;
+using CustomCADs.Infrastructure.Data.Repositories.Command;
+using CustomCADs.Infrastructure.Data.Repositories.Query;
 using Microsoft.EntityFrameworkCore;
 
 namespace CustomCADs.Tests.ServicesTests.OrderTests
@@ -14,7 +15,7 @@ namespace CustomCADs.Tests.ServicesTests.OrderTests
     [TestFixture]
     public class BaseOrdersTests
     {
-        private IRepository repository;
+        private readonly CadContext context = new(new DbContextOptionsBuilder<CadContext>().UseInMemoryDatabase("CadOrdersContext").Options);
         private readonly IMapper mapper = new MapperConfiguration(cfg =>
                 cfg.AddProfile<OrderProfile>())
             .CreateMapper();
@@ -38,52 +39,50 @@ namespace CustomCADs.Tests.ServicesTests.OrderTests
         [OneTimeSetUp]
         public async Task OneTimeSetup()
         {
-            var options = new DbContextOptionsBuilder<CadContext>()
-                .UseInMemoryDatabase("CadOrdersContext").Options;
-            
-            this.repository = new Repository(new(options));
-            SeedBuyers();
-            
-            await repository.AddRangeAsync(users).ConfigureAwait(false);
-            await repository.AddRangeAsync(new Category[5]
-            {
+            await context.Users.AddRangeAsync(users).ConfigureAwait(false);
+            await context.Categories.AddRangeAsync(
+            [
                 new() { Id = 1, Name = "Category1", },
                 new() { Id = 2, Name = "Category2", },
                 new() { Id = 3, Name = "Category3", },
                 new() { Id = 4, Name = "Category4", },
                 new() { Id = 5, Name = "Category5", },
-            }).ConfigureAwait(false);
-            await repository.SaveChangesAsync().ConfigureAwait(false);
+            ]).ConfigureAwait(false);
+            await context.SaveChangesAsync().ConfigureAwait(false);
 
-            this.service = new OrderService(repository, mapper);
+            SeedBuyers();
+            this.service = new OrderService(
+                new OrderQueryRepository(context), 
+                new OrderCommandRepository(context), 
+                mapper);
         }
 
         [SetUp]
         public async Task Setup()
         {
             Order[] entities = mapper.Map<Order[]>(orders);
-            await repository.AddRangeAsync(entities).ConfigureAwait(false);
-            await repository.SaveChangesAsync().ConfigureAwait(false);
+            await context.Orders.AddRangeAsync(entities).ConfigureAwait(false);
+            await context.SaveChangesAsync().ConfigureAwait(false);
         }
 
         [TearDown]
         public async Task Teardown()
         {
-            Order[] allOrders = await repository.All<Order>().ToArrayAsync();
-            repository.DeleteRange(allOrders);
-            await repository.SaveChangesAsync().ConfigureAwait(false);
+            Order[] allOrders = await context.Orders.ToArrayAsync();
+            context.Orders.RemoveRange(allOrders);
+            await context.SaveChangesAsync().ConfigureAwait(false);
         }
 
         [OneTimeTearDown]
         public async Task OneTimeTeardown()
         {
-            Category[] categories = await repository.All<Category>().ToArrayAsync().ConfigureAwait(false);
-            repository.DeleteRange(categories);
+            Category[] categories = await context.Categories.ToArrayAsync().ConfigureAwait(false);
+            context.Categories.RemoveRange(categories);
 
-            AppUser[] users = await repository.All<AppUser>().ToArrayAsync().ConfigureAwait(false);
-            repository.DeleteRange(users);
+            AppUser[] users = await context.Users.ToArrayAsync().ConfigureAwait(false);
+            context.Users.RemoveRange(users);
 
-            await repository.SaveChangesAsync().ConfigureAwait(false);
+            await context.SaveChangesAsync().ConfigureAwait(false);
         }
 
         private void SeedBuyers()
