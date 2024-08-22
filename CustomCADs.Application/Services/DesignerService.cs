@@ -5,7 +5,7 @@ using CustomCADs.Application.Models.Orders;
 using CustomCADs.Application.Models.Utilities;
 using CustomCADs.Domain;
 using CustomCADs.Domain.Entities;
-using CustomCADs.Domain.Entities.Enums;
+using CustomCADs.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;

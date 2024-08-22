@@ -5,8 +5,8 @@ using CustomCADs.Application.Models.Cads;
 using CustomCADs.Application.Services;
 using CustomCADs.Domain;
 using CustomCADs.Domain.Entities;
-using CustomCADs.Domain.Entities.Enums;
-using CustomCADs.Domain.Entities.Identity;
+using CustomCADs.Domain.Enums;
+using CustomCADs.Domain.Identity;
 using CustomCADs.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -42,14 +42,14 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
         ];
         protected CadModel[] cads =
         [
-            new() { Id = 1, Name = "Cad1", Description="abcdef", CategoryId = 1, Price = 1m, Status = CadStatus.Unchecked, CreationDate = DateTime.Now.AddDays(-1), Coords = new double[3], PanCoords = new double[3] },
-            new() { Id = 2, Name = "Cad2", Description="ghijklm", CategoryId = 2, Price = 2m, Status = CadStatus.Unchecked, CreationDate = DateTime.Now.AddDays(-2), Coords = new double[3], PanCoords = new double[3] },
-            new() { Id = 3, Name = "Cad3", Description="oprqstn", CategoryId = 3, Price = 3m, Status = CadStatus.Validated, CreationDate = DateTime.Now.AddDays(-3), Coords = new double[3], PanCoords = new double[3] },
-            new() { Id = 4, Name = "Cad4", Description="uvwxyz", CategoryId = 4, Price = 4m, Status = CadStatus.Validated, CreationDate = DateTime.Now.AddDays(-4), Coords = new double[3], PanCoords = new double[3] },
-            new() { Id = 5, Name = "Cad5", Description="abvgde", CategoryId = 5, Price = 5m, Status = CadStatus.Reported, CreationDate = DateTime.Now.AddDays(-5), Coords = new double[3], PanCoords = new double[3] },
-            new() { Id = 6, Name = "Cad6", Description="zijklmn", CategoryId = 6, Price = 6m, Status = CadStatus.Reported, CreationDate = DateTime.Now.AddDays(-6), Coords = new double[3], PanCoords = new double[3] },
-            new() { Id = 7, Name = "Cad7", Description="oprstufh", CategoryId = 7, Price = 7m, Status = CadStatus.Banned, CreationDate = DateTime.Now.AddDays(-7), Coords = new double[3], PanCoords = new double[3] },
-            new() { Id = 8, Name = "Cad8", Description="cchshsht", CategoryId = 8, Price = 8m, Status = CadStatus.Banned, CreationDate = DateTime.Now.AddDays(-8), Coords = new double[3], PanCoords = new double[3] },
+            new() { Id = 1, Name = "Cad1", Description="abcdef", CategoryId = 1, Price = 1m, Status = CadStatus.Unchecked, CreationDate = DateTime.Now.AddDays(-1) },
+            new() { Id = 2, Name = "Cad2", Description="ghijklm", CategoryId = 2, Price = 2m, Status = CadStatus.Unchecked, CreationDate = DateTime.Now.AddDays(-2) },
+            new() { Id = 3, Name = "Cad3", Description="oprqstn", CategoryId = 3, Price = 3m, Status = CadStatus.Validated, CreationDate = DateTime.Now.AddDays(-3) },
+            new() { Id = 4, Name = "Cad4", Description="uvwxyz", CategoryId = 4, Price = 4m, Status = CadStatus.Validated, CreationDate = DateTime.Now.AddDays(-4) },
+            new() { Id = 5, Name = "Cad5", Description="abvgde", CategoryId = 5, Price = 5m, Status = CadStatus.Reported, CreationDate = DateTime.Now.AddDays(-5) },
+            new() { Id = 6, Name = "Cad6", Description="zijklmn", CategoryId = 6, Price = 6m, Status = CadStatus.Reported, CreationDate = DateTime.Now.AddDays(-6) },
+            new() { Id = 7, Name = "Cad7", Description="oprstufh", CategoryId = 7, Price = 7m, Status = CadStatus.Banned, CreationDate = DateTime.Now.AddDays(-7) },
+            new() { Id = 8, Name = "Cad8", Description="cchshsht", CategoryId = 8, Price = 8m, Status = CadStatus.Banned, CreationDate = DateTime.Now.AddDays(-8) },
         ];
 
         [OneTimeSetUp]

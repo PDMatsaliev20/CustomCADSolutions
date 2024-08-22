@@ -4,7 +4,7 @@ using CustomCADs.Application.Models.Cads;
 using CustomCADs.Application.Models.Utilities;
 using CustomCADs.Domain;
 using CustomCADs.Domain.Entities;
-using CustomCADs.Domain.Entities.Enums;
+using CustomCADs.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Linq.Expressions;
@@ -21,7 +21,7 @@ namespace CustomCADs.Application.Services
             // Querying
             if (query.Creator != null)
             {
-                allCads = allCads.Where(c => c.Creator!.UserName == query.Creator);
+                allCads = allCads.Where(c => c.Creator.UserName == query.Creator);
             }
             if (query.Status != null)
             {
@@ -93,19 +93,18 @@ namespace CustomCADs.Application.Services
         {
             Cad cad = await repository.GetByIdAsync<Cad>(id).ConfigureAwait(false)
                 ?? throw new KeyNotFoundException("No such Cad exists.");
-
-            cad.CadPath = cadPath;
-            cad.ImagePath = imagePath;
+            
+            cad.Paths = new(cadPath, imagePath);
             await repository.SaveChangesAsync().ConfigureAwait(false);
         }
 
         public async Task<int> CreateAsync(CadModel model)
         {
             Cad cad = mapper.Map<Cad>(model);
-            EntityEntry<Cad> entry = await repository.AddAsync(cad).ConfigureAwait(false);
+            int id = await repository.AddAsync<Cad, int>(cad).ConfigureAwait(false);
             await repository.SaveChangesAsync().ConfigureAwait(false);
 
-            return entry.Entity.Id;
+            return id;
         }
 
         public async Task EditAsync(int id, CadModel model)
@@ -118,13 +117,9 @@ namespace CustomCADs.Application.Services
             cad.Price = model.Price;
             cad.CategoryId = model.CategoryId;
 
-            cad.X = model.Coords[0];
-            cad.Y = model.Coords[1];
-            cad.Z = model.Coords[2];
-            cad.PanX = model.PanCoords[0];
-            cad.PanY = model.PanCoords[1];
-            cad.PanZ = model.PanCoords[2];
-
+            cad.CamCoordinates = model.CamCoordinates;
+            cad.PanCoordinates = model.PanCoordinates;
+            
             await repository.SaveChangesAsync().ConfigureAwait(false);
         }
         

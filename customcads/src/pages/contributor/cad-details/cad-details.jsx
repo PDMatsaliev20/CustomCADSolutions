@@ -33,20 +33,12 @@ function EditCadPage() {
 
         const savePosition = async (e) => {
             const { coords, panCoords } = e.detail;
-
+            
             try {
-                const updateCoords = {
-                    path: "/coords",
-                    op: "replace",
-                    value: coords
-                }, updatePanCoords = {
-                    path: "/panCoords",
-                    op: "replace",
-                    value: panCoords
-                }
-            await PatchCad(id, [updateCoords, updatePanCoords]);
-                setIsChanged(false);
+                await PatchCad(id, 'camera', coords);
+                await PatchCad(id, 'pan', panCoords);
 
+                setIsChanged(false);
                 setTimeout(sendTrackChangesEvent, 1500);
             } catch (e) {
                 console.error(e);

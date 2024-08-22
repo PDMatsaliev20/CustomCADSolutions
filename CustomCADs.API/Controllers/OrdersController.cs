@@ -7,7 +7,7 @@ using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Cads;
 using CustomCADs.Application.Models.Orders;
 using CustomCADs.Application.Models.Utilities;
-using CustomCADs.Domain.Entities.Enums;
+using CustomCADs.Domain.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -423,8 +423,8 @@ namespace CustomCADs.API.Controllers
 
                 CadModel model = await orderService.GetCadAsync(id).ConfigureAwait(false);
 
-                byte[] cad = await env.GetCadBytes(model.Name + model.Id, model.CadExtension).ConfigureAwait(false);
-                return model.CadExtension == ".glb"
+                byte[] cad = await env.GetCadBytes(model.Name + model.Id, model.Paths.FileExtension).ConfigureAwait(false);
+                return model.Paths.FileExtension == ".glb"
                     ? File(cad, "model/gltf-binary", $"{model.Name}.glb")
                     : File(cad, "application/zip", $"{model.Name}.zip");
             }

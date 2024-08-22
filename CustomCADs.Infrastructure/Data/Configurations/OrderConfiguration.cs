@@ -8,8 +8,20 @@ namespace CustomCADs.Infrastructure.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Order> builder)
         {
-            builder.HasOne(o => o.Buyer).WithMany().OnDelete(DeleteBehavior.Cascade);
-            builder.HasOne(o => o.Designer).WithMany().OnDelete(DeleteBehavior.NoAction);
+            builder.HasKey(o => o.Id);
+
+            builder.HasOne(o => o.Buyer).WithMany()
+                .HasForeignKey(o => o.BuyerId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasOne(o => o.Designer).WithMany()
+                .HasForeignKey(o => o.DesignerId)
+                .OnDelete(DeleteBehavior.NoAction);
+            
+            builder.HasOne(o => o.Category).WithMany()
+                .HasForeignKey(o => o.CategoryId)
+                .OnDelete(DeleteBehavior.NoAction);
+
             builder.Navigation(o => o.Category).AutoInclude();
             builder.Navigation(o => o.Buyer).AutoInclude();
             builder.Navigation(o => o.Designer).AutoInclude();

@@ -41,10 +41,10 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
                 Assert.That(actualCad.Name, Is.EqualTo(expectedCad.Name),
                     string.Format(ModelPropertyMismatch, "Name"));
 
-                Assert.That(actualCad.CadExtension, Is.EqualTo(expectedCad.CadExtension),
+                Assert.That(actualCad.Paths.FileExtension, Is.EqualTo(expectedCad.Paths.FileExtension),
                     string.Format(ModelPropertyMismatch, "Cad"));
                 
-                Assert.That(actualCad.ImageExtension, Is.EqualTo(expectedCad.ImageExtension),
+                Assert.That(actualCad.Paths.ImageExtension, Is.EqualTo(expectedCad.Paths.ImageExtension),
                     string.Format(ModelPropertyMismatch, "Image"));
 
                 Assert.That(actualCad.Status, Is.EqualTo(expectedCad.Status),
@@ -53,11 +53,11 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
                 Assert.That(actualCad.CategoryId, Is.EqualTo(expectedCad.CategoryId),
                     string.Format(ModelPropertyMismatch, "CategoryId"));
 
-                Assert.That(actualCad.Coords, Is.EqualTo(expectedCad.Coords),
-                    string.Format(ModelPropertyMismatch, "Coords"));
+                Assert.That(actualCad.CamCoordinates, Is.EqualTo(expectedCad.CamCoordinates),
+                    string.Format(ModelPropertyMismatch, "Cam Coordinates"));
                 
-                Assert.That(actualCad.PanCoords, Is.EqualTo(expectedCad.PanCoords),
-                    string.Format(ModelPropertyMismatch, "Coords"));
+                Assert.That(actualCad.PanCoordinates, Is.EqualTo(expectedCad.PanCoordinates),
+                    string.Format(ModelPropertyMismatch, "Pan Coordinates"));
 
                 Assert.That(actualCad.CreatorId, Is.EqualTo(expectedCad.CreatorId),
                     string.Format(ModelPropertyMismatch, "CreatorId"));

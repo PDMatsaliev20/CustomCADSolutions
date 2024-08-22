@@ -24,8 +24,8 @@ const PutCad = async (id, cad) => {
     return await axios.put(`/API/Cads/${id}`, cad, { headers: { 'Content-Type': 'multipart/form-data' } });
 }
 
-const PatchCad = async (id, operations) => {
-    return await axios.patch(`/API/Cads/${id}`, operations);
+const PatchCad = async (id, type, coords) => {
+    return await axios.patch(`/API/Cads/${id}?type=${type}`, { x: coords[0], y: coords[1], z: coords[2] });
 }
 
 const DeleteCad = async (id) => {

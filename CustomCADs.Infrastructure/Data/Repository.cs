@@ -1,7 +1,6 @@
 ﻿using CustomCADs.Domain;
+using CustomCADs.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-
 namespace CustomCADs.Infrastructure.Data
 {
     public class Repository(CadContext context) : IRepository
@@ -26,9 +25,9 @@ namespace CustomCADs.Infrastructure.Data
             return context.Set<T>().Count(predicate);
         }
 
-        public async Task<EntityEntry<T>> AddAsync<T>(T entity) where T : class
+        public async Task<TKey> AddAsync<T, TKey>(T entity) where T : class, IEntity<TKey>
         {
-            return await context.Set<T>().AddAsync(entity).ConfigureAwait(false);
+            return (await context.Set<T>().AddAsync(entity).ConfigureAwait(false)).Entity.Id!;
         }
 
         public async Task AddRangeAsync<T>(params T[] entity) where T : class

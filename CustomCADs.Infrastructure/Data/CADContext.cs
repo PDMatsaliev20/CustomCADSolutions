@@ -1,5 +1,5 @@
 ﻿using CustomCADs.Domain.Entities;
-using CustomCADs.Domain.Entities.Identity;
+using CustomCADs.Domain.Identity;
 using CustomCADs.Infrastructure.Data.Configurations;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;

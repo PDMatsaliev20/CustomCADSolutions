@@ -5,7 +5,7 @@ using CustomCADs.Application.Models.Orders;
 using CustomCADs.Application.Services;
 using CustomCADs.Domain;
 using CustomCADs.Domain.Entities;
-using CustomCADs.Domain.Entities.Identity;
+using CustomCADs.Domain.Identity;
 using CustomCADs.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 

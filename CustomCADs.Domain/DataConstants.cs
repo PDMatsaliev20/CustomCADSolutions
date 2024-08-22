@@ -27,9 +27,6 @@
             public const int CoordMin = -1000;
             public const int CoordMax = 1000;
             
-            public const int PanMin = -1000;
-            public const int PanMax = 1000;
-
             public const string SpinAxisErrorMessage = "{0} must be either x, y or z";
             public const string SpinAxisRegEx = "[xyz]?";
         }

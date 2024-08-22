@@ -1,5 +1,5 @@
 ﻿using CustomCADs.Application.Models.Orders;
-using CustomCADs.Domain.Entities.Enums;
+using CustomCADs.Domain.Enums;
 using static CustomCADs.Application.TestsErrorMessages;
 
 namespace CustomCADs.Tests.ServicesTests.OrderTests

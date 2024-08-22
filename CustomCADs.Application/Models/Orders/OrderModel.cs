@@ -1,7 +1,7 @@
 ﻿using CustomCADs.Application.Models.Cads;
 using CustomCADs.Domain.Entities;
-using CustomCADs.Domain.Entities.Enums;
-using CustomCADs.Domain.Entities.Identity;
+using CustomCADs.Domain.Enums;
+using CustomCADs.Domain.Identity;
 using System.ComponentModel.DataAnnotations;
 using static CustomCADs.Domain.DataConstants;
 using static CustomCADs.Domain.DataConstants.OrderConstants;

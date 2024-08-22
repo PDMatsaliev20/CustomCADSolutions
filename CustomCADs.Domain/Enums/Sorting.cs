@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Domain.Entities.Enums
+﻿namespace CustomCADs.Domain.Enums
 {
     public enum Sorting
     {

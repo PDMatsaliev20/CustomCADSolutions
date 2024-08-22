@@ -3,7 +3,7 @@ using CustomCADs.Application.Mappings;
 using CustomCADs.Application.Models.Categories;
 using CustomCADs.Application.Services;
 using CustomCADs.Domain;
-using CustomCADs.Domain.Entities.Identity;
+using CustomCADs.Domain.Identity;
 using CustomCADs.Infrastructure.Data;
 using CustomCADs.Infrastructure.Payment;
 using Microsoft.AspNetCore.Authentication.Cookies;

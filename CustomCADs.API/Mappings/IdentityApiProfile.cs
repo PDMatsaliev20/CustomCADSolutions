@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using CustomCADs.API.Models.Others;
-using CustomCADs.Domain.Entities.Identity;
+using CustomCADs.Domain.Identity;
 
 namespace CustomCADs.API.Mappings
 {

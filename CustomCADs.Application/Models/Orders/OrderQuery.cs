@@ -1,4 +1,4 @@
-﻿using CustomCADs.Domain.Entities.Enums;
+﻿using CustomCADs.Domain.Enums;
 
 namespace CustomCADs.Application.Models.Orders
 {

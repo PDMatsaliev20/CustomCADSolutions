@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
 using CustomCADs.API.Helpers;
-using CustomCADs.API.Mappings;
 using CustomCADs.API.Models.Others;
-using CustomCADs.Domain.Entities.Identity;
+using CustomCADs.Domain.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.JsonPatch;

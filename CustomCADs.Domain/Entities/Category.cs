@@ -2,7 +2,7 @@
 
 namespace CustomCADs.Domain.Entities
 {
-    public class Category
+    public class Category : IEntity<int>
     {
         [Key]
         public int Id { get; set; }

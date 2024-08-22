@@ -30,10 +30,10 @@ namespace CustomCADs.Application.Services
         {
             Category entity = mapper.Map<Category>(model);  
             
-            EntityEntry<Category> category = await repository.AddAsync(entity).ConfigureAwait(false);
+            int id = await repository.AddAsync<Category, int>(entity).ConfigureAwait(false);
             await repository.SaveChangesAsync().ConfigureAwait(false);
             
-            return category.Entity.Id;
+            return id;
         }
 
         public async Task EditAsync(int id, CategoryModel model)

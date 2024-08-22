@@ -1,65 +1,44 @@
-﻿using CustomCADs.Domain.Entities.Enums;
-using CustomCADs.Domain.Entities.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using CustomCADs.Domain.Enums;
+using CustomCADs.Domain.Identity;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using static CustomCADs.Domain.DataConstants;
 
 namespace CustomCADs.Domain.Entities
 {
-    public class Order
+    public class Order : IEntity<int>
     {
-        [Key]
-        [Comment("Identitfication of Order")]
         public int Id { get; set; }
 
         [Required]
-        [Comment("Name of Order")]
         public string Name { get; set; } = null!;
 
         [Required]
-        [Comment("Description of Order")]
         [MaxLength(OrderConstants.DescriptionMaxLength)]
         public string Description { get; set; } = null!;
 
         [Required]
-        [Comment("Date of Order")]
         public DateTime OrderDate { get; set; }
 
         [Required]
-        [Comment("Status of Order")]
         public OrderStatus Status { get; set; }
 
         [Required]
-        [Comment("Should Order Be Delivered After Completion")]
         public bool ShouldBeDelivered { get; set; }
 
-        [Comment("Identification of Order's Category")]
-        public int CategoryId { get; set; }
-
-        [Comment("Path to Optional Image of Order")]
         public string? ImagePath { get; set; }
 
-        [Comment("Identification of Orders' 3D Model")]
-        public int? CadId { get; set; }
-
-        [Comment("Identification of Order's 3D Designer")]
-        public string? DesignerId { get; set; }
-
         [Required]
-        [Comment("Identification of User")]
-        public string BuyerId { get; set; } = null!;
-
-        [ForeignKey(nameof(CategoryId))]
+        public int CategoryId { get; set; }
         public Category Category { get; set; } = null!;
 
-        [ForeignKey(nameof(CadId))]
-        public Cad? Cad { get; set; }
+        [Required]
+        public string BuyerId { get; set; } = null!;
+        public AppUser Buyer { get; set; } = null!;
         
-        [ForeignKey(nameof(DesignerId))]
+        public string? DesignerId { get; set; }
         public AppUser? Designer { get; set; } 
 
-        [ForeignKey(nameof(BuyerId))]
-        public AppUser Buyer { get; set; } = null!;
+        public int? CadId { get; set; }
+        public Cad? Cad { get; set; }        
     }
 }

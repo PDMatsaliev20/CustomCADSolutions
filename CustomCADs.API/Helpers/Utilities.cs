@@ -1,4 +1,4 @@
-﻿using CustomCADs.Domain.Entities.Identity;
+﻿using CustomCADs.Domain.Identity;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;

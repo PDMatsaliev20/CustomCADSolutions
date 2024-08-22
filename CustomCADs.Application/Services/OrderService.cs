@@ -5,7 +5,6 @@ using CustomCADs.Application.Models.Orders;
 using CustomCADs.Application.Models.Utilities;
 using CustomCADs.Domain;
 using CustomCADs.Domain.Entities;
-using CustomCADs.Domain.Entities.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Linq.Expressions;
@@ -117,10 +116,10 @@ namespace CustomCADs.Application.Services
         {
             Order order = mapper.Map<Order>(model);
 
-            EntityEntry<Order> entry = await repository.AddAsync(order).ConfigureAwait(false);
+            int id = await repository.AddAsync<Order, int>(order).ConfigureAwait(false);
             await repository.SaveChangesAsync().ConfigureAwait(false);
 
-            return entry.Entity.Id;
+            return id;
         }
 
         public async Task EditAsync(int id, OrderModel model)

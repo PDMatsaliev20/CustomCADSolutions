@@ -6,7 +6,7 @@ using CustomCADs.API.Models.Queries;
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Cads;
 using CustomCADs.Application.Models.Utilities;
-using CustomCADs.Domain.Entities.Enums;
+using CustomCADs.Domain.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -222,9 +222,9 @@ namespace CustomCADs.API.Controllers
 
                 if (dto.Image != null)
                 {
-                    env.DeleteFile("images", cad.Name + id, cad.ImageExtension);
+                    env.DeleteFile("images", cad.Name + id, cad.Paths.ImageExtension);
                     string imagePath = await env.UploadImageAsync(dto.Image, dto.Name + id + dto.Image.GetFileExtension()).ConfigureAwait(false);
-                    await cadService.SetPathsAsync(id, cad.CadPath, imagePath).ConfigureAwait(false);
+                    await cadService.SetPathsAsync(id, cad.Paths.FilePath, imagePath).ConfigureAwait(false);
                 }
 
                 cad.Name = dto.Name;
@@ -261,14 +261,8 @@ namespace CustomCADs.API.Controllers
         [ProducesResponseType(Status404NotFound)]
         [ProducesResponseType(Status409Conflict)]
         [ProducesResponseType(Status500InternalServerError)]
-        public async Task<ActionResult> PatchCadAsync(int id, [FromBody] JsonPatchDocument<CadModel> patchCad)
+        public async Task<ActionResult> PatchCadAsync(int id, string type, CoordinatesDTO coordinates)
         {
-            string? modifiedForbiddenField = patchCad.CheckForBadChanges("/id", "/imagePath", "/cadPath", "/status", "/creationDate", "/creatorId", "/category", "/creator", "/orders");
-            if (modifiedForbiddenField != null)
-            {
-                return BadRequest(string.Format(ForbiddenPatch, modifiedForbiddenField));
-            }
-
             try
             {
                 CadModel model = await cadService.GetByIdAsync(id).ConfigureAwait(false);
@@ -278,13 +272,14 @@ namespace CustomCADs.API.Controllers
                     return StatusCode(403, ForbiddenAccess);
                 }
 
-                string? error = null;
-                patchCad.ApplyTo(model, p => error = p.ErrorMessage);
-                if (!string.IsNullOrEmpty(error))
+                double x = coordinates.X, y = coordinates.Y, z = coordinates.Z;
+                switch (type.Trim().ToLower())
                 {
-                    return BadRequest(error);
+                    case "camera": model.CamCoordinates = new(x, y, z); break;
+                    case "pan": model.PanCoordinates = new(x, y, z); break;
+                    default: throw new ArgumentException("Parameter 'type' must be either 'Camera' or 'Pan'.");
                 }
-
+                
                 bool isValid = model.Validate(out IList<string> errors);
                 if (!isValid)
                 {
@@ -297,6 +292,10 @@ namespace CustomCADs.API.Controllers
             catch (KeyNotFoundException ex)
             {
                 return NotFound(ex.GetMessage());
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.GetMessage());
             }
             catch (DbUpdateConcurrencyException ex)
             {
@@ -328,8 +327,8 @@ namespace CustomCADs.API.Controllers
                     return StatusCode(403, ForbiddenAccess);
                 }
 
-                string cadFileName = model.Name + id, cadExtension = model.CadExtension,
-                imageFileName = model.Name + id, imageExtension = model.ImageExtension;
+                string cadFileName = model.Name + id, cadExtension = model.Paths.FileExtension,
+                imageFileName = model.Name + id, imageExtension = model.Paths.ImageExtension;
                 
                 await cadService.DeleteAsync(id).ConfigureAwait(false);
 

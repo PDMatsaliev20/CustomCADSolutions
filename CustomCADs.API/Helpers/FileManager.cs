@@ -35,7 +35,7 @@ namespace CustomCADs.API.Helpers
         public static async Task<string> UploadImageAsync(this IWebHostEnvironment env, IFormFile image, string fileName)
         {
             ArgumentNullException.ThrowIfNull(image, nameof(image));
-            if (image.Length != 0)
+            if (image.Length == 0)
             {
                 throw new ArgumentException(InvalidSize, nameof(image.Length));
             }
@@ -49,7 +49,7 @@ namespace CustomCADs.API.Helpers
         public static async Task<string> UploadCadAsync(this IWebHostEnvironment env, IFormFile cad, string name, string extension)
         {
             ArgumentNullException.ThrowIfNull(cad, nameof(cad));
-            if (cad.Length != 0)
+            if (cad.Length == 0)
             {
                 throw new ArgumentException(InvalidSize, nameof(cad.Length));
             }

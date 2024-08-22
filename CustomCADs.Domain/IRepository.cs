@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
+﻿using CustomCADs.Domain.Entities;
 
 namespace CustomCADs.Domain
 {
@@ -14,7 +14,7 @@ namespace CustomCADs.Domain
 
         Task AddRangeAsync<T>(params T[] entity) where T : class;
 
-        Task<EntityEntry<T>> AddAsync<T>(T entity) where T : class;
+        Task<TKey> AddAsync<T, TKey>(T entity) where T : class, IEntity<TKey>;
 
         void Delete<T>(T entity) where T : class;
 

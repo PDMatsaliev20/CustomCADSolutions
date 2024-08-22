@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using static CustomCADs.Domain.DataConstants;
 
-namespace CustomCADs.Domain.Entities.Identity
+namespace CustomCADs.Domain.Identity
 {
     public class AppRole : IdentityRole
     {

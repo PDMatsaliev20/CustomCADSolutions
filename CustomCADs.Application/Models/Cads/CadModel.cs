@@ -1,7 +1,8 @@
 ﻿using CustomCADs.Application.Models.Categories;
 using CustomCADs.Application.Models.Orders;
-using CustomCADs.Domain.Entities.Enums;
-using CustomCADs.Domain.Entities.Identity;
+using CustomCADs.Domain.Enums;
+using CustomCADs.Domain.Identity;
+using CustomCADs.Domain.ValueObjects;
 using System.ComponentModel.DataAnnotations;
 using static CustomCADs.Domain.DataConstants;
 
@@ -31,30 +32,25 @@ namespace CustomCADs.Application.Models.Cads
         public DateTime CreationDate { get; set; }
 
         [Required(ErrorMessage = RequiredErrorMessage)]
-        public double[] Coords { get; set; } = new double[3];
+        public Coordinates CamCoordinates { get; set; } = new(0, 0, 0);
+        
+        [Required(ErrorMessage = RequiredErrorMessage)]
+        public Coordinates PanCoordinates { get; set; } = new(0, 0, 0);
 
         [Required(ErrorMessage = RequiredErrorMessage)]
-        public double[] PanCoords { get; set; } = new double[3];
-
-        public string CadPath { get; set; } = string.Empty;
-        public string CadExtension => '.' + CadPath.Split('.')[^1].ToLower();
-
-        public string ImagePath { get; set; } = string.Empty;
-        public string ImageExtension => '.' + ImagePath.Split('.')[^1].ToLower();
-
-        [Required(ErrorMessage = RequiredErrorMessage)]
-        public int CategoryId { get; set; }
+        public Paths Paths { get; set; } = null!;
 
         [Required(ErrorMessage = RequiredErrorMessage)]
         [AllowedValues(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
             ErrorMessage = "Existing Categories have IDs: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]")]
-        public string CreatorId { get; set; } = null!;
-
+        public int CategoryId { get; set; }
         public CategoryModel Category { get; set; } = null!;
 
+        [Required(ErrorMessage = RequiredErrorMessage)]
+        public string CreatorId { get; set; } = null!;
         public AppUser Creator { get; set; } = null!;
 
-        public ICollection<OrderModel> Orders { get; set; } = new List<OrderModel>();
+        public ICollection<OrderModel> Orders { get; set; } = [];
         
         public bool Validate(out IList<string> errors)
         {

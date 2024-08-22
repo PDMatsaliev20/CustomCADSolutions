@@ -1,5 +1,5 @@
 ﻿using CustomCADs.Application.Models.Cads;
-using CustomCADs.Domain.Entities.Enums;
+using CustomCADs.Domain.Enums;
 using static CustomCADs.Application.TestsErrorMessages;
 
 namespace CustomCADs.Tests.ServicesTests.CadTests
@@ -14,8 +14,8 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
             expectedCad.Name = "EditedCad";
             expectedCad.Price++;
             expectedCad.CategoryId = 2;
-            expectedCad.Coords = [100, 100, 100];
-            expectedCad.PanCoords = [200, 200, 200];
+            expectedCad.CamCoordinates = new(100, 100, 100);
+            expectedCad.PanCoordinates = new(200, 200, 200);
 
             await service.EditAsync(id, expectedCad).ConfigureAwait(false);
             CadModel actualCad = await service.GetByIdAsync(id).ConfigureAwait(false);
@@ -31,8 +31,11 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
                 Assert.That(actualCad.CategoryId, Is.EqualTo(expectedCad.CategoryId ),
                     string.Format(DoesNotEditEnough, "CategoryId"));
                 
-                Assert.That(actualCad.Coords, Is.EqualTo(expectedCad.Coords),
-                    string.Format(DoesNotEditEnough, "Coords"));
+                Assert.That(actualCad.CamCoordinates, Is.EqualTo(expectedCad.CamCoordinates),
+                    string.Format(DoesNotEditEnough, "CamCoordinates"));
+
+                Assert.That(actualCad.PanCoordinates, Is.EqualTo(expectedCad.PanCoordinates),
+                    string.Format(DoesNotEditEnough, "Pan Coordinates"));
             });
         }
 
