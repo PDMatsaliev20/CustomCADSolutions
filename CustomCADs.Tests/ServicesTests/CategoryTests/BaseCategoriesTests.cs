@@ -5,6 +5,7 @@ using CustomCADs.Application.Models.Categories;
 using CustomCADs.Application.Services;
 using CustomCADs.Domain.Entities;
 using CustomCADs.Infrastructure.Data;
+using CustomCADs.Infrastructure.Data.Repositories;
 using CustomCADs.Infrastructure.Data.Repositories.Command;
 using CustomCADs.Infrastructure.Data.Repositories.Query;
 using Microsoft.EntityFrameworkCore;
@@ -33,7 +34,7 @@ namespace CustomCADs.Tests.ServicesTests.CategoryTests
         [OneTimeSetUp]
         public void OneTimeSetup()
         {
-            this.service = new CategoryService(
+            this.service = new CategoryService(new DbTracker(context),
                 new CategoryQueryRepository(context), 
                 new CategoryCommandRepository(context), 
                 mapper);

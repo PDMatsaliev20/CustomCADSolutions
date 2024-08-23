@@ -126,7 +126,7 @@ namespace CustomCADs.API.Controllers
                 int pendingOrdersCount = orderService.Count(o => predicate(o, OrderStatus.Pending));
                 int begunOrdersCount = orderService.Count(o => predicate(o, OrderStatus.Begun));
                 int finishedOrdersCount = orderService.Count(o => predicate(o, OrderStatus.Finished));
-                int reportedOrdersCount = orderService.Count(o => predicate(o, OrderStatus.Removed));
+                int reportedOrdersCount = orderService.Count(o => predicate(o, OrderStatus.Reported));
                 int removedOrdersCount = orderService.Count(o => predicate(o, OrderStatus.Removed));
 
                 return new { pending = pendingOrdersCount, begun = begunOrdersCount, finished = finishedOrdersCount, reported = reportedOrdersCount, removed = removedOrdersCount };

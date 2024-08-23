@@ -6,6 +6,7 @@ using CustomCADs.Application.Services;
 using CustomCADs.Domain.Entities;
 using CustomCADs.Domain.Identity;
 using CustomCADs.Infrastructure.Data;
+using CustomCADs.Infrastructure.Data.Repositories;
 using CustomCADs.Infrastructure.Data.Repositories.Command;
 using CustomCADs.Infrastructure.Data.Repositories.Query;
 using Microsoft.EntityFrameworkCore;
@@ -51,7 +52,7 @@ namespace CustomCADs.Tests.ServicesTests.OrderTests
             await context.SaveChangesAsync().ConfigureAwait(false);
 
             SeedBuyers();
-            this.service = new OrderService(
+            this.service = new OrderService(new DbTracker(context),
                 new OrderQueryRepository(context), 
                 new OrderCommandRepository(context), 
                 mapper);

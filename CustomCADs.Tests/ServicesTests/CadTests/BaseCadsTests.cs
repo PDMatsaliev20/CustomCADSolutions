@@ -3,10 +3,12 @@ using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Mappings;
 using CustomCADs.Application.Models.Cads;
 using CustomCADs.Application.Services;
+using CustomCADs.Domain.Contracts;
 using CustomCADs.Domain.Entities;
 using CustomCADs.Domain.Enums;
 using CustomCADs.Domain.Identity;
 using CustomCADs.Infrastructure.Data;
+using CustomCADs.Infrastructure.Data.Repositories;
 using CustomCADs.Infrastructure.Data.Repositories.Command;
 using CustomCADs.Infrastructure.Data.Repositories.Query;
 using Microsoft.EntityFrameworkCore;
@@ -63,7 +65,7 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
             await context.Categories.AddRangeAsync(categories).ConfigureAwait(false);
             await context.SaveChangesAsync();
 
-            service = new CadService(
+            service = new CadService(new DbTracker(context),
                 new CadQueryRepository(context),
                 new OrderQueryRepository(context),
                 new CadCommandRepository(context),
