@@ -41,10 +41,6 @@ namespace CustomCADs.Infrastructure.Data.Configurations
                 cb.Property(c => c.FilePath).HasColumnName("FilePath");
             });
 
-            builder.Navigation(c => c.Category).AutoInclude();
-            builder.Navigation(c => c.Creator).AutoInclude();
-            builder.Navigation(c => c.Orders).AutoInclude();
-
             builder.Property(c => c.Price).HasPrecision(18, 2);
         }
     }

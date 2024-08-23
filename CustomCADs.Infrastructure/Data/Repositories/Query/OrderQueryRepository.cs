@@ -1,5 +1,6 @@
 ﻿using CustomCADs.Domain.Entities;
 using CustomCADs.Domain.Contracts;
+using Microsoft.EntityFrameworkCore;
 
 namespace CustomCADs.Infrastructure.Data.Repositories.Query
 {
@@ -7,17 +8,27 @@ namespace CustomCADs.Infrastructure.Data.Repositories.Query
     {
         public IQueryable<Order> GetAll()
         {
-            return context.Orders;
+            return context.Orders
+                .Include(o => o.Category)
+                .Include(o => o.Buyer)
+                .Include(o => o.Designer);
         }
 
         public async Task<Order?> GetByIdAsync(params object[] id)
         {
-            return await context.Orders.FindAsync(id).ConfigureAwait(false);
+            return await context.Orders
+                .Include(o => o.Category)
+                .Include(o => o.Buyer)
+                .Include(o => o.Designer)
+                .Include(o => o.Cad)
+                .FirstOrDefaultAsync(o => o.Id.Equals(id[0])).ConfigureAwait(false);
         }
 
         public int Count(Func<Order, bool> predicate)
         {
-            return context.Orders.Count(predicate);
+            return context.Orders
+                .Include(o => o.Buyer)
+                .Count(predicate);
         }
     }
 }

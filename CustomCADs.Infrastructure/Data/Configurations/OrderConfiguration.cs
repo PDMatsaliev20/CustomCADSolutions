@@ -21,11 +21,6 @@ namespace CustomCADs.Infrastructure.Data.Configurations
             builder.HasOne(o => o.Category).WithMany()
                 .HasForeignKey(o => o.CategoryId)
                 .OnDelete(DeleteBehavior.NoAction);
-
-            builder.Navigation(o => o.Category).AutoInclude();
-            builder.Navigation(o => o.Buyer).AutoInclude();
-            builder.Navigation(o => o.Designer).AutoInclude();
-            builder.Navigation(o => o.Cad).AutoInclude();
         }
     }
 }
