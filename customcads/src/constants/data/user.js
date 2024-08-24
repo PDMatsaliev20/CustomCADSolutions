@@ -2,7 +2,15 @@ export default {
     username: {
         isRequired: true,
         maxLength: 62,
-        minLength: 3,
+        minLength: 2,
+    },
+    firstName: {
+        maxLength: 62,
+        minLength: 2,
+    },
+    lastName: {
+        maxLength: 62,
+        minLength: 2,
     },
     email: {
         isRequired: true,

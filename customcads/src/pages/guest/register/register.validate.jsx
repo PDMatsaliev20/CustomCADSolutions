@@ -17,6 +17,26 @@ export default (user) => {
         errors.username = errorMessages.length(usernameLabel, usernameMinLength, usernameMaxLength);
     }
 
+    const firstName = user.firstName.trim();
+    const firstNameLabel = t('common.labels.first_name');
+    const { isRequired: firstNameIsRequired, minLength: firstNameMinLength, maxLength: firstNameMaxLength } = userValidation.firstName;
+
+    if (firstNameIsRequired && !firstName) {
+        errors.firstName = errorMessages.required(usernameLabel);
+    } else if (!(firstName.length >= firstNameMinLength && firstName.length <= firstNameMaxLength)) {
+        errors.firstName = errorMessages.length(firstNameLabel, firstNameMinLength, firstNameMaxLength);
+    }
+    
+    const lastName = user.lastName.trim();
+    const lastNameLabel = t('common.labels.last_name');
+    const { isRequired: lastNameIsRequired, minLength: lastNameMinLength, maxLength: lastNameMaxLength } = userValidation.firstName;
+
+    if (lastNameIsRequired && !lastName) {
+        errors.lastName = errorMessages.required(lastNameLabel);
+    } else if (!(lastName.length >= lastNameMinLength && lastName.length <= lastNameMaxLength)) {
+        errors.lastName = errorMessages.length(lastNameLabel, lastNameMinLength, lastNameMaxLength);
+    }
+
     const email = user.email.trim();
     const emailLabel = t('common.labels.email');
     const { isRequired: emailIsRequired, minLength: emailMinLength, maxLength: emailMaxLength, regex: emailRegex } = userValidation.email;

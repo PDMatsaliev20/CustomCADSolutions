@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 using Stripe;
+using static CustomCADs.Domain.DataConstants.RoleConstants;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -183,7 +184,15 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 if (!await roleManager.RoleExistsAsync(role))
                 {
-                    await roleManager.CreateAsync(new AppRole(role));
+                    string? description = role switch
+                    {
+                        Client => ClientDescription,
+                        Contributor => ContributorDescription,
+                        Designer => DesignerDescription,
+                        Admin => AdminDescription,
+                        _ => null
+                    };
+                    await roleManager.CreateAsync(new AppRole(role, description));
                 }
             }
         }
@@ -226,11 +235,7 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             if (await userManager.FindByEmailAsync(email) == null)
             {
-                AppUser user = new()
-                {
-                    UserName = username,
-                    Email = email,
-                };
+                AppUser user = new(username, email);
 
                 var result = await userManager.CreateAsync(user, password);
                 if (result.Succeeded)

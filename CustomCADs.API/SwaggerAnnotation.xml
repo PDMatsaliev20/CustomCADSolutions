@@ -325,7 +325,7 @@
             <summary>
                 Creates a new account with the specified parameters for the user and logs into it.
             </summary>
-            <param name="role"></param>
+            <param name="role">Must be Client or Contributor</param>
             <param name="register"></param>
             <returns></returns>
         </member>

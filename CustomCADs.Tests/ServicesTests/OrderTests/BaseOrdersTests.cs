@@ -24,9 +24,9 @@ namespace CustomCADs.Tests.ServicesTests.OrderTests
         protected IOrderService service;
         protected AppUser[] users =
         [
-            new() { UserName = "Client" },
-            new() { UserName = "Contributor" },
-            new() { UserName = "Hacker" },
+            new("Client"),
+            new("Contributor"),
+            new("Hacker"),
         ];
         protected OrderModel[] orders =
         [

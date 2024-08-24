@@ -1,5 +1,7 @@
 {
   "username": "Потребителско име",
+  "first_name": "Име",
+  "last_name": "Фамилия",
   "email": "Имейл",
   "password": "Парола",
   "confirm_password": "Потвърди Парола",

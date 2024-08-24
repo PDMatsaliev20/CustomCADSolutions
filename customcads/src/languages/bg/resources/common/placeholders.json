@@ -1,5 +1,7 @@
 {
   "username": "Your_Username123",
+  "first_name": "John",
+  "last_name": "Doe",
   "email": "your@email.com",
   "password": "your_secret_password_123",
   "order_name": "CAD По Поръчка",

@@ -21,7 +21,7 @@ function RegisterPage() {
         handleInput,
         handleBlur,
         handleSubmit
-    } = useForm({ username: '', email: '', password: '', confirmPassword: '' }, useValidateRegister);
+    } = useForm({ username: '', firstName: '', lastName: '', email: '', password: '', confirmPassword: '' }, useValidateRegister);
 
     const isClient = role.toLowerCase() === "client";
     const isContributor = role.toLowerCase() === "contributor";
@@ -47,6 +47,32 @@ function RegisterPage() {
             <div className="w-7/12 pt-8 pb-2 px-12 mt-8 bg-indigo-400 rounded-md border-2 border-indigo-600 shadow-md shadow-indigo-500">
                 <form onSubmit={(e) => handleSubmit(e, handleSubmitCallback)} autoComplete="off" noValidate>
                     <div className="mb-2 flex flex-col gap-y-4">
+                        <div className="w-full flex gap-x-2">
+                            <Input
+                                id="firstName"
+                                label={t('common.labels.first_name')}
+                                name="firstName"
+                                value={user.firstName}
+                                onInput={handleInput}
+                                onBlur={handleBlur}
+                                placeholder={t("common.placeholders.first_name")}
+                                touched={touched.firstName}
+                                error={errors.firstName}
+                                className="basis-1/3 grow text-indigo-900 w-full mt-1 p-2 px-4 border-2 border-indigo-300 rounded focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                            />
+                            <Input
+                                id="lastName"
+                                label={t('common.labels.last_name')}
+                                name="lastName"
+                                value={user.lastName}
+                                onInput={handleInput}
+                                onBlur={handleBlur}
+                                placeholder={t("common.placeholders.last_name")}
+                                touched={touched.lastName}
+                                error={errors.lastName}
+                                className="basis-1/3 grow text-indigo-900 w-full mt-1 p-2 px-4 border-2 border-indigo-300 rounded focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                            />
+                        </div>
                         <Input
                             id="username"
                             label={t('common.labels.username')}

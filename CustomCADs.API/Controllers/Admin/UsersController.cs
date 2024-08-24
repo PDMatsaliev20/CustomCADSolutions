@@ -150,7 +150,7 @@ namespace CustomCADs.API.Controllers.Admin
 
             try
             {
-                AppUser user = new(username) { Email = $"{username}@gmail.com" };
+                AppUser user = new(username, $"{username}@gmail.com");
                 IdentityResult result = await userManager.CreateAsync(user).ConfigureAwait(false);
                 if (!result.Succeeded)
                 {

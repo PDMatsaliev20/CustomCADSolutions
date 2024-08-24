@@ -41,9 +41,9 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
         ];
         protected AppUser[] users =
         [
-            new() { UserName = "Contributor" },
-            new() { UserName = "Designer" },
-            new() { UserName = "Hacker" },
+            new("Contributor"),
+            new("Designer"),
+            new("Hacker"),
         ];
         protected CadModel[] cads =
         [

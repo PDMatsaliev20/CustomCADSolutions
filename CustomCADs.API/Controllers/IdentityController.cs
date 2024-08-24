@@ -26,7 +26,7 @@ namespace CustomCADs.API.Controllers
         /// <summary>
         ///     Creates a new account with the specified parameters for the user and logs into it.
         /// </summary>
-        /// <param name="role"></param>
+        /// <param name="role">Must be Client or Contributor</param>
         /// <param name="register"></param>
         /// <returns></returns>
         [HttpPost("Register/{role}")]
@@ -43,11 +43,7 @@ namespace CustomCADs.API.Controllers
 
             try
             {
-                AppUser user = new()
-                {
-                    UserName = register.Username,
-                    Email = register.Email
-                };
+                AppUser user = new(register.Username, register.Email, register.FirstName, register.LastName);
                 IdentityResult result = await userManager.CreateAsync(user, register.Password).ConfigureAwait(false);
 
                 if (!result.Succeeded)

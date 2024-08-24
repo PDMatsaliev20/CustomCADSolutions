@@ -6,8 +6,6 @@ namespace CustomCADs.API.Models.Users
 {
     public class UserRegisterModel
     {
-        public string? ReturnUrl { get; set; }
-
         [Required(ErrorMessage = RequiredErrorMessage)]
         [StringLength(NameMaxLength, MinimumLength = NameMinLength,
             ErrorMessage = LengthErrorMessage)]
@@ -16,6 +14,14 @@ namespace CustomCADs.API.Models.Users
         [Required(ErrorMessage = RequiredErrorMessage)]
         [EmailAddress]
         public string Email { get; set; } = null!;
+        
+        [StringLength(NameMaxLength, MinimumLength = NameMinLength,
+            ErrorMessage = LengthErrorMessage)]
+        public string? FirstName { get; set; }
+        
+        [StringLength(NameMaxLength, MinimumLength = NameMinLength,
+            ErrorMessage = LengthErrorMessage)]
+        public string? LastName { get; set; }
 
         [Required(ErrorMessage = RequiredErrorMessage)]
         [StringLength(PasswordMaxLength, MinimumLength = PasswordMinLength,
