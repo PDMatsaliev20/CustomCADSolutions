@@ -11,7 +11,7 @@ function UncheckedCad({ item, onValidate, onReport }) {
     };
 
     const handleReport = () => {
-        if (confirm(t('private.designer.confirm_report'))) {
+        if (confirm(t('private.designer.confirm_cad_report'))) {
             onReport();
         }
     };

@@ -13,6 +13,7 @@
         public const string InvalidSize = "Size must not be 0";
         public const string InvalidZip = "Zip is not valid";
         public const string UnauthenticatedUser = "User not authenticated.";
+        public const string LockedOutUser = "The max attempts for logging in has been reached. The account has been locked out for {0} seconds.";
         public const string UserHasNoRole = "User has no role.";
         public const string UserHasRoles = "User has more than one role.";
         public const string OrderHasNoCad = "Order has no associated Cad.";

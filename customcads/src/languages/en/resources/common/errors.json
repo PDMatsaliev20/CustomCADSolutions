@@ -12,5 +12,7 @@
   "invalid": "is not valid",
   "equal": "Passwords must be equal!",
   "invalid_data": "Invalid data!",
-  "sign_in_error": "Non-existent account or wrong password"
+  "sign_in_error": "Non-existent account or wrong password",
+  "locked_out_error": "The max attempts for logging in has been reached. The account has been locked out for",
+  "seconds": "seconds"
 }

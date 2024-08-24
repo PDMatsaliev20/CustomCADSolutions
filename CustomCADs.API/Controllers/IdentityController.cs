@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using static CustomCADs.API.Helpers.Utilities;
+using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace CustomCADs.API.Controllers
 {
@@ -103,6 +104,7 @@ namespace CustomCADs.API.Controllers
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status400BadRequest)]
         [ProducesResponseType(Status401Unauthorized)]
+        [ProducesResponseType(Status423Locked)]
         [ProducesResponseType(Status500InternalServerError)]
         public async Task<ActionResult<string>> Login([FromBody] UserLoginModel model)
         {
@@ -110,17 +112,48 @@ namespace CustomCADs.API.Controllers
             {
                 AppUser? user = await userManager.FindByNameAsync(model.Username).ConfigureAwait(false);
 
-                if (user == null || !await userManager.CheckPasswordAsync(user, model.Password).ConfigureAwait(false))
+                if (user == null)
                 {
                     return Unauthorized(InvalidLogin);
                 }
-                await user.SignInAsync(signInManager, GetAuthProps(model.RememberMe)).ConfigureAwait(false);
 
-                var roles = await userManager.GetRolesAsync(user).ConfigureAwait(false);
-                Response.Cookies.Append("role", roles.Single());
-                Response.Cookies.Append("username", user.UserName!);
-                
-                return "Welcome back!";
+                if (await userManager.IsLockedOutAsync(user).ConfigureAwait(false) && user.LockoutEnd.HasValue)
+                {
+                    DateTimeOffset lockoutEnd = user.LockoutEnd.Value;
+                    TimeSpan timeLeft = lockoutEnd.Subtract(DateTimeOffset.UtcNow);
+
+                    return StatusCode(Status423Locked, new { timeLeft.Seconds, Error = string.Format(LockedOutUser, timeLeft.Seconds) });
+                }
+
+                SignInResult result = await signInManager.PasswordSignInAsync(
+                    user, 
+                    model.Password, 
+                    model.RememberMe, 
+                    lockoutOnFailure: true)
+                    .ConfigureAwait(false);
+
+                if (result.Succeeded)
+                {
+                    await user.SignInAsync(signInManager, GetAuthProps(model.RememberMe)).ConfigureAwait(false);
+
+                    var roles = await userManager.GetRolesAsync(user).ConfigureAwait(false);
+                    Response.Cookies.Append("role", roles.Single());
+                    Response.Cookies.Append("username", user.UserName!);
+
+                    return "Welcome back!";
+                }
+                else
+                {
+                    if (result.IsLockedOut && user.LockoutEnd.HasValue)
+                    {
+                        DateTimeOffset lockoutEnd = user.LockoutEnd.Value;
+                        TimeSpan timeLeft = lockoutEnd.Subtract(DateTimeOffset.UtcNow);
+                        
+                        return StatusCode(Status423Locked, string.Format(LockedOutUser, timeLeft.TotalSeconds));
+                    }
+                    
+                    return Unauthorized(InvalidLogin);
+                }
             }
             catch (Exception ex)
             {
@@ -140,7 +173,8 @@ namespace CustomCADs.API.Controllers
             try
             {
                 await signInManager.Context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme).ConfigureAwait(false);
-                
+                await signInManager.SignOutAsync().ConfigureAwait(false);
+
                 Response.Cookies.Delete("username");
                 Response.Cookies.Delete("role");
                 

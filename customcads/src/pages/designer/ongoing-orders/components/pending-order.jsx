@@ -15,7 +15,7 @@ function PendingOrder({ order, updateParent }) {
     };
 
     const handleReport = async () => {
-        if (confirm(t('private.designer.confirm_report'))) {
+        if (confirm(t('private.designer.confirm_order_report'))) {
             try {
                 await ReportOrder(order.id);
                 updateParent(order.id);

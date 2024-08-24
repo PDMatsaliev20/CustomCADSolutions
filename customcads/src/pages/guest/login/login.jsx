@@ -29,8 +29,11 @@ function LoginPage() {
             const role = getCookie('role');
             navigate(`/${role.toLowerCase()}`);
         } catch (e) {
-            if (e.response.data === 'Invalid Username or Password.') {
-                alert(t('common.errors.sign_in_error'));
+            const { status, data } = e.response;
+            switch (status) {
+                case 401: alert(t('common.errors.sign_in_error')); break;
+                case 423: alert(`${t('common.errors.locked_out_error')} ${data.seconds} ${t('common.errors.seconds')}.`); break;
+                default: break;
             }
             console.error(e);
         }
