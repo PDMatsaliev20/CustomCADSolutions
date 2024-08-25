@@ -10,7 +10,7 @@ namespace CustomCADs.Infrastructure.Data.Repositories.Query
             return context.Categories;
         }
 
-        public async Task<Category?> GetByIdAsync(params object[] id)
+        public async Task<Category?> GetByIdAsync(object id)
         {
             return await context.Categories.FindAsync(id).ConfigureAwait(false);
         }

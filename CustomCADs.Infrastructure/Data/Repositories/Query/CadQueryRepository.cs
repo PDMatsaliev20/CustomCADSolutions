@@ -13,13 +13,13 @@ namespace CustomCADs.Infrastructure.Data.Repositories.Query
                 .Include(c => c.Creator);
         }
 
-        public async Task<Cad?> GetByIdAsync(params object[] id)
+        public async Task<Cad?> GetByIdAsync(object id)
         {
             return await context.Cads
                 .Include(c => c.Category)
                 .Include(c => c.Creator)
                 .Include(c => c.Orders)
-                .FirstOrDefaultAsync(c => c.Id.Equals(id[0]))
+                .FirstOrDefaultAsync(c => id.Equals(c.Id))
                 .ConfigureAwait(false);
         }
 

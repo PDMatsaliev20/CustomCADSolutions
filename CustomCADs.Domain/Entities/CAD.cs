@@ -6,7 +6,7 @@ using static CustomCADs.Domain.DataConstants;
 
 namespace CustomCADs.Domain.Entities
 {
-    public class Cad : IEntity<int>
+    public class Cad 
     {
         public int Id { get; set; }
 

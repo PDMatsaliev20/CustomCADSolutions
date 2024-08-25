@@ -5,7 +5,7 @@ using static CustomCADs.Domain.DataConstants;
 
 namespace CustomCADs.Domain.Entities
 {
-    public class Order : IEntity<int>
+    public class Order 
     {
         public int Id { get; set; }
 

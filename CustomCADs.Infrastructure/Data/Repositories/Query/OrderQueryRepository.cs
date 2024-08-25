@@ -14,14 +14,14 @@ namespace CustomCADs.Infrastructure.Data.Repositories.Query
                 .Include(o => o.Designer);
         }
 
-        public async Task<Order?> GetByIdAsync(params object[] id)
+        public async Task<Order?> GetByIdAsync(object id)
         {
             return await context.Orders
                 .Include(o => o.Category)
                 .Include(o => o.Buyer)
                 .Include(o => o.Designer)
                 .Include(o => o.Cad)
-                .FirstOrDefaultAsync(o => o.Id.Equals(id[0])).ConfigureAwait(false);
+                .FirstOrDefaultAsync(o => id.Equals(o.Id)).ConfigureAwait(false);
         }
 
         public int Count(Func<Order, bool> predicate)
