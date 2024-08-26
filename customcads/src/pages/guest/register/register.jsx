@@ -5,6 +5,7 @@ import useForm from '@/hooks/useForm';
 import { Register } from '@/requests/public/identity';
 import ErrorPage from '@/components/error-page';
 import Input from '@/components/fields/input';
+import Password from '@/components/fields/password';
 import { getCookie } from '@/utils/cookie-manager';
 import useValidateRegister from './register.validate';
 
@@ -100,10 +101,9 @@ function RegisterPage() {
                             isRequired
                             className="text-indigo-900 w-full mt-1 p-2 px-4 border-2 border-indigo-300 rounded focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                         />
-                        <Input
+                        <Password
                             id="password"
                             label={t('common.labels.password')}
-                            type="password"
                             name="password"
                             value={user.password}
                             onInput={handleInput}
@@ -112,12 +112,11 @@ function RegisterPage() {
                             touched={touched.password}
                             error={errors.password}
                             isRequired
-                            className="text-indigo-900 w-full mt-1 p-2 px-4 border-2 border-indigo-300 rounded focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                            className="basis-full text-indigo-900 focus:outline-none"
                         />
-                         <Input
+                        <Password
                             id="confirmPassword"
                             label={t('common.labels.confirm_password')}
-                            type="password"
                             name="confirmPassword"
                             value={user.confirmPassword}
                             onInput={handleInput}
@@ -126,7 +125,7 @@ function RegisterPage() {
                             touched={touched.confirmPassword}
                             error={errors.confirmPassword}
                             isRequired
-                            className="text-indigo-900 w-full mt-1 p-2 px-4 border-2 border-indigo-300 rounded focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                            className="basis-full text-indigo-900 focus:outline-none"
                         />
                     </div>
                     <div className="basis-full py-4 flex justify-center items-center gap-3 text-indigo-50">

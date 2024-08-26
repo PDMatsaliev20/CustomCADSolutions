@@ -4,6 +4,7 @@ import { useAuth } from '@/contexts/auth-context';
 import useForm from '@/hooks/useForm';
 import { Login } from '@/requests/public/identity';
 import Input from '@/components/fields/input';
+import Password from '@/components/fields/password';
 import { getCookie } from '@/utils/cookie-manager';
 import useValidateLogin from './login.validate';
 
@@ -60,20 +61,21 @@ function LoginPage() {
                             isRequired
                             className="text-indigo-900 w-full mt-1 p-2 px-4 border-2 border-indigo-300 rounded focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                         />
-                        <Input
-                            id="password"
-                            label={t('common.labels.password')}
-                            type="password"
-                            name="password"
-                            value={user.password}
-                            onInput={handleInput}
-                            onBlur={handleBlur}
-                            placeholder={t('common.placeholders.password')}
-                            touched={touched.password} 
-                            error={errors.password} 
-                            isRequired
-                            className="text-indigo-900 w-full mt-1 p-2 px-4 rounded border-2 border-indigo-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                        />
+                        <div className="flex items-center">
+                            <Password
+                                id="password"
+                                label={t('common.labels.password')}
+                                name="password"
+                                value={user.password}
+                                onInput={handleInput}
+                                onBlur={handleBlur}
+                                placeholder={t('common.placeholders.password')}
+                                touched={touched.password}
+                                error={errors.password}
+                                isRequired
+                                className="basis-full text-indigo-900 focus:outline-none"
+                            />
+                        </div>
                     </div>
                     <div className="flex justify-between items-center">
                         <div className="flex items-center">
