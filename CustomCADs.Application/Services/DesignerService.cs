@@ -17,7 +17,7 @@ namespace CustomCADs.Application.Services
     {
         public async Task<OrderResult> GetOrdersAsync(string status, string? designerId, SearchModel search, PaginationModel pagination)
         {
-            IQueryable<Order> dbOrders = orderQueries.GetAll();
+            IQueryable<Order> dbOrders = orderQueries.GetAll(asNoTracking: true);
 
             if (!string.IsNullOrWhiteSpace(designerId))
             {
@@ -80,7 +80,8 @@ namespace CustomCADs.Application.Services
 
         public async Task<CadResult> GetCadsAsync(SearchModel search, PaginationModel pagination)
         {
-            IQueryable<Cad> allCads = cadQueries.GetAll().Where(c => c.Status == CadStatus.Unchecked);
+            IQueryable<Cad> allCads = cadQueries.GetAll(asNoTracking: true)
+                .Where(c => c.Status == CadStatus.Unchecked);
 
             // Search & Sort
             if (search.Category != null)

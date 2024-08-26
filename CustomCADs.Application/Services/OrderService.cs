@@ -17,7 +17,7 @@ namespace CustomCADs.Application.Services
     {
         public async Task<OrderResult> GetAllAsync(OrderQuery query, SearchModel search, PaginationModel pagination, Expression<Func<Order, bool>>? customFilter = null)
         {
-            IQueryable<Order> dbOrders = queries.GetAll();
+            IQueryable<Order> dbOrders = queries.GetAll(asNoTracking: true);
 
             // Querying
             if (!string.IsNullOrWhiteSpace(query.Buyer))
@@ -75,7 +75,8 @@ namespace CustomCADs.Application.Services
 
         public async Task<OrderModel> GetByIdAsync(int id)
         {
-            Order order = await queries.GetByIdAsync(id).ConfigureAwait(false)
+            Order order = await queries.GetByIdAsync(id, asNoTracking: true)
+                .ConfigureAwait(false)
                 ?? throw new KeyNotFoundException();
 
             OrderModel model = mapper.Map<OrderModel>(order);
@@ -84,7 +85,8 @@ namespace CustomCADs.Application.Services
         
         public async Task<CadModel> GetCadAsync(int id)
         {
-            Order? order = await queries.GetByIdAsync(id).ConfigureAwait(false);
+            Order? order = await queries.GetByIdAsync(id, asNoTracking: true)
+                .ConfigureAwait(false);
 
             if (order == null || order.CadId == null)
             {
@@ -96,7 +98,7 @@ namespace CustomCADs.Application.Services
         }
 
         public async Task<bool> ExistsByIdAsync(int id)
-            => await queries.GetByIdAsync(id).ConfigureAwait(false) != null;
+            => await queries.ExistsByIdAsync(id).ConfigureAwait(false);
 
         public int Count(Func<OrderModel, bool> predicate)
             =>  queries.Count(order => predicate(mapper.Map<OrderModel>(order)));

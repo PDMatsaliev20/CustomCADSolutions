@@ -19,7 +19,7 @@ namespace CustomCADs.Application.Services
     {
         public async Task<CadResult> GetAllAsync(CadQuery query, SearchModel search, PaginationModel pagination, Expression<Func<Cad, bool>>? customFilter = null)
         {
-            IQueryable<Cad> allCads = cadQueries.GetAll();
+            IQueryable<Cad> allCads = cadQueries.GetAll(asNoTracking: true);
 
             // Querying
             if (query.Creator != null)
@@ -77,7 +77,7 @@ namespace CustomCADs.Application.Services
 
         public async Task<CadModel> GetByIdAsync(int id)
         {
-            Cad cad = await cadQueries.GetByIdAsync(id).ConfigureAwait(false)
+            Cad cad = await cadQueries.GetByIdAsync(id, true).ConfigureAwait(false)
                 ?? throw new KeyNotFoundException($"Model with id: {id} doesn't exist");
 
             CadModel model = mapper.Map<CadModel>(cad);
@@ -85,11 +85,13 @@ namespace CustomCADs.Application.Services
         }
 
         public async Task<bool> ExistsByIdAsync(int id)
-            => await cadQueries.GetByIdAsync(id).ConfigureAwait(false) != null;
+            => await cadQueries.ExistsByIdAsync(id).ConfigureAwait(false);
 
         public int Count(Func<CadModel, bool> predicate)
         {
-            return cadQueries.Count(cad => predicate(mapper.Map<CadModel>(cad)));
+            return cadQueries.Count(
+                cad => predicate(mapper.Map<CadModel>(cad)), 
+                asNoTracking: true);
         }
 
         public async Task SetPathsAsync(int id, string cadPath, string imagePath)

@@ -14,14 +14,15 @@ namespace CustomCADs.Application.Services
     {
         public async Task<IEnumerable<CategoryModel>> GetAllAsync()
         {
-            Category[] entities = await queries.GetAll().ToArrayAsync().ConfigureAwait(false);
+            Category[] entities = await queries.GetAll(asNoTracking: true).ToArrayAsync().ConfigureAwait(false);
             CategoryModel[] models = mapper.Map<CategoryModel[]>(entities);
             return models;
         }
 
         public async Task<CategoryModel> GetByIdAsync(int id)
         {
-            Category entity = await queries.GetByIdAsync(id).ConfigureAwait(false)
+            Category entity = await queries.GetByIdAsync(id, asNoTracking: true)
+                .ConfigureAwait(false)
                 ?? throw new KeyNotFoundException();
 
             CategoryModel model = mapper.Map<CategoryModel>(entity);
