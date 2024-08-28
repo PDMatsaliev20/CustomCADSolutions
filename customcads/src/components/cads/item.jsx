@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { dateToMachineReadable } from '@/utils/date-manager';
 
 function GalleryItem({ item, by, on }) {
     const { t } = useTranslation();
@@ -14,7 +15,9 @@ function GalleryItem({ item, by, on }) {
             </Link>
             <p className="basis-full text-center text-indigo-950 font-semibold">
                 {by && t('private.cads.by', { date: item.creatorName })}
-                {on && t('private.cads.on', { date: item.creationDate })}
+                {on && <time dateTime={dateToMachineReadable(item.creationDate)}>
+                    {t('private.cads.on', { date: item.creationDate })}
+                </time>}
             </p>
         </li>
     );

@@ -1,12 +1,11 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { PatchOrder, DownloadOrderCad } from '@/requests/private/orders';
+import { dateToMachineReadable } from '@/utils/date-manager';
 
 function FinishedOrder({ order }) {
     const { t } = useTranslation();
     const [shouldBeDelivered, setShouldBeDelivered] = useState(order.shouldBeDelivered);
-    const machineReadableDateTime = order.orderDate && order.orderDate.replaceAll('.', '-');
-
     
     const handleDownload = async () => {
         try {
@@ -80,7 +79,7 @@ function FinishedOrder({ order }) {
             <hr className="border-t-2 border-indigo-800" />
             <div className="text-indigo-800 text-center">
                 <span className="font-semibold">{t('private.orders.ordered_on')}</span>
-                <time dateTime={machineReadableDateTime} className="italic">
+                <time dateTime={dateToMachineReadable(order.orderDate)} className="italic">
                     {order.orderDate}
                 </time>
             </div>

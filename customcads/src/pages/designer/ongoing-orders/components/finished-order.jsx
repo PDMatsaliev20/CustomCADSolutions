@@ -1,8 +1,8 @@
 import { useTranslation } from 'react-i18next';
+import { dateToMachineReadable } from '@/utils/date-manager';
 
 function FinishedOrder({ order }) {
     const { t } = useTranslation();
-    const machineReadableDateTime = order.orderDate && order.orderDate.replaceAll('.', '-');
     
     return (
         <div className="min-h-full bg-indigo-200 px-4 py-4 rounded-lg flex flex-col gap-y-2 shadow-lg shadow-indigo-800">
@@ -26,7 +26,7 @@ function FinishedOrder({ order }) {
             <hr className="border-t-2 border-indigo-800" />
             <div className="text-indigo-800 text-center">
                 <span className="font-semibold">{t('private.designer.ordered_on')} </span>
-                <time dateTime={machineReadableDateTime} className="italic">
+                <time dateTime={dateToMachineReadable(order.orderDate)} className="italic">
                     {order.orderDate}
                 </time>
             </div>

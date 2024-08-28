@@ -1,9 +1,9 @@
 import { useTranslation } from 'react-i18next';
 import { BeginOrder, ReportOrder } from '@/requests/private/designer';
+import { dateToMachineReadable } from '@/utils/date-manager';
 
 function PendingOrder({ order, updateParent }) {
     const { t } = useTranslation();
-    const machineReadableDateTime = order.orderDate && order.orderDate.replaceAll('.', '-');
 
     const handleBegin = async () => {
         try {
@@ -47,7 +47,7 @@ function PendingOrder({ order, updateParent }) {
             <hr className="border-t-2 border-indigo-800" />
             <div className="text-indigo-800 text-center">
                 <span className="font-semibold">{t('private.designer.ordered_on')} </span>
-                <time dateTime={machineReadableDateTime} className="italic">
+                <time dateTime={dateToMachineReadable(order.orderDate)} className="italic">
                     {order.orderDate}
                 </time>
             </div>

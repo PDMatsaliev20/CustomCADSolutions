@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { dateToMachineReadable } from '@/utils/date-manager';
 
 function PendingOrder({ order, onDelete }) {
     const { t } = useTranslation();
-    const machineReadableDateTime = order.orderDate && order.orderDate.replaceAll('.', '-');
 
     return (
         <div className="min-h-full bg-indigo-200 px-4 py-4 rounded-lg flex flex-col gap-y-2 shadow-lg shadow-indigo-800">
@@ -32,7 +32,7 @@ function PendingOrder({ order, onDelete }) {
                 </div>
                 <div>
                     <span className="font-semibold">{t('private.orders.ordered_on')}</span>
-                    <time dateTime={machineReadableDateTime} className="italic">
+                    <time dateTime={dateToMachineReadable(order.orderDate)} className="italic">
                         {order.orderDate}
                     </time>
                 </div>

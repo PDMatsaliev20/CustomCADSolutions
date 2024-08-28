@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { PutCad, PatchCad, DeleteCad } from '@/requests/private/cads';
 import { useAuth } from '@/contexts/auth-context';
 import ThreeJS from '@/components/cads/three';
+import { dateToMachineReadable } from '@/utils/date-manager';
 
 function EditCadPage() {
     const { userRole } = useAuth();
@@ -201,7 +202,7 @@ function EditCadPage() {
                         </div>
                         <div>
                             <span className="font-semibold">{t('private.cads.created_on')}</span>
-                            <time dateTime={loadedCad.creationDate.replaceAll('.', '-')} className="italic">
+                            <time dateTime={dateToMachineReadable(loadedCad.creationDate)} className="italic">
                                 {loadedCad.creationDate}
                             </time>
                         </div>

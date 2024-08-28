@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLoaderData } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { PutOrder } from '@/requests/private/orders';
+import { dateToMachineReadable } from '@/utils/date-manager';
 
 function OrderDetails() {
     const { t } = useTranslation();
@@ -117,7 +118,7 @@ function OrderDetails() {
                             </div>
                             <div className="text-end">
                                 <span className="font-semibold">{t('private.orders.ordered_on')}</span>
-                                <time dateTime={loadedOrder.orderDate.replaceAll('.', '-')} className="italic">
+                                <time dateTime={dateToMachineReadable(loadedOrder.orderDate)} className="italic">
                                     {loadedOrder.orderDate}
                                 </time>
                             </div>
