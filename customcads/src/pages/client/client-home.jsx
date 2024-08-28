@@ -36,12 +36,12 @@ function ClientHome() {
                     <ol className="grid grid-rows-5 gap-y-3 border-4 border-indigo-500 pt-3 pb-2 px-6 rounded-2xl bg-indigo-100">
                         <li key={0} className="px-2 pb-2 border-b-2 border-indigo-900 rounded">
                             <div className="flex items-center gap-x-4 font-bold">
-                                <span className="basis-1/6">Name</span>
+                                <span className="basis-1/6">{t('common.labels.name')}</span>
                                 <div className="grow">
                                     <div className="flex justify-between items-center px-4 py-2">
-                                        <p className="basis-1/3 text-start">Category</p>
-                                        <p className="basis-1/3 text-center">Order Date</p>
-                                        <p className="basis-1/3 text-end">Status</p>
+                                        <p className="basis-1/3 text-start">{t('common.labels.category')}</p>
+                                        <p className="basis-1/3 text-center">{t('common.labels.order_date')}</p>
+                                        <p className="basis-1/3 text-end">{t('common.labels.status')}</p>
                                     </div>
                                 </div>
                             </div>

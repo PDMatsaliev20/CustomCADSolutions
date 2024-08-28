@@ -7,6 +7,7 @@ import ErrorPage from '@/components/error-page';
 import Input from '@/components/fields/input';
 import Password from '@/components/fields/password';
 import { getCookie } from '@/utils/cookie-manager';
+import capitalize from '@/utils/capitalize';
 import useValidateRegister from './register.validate';
 
 function RegisterPage() {
@@ -14,7 +15,7 @@ function RegisterPage() {
     const navigate = useNavigate();
     const { t } = useTranslation();
     const { role } = useParams();
-    
+
     const {
         values: user,
         touched,
@@ -43,7 +44,7 @@ function RegisterPage() {
     return (
         <section className="flex flex-col gap-y-4 items-center">
             <h1 className="text-4xl text-center text-indigo-950 font-bold">
-                {t('public.register.register_title')} {role.toLowerCase() == 'client' ? t('common.roles.Client') : t('common.roles.Contributor')}
+                {t('public.register.register_title', { role: t(`common.roles.${capitalize(role)}`) })}
             </h1>
             <div className="w-7/12 pt-8 pb-2 px-12 mt-8 bg-indigo-400 rounded-md border-2 border-indigo-600 shadow-md shadow-indigo-500">
                 <form onSubmit={(e) => handleSubmit(e, handleSubmitCallback)} autoComplete="off" noValidate>

@@ -118,7 +118,11 @@ namespace CustomCADs.API.Controllers
                     DateTimeOffset lockoutEnd = user.LockoutEnd.Value;
                     TimeSpan timeLeft = lockoutEnd.Subtract(DateTimeOffset.UtcNow);
 
-                    return StatusCode(Status423Locked, new { timeLeft.Seconds, Error = string.Format(LockedOutUser, timeLeft.Seconds) });
+                    return StatusCode(Status423Locked, new
+                    {
+                        Seconds = Convert.ToInt16(timeLeft.TotalSeconds),
+                        Error = string.Format(LockedOutUser, timeLeft.Seconds)
+                    });
                 }
 
                 SignInResult result = await signInManager.PasswordSignInAsync(

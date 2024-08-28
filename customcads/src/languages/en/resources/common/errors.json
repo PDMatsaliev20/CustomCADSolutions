@@ -1,18 +1,13 @@
 {
-  "field": "The field",
-  "required": "is required",
-  "between": "must be between",
-  "and": "and",
-  "characters": "characters",
-  "have": "must have a",
-  "symbol": "symbol",
-  "not": "must not be",
-  "first": "the first character",
-  "last": "the last character",
-  "invalid": "is not valid",
-  "equal": "Passwords must be equal!",
+  "required": "The field '{{field}}' is required",
+  "length": "The length of '{{field}}' must be between {{min}} and {{max}}",
+  "range": "The value of '{{field}}' must be between {{min}} and {{max}}",
+  "required_symbol": "The field '{{field}}' must contain a '{{symbol}}' symbol",
+  "invalid_first": "'{{symbol}}' must not be the first character",
+  "invalid_last": "'{{symbol}}' must not be the last character",
+  "pattern": "The field '{{field}}' is not valid",
+  "equal": "Passwords must be equal",
   "invalid_data": "Invalid data!",
   "sign_in_error": "Non-existent account or wrong password",
-  "locked_out_error": "The max attempts for logging in has been reached. The account has been locked out for",
-  "seconds": "seconds"
+  "locked_out_error": "The max attempts for logging in has been reached. The account has been locked out for {{seconds}} seconds"
 }

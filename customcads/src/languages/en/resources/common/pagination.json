@@ -1,4 +1,5 @@
 {
+  "message": "Showing {{start}}-{{end}} of {{total}} results",
   "showing": "Showing",
   "of": "of",
   "results": "results",

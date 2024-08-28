@@ -1,9 +1,9 @@
-﻿import i18n from 'i18next';
+﻿import i18next from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import en from './en/resources';
 import bg from './bg/resources';
 
-i18n.use(initReactI18next)
+i18next.use(initReactI18next)
     .init({
         resources: { en, bg },
         lng: localStorage.getItem('language') || 'bg',
@@ -11,4 +11,4 @@ i18n.use(initReactI18next)
         interpolation: { escapeValue: false }
     });
 
-export default i18n;
+export default i18next;

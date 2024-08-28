@@ -41,20 +41,17 @@ function Pagination({ page, onPageChange, limit, total }) {
                 </button>
             </div>
             <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
-                <p>
-                    <span>{t('common.pagination.showing')} </span>
-                    <span>
-                        {total === 0 ? '0-0'
-                            : `${(page - 1) * limit + 1}-${page * limit < total ? page * limit : total}`}
-                    </span>
-                    <span> {t('common.pagination.of')} </span>
-                    <span>{total} </span>
-                    <span>{t('common.pagination.results')} </span>
-                </p>
+                <p>{
+                    t('common.pagination.message', {
+                        total: total,
+                        start: limit * (page - 1) + 1,
+                        end: page * limit < total ? page * limit : total,
+                    })
+                }</p>
                 <div aria-label="Pagination" className="isolate inline-flex -space-x-px rounded-md shadow-sm">
                     <ArrowBtn text={t('common.pagination.beginning')} type="beginning" onClick={handleBeginning} />
                     <ArrowBtn text={t('common.pagination.previous')} type="previous" onClick={handlePrevious} />
-                    {pageNums}  
+                    {pageNums}
                     <ArrowBtn text={t('common.pagination.next')} type="next" onClick={handleNext} />
                     <ArrowBtn text={t('common.pagination.end')} type="end" onClick={handleEnd} />
                 </div>

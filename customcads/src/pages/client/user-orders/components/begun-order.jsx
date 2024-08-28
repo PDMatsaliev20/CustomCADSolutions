@@ -18,7 +18,8 @@ function BegunOrder({ order, onDelete }) {
                         {t('private.orders.contact')}
                     </Link>
                     <button onClick={onDelete}
-                        className="basis-5/12 bg-indigo-100 border border-indigo-600 p-2 rounded text-center text-indigo-950 hover:bg-rose-500 hover:border-transparent hover:text-indigo-50">
+                        className="basis-5/12 bg-indigo-100 border border-indigo-600 p-2 rounded text-center text-indigo-950 hover:bg-rose-500 hover:border-transparent hover:text-indigo-50"
+                    >
                         {t('private.orders.cancel_order')}
                     </button>
                 </div>

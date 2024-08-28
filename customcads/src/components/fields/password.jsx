@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function Password({ id, label, isRequired, name, value, onInput, onBlur, placeholder, touched, error, className }) {
     const [isHidden, setIsHidden] = useState(true);

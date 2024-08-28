@@ -5,7 +5,7 @@
   "contributor_option": "I want to sell 3D Models -",
   "contributor_description": "(you can upload to our gallery or sell directly to us)",
   "continue": "Continue to Register",
-  "register_title": "Register as a",
+  "register_title": "Register as a {{role}}",
   "register": "Register",
   "go_to_login": "Already have an account?",
   "login": "Log in",

@@ -33,7 +33,7 @@ function LoginPage() {
             const { status, data } = e.response;
             switch (status) {
                 case 401: alert(t('common.errors.sign_in_error')); break;
-                case 423: alert(`${t('common.errors.locked_out_error')} ${data.seconds} ${t('common.errors.seconds')}.`); break;
+                case 423: alert(t('common.errors.locked_out_error', { seconds: data.seconds })); break;
                 default: break;
             }
             console.error(e);

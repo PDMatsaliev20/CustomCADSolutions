@@ -33,7 +33,7 @@ export default function AccountBtn() {
                     <div className="my-4 flex flex-col gap-y-4">
                         <MenuItem as="div" className="basis-full">
                             <span className="italic font-bold">
-                                {`${t('header.role')} ${t(`common.roles.${userRole}`)}`}
+                                {t('header.role', { role: t(`common.roles.${userRole}`) })}
                             </span>
                         </MenuItem>
 

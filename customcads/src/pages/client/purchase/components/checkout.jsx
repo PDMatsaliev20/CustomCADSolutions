@@ -77,8 +77,8 @@ function CheckoutForm({ id, onSubmit }) {
                         }
                         {status === successState &&
                             <span className="text-indigo-500 text-xl font-bold">
-                                <span>Check out your orders </span>
-                                <Link to="/client/orders/finished" className="text-center text-indigo-600 hover:text-indigo-600 font-extrabold">HERE!</Link>
+                                <span>{t('private.orders.check_out')} </span>
+                                <Link to="/client/orders/finished" className="text-center text-indigo-600 hover:text-indigo-600 font-extrabold">{t('private.orders.here')}!</Link>
                             </span>
                         }
                         <button

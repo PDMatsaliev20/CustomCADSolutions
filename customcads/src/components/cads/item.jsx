@@ -13,8 +13,8 @@ function GalleryItem({ item, by, on }) {
                 </div>
             </Link>
             <p className="basis-full text-center text-indigo-950 font-semibold">
-                {by && `${t('public.gallery.by')} '${item.creatorName}'`}
-                {on && `${t('private.cads.on')} '${item.creationDate}'`}
+                {by && t('private.cads.by', { date: item.creatorName })}
+                {on && t('private.cads.on', { date: item.creationDate })}
             </p>
         </li>
     );

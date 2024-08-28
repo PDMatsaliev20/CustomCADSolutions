@@ -5,7 +5,7 @@ import { PutOrder } from '@/requests/private/orders';
 
 function OrderDetails() {
     const { t } = useTranslation();
-    const { id, status } = useParams();
+    const { id } = useParams();
     const { loadedCategories, loadedOrder } = useLoaderData();
     const navigate = useNavigate();
 
@@ -61,7 +61,7 @@ function OrderDetails() {
     return (
         <div className="flex flex-wrap gap-y-8">
             <div className="basis-full">
-                <h1 className="text-4xl text-center text-indigo-950 font-bold">{`${t('private.orders.order-details_title')} #${id}`}</h1>
+                <h1 className="text-4xl text-center text-indigo-950 font-bold">{t('private.orders.order-details_title', { id: id })}</h1>
             </div>
             <div className="basis-10/12 mx-auto text-indigo-100">
                 <form onSubmit={handleFormSubmit} autoComplete="off">

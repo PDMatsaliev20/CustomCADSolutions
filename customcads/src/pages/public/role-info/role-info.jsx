@@ -31,9 +31,9 @@ function RoleInfo() {
         <div className="mt-5 flex flex-col gap-y-10">
             <h1 className="text-3xl text-indigo-900 text-center font-bold">
                 <span>{t('public.role.title')} </span>
-                <Link to={`/register/${role.toLowerCase()}`} className="text-indigo-800 font-extrabold">
+                <span className="text-indigo-800 font-extrabold">
                     {t(`common.roles.${role}`)}
-                </Link>!
+                </span>!
                 <span hidden={role !== 'Designer'}>
                     <Link to="/about" className="block text-sm">
                         {t('public.role.software')}
@@ -46,7 +46,7 @@ function RoleInfo() {
                         <span className="font-bold">{t('public.role.subtitle_1')}?</span>
                         <span className="mt-4 flex flex-col gap-y-2">
                             <p className="text-xl italic">
-                                {t('public.role.when')} {t(`common.roles.${role}`)}, {t('public.role.can')}:
+                                {t('public.role.abilities', { role: t(`common.roles.${role}`) })}:
                             </p>
                             <ul className="text-lg ps-8 list-disc">
                                 {abilities.map((ability, i) => <li key={i}>{ability}</li>)}
@@ -57,13 +57,13 @@ function RoleInfo() {
                         <span className="font-bold">{t('public.role.subtitle_2')}?</span>
                         <span className="mt-4 flex flex-col gap-y-2">
                             <p className="text-xl italic">
-                                {t('public.role.to')} {t(`common.roles.${role}`)}, {t('public.role.must')}:
+                                {t('public.role.guides', { role: t(`common.roles.${role}`) })}:
                             </p>
                             <ol className="text-lg ps-8 list-decimal">
                                 <li>
                                     <Link to={role === 'Designer' ? 'mailto:customcadsolutions222@gmail.com' : `/register/${role}`}>{guide[0]}</Link>
                                 </li>
-                                {guide.filter((_, i) => i !== 0).map((step, i) => <li key={i}>{step}</li>)}
+                                {guide.filter((_, i) => i).map((step, i) => <li key={i}>{step}</li>)}
                             </ol>
                         </span>
                     </li>

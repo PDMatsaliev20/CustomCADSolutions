@@ -2,7 +2,7 @@
   "home": "Home",
   "gallery": "Gallery",
   "login": "Login",
-  "role": "Role:",
+  "role": "Role: {{role}}",
   "log_out": "Log out",
   "language": "Language"
 }
