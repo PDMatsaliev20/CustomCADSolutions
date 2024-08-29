@@ -3,12 +3,12 @@ import useErrors from '@/hooks/useErrors';
 import userValidation from '@/constants/data/user';
 
 export default (user) => {
-    const { t } = useTranslation();
+    const { t: tCommon } = useTranslation('common');
     const errorMessages = useErrors();
     let errors = {};
 
     const username = user.username.trim();
-    const usernameLabel = t('common.labels.username');
+    const usernameLabel = tCommon('labels.username');
     const { isRequired: usernameIsRequired, minLength: usernameMinLength, maxLength: usernameMaxLength } = userValidation.username;
 
     if (usernameIsRequired && !username) {
@@ -18,7 +18,7 @@ export default (user) => {
     }
 
     const password = user.password.trim();
-    const passwordLabel = t('common.labels.password');
+    const passwordLabel = tCommon('labels.password');
     const { isRequired: passwordIsRequired, minLength: passwordMinLength, maxLength: passwordMaxLength } = userValidation.password;
 
     if (passwordIsRequired && !password) {

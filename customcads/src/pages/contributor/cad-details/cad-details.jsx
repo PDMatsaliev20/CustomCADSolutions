@@ -9,7 +9,8 @@ import { dateToMachineReadable } from '@/utils/date-manager';
 
 function EditCadPage() {
     const { userRole } = useAuth();
-    const { t } = useTranslation();
+    const { t: tPages } = useTranslation('pages');
+    const { t: tCommon } = useTranslation('common');
     const { id, loadedCategories, loadedCad } = useLoaderData();
     const navigate = useNavigate();
     const [cad, setCad] = useState({ name: '', description: '', categoryId: 0, price: 0, image: null });
@@ -91,7 +92,7 @@ function EditCadPage() {
     };
 
     const handleDelete = async () => {
-        if (confirm(t('private.cads.confirmation'))) {
+        if (confirm(tPages('cads.confirmation'))) {
             try {
                 await DeleteCad(id);
                 navigate(`/${userRole.toLowerCase()}/cads`);
@@ -108,7 +109,7 @@ function EditCadPage() {
                     <button type="button" onClick={() => window.dispatchEvent(new CustomEvent('SendPosition'))}
                         className="bg-indigo-500 text-indigo-50 font-bold py-3 px-6 rounded-lg border border-indigo-700 shadow shadow-indigo-950"
                     >
-                        {t('private.cads.update_position')}
+                        {tPages('cads.update_position')}
                     </button>
                 </div>
                 <div className="flex justify-center items-center gap-x-8">
@@ -118,7 +119,7 @@ function EditCadPage() {
                     <button type="submit"
                         className="bg-indigo-500 text-indigo-50 font-bold py-3 px-6 rounded-lg border border-indigo-700 shadow shadow-indigo-950"
                     >
-                        {t('private.cads.save_changes')}
+                        {tPages('cads.save_changes')}
                     </button>
                 </div>
             </div>
@@ -138,7 +139,7 @@ function EditCadPage() {
                         >
                             {loadedCategories.map(category =>
                                 <option key={category.id} value={category.id} className="bg-indigo-50" >
-                                    {t(`common.categories.${category.name}`)}
+                                    {tCommon(`categories.${category.name}`)}
                                 </option>)}
                         </select>
                         <input
@@ -163,9 +164,9 @@ function EditCadPage() {
                     <hr className="border-t-2 border-indigo-700" />
                     <section className="m-4 flex flex-wrap gap-y-1 bg-indigo-200 rounded-xl border-2 border-indigo-700 shadow-lg shadow-indigo-900 px-4 py-4">
                         <label htmlFor="description" className="w-full flex justify-between text-indigo-900 text-lg font-bold">
-                            <span>{t('common.labels.description')}</span>
+                            <span>{tCommon('labels.description')}</span>
                             <sub className="opacity-50 text-indigo-950 font-thin">
-                                {t('private.cads.hint')}
+                                {tPages('cads.hint')}
                             </sub>
                         </label>
                         <textarea
@@ -183,7 +184,7 @@ function EditCadPage() {
                     <footer className="px-4 py-3 basis-full flex justify-between items-center">
                         <div className="flex justify-center">
                             <label htmlFor="image" className="flex justify-around gap-x-4 items-center bg-indigo-300 px-4 py-1 rounded-md shadow-lg shadow-indigo-900">
-                                <p className="text-indigo-50 font-bold">{t('common.labels.image')}</p>
+                                <p className="text-indigo-50 font-bold">{tCommon('labels.image')}</p>
                                 <div className="flex justify-center gap-x-4 bg-indigo-700 rounded-xl py-2 px-4 border-2 border-indigo-400">
                                     <FontAwesomeIcon icon="arrow-up-from-bracket" className="text-xl text-indigo-100" />
                                     <div className={`${cad.image ? 'font-bold flex items-center' : 'hidden'}`}>
@@ -201,7 +202,7 @@ function EditCadPage() {
                             />
                         </div>
                         <div>
-                            <span className="font-semibold">{t('private.cads.created_on')}</span>
+                            <span className="font-semibold">{tPages('cads.created_on')}</span>
                             <time dateTime={dateToMachineReadable(loadedCad.creationDate)} className="italic">
                                 {loadedCad.creationDate}
                             </time>
@@ -211,7 +212,7 @@ function EditCadPage() {
                             onClick={handleDelete}
                             className="basis-2/12 text-indigo-950 bg-indigo-200 py-2 rounded-md hover:text-indigo-50 hover:bg-red-500 border-2 border-indigo-700"
                         >
-                            {t('private.cads.delete')}
+                            {tPages('cads.delete')}
                         </button>
                     </footer>
                 </div>

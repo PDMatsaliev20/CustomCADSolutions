@@ -14,7 +14,8 @@ import TextArea from '@/components/fields/textarea';
 import validateUploadCad from './upload-cad.validate';
 
 function UploadCad() {
-    const { t } = useTranslation();
+    const { t: tPages } = useTranslation('pages');
+    const { t: tCommon } = useTranslation('common');
     const { id } = useParams();
     const navigate = useNavigate();
     const { userRole } = useAuth();
@@ -52,7 +53,7 @@ function UploadCad() {
 
     const categoryMap = (category) =>
         <option key={category.id} value={category.id}>
-            {t(`common.categories.${category.name}`)}
+            {tCommon(`categories.${category.name}`)}
         </option>;
 
     return (
@@ -60,7 +61,7 @@ function UploadCad() {
             <form onSubmit={(e) => handleSubmit(e, handleSubmitCallback)} autoComplete="off" noValidate>
                 <div className="flex flex-col gap-y-4">
                     <div className="flex justify-center items-center gap-x-4 ">
-                        <h1 className="text-4xl text-center text-indigo-950 font-bold">{t('private.cads.upload-cad_title')}*:</h1>
+                        <h1 className="text-4xl text-center text-indigo-950 font-bold">{tPages('cads.upload-cad_title')}*:</h1>
                         <UploadCadBtn
                             id="file"
                             icon="arrow-up-from-bracket"
@@ -74,14 +75,14 @@ function UploadCad() {
                         <div className="basis-full">
                             <Input
                                 id="name"
-                                label={t('common.labels.name')}
+                                label={tCommon('labels.name')}
                                 isRequired
                                 name="name"
                                 value={cad.name}
                                 onInput={handleInput}
                                 onBlur={handleBlur}
                                 className="w-full rounded bg-indigo-50 text-indigo-900 p-2 border-2 focus:outline-none focus:border-indigo-300"
-                                placeholder={t("common.placeholders.cad_name")}
+                                placeholder={tCommon("placeholders.cad_name")}
                                 touched={touched.name}
                                 error={errors.name}
                             />
@@ -89,7 +90,7 @@ function UploadCad() {
                         <div className="basis-5/12 grow text-indigo-50">
                             <Select
                                 id="category"
-                                label={t('common.labels.category')}
+                                label={tCommon('labels.category')}
                                 isRequired
                                 name="categoryId"
                                 value={cad.category}
@@ -97,7 +98,7 @@ function UploadCad() {
                                 onBlur={handleBlur}
                                 className="w-full rounded bg-indigo-50 text-indigo-900 p-2 border-2 focus:outline-none focus:border-indigo-300"
                                 items={categories}
-                                defaultOption={t('common.categories.None')}
+                                defaultOption={tCommon('categories.None')}
                                 onMap={categoryMap}
                                 touched={touched.categoryId}
                                 error={errors.categoryId}
@@ -106,14 +107,14 @@ function UploadCad() {
                         <div className="basis-5/12 grow flex flex-wrap items-start">
                             <Input
                                 id="price"
-                                label={t('common.labels.price')}
+                                label={tCommon('labels.price')}
                                 isRequired
                                 type="number"
                                 name="price"
                                 value={cad.price}
                                 onInput={handleInput}
                                 onBlur={handleBlur}
-                                placeholder={t("common.placeholders.cad_price")}
+                                placeholder={tCommon("placeholders.cad_price")}
                                 className="w-full rounded bg-indigo-50 text-indigo-900 p-2 border-2 focus:outline-none focus:border-indigo-300"
                                 touched={touched.price}
                                 error={errors.price}
@@ -122,14 +123,14 @@ function UploadCad() {
                         <div className="basis-full flex flex-wrap">
                             <TextArea
                                 id="description"
-                                label={t('common.labels.description')}
+                                label={tCommon('labels.description')}
                                 isRequired
                                 name="description"
                                 value={cad.description}
                                 onInput={handleInput}
                                 onBlur={handleBlur}
                                 className="w-full rounded bg-indigo-50 text-indigo-900 p-2 border-2 focus:outline-none focus:border-indigo-300"
-                                placeholder={t('common.placeholders.cad_description')}
+                                placeholder={tCommon('placeholders.cad_description')}
                                 rows={3}
                                 touched={touched.description}
                                 error={errors.description}
@@ -139,7 +140,7 @@ function UploadCad() {
                             <FileInput
                                 id="image"
                                 icon="arrow-up-from-bracket"
-                                label={t('common.labels.image')}
+                                label={tCommon('labels.image')}
                                 isRequired
                                 file={cad.image}
                                 accept=".jpg,.png"
@@ -150,7 +151,7 @@ function UploadCad() {
                     </div>
                     <div className="mt-1 basis-full flex justify-center">
                         <button className="bg-indigo-200 text-indigo-800 rounded py-2 px-6 border-2 border-indigo-500">
-                            {t('private.cads.upload')}
+                            {tPages('cads.upload')}
                         </button>
                     </div>
                 </div>

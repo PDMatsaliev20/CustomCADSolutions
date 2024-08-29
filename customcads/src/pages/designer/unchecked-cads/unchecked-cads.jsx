@@ -8,7 +8,7 @@ import Pagination from '@/components/pagination';
 import ContributorCadItem from './components/unchecked-cad';
 
 function UncheckedCads() {
-    const { t } = useTranslation();
+    const { t: tPages } = useTranslation('pages');
     const [cads, setCads] = useState([]);
     const [search, setSearch] = useState({ name: '', category: '', creator: '', sorting: '' });
     const [total, setTotal] = useState(0);
@@ -32,12 +32,14 @@ function UncheckedCads() {
         <>
             <div className="flex flex-col gap-y-8 mb-8">
                 <h1 className="text-4xl text-center text-indigo-950 font-bold">
-                    {t('private.designer.unchecked-cads_title')}
+                    {tPages('designer.unchecked-cads_title')}
                 </h1>
                 <section className="flex flex-wrap justify-center gap-y-8">
                     <SearchBar setSearch={setSearch} />
                     {!cads.length
-                        ? <p className="text-lg text-indigo-900 text-center font-bold">{t('private.designer.no_cads')}</p>
+                        ? <p className="text-lg text-indigo-900 text-center font-bold">
+                            {tPages('designer.no_cads')}
+                        </p>
                         : <ul className="basis-full grid grid-cols-3 gap-12">
                             {cads.map(cad =>
                                 <ContributorCadItem key={cad.id}

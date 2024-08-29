@@ -3,7 +3,7 @@ import ArrowBtn from './pagination/arrow-btn';
 import PageNum from './pagination/page-num';
 
 function Pagination({ page, onPageChange, limit, total }) {
-    const { t } = useTranslation();
+    const { t: tCommon } = useTranslation('common');
 
     const lastPage = Math.ceil(total / limit);
 
@@ -32,28 +32,28 @@ function Pagination({ page, onPageChange, limit, total }) {
                 <button onClick={handlePrevious}
                     className="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
                 >
-                    {t('common.pagination.previous')}
+                    {tCommon('pagination.previous')}
                 </button>
                 <button onClick={handleNext}
                     className="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
                 >
-                    {t('common.pagination.next')}
+                    {tCommon('pagination.next')}
                 </button>
             </div>
             <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
                 <p>{
-                    t('common.pagination.message', {
+                    tCommon('pagination.message', {
                         total: total,
                         start: limit * (page - 1) + 1,
                         end: page * limit < total ? page * limit : total,
                     })
                 }</p>
                 <div aria-label="Pagination" className="isolate inline-flex -space-x-px rounded-md shadow-sm">
-                    <ArrowBtn text={t('common.pagination.beginning')} type="beginning" onClick={handleBeginning} />
-                    <ArrowBtn text={t('common.pagination.previous')} type="previous" onClick={handlePrevious} />
+                    <ArrowBtn text={tCommon('pagination.beginning')} type="beginning" onClick={handleBeginning} />
+                    <ArrowBtn text={tCommon('pagination.previous')} type="previous" onClick={handlePrevious} />
                     {pageNums}
-                    <ArrowBtn text={t('common.pagination.next')} type="next" onClick={handleNext} />
-                    <ArrowBtn text={t('common.pagination.end')} type="end" onClick={handleEnd} />
+                    <ArrowBtn text={tCommon('pagination.next')} type="next" onClick={handleNext} />
+                    <ArrowBtn text={tCommon('pagination.end')} type="end" onClick={handleEnd} />
                 </div>
             </div>
         </div>

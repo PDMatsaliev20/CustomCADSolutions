@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 const useForm = (initialState, useValidation) => {
-    const { t, i18n: { language } } = useTranslation();
+    const { i18n: { language } } = useTranslation();
+    const { t: tCommon } = useTranslation('common');
     const [values, setValues] = useState(initialState);
     const [touched, setTouched] = useState({});
     const [errors, setErrors] = useState({});
@@ -16,7 +17,7 @@ const useForm = (initialState, useValidation) => {
         const { name, value } = e.target;
         setValues(prevValues => ({ ...prevValues, [name]: value }));
     };
-    
+
     const handleCheckboxInput = (e) => {
         const { name, checked } = e.target;
         setValues(prevValues => ({ ...prevValues, [name]: checked }));
@@ -26,7 +27,7 @@ const useForm = (initialState, useValidation) => {
         const { name, files } = e.target;
         setValues(prevValues => ({ ...prevValues, [name]: files[0] }));
     };
-    
+
     const handleBlur = (e) => {
         const { name } = e.target;
         setTouched(prevTouched => ({ ...prevTouched, [name]: true }));
@@ -49,7 +50,7 @@ const useForm = (initialState, useValidation) => {
             fields.forEach(state => newTouched = { ...newTouched, [state]: true });
             setTouched(newTouched);
 
-            alert(t('common.errors.invalid_data'));
+            alert(tCommon('errors.invalid_data'));
         }
     };
 

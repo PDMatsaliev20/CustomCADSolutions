@@ -3,12 +3,12 @@ import useErrors from '@/hooks/useErrors';
 import userValidation from '@/constants/data/user';
 
 export default (user) => {
-    const { t } = useTranslation();
+    const { t: tCommon } = useTranslation('common');
     const errorMessages = useErrors();
     let errors = {};
 
     const username = user.username.trim();
-    const usernameLabel = t('common.labels.username');
+    const usernameLabel = tCommon('labels.username');
     const { isRequired: usernameIsRequired, minLength: usernameMinLength, maxLength: usernameMaxLength } = userValidation.username;
 
     if (usernameIsRequired && !username) {
@@ -18,7 +18,7 @@ export default (user) => {
     }
 
     const firstName = user.firstName.trim();
-    const firstNameLabel = t('common.labels.first_name');
+    const firstNameLabel = tCommon('labels.first_name');
     const { isRequired: firstNameIsRequired, minLength: firstNameMinLength, maxLength: firstNameMaxLength } = userValidation.firstName;
 
     if (firstNameIsRequired && !firstName) {
@@ -28,7 +28,7 @@ export default (user) => {
     }
     
     const lastName = user.lastName.trim();
-    const lastNameLabel = t('common.labels.last_name');
+    const lastNameLabel = tCommon('labels.last_name');
     const { isRequired: lastNameIsRequired, minLength: lastNameMinLength, maxLength: lastNameMaxLength } = userValidation.firstName;
 
     if (lastNameIsRequired && !lastName) {
@@ -38,7 +38,7 @@ export default (user) => {
     }
 
     const email = user.email.trim();
-    const emailLabel = t('common.labels.email');
+    const emailLabel = tCommon('labels.email');
     const { isRequired: emailIsRequired, minLength: emailMinLength, maxLength: emailMaxLength, regex: emailRegex } = userValidation.email;
 
     if (emailIsRequired && !email) {
@@ -56,7 +56,7 @@ export default (user) => {
     }
 
     const password = user.password.trim();
-    const passwordLabel = t('common.labels.password');
+    const passwordLabel = tCommon('labels.password');
     const { isRequired: passwordIsRequired, minLength: passwordMinLength, maxLength: passwordMaxLength } = userValidation.password;
 
     if (passwordIsRequired && !password) {
@@ -66,13 +66,13 @@ export default (user) => {
     }
 
     const confirmPassword = user.confirmPassword.trim();
-    const confirmPasswordLabel = t('common.labels.confirm_password');
+    const confirmPasswordLabel = tCommon('labels.confirm_password');
     const { isRequired: confirmPasswordIsRequired } = userValidation.confirmPassword;
 
     if (confirmPasswordIsRequired && !confirmPassword) {
         errors.confirmPassword = errorMessages.required(confirmPasswordLabel);
     } else if (confirmPassword !== user.password.trim()) {
-        errors.confirmPassword = t('common.errors.equal');
+        errors.confirmPassword = tCommon('errors.equal');
     }
 
     return errors;

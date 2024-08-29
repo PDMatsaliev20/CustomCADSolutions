@@ -2,16 +2,16 @@ import { useTranslation } from 'react-i18next';
 import ThreeJS from '@/components/cads/three';
 
 function UncheckedCad({ item, onValidate, onReport }) {
-    const { t } = useTranslation();
+    const { t: tPages } = useTranslation();
 
     const handleValidate = () => {
-        if (confirm(t('private.designer.confirm_validate'))) {
+        if (confirm(tPages('designer.confirm_validate'))) {
             onValidate();
         }
     };
 
     const handleReport = () => {
-        if (confirm(t('private.designer.confirm_cad_report'))) {
+        if (confirm(tPages('designer.confirm_cad_report'))) {
             onReport();
         }
     };
@@ -28,12 +28,12 @@ function UncheckedCad({ item, onValidate, onReport }) {
                 <button onClick={handleValidate}
                     className="basis-5/12 bg-indigo-700 text-center text-indigo-50 py-2 rounded-md hover:opacity-70 border-2 border-indigo-300"
                 >
-                    {t('private.designer.validate')}
+                    {tPages('designer.validate')}
                 </button>
                 <button onClick={handleReport}
                     className="basis-5/12 bg-indigo-50 py-2 rounded-md hover:text-indigo-50 hover:bg-red-500 border border-indigo-700"
                 >
-                    {t('private.designer.report')}
+                    {tPages('designer.report')}
                 </button>
             </div>
         </li>

@@ -3,7 +3,8 @@ import { useTranslation } from 'react-i18next';
 import HeaderBtn from './header-btn';
 
 function LanguageSelector() {
-    const { t, i18n } = useTranslation();
+    const { i18n } = useTranslation();
+    const { t: tLayout } = useTranslation('layout');
     const [language, setLanguage] = useState(i18n.language);
     const languages = ['bg', 'en'];
     let languageIndex = languages.indexOf(language);
@@ -18,7 +19,7 @@ function LanguageSelector() {
         i18n.changeLanguage(languages[languageIndex]);
     };
 
-    return <HeaderBtn onClick={handleClick} icon="globe" iconOrder="1" text={t("header.language")} />;
+    return <HeaderBtn onClick={handleClick} icon="globe" iconOrder="1" text={tLayout("header.language")} />;
 }
 
 export default LanguageSelector;

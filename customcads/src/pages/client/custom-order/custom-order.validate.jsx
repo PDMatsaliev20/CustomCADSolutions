@@ -3,12 +3,12 @@ import useErrors from '@/hooks/useErrors';
 import orderValidation from '@/constants/data/order';
 
 export default (order) => {
-    const { t } = useTranslation();
+    const { t: tCommon } = useTranslation('common');
     const errorMessages = useErrors();
     let errors = {};
 
     const name = order.name.trim();
-    const nameLabel = t('common.labels.name');
+    const nameLabel = tCommon('labels.name');
     const { isRequired: nameIsRequired, minLength: nameMinLength, maxLength: nameMaxLength } = orderValidation.name;
 
     if (nameIsRequired && !name) {
@@ -18,7 +18,7 @@ export default (order) => {
     }
 
     const description = order.description.trim();
-    const descriptionLabel = t('common.labels.description');
+    const descriptionLabel = tCommon('labels.description');
     const { isRequired: descriptionIsRequired, minLength: descriptionMinLength, maxLength: descriptionMaxLength } = orderValidation.description;
 
     if (descriptionIsRequired && !description) {
@@ -28,7 +28,7 @@ export default (order) => {
     } 
 
     const categoryId = order.categoryId;
-    const categoryLabel = t('common.labels.category');
+    const categoryLabel = tCommon('labels.category');
     const { isRequired: categoryIdIsRequired } = orderValidation.categoryId;
 
     if (categoryIdIsRequired && !categoryId) {

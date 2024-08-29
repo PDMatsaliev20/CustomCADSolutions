@@ -6,7 +6,7 @@ import Input from './fields/input';
 import Select from './fields/select';
 
 function SearchBar({ setSearch }) {
-    const { t } = useTranslation();
+    const { t: tCommon } = useTranslation('common');
     const [sortings, setSortings] = useState([]);
     const [categories, setCategories] = useState([]);
     const [copySearch, setCopySearch] = useState({ name: '', owner: '', category: '', sorting: 'Newest' });
@@ -31,12 +31,12 @@ function SearchBar({ setSearch }) {
 
     const categoryMap = (category) =>
         <option key={category.id} value={category.name}>
-            {t(`common.categories.${category.name}`)}
+            {tCommon(`categories.${category.name}`)}
         </option>;
 
     const sortingMap = (sorting) =>
         <option key={sorting} value={sorting}>
-            {t(`common.sortings.${sorting}`)}
+            {tCommon(`sortings.${sorting}`)}
         </option>;
 
     return (
@@ -47,12 +47,12 @@ function SearchBar({ setSearch }) {
                         <div className="basis-1/4 bg-indigo-200 text-indigo-800 border border-indigo-700 py-2 rounded-md text-center">
                             <Select
                                 id="category"
-                                label={t('common.searchbar.category')}
+                                label={tCommon('searchbar.category')}
                                 name="category"
                                 value={copySearch.category}
                                 onInput={handleInput}
                                 items={categories}
-                                defaultOption={t('common.categories.All')}
+                                defaultOption={tCommon('categories.All')}
                                 onMap={categoryMap}
                                 className="bg-indigo-50 border border-indigo-700 text-indigo-900 py-2 px-1 pe-2 rounded-md focus:outline-none"
                             />
@@ -63,7 +63,7 @@ function SearchBar({ setSearch }) {
                                 type="search"
                                 value={copySearch.name}
                                 onInput={handleInput}
-                                placeholder={t('common.searchbar.search_name')}
+                                placeholder={tCommon('searchbar.search_name')}
                                 className="w-full h-full bg-inherit text-inherit text-center focus:outline-none"
                             />
                             <button>
@@ -73,7 +73,7 @@ function SearchBar({ setSearch }) {
                         <div className="basis-1/4 bg-indigo-200 text-indigo-800 border border-indigo-700 py-2 rounded-md text-center">
                             <Select
                                 id="sorting"
-                                label={t('common.searchbar.sort_by')}
+                                label={tCommon('searchbar.sort_by')}
                                 name="sorting"
                                 value={copySearch.sorting}
                                 onInput={handleInput}
@@ -83,7 +83,7 @@ function SearchBar({ setSearch }) {
                             />
                         </div>
                     </div>
-                    <button className="hidden bg-indigo-200 py-1 px-4 rounded">{t('common.searchbar.Search')}</button>
+                    <button className="hidden bg-indigo-200 py-1 px-4 rounded">{tCommon('searchbar.Search')}</button>
                 </div>
             </form>
         </div>

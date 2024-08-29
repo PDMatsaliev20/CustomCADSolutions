@@ -7,26 +7,26 @@ import { Purchase } from '@/requests/private/payment';
 function CheckoutForm({ id, onSubmit }) {
     const stripe = useStripe();
     const elements = useElements();
-    const { t } = useTranslation();
+    const { t: tPages } = useTranslation('pages');
 
     const [awaitingState, processingState, successState, errorState] = ['awaiting', 'processing', 'success', 'error'];
     const [status, setStatus] = useState(awaitingState);
     const [error, setError] = useState(null);
 
-    let btnMesg = t('private.orders.purchase');
+    let btnMesg = tPages('orders.purchase');
     useEffect(() => {
         switch (status) {
             case awaitingState:
             case errorState:
-                btnMesg = t('private.orders.purchase');
+                btnMesg = tPages('orders.purchase');
                 break;
 
             case processingState:
-                btnMesg = t('private.orders.processing');
+                btnMesg = tPages('orders.processing');
                 break;
 
             case successState:
-                btnMesg = t('private.orders.paid');
+                btnMesg = tPages('orders.paid');
                 break;
         }
     }, [status]);
@@ -77,8 +77,10 @@ function CheckoutForm({ id, onSubmit }) {
                         }
                         {status === successState &&
                             <span className="text-indigo-500 text-xl font-bold">
-                                <span>{t('private.orders.check_out')} </span>
-                                <Link to="/client/orders/finished" className="text-center text-indigo-600 hover:text-indigo-600 font-extrabold">{t('private.orders.here')}!</Link>
+                                <span>{tPages('orders.check_out')} </span>
+                                <Link to="/client/orders/finished" className="text-center text-indigo-600 hover:text-indigo-600 font-extrabold">
+                                    {tPages('orders.here')}!
+                                </Link>
                             </span>
                         }
                         <button

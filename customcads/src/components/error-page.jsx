@@ -4,34 +4,34 @@ import { useAuth } from '@/contexts/auth-context';
 
 function ErrorPage({ status }) {
     const { userRole } = useAuth();
-    const { t } = useTranslation();
+    const { t: tCommon } = useTranslation('common');
 
     let text, src, link;
     switch (status) {
         case 400:
-            text = t("common.http.400");
+            text = tCommon("http.400");
             src = "/errors/az.png";
             break;
 
         case 401:
-            text = t("common.http.401");
+            text = tCommon("http.401");
             src = "/errors/doggo.png";
-            link = <Link to="/login">{t('common.http.authenticate')}</Link>;
+            link = <Link to="/login">{tCommon('http.authenticate')}</Link>;
             break;
 
         case 403:
-            text = t("common.http.403");
+            text = tCommon("http.403");
             src = "/errors/nikola.png";
-            link = <Link to={`/info/${userRole.toLowerCase()}`}>{t('common.http.authorize')}</Link>;
+            link = <Link to={`/info/${userRole.toLowerCase()}`}>{tCommon('http.authorize')}</Link>;
             break;
 
         case 404:
-            text = t("common.http.404");
+            text = tCommon("http.404");
             src = "/errors/mickey.png";
             break;
 
         default:
-            text = t('common.http.general');
+            text = tCommon('http.general');
             src = "/errors/cowabunga.png";
             break;
     }

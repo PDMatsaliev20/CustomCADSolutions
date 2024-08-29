@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { dateToMachineReadable } from '@/utils/date-manager';
 
 function GalleryItem({ item, by, on }) {
-    const { t } = useTranslation();
+    const { t: tPages } = useTranslation('pages');
 
     return (
         <li className="flex flex-wrap gap-y-2 bg-indigo-200 rounded-xl border-2 border-indigo-600 shadow-2xl shadow-indigo-400 px-6 py-6 basis-3/12 hover:bg-indigo-300 active:bg-indigo-400">
@@ -14,9 +14,9 @@ function GalleryItem({ item, by, on }) {
                 </div>
             </Link>
             <p className="basis-full text-center text-indigo-950 font-semibold">
-                {by && t('private.cads.by', { date: item.creatorName })}
+                {by && tPages('cads.by', { date: item.creatorName })}
                 {on && <time dateTime={dateToMachineReadable(item.creationDate)}>
-                    {t('private.cads.on', { date: item.creationDate })}
+                    {tPages('cads.on', { date: item.creationDate })}
                 </time>}
             </p>
         </li>

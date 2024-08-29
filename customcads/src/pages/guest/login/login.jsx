@@ -11,7 +11,8 @@ import useValidateLogin from './login.validate';
 function LoginPage() {
     const { setIsAuthenticated } = useAuth();
     const navigate = useNavigate();
-    const { t } = useTranslation();
+    const { t: tCommon } = useTranslation('common');
+    const { t: tPages } = useTranslation('pages');
 
     const {
         values: user,
@@ -32,8 +33,8 @@ function LoginPage() {
         } catch (e) {
             const { status, data } = e.response;
             switch (status) {
-                case 401: alert(t('common.errors.sign_in_error')); break;
-                case 423: alert(t('common.errors.locked_out_error', { seconds: data.seconds })); break;
+                case 401: alert(tCommon('errors.sign_in_error')); break;
+                case 423: alert(tCommon('errors.locked_out_error', { seconds: data.seconds })); break;
                 default: break;
             }
             console.error(e);
@@ -43,19 +44,19 @@ function LoginPage() {
     return (
         <section className="flex flex-col gap-y-4 items-center">
             <h1 className="my-6 text-4xl text-center font-bold ">
-                {t('public.login.title')}
+                {tPages('login.title')}
             </h1>
             <div className="w-6/12 px-12 pt-8 pb-6 bg-indigo-400 rounded-lg border-2 border-indigo-600 shadow-md shadow-indigo-500">
                 <form onSubmit={(e) => handleSubmit(e, handleSubmitCallback)} noValidate>
                     <div className="mb-4 flex flex-col gap-y-4">
                         <Input
                             id="username"
-                            label={t('common.labels.username')}
+                            label={tCommon('labels.username')}
                             name="username"
                             value={user.username}
                             onInput={handleInput}
                             onBlur={handleBlur}
-                            placeholder={t('common.placeholders.username')}
+                            placeholder={tCommon('placeholders.username')}
                             touched={touched.username} 
                             error={errors.username} 
                             isRequired
@@ -64,12 +65,12 @@ function LoginPage() {
                         <div className="flex items-center">
                             <Password
                                 id="password"
-                                label={t('common.labels.password')}
+                                label={tCommon('labels.password')}
                                 name="password"
                                 value={user.password}
                                 onInput={handleInput}
                                 onBlur={handleBlur}
-                                placeholder={t('common.placeholders.password')}
+                                placeholder={tCommon('placeholders.password')}
                                 touched={touched.password}
                                 error={errors.password}
                                 isRequired
@@ -85,11 +86,11 @@ function LoginPage() {
                                 value={user.rememberMe}
                                 onInput={handleInput}
                             />
-                            <label className="ms-1 text-indigo-50">{t('public.login.remember_me')}</label>
+                            <label className="ms-1 text-indigo-50">{tPages('login.remember_me')}</label>
                         </div>
                         <div>
                             <Link to="#" className="text-indigo-900 font-bold underline-offset-2 underline hover:italic">
-                                {t('public.login.forgot_password')}
+                                {tPages('login.forgot_password')}
                             </Link>
                         </div>
                     </div>
@@ -98,16 +99,16 @@ function LoginPage() {
                             type="submit"
                             className="bg-indigo-600 text-indigo-50 py-2 px-4 rounded hover:bg-indigo-700"
                         >
-                            {t('public.login.log_in')}
+                            {tPages('login.log_in')}
                         </button>
                     </div>
                 </form>
             </div>
             <section className="">
                 <button className="">
-                    <p>{t("public.login.go_to_register")}</p>
+                    <p>{tPages("login.go_to_register")}</p>
                     <Link to="/register" className="text-center font-bold text-indigo-700">
-                        {t('public.login.register')}
+                        {tPages('login.register')}
                     </Link>
                 </button>
             </section>

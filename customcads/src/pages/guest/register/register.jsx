@@ -13,7 +13,8 @@ import useValidateRegister from './register.validate';
 function RegisterPage() {
     const { setIsAuthenticated } = useAuth();
     const navigate = useNavigate();
-    const { t } = useTranslation();
+    const { t: tCommon } = useTranslation('common');
+    const { t: tPages } = useTranslation('pages');
     const { role } = useParams();
 
     const {
@@ -44,7 +45,7 @@ function RegisterPage() {
     return (
         <section className="flex flex-col gap-y-4 items-center">
             <h1 className="text-4xl text-center text-indigo-950 font-bold">
-                {t('public.register.register_title', { role: t(`common.roles.${capitalize(role)}`) })}
+                {tPages('register.register_title', { role: tCommon(`roles.${capitalize(role)}`) })}
             </h1>
             <div className="w-7/12 pt-8 pb-2 px-12 mt-8 bg-indigo-400 rounded-md border-2 border-indigo-600 shadow-md shadow-indigo-500">
                 <form onSubmit={(e) => handleSubmit(e, handleSubmitCallback)} autoComplete="off" noValidate>
@@ -52,24 +53,24 @@ function RegisterPage() {
                         <div className="w-full flex gap-x-2">
                             <Input
                                 id="firstName"
-                                label={t('common.labels.first_name')}
+                                label={tCommon('labels.first_name')}
                                 name="firstName"
                                 value={user.firstName}
                                 onInput={handleInput}
                                 onBlur={handleBlur}
-                                placeholder={t("common.placeholders.first_name")}
+                                placeholder={tCommon("placeholders.first_name")}
                                 touched={touched.firstName}
                                 error={errors.firstName}
                                 className="basis-1/3 grow text-indigo-900 w-full mt-1 p-2 px-4 border-2 border-indigo-300 rounded focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                             />
                             <Input
                                 id="lastName"
-                                label={t('common.labels.last_name')}
+                                label={tCommon('labels.last_name')}
                                 name="lastName"
                                 value={user.lastName}
                                 onInput={handleInput}
                                 onBlur={handleBlur}
-                                placeholder={t("common.placeholders.last_name")}
+                                placeholder={tCommon("placeholders.last_name")}
                                 touched={touched.lastName}
                                 error={errors.lastName}
                                 className="basis-1/3 grow text-indigo-900 w-full mt-1 p-2 px-4 border-2 border-indigo-300 rounded focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
@@ -77,12 +78,12 @@ function RegisterPage() {
                         </div>
                         <Input
                             id="username"
-                            label={t('common.labels.username')}
+                            label={tCommon('labels.username')}
                             name="username"
                             value={user.username}
                             onInput={handleInput}
                             onBlur={handleBlur}
-                            placeholder={t("common.placeholders.username")}
+                            placeholder={tCommon("placeholders.username")}
                             touched={touched.username}
                             error={errors.username}
                             isRequired
@@ -90,13 +91,13 @@ function RegisterPage() {
                         />
                         <Input
                             id="email"
-                            label={t('common.labels.email')}
+                            label={tCommon('labels.email')}
                             type="email"
                             name="email"
                             value={user.email}
                             onInput={handleInput}
                             onBlur={handleBlur}
-                            placeholder={t("common.placeholders.email")}
+                            placeholder={tCommon("placeholders.email")}
                             touched={touched.email}
                             error={errors.email}
                             isRequired
@@ -104,12 +105,12 @@ function RegisterPage() {
                         />
                         <Password
                             id="password"
-                            label={t('common.labels.password')}
+                            label={tCommon('labels.password')}
                             name="password"
                             value={user.password}
                             onInput={handleInput}
                             onBlur={handleBlur}
-                            placeholder={t("common.placeholders.password")}
+                            placeholder={tCommon("placeholders.password")}
                             touched={touched.password}
                             error={errors.password}
                             isRequired
@@ -117,12 +118,12 @@ function RegisterPage() {
                         />
                         <Password
                             id="confirmPassword"
-                            label={t('common.labels.confirm_password')}
+                            label={tCommon('labels.confirm_password')}
                             name="confirmPassword"
                             value={user.confirmPassword}
                             onInput={handleInput}
                             onBlur={handleBlur}
-                            placeholder={t("common.placeholders.password")}
+                            placeholder={tCommon("placeholders.password")}
                             touched={touched.confirmPassword}
                             error={errors.confirmPassword}
                             isRequired
@@ -134,16 +135,16 @@ function RegisterPage() {
                             type="submit"
                             className="bg-indigo-600 text-indigo-50 font-bold py-2 px-4 rounded hover:bg-indigo-700"
                         >
-                            {t('public.register.register')}
+                            {tPages('register.register')}
                         </button>
                     </div>
                 </form>
             </div>
             <section className="flex gap-x-4">
                 <div className="text-center">
-                    <p className="text-indigo-950" >{t('public.register.go_to_login')}</p>
+                    <p className="text-indigo-950" >{tPages('register.go_to_login')}</p>
                     <Link to="/login" className="text-center font-semibold text-indigo-700">
-                        {t('public.register.login')}
+                        {tPages('register.login')}
                     </Link>
                 </div>
             </section>

@@ -9,7 +9,7 @@ import Spinner from '@/components/spinner';
 import CheckoutForm from './components/checkout';
 
 function PurchasePage() {
-    const { t } = useTranslation();
+    const { t: tPages } = useTranslation('pages');
     const { id } = useParams();
     const [pk, setPk] = useState();
     const [stripePromise, setStripePromise] = useState();
@@ -38,7 +38,7 @@ function PurchasePage() {
                 : <div className="min-h-96 flex place-content-center mt-8">
                     <div className="basis-full flex flex-wrap items-center gap-y-4">
                         <h1 className="basis-full text-4xl text-center text-indigo-900 font-bold">
-                            {t('private.orders.purchase_title')}
+                            {tPages('orders.purchase_title')}
                         </h1>
                         <div className="h-4/6 basis-full">
                             <Elements stripe={stripePromise}>

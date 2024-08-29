@@ -7,7 +7,7 @@ import AccountBtn from './components/account-btn';
 import LanguageBtn from './components/language-btn';
 
 function Header() {
-    const { t } = useTranslation();
+    const { t: tLayout } = useTranslation('layout');
     const { isAuthenticated, userRole } = useAuth();
     
     return (
@@ -15,10 +15,10 @@ function Header() {
             <ul className="flex justify-between items-center mx-5">
                 <li className="basis-1/3 flex justify-start items-center gap-x-6">
                     <Link to={!isAuthenticated ? '/' : `/${userRole.toLowerCase()}`} className="hover:no-underline">
-                        <HeaderBtn icon="home" text={t("header.home")} orderReversed />
+                        <HeaderBtn icon="home" text={tLayout("header.home")} orderReversed />
                     </Link>
                     <Link to="/gallery" className="hover:no-underline">
-                        <HeaderBtn icon="basket-shopping" text={t("header.gallery")} orderReversed />
+                        <HeaderBtn icon="basket-shopping" text={tLayout("header.gallery")} orderReversed />
                     </Link>
                 </li>
                 <li className="basis-1/3 flex justify-center">

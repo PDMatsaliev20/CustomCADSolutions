@@ -7,7 +7,8 @@ import HeaderBtn from './header-btn';
 
 export default function AccountBtn() {
     const navigate = useNavigate();
-    const { t } = useTranslation();
+    const { t: tLayout } = useTranslation('layout');
+    const { t: tCommon } = useTranslation('common');
     const { userRole, username, setIsAuthenticated } = useAuth();
 
     const handleLogout = async () => {
@@ -33,7 +34,7 @@ export default function AccountBtn() {
                     <div className="my-4 flex flex-col gap-y-4">
                         <MenuItem as="div" className="basis-full">
                             <span className="italic font-bold">
-                                {t('header.role', { role: t(`common.roles.${userRole}`) })}
+                                {tLayout('header.role', { role: tCommon(`roles.${userRole}`) })}
                             </span>
                         </MenuItem>
 
@@ -42,7 +43,7 @@ export default function AccountBtn() {
                         <div>
                             <MenuItem as="div" className="basis-full">
                                 <button className="font-bold text-indigo-900 bg-indigo-200 py-2 px-5 rounded border border-indigo-700 shadow shadow-indigo-800" onClick={handleLogout}>
-                                    {t('header.log_out')}
+                                    {tLayout('header.log_out')}
                                 </button>
                             </MenuItem>
                         </div>

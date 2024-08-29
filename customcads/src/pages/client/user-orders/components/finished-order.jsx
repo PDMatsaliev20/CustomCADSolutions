@@ -4,7 +4,7 @@ import { PatchOrder, DownloadOrderCad } from '@/requests/private/orders';
 import { dateToMachineReadable } from '@/utils/date-manager';
 
 function FinishedOrder({ order }) {
-    const { t } = useTranslation();
+    const { t: tPages } = useTranslation('pages');
     const [shouldBeDelivered, setShouldBeDelivered] = useState(order.shouldBeDelivered);
     
     const handleDownload = async () => {
@@ -43,9 +43,9 @@ function FinishedOrder({ order }) {
             await PatchOrder(order.id, [flipShouldBeDelivered]);
 
             if (shouldBeDelivered) {
-                alert(t('private.orders.alert_cancel'));
+                alert(tPages('orders.alert_cancel'));
             } else {
-                alert(t('private.orders.alert_delivery'));
+                alert(tPages('orders.alert_delivery'));
             }
             setShouldBeDelivered(shouldBeDelivered => !shouldBeDelivered);
         } catch (e) {
@@ -63,22 +63,22 @@ function FinishedOrder({ order }) {
                     <button onClick={handleDownload}
                         className="basis-6/12 bg-indigo-700 border border-indigo-500 p-2 rounded text-center text-indigo-50 hover:opacity-70 hover:border-transparent"
                     >
-                        {t('private.orders.download')}
+                        {tPages('orders.download')}
                     </button>
                     <button onClick={handleRequest}
                         className="basis-5/12 bg-indigo-100 border border-indigo-600 p-2 rounded text-center text-indigo-950 hover:bg-rose-500 hover:border-transparent hover:text-indigo-50"
                     >
                         {
                             shouldBeDelivered
-                            ? t('private.orders.cancel_request') 
-                            : t('private.orders.request')
+                            ? tPages('orders.cancel_request') 
+                            : tPages('orders.request')
                         }
                     </button>
                 </div>
             </section>
             <hr className="border-t-2 border-indigo-800" />
             <div className="text-indigo-800 text-center">
-                <span className="font-semibold">{t('private.orders.ordered_on')}</span>
+                <span className="font-semibold">{tPages('orders.ordered_on')}</span>
                 <time dateTime={dateToMachineReadable(order.orderDate)} className="italic">
                     {order.orderDate}
                 </time>

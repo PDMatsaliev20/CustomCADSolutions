@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
 function RecentItem({ to, item }) {
-    const { t } = useTranslation();
+    const { t: tCommon } = useTranslation('common');
 
     return (
         <Link to={to} className="flex items-center gap-x-4 group/row hover:no-underline">
@@ -11,9 +11,9 @@ function RecentItem({ to, item }) {
             </span>
             <div className="grow group-hover/row:text-lg group-hover/row:font-bold">
                 <div className="flex justify-between items-center px-4 py-2">
-                    <p>{t(`common.categories.${item.category}`)}</p>
+                    <p>{tCommon(`categories.${item.category}`)}</p>
                     <p>{item.date}</p>
-                    <p>{t(`common.statuses.${item.status}`)}</p>
+                    <p>{tCommon(`statuses.${item.status}`)}</p>
                 </div>
             </div>
         </Link>

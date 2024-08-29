@@ -1,20 +1,18 @@
 // Layout
-import header from './resources/header.json';
-import navbar from './resources/navbar.json';
-import footer from './resources/footer.json';
+import header from './resources/layout/header.json';
+import navbar from './resources/layout/navbar.json';
+import footer from './resources/layout/footer.json';
 
-// Public
-import home from './resources/pages/public/home.json';
-import gallery from './resources/pages/public/gallery.json';
-import about from './resources/pages/public/about.json';
-import register from './resources/pages/public/register.json';
-import login from './resources/pages/public/login.json';
-import role from './resources/pages/public/role.json';
-
-// Private
-import orders from './resources/pages/private/orders.json';
-import cads from './resources/pages/private/cads.json';
-import designer from './resources/pages/private/designer.json';
+// Pages
+import home from './resources/pages/home.json';
+import gallery from './resources/pages/gallery.json';
+import about from './resources/pages/about.json';
+import register from './resources/pages/register.json';
+import login from './resources/pages/login.json';
+import role from './resources/pages/role.json';
+import orders from './resources/pages/orders.json';
+import cads from './resources/pages/cads.json';
+import designer from './resources/pages/designer.json';
 
 // Common
 import labels from './resources/common/labels.json';
@@ -30,33 +28,33 @@ import statuses from './resources/common/statuses.json';
 import others from './resources/common/others.json';
 
 export default {
-    translation: {
-        header, navbar, footer,
-        public: {
-            home,
-            gallery,
-            about,
-            register,
-            login,
-            role,
-        },
-        private: {
-            orders,
-            cads,
-            designer,
-        },
-        common: {
-            labels,
-            errors,
-            searchbar,
-            pagination,
-            placeholders,
-            roles,
-            categories,
-            sortings,
-            http,
-            statuses,
-            others,
-        }
+    layout: {
+        header,
+        navbar,
+        footer
+    },
+    pages: {
+        home,
+        gallery,
+        about,
+        register,
+        login,
+        role,
+        orders,
+        cads,
+        designer,
+    },
+    common: {
+        labels,
+        placeholders,
+        errors,
+        searchbar,
+        pagination,
+        roles,
+        categories,
+        sortings,
+        http,
+        statuses,
+        others,
     }
 };

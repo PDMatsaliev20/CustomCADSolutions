@@ -10,7 +10,8 @@ import TextArea from '@/components/fields/textarea';
 import validateCustomOrder from './custom-order.validate';
 
 function CustomOrder() {
-    const { t } = useTranslation();
+    const { t: tCommon } = useTranslation('common');
+    const { t: tPages } = useTranslation('pages');
     const navigate = useNavigate();
     const [categories, setCategories] = useState([]);
     const {
@@ -38,23 +39,23 @@ function CustomOrder() {
 
     const categoryMap = (category) =>
         <option key={category.id} value={category.id}>
-            {t(`common.categories.${category.name}`)}
+            {tCommon(`categories.${category.name}`)}
         </option>;
 
     return (
         <div className="flex flex-col gap-y-8 mt-2">
-            <h1 className="text-4xl text-center text-indigo-950 font-bold">{t('private.orders.custom-order_title')}</h1>
+            <h1 className="text-4xl text-center text-indigo-950 font-bold">{tPages('orders.custom-order_title')}</h1>
             <form onSubmit={(e) => handleSubmit(e, handleSubmitCallback)} autoComplete="off" noValidate>
                 <div className="w-7/12 mx-auto flex flex-wrap items-start gap-x-4 gap-y-4 bg-indigo-700 py-8 px-10 rounded-xl border-4 border-indigo-500 shadow-lg shadow-indigo-700">
                     <div className="basis-1/2 flex flex-wrap">
                         <Input
                             id="name"
-                            label={t('common.labels.name')}
+                            label={tCommon('labels.name')}
                             name="name"
                             value={order.name}
                             onInput={handleInput}
                             onBlur={handleBlur}
-                            placeholder={t('common.placeholders.order_name')}
+                            placeholder={tCommon('placeholders.order_name')}
                             className="inline-block w-full min-h-10 px-3 rounded bg-indigo-50 text-indigo-900 border-2 focus:outline-none focus:border-indigo-300"
                             touched={touched.name}
                             error={errors.name}
@@ -64,13 +65,13 @@ function CustomOrder() {
                     <div className="basis-1/3 grow flex flex-wrap text-indigo-50">
                         <Select
                             id="category"
-                            label={t('common.labels.category')}
+                            label={tCommon('labels.category')}
                             name="categoryId"
                             value={order.category}
                             onInput={handleInput}
                             onBlur={handleBlur}
                             items={categories}
-                            defaultOption={t('common.categories.None')}
+                            defaultOption={tCommon('categories.None')}
                             onMap={categoryMap}
                             className="inline-block w-full min-h-10 rounded bg-indigo-50 text-indigo-900 p-2 border-2 focus:outline-none focus:border-indigo-300"
                             touched={touched.categoryId}
@@ -81,14 +82,14 @@ function CustomOrder() {
                     <div className="basis-full flex flex-wrap">
                         <TextArea
                             id="description"
-                            label={t('common.labels.description')}
+                            label={tCommon('labels.description')}
                             isRequired
                             name="description"
                             value={order.description}
                             onInput={handleInput}
                             onBlur={handleBlur}
                             className="w-full rounded bg-indigo-50 text-indigo-900 p-2 border-2 focus:outline-none focus:border-indigo-300"
-                            placeholder={t('common.placeholders.order_description')}
+                            placeholder={tCommon('placeholders.order_description')}
                             rows={3}
                             touched={touched.description}
                             error={errors.description}
@@ -104,13 +105,13 @@ function CustomOrder() {
                             onBlur={handleBlur}
                         />
                         <label htmlFor="delivery" className="text-indigo-50 font-bold">
-                            {t('common.labels.delivery')}
+                            {tCommon('labels.delivery')}
                         </label>
                     </div>
                 </div>
                 <div className="mt-6 basis-full flex justify-center">
                     <button className="bg-indigo-200 text-indigo-800 rounded py-2 px-8 border-2 border-indigo-500">
-                        {t('private.orders.order')}
+                        {tPages('orders.order')}
                     </button>
                 </div>
             </form>

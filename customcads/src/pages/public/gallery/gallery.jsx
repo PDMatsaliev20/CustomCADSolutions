@@ -8,7 +8,7 @@ import Pagination from '@/components/pagination';
 import GalleryItem from '@/components/cads/item';
 
 function GalleryPage() {
-    const { t } = useTranslation();
+    const { t: tPages } = useTranslation('pages');
     const [cads, setCads] = useState([]);
     const [search, setSearch] = useState({ name: '', category: '', owner: '', sorting: '' });
     const [total, setTotal] = useState(0);
@@ -21,12 +21,16 @@ function GalleryPage() {
 
     return (
         <div className="mt-4 mb-6 flex flex-col gap-y-6">
-            <h1 className="basis-full text-center text-4xl text-indigo-950 font-bold">{t('public.gallery.title')}</h1>
+            <h1 className="basis-full text-center text-4xl text-indigo-950 font-bold">
+                {tPages('gallery.title')}
+            </h1>
             <div className="flex flex-wrap justify-center gap-y-10">
                 <SearchBar setSearch={setSearch} />
                 <section className="basis-full">
                     {!cads.length
-                        ? <p className="text-lg text-indigo-900 text-center font-bold">{t('public.gallery.no_cads')}</p>
+                        ? <p className="text-lg text-indigo-900 text-center font-bold">
+                            {tPages('gallery.no_cads')}
+                        </p>
                         : <ul className="grid grid-cols-3 gap-y-12 gap-x-10">
                             {cads.map(cad => <GalleryItem key={cad.id} item={cad} by />)}
                         </ul>}

@@ -5,7 +5,8 @@ import { PutOrder } from '@/requests/private/orders';
 import { dateToMachineReadable } from '@/utils/date-manager';
 
 function OrderDetails() {
-    const { t } = useTranslation();
+    const { t: tPages } = useTranslation('pages');
+    const { t: tCommon } = useTranslation('common');
     const { id } = useParams();
     const { loadedCategories, loadedOrder } = useLoaderData();
     const navigate = useNavigate();
@@ -30,7 +31,7 @@ function OrderDetails() {
 
     const handleInput = (e) => {
         if (order.status !== 'Pending') {
-            alert(t('private.orders.warning'));
+            alert(tPages('orders.warning'));
             return;
         }
         const newOrder = { ...order, [e.target.name]: e.target.value.trim() };
@@ -62,7 +63,7 @@ function OrderDetails() {
     return (
         <div className="flex flex-wrap gap-y-8">
             <div className="basis-full">
-                <h1 className="text-4xl text-center text-indigo-950 font-bold">{t('private.orders.order-details_title', { id: id })}</h1>
+                <h1 className="text-4xl text-center text-indigo-950 font-bold">{tPages('orders.order-details_title', { id: id })}</h1>
             </div>
             <div className="basis-10/12 mx-auto text-indigo-100">
                 <form onSubmit={handleFormSubmit} autoComplete="off">
@@ -77,7 +78,7 @@ function OrderDetails() {
                                 >
                                     {categories.map(category =>
                                         <option key={category.id} value={category.id} className="bg-indigo-50">
-                                            {t(`common.categories.${category.name}`)}
+                                            {tCommon(`categories.${category.name}`)}
                                         </option>)}
                                 </select>
                                 <input
@@ -87,15 +88,15 @@ function OrderDetails() {
                                     className="bg-indigo-400 text-3xl text-center font-bold focus:outline-none py-2 rounded-xl border-4 border-indigo-300 shadow-xl shadow-indigo-900"
                                 />
                                 <span className="bg-indigo-200 text-indigo-700 px-4 py-2 rounded-xl italic border-4 border-indigo-300 shadow-md shadow-indigo-950">
-                                    {t(`common.statuses.${loadedOrder.status}`)}
+                                    {tCommon(`statuses.${loadedOrder.status}`)}
                                 </span>
                             </div>
                         </header>
                         <section className="basis-full flex flex-wrap gap-y-1 bg-indigo-100 rounded-xl border-2 border-indigo-700 shadow-lg shadow-indigo-900 px-4 py-4">
                             <label htmlFor="description" className="w-full flex justify-between text-indigo-900 text-lg font-bold">
-                                <span>{t('private.orders.description')}</span>
+                                <span>{tPages('orders.description')}</span>
                                 <sub className="opacity-50 text-indigo-950 font-thin">
-                                    {t('private.orders.hint')}
+                                    {tPages('orders.hint')}
                                 </sub>
                             </label>
                             <textarea
@@ -111,13 +112,13 @@ function OrderDetails() {
                         </section>
                         <footer className="basis-full flex justify-between">
                             <div className="text-start">
-                                <span className="font-semibold">{t('private.orders.ordered_by')}</span>
+                                <span className="font-semibold">{tPages('orders.ordered_by')}</span>
                                 <span className="underline underline-offset-4 italic">
                                     {loadedOrder.buyerName}
                                 </span>
                             </div>
                             <div className="text-end">
-                                <span className="font-semibold">{t('private.orders.ordered_on')}</span>
+                                <span className="font-semibold">{tPages('orders.ordered_on')}</span>
                                 <time dateTime={dateToMachineReadable(loadedOrder.orderDate)} className="italic">
                                     {loadedOrder.orderDate}
                                 </time>
@@ -126,7 +127,7 @@ function OrderDetails() {
                     </div>
                     <div className={`${isEditing ? 'flex justify-center mt-8' : ' hidden'}`}>
                         <button className="bg-indigo-500 text-indigo-50 font-bold py-3 px-6 rounded-lg border border-indigo-700 shadow shadow-indigo-950">
-                            {t('private.orders.save_changes')}
+                            {tPages('orders.save_changes')}
                         </button>
                     </div>
                 </form>

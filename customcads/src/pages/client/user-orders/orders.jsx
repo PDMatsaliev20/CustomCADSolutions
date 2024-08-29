@@ -13,7 +13,7 @@ import BegunOrder from './components/begun-order';
 import FinishedOrder from './components/finished-order';
 
 function UserOrders() {
-    const { t } = useTranslation();
+    const { t: tPages } = useTranslation('pages');
     const [orders, setOrders] = useState([]);
     const { status } = useLoaderData();
     const [search, setSearch] = useState({ name: '', category: '', sorting: '' });
@@ -34,7 +34,7 @@ function UserOrders() {
     }, [status, search, page]);
 
     const handleDelete = async (id) => {
-        if (confirm(t('private.orders.alert_delete'))) {
+        if (confirm(tPages('orders.alert_delete'))) {
             try {
                 await DeleteOrder(id);
                 fetchOrders();
@@ -55,15 +55,15 @@ function UserOrders() {
             <div className="basis-full flex flex-col"> 
                 <h2 className="px-4 text-2xl text-indigo-950">
                     <div className="flex justify-between items-center rounded-t-xl border-4 border-b border-indigo-700 overflow-hidden bg-indigo-500 text-center font-bold">
-                        <Tab to="/client/orders/pending" position='start' text={t('private.orders.pending_title')} isActive={isPending} />
-                        <Tab to="/client/orders/begun" position='middle' text={t('private.orders.begun_title')} isActive={isBegun} />
-                        <Tab to="/client/orders/finished" position='end' text={t('private.orders.finished_title')} isActive={isFinished} />
+                        <Tab to="/client/orders/pending" position='start' text={tPages('orders.pending_title')} isActive={isPending} />
+                        <Tab to="/client/orders/begun" position='middle' text={tPages('orders.begun_title')} isActive={isBegun} />
+                        <Tab to="/client/orders/finished" position='end' text={tPages('orders.finished_title')} isActive={isFinished} />
                     </div>
                 </h2>
                 <SearchBar setSearch={setSearch} />
             </div>
             {!orders.length ?
-                <p className="text-lg text-indigo-900 text-center font-bold">{t('private.orders.no_orders')}</p>
+                <p className="text-lg text-indigo-900 text-center font-bold">{tPages('orders.no_orders')}</p>
                 : <ul className="basis-full grid grid-cols-12 gap-x-16 gap-y-12">
                     {orders.filter(o => o.status.toLowerCase() === status.toLowerCase()).map(order =>
                         <li key={order.id} className="col-span-6">{chooseOrder(order)}</li>)}

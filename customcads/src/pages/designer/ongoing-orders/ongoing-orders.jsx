@@ -12,7 +12,7 @@ import BegunOrder from './components/begun-order';
 import FinishedOrder from './components/finished-order';
 
 function OngoingOrders() {
-    const { t } = useTranslation();
+    const { t: tPages } = useTranslation('pages');
     const { status } = useLoaderData();
     const [orders, setOrders] = useState([]);
     const [search, setSearch] = useState({ name: '', category: '', owner: '', sorting: '' });
@@ -41,15 +41,17 @@ function OngoingOrders() {
             <div className="basis-full flex flex-col">
                 <h2 className="px-4 basis-full text-3xl text-indigo-950">
                     <div className="flex justify-between items-center rounded-t-xl border-t-4 border-x-4 border-b border-indigo-600 overflow-hidden bg-indigo-500 text-center font-bold">
-                        <Tab position="start" to="/designer/orders/pending" text={t('private.designer.pending_title')} isActive={status === 'Pending'} />
-                        <Tab position="middle" to="/designer/orders/begun" text={t('private.designer.begun_title')} isActive={status === 'Begun'} />
-                        <Tab position="end" to="/designer/orders/finished" text={t('private.designer.finished_title')} isActive={status === 'Finished'} />
+                        <Tab position="start" to="/designer/orders/pending" text={tPages('designer.pending_title')} isActive={status === 'Pending'} />
+                        <Tab position="middle" to="/designer/orders/begun" text={tPages('designer.begun_title')} isActive={status === 'Begun'} />
+                        <Tab position="end" to="/designer/orders/finished" text={tPages('designer.finished_title')} isActive={status === 'Finished'} />
                     </div>
                 </h2>
                 <SearchBar setSearch={setSearch} />
             </div>
-            {!orders.length ?
-                <p className="basis-full text-lg text-indigo-900 text-center font-bold">{t('private.designer.no_orders')}</p>
+            {!orders.length
+                ? <p className="basis-full text-lg text-indigo-900 text-center font-bold">
+                    {tPages('designer.no_orders')}
+                </p>
                 : <ul className="basis-full grid grid-cols-3 gap-y-8 gap-x-[5%]">
                     {orders.map(order =>
                         <li key={order.id}>{chooseOrder(order)}</li>

@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 
 function Profile({ person: { img, name, role, desc, contact } }) {
-    const { t } = useTranslation();
+    const { t: tPages } = useTranslation('pages');
 
     return (
         <article className="flex flex-wrap gap-x-3 p-2 w-full bg-indigo-200 border border-indigo-500 rounded-sm">
@@ -17,7 +17,7 @@ function Profile({ person: { img, name, role, desc, contact } }) {
                     <p>{desc}</p>
                 </details>
                 <p className="underline underline-offset-4">
-                    {t('public.about.preferred')}
+                    {tPages('about.preferred')}
                     <span className="font-bold"> {contact}</span>
                 </p>
             </div>
