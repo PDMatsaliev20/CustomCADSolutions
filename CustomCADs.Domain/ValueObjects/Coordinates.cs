@@ -30,9 +30,9 @@ namespace CustomCADs.Domain.ValueObjects
         {
             if (obj == null) return false;
             
-            if (obj is Coordinates)
+            if (obj is Coordinates coords)
             {
-                return Equals((Coordinates)obj);
+                return Equals(coords);
             }
             
             return base.Equals(obj);

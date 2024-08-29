@@ -34,8 +34,8 @@ namespace CustomCADs.API.Controllers
             => new CadGetDTO()
             {
                 CadPath = "/files/HomeCAD.glb",
-                Coords = [2, 16, 33],
-                PanCoords = [0, 6, -3]
+                CamCoordinates = new() { X = 2, Y = 16, Z = 33 },
+                PanCoordinates = new() { X = 0, Y = 6, Z = -3 },
             };
 
         /// <summary>

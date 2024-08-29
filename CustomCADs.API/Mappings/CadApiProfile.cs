@@ -2,6 +2,7 @@
 using CustomCADs.API.Models.Cads;
 using CustomCADs.API.Models.Queries;
 using CustomCADs.Application.Models.Cads;
+using CustomCADs.Domain.ValueObjects;
 
 namespace CustomCADs.API.Mappings
 {
@@ -9,11 +10,14 @@ namespace CustomCADs.API.Mappings
     {
         public CadApiProfile()
         {
+            CoordinateToDTO();
             QueryResultToDTO();
             ModelToGet();
             PostToModel();
             PutToModel();
         }
+
+        public void CoordinateToDTO() => CreateMap<Coordinates, CoordinatesDTO>();
 
         public void ModelToGet() => CreateMap<CadModel, CadGetDTO>()
             .ForMember(export => export.CreationDate, opt =>
@@ -27,12 +31,7 @@ namespace CustomCADs.API.Mappings
             .ForMember(export => export.CadPath, opt => 
                 opt.MapFrom(model => model.Paths.FilePath))
             .ForMember(export => export.ImagePath, opt => 
-                opt.MapFrom(model => model.Paths.ImagePath))
-            .ForMember(export => export.Coords, opt => 
-                opt.MapFrom(model => new double[3] { model.CamCoordinates.X, model.CamCoordinates.Y, model.CamCoordinates.Z  }))
-            .ForMember(export => export.PanCoords, opt => 
-                opt.MapFrom(model => new double[3] { model.PanCoordinates.X, model.PanCoordinates.Y, model.PanCoordinates.Z  }))
-            ;
+                opt.MapFrom(model => model.Paths.ImagePath));
 
         public void QueryResultToDTO() => CreateMap<CadResult, CadQueryResultDTO>();
         
