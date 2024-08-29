@@ -28,8 +28,8 @@ function ThreeJS({ cad, isHomeCad }) {
             const scene = new THREE.Scene();
 
             const camera = new THREE.PerspectiveCamera(model.fov, window.innerWidth / window.innerHeight, 0.001, 1000);
-            camera.position.set(model.coords[0], model.coords[1], model.coords[2]);
-            if (model.coords.every(c => c === 0)) {
+            camera.position.set(model.camCoordinates.x, model.camCoordinates.y, model.camCoordinates.z);
+            if (model.camCoordinates == { x: 0, y: 0, z: 0 }) {
                 camera.position.set(0, 0, 5);
             }
 
@@ -40,7 +40,7 @@ function ThreeJS({ cad, isHomeCad }) {
 
             const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
             mount.appendChild(renderer.domElement);
-
+            
             let isInteracting = false
             let resumeTimeout;
 
@@ -59,12 +59,13 @@ function ThreeJS({ cad, isHomeCad }) {
             }
 
             function sendPosition() {
-                window.dispatchEvent(new CustomEvent('SavePosition', {
-                    detail: {
-                        coords: [camera.position.x, camera.position.y, camera.position.z],
-                        panCoords: [controls.target.x, controls.target.y, controls.target.z]
-                    }
-                }));
+                const { x: xCam, y: yCam, z: zCam } = camera.position;
+                const coords = { x: xCam, y: yCam, z: zCam };
+
+                const { x: xPan, y: yPan, z: zPan } = controls.target;
+                const panCoords = { x: xPan, y: yPan, z: zPan };
+
+                window.dispatchEvent(new CustomEvent('SavePosition', { detail: { coords, panCoords, }}));
             };
 
             function trackChanges() {
@@ -95,7 +96,7 @@ function ThreeJS({ cad, isHomeCad }) {
             const controls = new OrbitControls(camera, renderer.domElement);
             controls.enableDamping = true;
             controls.dampingFactor = 0.1;
-            controls.target.set(model.panCoords[0], model.panCoords[1], model.panCoords[2]);
+            controls.target.set(model.panCoordinates.x, model.panCoordinates.y, model.panCoordinates.z);
             controls.update();
 
             const loader = new GLTFLoader();
