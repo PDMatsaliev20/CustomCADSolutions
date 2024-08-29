@@ -84,16 +84,21 @@ function ThreeJS({ cad, isHomeCad }) {
             }
             updateRendererSize();
 
-            const directionalLight = new THREE.DirectionalLight(isHomeCad ? 0xa5b4fc : 0xffffff, 1);
-            directionalLight.position.set(1, 1, 1).normalize();
-            scene.add(directionalLight);
-
-            const directionalLight2 = new THREE.DirectionalLight(0xffffff, 1);
-            directionalLight2.position.set(-1, 1, 1).normalize();
-            scene.add(directionalLight2);
-
-            const ambientLight = new THREE.AmbientLight(isHomeCad ? 0xa5b4fc : 0xffffff, 0.5);
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
             scene.add(ambientLight);
+
+            function addDirectionalLight(intensity, coords) {
+                const light = new THREE.DirectionalLight(0xffffff, intensity);
+                light.position.set(coords.x, coords.y, coords.z);
+                scene.add(light);
+            }
+            addDirectionalLight(1, { x: 5, y: 10, z: 5 });
+            addDirectionalLight(0.5, { x: -5, y: 5, z: 5 });
+            addDirectionalLight(0.5, { x: 5, y: -5, z: 5 });
+            addDirectionalLight(0.3, { x: 0, y: 5, z: -5 });
+            addDirectionalLight(0.3, { x: 0, y: -5, z: 0 });
+            addDirectionalLight(0.3, { x: -5, y: 0, z: 0 });
+            addDirectionalLight(0.3, { x: 5, y: 0, z: 0 });
 
             const controls = new OrbitControls(camera, renderer.domElement);
             controls.enableDamping = true;
@@ -107,7 +112,7 @@ function ThreeJS({ cad, isHomeCad }) {
                 (xhr) => xhr.loaded === xhr.total && setLoader(false),
                 (e) => console.error(e)
             );
-
+            
             controls.addEventListener('change', cadTouched);
 
             function animate() {
