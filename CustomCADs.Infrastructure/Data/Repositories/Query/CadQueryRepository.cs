@@ -1,6 +1,7 @@
 ﻿using CustomCADs.Domain.Entities;
 using CustomCADs.Domain.Contracts;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace CustomCADs.Infrastructure.Data.Repositories.Query
 {
@@ -15,12 +16,21 @@ namespace CustomCADs.Infrastructure.Data.Repositories.Query
 
         public async Task<Cad?> GetByIdAsync(object id, bool asNoTracking = false)
         {
-            return await Query(context.Cads, asNoTracking)
-                .Include(c => c.Category)
-                .Include(c => c.Creator)
-                .Include(c => c.Orders)
+            Cad? cad = await Query(context.Cads, asNoTracking)
                 .FirstOrDefaultAsync(c => id.Equals(c.Id))
                 .ConfigureAwait(false);
+            
+            if (cad == null) 
+            { 
+                return null; 
+            }
+
+            EntityEntry<Cad> entry = context.Cads.Entry(cad);
+            await entry.Reference(o => o.Category).LoadAsync().ConfigureAwait(false);
+            await entry.Reference(o => o.Creator).LoadAsync().ConfigureAwait(false);
+            await entry.Reference(o => o.Orders).LoadAsync().ConfigureAwait(false);
+
+            return cad;
         }
 
         public async Task<bool> ExistsByIdAsync(object id)

@@ -1,6 +1,8 @@
 ﻿using CustomCADs.Domain.Entities;
 using CustomCADs.Domain.Contracts;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Metadata.Ecma335;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace CustomCADs.Infrastructure.Data.Repositories.Query
 {
@@ -9,7 +11,6 @@ namespace CustomCADs.Infrastructure.Data.Repositories.Query
         public IQueryable<Order> GetAll(bool asNoTracking = false)
         {
             return Query(context.Orders, asNoTracking)
-                .AsNoTracking()
                 .Include(o => o.Category)
                 .Include(o => o.Buyer)
                 .Include(o => o.Designer);
@@ -17,13 +18,22 @@ namespace CustomCADs.Infrastructure.Data.Repositories.Query
 
         public async Task<Order?> GetByIdAsync(object id, bool asNoTracking = false)
         {
-            return await Query(context.Orders, asNoTracking)
-                .AsNoTracking()
-                .Include(o => o.Category)
-                .Include(o => o.Buyer)
-                .Include(o => o.Designer)
-                .Include(o => o.Cad)
-                .FirstOrDefaultAsync(o => id.Equals(o.Id)).ConfigureAwait(false);
+            Order? order = await Query(context.Orders, asNoTracking)
+                .FirstOrDefaultAsync(o => id.Equals(o.Id))
+                .ConfigureAwait(false);
+            
+            if (order == null)
+            {
+                return order;
+            }
+
+            EntityEntry<Order> entry = context.Orders.Entry(order);
+            await entry.Reference(o => o.Category).LoadAsync().ConfigureAwait(false);
+            await entry.Reference(o => o.Buyer).LoadAsync().ConfigureAwait(false);
+            await entry.Reference(o => o.Designer).LoadAsync().ConfigureAwait(false);
+            await entry.Reference(o => o.Cad).LoadAsync().ConfigureAwait(false);
+
+            return order;
         }
 
         public async Task<bool> ExistsByIdAsync(object id)
