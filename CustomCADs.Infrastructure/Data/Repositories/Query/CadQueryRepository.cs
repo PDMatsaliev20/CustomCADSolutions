@@ -11,26 +11,19 @@ namespace CustomCADs.Infrastructure.Data.Repositories.Query
         {
             return Query(context.Cads, asNoTracking)
                 .Include(c => c.Category)
-                .Include(c => c.Creator);
+                .Include(c => c.Creator)
+                .AsSplitQuery();
         }
 
         public async Task<Cad?> GetByIdAsync(int id, bool asNoTracking = false)
         {
-            Cad? cad = await Query(context.Cads, asNoTracking)
+            return await Query(context.Cads, asNoTracking)
+                .Include(o => o.Category)
+                .Include(o => o.Creator)
+                .Include(o => o.Orders)
+                .AsSplitQuery()
                 .FirstOrDefaultAsync(c => c.Id == id)
                 .ConfigureAwait(false);
-            
-            if (cad == null) 
-            { 
-                return null; 
-            }
-
-            EntityEntry<Cad> entry = context.Cads.Entry(cad);
-            await entry.Reference(o => o.Category).LoadAsync().ConfigureAwait(false);
-            await entry.Reference(o => o.Creator).LoadAsync().ConfigureAwait(false);
-            await entry.Collection(o => o.Orders).LoadAsync().ConfigureAwait(false);
-
-            return cad;
         }
 
         public async Task<bool> ExistsByIdAsync(int id)
