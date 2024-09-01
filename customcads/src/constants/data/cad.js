@@ -15,7 +15,7 @@ export default {
     price: {
         isRequired: true,
         min: 0.01,
-        max: 1000
+        max: 999
     },
     file: {
         isRequired: true

@@ -1,31 +1,26 @@
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useForm } from 'react-hook-form';
 import { useAuth } from '@/contexts/auth-context';
-import useForm from '@/hooks/useForm';
 import { Login } from '@/requests/public/identity';
 import Input from '@/components/fields/input';
 import Password from '@/components/fields/password';
 import { getCookie } from '@/utils/cookie-manager';
-import useValidateLogin from './login.validate';
+import loginValidations from './login-validations';
 
 function LoginPage() {
     const { setIsAuthenticated } = useAuth();
     const navigate = useNavigate();
     const { t: tCommon } = useTranslation('common');
     const { t: tPages } = useTranslation('pages');
+    const [rememberMe, setRememberMe] = useState(false);
+    const { register, formState, handleSubmit, watch } = useForm({ mode: 'onTouched' });
+    const { username, password } = loginValidations();
 
-    const {
-        values: user,
-        touched,
-        errors,
-        handleInput,
-        handleBlur,
-        handleSubmit,
-    } = useForm({ username: '', password: '', rememberMe: false }, useValidateLogin);
-
-    const handleSubmitCallback = async () => {
+    const onSubmit = async (user) => {
         try {
-            await Login(user);
+            await Login({ ...user, rememberMe });
             setIsAuthenticated(true);
 
             const role = getCookie('role');
@@ -47,46 +42,39 @@ function LoginPage() {
                 {tPages('login.title')}
             </h1>
             <div className="w-6/12 px-12 pt-8 pb-6 bg-indigo-400 rounded-lg border-2 border-indigo-600 shadow-md shadow-indigo-500">
-                <form onSubmit={(e) => handleSubmit(e, handleSubmitCallback)} noValidate>
+                <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="mb-4 flex flex-col gap-y-4">
                         <Input
                             id="username"
                             label={tCommon('labels.username')}
-                            name="username"
-                            value={user.username}
-                            onInput={handleInput}
-                            onBlur={handleBlur}
+                            rhfProps={register('username', username)}
                             placeholder={tCommon('placeholders.username')}
-                            touched={touched.username} 
-                            error={errors.username} 
+                            error={formState.errors.username}
                             isRequired
-                            className="text-indigo-900 w-full mt-1 p-2 px-4 border-2 border-indigo-300 rounded focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                         />
                         <div className="flex items-center">
                             <Password
                                 id="password"
                                 label={tCommon('labels.password')}
-                                name="password"
-                                value={user.password}
-                                onInput={handleInput}
-                                onBlur={handleBlur}
                                 placeholder={tCommon('placeholders.password')}
-                                touched={touched.password}
-                                error={errors.password}
-                                isRequired
+                                rhfProps={register('password', password)}
+                                hidden={!watch('password')}
+                                error={formState.errors.password}
                                 className="basis-full text-indigo-900 focus:outline-none"
+                                isRequired
                             />
                         </div>
                     </div>
                     <div className="flex justify-between items-center">
                         <div className="flex items-center">
                             <input
+                                id="rememberMe"
                                 type="checkbox"
                                 name="rememberMe"
-                                value={user.rememberMe}
-                                onInput={handleInput}
+                                value={rememberMe}
+                                onInput={() => setRememberMe(rm => !rm)}
                             />
-                            <label className="ms-1 text-indigo-50">{tPages('login.remember_me')}</label>
+                            <label htmlFor="rememberMe" className="ms-1 text-indigo-50">{tPages('login.remember_me')}</label>
                         </div>
                         <div>
                             <Link to="#" className="text-indigo-900 font-bold underline-offset-2 underline hover:italic">

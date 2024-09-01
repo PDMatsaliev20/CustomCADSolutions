@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useForm } from 'react-hook-form';
 import { useAuth } from '@/contexts/auth-context';
-import useForm from '@/hooks/useForm';
 import { GetCategories } from '@/requests/public/home';
 import { PostCad } from '@/requests/private/cads';
 import { FinishOrder } from '@/requests/private/designer';
@@ -11,7 +11,7 @@ import FileInput from '@/components/fields/file-input';
 import Input from '@/components/fields/input';
 import Select from '@/components/fields/select';
 import TextArea from '@/components/fields/textarea';
-import validateUploadCad from './upload-cad.validate';
+import cadValidations from './cad-validations';
 
 function UploadCad() {
     const { t: tPages } = useTranslation('pages');
@@ -20,24 +20,18 @@ function UploadCad() {
     const navigate = useNavigate();
     const { userRole } = useAuth();
     const [categories, setCategories] = useState([]);
-
-    const {
-        values: cad,
-        touched,
-        errors,
-        handleBlur,
-        handleInput,
-        handleFileUpload,
-        handleSubmit
-    } = useForm({ name: '', description: '', categoryId: 0, price: 0, file: null, image: null }, validateUploadCad);
+    const [file, setFile] = useState();
+    const [image, setImage] = useState();
+    const { register, formState, handleSubmit } = useForm({ mode: 'onTouched' });
+    const { name, description, categoryId, price } = cadValidations();
 
     useEffect(() => {
         fetchCategories();
     }, []);
 
-    const handleSubmitCallback = async () => {
+    const onSubmit = async (cad) => {
         try {
-            const { data } = await PostCad(cad);
+            const { data } = await PostCad({ ...cad, image, file });
             if (userRole === 'Designer') {
                 if (id) {
                     await FinishOrder(id, data.id);
@@ -58,17 +52,17 @@ function UploadCad() {
 
     return (
         <div className="my-2">
-            <form onSubmit={(e) => handleSubmit(e, handleSubmitCallback)} autoComplete="off" noValidate>
+            <form onSubmit={handleSubmit(onSubmit)} noValidate>
                 <div className="flex flex-col gap-y-4">
                     <div className="flex justify-center items-center gap-x-4 ">
                         <h1 className="text-4xl text-center text-indigo-950 font-bold">{tPages('cads.upload-cad_title')}*:</h1>
                         <UploadCadBtn
                             id="file"
                             icon="arrow-up-from-bracket"
-                            file={cad.file}
+                            file={file}
                             accept=".glb,.zip"
                             name="file"
-                            onInput={handleFileUpload}
+                            onInput={(e) => setFile(e.target.files[0])}
                         />
                     </div>
                     <div className="w-8/12 mx-auto flex flex-wrap gap-y-4 gap-x-8 bg-indigo-700 py-8 px-12 rounded-xl  border-4 border-indigo-500 shadow-md shadow-indigo-700">
@@ -76,64 +70,48 @@ function UploadCad() {
                             <Input
                                 id="name"
                                 label={tCommon('labels.name')}
-                                isRequired
-                                name="name"
-                                value={cad.name}
-                                onInput={handleInput}
-                                onBlur={handleBlur}
+                                rhfProps={register('name', name)}
                                 className="w-full rounded bg-indigo-50 text-indigo-900 p-2 border-2 focus:outline-none focus:border-indigo-300"
                                 placeholder={tCommon("placeholders.cad_name")}
-                                touched={touched.name}
-                                error={errors.name}
+                                error={formState.errors.name}
+                                isRequired
                             />
                         </div>
                         <div className="basis-5/12 grow text-indigo-50">
                             <Select
                                 id="category"
                                 label={tCommon('labels.category')}
-                                isRequired
-                                name="categoryId"
-                                value={cad.category}
-                                onInput={handleInput}
-                                onBlur={handleBlur}
+                                rhfProps={register('categoryId', categoryId)}
                                 className="w-full rounded bg-indigo-50 text-indigo-900 p-2 border-2 focus:outline-none focus:border-indigo-300"
                                 items={categories}
                                 defaultOption={tCommon('categories.None')}
                                 onMap={categoryMap}
-                                touched={touched.categoryId}
-                                error={errors.categoryId}
+                                error={formState.errors.categoryId}
+                                isRequired
                             />
                         </div>
                         <div className="basis-5/12 grow flex flex-wrap items-start">
                             <Input
                                 id="price"
                                 label={tCommon('labels.price')}
-                                isRequired
                                 type="number"
-                                name="price"
-                                value={cad.price}
-                                onInput={handleInput}
-                                onBlur={handleBlur}
+                                rhfProps={register('price', price)}
                                 placeholder={tCommon("placeholders.cad_price")}
                                 className="w-full rounded bg-indigo-50 text-indigo-900 p-2 border-2 focus:outline-none focus:border-indigo-300"
-                                touched={touched.price}
-                                error={errors.price}
+                                error={formState.errors.price}
+                                isRequired
                             />
                         </div>
                         <div className="basis-full flex flex-wrap">
                             <TextArea
                                 id="description"
                                 label={tCommon('labels.description')}
-                                isRequired
-                                name="description"
-                                value={cad.description}
-                                onInput={handleInput}
-                                onBlur={handleBlur}
+                                rhfProps={register('description', description)}
                                 className="w-full rounded bg-indigo-50 text-indigo-900 p-2 border-2 focus:outline-none focus:border-indigo-300"
                                 placeholder={tCommon('placeholders.cad_description')}
                                 rows={3}
-                                touched={touched.description}
-                                error={errors.description}
+                                error={formState.errors.description}
+                                isRequired
                             />
                         </div>
                         <div className="basis-full flex justify-center">
@@ -142,10 +120,10 @@ function UploadCad() {
                                 icon="arrow-up-from-bracket"
                                 label={tCommon('labels.image')}
                                 isRequired
-                                file={cad.image}
+                                file={image}
                                 accept=".jpg,.png"
                                 name="image"
-                                onInput={handleFileUpload}
+                                onInput={(e) => setImage(e.target.files[0])}
                             />
                         </div>
                     </div>

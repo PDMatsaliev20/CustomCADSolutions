@@ -1,14 +1,14 @@
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useForm } from 'react-hook-form';
 import { useAuth } from '@/contexts/auth-context';
-import useForm from '@/hooks/useForm';
 import { Register } from '@/requests/public/identity';
 import ErrorPage from '@/components/error-page';
 import Input from '@/components/fields/input';
 import Password from '@/components/fields/password';
 import { getCookie } from '@/utils/cookie-manager';
 import capitalize from '@/utils/capitalize';
-import useValidateRegister from './register.validate';
+import registerValidations from './register-validations';
 
 function RegisterPage() {
     const { setIsAuthenticated } = useAuth();
@@ -16,23 +16,16 @@ function RegisterPage() {
     const { t: tCommon } = useTranslation('common');
     const { t: tPages } = useTranslation('pages');
     const { role } = useParams();
-
-    const {
-        values: user,
-        touched,
-        errors,
-        handleInput,
-        handleBlur,
-        handleSubmit
-    } = useForm({ username: '', firstName: '', lastName: '', email: '', password: '', confirmPassword: '' }, useValidateRegister);
-
+    const { register, formState, handleSubmit, watch } = useForm({ mode: 'onTouched' });
+    const { firstName, lastName, username, email, password, confirmPassword } = registerValidations(watch('password'));
+    
     const isClient = role.toLowerCase() === "client";
     const isContributor = role.toLowerCase() === "contributor";
     if (!(isClient || isContributor)) {
         return <ErrorPage status={404} />;
     }
 
-    const handleSubmitCallback = async () => {
+    const onSubmit = async (user) => {
         try {
             await Register(isClient ? 'Client' : 'Contributor', user);
             setIsAuthenticated(true);
@@ -48,86 +41,64 @@ function RegisterPage() {
                 {tPages('register.register_title', { role: tCommon(`roles.${capitalize(role)}`) })}
             </h1>
             <div className="w-7/12 pt-8 pb-2 px-12 mt-8 bg-indigo-400 rounded-md border-2 border-indigo-600 shadow-md shadow-indigo-500">
-                <form onSubmit={(e) => handleSubmit(e, handleSubmitCallback)} autoComplete="off" noValidate>
+                <form onSubmit={handleSubmit(onSubmit)} noValidate>
                     <div className="mb-2 flex flex-col gap-y-4">
                         <div className="w-full flex gap-x-2">
                             <Input
                                 id="firstName"
                                 label={tCommon('labels.first_name')}
-                                name="firstName"
-                                value={user.firstName}
-                                onInput={handleInput}
-                                onBlur={handleBlur}
+                                rhfProps={register('firstName', firstName)}
                                 placeholder={tCommon("placeholders.first_name")}
-                                touched={touched.firstName}
-                                error={errors.firstName}
+                                error={formState.errors.firstName}
                                 className="basis-1/3 grow text-indigo-900 w-full mt-1 p-2 px-4 border-2 border-indigo-300 rounded focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                             />
                             <Input
                                 id="lastName"
                                 label={tCommon('labels.last_name')}
-                                name="lastName"
-                                value={user.lastName}
-                                onInput={handleInput}
-                                onBlur={handleBlur}
+                                rhfProps={register('lastName', lastName)}
                                 placeholder={tCommon("placeholders.last_name")}
-                                touched={touched.lastName}
-                                error={errors.lastName}
+                                error={formState.errors.lastName}
                                 className="basis-1/3 grow text-indigo-900 w-full mt-1 p-2 px-4 border-2 border-indigo-300 rounded focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                             />
                         </div>
                         <Input
                             id="username"
                             label={tCommon('labels.username')}
-                            name="username"
-                            value={user.username}
-                            onInput={handleInput}
-                            onBlur={handleBlur}
-                            placeholder={tCommon("placeholders.username")}
-                            touched={touched.username}
-                            error={errors.username}
+                            rhfProps={register('username', username)}
+                            placeholder={tCommon('placeholders.username')}
+                            error={formState.errors.username}
                             isRequired
-                            className="text-indigo-900 w-full mt-1 p-2 px-4 border-2 border-indigo-300 rounded focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                         />
                         <Input
                             id="email"
                             label={tCommon('labels.email')}
                             type="email"
-                            name="email"
-                            value={user.email}
-                            onInput={handleInput}
-                            onBlur={handleBlur}
+                            rhfProps={register('email', email)}
                             placeholder={tCommon("placeholders.email")}
-                            touched={touched.email}
-                            error={errors.email}
-                            isRequired
+                            error={formState.errors.email}
                             className="text-indigo-900 w-full mt-1 p-2 px-4 border-2 border-indigo-300 rounded focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                            isRequired
                         />
                         <Password
                             id="password"
                             label={tCommon('labels.password')}
                             name="password"
-                            value={user.password}
-                            onInput={handleInput}
-                            onBlur={handleBlur}
-                            placeholder={tCommon("placeholders.password")}
-                            touched={touched.password}
-                            error={errors.password}
-                            isRequired
+                            placeholder={tCommon('placeholders.password')}
+                            rhfProps={register('password', password)}
+                            hidden={!watch('password')}
+                            error={formState.errors.password}
                             className="basis-full text-indigo-900 focus:outline-none"
+                            isRequired
                         />
                         <Password
                             id="confirmPassword"
                             label={tCommon('labels.confirm_password')}
-                            name="confirmPassword"
-                            value={user.confirmPassword}
-                            onInput={handleInput}
-                            onBlur={handleBlur}
+                            rhfProps={register('confirmPassword', confirmPassword)}
                             placeholder={tCommon("placeholders.password")}
-                            touched={touched.confirmPassword}
-                            error={errors.confirmPassword}
-                            isRequired
+                            hidden={!watch('confirmPassword')}
+                            error={formState.errors.confirmPassword}
                             className="basis-full text-indigo-900 focus:outline-none"
+                            isRequired
                         />
                     </div>
                     <div className="basis-full py-4 flex justify-center items-center gap-3 text-indigo-50">

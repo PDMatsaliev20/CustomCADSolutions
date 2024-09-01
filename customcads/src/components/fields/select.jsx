@@ -1,4 +1,4 @@
-function SelectField({ id, label, isRequired, name, value, onInput, onBlur, defaultOption, items, onMap, className, touched, error }) {
+function SelectField({ id, label, isRequired, name, value, onInput, rhfProps, defaultOption, items, onMap, className, error }) {
     return (
         <label htmlFor={id} className="w-full">
             <span>{label}{isRequired ? '*' : ''}</span>
@@ -7,15 +7,15 @@ function SelectField({ id, label, isRequired, name, value, onInput, onBlur, defa
                 name={name}
                 value={value}
                 onInput={onInput}
-                onBlur={onBlur}
+                {...rhfProps}
                 className={className}
             >
                 {defaultOption && <option key={0} value="">{defaultOption}</option> }
                 {items.map(onMap)}
             </select>
-            <span className={`${touched && error ? 'inline-block' : 'hidden'} text-sm bg-red-700 p-1 rounded text-indigo-100 font-bold`}>
-                {error}
-            </span>
+            {error && <span className={`inline-block text-sm bg-red-700 p-1 rounded text-indigo-100 font-bold`}>
+                {error.message}
+            </span>}
         </label>
     );
 }
