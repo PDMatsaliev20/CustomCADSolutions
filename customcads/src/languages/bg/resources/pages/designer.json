@@ -1,7 +1,7 @@
 {
   "home_title": "Табло за Управление",
   "home_subtitle_1": "Скорошно Качени 3D Модели",
-  "home_subtitle_2": "Скорошно Завършени Поръчки",
+  "home_subtitle_2": "Скорошни {{status}} Поръчки",
   "unchecked-cads_title": "3D Модели за Проверка",
   "validate": "Одобри",
   "report": "Докладвай",

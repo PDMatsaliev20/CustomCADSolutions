@@ -1,7 +1,7 @@
 {
   "home_title":  "Your Dashboard",
   "home_subtitle_1":  "Recently Uploaded 3D Models",
-  "home_subtitle_2":  "Recently Finished Orders",
+  "home_subtitle_2":  "Recent {{status}} Orders",
   "unchecked-cads_title": "3D Models to Check",
   "validate": "Validate",
   "report": "Report",

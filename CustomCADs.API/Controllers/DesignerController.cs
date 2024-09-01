@@ -146,21 +146,21 @@ namespace CustomCADs.API.Controllers
         /// <summary>
         ///     Gets the User's most recent finished Orders.
         /// </summary>
+        /// <param name="status"></param>
         /// <param name="limit"></param>
         /// <returns></returns>
         [HttpGet("Orders/Recent")]
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status500InternalServerError)]
         [ProducesResponseType(Status502BadGateway)]
-        public async Task<ActionResult<OrderResultDTO>> GetRecentOrdersAsync(int limit = 4)
+        public async Task<ActionResult<OrderResultDTO>> GetRecentOrdersAsync(string status, int limit = 4)
         {
             try
             {
-                OrderQuery query = new() { Status = OrderStatus.Finished };
                 SearchModel search = new() { Sorting = "newest" };
                 PaginationModel pagination = new() { Limit = limit };
 
-                OrderResult result = await designerService.GetOrdersAsync("finished", User.GetId(), search, pagination);
+                OrderResult result = await designerService.GetOrdersAsync(status, User.GetId(), search, pagination);
 
                 return mapper.Map<OrderResultDTO>(result);
             }

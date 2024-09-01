@@ -1,7 +1,6 @@
 import AuthGuard from '@/routing/auth-guard';
 import { GetCategories } from '@/requests/public/home';
-import { GetCad, GetRecentCads } from '@/requests/private/cads';
-import { GetRecentFinishedOrders } from '@/requests/private/designer';
+import { GetCad } from '@/requests/private/cads';
 import DesignerHomePage from '@/pages/designer/designer-home';
 import UserCadsPage from '@/pages/contributor/user-cads/cads';
 import CadDetailsPage from '@/pages/contributor/cad-details/cad-details';
@@ -15,22 +14,7 @@ export default {
     children: [
         {
             path: '/designer',
-            element: <DesignerHomePage />,
-            loader: async () => {
-                try {
-                    const { data: { cads } } = await GetRecentCads();
-                    const { data: { orders } } = await GetRecentFinishedOrders();
-
-                    return { loadedCads: cads, loadedOrders: orders };
-                } catch (e) {
-                    console.error(e);
-                    switch (e.response.status) {
-                        case 401: return { error: true, unauthenticated: true }; break;
-                        case 403: return { error: true, unauthorized: true }; break;
-                        default: return { error: true }; break;
-                    }
-                }
-            }
+            element: <DesignerHomePage />
         },
         {
             path: '/designer/cads',

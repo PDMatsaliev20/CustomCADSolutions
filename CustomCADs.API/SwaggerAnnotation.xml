@@ -231,10 +231,11 @@
             <param name="limit"></param>
             <returns></returns>
         </member>
-        <member name="M:CustomCADs.API.Controllers.DesignerController.GetRecentOrdersAsync(System.Int32)">
+        <member name="M:CustomCADs.API.Controllers.DesignerController.GetRecentOrdersAsync(System.String,System.Int32)">
             <summary>
                 Gets the User's most recent finished Orders.
             </summary>
+            <param name="status"></param>
             <param name="limit"></param>
             <returns></returns>
         </member>
