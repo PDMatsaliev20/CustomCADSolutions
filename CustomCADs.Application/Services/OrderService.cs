@@ -11,7 +11,7 @@ using System.Linq.Expressions;
 namespace CustomCADs.Application.Services
 {
     public class OrderService(IDbTracker dbTracker,
-        IQueryRepository<Order> queries,
+        IQueryRepository<Order, int> queries,
         ICommandRepository<Order> commands, 
         IMapper mapper) : IOrderService
     {

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 namespace CustomCADs.Application.Services
 {
     public class CategoryService(IDbTracker dbTracker,
-        IQueryRepository<Category> queries, 
+        IQueryRepository<Category, int> queries, 
         ICommandRepository<Category> commands, 
         IMapper mapper) : ICategoryService
     {

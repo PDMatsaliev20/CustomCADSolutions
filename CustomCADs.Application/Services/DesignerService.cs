@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore;
 namespace CustomCADs.Application.Services
 {
     public class DesignerService(IDbTracker dbTracker,
-        IQueryRepository<Cad> cadQueries, 
-        IQueryRepository<Order> orderQueries,
+        IQueryRepository<Cad, int> cadQueries, 
+        IQueryRepository<Order, int> orderQueries,
         IMapper mapper) : IDesignerService
     {
         public async Task<OrderResult> GetOrdersAsync(string status, string? designerId, SearchModel search, PaginationModel pagination)

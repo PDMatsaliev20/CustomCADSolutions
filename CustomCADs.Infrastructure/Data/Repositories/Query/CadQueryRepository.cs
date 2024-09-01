@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace CustomCADs.Infrastructure.Data.Repositories.Query
 {
-    public class CadQueryRepository(CadContext context) : IQueryRepository<Cad>
+    public class CadQueryRepository(CadContext context) : IQueryRepository<Cad, int>
     {
         public IQueryable<Cad> GetAll(bool asNoTracking = false)
         {
@@ -14,10 +14,10 @@ namespace CustomCADs.Infrastructure.Data.Repositories.Query
                 .Include(c => c.Creator);
         }
 
-        public async Task<Cad?> GetByIdAsync(object id, bool asNoTracking = false)
+        public async Task<Cad?> GetByIdAsync(int id, bool asNoTracking = false)
         {
             Cad? cad = await Query(context.Cads, asNoTracking)
-                .FirstOrDefaultAsync(c => id.Equals(c.Id))
+                .FirstOrDefaultAsync(c => c.Id == id)
                 .ConfigureAwait(false);
             
             if (cad == null) 
@@ -28,13 +28,13 @@ namespace CustomCADs.Infrastructure.Data.Repositories.Query
             EntityEntry<Cad> entry = context.Cads.Entry(cad);
             await entry.Reference(o => o.Category).LoadAsync().ConfigureAwait(false);
             await entry.Reference(o => o.Creator).LoadAsync().ConfigureAwait(false);
-            await entry.Reference(o => o.Orders).LoadAsync().ConfigureAwait(false);
+            await entry.Collection(o => o.Orders).LoadAsync().ConfigureAwait(false);
 
             return cad;
         }
 
-        public async Task<bool> ExistsByIdAsync(object id)
-            => await context.Cads.AnyAsync(o => id.Equals(o.Id)).ConfigureAwait(false);
+        public async Task<bool> ExistsByIdAsync(int id)
+            => await context.Cads.AnyAsync(o => o.Id == id).ConfigureAwait(false);
 
         public int Count(Func<Cad, bool> predicate, bool asNoTracking = false)
         {

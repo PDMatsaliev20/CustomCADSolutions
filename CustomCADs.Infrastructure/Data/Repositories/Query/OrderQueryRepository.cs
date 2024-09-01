@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace CustomCADs.Infrastructure.Data.Repositories.Query
 {
-    public class OrderQueryRepository(CadContext context) : IQueryRepository<Order>
+    public class OrderQueryRepository(CadContext context) : IQueryRepository<Order, int>
     {
         public IQueryable<Order> GetAll(bool asNoTracking = false)
         {
@@ -16,10 +16,10 @@ namespace CustomCADs.Infrastructure.Data.Repositories.Query
                 .Include(o => o.Designer);
         }
 
-        public async Task<Order?> GetByIdAsync(object id, bool asNoTracking = false)
+        public async Task<Order?> GetByIdAsync(int id, bool asNoTracking = false)
         {
             Order? order = await Query(context.Orders, asNoTracking)
-                .FirstOrDefaultAsync(o => id.Equals(o.Id))
+                .FirstOrDefaultAsync(o => o.Id == id)
                 .ConfigureAwait(false);
             
             if (order == null)
@@ -36,8 +36,8 @@ namespace CustomCADs.Infrastructure.Data.Repositories.Query
             return order;
         }
 
-        public async Task<bool> ExistsByIdAsync(object id)
-            => await context.Orders.AnyAsync(o => id.Equals(o.Id)).ConfigureAwait(false);
+        public async Task<bool> ExistsByIdAsync(int id)
+            => await context.Orders.AnyAsync(o => o.Id == id).ConfigureAwait(false);
 
         public int Count(Func<Order, bool> predicate, bool asNoTracking = false)
         {

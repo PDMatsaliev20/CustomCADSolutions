@@ -28,9 +28,9 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddDbContext<CadContext>(options => options.UseSqlServer(connectionString));
             services.AddScoped<IDbTracker, DbTracker>();            
 
-            services.AddScoped<IQueryRepository<Order>, OrderQueryRepository>();
-            services.AddScoped<IQueryRepository<Cad>, CadQueryRepository>();
-            services.AddScoped<IQueryRepository<Category>, CategoryQueryRepository>();
+            services.AddScoped<IQueryRepository<Order, int>, OrderQueryRepository>();
+            services.AddScoped<IQueryRepository<Cad, int>, CadQueryRepository>();
+            services.AddScoped<IQueryRepository<Category, int>, CategoryQueryRepository>();
 
             services.AddScoped<ICommandRepository<Order>, OrderCommandRepository>();
             services.AddScoped<ICommandRepository<Cad>, CadCommandRepository>();

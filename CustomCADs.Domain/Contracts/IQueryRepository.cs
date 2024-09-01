@@ -1,10 +1,10 @@
 ﻿namespace CustomCADs.Domain.Contracts
 {
-    public interface IQueryRepository<T> where T : class
+    public interface IQueryRepository<TEntity, TKey> where TEntity : class
     {
-        IQueryable<T> GetAll(bool asNoTracking = false);
-        Task<T?> GetByIdAsync(object id, bool asNoTracking = false);
-        Task<bool> ExistsByIdAsync(object id);
-        int Count(Func<T, bool> predicate, bool asNoTracking = false);
+        IQueryable<TEntity> GetAll(bool asNoTracking = false);
+        Task<TEntity?> GetByIdAsync(TKey id, bool asNoTracking = false);
+        Task<bool> ExistsByIdAsync(TKey id);
+        int Count(Func<TEntity, bool> predicate, bool asNoTracking = false);
     }
 }
