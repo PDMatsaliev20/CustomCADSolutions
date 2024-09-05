@@ -44,8 +44,7 @@ export default {
                     return { id, loadedCategories: categoriesRes.data, loadedCad: cadRes.data };
                 } catch (e) {
                     console.error(e);
-                    return {
-                        id, loadedCategories: [], loadedCad: {} };
+                    return { id, loadedCategories: [], loadedCad: {} };
                 }
             }
         },

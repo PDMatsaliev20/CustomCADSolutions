@@ -44,7 +44,7 @@ export default {
                     const categories = await GetCategories();
                     const orderRes = await GetOrder(id);
 
-                    return { loadedCategories: categories.data, loadedOrder: orderRes.data };
+                    return { id, loadedCategories: categories.data, loadedOrder: orderRes.data };
                 } catch (e) {
                     console.error(e);
                     return { loadedCategories: [], loadedOrder: {} };

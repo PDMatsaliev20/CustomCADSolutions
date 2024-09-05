@@ -52,7 +52,7 @@ function ClientHome() {
                                 to={order.status.toLowerCase() === 'pending'
                                     ? `/client/orders/pending/${order.id}`
                                     : `/client/orders/${order.status.toLowerCase()}`}
-                                item={{ ...order, date: order.orderDate }}
+                                item={{ ...order, category: order.category.name, date: order.orderDate }}
                             />
                         </li>)}
                     </ol>

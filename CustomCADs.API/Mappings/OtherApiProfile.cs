@@ -8,8 +8,10 @@ namespace CustomCADs.API.Mappings
         public OtherApiProfile()
         {
             CategoryToDTO();
+            DTOToCategory();
         }
 
         private void CategoryToDTO() => CreateMap<CategoryModel, CategoryDTO>();
+        private void DTOToCategory() => CreateMap<CategoryDTO, CategoryModel>();
     }
 }

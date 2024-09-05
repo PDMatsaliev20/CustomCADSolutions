@@ -1,5 +1,5 @@
 ﻿using CustomCADs.Application.Models.Cads;
-using CustomCADs.Domain.Entities;
+using CustomCADs.Application.Models.Categories;
 using CustomCADs.Domain.Enums;
 using CustomCADs.Domain.Identity;
 using System.ComponentModel.DataAnnotations;
@@ -45,7 +45,7 @@ namespace CustomCADs.Application.Models.Orders
         [AllowedValues(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
             ErrorMessage = "Existing Categories have IDs: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]")]
         public int CategoryId { get; set; }
-        public Category Category { get; set; } = null!;
+        public CategoryModel Category { get; set; } = null!;
 
         [Required(ErrorMessage = RequiredErrorMessage)]
         public string BuyerId { get; set; } = null!;

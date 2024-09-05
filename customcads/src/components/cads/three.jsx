@@ -42,7 +42,7 @@ function ThreeJS({ cad, isHomeCad }) {
 
             const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
             mount.appendChild(renderer.domElement);
-            
+
             let isInteracting = false
             let resumeTimeout;
 
@@ -61,13 +61,15 @@ function ThreeJS({ cad, isHomeCad }) {
             }
 
             function sendPosition() {
-                const { x: xCam, y: yCam, z: zCam } = camera.position;
-                const coords = { x: xCam, y: yCam, z: zCam };
+                const [camCoords, panCoords] = [camera.position, controls.target];
+                window.dispatchEvent(new CustomEvent('SavePosition', { detail: { camCoords, panCoords, } }));
+            };
 
-                const { x: xPan, y: yPan, z: zPan } = controls.target;
-                const panCoords = { x: xPan, y: yPan, z: zPan };
-
-                window.dispatchEvent(new CustomEvent('SavePosition', { detail: { coords, panCoords, }}));
+            function resetPosition() {
+                const [camCoords, panCoords] = [model.camCoordinates, model.panCoordinates];
+                camera.position.set(camCoords.x, camCoords.y, camCoords.z);
+                controls.target.set(panCoords.x, panCoords.y, panCoords.z);
+                window.dispatchEvent(new CustomEvent('ResetsPosition'));
             };
 
             function trackChanges() {
@@ -112,7 +114,7 @@ function ThreeJS({ cad, isHomeCad }) {
                 (xhr) => xhr.loaded === xhr.total && setLoader(false),
                 (e) => console.error(e)
             );
-            
+
             controls.addEventListener('change', cadTouched);
 
             function animate() {
@@ -130,6 +132,7 @@ function ThreeJS({ cad, isHomeCad }) {
             window.addEventListener('resize', updateRendererSize);
             window.addEventListener('TrackChanges', trackChanges);
             window.addEventListener('SendPosition', sendPosition);
+            window.addEventListener('ResetPosition', resetPosition);
 
 
             return () => {
@@ -138,6 +141,7 @@ function ThreeJS({ cad, isHomeCad }) {
                 window.removeEventListener('resize', updateRendererSize);
                 window.removeEventListener('TrackChanges', trackChanges);
                 window.removeEventListener('SendPosition', sendPosition);
+                window.addEventListener('ResetPosition', resetPosition);
             };
         }
 
@@ -153,7 +157,7 @@ function ThreeJS({ cad, isHomeCad }) {
     async function fetchHomeCad() {
         try {
             const { data } = await GetHomeCad();
-        setModel(data);
+            setModel(data);
 
         } catch (error) {
             console.error('Error fetching CAD:', error);

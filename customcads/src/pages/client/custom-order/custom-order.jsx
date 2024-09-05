@@ -73,7 +73,6 @@ function CustomOrder() {
                             placeholder={tCommon('placeholders.order_description')}
                             rows={3}
                             error={formState.errors.description}
-                            className="w-full rounded bg-indigo-50 text-indigo-900 p-2 border-2 focus:outline-none focus:border-indigo-300"
                             isRequired
                         />
                     </div>

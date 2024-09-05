@@ -42,7 +42,7 @@ function GalleryDetailsPage() {
                             value={loadedCad.description}
                             readOnly
                             rows={9}
-                            className="resize-none bg-inherit focus:outline-none"
+                            className="resize-none bg-inherit focus:outline-none resize-none"
                         />
                         <button onClick={handleBuy}
                             className="self-center bg-indigo-700 py-2 px-4 rounded hover:font-extrabold focus:outline-none active:opacity-80"

@@ -29,7 +29,7 @@ function PendingOrder({ order, onDelete }) {
             <div className="flex justify-between px-4 text-indigo-800 text-center">
                 <div>
                     <span className="font-semibold">{tPages('orders.category')}</span>
-                    <span className="italic">{tCommon(`categories.${order.category}`)}</span>
+                    <span className="italic">{tCommon(`categories.${order.category.name}`)}</span>
                 </div>
                 <div>
                     <span className="font-semibold">{tPages('orders.ordered_on')}</span>

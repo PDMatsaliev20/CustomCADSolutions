@@ -24,6 +24,7 @@
   "hint": "(you can edit the name, description and category)",
   "ordered_by": "Ordered by: ",
   "save_changes": "Save changes",
+  "revert_changes": "Revert changes",
   "warning": "Can't edit an Order that's already Begun or Finished",
   "custom-order_title": "Describe Your Custom 3D Model",
   "order": "Send Order",

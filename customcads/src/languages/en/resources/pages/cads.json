@@ -12,8 +12,10 @@
   "upload-cad_title": "Upload Your 3D Model",
   "upload": "Upload",
   "hint": "(you can edit the name, description, category and price)",
-  "created_by": "Created by: ",
-  "created_on": "Created on: ",
-  "save_changes": "Save changes",
-  "update_position": "Update Position"
+  "created_by": "Created by",
+  "created_on": "Created on",
+  "save_changes": "Save",
+  "revert_changes": "Revert",
+  "update_position": "Update",
+  "reset_position": "Reset"
 }

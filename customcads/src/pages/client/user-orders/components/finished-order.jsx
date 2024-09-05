@@ -5,6 +5,7 @@ import { dateToMachineReadable } from '@/utils/date-manager';
 
 function FinishedOrder({ order }) {
     const { t: tPages } = useTranslation('pages');
+    const { t: tCommon } = useTranslation('common');
     const [shouldBeDelivered, setShouldBeDelivered] = useState(order.shouldBeDelivered);
     
     const handleDownload = async () => {
@@ -77,11 +78,17 @@ function FinishedOrder({ order }) {
                 </div>
             </section>
             <hr className="border-t-2 border-indigo-800" />
-            <div className="text-indigo-800 text-center">
-                <span className="font-semibold">{tPages('orders.ordered_on')}</span>
-                <time dateTime={dateToMachineReadable(order.orderDate)} className="italic">
-                    {order.orderDate}
-                </time>
+            <div className="flex justify-between px-4 text-indigo-800 text-center">
+                <div>
+                    <span className="font-semibold">{tPages('orders.category')}</span>
+                    <span className="italic">{tCommon(`categories.${order.category.name}`)}</span>
+                </div>
+                <div>
+                    <span className="font-semibold">{tPages('orders.ordered_on')}</span>
+                    <time dateTime={dateToMachineReadable(order.orderDate)} className="italic">
+                        {order.orderDate}
+                    </time>
+                </div>
             </div>
         </div>
     );

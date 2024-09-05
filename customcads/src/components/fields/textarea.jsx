@@ -10,7 +10,7 @@ function TextArea({ id, label, isRequired, name, value, onInput, rhfProps, class
                 value={value}
                 onInput={onInput}
                 {...rhfProps}
-                className={className}
+                className={className || "w-full rounded bg-indigo-50 text-indigo-900 p-2 border-2 focus:outline-none focus:border-indigo-300 resize-none"}
                 placeholder={placeholder}
                 rows={rows}
             />

@@ -12,8 +12,10 @@
   "upload-cad_title": "Качете 3D Модела Си",
   "upload": "Качи",
   "hint": "(можете да редактирате името, описанието, категорията и цената)",
-  "created_by": "Създадено на: ",
-  "created_on": "Създадено от: ",
-  "save_changes": "Запази промените",
-  "update_position": "Актуализирай Положението"
+  "created_by": "Създадено от",
+  "created_on": "Създадено на",
+  "save_changes": "Запази",
+  "revert_changes": "Отхвърли",
+  "update_position": "Актуализирай",
+  "reset_position": "Загуби"
 }

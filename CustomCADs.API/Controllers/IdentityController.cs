@@ -64,7 +64,7 @@ namespace CustomCADs.API.Controllers
                 await user.SignInAsync(signInManager, GetAuthProps(false)).ConfigureAwait(false);
 
                 Response.Cookies.Append("role", role);
-                Response.Cookies.Append("username", user.UserName);
+                Response.Cookies.Append("username", user.UserName!);
 
                 return "Welcome!";
             }
