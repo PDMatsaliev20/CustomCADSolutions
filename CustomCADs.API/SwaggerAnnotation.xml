@@ -11,7 +11,7 @@
             <param name="roleManager"></param>
             <param name="mapper"></param>
         </member>
-        <member name="M:CustomCADs.API.Controllers.Admin.RolesController.#ctor(Microsoft.AspNetCore.Identity.RoleManager{CustomCADs.Domain.Identity.AppRole},AutoMapper.IMapper)">
+        <member name="M:CustomCADs.API.Controllers.Admin.RolesController.#ctor(Microsoft.AspNetCore.Identity.RoleManager{CustomCADs.Infrastructure.Data.Identity.AppRole},AutoMapper.IMapper)">
             <summary>
                 Admin Controller for managing Roles.
             </summary>
@@ -39,7 +39,7 @@
             <param name="description"></param>
             <returns></returns>
         </member>
-        <member name="M:CustomCADs.API.Controllers.Admin.RolesController.PatchRoleAsync(System.String,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{CustomCADs.Domain.Identity.AppRole})">
+        <member name="M:CustomCADs.API.Controllers.Admin.RolesController.PatchRoleAsync(System.String,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{CustomCADs.Infrastructure.Data.Identity.AppRole})">
             <summary>
                 Updates a Role in the traditional way - with an array of operations.
             </summary>
@@ -62,7 +62,7 @@
             <param name="roleManager"></param>
             <param name="mapper"></param>
         </member>
-        <member name="M:CustomCADs.API.Controllers.Admin.UsersController.#ctor(Microsoft.AspNetCore.Identity.UserManager{CustomCADs.Domain.Identity.AppUser},Microsoft.AspNetCore.Identity.RoleManager{CustomCADs.Domain.Identity.AppRole},AutoMapper.IMapper)">
+        <member name="M:CustomCADs.API.Controllers.Admin.UsersController.#ctor(Microsoft.AspNetCore.Identity.UserManager{CustomCADs.Infrastructure.Data.Identity.AppUser},Microsoft.AspNetCore.Identity.RoleManager{CustomCADs.Infrastructure.Data.Identity.AppRole},AutoMapper.IMapper)">
             <summary>
                 Admin Controller for managing Users.
             </summary>
@@ -91,7 +91,7 @@
             <param name="role"></param>
             <returns></returns>
         </member>
-        <member name="M:CustomCADs.API.Controllers.Admin.UsersController.PatchUserAsync(System.String,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{CustomCADs.Domain.Identity.AppUser},System.String)">
+        <member name="M:CustomCADs.API.Controllers.Admin.UsersController.PatchUserAsync(System.String,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{CustomCADs.Infrastructure.Data.Identity.AppUser},System.String)">
             <summary>
                 Updates a User in the traditional way - with an array of operations.
             </summary>
@@ -315,7 +315,7 @@
             <param name="userManager"></param>
             <param name="signInManager"></param>
         </member>
-        <member name="M:CustomCADs.API.Controllers.IdentityController.#ctor(Microsoft.AspNetCore.Identity.UserManager{CustomCADs.Domain.Identity.AppUser},Microsoft.AspNetCore.Identity.SignInManager{CustomCADs.Domain.Identity.AppUser})">
+        <member name="M:CustomCADs.API.Controllers.IdentityController.#ctor(Microsoft.AspNetCore.Identity.UserManager{CustomCADs.Infrastructure.Data.Identity.AppUser},Microsoft.AspNetCore.Identity.SignInManager{CustomCADs.Infrastructure.Data.Identity.AppUser})">
             <summary>
                 Controller for managing Authentication/Authorization and info about the User's Identity.
             </summary>

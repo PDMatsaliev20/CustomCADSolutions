@@ -4,7 +4,7 @@ using CustomCADs.Application.Models.Categories;
 using CustomCADs.Application.Services;
 using CustomCADs.Domain.Contracts;
 using CustomCADs.Domain.Entities;
-using CustomCADs.Domain.Identity;
+using CustomCADs.Infrastructure.Data.Identity;
 using CustomCADs.Infrastructure.Data;
 using CustomCADs.Infrastructure.Data.Repositories;
 using CustomCADs.Infrastructure.Data.Repositories.Command;
@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 using Stripe;
 using static CustomCADs.Domain.DataConstants.RoleConstants;
+using CustomCADs.Application;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -70,10 +71,12 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IDesignerService, DesignerService>();
         }
 
-        public static IServiceCollection AddApplicationAutoMapper(this IServiceCollection services)
+        public static IServiceCollection AddMappings(this IServiceCollection services)
         {
-            services.AddAutoMapper(typeof(CategoryProfile), typeof(CadProfile), typeof(OrderProfile));
-            return services;
+            return services
+                .AddAutoMapper(typeof(Program))
+                .AddAutoMapper(typeof(TestsErrorMessages))
+                .AddAutoMapper(typeof(Mappings));
         }
 
         public static void AddJsonAndXml(this IMvcBuilder mvc)

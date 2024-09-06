@@ -6,7 +6,6 @@ using CustomCADs.Application.Models.Utilities;
 using CustomCADs.Domain.Contracts;
 using CustomCADs.Domain.Entities;
 using CustomCADs.Domain.Enums;
-using Microsoft.EntityFrameworkCore;
 
 namespace CustomCADs.Application.Services
 {
@@ -17,54 +16,24 @@ namespace CustomCADs.Application.Services
     {
         public async Task<OrderResult> GetOrdersAsync(string status, string? designerId, SearchModel search, PaginationModel pagination)
         {
-            IQueryable<Order> dbOrders = orderQueries.GetAll(asNoTracking: true);
+            IEnumerable<Order> orders = await orderQueries.GetAll(
+                status: status,
+                name: search.Name,
+                owner: search.Owner,
+                category: search.Category,
+                sorting: search.Sorting,
+                customFilter: o => o.DesignerId == designerId,
+                asNoTracking: true
+            ).ConfigureAwait(false);
 
-            if (!string.IsNullOrWhiteSpace(designerId))
-            {
-                dbOrders = dbOrders.Where(o => o.DesignerId == designerId);
-            }
-
-            dbOrders = status.ToLower() switch
-            {
-                "pending" => dbOrders.Where(o => o.Status == OrderStatus.Pending),
-                "begun" => dbOrders.Where(o => o.Status == OrderStatus.Begun),
-                "finished" => dbOrders.Where(o => o.Status == OrderStatus.Finished && o.ShouldBeDelivered),
-                _ => dbOrders
-            };
-
-            if (!string.IsNullOrWhiteSpace(search.Name))
-            {
-                dbOrders = dbOrders.Where(o => o.Name.Contains(search.Name));
-            }
-            if (!string.IsNullOrWhiteSpace(search.Owner))
-            {
-                dbOrders = dbOrders.Where(o => o.Buyer.UserName!.Contains(search.Owner));
-            }
-            if (!string.IsNullOrWhiteSpace(search.Category))
-            {
-                dbOrders = dbOrders.Where(o => o.Category.Name == search.Category);
-            }
-            dbOrders = search.Sorting.ToLower() switch
-            {
-                "newest" => dbOrders.OrderByDescending(o => o.OrderDate),
-                "oldest" => dbOrders.OrderBy(o => o.OrderDate),
-                "alphabetical" => dbOrders.OrderBy(o => o.Name),
-                "unalphabetical" => dbOrders.OrderByDescending(o => o.Name),
-                "category" => dbOrders.OrderBy(o => o.Category.Name),
-                _ => dbOrders.OrderByDescending(o => o.Id)
-            };
-
-            // Pagination
-            Order[] orders = await dbOrders
+            OrderModel[] models = mapper.Map<OrderModel[]>(orders
                 .Skip((pagination.Page - 1) * pagination.Limit)
                 .Take(pagination.Limit)
-                .ToArrayAsync()
-                .ConfigureAwait(false);
+            );
 
-            OrderModel[] models = mapper.Map<OrderModel[]>(orders);
             return new()
             {
-                Count = dbOrders.Count(),
+                Count = orders.Count(),
                 Orders = models
             };
         }
@@ -80,43 +49,23 @@ namespace CustomCADs.Application.Services
 
         public async Task<CadResult> GetCadsAsync(SearchModel search, PaginationModel pagination)
         {
-            IQueryable<Cad> allCads = cadQueries.GetAll(asNoTracking: true)
-                .Where(c => c.Status == CadStatus.Unchecked);
+            IEnumerable<Cad> cads = await cadQueries.GetAll(
+                status: CadStatus.Unchecked.ToString(),
+                category: search.Category,
+                name: search.Name,
+                owner: search.Owner,
+                sorting: search.Sorting,
+                asNoTracking: true
+            ).ConfigureAwait(false);
 
-            // Search & Sort
-            if (search.Category != null)
-            {
-                allCads = allCads.Where(c => c.Category.Name == search.Category);
-            }
-            if (!string.IsNullOrWhiteSpace(search.Name))
-            {
-                allCads = allCads.Where(c => c.Name.Contains(search.Name));
-            }
-            if (!string.IsNullOrWhiteSpace(search.Owner))
-            {
-                allCads = allCads.Where(c => c.Creator.UserName!.Contains(search.Owner));
-            }
-
-            allCads = search.Sorting.ToLower() switch
-            {
-                "newest" => allCads.OrderByDescending(c => c.CreationDate),
-                "oldest" => allCads.OrderBy(c => c.CreationDate),
-                "alphabetical" => allCads.OrderBy(c => c.Name),
-                "unalphabetical" => allCads.OrderByDescending(c => c.Name),
-                "category" => allCads.OrderBy(m => m.Category.Name),
-                _ => allCads.OrderByDescending(c => c.Id),
-            };
-
-            Cad[] cads = await allCads
+            CadModel[] models = mapper.Map<CadModel[]>(cads
                 .Skip((pagination.Page - 1) * pagination.Limit)
                 .Take(pagination.Limit)
-                .ToArrayAsync()
-                .ConfigureAwait(false);
+            );
 
-            CadModel[] models = mapper.Map<CadModel[]>(cads);
             return new()
             {
-                Count = allCads.Count(),
+                Count = cads.Count(),
                 Cads = models,
             };
         }

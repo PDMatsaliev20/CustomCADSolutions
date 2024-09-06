@@ -1,10 +1,11 @@
 ﻿using CustomCADs.Domain.Enums;
+using CustomCADs.Infrastructure.Data.Identity;
 using System.ComponentModel.DataAnnotations;
 using static CustomCADs.Domain.DataConstants;
 
-namespace CustomCADs.Domain.Entities
+namespace CustomCADs.Infrastructure.Data.Entities
 {
-    public class Order 
+    public class POrder 
     {
         public int Id { get; set; }
 
@@ -28,16 +29,16 @@ namespace CustomCADs.Domain.Entities
 
         [Required]
         public int CategoryId { get; set; }
-        public Category Category { get; set; } = null!;
+        public PCategory Category { get; set; } = null!;
 
         [Required]
         public string BuyerId { get; set; } = null!;
-        public User Buyer { get; set; } = null!;
+        public AppUser Buyer { get; set; } = null!;
         
         public string? DesignerId { get; set; }
-        public User? Designer { get; set; } 
+        public AppUser? Designer { get; set; } 
 
         public int? CadId { get; set; }
-        public Cad? Cad { get; set; }        
+        public PCad? Cad { get; set; }        
     }
 }

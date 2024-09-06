@@ -1,7 +1,7 @@
 ﻿using CustomCADs.Application.Models.Cads;
 using CustomCADs.Application.Models.Categories;
+using CustomCADs.Domain.Entities;
 using CustomCADs.Domain.Enums;
-using CustomCADs.Domain.Identity;
 using System.ComponentModel.DataAnnotations;
 using static CustomCADs.Domain.DataConstants;
 using static CustomCADs.Domain.DataConstants.OrderConstants;
@@ -39,7 +39,7 @@ namespace CustomCADs.Application.Models.Orders
         public CadModel? Cad { get; set; }
 
         public string? DesignerId { get; set; }
-        public AppUser? Designer { get; set; }
+        public User? Designer { get; set; }
         
         [Required(ErrorMessage = RequiredErrorMessage)]
         [AllowedValues(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
@@ -49,7 +49,7 @@ namespace CustomCADs.Application.Models.Orders
 
         [Required(ErrorMessage = RequiredErrorMessage)]
         public string BuyerId { get; set; } = null!;
-        public AppUser Buyer { get; set; } = null!;
+        public User Buyer { get; set; } = null!;
         
         public bool Validate(out IList<string> errors)
         {

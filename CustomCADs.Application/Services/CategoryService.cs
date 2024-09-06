@@ -14,7 +14,7 @@ namespace CustomCADs.Application.Services
     {
         public async Task<IEnumerable<CategoryModel>> GetAllAsync()
         {
-            Category[] entities = await queries.GetAll(asNoTracking: true).ToArrayAsync().ConfigureAwait(false);
+            IEnumerable<Category> entities = await queries.GetAll(asNoTracking: true).ConfigureAwait(false);
             CategoryModel[] models = mapper.Map<CategoryModel[]>(entities);
             return models;
         }

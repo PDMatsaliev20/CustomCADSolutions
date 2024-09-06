@@ -109,17 +109,17 @@ namespace CustomCADs.API.Controllers
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status500InternalServerError)]
         [ProducesResponseType(Status502BadGateway)]
-        public ActionResult<CadCountsDTO> GetCadsCountsAsync()
+        public async Task<ActionResult<CadCountsDTO>> GetCadsCountsAsync()
         {
             try
             {
                 bool predicate(CadModel cad, CadStatus s)
                     => cad.Status == s && cad.Creator.UserName == User.Identity!.Name;
 
-                int uncheckedCadsCounts = cadService.Count(c => predicate(c, CadStatus.Unchecked));
-                int validatedCadsCounts = cadService.Count(c => predicate(c, CadStatus.Validated));
-                int reportedCadsCounts = cadService.Count(c => predicate(c, CadStatus.Reported));
-                int bannedCadsCounts = cadService.Count(c => predicate(c, CadStatus.Banned));
+                int uncheckedCadsCounts = await cadService.Count(c => predicate(c, CadStatus.Unchecked)).ConfigureAwait(false);
+                int validatedCadsCounts = await cadService.Count(c => predicate(c, CadStatus.Validated)).ConfigureAwait(false);
+                int reportedCadsCounts = await cadService.Count(c => predicate(c, CadStatus.Reported)).ConfigureAwait(false);
+                int bannedCadsCounts = await cadService.Count(c => predicate(c, CadStatus.Banned)).ConfigureAwait(false);
 
                 CadCountsDTO counts = new(uncheckedCadsCounts, validatedCadsCounts, reportedCadsCounts, bannedCadsCounts);
                 return counts;

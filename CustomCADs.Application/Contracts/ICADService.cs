@@ -12,7 +12,7 @@ namespace CustomCADs.Application.Contracts
         /// </summary>
         /// <param name="query">Specify Creator name, sorting, count, etc.</param>
         /// <returns>A Task object that represents the specified Cads.</returns>
-        Task<CadResult> GetAllAsync(CadQuery query, SearchModel search, PaginationModel pagination, Expression<Func<Cad, bool>>? customFilter = null);
+        Task<CadResult> GetAllAsync(CadQuery query, SearchModel search, PaginationModel pagination, Func<Cad, bool>? customFilter = null);
 
         /// <summary>
         ///     Searches for a Cad by the given id.
@@ -34,7 +34,7 @@ namespace CustomCADs.Application.Contracts
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns>An integer holding the result.</returns>
-        int Count(Func<CadModel, bool> predicate);
+        Task<int> Count(Func<CadModel, bool> predicate);
 
         /// <summary>
         ///     Sets the Cad and the Image's path in the wwwroot folder.

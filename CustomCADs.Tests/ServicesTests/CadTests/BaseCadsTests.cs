@@ -3,11 +3,11 @@ using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Mappings;
 using CustomCADs.Application.Models.Cads;
 using CustomCADs.Application.Services;
-using CustomCADs.Domain.Contracts;
 using CustomCADs.Domain.Entities;
 using CustomCADs.Domain.Enums;
-using CustomCADs.Domain.Identity;
 using CustomCADs.Infrastructure.Data;
+using CustomCADs.Infrastructure.Data.Entities;
+using CustomCADs.Infrastructure.Data.Identity;
 using CustomCADs.Infrastructure.Data.Repositories;
 using CustomCADs.Infrastructure.Data.Repositories.Command;
 using CustomCADs.Infrastructure.Data.Repositories.Query;
@@ -62,13 +62,13 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
         {
             await context.Users.AddRangeAsync(users).ConfigureAwait(false);
             SeedCreators();
-            await context.Categories.AddRangeAsync(categories).ConfigureAwait(false);
+            await context.Categories.AddRangeAsync(mapper.Map<PCategory[]>(categories)).ConfigureAwait(false);
             await context.SaveChangesAsync();
 
             service = new CadService(new DbTracker(context),
-                new CadQueryRepository(context),
-                new OrderQueryRepository(context),
-                new CadCommandRepository(context),
+                new CadQueryRepository(context, mapper),
+                new OrderQueryRepository(context, mapper),
+                new CadCommandRepository(context, mapper),
                 mapper);
         }
 
@@ -76,7 +76,7 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
         public async Task Setup()
         {
             Cad[] allCads = mapper.Map<Cad[]>(cads);
-            await context.Cads.AddRangeAsync(allCads).ConfigureAwait(false);
+            await context.Cads.AddRangeAsync(mapper.Map<PCad[]>(allCads)).ConfigureAwait(false);
             await context.SaveChangesAsync().ConfigureAwait(false);
             cads = mapper.Map<CadModel[]>(allCads);
         }
@@ -85,7 +85,7 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
         public async Task Teardown()
         {
             ClearCadCategories();
-            Cad[] cads = await context.Cads.ToArrayAsync().ConfigureAwait(false);
+            PCad[] cads = await context.Cads.ToArrayAsync().ConfigureAwait(false);
             context.Cads.RemoveRange(cads);
             await context.SaveChangesAsync().ConfigureAwait(false);
         }
@@ -96,7 +96,7 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
             AppUser[] users = await context.Users.ToArrayAsync().ConfigureAwait(false);
             context.Users.RemoveRange(users);
 
-            Category[] categories = await context.Categories.ToArrayAsync().ConfigureAwait(false);
+            PCategory[] categories = await context.Categories.ToArrayAsync().ConfigureAwait(false);
             context.Categories.RemoveRange(categories);
 
             await context.SaveChangesAsync().ConfigureAwait(false);
@@ -107,13 +107,13 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
             for (int i = 0; i < 5; i++)
             {
                 cads[i].CreatorId = users[0].Id;
-                cads[i].Creator = users[0];
+                cads[i].Creator = mapper.Map<User>(users[0]);
             }
 
             for (int i = 5; i < 8; i++)
             {
                 cads[i].CreatorId = users[1].Id;
-                cads[i].Creator = users[1];
+                cads[i].Creator = mapper.Map<User>(users[1]);
             }
         }
 

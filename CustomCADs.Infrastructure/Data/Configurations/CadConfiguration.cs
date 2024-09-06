@@ -1,12 +1,12 @@
-﻿using CustomCADs.Domain.Entities;
+﻿using CustomCADs.Infrastructure.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CustomCADs.Infrastructure.Data.Configurations
 {
-    public class CadConfiguration : IEntityTypeConfiguration<Cad>
+    public class CadConfiguration : IEntityTypeConfiguration<PCad>
     {
-        public void Configure(EntityTypeBuilder<Cad> builder)
+        public void Configure(EntityTypeBuilder<PCad> builder)
         {
             builder.HasKey(x => x.Id);
 

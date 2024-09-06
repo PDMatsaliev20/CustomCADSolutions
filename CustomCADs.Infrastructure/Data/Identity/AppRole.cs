@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 using static CustomCADs.Domain.DataConstants;
 
-namespace CustomCADs.Domain.Identity
+namespace CustomCADs.Infrastructure.Data.Identity
 {
     public class AppRole : IdentityRole
     {

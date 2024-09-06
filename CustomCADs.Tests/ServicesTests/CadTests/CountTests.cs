@@ -5,13 +5,13 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
     public class CountTests : BaseCadsTests
     {
         [Test]
-        public void Test_CountsCorrectly()
+        public async Task Test_CountsCorrectly()
         {
             int expectedNoneCount = 0;
-            int actualNoneCount = service.Count(c => string.IsNullOrEmpty(c.Name));
+            int actualNoneCount = await service.Count(c => string.IsNullOrEmpty(c.Name));
             
             int expectedAllCount = cads.Length;
-            int actualAllCount = service.Count(c => !string.IsNullOrEmpty(c.Name));
+            int actualAllCount = await service.Count(c => !string.IsNullOrEmpty(c.Name));
 
             Assert.Multiple(() =>
             {

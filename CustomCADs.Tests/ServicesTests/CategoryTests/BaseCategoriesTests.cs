@@ -5,6 +5,7 @@ using CustomCADs.Application.Models.Categories;
 using CustomCADs.Application.Services;
 using CustomCADs.Domain.Entities;
 using CustomCADs.Infrastructure.Data;
+using CustomCADs.Infrastructure.Data.Entities;
 using CustomCADs.Infrastructure.Data.Repositories;
 using CustomCADs.Infrastructure.Data.Repositories.Command;
 using CustomCADs.Infrastructure.Data.Repositories.Query;
@@ -35,23 +36,23 @@ namespace CustomCADs.Tests.ServicesTests.CategoryTests
         public void OneTimeSetup()
         {
             this.service = new CategoryService(new DbTracker(context),
-                new CategoryQueryRepository(context), 
-                new CategoryCommandRepository(context), 
+                new CategoryQueryRepository(context, mapper), 
+                new CategoryCommandRepository(context, mapper), 
                 mapper);
         }
 
         [SetUp]
         public async Task Setup()
         {
-            Category[] categories = mapper.Map<Category[]>(this.categories);
-            await context.Categories.AddRangeAsync(categories).ConfigureAwait(false);
+            Category[] allCategories = mapper.Map<Category[]>(categories);
+            await context.Categories.AddRangeAsync(mapper.Map<PCategory[]>(allCategories)).ConfigureAwait(false);
             await context.SaveChangesAsync().ConfigureAwait(false);
         }
 
         [TearDown]
         public async Task TearDown()
         {
-            Category[] allCategories = await context.Categories.ToArrayAsync();
+            PCategory[] allCategories = await context.Categories.ToArrayAsync();
             context.Categories.RemoveRange(allCategories);
             await context.SaveChangesAsync().ConfigureAwait(false);
         }

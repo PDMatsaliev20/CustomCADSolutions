@@ -4,8 +4,9 @@ using CustomCADs.Application.Mappings;
 using CustomCADs.Application.Models.Orders;
 using CustomCADs.Application.Services;
 using CustomCADs.Domain.Entities;
-using CustomCADs.Domain.Identity;
 using CustomCADs.Infrastructure.Data;
+using CustomCADs.Infrastructure.Data.Entities;
+using CustomCADs.Infrastructure.Data.Identity;
 using CustomCADs.Infrastructure.Data.Repositories;
 using CustomCADs.Infrastructure.Data.Repositories.Command;
 using CustomCADs.Infrastructure.Data.Repositories.Query;
@@ -53,23 +54,23 @@ namespace CustomCADs.Tests.ServicesTests.OrderTests
 
             SeedBuyers();
             this.service = new OrderService(new DbTracker(context),
-                new OrderQueryRepository(context), 
-                new OrderCommandRepository(context), 
+                new OrderQueryRepository(context, mapper), 
+                new OrderCommandRepository(context, mapper), 
                 mapper);
         }
 
         [SetUp]
         public async Task Setup()
         {
-            Order[] entities = mapper.Map<Order[]>(orders);
-            await context.Orders.AddRangeAsync(entities).ConfigureAwait(false);
+            Order[] allOrders = mapper.Map<Order[]>(orders);
+            await context.Orders.AddRangeAsync(mapper.Map<POrder[]>(allOrders)).ConfigureAwait(false);
             await context.SaveChangesAsync().ConfigureAwait(false);
         }
 
         [TearDown]
         public async Task Teardown()
         {
-            Order[] allOrders = await context.Orders.ToArrayAsync();
+            POrder[] allOrders = await context.Orders.ToArrayAsync();
             context.Orders.RemoveRange(allOrders);
             await context.SaveChangesAsync().ConfigureAwait(false);
         }
@@ -77,7 +78,7 @@ namespace CustomCADs.Tests.ServicesTests.OrderTests
         [OneTimeTearDown]
         public async Task OneTimeTeardown()
         {
-            Category[] categories = await context.Categories.ToArrayAsync().ConfigureAwait(false);
+            PCategory[] categories = await context.Categories.ToArrayAsync().ConfigureAwait(false);
             context.Categories.RemoveRange(categories);
 
             AppUser[] users = await context.Users.ToArrayAsync().ConfigureAwait(false);

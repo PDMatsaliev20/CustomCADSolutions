@@ -1,16 +1,16 @@
-﻿using CustomCADs.Domain.Entities;
-using CustomCADs.Domain.Identity;
+﻿using CustomCADs.Infrastructure.Data.Identity;
 using CustomCADs.Infrastructure.Data.Configurations;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using CustomCADs.Infrastructure.Data.Entities;
 
 namespace CustomCADs.Infrastructure.Data
 {
     public class CadContext(DbContextOptions<CadContext> options) : IdentityDbContext<AppUser, AppRole, string>(options)
     {
-        public DbSet<Order> Orders { get; set; } = null!;
-        public DbSet<Cad> Cads { get; set; } = null!;
-        public DbSet<Category> Categories { get; set; } = null!;
+        public DbSet<POrder> Orders { get; set; } = null!;
+        public DbSet<PCad> Cads { get; set; } = null!;
+        public DbSet<PCategory> Categories { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

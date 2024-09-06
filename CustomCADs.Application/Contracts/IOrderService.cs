@@ -12,7 +12,7 @@ namespace CustomCADs.Application.Contracts
         ///     Pulls all Orders from the Orders table.
         /// </summary>
         /// <returns>A Task object that represents the Orders.</returns>
-        Task<OrderResult> GetAllAsync(OrderQuery query, SearchModel search, PaginationModel pagination, Expression<Func<Order, bool>>? customFilter = null);
+        Task<OrderResult> GetAllAsync(OrderQuery query, SearchModel search, PaginationModel pagination, Func<Order, bool>? customFilter = null);
 
         /// <summary>
         ///     Searches for an Order by the given id.
@@ -41,7 +41,7 @@ namespace CustomCADs.Application.Contracts
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns>An integer holding the result.</returns>
-        int Count(Func<OrderModel, bool> predicate);
+        Task<int> Count(Func<OrderModel, bool> predicate);
 
         /// <summary>
         ///     Creates the specified Order in the Orders table.

@@ -5,8 +5,6 @@ using CustomCADs.Application.Models.Orders;
 using CustomCADs.Application.Models.Utilities;
 using CustomCADs.Domain.Contracts;
 using CustomCADs.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
 
 namespace CustomCADs.Application.Services
 {
@@ -15,60 +13,27 @@ namespace CustomCADs.Application.Services
         ICommandRepository<Order> commands, 
         IMapper mapper) : IOrderService
     {
-        public async Task<OrderResult> GetAllAsync(OrderQuery query, SearchModel search, PaginationModel pagination, Expression<Func<Order, bool>>? customFilter = null)
+        public async Task<OrderResult> GetAllAsync(OrderQuery query, SearchModel search, PaginationModel pagination, Func<Order, bool>? customFilter = null)
         {
-            IQueryable<Order> dbOrders = queries.GetAll(asNoTracking: true);
+            IEnumerable<Order> orders = await queries.GetAll(
+                user: query.Buyer,
+                status: query.Status.ToString(),
+                name: search.Name,
+                owner: search.Owner,
+                category: search.Category,
+                sorting: search.Sorting,
+                customFilter: customFilter,
+                asNoTracking: true
+            ).ConfigureAwait(false);
 
-            // Querying
-            if (!string.IsNullOrWhiteSpace(query.Buyer))
-            {
-                dbOrders = dbOrders.Where(o => o.Buyer.UserName == query.Buyer);
-            }
-            if (query.Status != null)
-            {
-                dbOrders = dbOrders.Where(o => o.Status == query.Status);
-            }
-
-            // Optional custom filter
-            if (customFilter != null)
-            {
-                dbOrders = dbOrders.Where(customFilter);
-            }
-
-            // Search & Sort
-            if (!string.IsNullOrWhiteSpace(search.Name))
-            {
-                dbOrders = dbOrders.Where(o => o.Name.Contains(search.Name));
-            }
-            if (!string.IsNullOrWhiteSpace(search.Owner))
-            {
-                dbOrders = dbOrders.Where(o => o.Buyer.UserName!.Contains(search.Owner));
-            }
-            if (!string.IsNullOrWhiteSpace(search.Category))
-            {
-                dbOrders = dbOrders.Where(o => o.Category.Name == search.Category);
-            }
-            dbOrders = search.Sorting.ToLower() switch
-            {
-                "newest" => dbOrders.OrderByDescending(o => o.OrderDate),
-                "oldest" => dbOrders.OrderBy(o => o.OrderDate),
-                "alphabetical" => dbOrders.OrderBy(o => o.Name),
-                "unalphabetical" => dbOrders.OrderByDescending(o => o.Name),
-                "category" => dbOrders.OrderBy(o => o.Category.Name),
-                _ => dbOrders.OrderByDescending(o => o.Id)
-            };
-
-            // Pagination
-            Order[] orders = await dbOrders
+            OrderModel[] models = mapper.Map<OrderModel[]>(orders
                 .Skip((pagination.Page - 1) * pagination.Limit)
                 .Take(pagination.Limit)
-                .ToArrayAsync()
-                .ConfigureAwait(false);
+            );
 
-            OrderModel[] models = mapper.Map<OrderModel[]>(orders);
             return new()
             {
-                Count = dbOrders.Count(),
+                Count = orders.Count(),
                 Orders = models
             };
         }
@@ -100,8 +65,13 @@ namespace CustomCADs.Application.Services
         public async Task<bool> ExistsByIdAsync(int id)
             => await queries.ExistsByIdAsync(id).ConfigureAwait(false);
 
-        public int Count(Func<OrderModel, bool> predicate)
-            =>  queries.Count(order => predicate(mapper.Map<OrderModel>(order)));
+        public async Task<int> Count(Func<OrderModel, bool> predicate)
+        {
+            return await queries.CountAsync(
+                order => predicate(mapper.Map<OrderModel>(order)),
+                asNoTracking: true
+            ).ConfigureAwait(false);
+        }
         
         public async Task<bool> HasCadAsync(int id)
         {

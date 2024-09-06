@@ -1,12 +1,12 @@
-﻿using CustomCADs.Domain.Entities;
+﻿using CustomCADs.Infrastructure.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CustomCADs.Infrastructure.Data.Configurations
 {
-    public class OrderConfiguration : IEntityTypeConfiguration<Order>
+    public class OrderConfiguration : IEntityTypeConfiguration<POrder>
     {
-        public void Configure(EntityTypeBuilder<Order> builder)
+        public void Configure(EntityTypeBuilder<POrder> builder)
         {
             builder.HasKey(o => o.Id);
 

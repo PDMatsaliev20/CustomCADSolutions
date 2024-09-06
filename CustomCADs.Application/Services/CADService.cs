@@ -5,74 +5,38 @@ using CustomCADs.Application.Models.Utilities;
 using CustomCADs.Domain.Contracts;
 using CustomCADs.Domain.Entities;
 using CustomCADs.Domain.Enums;
-using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
-
 
 namespace CustomCADs.Application.Services
 {
     public class CadService(IDbTracker dbTracker,
         IQueryRepository<Cad, int> cadQueries,
-        IQueryRepository<Order, int> orderQueries, 
+        IQueryRepository<Order, int> orderQueries,
         ICommandRepository<Cad> commands,
         IMapper mapper) : ICadService
     {
-        public async Task<CadResult> GetAllAsync(CadQuery query, SearchModel search, PaginationModel pagination, Expression<Func<Cad, bool>>? customFilter = null)
+        public async Task<CadResult> GetAllAsync(CadQuery query, SearchModel search, PaginationModel pagination, Func<Cad, bool>? customFilter = null)
         {
-            IQueryable<Cad> allCads = cadQueries.GetAll(asNoTracking: true);
+            IEnumerable<Cad> cads = await cadQueries.GetAll(
+                user: query.Creator,
+                status: query.Status.ToString(),
+                category: search.Category,
+                name: search.Name,
+                owner: search.Owner,
+                sorting: search.Sorting,
+                customFilter,
+                asNoTracking: true
+            ).ConfigureAwait(false);
 
-            // Querying
-            if (query.Creator != null)
-            {
-                allCads = allCads.Where(c => c.Creator.UserName == query.Creator);
-            }
-            if (query.Status != null)
-            {
-                allCads = allCads.Where(c => c.Status == query.Status);
-            }
-
-            // Optional custom filter
-            if (customFilter != null)
-            {
-                allCads = allCads.Where(customFilter);
-            }
-
-            // Search & Sort
-            if (search.Category != null)
-            {
-                allCads = allCads.Where(c => c.Category.Name == search.Category);
-            }
-            if (!string.IsNullOrWhiteSpace(search.Name))
-            {
-                allCads = allCads.Where(c => c.Name.Contains(search.Name));
-            }
-            if (!string.IsNullOrWhiteSpace(search.Owner))
-            {
-                allCads = allCads.Where(c => c.Creator.UserName!.Contains(search.Owner));
-            }
-
-            allCads = search.Sorting.ToLower() switch
-            {
-                "newest" => allCads.OrderByDescending(c => c.CreationDate),
-                "oldest" => allCads.OrderBy(c => c.CreationDate),
-                "alphabetical" => allCads.OrderBy(c => c.Name),
-                "unalphabetical" => allCads.OrderByDescending(c => c.Name),
-                "category" => allCads.OrderBy(m => m.Category.Name),
-                _ => allCads.OrderByDescending(c => c.Id),
-            };
-
-            Cad[] cads = await allCads
+            CadModel[] models = mapper.Map<CadModel[]>(cads
                 .Skip((pagination.Page - 1) * pagination.Limit)
                 .Take(pagination.Limit)
-                .ToArrayAsync()
-                .ConfigureAwait(false);
+            );
 
-            CadModel[] models = mapper.Map<CadModel[]>(cads);
             return new()
             {
-                Count = allCads.Count(),
+                Count = cads.Count(),
                 Cads = models,
-            }; 
+            };
         }
 
         public async Task<CadModel> GetByIdAsync(int id)
@@ -87,18 +51,19 @@ namespace CustomCADs.Application.Services
         public async Task<bool> ExistsByIdAsync(int id)
             => await cadQueries.ExistsByIdAsync(id).ConfigureAwait(false);
 
-        public int Count(Func<CadModel, bool> predicate)
+        public async Task<int> Count(Func<CadModel, bool> predicate)
         {
-            return cadQueries.Count(
-                cad => predicate(mapper.Map<CadModel>(cad)), 
-                asNoTracking: true);
+            return await cadQueries.CountAsync(
+                cad => predicate(mapper.Map<CadModel>(cad)),
+                asNoTracking: true
+            ).ConfigureAwait(false);
         }
 
         public async Task SetPathsAsync(int id, string cadPath, string imagePath)
         {
             Cad cad = await cadQueries.GetByIdAsync(id).ConfigureAwait(false)
                 ?? throw new KeyNotFoundException("No such Cad exists.");
-            
+
             cad.Paths = new(cadPath, imagePath);
             await dbTracker.SaveChangesAsync().ConfigureAwait(false);
         }
@@ -124,14 +89,15 @@ namespace CustomCADs.Application.Services
 
             cad.CamCoordinates = model.CamCoordinates;
             cad.PanCoordinates = model.PanCoordinates;
-            
+
             await dbTracker.SaveChangesAsync().ConfigureAwait(false);
         }
-        
+
         public async Task DeleteAsync(int id)
         {
-            IQueryable<Order> orders = orderQueries.GetAll()
-                .Where(o => o.CadId == id);
+            IEnumerable<Order> orders = await orderQueries.GetAll(
+                customFilter: o => o.CadId == id
+            ).ConfigureAwait(false);
 
             foreach (Order order in orders)
             {
@@ -141,7 +107,7 @@ namespace CustomCADs.Application.Services
                 order.CadId = null;
                 order.Cad = null;
             }
-
+            
             Cad cad = await cadQueries.GetByIdAsync(id).ConfigureAwait(false)
                 ?? throw new KeyNotFoundException();
 
