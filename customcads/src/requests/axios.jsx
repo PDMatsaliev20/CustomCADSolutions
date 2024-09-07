@@ -10,4 +10,18 @@ const axiosInstance = axios.create({
     },
 });
 
+axiosInstance.interceptors.response.use(
+    response => response,
+    async (error) => {
+        const { response: { status }, config } = error;
+        const rtUrl = 'API/Identity/RefreshToken';
+
+        if (status === 401 && config.url !== rtUrl) {
+            await axiosInstance.post(rtUrl);
+            return axios(config);
+        }
+        return Promise.reject(error);
+    }
+);
+
 export default axiosInstance;

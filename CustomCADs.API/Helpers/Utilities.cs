@@ -1,9 +1,8 @@
 ﻿using CustomCADs.Infrastructure.Data.Identity;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.JsonPatch;
 using System.Security.Claims;
+using static CustomCADs.Domain.DataConstants.UserConstants;
 
 namespace CustomCADs.API.Helpers
 {
@@ -28,22 +27,18 @@ namespace CustomCADs.API.Helpers
             return text[..1].ToUpper() + text[1..].ToLower();
         }
 
-        public static async Task SignInAsync(this AppUser user, SignInManager<AppUser> signInManager, AuthenticationProperties? authprop)
-            => await signInManager.Context.SignInAsync(
-                CookieAuthenticationDefaults.AuthenticationScheme,
-                await signInManager.CreateUserPrincipalAsync(user).ConfigureAwait(false),
-                authprop).ConfigureAwait(false);
+        public static async Task<(string value, DateTime end)> RenewRefreshToken(this UserManager<AppUser> userManager, AppUser user)
+        {
+            string newRT = JwtHelper.GenerateRefreshToken();
+            DateTime newEndDate = DateTime.UtcNow.AddDays(RefreshTokenDaysLimit);
 
-        public static AuthenticationProperties GetAuthProps(bool rememberMe) => rememberMe ?
-            new()
-            {
-                IsPersistent = true,
-                ExpiresUtc = DateTimeOffset.UtcNow.AddMonths(1)
-            } : new()
-            {
-                IsPersistent = true,
-                ExpiresUtc = DateTimeOffset.UtcNow.AddDays(1)
-            };
+            user.RefreshToken = newRT;
+            user.RefreshTokenEndDate = newEndDate;
+            await userManager.UpdateAsync(user).ConfigureAwait(false);
+            
+            return (newRT, newEndDate);
+
+        }
 
         public static string? CheckForBadChanges<TModel>(this JsonPatchDocument<TModel> patchDoc, params string[] fields) where TModel : class
         {

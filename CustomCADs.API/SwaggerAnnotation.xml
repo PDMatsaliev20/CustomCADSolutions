@@ -314,13 +314,15 @@
             </summary>
             <param name="userManager"></param>
             <param name="signInManager"></param>
+            <param name="config"></param>
         </member>
-        <member name="M:CustomCADs.API.Controllers.IdentityController.#ctor(Microsoft.AspNetCore.Identity.UserManager{CustomCADs.Infrastructure.Data.Identity.AppUser},Microsoft.AspNetCore.Identity.SignInManager{CustomCADs.Infrastructure.Data.Identity.AppUser})">
+        <member name="M:CustomCADs.API.Controllers.IdentityController.#ctor(Microsoft.AspNetCore.Identity.UserManager{CustomCADs.Infrastructure.Data.Identity.AppUser},Microsoft.AspNetCore.Identity.SignInManager{CustomCADs.Infrastructure.Data.Identity.AppUser},Microsoft.Extensions.Configuration.IConfiguration)">
             <summary>
                 Controller for managing Authentication/Authorization and info about the User's Identity.
             </summary>
             <param name="userManager"></param>
             <param name="signInManager"></param>
+            <param name="config"></param>
         </member>
         <member name="M:CustomCADs.API.Controllers.IdentityController.Register(System.String,CustomCADs.API.Models.Users.UserRegisterModel)">
             <summary>
@@ -340,6 +342,12 @@
         <member name="M:CustomCADs.API.Controllers.IdentityController.Logout">
             <summary>
                 Logs out of the current account.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.IdentityController.RefreshToken">
+            <summary>
+                Returns a Refresh token
             </summary>
             <returns></returns>
         </member>

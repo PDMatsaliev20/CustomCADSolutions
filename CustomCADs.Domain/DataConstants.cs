@@ -52,6 +52,8 @@
 
             public const int PasswordMaxLength = 100;
             public const int PasswordMinLength = 6;
+
+            public const int RefreshTokenDaysLimit = 7;
         }
 
         public static class RoleConstants

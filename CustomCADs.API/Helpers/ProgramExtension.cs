@@ -1,22 +1,24 @@
-﻿using CustomCADs.Application.Contracts;
-using CustomCADs.Application.Mappings;
+﻿using CustomCADs.API.Helpers;
+using CustomCADs.Application;
+using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Categories;
 using CustomCADs.Application.Services;
 using CustomCADs.Domain.Contracts;
 using CustomCADs.Domain.Entities;
-using CustomCADs.Infrastructure.Data.Identity;
 using CustomCADs.Infrastructure.Data;
+using CustomCADs.Infrastructure.Data.Identity;
 using CustomCADs.Infrastructure.Data.Repositories;
 using CustomCADs.Infrastructure.Data.Repositories.Command;
 using CustomCADs.Infrastructure.Data.Repositories.Query;
 using CustomCADs.Infrastructure.Payment;
-using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Stripe;
+using System.Text;
 using static CustomCADs.Domain.DataConstants.RoleConstants;
-using CustomCADs.Application;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -27,7 +29,7 @@ namespace Microsoft.Extensions.DependencyInjection
             string connectionString = config.GetConnectionString("RealConnection")
                     ?? throw new KeyNotFoundException("Could not find connection string 'RealConnection'.");
             services.AddDbContext<CadContext>(options => options.UseSqlServer(connectionString));
-            services.AddScoped<IDbTracker, DbTracker>();            
+            services.AddScoped<IDbTracker, DbTracker>();
 
             services.AddScoped<IQueryRepository<Order, int>, OrderQueryRepository>();
             services.AddScoped<IQueryRepository<Cad, int>, CadQueryRepository>();
@@ -96,7 +98,7 @@ namespace Microsoft.Extensions.DependencyInjection
                     Title = "CustomCADs API",
                     Description = "An API to Order, Purchase, Upload and Validate 3D Models",
                     Contact = new() { Name = "Ivan", Email = "ivanangelov414@gmail.com" },
-                    License = new() { Name = "Apache License 2.0", Url= new Uri("https://www.apache.org/licenses/LICENSE-2.0") }
+                    License = new() { Name = "Apache License 2.0", Url = new Uri("https://www.apache.org/licenses/LICENSE-2.0") }
                 });
                 c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "SwaggerAnnotation.xml"));
             });
@@ -116,41 +118,45 @@ namespace Microsoft.Extensions.DependencyInjection
             });
         }
 
-        public static IServiceCollection AddAuthWithCookie(this IServiceCollection services)
+        public static IServiceCollection AddAuthWithCookie(this IServiceCollection services, IConfiguration config)
         {
             services.AddAuthentication(opt =>
             {
-                opt.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                opt.DefaultForbidScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                opt.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                opt.DefaultSignOutScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                opt.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                opt.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            })
-                .AddCookie(options =>
+                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultForbidScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultSignOutScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(opt =>
+            {
+                string? secretKey = config["JwtSettings:SecretKey"];
+                ArgumentNullException.ThrowIfNull(secretKey, nameof(secretKey));
+                
+                opt.TokenValidationParameters = new()
                 {
-                    options.Cookie.HttpOnly = true;
-                    options.Cookie.SameSite = SameSiteMode.None;
-                    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-                    options.SlidingExpiration = true;
-                    options.Events = new()
+                    ValidateAudience = true,
+                    ValidateIssuer = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = config["JwtSettings:Issuer"],
+                    ValidAudience = config["JwtSettings:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey)),
+                };
+
+                opt.Events = new()
+                {
+                    OnMessageReceived = context =>
                     {
-                        OnRedirectToLogin = context =>
-                        {
-                            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                            return Task.CompletedTask;
-                        },
-                        OnRedirectToAccessDenied = context =>
-                        {
-                            context.Response.StatusCode = StatusCodes.Status403Forbidden;
-                            return Task.CompletedTask;
-                        },
-                    };
-                });
+                        context.Token = context.Request.Cookies["jwt"];
+                        return Task.CompletedTask;
+                    },
+                };
+            });
 
             return services;
         }
-
+        
         public static void AddRoles(this IServiceCollection services, IEnumerable<string> roles)
         {
             services.AddAuthorization(options =>

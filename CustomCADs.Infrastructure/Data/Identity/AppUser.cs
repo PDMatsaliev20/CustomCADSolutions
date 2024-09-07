@@ -25,5 +25,8 @@ namespace CustomCADs.Infrastructure.Data.Identity
 
         [StringLength(50)]
         public string? LastName { get; set; }
+
+        public string? RefreshToken { get; set; }
+        public DateTime? RefreshTokenEndDate { get; set; }
     }
 }
