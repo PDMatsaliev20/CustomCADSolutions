@@ -9,8 +9,8 @@ using CustomCADs.Domain.Entities;
 namespace CustomCADs.Application.Services
 {
     public class OrderService(IDbTracker dbTracker,
-        IQueryRepository<Order, int> queries,
-        ICommandRepository<Order> commands, 
+        IQueries<Order> queries,
+        ICommands<Order> commands, 
         IMapper mapper) : IOrderService
     {
         public async Task<OrderResult> GetAllAsync(OrderQuery query, SearchModel search, PaginationModel pagination, Func<Order, bool>? customFilter = null)

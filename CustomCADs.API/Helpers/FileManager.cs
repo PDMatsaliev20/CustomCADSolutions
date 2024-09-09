@@ -15,7 +15,7 @@ namespace CustomCADs.API.Helpers
         public static string GetPath(this IWebHostEnvironment env, string folder, string fileName)
             => Path.Combine(env.WebRootPath, "files", folder, fileName);
 
-        public static async Task<string> UploadOrderAsync(this IWebHostEnvironment env, IFormFile image, string fileName)
+        public static async Task<string> UploadOrderAsync(this IWebHostEnvironment env, IFormFile? image, string fileName)
         {
             ArgumentNullException.ThrowIfNull(image, nameof(image));
             if (image.Length == 0)
@@ -23,9 +23,6 @@ namespace CustomCADs.API.Helpers
                 throw new ArgumentException(InvalidSize, nameof(image.Length));
             }
 
-            string a = env.WebRootPath;
-            string b = GetRelativePath("orders", fileName);
-            string c = Path.Combine(a, b);
             using FileStream stream = new(env.GetPath("orders", fileName), FileMode.Create);
             await image.CopyToAsync(stream).ConfigureAwait(false);
 

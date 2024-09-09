@@ -1,16 +1,16 @@
-﻿using CustomCADs.API.Helpers;
-using CustomCADs.Application;
+﻿using CustomCADs.Application;
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Categories;
 using CustomCADs.Application.Services;
 using CustomCADs.Domain.Contracts;
 using CustomCADs.Domain.Entities;
-using CustomCADs.Infrastructure.Data;
-using CustomCADs.Infrastructure.Data.Identity;
-using CustomCADs.Infrastructure.Data.Repositories;
-using CustomCADs.Infrastructure.Data.Repositories.Command;
-using CustomCADs.Infrastructure.Data.Repositories.Query;
+using CustomCADs.Infrastructure.Identity;
 using CustomCADs.Infrastructure.Payment;
+using CustomCADs.Persistence;
+using CustomCADs.Persistence.Repositories;
+using CustomCADs.Persistence.Repositories.Cads;
+using CustomCADs.Persistence.Repositories.Categories;
+using CustomCADs.Persistence.Repositories.Orders;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.StaticFiles;
@@ -28,20 +28,24 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             string connectionString = config.GetConnectionString("RealConnection")
                     ?? throw new KeyNotFoundException("Could not find connection string 'RealConnection'.");
-            services.AddDbContext<CadContext>(options => options.UseSqlServer(connectionString));
+            services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connectionString));
             services.AddScoped<IDbTracker, DbTracker>();
 
-            services.AddScoped<IQueryRepository<Order, int>, OrderQueryRepository>();
-            services.AddScoped<IQueryRepository<Cad, int>, CadQueryRepository>();
-            services.AddScoped<IQueryRepository<Category, int>, CategoryQueryRepository>();
+            services.AddScoped<IQueries<Order>, OrderQueries>();
+            services.AddScoped<IQueries<Cad>, CadQueries>();
+            services.AddScoped<IQueries<Category>, CategoryQueries>();
 
-            services.AddScoped<ICommandRepository<Order>, OrderCommandRepository>();
-            services.AddScoped<ICommandRepository<Cad>, CadCommandRepository>();
-            services.AddScoped<ICommandRepository<Category>, CategoryCommandRepository>();
+            services.AddScoped<ICommands<Order>, OrderCommands>();
+            services.AddScoped<ICommands<Cad>, CadCommands>();
+            services.AddScoped<ICommands<Category>, CategoryCommands>();
         }
 
-        public static void AddAppIdentity(this IServiceCollection services)
+        public static void AddAppIdentity(this IServiceCollection services, IConfiguration config)
         {
+            string connectionString = config.GetConnectionString("IdentityConnection")
+                    ?? throw new KeyNotFoundException("Could not find connection string 'IdentityConnection'.");
+            services.AddDbContext<IdentityContext>(options => options.UseSqlServer(connectionString));
+
             services.AddIdentity<AppUser, AppRole>(options =>
             {
                 options.SignIn.RequireConfirmedAccount = false;
@@ -53,7 +57,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 options.Lockout.MaxFailedAccessAttempts = 5;
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
             })
-            .AddEntityFrameworkStores<CadContext>()
+            .AddEntityFrameworkStores<IdentityContext>()
             .AddDefaultTokenProviders();
         }
 
@@ -77,8 +81,7 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             return services
                 .AddAutoMapper(typeof(Program))
-                .AddAutoMapper(typeof(TestsErrorMessages))
-                .AddAutoMapper(typeof(Mappings));
+                .AddAutoMapper(typeof(TestsErrorMessages));
         }
 
         public static void AddJsonAndXml(this IMvcBuilder mvc)
@@ -100,7 +103,7 @@ namespace Microsoft.Extensions.DependencyInjection
                     Contact = new() { Name = "Ivan", Email = "ivanangelov414@gmail.com" },
                     License = new() { Name = "Apache License 2.0", Url = new Uri("https://www.apache.org/licenses/LICENSE-2.0") }
                 });
-                c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "SwaggerAnnotation.xml"));
+                c.IncludeXmlComments(Path.Combine(System.AppContext.BaseDirectory, "SwaggerAnnotation.xml"));
             });
         }
 
@@ -201,7 +204,7 @@ namespace Microsoft.Extensions.DependencyInjection
                         Admin => AdminDescription,
                         _ => null
                     };
-                    await roleManager.CreateAsync(new AppRole(role, description));
+                    await roleManager.CreateAsync(new AppRole(role));
                 }
             }
         }

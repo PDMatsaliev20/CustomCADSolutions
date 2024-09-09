@@ -1,6 +1,6 @@
 ﻿using CustomCADs.API.Helpers;
 using CustomCADs.API.Models.Users;
-using CustomCADs.Infrastructure.Data.Identity;
+using CustomCADs.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -43,7 +43,7 @@ namespace CustomCADs.API.Controllers
 
             try
             {
-                AppUser user = new(register.Username, register.Email, register.FirstName, register.LastName);
+                AppUser user = new(register.Username, register.Email);
                 IdentityResult result = await userManager.CreateAsync(user, register.Password).ConfigureAwait(false);
 
                 if (!result.Succeeded)
@@ -193,9 +193,9 @@ namespace CustomCADs.API.Controllers
                 }
                 await signInManager.SignOutAsync().ConfigureAwait(false);
 
-                user.RefreshToken = null;
-                user.RefreshTokenEndDate = null;
-                await userManager.UpdateAsync(user);
+                //user.RefreshToken = null;
+                //user.RefreshTokenEndDate = null;
+                //await userManager.UpdateAsync(user);
 
                 Response.Cookies.Delete("jwt");
                 Response.Cookies.Delete("rt");
@@ -218,9 +218,9 @@ namespace CustomCADs.API.Controllers
         public async Task<ActionResult<string>> RefreshToken()
         {
             string? rt = Request.Cookies.FirstOrDefault(c => c.Key == "rt").Value;
-            AppUser? user = await userManager.Users.FirstOrDefaultAsync(u => u.RefreshToken == rt);
+            AppUser? user = await userManager.Users.FirstOrDefaultAsync(/*u => u.RefreshToken == rt*/);
 
-            if (user == null || string.IsNullOrEmpty(rt) || user.RefreshToken != rt || user.RefreshTokenEndDate < DateTime.UtcNow)
+            if (user == null || string.IsNullOrEmpty(rt) /*|| user.RefreshToken != rt || user.RefreshTokenEndDate < DateTime.UtcNow*/)
             {
                 return StatusCode(Status401Unauthorized);
             }
@@ -230,10 +230,10 @@ namespace CustomCADs.API.Controllers
             string signedJwt = new JwtSecurityTokenHandler().WriteToken(newJwt);
             Response.Cookies.Append("jwt", signedJwt, new() { HttpOnly = true, Secure = true, Expires = newJwt.ValidTo });
 
-            if (user.RefreshTokenEndDate >= DateTime.UtcNow.AddMinutes(1))
-            {
-                return "Refresh token still valid, no need to refresh.";
-            }
+            //if (user.RefreshTokenEndDate >= DateTime.UtcNow.AddMinutes(1))
+            //{
+            //    return "Refresh token still valid, no need to refresh.";
+            //}
 
             (string newRT, DateTime newEnd) = await userManager.RenewRefreshToken(user).ConfigureAwait(false);
             Response.Cookies.Append("rt", newRT, new() { HttpOnly = true, Secure = true, Expires = newEnd });

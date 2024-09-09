@@ -3,7 +3,7 @@ using static CustomCADs.Domain.DataConstants.RoleConstants;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCadContext(builder.Configuration);
-builder.Services.AddAppIdentity();
+builder.Services.AddAppIdentity(builder.Configuration);
 builder.Services.AddStripe(builder.Configuration);
 builder.Services.AddServices();
 

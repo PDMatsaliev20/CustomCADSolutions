@@ -4,12 +4,9 @@ using CustomCADs.Application.Mappings;
 using CustomCADs.Application.Models.Orders;
 using CustomCADs.Application.Services;
 using CustomCADs.Domain.Entities;
-using CustomCADs.Infrastructure.Data;
-using CustomCADs.Infrastructure.Data.Entities;
-using CustomCADs.Infrastructure.Data.Identity;
-using CustomCADs.Infrastructure.Data.Repositories;
-using CustomCADs.Infrastructure.Data.Repositories.Command;
-using CustomCADs.Infrastructure.Data.Repositories.Query;
+using CustomCADs.Persistence;
+using CustomCADs.Persistence.Repositories;
+using CustomCADs.Persistence.Repositories.Orders;
 using Microsoft.EntityFrameworkCore;
 
 namespace CustomCADs.Tests.ServicesTests.OrderTests
@@ -17,17 +14,17 @@ namespace CustomCADs.Tests.ServicesTests.OrderTests
     [TestFixture]
     public class BaseOrdersTests
     {
-        private readonly CadContext context = new(new DbContextOptionsBuilder<CadContext>().UseInMemoryDatabase("CadOrdersContext").Options);
+        private readonly Persistence.ApplicationContext context = new(new DbContextOptionsBuilder<Persistence.ApplicationContext>().UseInMemoryDatabase("CadOrdersContext").Options);
         private readonly IMapper mapper = new MapperConfiguration(cfg =>
                 cfg.AddProfile<OrderProfile>())
             .CreateMapper();
 
         protected IOrderService service;
-        protected AppUser[] users =
+        protected User[] users =
         [
-            new("Client"),
-            new("Contributor"),
-            new("Hacker"),
+            new() { UserName = "Client" },
+            new() { UserName = "Contributor" },
+            new() { UserName = "Hacker" },
         ];
         protected OrderModel[] orders =
         [
@@ -54,8 +51,8 @@ namespace CustomCADs.Tests.ServicesTests.OrderTests
 
             SeedBuyers();
             this.service = new OrderService(new DbTracker(context),
-                new OrderQueryRepository(context, mapper), 
-                new OrderCommandRepository(context, mapper), 
+                new OrderQueries(context),
+                new OrderCommands(context),
                 mapper);
         }
 
@@ -63,14 +60,14 @@ namespace CustomCADs.Tests.ServicesTests.OrderTests
         public async Task Setup()
         {
             Order[] allOrders = mapper.Map<Order[]>(orders);
-            await context.Orders.AddRangeAsync(mapper.Map<POrder[]>(allOrders)).ConfigureAwait(false);
+            await context.Orders.AddRangeAsync(allOrders).ConfigureAwait(false);
             await context.SaveChangesAsync().ConfigureAwait(false);
         }
 
         [TearDown]
         public async Task Teardown()
         {
-            POrder[] allOrders = await context.Orders.ToArrayAsync();
+            Order[] allOrders = await context.Orders.ToArrayAsync();
             context.Orders.RemoveRange(allOrders);
             await context.SaveChangesAsync().ConfigureAwait(false);
         }
@@ -78,10 +75,10 @@ namespace CustomCADs.Tests.ServicesTests.OrderTests
         [OneTimeTearDown]
         public async Task OneTimeTeardown()
         {
-            PCategory[] categories = await context.Categories.ToArrayAsync().ConfigureAwait(false);
+            Category[] categories = await context.Categories.ToArrayAsync().ConfigureAwait(false);
             context.Categories.RemoveRange(categories);
 
-            AppUser[] users = await context.Users.ToArrayAsync().ConfigureAwait(false);
+            User[] users = await context.Users.ToArrayAsync().ConfigureAwait(false);
             context.Users.RemoveRange(users);
 
             await context.SaveChangesAsync().ConfigureAwait(false);

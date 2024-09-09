@@ -3,13 +3,12 @@ using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Categories;
 using CustomCADs.Domain.Contracts;
 using CustomCADs.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
 
 namespace CustomCADs.Application.Services
 {
     public class CategoryService(IDbTracker dbTracker,
-        IQueryRepository<Category, int> queries, 
-        ICommandRepository<Category> commands, 
+        IQueries<Category> queries, 
+        ICommands<Category> commands, 
         IMapper mapper) : ICategoryService
     {
         public async Task<IEnumerable<CategoryModel>> GetAllAsync()

@@ -1,4 +1,4 @@
-﻿using CustomCADs.Infrastructure.Data.Identity;
+﻿using CustomCADs.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.JsonPatch;
 using System.Security.Claims;
@@ -32,9 +32,9 @@ namespace CustomCADs.API.Helpers
             string newRT = JwtHelper.GenerateRefreshToken();
             DateTime newEndDate = DateTime.UtcNow.AddDays(RefreshTokenDaysLimit);
 
-            user.RefreshToken = newRT;
-            user.RefreshTokenEndDate = newEndDate;
-            await userManager.UpdateAsync(user).ConfigureAwait(false);
+            //user.RefreshToken = newRT;
+            //user.RefreshTokenEndDate = newEndDate;
+            //await userManager.UpdateAsync(user).ConfigureAwait(false);
             
             return (newRT, newEndDate);
 

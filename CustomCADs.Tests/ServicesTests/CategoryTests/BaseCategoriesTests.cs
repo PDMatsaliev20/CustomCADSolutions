@@ -4,18 +4,16 @@ using CustomCADs.Application.Mappings;
 using CustomCADs.Application.Models.Categories;
 using CustomCADs.Application.Services;
 using CustomCADs.Domain.Entities;
-using CustomCADs.Infrastructure.Data;
-using CustomCADs.Infrastructure.Data.Entities;
-using CustomCADs.Infrastructure.Data.Repositories;
-using CustomCADs.Infrastructure.Data.Repositories.Command;
-using CustomCADs.Infrastructure.Data.Repositories.Query;
+using CustomCADs.Persistence;
+using CustomCADs.Persistence.Repositories;
+using CustomCADs.Persistence.Repositories.Categories;
 using Microsoft.EntityFrameworkCore;
 
 namespace CustomCADs.Tests.ServicesTests.CategoryTests
 {
     public class BaseCategoriesTests
     {
-        private readonly CadContext context = new(new DbContextOptionsBuilder<CadContext>()
+        private readonly Persistence.ApplicationContext context = new(new DbContextOptionsBuilder<Persistence.ApplicationContext>()
             .UseInMemoryDatabase("CadCategoriesContext").Options);
 
         private readonly IMapper mapper = new MapperConfiguration(cfg => 
@@ -36,8 +34,8 @@ namespace CustomCADs.Tests.ServicesTests.CategoryTests
         public void OneTimeSetup()
         {
             this.service = new CategoryService(new DbTracker(context),
-                new CategoryQueryRepository(context, mapper), 
-                new CategoryCommandRepository(context, mapper), 
+                new CategoryQueries(context), 
+                new CategoryCommands(context), 
                 mapper);
         }
 
@@ -45,14 +43,14 @@ namespace CustomCADs.Tests.ServicesTests.CategoryTests
         public async Task Setup()
         {
             Category[] allCategories = mapper.Map<Category[]>(categories);
-            await context.Categories.AddRangeAsync(mapper.Map<PCategory[]>(allCategories)).ConfigureAwait(false);
+            await context.Categories.AddRangeAsync(allCategories).ConfigureAwait(false);
             await context.SaveChangesAsync().ConfigureAwait(false);
         }
 
         [TearDown]
         public async Task TearDown()
         {
-            PCategory[] allCategories = await context.Categories.ToArrayAsync();
+            Category[] allCategories = await context.Categories.ToArrayAsync();
             context.Categories.RemoveRange(allCategories);
             await context.SaveChangesAsync().ConfigureAwait(false);
         }

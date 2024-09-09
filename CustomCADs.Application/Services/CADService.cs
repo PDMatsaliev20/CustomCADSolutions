@@ -9,9 +9,9 @@ using CustomCADs.Domain.Enums;
 namespace CustomCADs.Application.Services
 {
     public class CadService(IDbTracker dbTracker,
-        IQueryRepository<Cad, int> cadQueries,
-        IQueryRepository<Order, int> orderQueries,
-        ICommandRepository<Cad> commands,
+        IQueries<Cad> cadQueries,
+        IQueries<Order> orderQueries,
+        ICommands<Cad> commands,
         IMapper mapper) : ICadService
     {
         public async Task<CadResult> GetAllAsync(CadQuery query, SearchModel search, PaginationModel pagination, Func<Cad, bool>? customFilter = null)
