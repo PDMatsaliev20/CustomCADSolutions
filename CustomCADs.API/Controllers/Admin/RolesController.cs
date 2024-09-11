@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CustomCADs.API.Helpers;
+using CustomCADs.API.Identity;
 using CustomCADs.API.Models.Others;
 using CustomCADs.Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;
@@ -17,12 +18,12 @@ namespace CustomCADs.API.Controllers.Admin
     /// <summary>
     ///     Admin Controller for managing Roles.
     /// </summary>
-    /// <param name="roleManager"></param>
+    /// <param name="appRoleManager"></param>
     /// <param name="mapper"></param>
     [ApiController]
     [Route("API/Admin/[controller]")]
     [Authorize(Roles = RoleConstants.Admin)]
-    public class RolesController(RoleManager<AppRole> roleManager, IMapper mapper) : ControllerBase
+    public class RolesController(AppRoleManager appRoleManager, IMapper mapper) : ControllerBase
     {
         private readonly string createdAtReturnAction = nameof(GetRoleAsync).Replace("Async", "");
 
@@ -39,7 +40,7 @@ namespace CustomCADs.API.Controllers.Admin
         {
             try
             {
-                AppRole[] roles = await roleManager.Roles.ToArrayAsync().ConfigureAwait(false);
+                AppRole[] roles = await appRoleManager.Roles.ToArrayAsync().ConfigureAwait(false);
                 return mapper.Map<RoleDTO[]>(roles);
             }
             catch (Exception ex) when (
@@ -70,7 +71,7 @@ namespace CustomCADs.API.Controllers.Admin
         {
             try
             {
-                AppRole? role = await roleManager.FindByNameAsync(name).ConfigureAwait(false);
+                AppRole? role = await appRoleManager.FindByNameAsync(name).ConfigureAwait(false);
 
                 return role == null 
                     ? NotFound(string.Format(ApiMessages.NotFound, "Role"))
@@ -110,7 +111,7 @@ namespace CustomCADs.API.Controllers.Admin
             try
             {
                 AppRole role = new(name);
-                IdentityResult result = await roleManager.CreateAsync(role).ConfigureAwait(false);
+                IdentityResult result = await appRoleManager.CreateAsync(role).ConfigureAwait(false);
                 if (!result.Succeeded)
                 {
                     return StatusCode(Status500InternalServerError, result.Errors);
@@ -158,7 +159,7 @@ namespace CustomCADs.API.Controllers.Admin
 
             try
             {
-                AppRole? role = await roleManager.FindByNameAsync(name).ConfigureAwait(false);
+                AppRole? role = await appRoleManager.FindByNameAsync(name).ConfigureAwait(false);
                 if (role == null)
                 {
                     return NotFound("Role not found.");
@@ -171,7 +172,7 @@ namespace CustomCADs.API.Controllers.Admin
                 {
                     return BadRequest(error);
                 }
-                await roleManager.UpdateAsync(role).ConfigureAwait(false);
+                await appRoleManager.UpdateAsync(role).ConfigureAwait(false);
 
                 return NoContent();
             }
@@ -194,13 +195,13 @@ namespace CustomCADs.API.Controllers.Admin
         {
             try
             {
-                AppRole? role = await roleManager.FindByNameAsync(name).ConfigureAwait(false);
+                AppRole? role = await appRoleManager.FindByNameAsync(name).ConfigureAwait(false);
                 if (role == null)
                 {
                     return NotFound(string.Format(ApiMessages.NotFound, "Role"));
                 }
 
-                await roleManager.DeleteAsync(role).ConfigureAwait(false);
+                await appRoleManager.DeleteAsync(role).ConfigureAwait(false);
                 return NoContent();
             }
             catch (Exception ex)

@@ -2,7 +2,7 @@
 using static CustomCADs.Domain.DataConstants;
 using static CustomCADs.Domain.DataConstants.UserConstants;
 
-namespace CustomCADs.API.Models.Users
+namespace CustomCADs.API.Models.Identity
 {
     public class UserRegisterModel
     {
@@ -14,11 +14,11 @@ namespace CustomCADs.API.Models.Users
         [Required(ErrorMessage = RequiredErrorMessage)]
         [EmailAddress]
         public string Email { get; set; } = null!;
-        
+
         [StringLength(NameMaxLength, MinimumLength = NameMinLength,
             ErrorMessage = LengthErrorMessage)]
         public string? FirstName { get; set; }
-        
+
         [StringLength(NameMaxLength, MinimumLength = NameMinLength,
             ErrorMessage = LengthErrorMessage)]
         public string? LastName { get; set; }
@@ -31,7 +31,7 @@ namespace CustomCADs.API.Models.Users
 
         [Required(ErrorMessage = RequiredErrorMessage)]
         [DataType(DataType.Password)]
-        [Compare(nameof(this.Password))]
+        [Compare(nameof(Password))]
         public string ConfirmPassword { get; set; } = null!;
     }
 }

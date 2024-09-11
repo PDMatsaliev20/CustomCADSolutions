@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using CustomCADs.API.Models.Others;
-using CustomCADs.Infrastructure.Identity;
+using CustomCADs.Domain.Entities;
 
 namespace CustomCADs.API.Mappings
 {
@@ -12,9 +12,9 @@ namespace CustomCADs.API.Mappings
             UserToDTO();
         }
 
-        private void RoleToDTO() => CreateMap<AppRole, RoleDTO>();
+        private void RoleToDTO() => CreateMap<Role, RoleDTO>();
 
-        private void UserToDTO() => CreateMap<AppUser, UserDTO>()
+        private void UserToDTO() => CreateMap<User, UserDTO>()
             .ForMember(dto => dto.Username, opt => opt.MapFrom(user => user.UserName))
             .ForMember(dto => dto.Role, opt => opt.Ignore());
     }

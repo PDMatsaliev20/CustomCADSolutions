@@ -1,12 +1,15 @@
 ﻿using AutoMapper;
 using CustomCADs.API.Helpers;
-using CustomCADs.API.Models.Others;
+using CustomCADs.API.Identity;
+using CustomCADs.API.Models.Users;
+using CustomCADs.Application.Contracts;
+using CustomCADs.Application.Models.Users;
+using CustomCADs.Application.Models.Utilities;
 using CustomCADs.Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using static CustomCADs.Domain.DataConstants;
 
 namespace CustomCADs.API.Controllers.Admin
@@ -17,19 +20,24 @@ namespace CustomCADs.API.Controllers.Admin
     /// <summary>
     ///     Admin Controller for managing Users.
     /// </summary>
-    /// <param name="userManager"></param>
-    /// <param name="roleManager"></param>
+    /// <param name="userService"></param>
+    /// <param name="appUserManager"></param>
+    /// <param name="appRoleManager"></param>
     /// <param name="mapper"></param>
     [ApiController]
     [Route("API/Admin/[controller]")]
     [Authorize(Roles = RoleConstants.Admin)]
-    public class UsersController(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, IMapper mapper) : ControllerBase
+    public class UsersController(IUserService userService, AppUserManager appUserManager, AppRoleManager appRoleManager, IMapper mapper) : ControllerBase
     {
         private readonly string createdAtReturnAction = nameof(GetUserAsync).Replace("Async", "");
 
         /// <summary>
         ///     Gets All Users.
         /// </summary>
+        /// <param name="name"></param>
+        /// <param name="sorting"></param>
+        /// <param name="limit"></param>
+        /// <param name="page"></param>
         /// <returns></returns>
         [HttpGet]
         [Produces("application/json")]
@@ -38,22 +46,16 @@ namespace CustomCADs.API.Controllers.Admin
         [ProducesResponseType(Status404NotFound)]
         [ProducesResponseType(Status500InternalServerError)]
         [ProducesResponseType(Status502BadGateway)]
-        public async Task<ActionResult<UserDTO[]>> GetUsersAsync()
+        public async Task<ActionResult<UserGetDTO[]>> GetUsersAsync(string? name, string sorting, int limit = 50, int page = 1)
         {
+            SearchModel search = new() { Name = name, Sorting = sorting ?? string.Empty };
+            PaginationModel pagination = new() { Limit = limit, Page = page };
+
             try
             {
-                AppUser[] users = await userManager.Users.ToArrayAsync().ConfigureAwait(false);
-
-                ICollection<UserDTO> dtos = [];
-                foreach (AppUser user in users)
-                {
-                    UserDTO dto = mapper.Map<UserDTO>(user);
-                    IList<string> roles = await userManager.GetRolesAsync(user).ConfigureAwait(false);
-                    dto.Role = roles.Single();
-                    dtos.Add(dto);
-                }
-
-                return dtos.ToArray();
+                UserResult result = await userService.GetAllAsync(search, pagination).ConfigureAwait(false);
+                UserGetDTO[] gets = mapper.Map<UserGetDTO[]>(result.Users);
+                return gets;
             }
             catch (Exception ex) when (
                 ex is AutoMapperConfigurationException
@@ -87,22 +89,15 @@ namespace CustomCADs.API.Controllers.Admin
         [ProducesResponseType(Status404NotFound)]
         [ProducesResponseType(Status500InternalServerError)]
         [ProducesResponseType(Status502BadGateway)]
-        public async Task<ActionResult<UserDTO>> GetUserAsync(string name)
+        public async Task<ActionResult<UserGetDTO>> GetUserAsync(string name)
         {
-            AppUser? user = await userManager.FindByNameAsync(name).ConfigureAwait(false);
-            if (user == null)
-            {
-                return NotFound(string.Format(ApiMessages.NotFound, "User"));
-            }
-
+            UserResult result = await userService.GetAllAsync(new(), new(), u => u.UserName == name).ConfigureAwait(false);
+            UserModel model = result.Users.Single();
+            
             try
             {
-                UserDTO dto = mapper.Map<UserDTO>(user);
-
-                IList<string> roles = await userManager.GetRolesAsync(user).ConfigureAwait(false);
-                dto.Role = roles.Single();
-
-                return dto;
+                UserGetDTO get = mapper.Map<UserGetDTO>(model);
+                return get;
             }
             catch (Exception ex) when (
                 ex is AutoMapperConfigurationException
@@ -128,39 +123,37 @@ namespace CustomCADs.API.Controllers.Admin
         /// <summary>
         ///     Creates a User with the specified name and role.
         /// </summary>
-        /// <param name="username"></param>
-        /// <param name="role"></param>
+        /// <param name="post"></param>
         /// <returns></returns>
         [HttpPost("{username}")]
         [ProducesResponseType(Status201Created)]
         [ProducesResponseType(Status400BadRequest)]
         [ProducesResponseType(Status500InternalServerError)]
         [ProducesResponseType(Status502BadGateway)]
-        public async Task<ActionResult> PostUserAsync(string username, string role)
+        public async Task<ActionResult> PostUserAsync(UserPostDTO post)
         {
-            if (string.IsNullOrWhiteSpace(username))
+            if (!await appRoleManager.RoleExistsAsync(post.Role))
             {
-                return BadRequest(string.Format(IsRequired, "Username"));
-            }
-
-            if (!await roleManager.RoleExistsAsync(role))
-            {
-                return BadRequest(string.Format(InvalidRole, string.Join(", ", roleManager.Roles)));
+                return BadRequest(string.Format(InvalidRole, string.Join(", ", appRoleManager.Roles)));
             }
 
             try
             {
-                AppUser user = new(username, $"{username}@gmail.com");
-                IdentityResult result = await userManager.CreateAsync(user).ConfigureAwait(false);
+                AppUser user = new(post.Username, post.Email);
+                IdentityResult result = await appUserManager.CreateAsync(user).ConfigureAwait(false);
                 if (!result.Succeeded)
                 {
                     return StatusCode(Status500InternalServerError, result.Errors);
                 }
+                await appUserManager.AddToRoleAsync(user, post.Role).ConfigureAwait(false);
 
-                await userManager.AddToRoleAsync(user, role).ConfigureAwait(false);
-                UserDTO dto = mapper.Map<UserDTO>(user);
+                UserModel model = mapper.Map<UserModel>(post);
+                string id = await userService.CreateAsync(model);
 
-                return CreatedAtAction(createdAtReturnAction, new { name = username }, dto);
+                UserModel addedModel = await userService.GetByIdAsync(id).ConfigureAwait(false);
+                UserGetDTO get = mapper.Map<UserGetDTO>(addedModel);
+
+                return CreatedAtAction(createdAtReturnAction, new { name = get.Username }, get);
             }
             catch (Exception ex) when (
                 ex is AutoMapperConfigurationException
@@ -180,21 +173,20 @@ namespace CustomCADs.API.Controllers.Admin
         /// </summary>
         /// <param name="username"></param>
         /// <param name="patchUser"></param>
-        /// <param name="newRole"></param>
         /// <returns></returns>
         [HttpPatch("{username}")]
         [ProducesResponseType(Status204NoContent)]
         [ProducesResponseType(Status400BadRequest)]
         [ProducesResponseType(Status404NotFound)]
         [ProducesResponseType(Status500InternalServerError)]
-        public async Task<ActionResult> PatchUserAsync(string username, [FromBody] JsonPatchDocument<AppUser> patchUser, string? newRole)
+        public async Task<ActionResult> PatchUserAsync(string username, [FromBody] JsonPatchDocument<UserModel> patchUser)
         {
             if (string.IsNullOrWhiteSpace(username))
             {
                 return BadRequest(string.Format(IsRequired, "Username"));
             }
 
-            string? modifiedForbiddenField = patchUser.CheckForBadChanges("/id", "/accessFailedCount", "/emailConfirmed", "/phoneNumberConfirmed", "/normalizedName", "/normalizedEmail", "/concurrencyStamp", "/securityStamp", "/lockoutEnabled", "/lockoutEnd", "/passwordHash", "/twoFactorEnabled");
+            string? modifiedForbiddenField = patchUser.CheckForBadChanges("/id", "refreshToken", "refreshTokenEndDate");
             if (modifiedForbiddenField != null)
             {
                 return BadRequest(string.Format(ForbiddenPatch, modifiedForbiddenField));
@@ -202,32 +194,36 @@ namespace CustomCADs.API.Controllers.Admin
             
             try
             {
-                AppUser? user = await userManager.FindByNameAsync(username).ConfigureAwait(false);
-                if (user == null)
+                UserResult result = await userService.GetAllAsync(new(), new(), u => u.UserName == username).ConfigureAwait(false);
+                UserModel? model = result.Users.SingleOrDefault();
+                AppUser? user = await appUserManager.FindByNameAsync(username).ConfigureAwait(false);
+
+                if (user == null || model == null)
                 {
                     return NotFound(string.Format(ApiMessages.NotFound, "User"));
                 }
 
-                if (!string.IsNullOrWhiteSpace(newRole))
-                {
-                    if (!await roleManager.RoleExistsAsync(newRole).ConfigureAwait(false))
-                    {
-                        return BadRequest(string.Format(InvalidRole, string.Join(", ", roleManager.Roles)));
-                    }
-                    IList<string> roles = await userManager.GetRolesAsync(user).ConfigureAwait(false);
-
-                    await userManager.RemoveFromRoleAsync(user, roles.Single()).ConfigureAwait(false);
-                    await userManager.AddToRoleAsync(user, newRole).ConfigureAwait(false);
-                }
+                string oldRole = model.RoleName;
 
                 string? error = null;
-                patchUser.ApplyTo(user, a => error = a.ErrorMessage);
-
+                patchUser.ApplyTo(model, a => error = a.ErrorMessage);
                 if (string.IsNullOrEmpty(error))
                 {
                     return BadRequest(error);
                 }
-                await userManager.UpdateAsync(user).ConfigureAwait(false);
+
+                string newRole = model.RoleName;
+                if (oldRole != newRole)
+                {
+                    if (!await appRoleManager.RoleExistsAsync(newRole).ConfigureAwait(false))
+                    {
+                        return BadRequest(string.Format(InvalidRole, string.Join(", ", appRoleManager.Roles)));
+                    }
+                    
+                    await appUserManager.RemoveFromRoleAsync(user, oldRole).ConfigureAwait(false);
+                    await appUserManager.AddToRoleAsync(user, newRole).ConfigureAwait(false);
+                }
+                await appUserManager.UpdateAsync(user).ConfigureAwait(false);
 
                 return NoContent();
             }
@@ -258,13 +254,15 @@ namespace CustomCADs.API.Controllers.Admin
         {
             try
             {
-                AppUser? user = await userManager.FindByNameAsync(username).ConfigureAwait(false);
+                AppUser? user = await appUserManager.FindByNameAsync(username).ConfigureAwait(false);
                 if (user == null) 
                 {
                     return NotFound(string.Format(ApiMessages.NotFound, "User"));
                 }
 
-                await userManager.DeleteAsync(user).ConfigureAwait(false);
+                await appUserManager.DeleteAsync(user).ConfigureAwait(false);
+                await userService.DeleteAsync(username).ConfigureAwait(false);
+
                 return NoContent();
             }
             catch (Exception ex)

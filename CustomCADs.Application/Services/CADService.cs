@@ -9,8 +9,8 @@ using CustomCADs.Domain.Enums;
 namespace CustomCADs.Application.Services
 {
     public class CadService(IDbTracker dbTracker,
-        IQueries<Cad> cadQueries,
-        IQueries<Order> orderQueries,
+        IQueries<Cad, int> cadQueries,
+        IQueries<Order, int> orderQueries,
         ICommands<Cad> commands,
         IMapper mapper) : ICadService
     {

@@ -10,8 +10,8 @@ using CustomCADs.Domain.Enums;
 namespace CustomCADs.Application.Services
 {
     public class DesignerService(IDbTracker dbTracker,
-        IQueries<Cad> cadQueries, 
-        IQueries<Order> orderQueries,
+        IQueries<Cad, int> cadQueries, 
+        IQueries<Order, int> orderQueries,
         IMapper mapper) : IDesignerService
     {
         public async Task<OrderResult> GetOrdersAsync(string status, string? designerId, SearchModel search, PaginationModel pagination)

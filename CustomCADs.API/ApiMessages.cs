@@ -4,6 +4,9 @@
     {
         public const string IsRequired = "{0} is required.";
         public const string NotFound = "{0} not found.";
+        public const string NoRefreshToken = "No Refresh Token provided.";
+        public const string NoNeedForNewRT = "Refresh token still valid, no need to refresh.";
+        public const string AccessTokenRenewed = "Access token renewed";
         public const string ForbiddenAccess = "Not allowed to modify another User's resources.";
         public const string ForbiddenPatch = "Not allowed to patch field {0}.";
         public const string ForbiddenRoleRegister = "You must apply to either be a Client or a Contributor.";

@@ -2,12 +2,12 @@
 using static CustomCADs.Domain.DataConstants;
 using static CustomCADs.Domain.DataConstants.UserConstants;
 
-namespace CustomCADs.API.Models.Users
+namespace CustomCADs.API.Models.Identity
 {
     public class UserLoginModel
     {
         [Required(ErrorMessage = RequiredErrorMessage)]
-        [StringLength(NameMaxLength, MinimumLength = NameMinLength, 
+        [StringLength(NameMaxLength, MinimumLength = NameMinLength,
             ErrorMessage = LengthErrorMessage)]
         public string Username { get; set; } = null!;
 

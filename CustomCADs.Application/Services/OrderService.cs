@@ -9,7 +9,7 @@ using CustomCADs.Domain.Entities;
 namespace CustomCADs.Application.Services
 {
     public class OrderService(IDbTracker dbTracker,
-        IQueries<Order> queries,
+        IQueries<Order, int> queries,
         ICommands<Order> commands, 
         IMapper mapper) : IOrderService
     {

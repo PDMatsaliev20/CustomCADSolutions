@@ -8,14 +8,14 @@
             <summary>
                 Admin Controller for managing Roles.
             </summary>
-            <param name="roleManager"></param>
+            <param name="appRoleManager"></param>
             <param name="mapper"></param>
         </member>
-        <member name="M:CustomCADs.API.Controllers.Admin.RolesController.#ctor(Microsoft.AspNetCore.Identity.RoleManager{CustomCADs.Infrastructure.Identity.AppRole},AutoMapper.IMapper)">
+        <member name="M:CustomCADs.API.Controllers.Admin.RolesController.#ctor(CustomCADs.API.Identity.AppRoleManager,AutoMapper.IMapper)">
             <summary>
                 Admin Controller for managing Roles.
             </summary>
-            <param name="roleManager"></param>
+            <param name="appRoleManager"></param>
             <param name="mapper"></param>
         </member>
         <member name="M:CustomCADs.API.Controllers.Admin.RolesController.GetRolesAsync">
@@ -58,22 +58,28 @@
             <summary>
                 Admin Controller for managing Users.
             </summary>
-            <param name="userManager"></param>
-            <param name="roleManager"></param>
+            <param name="userService"></param>
+            <param name="appUserManager"></param>
+            <param name="appRoleManager"></param>
             <param name="mapper"></param>
         </member>
-        <member name="M:CustomCADs.API.Controllers.Admin.UsersController.#ctor(Microsoft.AspNetCore.Identity.UserManager{CustomCADs.Infrastructure.Identity.AppUser},Microsoft.AspNetCore.Identity.RoleManager{CustomCADs.Infrastructure.Identity.AppRole},AutoMapper.IMapper)">
+        <member name="M:CustomCADs.API.Controllers.Admin.UsersController.#ctor(CustomCADs.Application.Contracts.IUserService,CustomCADs.API.Identity.AppUserManager,CustomCADs.API.Identity.AppRoleManager,AutoMapper.IMapper)">
             <summary>
                 Admin Controller for managing Users.
             </summary>
-            <param name="userManager"></param>
-            <param name="roleManager"></param>
+            <param name="userService"></param>
+            <param name="appUserManager"></param>
+            <param name="appRoleManager"></param>
             <param name="mapper"></param>
         </member>
-        <member name="M:CustomCADs.API.Controllers.Admin.UsersController.GetUsersAsync">
+        <member name="M:CustomCADs.API.Controllers.Admin.UsersController.GetUsersAsync(System.String,System.String,System.Int32,System.Int32)">
             <summary>
                 Gets All Users.
             </summary>
+            <param name="name"></param>
+            <param name="sorting"></param>
+            <param name="limit"></param>
+            <param name="page"></param>
             <returns></returns>
         </member>
         <member name="M:CustomCADs.API.Controllers.Admin.UsersController.GetUserAsync(System.String)">
@@ -83,21 +89,19 @@
             <param name="name"></param>
             <returns></returns>
         </member>
-        <member name="M:CustomCADs.API.Controllers.Admin.UsersController.PostUserAsync(System.String,System.String)">
+        <member name="M:CustomCADs.API.Controllers.Admin.UsersController.PostUserAsync(CustomCADs.API.Models.Users.UserPostDTO)">
             <summary>
                 Creates a User with the specified name and role.
             </summary>
-            <param name="username"></param>
-            <param name="role"></param>
+            <param name="post"></param>
             <returns></returns>
         </member>
-        <member name="M:CustomCADs.API.Controllers.Admin.UsersController.PatchUserAsync(System.String,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{CustomCADs.Infrastructure.Identity.AppUser},System.String)">
+        <member name="M:CustomCADs.API.Controllers.Admin.UsersController.PatchUserAsync(System.String,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{CustomCADs.Application.Models.Users.UserModel})">
             <summary>
                 Updates a User in the traditional way - with an array of operations.
             </summary>
             <param name="username"></param>
             <param name="patchUser"></param>
-            <param name="newRole"></param>
             <returns></returns>
         </member>
         <member name="M:CustomCADs.API.Controllers.Admin.UsersController.DeleteUserAsync(System.String)">
@@ -312,16 +316,18 @@
             <summary>
                 Controller for managing Authentication/Authorization and info about the User's Identity.
             </summary>
-            <param name="userManager"></param>
-            <param name="signInManager"></param>
+            <param name="userService"></param>
+            <param name="appUserManager"></param>
+            <param name="appSignInManager"></param>
             <param name="config"></param>
         </member>
-        <member name="M:CustomCADs.API.Controllers.IdentityController.#ctor(Microsoft.AspNetCore.Identity.UserManager{CustomCADs.Infrastructure.Identity.AppUser},Microsoft.AspNetCore.Identity.SignInManager{CustomCADs.Infrastructure.Identity.AppUser},Microsoft.Extensions.Configuration.IConfiguration)">
+        <member name="M:CustomCADs.API.Controllers.IdentityController.#ctor(CustomCADs.Application.Contracts.IUserService,CustomCADs.API.Identity.AppUserManager,CustomCADs.API.Identity.AppSignInManager,Microsoft.Extensions.Configuration.IConfiguration)">
             <summary>
                 Controller for managing Authentication/Authorization and info about the User's Identity.
             </summary>
-            <param name="userManager"></param>
-            <param name="signInManager"></param>
+            <param name="userService"></param>
+            <param name="appUserManager"></param>
+            <param name="appSignInManager"></param>
             <param name="config"></param>
         </member>
         <member name="M:CustomCADs.API.Controllers.IdentityController.Register(System.String,CustomCADs.API.Models.Users.UserRegisterModel)">
@@ -336,7 +342,7 @@
             <summary>
                 Logs into the account with the specified parameters.
             </summary>
-            <param name="model"></param>
+            <param name="login"></param>
             <returns></returns>
         </member>
         <member name="M:CustomCADs.API.Controllers.IdentityController.Logout">

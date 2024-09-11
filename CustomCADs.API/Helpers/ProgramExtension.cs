@@ -1,6 +1,8 @@
-﻿using CustomCADs.Application;
+﻿using CustomCADs.API.Identity;
+using CustomCADs.Application;
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Categories;
+using CustomCADs.Application.Models.Roles;
 using CustomCADs.Application.Services;
 using CustomCADs.Domain.Contracts;
 using CustomCADs.Domain.Entities;
@@ -11,8 +13,9 @@ using CustomCADs.Persistence.Repositories;
 using CustomCADs.Persistence.Repositories.Cads;
 using CustomCADs.Persistence.Repositories.Categories;
 using CustomCADs.Persistence.Repositories.Orders;
+using CustomCADs.Persistence.Repositories.Roles;
+using CustomCADs.Persistence.Repositories.Users;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -24,23 +27,27 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     public static class ProgramExtension
     {
-        public static void AddCadContext(this IServiceCollection services, IConfiguration config)
+        public static void AddApplicationContext(this IServiceCollection services, IConfiguration config)
         {
             string connectionString = config.GetConnectionString("RealConnection")
                     ?? throw new KeyNotFoundException("Could not find connection string 'RealConnection'.");
             services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connectionString));
             services.AddScoped<IDbTracker, DbTracker>();
 
-            services.AddScoped<IQueries<Order>, OrderQueries>();
-            services.AddScoped<IQueries<Cad>, CadQueries>();
-            services.AddScoped<IQueries<Category>, CategoryQueries>();
+            services.AddScoped<IQueries<Order, int>, OrderQueries>();
+            services.AddScoped<IQueries<Cad, int>, CadQueries>();
+            services.AddScoped<IQueries<Category, int>, CategoryQueries>();
+            services.AddScoped<IQueries<User, string>, UserQueries>();
+            services.AddScoped<IQueries<Role, string>, RoleQueries>();
 
             services.AddScoped<ICommands<Order>, OrderCommands>();
             services.AddScoped<ICommands<Cad>, CadCommands>();
             services.AddScoped<ICommands<Category>, CategoryCommands>();
+            services.AddScoped<ICommands<User>, UserCommands>();
+            services.AddScoped<ICommands<Role>, RoleCommands>();
         }
 
-        public static void AddAppIdentity(this IServiceCollection services, IConfiguration config)
+        public static void AddIdentityContext(this IServiceCollection services, IConfiguration config)
         {
             string connectionString = config.GetConnectionString("IdentityConnection")
                     ?? throw new KeyNotFoundException("Could not find connection string 'IdentityConnection'.");
@@ -57,8 +64,11 @@ namespace Microsoft.Extensions.DependencyInjection
                 options.Lockout.MaxFailedAccessAttempts = 5;
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
             })
-            .AddEntityFrameworkStores<IdentityContext>()
-            .AddDefaultTokenProviders();
+            .AddEntityFrameworkStores<IdentityContext>();
+
+            services.AddScoped<AppUserManager>();
+            services.AddScoped<AppSignInManager>();
+            services.AddScoped<AppRoleManager>();
         }
 
         public static IServiceCollection AddStripe(this IServiceCollection services, IConfiguration config)
@@ -75,6 +85,8 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<ICadService, CadService>();
             services.AddScoped<IDesignerService, DesignerService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IRoleService, RoleService>();
         }
 
         public static IServiceCollection AddMappings(this IServiceCollection services)
@@ -103,7 +115,7 @@ namespace Microsoft.Extensions.DependencyInjection
                     Contact = new() { Name = "Ivan", Email = "ivanangelov414@gmail.com" },
                     License = new() { Name = "Apache License 2.0", Url = new Uri("https://www.apache.org/licenses/LICENSE-2.0") }
                 });
-                c.IncludeXmlComments(Path.Combine(System.AppContext.BaseDirectory, "SwaggerAnnotation.xml"));
+                c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "SwaggerAnnotation.xml"));
             });
         }
 
@@ -191,10 +203,17 @@ namespace Microsoft.Extensions.DependencyInjection
         public static async Task UseRolesAsync(this IServiceProvider service, string[] roles)
         {
             using IServiceScope scope = service.CreateScope();
-            var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<AppRole>>();
+            var appRoleManager = scope.ServiceProvider.GetRequiredService<AppRoleManager>();
+            var roleService = scope.ServiceProvider.GetRequiredService<IRoleService>();
+
             foreach (string role in roles)
             {
-                if (!await roleManager.RoleExistsAsync(role))
+                if (!await appRoleManager.RoleExistsAsync(role).ConfigureAwait(false))
+                {
+                    await appRoleManager.CreateAsync(new AppRole(role)).ConfigureAwait(false);
+                }
+
+                if (!await roleService.ExistsByNameAsync(role).ConfigureAwait(false))
                 {
                     string? description = role switch
                     {
@@ -202,9 +221,13 @@ namespace Microsoft.Extensions.DependencyInjection
                         Contributor => ContributorDescription,
                         Designer => DesignerDescription,
                         Admin => AdminDescription,
-                        _ => null
+                        _ => "Description missing."
                     };
-                    await roleManager.CreateAsync(new AppRole(role));
+                    await roleService.CreateAsync(new RoleModel()
+                    {
+                        Name = role,
+                        Description = description
+                    }).ConfigureAwait(false);
                 }
             }
         }
@@ -227,7 +250,8 @@ namespace Microsoft.Extensions.DependencyInjection
         public static async Task UseAppUsers(this IServiceProvider service, IConfiguration config, Dictionary<string, string> users)
         {
             using IServiceScope scope = service.CreateScope();
-            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
+            var appUserManager = scope.ServiceProvider.GetRequiredService<AppUserManager>();
+            var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
 
             int i = 1;
             foreach (KeyValuePair<string, string> user in users)
@@ -238,21 +262,26 @@ namespace Microsoft.Extensions.DependencyInjection
                 string? password = config[$"Passwords:{role}"];
                 if (password != null)
                 {
-                    await userManager.AddUserAsync(username, email, password, role);
+                    await appUserManager.AddUserAsync(username, email, password, role);
+
+                    if (!await userService.ExistsByNameAsync(username).ConfigureAwait(false))
+                    {
+                        await userService.CreateAsync(new() { UserName = username, Email = email, RoleName = role });
+                    }
                 }
             }
         }
 
-        private static async Task AddUserAsync(this UserManager<AppUser> userManager, string username, string email, string password, string role)
+        private static async Task AddUserAsync(this AppUserManager appUserManager, string username, string email, string password, string role)
         {
-            if (await userManager.FindByEmailAsync(email) == null)
+            if (await appUserManager.FindByEmailAsync(email) == null)
             {
                 AppUser user = new(username, email);
 
-                var result = await userManager.CreateAsync(user, password);
+                var result = await appUserManager.CreateAsync(user, password);
                 if (result.Succeeded)
                 {
-                    await userManager.AddToRoleAsync(user, role);
+                    await appUserManager.AddToRoleAsync(user, role);
                 }
             }
         }

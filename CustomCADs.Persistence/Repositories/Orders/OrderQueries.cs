@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CustomCADs.Persistence.Repositories.Orders
 {
-    public class OrderQueries(ApplicationContext context) : IQueries<Order>
+    public class OrderQueries(ApplicationContext context) : IQueries<Order, int>
     {
         public async Task<IEnumerable<Order>> GetAll(string? user = null, string? status = null, string? category = null, string? name = null, string? owner = null, string sorting = "", Func<Order, bool>? customFilter = null, bool asNoTracking = false)
         {
@@ -75,18 +75,18 @@ namespace CustomCADs.Persistence.Repositories.Orders
 
         public async Task<bool> ExistsByIdAsync(int id)
         {
-            return await context.Orders.AnyAsync(o => o.Id == id).ConfigureAwait(false);
+            return await context.Orders
+                .AnyAsync(o => o.Id == id)
+                .ConfigureAwait(false);
         }
 
         public async Task<int> CountAsync(Func<Order, bool> predicate, bool asNoTracking = false)
         {
-            Order[] orders = await context.Orders
+            return await context.Orders
                 .Query(asNoTracking)
                 .Include(o => o.Buyer)
-                .ToArrayAsync()
+                .CountAsync(c => predicate(c))
                 .ConfigureAwait(false);
-
-            return orders.Count(predicate);
         }
     }
 }

@@ -9,6 +9,7 @@ namespace CustomCADs.Persistence
         public DbSet<Cad> Cads { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

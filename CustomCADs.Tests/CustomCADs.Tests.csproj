@@ -26,7 +26,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CustomCADs.Application\CustomCADs.Application.csproj" />
-    <ProjectReference Include="..\CustomCADs.Infrastructure\CustomCADs.Infrastructure.csproj" />
     <ProjectReference Include="..\CustomCADs.Persistence\CustomCADs.Persistence.csproj" />
   </ItemGroup>
 

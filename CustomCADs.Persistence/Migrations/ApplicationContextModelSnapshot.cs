@@ -195,6 +195,24 @@ namespace CustomCADs.Persistence.Migrations
                     b.ToTable("Orders");
                 });
 
+            modelBuilder.Entity("CustomCADs.Domain.Entities.Role", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Roles");
+                });
+
             modelBuilder.Entity("CustomCADs.Domain.Entities.User", b =>
                 {
                     b.Property<string>("Id")
@@ -216,14 +234,17 @@ namespace CustomCADs.Persistence.Migrations
                     b.Property<DateTime?>("RefreshTokenEndDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Role")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("RoleName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("RoleName");
 
                     b.ToTable("Users");
                 });
@@ -362,9 +383,26 @@ namespace CustomCADs.Persistence.Migrations
                     b.Navigation("Designer");
                 });
 
+            modelBuilder.Entity("CustomCADs.Domain.Entities.User", b =>
+                {
+                    b.HasOne("CustomCADs.Domain.Entities.Role", "Role")
+                        .WithMany("Users")
+                        .HasForeignKey("RoleName")
+                        .HasPrincipalKey("Name")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Role");
+                });
+
             modelBuilder.Entity("CustomCADs.Domain.Entities.Cad", b =>
                 {
                     b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("CustomCADs.Domain.Entities.Role", b =>
+                {
+                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }

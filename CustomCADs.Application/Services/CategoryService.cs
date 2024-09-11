@@ -7,7 +7,7 @@ using CustomCADs.Domain.Entities;
 namespace CustomCADs.Application.Services
 {
     public class CategoryService(IDbTracker dbTracker,
-        IQueries<Category> queries, 
+        IQueries<Category, int> queries, 
         ICommands<Category> commands, 
         IMapper mapper) : ICategoryService
     {

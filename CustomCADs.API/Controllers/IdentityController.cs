@@ -1,5 +1,8 @@
 ﻿using CustomCADs.API.Helpers;
-using CustomCADs.API.Models.Users;
+using CustomCADs.API.Identity;
+using CustomCADs.API.Models.Identity;
+using CustomCADs.Application.Contracts;
+using CustomCADs.Application.Models.Users;
 using CustomCADs.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -16,12 +19,13 @@ namespace CustomCADs.API.Controllers
     /// <summary>
     ///     Controller for managing Authentication/Authorization and info about the User's Identity.
     /// </summary>
-    /// <param name="userManager"></param>
-    /// <param name="signInManager"></param>
+    /// <param name="userService"></param>
+    /// <param name="appUserManager"></param>
+    /// <param name="appSignInManager"></param>
     /// <param name="config"></param>
     [ApiController]
     [Route("API/[controller]")]
-    public class IdentityController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IConfiguration config) : ControllerBase
+    public class IdentityController(IUserService userService,  AppUserManager appUserManager, AppSignInManager appSignInManager, IConfiguration config) : ControllerBase
     {
         /// <summary>
         ///     Creates a new account with the specified parameters for the user and logs into it.
@@ -44,7 +48,7 @@ namespace CustomCADs.API.Controllers
             try
             {
                 AppUser user = new(register.Username, register.Email);
-                IdentityResult result = await userManager.CreateAsync(user, register.Password).ConfigureAwait(false);
+                IdentityResult result = await appUserManager.CreateAsync(user, register.Password).ConfigureAwait(false);
 
                 if (!result.Succeeded)
                 {
@@ -60,17 +64,27 @@ namespace CustomCADs.API.Controllers
                     return BadRequest(ForbiddenRoleRegister);
                 }
 
-                await userManager.AddToRoleAsync(user, role).ConfigureAwait(false);
-                await signInManager.SignInAsync(user, false).ConfigureAwait(false);
+                await appUserManager.AddToRoleAsync(user, role).ConfigureAwait(false);
+                await appSignInManager.SignInAsync(user, false).ConfigureAwait(false);
 
                 Response.Cookies.Append("role", role);
                 Response.Cookies.Append("username", user.UserName!);
 
-                JwtSecurityToken jwt = config.GenerateAccessToken(user.Id, user.UserName!, role);
-                string signedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
-                Response.Cookies.Append("jwt", signedJwt, new() { HttpOnly = true, Secure = true, Expires = jwt.ValidTo });
+                UserModel model = new()
+                {
+                    UserName = register.Username,
+                    Email = register.Email,
+                    FirstName = register.FirstName,
+                    LastName = register.LastName,
+                    RoleName = role,
+                };
+                string id = await userService.CreateAsync(model).ConfigureAwait(false);
 
-                (string newRT, DateTime newEnd) = await userManager.RenewRefreshToken(user).ConfigureAwait(false);
+                JwtSecurityToken jwt = config.GenerateAccessToken(id, model.UserName, model.RoleName);
+                string signedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
+                Response.Cookies.Append("jwt", signedJwt, new() { HttpOnly = true, Secure = true, Expires = jwt.ValidTo });                
+
+                (string newRT, DateTime newEnd) = await userService.RenewRefreshToken(model).ConfigureAwait(false);
                 Response.Cookies.Append("rt", newRT, new() { HttpOnly = true, Secure = true, Expires = newEnd });
 
                 return "Welcome!";
@@ -100,7 +114,7 @@ namespace CustomCADs.API.Controllers
         /// <summary>
         ///     Logs into the account with the specified parameters.
         /// </summary>
-        /// <param name="model"></param>
+        /// <param name="login"></param>
         /// <returns></returns>
         [HttpPost("Login")]
         [Consumes("application/json")]
@@ -109,21 +123,19 @@ namespace CustomCADs.API.Controllers
         [ProducesResponseType(Status401Unauthorized)]
         [ProducesResponseType(Status423Locked)]
         [ProducesResponseType(Status500InternalServerError)]
-        public async Task<ActionResult<string>> Login([FromBody] UserLoginModel model)
+        public async Task<ActionResult<string>> Login([FromBody] UserLoginModel login)
         {
             try
             {
-                AppUser? user = await userManager.FindByNameAsync(model.Username).ConfigureAwait(false);
-
+                AppUser? user = await appUserManager.FindByNameAsync(login.Username).ConfigureAwait(false);
                 if (user == null)
                 {
                     return Unauthorized(InvalidLogin);
                 }
 
-                if (await userManager.IsLockedOutAsync(user).ConfigureAwait(false) && user.LockoutEnd.HasValue)
+                if (await appUserManager.IsLockedOutAsync(user).ConfigureAwait(false) && user.LockoutEnd.HasValue)
                 {
-                    DateTimeOffset lockoutEnd = user.LockoutEnd.Value;
-                    TimeSpan timeLeft = lockoutEnd.Subtract(DateTimeOffset.UtcNow);
+                    TimeSpan timeLeft = user.LockoutEnd.Value.Subtract(DateTimeOffset.UtcNow);
 
                     return StatusCode(Status423Locked, new
                     {
@@ -132,26 +144,25 @@ namespace CustomCADs.API.Controllers
                     });
                 }
 
-                SignInResult result = await signInManager.PasswordSignInAsync(
+                SignInResult result = await appSignInManager.PasswordSignInAsync(
                     user,
-                    model.Password,
-                    model.RememberMe,
+                    login.Password,
+                    login.RememberMe,
                     lockoutOnFailure: true)
                     .ConfigureAwait(false);
 
                 if (result.Succeeded)
                 {
-                    string role = (await userManager.GetRolesAsync(user).ConfigureAwait(false))
-                        .Single();
+                    UserModel model = await userService.GetByNameAsync(login.Username).ConfigureAwait(false);
+                    
+                    Response.Cookies.Append("role", model.RoleName);
+                    Response.Cookies.Append("username", model.UserName);
 
-                    Response.Cookies.Append("role", role);
-                    Response.Cookies.Append("username", user.UserName!);
-
-                    JwtSecurityToken jwt = config.GenerateAccessToken(user.Id, user.UserName!, role);
+                    JwtSecurityToken jwt = config.GenerateAccessToken(model.Id, model.UserName, model.RoleName);
                     string signedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
                     Response.Cookies.Append("jwt", signedJwt, new() { HttpOnly = true, Secure = true, Expires = jwt.ValidTo });
 
-                    (string newRT, DateTime newEnd) = await userManager.RenewRefreshToken(user).ConfigureAwait(false);
+                    (string newRT, DateTime newEnd) = await userService.RenewRefreshToken(model).ConfigureAwait(false);
                     Response.Cookies.Append("rt", newRT, new() { HttpOnly = true, Secure = true, Expires = newEnd });
 
                     return "Welcome back!";
@@ -160,10 +171,13 @@ namespace CustomCADs.API.Controllers
                 {
                     if (result.IsLockedOut && user.LockoutEnd.HasValue)
                     {
-                        DateTimeOffset lockoutEnd = user.LockoutEnd.Value;
-                        TimeSpan timeLeft = lockoutEnd.Subtract(DateTimeOffset.UtcNow);
+                        TimeSpan timeLeft = user.LockoutEnd.Value.Subtract(DateTimeOffset.UtcNow);
 
-                        return StatusCode(Status423Locked, string.Format(LockedOutUser, timeLeft.TotalSeconds));
+                        return StatusCode(Status423Locked, new
+                        {
+                            Seconds = Convert.ToInt16(timeLeft.TotalSeconds),
+                            Error = string.Format(LockedOutUser, timeLeft.Seconds)
+                        });
                     }
 
                     return Unauthorized(InvalidLogin);
@@ -186,16 +200,12 @@ namespace CustomCADs.API.Controllers
         {
             try
             {
-                AppUser? user = await userManager.FindByIdAsync(User.GetId());
-                if (user == null)
-                {
-                    return BadRequest();
-                }
-                await signInManager.SignOutAsync().ConfigureAwait(false);
+                UserModel model = await userService.GetByIdAsync(User.GetId()).ConfigureAwait(false);
+                await appSignInManager.SignOutAsync().ConfigureAwait(false);
 
-                //user.RefreshToken = null;
-                //user.RefreshTokenEndDate = null;
-                //await userManager.UpdateAsync(user);
+                model.RefreshToken = null;
+                model.RefreshTokenEndDate = null;
+                await userService.EditAsync(model.Id, model);
 
                 Response.Cookies.Delete("jwt");
                 Response.Cookies.Delete("rt");
@@ -203,6 +213,10 @@ namespace CustomCADs.API.Controllers
                 Response.Cookies.Delete("role");
 
                 return "Bye-bye.";
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.GetMessage());
             }
             catch (Exception ex)
             {
@@ -218,27 +232,31 @@ namespace CustomCADs.API.Controllers
         public async Task<ActionResult<string>> RefreshToken()
         {
             string? rt = Request.Cookies.FirstOrDefault(c => c.Key == "rt").Value;
-            AppUser? user = await userManager.Users.FirstOrDefaultAsync(/*u => u.RefreshToken == rt*/);
+            if (string.IsNullOrEmpty(rt))
+            {
+                return BadRequest(NoRefreshToken);
+            }
 
-            if (user == null || string.IsNullOrEmpty(rt) /*|| user.RefreshToken != rt || user.RefreshTokenEndDate < DateTime.UtcNow*/)
+            UserResult result = await userService.GetAllAsync(new(), new(), u => u.RefreshToken == rt);
+            UserModel? model = result.Users.SingleOrDefault();
+            if (model == null || model.RefreshToken != rt || model.RefreshTokenEndDate < DateTime.UtcNow)
             {
                 return StatusCode(Status401Unauthorized);
             }
-            string role = (await userManager.GetRolesAsync(user)).Single();
 
-            JwtSecurityToken newJwt = config.GenerateAccessToken(user.Id, user.UserName!, role);
+            JwtSecurityToken newJwt = config.GenerateAccessToken(model.Id, model.UserName, model.RoleName);
             string signedJwt = new JwtSecurityTokenHandler().WriteToken(newJwt);
             Response.Cookies.Append("jwt", signedJwt, new() { HttpOnly = true, Secure = true, Expires = newJwt.ValidTo });
 
-            //if (user.RefreshTokenEndDate >= DateTime.UtcNow.AddMinutes(1))
-            //{
-            //    return "Refresh token still valid, no need to refresh.";
-            //}
+            if (model.RefreshTokenEndDate >= DateTime.UtcNow.AddMinutes(1))
+            {
+                return NoNeedForNewRT;
+            }
 
-            (string newRT, DateTime newEnd) = await userManager.RenewRefreshToken(user).ConfigureAwait(false);
+            (string newRT, DateTime newEnd) = await userService.RenewRefreshToken(model).ConfigureAwait(false);
             Response.Cookies.Append("rt", newRT, new() { HttpOnly = true, Secure = true, Expires = newEnd });
 
-            return "Access token renewed";
+            return AccessTokenRenewed;
         }
 
 
@@ -262,14 +280,12 @@ namespace CustomCADs.API.Controllers
         {
             try
             {
-                AppUser? user = await userManager.GetUserAsync(User).ConfigureAwait(false);
-                if (user == null)
-                {
-                    return Unauthorized(UnauthenticatedUser);
-                }
-
-                IEnumerable<string> roles = await userManager.GetRolesAsync(user);
-                return roles.Single();
+                UserModel model = await userService.GetByIdAsync(User.GetId());
+                return model.RoleName;
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.GetMessage());
             }
             catch (ArgumentNullException)
             {

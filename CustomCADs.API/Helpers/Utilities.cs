@@ -1,5 +1,5 @@
-﻿using CustomCADs.Infrastructure.Identity;
-using Microsoft.AspNetCore.Identity;
+﻿using CustomCADs.Application.Contracts;
+using CustomCADs.Application.Models.Users;
 using Microsoft.AspNetCore.JsonPatch;
 using System.Security.Claims;
 using static CustomCADs.Domain.DataConstants.UserConstants;
@@ -27,17 +27,16 @@ namespace CustomCADs.API.Helpers
             return text[..1].ToUpper() + text[1..].ToLower();
         }
 
-        public static async Task<(string value, DateTime end)> RenewRefreshToken(this UserManager<AppUser> userManager, AppUser user)
+        public static async Task<(string value, DateTime end)> RenewRefreshToken(this IUserService userService, UserModel user)
         {
             string newRT = JwtHelper.GenerateRefreshToken();
             DateTime newEndDate = DateTime.UtcNow.AddDays(RefreshTokenDaysLimit);
 
-            //user.RefreshToken = newRT;
-            //user.RefreshTokenEndDate = newEndDate;
-            //await userManager.UpdateAsync(user).ConfigureAwait(false);
-            
-            return (newRT, newEndDate);
+            user.RefreshToken = newRT;
+            user.RefreshTokenEndDate = newEndDate;
+            await userService.EditAsync(user.Id, user).ConfigureAwait(false);
 
+            return (newRT, newEndDate);
         }
 
         public static string? CheckForBadChanges<TModel>(this JsonPatchDocument<TModel> patchDoc, params string[] fields) where TModel : class

@@ -36,7 +36,6 @@
 		<ProjectReference Include="..\customcads\customcads.esproj">
 			<ReferenceOutputAssembly>false</ReferenceOutputAssembly>
 		</ProjectReference>
-		<ProjectReference Include="..\CustomCADs.Application\CustomCADs.Application.csproj" />
 	</ItemGroup>
 
 </Project>
