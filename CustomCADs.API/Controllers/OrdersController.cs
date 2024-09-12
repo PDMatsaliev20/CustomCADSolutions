@@ -15,8 +15,8 @@ using static CustomCADs.Domain.DataConstants.RoleConstants;
 
 namespace CustomCADs.API.Controllers
 {
-    using static StatusCodes;
     using static ApiMessages;
+    using static StatusCodes;
 
     /// <summary>
     ///     Controller for CRUD operations on Order.
@@ -46,20 +46,26 @@ namespace CustomCADs.API.Controllers
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status500InternalServerError)]
         [ProducesResponseType(Status502BadGateway)]
-        public async Task<ActionResult<OrderResultDTO>> GetOrdersAsync(string status, [FromQuery] PaginationModel pagination, string? sorting, string? category, string? name)
+        public ActionResult<OrderResultDTO> GetOrdersAsync(string status, [FromQuery] PaginationModel pagination, string? sorting, string? category, string? name)
         {
             try
             {
-                if (!Enum.TryParse(status.Capitalize(), out OrderStatus enumStatus))
+                if (!Enum.TryParse(status.Capitalize(), out OrderStatus _))
                 {
                     string allowedStatuses = string.Join(", ", Enum.GetNames<OrderStatus>());
                     return BadRequest(string.Format(InvalidStatus, allowedStatuses));
                 }
 
-                OrderQuery query = new() { Buyer = User.Identity!.Name, Status = enumStatus };
-                SearchModel search = new() { Category = category, Name = name, Sorting = sorting ?? string.Empty };
+                OrderResult result = orderService.GetAll(
+                        buyer: User.Identity?.Name,
+                        status: status,
+                        category: category,
+                        name: name,
+                        sorting: sorting ?? "",
+                        page: pagination.Page,
+                        limit: pagination.Limit
+                    );
 
-                OrderResult result = await orderService.GetAllAsync(query, search, pagination).ConfigureAwait(false);
                 return mapper.Map<OrderResultDTO>(result);
             }
             catch (Exception ex) when (
@@ -84,16 +90,16 @@ namespace CustomCADs.API.Controllers
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status500InternalServerError)]
         [ProducesResponseType(Status502BadGateway)]
-        public async Task<ActionResult<OrderResultDTO>> GetRecentOrdersAsync(int limit = 4)
+        public ActionResult<OrderResultDTO> GetRecentOrdersAsync(int limit = 4)
         {
             try
             {
-                OrderQuery query = new() { Buyer = User.Identity!.Name };
-                SearchModel search = new() { Sorting = nameof(Sorting.Newest) };
-                PaginationModel pagination = new() { Limit = limit };
+                OrderResult result = orderService.GetAll(
+                    buyer: User.Identity?.Name, 
+                    sorting: nameof(Sorting.Newest), 
+                    limit: limit
+                    );
 
-                OrderResult result = await orderService.GetAllAsync(query, search, pagination)
-                    .ConfigureAwait(false);
                 return mapper.Map<OrderResultDTO>(result);
             }
             catch (Exception ex) when (

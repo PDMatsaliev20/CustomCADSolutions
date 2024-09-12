@@ -8,8 +8,8 @@ using static CustomCADs.Domain.DataConstants.RoleConstants;
 
 namespace CustomCADs.API.Controllers
 {
-    using static StatusCodes;
     using static ApiMessages;
+    using static StatusCodes;
 
     /// <summary>
     ///     Controller for managing payments on the server.

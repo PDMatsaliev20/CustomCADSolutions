@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using CustomCADs.Application.Contracts;
+using CustomCADs.Application.Helpers;
 using CustomCADs.Application.Models.Cads;
 using CustomCADs.Application.Models.Orders;
-using CustomCADs.Application.Models.Utilities;
 using CustomCADs.Domain.Contracts;
 using CustomCADs.Domain.Entities;
 using CustomCADs.Domain.Enums;
@@ -14,27 +14,19 @@ namespace CustomCADs.Application.Services
         IQueries<Order, int> orderQueries,
         IMapper mapper) : IDesignerService
     {
-        public async Task<OrderResult> GetOrdersAsync(string status, string? designerId, SearchModel search, PaginationModel pagination)
+        public OrderResult GetOrders(string status = "", string? designerId = null, string? category = null, string? name = null, string? buyer = null, string sorting = "", int page = 1, int limit = 20)
         {
-            IEnumerable<Order> orders = await orderQueries.GetAll(
-                status: status,
-                name: search.Name,
-                owner: search.Owner,
-                category: search.Category,
-                sorting: search.Sorting,
-                customFilter: o => o.DesignerId == designerId,
-                asNoTracking: true
-            ).ConfigureAwait(false);
+            IQueryable<Order> queryable = orderQueries.GetAll(true);
+            queryable = queryable.Filter(status: status, customFilter: o => o.DesignerId == designerId);
+            queryable = queryable.Search(category: category, name: name, buyer: buyer);
+            queryable = queryable.Sort(sorting: sorting);
 
-            OrderModel[] models = mapper.Map<OrderModel[]>(orders
-                .Skip((pagination.Page - 1) * pagination.Limit)
-                .Take(pagination.Limit)
-            );
 
+            IEnumerable<Order> orders = [..queryable.Skip((page - 1) * limit).Take(limit)];
             return new()
             {
                 Count = orders.Count(),
-                Orders = models
+                Orders = mapper.Map<OrderModel[]>(orders),
             };
         }
 
@@ -47,26 +39,18 @@ namespace CustomCADs.Application.Services
             await dbTracker.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        public async Task<CadResult> GetCadsAsync(SearchModel search, PaginationModel pagination)
+        public CadResult GetCadsAsync(string? category = null, string? name = null, string? creator = null, string sorting = "", int page = 1, int limit = 20)
         {
-            IEnumerable<Cad> cads = await cadQueries.GetAll(
-                status: CadStatus.Unchecked.ToString(),
-                category: search.Category,
-                name: search.Name,
-                owner: search.Owner,
-                sorting: search.Sorting,
-                asNoTracking: true
-            ).ConfigureAwait(false);
+            IQueryable<Cad> queryable = cadQueries.GetAll(true);
+            queryable = queryable.Filter(status: CadStatus.Unchecked.ToString());
+            queryable = queryable.Search(category: category, name: name, creator: creator);
+            queryable = queryable.Sort(sorting);
 
-            CadModel[] models = mapper.Map<CadModel[]>(cads
-                .Skip((pagination.Page - 1) * pagination.Limit)
-                .Take(pagination.Limit)
-            );
-
+            IEnumerable<Cad> cads = [..queryable.Skip((page - 1) * limit).Take(limit)];
             return new()
             {
                 Count = cads.Count(),
-                Cads = models,
+                Cads = mapper.Map<CadModel[]>(cads),
             };
         }
 

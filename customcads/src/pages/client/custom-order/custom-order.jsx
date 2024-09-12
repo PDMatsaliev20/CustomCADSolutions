@@ -7,6 +7,7 @@ import { PostOrder } from '@/requests/private/orders';
 import Input from '@/components/fields/input';
 import Select from '@/components/fields/select';
 import TextArea from '@/components/fields/textarea';
+import FileInput from '@/components/fields/file-input';
 import orderValidations from './order-validations';
 
 function CustomOrder() {
@@ -15,15 +16,17 @@ function CustomOrder() {
     const navigate = useNavigate();
     const [categories, setCategories] = useState([]);
     const [shouldBeDelivered, setShouldBeDelivered] = useState(false);
+    const [image, setImage] = useState();
     const { register, formState, handleSubmit } = useForm({ mode: 'onTouched' });
-    const { name,  description, categoryId } = orderValidations();
+    const { name, description, categoryId } = orderValidations();
 
     useEffect(() => {
         fetchCategories();
     }, []);
 
-    const onSubmit = async (order) => {
+    const onSubmit = async (data) => {
         try {
+            const order = { ...data, image };
             await PostOrder(order);
             navigate("/client/orders/pending");
         } catch (e) {
@@ -76,16 +79,28 @@ function CustomOrder() {
                             isRequired
                         />
                     </div>
-                    <div className="basis-full flex gap-x-1">
-                        <input
-                            id="delivery"
-                            type="checkbox"
-                            checked={shouldBeDelivered}
-                            onChange={() => setShouldBeDelivered(sbd => !sbd)}
+                    <div className="basis-full flex justify-between">
+                        <div className="flex flex-wrap items-center gap-x-1">
+                            <input
+                                id="delivery"
+                                type="checkbox"
+                                checked={shouldBeDelivered}
+                                onChange={() => setShouldBeDelivered(sbd => !sbd)}
+                            />
+                            <label htmlFor="delivery" className="text-indigo-50 font-bold">
+                                {tCommon('labels.delivery')}
+                            </label>
+                        </div>
+                        <FileInput
+                            id="image"
+                            name="image"
+                            icon="arrow-up-from-bracket"
+                            label={tCommon('labels.image')}
+                            file={image}
+                            type="file"
+                            accept=".jpg,.png"
+                            onInput={(e) => setImage(e.target.files[0])}
                         />
-                        <label htmlFor="delivery" className="text-indigo-50 font-bold">
-                            {tCommon('labels.delivery')}
-                        </label>
                     </div>
                 </div>
                 <div className="mt-6 basis-full flex justify-center">

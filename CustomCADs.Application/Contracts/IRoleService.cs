@@ -1,6 +1,4 @@
 ﻿using CustomCADs.Application.Models.Roles;
-using CustomCADs.Application.Models.Utilities;
-using CustomCADs.Domain.Entities;
 
 namespace CustomCADs.Application.Contracts
 {
@@ -10,7 +8,7 @@ namespace CustomCADs.Application.Contracts
         ///     Pulls all Roles from the database
         /// </summary>
         /// <returns>A Task object that represents the Roles</returns>
-        Task<RoleResult> GetAllAsync(SearchModel search, PaginationModel pagination, Func<Role, bool>? customFilter = null);
+        RoleResult GetAll(string? name = null, string? description = null, string sorting = "", int page = 1, int limit = 50, Func<RoleModel, bool>? customFilter = null);
 
         /// <summary>
         ///     Searches for a Role by the given id
@@ -18,7 +16,7 @@ namespace CustomCADs.Application.Contracts
         /// <param name="name"></param>
         /// <returns>A Task object that represents the Role</returns>
         /// <exception cref="KeyNotFoundException">if no Role with the given id exists.</exception>
-        Task<RoleModel> GetByNameAsync(string name);
+        RoleModel GetByNameAsync(string name);
 
         /// <summary>
         ///     Checks whether an Role exists by the given id.
@@ -32,7 +30,7 @@ namespace CustomCADs.Application.Contracts
         /// </summary>
         /// <param name="name"></param>
         /// <exception cref="KeyNotFoundException">if no Role with the given name exists.</exception>
-        Task<bool> ExistsByNameAsync(string name);
+        bool ExistsByName(string name);
 
         /// <summary>
         ///     Creates the specified Role in the Roles table

@@ -4,7 +4,6 @@ using CustomCADs.API.Models.Cads;
 using CustomCADs.API.Models.Queries;
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Cads;
-using CustomCADs.Application.Models.Utilities;
 using CustomCADs.Domain.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,8 +12,8 @@ using static CustomCADs.Domain.DataConstants.RoleConstants;
 
 namespace CustomCADs.API.Controllers
 {
-    using static StatusCodes;
     using static ApiMessages;
+    using static StatusCodes;
 
     /// <summary>
     ///     Controller for CRUD operations on Cad
@@ -43,15 +42,19 @@ namespace CustomCADs.API.Controllers
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status500InternalServerError)]
         [ProducesResponseType(Status502BadGateway)]
-        public async Task<ActionResult<CadQueryResultDTO>> GetCadsAsync(string? sorting, string? category, string? name, int page = 1, int limit = 20)
+        public ActionResult<CadQueryResultDTO> GetCadsAsync(string? sorting, string? category, string? name, int page = 1, int limit = 20)
         {
-            CadQuery query = new() { Creator = User.Identity!.Name };
-            SearchModel search = new() { Category = category, Name = name, Sorting = sorting ?? "" };
-            PaginationModel pagination = new() { Page = page, Limit = limit };
-
             try
             {
-                CadResult result = await cadService.GetAllAsync(query, search, pagination).ConfigureAwait(false);
+                CadResult result = cadService.GetAllAsync(
+                    creator: User.Identity?.Name,
+                    category: category,
+                    name: name,
+                    sorting: sorting ?? string.Empty,
+                    page: page,
+                    limit: limit
+                    ); 
+
                 return mapper.Map<CadQueryResultDTO>(result);
             }
             catch (Exception ex) when (
@@ -76,15 +79,16 @@ namespace CustomCADs.API.Controllers
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status500InternalServerError)]
         [ProducesResponseType(Status502BadGateway)]
-        public async Task<ActionResult<CadQueryResultDTO>> GetRecentCadsAsync(int limit = 4)
+        public ActionResult<CadQueryResultDTO> GetRecentCadsAsync(int limit = 4)
         {
-            CadQuery query = new() { Creator = User.Identity!.Name };
-            SearchModel search = new() { Sorting = nameof(Sorting.Newest) };
-            PaginationModel pagination = new() { Limit = limit };
-
             try
             {
-                CadResult result = await cadService.GetAllAsync(query, search, pagination).ConfigureAwait(false);
+                CadResult result = cadService.GetAllAsync(
+                    creator: User.Identity?.Name,
+                    sorting: nameof(Sorting.Newest),
+                    limit: limit
+                    );
+
                 return mapper.Map<CadQueryResultDTO>(result);
             }
             catch (Exception ex) when (

@@ -4,7 +4,6 @@ using CustomCADs.API.Models.Queries;
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Cads;
 using CustomCADs.Application.Models.Orders;
-using CustomCADs.Application.Models.Utilities;
 using CustomCADs.Domain.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,8 +12,8 @@ using static CustomCADs.Domain.DataConstants.RoleConstants;
 
 namespace CustomCADs.API.Controllers
 {
-    using static StatusCodes;
     using static ApiMessages;
+    using static StatusCodes;
 
     /// <summary>
     ///     Controller for Updating Status of Cad and Order.
@@ -40,14 +39,19 @@ namespace CustomCADs.API.Controllers
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status500InternalServerError)]
         [ProducesResponseType(Status502BadGateway)]
-        public async Task<ActionResult<CadQueryResultDTO>> GetUncheckedCadsAsync(string? sorting, string? category, string? name, string? creator, int page = 1, int limit = 6)
+        public ActionResult<CadQueryResultDTO> GetUncheckedCadsAsync(string? sorting, string? category, string? name, string? creator, int page = 1, int limit = 6)
         {
-            SearchModel search = new() { Category = category, Owner = creator, Name = name, Sorting = sorting ?? ""};
-            PaginationModel pagination = new() { Page = page, Limit = limit };
-
             try
             {
-                CadResult result = await designerService.GetCadsAsync(search, pagination).ConfigureAwait(false);
+                CadResult result = designerService.GetCadsAsync(
+                    category: category,
+                    creator: creator,
+                    name: name,
+                    sorting: sorting ?? string.Empty,
+                    page: page,
+                    limit: limit
+                    );
+
                 return mapper.Map<CadQueryResultDTO>(result);
             }
             catch (Exception ex) when (
@@ -112,21 +116,24 @@ namespace CustomCADs.API.Controllers
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status500InternalServerError)]
         [ProducesResponseType(Status502BadGateway)]
-        public async Task<ActionResult<OrderResultDTO>> GetOrdersByStatusAsync(string status, string? sorting, string? category, string? name, string? buyer, int page = 1, int limit = 20)
+        public ActionResult<OrderResultDTO> GetOrdersByStatusAsync(string status, string sorting, string? category, string? name, string? buyer, int page = 1, int limit = 20)
         {
             try
             {
-                if (!Enum.TryParse(status.Capitalize(), out OrderStatus enumStatus))
+                if (!Enum.TryParse(status.Capitalize(), out OrderStatus _))
                 {
                     string allowedStatuses = string.Join(", ", Enum.GetNames<OrderStatus>());
                     return BadRequest(string.Format(InvalidStatus, allowedStatuses));
                 }
 
-                OrderQuery query = new() { Status = Enum.Parse<OrderStatus>(status.Capitalize()) };
-                SearchModel search = new() { Category = category, Name = name, Owner = buyer, Sorting = sorting ?? string.Empty };
-                PaginationModel pagination = new() { Page = page, Limit = limit };
-
-                OrderResult result = await designerService.GetOrdersAsync(status, null, search, pagination).ConfigureAwait(false);
+                OrderResult result = designerService.GetOrders(
+                    status: status,
+                    category: category,
+                    name: name,
+                    buyer: buyer,
+                    page: page,
+                    limit: limit
+                    );
 
                 return mapper.Map<OrderResultDTO>(result);
             }
@@ -142,7 +149,7 @@ namespace CustomCADs.API.Controllers
                 return StatusCode(Status500InternalServerError, ex.GetMessage());
             }
         }
-        
+
         /// <summary>
         ///     Gets the User's most recent finished Orders.
         /// </summary>
@@ -153,14 +160,16 @@ namespace CustomCADs.API.Controllers
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status500InternalServerError)]
         [ProducesResponseType(Status502BadGateway)]
-        public async Task<ActionResult<OrderResultDTO>> GetRecentOrdersAsync(string status, int limit = 4)
+        public ActionResult<OrderResultDTO> GetRecentOrdersAsync(string status, int limit = 4)
         {
             try
             {
-                SearchModel search = new() { Sorting = "newest" };
-                PaginationModel pagination = new() { Limit = limit };
-
-                OrderResult result = await designerService.GetOrdersAsync(status, User.GetId(), search, pagination);
+                OrderResult result = designerService.GetOrders(
+                    status: status, 
+                    buyer: User.GetId(),
+                    sorting: "newest",
+                    limit: limit
+                    );
 
                 return mapper.Map<OrderResultDTO>(result);
             }
@@ -235,7 +244,7 @@ namespace CustomCADs.API.Controllers
                 await designerService.CompleteAsync(id, cadId, User.GetId()).ConfigureAwait(false);
                 return NoContent();
             }
-            catch (KeyNotFoundException ex) 
+            catch (KeyNotFoundException ex)
             {
                 return NotFound(ex.GetMessage());
             }

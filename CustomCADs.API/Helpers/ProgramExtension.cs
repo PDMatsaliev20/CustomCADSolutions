@@ -213,7 +213,7 @@ namespace Microsoft.Extensions.DependencyInjection
                     await appRoleManager.CreateAsync(new AppRole(role)).ConfigureAwait(false);
                 }
 
-                if (!await roleService.ExistsByNameAsync(role).ConfigureAwait(false))
+                if (!roleService.ExistsByName(role))
                 {
                     string? description = role switch
                     {
@@ -237,7 +237,7 @@ namespace Microsoft.Extensions.DependencyInjection
             using IServiceScope scope = service.CreateScope();
             var categoryService = scope.ServiceProvider.GetRequiredService<ICategoryService>();
 
-            IEnumerable<CategoryModel> existingCategoreis = await categoryService.GetAllAsync().ConfigureAwait(false);
+            IEnumerable<CategoryModel> existingCategoreis = categoryService.GetAll();
             foreach (string category in new string[] { "Animals", "Characters", "Electronics", "Fashion", "Furniture", "Nature", "Science", "Sports", "Toys", "Vehicles", "Others" })
             {
                 if (!existingCategoreis.Select(c => c.Name).Contains(category))
@@ -264,7 +264,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 {
                     await appUserManager.AddUserAsync(username, email, password, role);
 
-                    if (!await userService.ExistsByNameAsync(username).ConfigureAwait(false))
+                    if (!userService.ExistsByName(username))
                     {
                         await userService.CreateAsync(new() { UserName = username, Email = email, RoleName = role });
                     }

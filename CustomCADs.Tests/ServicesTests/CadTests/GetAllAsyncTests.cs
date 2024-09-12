@@ -8,11 +8,11 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
     public class GetAllAsyncTests : BaseCadsTests
     {
         [Test]
-        public async Task Test_ReturnsAllWithNoFilters()
+        public void Test_ReturnsAllWithNoFilters()
         {
             int expectedCount = this.cads.Length;
             
-            CadResult result = await service.GetAllAsync(new(), new(), new()).ConfigureAwait(false);
+            CadResult result = service.GetAllAsync();
             int actualCount = result.Count;
 
             Assert.That(actualCount, Is.EqualTo(expectedCount),
@@ -21,12 +21,10 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
 
         [TestCase("Category1")]
         [TestCase("Category4")]
-        public async Task Test_ReturnsCorrectlyWithCategoryFilter(string categoryName)
+        public void Test_ReturnsCorrectlyWithCategoryFilter(string categoryName)
         {
             int expectedCount = this.cads.Count(c => c.Category.Name == categoryName);
-            SearchModel search = new() { Category = categoryName };
-
-            CadResult result = await service.GetAllAsync(new(), search, new()).ConfigureAwait(false);
+            CadResult result = service.GetAllAsync(category: categoryName);
             int actualCount = result.Count;
 
             Assert.That(actualCount, Is.EqualTo(expectedCount),
@@ -35,12 +33,10 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
 
         [TestCase("Client")]
         [TestCase("Contributor")]
-        public async Task Test_ReturnsCorrectlyWithCreatorFilter(string creatorName)
+        public void Test_ReturnsCorrectlyWithCreatorFilter(string creatorName)
         {
             int expectedCount = this.cads.Count(c => c.Creator.UserName == creatorName);
-            SearchModel search = new() { Owner = creatorName };
-
-            CadResult result = await service.GetAllAsync(new(), search, new()).ConfigureAwait(false);
+            CadResult result = service.GetAllAsync(creator: creatorName);
             int actualCount = result.Count;
 
             Assert.That(actualCount, Is.EqualTo(expectedCount),
@@ -49,12 +45,10 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
 
         [TestCase("Cad")]
         [TestCase("3")]
-        public async Task Test_ReturnsCorrectlyWithLikeNameFilter(string likeName)
+        public void Test_ReturnsCorrectlyWithLikeNameFilter(string likeName)
         {
             int expectedCount = this.cads.Count(c => c.Name.Contains(likeName));
-            SearchModel search = new() { Name = likeName };
-
-            CadResult result = await service.GetAllAsync(new(), search, new()).ConfigureAwait(false);
+            CadResult result = service.GetAllAsync(name: likeName);
             int actualCount = result.Count;
 
             Assert.That(actualCount, Is.EqualTo(expectedCount),
@@ -64,12 +58,12 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
         [TestCase("C")]
         [TestCase("ient")]
         [TestCase("ontr")]
-        public async Task Test_ReturnsCorrectlyWithLikeCreatorFilter(string likeCreator)
+        public void Test_ReturnsCorrectlyWithLikeCreatorFilter(string likeCreator)
         {
             int expectedCount = this.cads.Count(c => c.Creator.UserName!.Contains(likeCreator));
             SearchModel search = new() { Owner = likeCreator };
 
-            CadResult result = await service.GetAllAsync(new(), search, new()).ConfigureAwait(false);
+            CadResult result = service.GetAllAsync(owner: likeCreator);
             int actualCount = result.Count;
 
             Assert.That(actualCount, Is.EqualTo(expectedCount),
@@ -81,7 +75,7 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
         [TestCase(CadStatus.Reported)]
         [TestCase(CadStatus.Banned)]
         [TestCase(null)]
-        public async Task Test_ReturnsCorrectlyWithStatusFilters(CadStatus? status)
+        public void Test_ReturnsCorrectlyWithStatusFilters(CadStatus? status)
         {
             int expectedCount = 0;
             if (status != null)
@@ -93,9 +87,7 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
                 expectedCount = cads.Length;
             }
 
-            CadQuery query = new() { Status = status };
-
-            CadResult result = await service.GetAllAsync(query, new(), new()).ConfigureAwait(false);
+            CadResult result = service.GetAllAsync(status: status == null ? null : status.ToString());
             int actualCount = result.Count;
 
             Assert.That(actualCount, Is.EqualTo(expectedCount),
@@ -107,7 +99,7 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
         [TestCase(3, 3)]
         [TestCase(1, 2)]
         [TestCase(4, 2)]
-        public async Task Test_ReturnsCorrectlyWithPagination(int page, int limit)
+        public void Test_ReturnsCorrectlyWithPagination(int page, int limit)
         {
             int[] expectedCadIds = this.cads
                 .OrderByDescending(c => c.Id)
@@ -116,8 +108,7 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
                 .Select(c => c.Id)
                 .ToArray();
 
-            PaginationModel pagination = new() { Page = page, Limit = limit };
-            CadResult result = await service.GetAllAsync(new(), new(), pagination).ConfigureAwait(false);
+            CadResult result = service.GetAllAsync(page: page, limit: limit);
             int[] actualCadIds = result.Cads.Select(c => c.Id).ToArray();
 
             Assert.That(actualCadIds, Is.EqualTo(expectedCadIds),
@@ -129,7 +120,7 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
         [TestCase(Sorting.Alphabetical)]
         [TestCase(Sorting.Unalphabetical)]
         [TestCase(Sorting.Category)]
-        public async Task Test_ReturnsCorrectlyWithSorting(Sorting sorting)
+        public void Test_ReturnsCorrectlyWithSorting(Sorting sorting)
         {
             var expectedSort = (sorting switch
             {
@@ -141,7 +132,7 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
                 _ => cads.OrderBy(c => c.Id),
             }).Select(c => c.Id);
 
-            CadResult result = await service.GetAllAsync(new(), new() { Sorting = sorting.ToString() }, new()).ConfigureAwait(false);
+            CadResult result = service.GetAllAsync(sorting: sorting.ToString());
             var actualSort = result.Cads.Select(c => c.Id);
 
             Assert.That(actualSort, Is.EqualTo(expectedSort),

@@ -1,6 +1,5 @@
 ﻿using CustomCADs.Application.Models.Cads;
 using CustomCADs.Application.Models.Orders;
-using CustomCADs.Application.Models.Utilities;
 using CustomCADs.Domain.Enums;
 
 namespace CustomCADs.Application.Contracts
@@ -14,7 +13,7 @@ namespace CustomCADs.Application.Contracts
         /// <param name="search"></param>
         /// <param name="pagination"></param>
         /// <returns>A Task object that represents the Result.</returns>
-        Task<CadResult> GetCadsAsync(SearchModel search, PaginationModel pagination);
+        CadResult GetCadsAsync(string? category = null, string? name = null, string? creator = null, string sorting = "", int page = 1, int limit = 20);
 
         /// <summary>
         ///     Overwrites Cad's Status property with the given.
@@ -32,8 +31,8 @@ namespace CustomCADs.Application.Contracts
         /// <param name="search"></param>
         /// <param name="pagination"></param>
         /// <returns>A Task object that represents the Result.</returns>
-        Task<OrderResult> GetOrdersAsync(string status, string? designerId, SearchModel search, PaginationModel pagination);
-        
+        OrderResult GetOrders(string status = "", string? designerId = null, string? category = null, string? name = null, string? buyer = null, string sorting = "", int page = 1, int limit = 20);
+
         /// <summary>
         ///     Sets the Order's Status to Begun and DesignerId from null to the given designerId.
         /// </summary>

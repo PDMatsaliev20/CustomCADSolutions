@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using CustomCADs.Application.Contracts;
+using CustomCADs.Application.Helpers;
 using CustomCADs.Application.Models.Users;
-using CustomCADs.Application.Models.Utilities;
 using CustomCADs.Domain.Contracts;
 using CustomCADs.Domain.Entities;
 
@@ -13,15 +13,18 @@ namespace CustomCADs.Application.Services
         IDbTracker tracker,
         IMapper mapper) : IUserService
     {
-        public async Task<UserResult> GetAllAsync(SearchModel search, PaginationModel pagination, Func<UserModel, bool>? customFilter = null)
+        public UserResult GetAll(bool? hasRT, string? username, string? email, string? firstName, string? lastName, DateTime? rtEndDateBefore, DateTime? rtEndDateAfter, string sorting = "", int page = 1, int limit = 20, Func<UserModel, bool>? customFilter = null)
         {
-            IEnumerable<User> entities = await queries.GetAll().ConfigureAwait(false);
-            UserModel[] models = mapper.Map<UserModel[]>(entities);
+            IQueryable<User> queryable = queries.GetAll(true);
+            queryable = queryable.Filter(hasRT, customFilter != null ? u => customFilter(mapper.Map<UserModel>(u)) : null);
+            queryable = queryable.Search(username, email, firstName, lastName, rtEndDateBefore, rtEndDateAfter);
+            queryable = queryable.Sort(sorting);
 
+            IEnumerable<User> entities = [.. queryable.Skip((page - 1) * limit).Take(limit)];
             return new()
             {
-                Count = entities.Count(),
-                Users = models,
+                Count = queryable.Count(),
+                Users = mapper.Map<UserModel[]>(entities),
             };
         }
 
@@ -29,26 +32,28 @@ namespace CustomCADs.Application.Services
         {
             User? entity = await queries.GetByIdAsync(id).ConfigureAwait(false);
             ArgumentNullException.ThrowIfNull(entity);
-            
+
             UserModel model = mapper.Map<UserModel>(entity);
             return model;
         }
-        
-        public async Task<UserModel> GetByNameAsync(string name)
+
+        public UserModel GetByName(string name)
         {
-            IEnumerable<User> users = await queries.GetAll(customFilter: u => u.UserName == name).ConfigureAwait(false);
-            User entity = users.Single();
-            
-            UserModel model = mapper.Map<UserModel>(entity);
+            IQueryable<User> users = queries.GetAll(true);
+            users = users.Filter(customFilter: u => u.UserName == name);
+
+            UserModel model = mapper.Map<UserModel>(users.Single());
             return model;
         }
-        
+
         public async Task<bool> ExistsByIdAsync(string id)
             => await queries.ExistsByIdAsync(id).ConfigureAwait(false);
-        
-        public async Task<bool> ExistsByNameAsync(string username)
+
+        public bool ExistsByName(string username)
         {
-            IEnumerable<User> users = await queries.GetAll(customFilter: u => u.UserName == username).ConfigureAwait(false);
+            IQueryable<User> users = queries.GetAll(true);
+            users = users.Filter(customFilter: u => u.UserName == username);
+
             return users.Count() == 1;
         }
 
@@ -56,7 +61,7 @@ namespace CustomCADs.Application.Services
         {
             User user = mapper.Map<User>(model);
             User addedUser = await commands.AddAsync(user).ConfigureAwait(false);
-            
+
             await tracker.SaveChangesAsync().ConfigureAwait(false);
             return addedUser.Id;
         }
@@ -79,10 +84,10 @@ namespace CustomCADs.Application.Services
 
         public async Task DeleteAsync(string username)
         {
-            IEnumerable<User> result = await queries.GetAll(customFilter: u => u.UserName == username);
-            User? user = result.Single();
-
-            commands.Delete(user);
+            IQueryable<User> users = queries.GetAll(true);
+            users = users.Filter(customFilter: u => u.UserName == username);
+            
+            commands.Delete(users.Single());
             await tracker.SaveChangesAsync().ConfigureAwait(false);
         }
     }

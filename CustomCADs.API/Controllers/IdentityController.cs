@@ -13,8 +13,8 @@ using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace CustomCADs.API.Controllers
 {
-    using static StatusCodes;
     using static ApiMessages;
+    using static StatusCodes;
 
     /// <summary>
     ///     Controller for managing Authentication/Authorization and info about the User's Identity.
@@ -153,7 +153,7 @@ namespace CustomCADs.API.Controllers
 
                 if (result.Succeeded)
                 {
-                    UserModel model = await userService.GetByNameAsync(login.Username).ConfigureAwait(false);
+                    UserModel model = userService.GetByName(login.Username);
                     
                     Response.Cookies.Append("role", model.RoleName);
                     Response.Cookies.Append("username", model.UserName);
@@ -237,7 +237,7 @@ namespace CustomCADs.API.Controllers
                 return BadRequest(NoRefreshToken);
             }
 
-            UserResult result = await userService.GetAllAsync(new(), new(), u => u.RefreshToken == rt);
+            UserResult result = userService.GetAll(customFilter: u => u.RefreshToken == rt);
             UserModel? model = result.Users.SingleOrDefault();
             if (model == null || model.RefreshToken != rt || model.RefreshTokenEndDate < DateTime.UtcNow)
             {

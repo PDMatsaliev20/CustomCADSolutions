@@ -1,15 +1,14 @@
 ﻿using CustomCADs.Application.Models.Users;
-using CustomCADs.Application.Models.Utilities;
 
 namespace CustomCADs.Application.Contracts
 {
     public interface IUserService
     {
         /// <summary>
-        ///     Pulls all Users from the database
+        ///     Pulls specified Users from the database
         /// </summary>
         /// <returns>A Task object that represents the Users</returns>
-        Task<UserResult> GetAllAsync(SearchModel search, PaginationModel pagination, Func<UserModel, bool>? customFilter = null);
+        UserResult GetAll(bool? hasRT = null, string? username = null, string? email = null, string? firstName = null, string? lastName = null, DateTime? rtEndDateBefore = null, DateTime? rtEndDateAfter = null, string sorting = "", int page = 1, int limit = 20, Func<UserModel, bool>? customFilter = null);
 
         /// <summary>
         ///     Searches for a User by the given id
@@ -25,7 +24,7 @@ namespace CustomCADs.Application.Contracts
         /// <param name="id"></param>
         /// <returns>A Task object that represents the User</returns>
         /// <exception cref="KeyNotFoundException">if no User with the given name exists.</exception>
-        Task<UserModel> GetByNameAsync(string name);
+        UserModel GetByName(string name);
 
         ///<summary>
         ///     Checks whether an User exists by the given id.
@@ -39,7 +38,7 @@ namespace CustomCADs.Application.Contracts
         ///</summary>
         /// <param name="username"></param>
         /// <exception cref="KeyNotFoundException">if no User with the given name exists.</exception>
-        Task<bool> ExistsByNameAsync(string username);
+        bool ExistsByName(string username);
 
         /// <summary>
         ///     Creates the specified User in the Users table

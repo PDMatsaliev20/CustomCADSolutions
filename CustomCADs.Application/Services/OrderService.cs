@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using CustomCADs.Application.Contracts;
+using CustomCADs.Application.Helpers;
 using CustomCADs.Application.Models.Cads;
 using CustomCADs.Application.Models.Orders;
-using CustomCADs.Application.Models.Utilities;
 using CustomCADs.Domain.Contracts;
 using CustomCADs.Domain.Entities;
 
@@ -10,31 +10,21 @@ namespace CustomCADs.Application.Services
 {
     public class OrderService(IDbTracker dbTracker,
         IQueries<Order, int> queries,
-        ICommands<Order> commands, 
+        ICommands<Order> commands,
         IMapper mapper) : IOrderService
     {
-        public async Task<OrderResult> GetAllAsync(OrderQuery query, SearchModel search, PaginationModel pagination, Func<Order, bool>? customFilter = null)
+        public OrderResult GetAll(string? buyer = null, string? status = null, string? category = null, string? name = null, string? owner = null, string sorting = "", int page = 1, int limit = 20, Func<OrderModel, bool>? customFilter = null)
         {
-            IEnumerable<Order> orders = await queries.GetAll(
-                user: query.Buyer,
-                status: query.Status.ToString(),
-                name: search.Name,
-                owner: search.Owner,
-                category: search.Category,
-                sorting: search.Sorting,
-                customFilter: customFilter,
-                asNoTracking: true
-            ).ConfigureAwait(false);
+            IQueryable<Order> queryable = queries.GetAll(true);
+            queryable = queryable.Filter(buyer, status, customFilter == null ? null : o => customFilter(mapper.Map<OrderModel>(o)));
+            queryable = queryable.Search(category, name, owner);
+            queryable = queryable.Sort(sorting);
 
-            OrderModel[] models = mapper.Map<OrderModel[]>(orders
-                .Skip((pagination.Page - 1) * pagination.Limit)
-                .Take(pagination.Limit)
-            );
-
+            IEnumerable<Order> entities = [..queryable.Skip((page - 1) * limit).Take(limit)];
             return new()
             {
-                Count = orders.Count(),
-                Orders = models
+                Count = queryable.Count(),
+                Orders = mapper.Map<OrderModel[]>(entities)
             };
         }
 

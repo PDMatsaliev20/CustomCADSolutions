@@ -1,45 +1,50 @@
 ﻿using AutoMapper;
 using CustomCADs.Application.Contracts;
+using CustomCADs.Application.Helpers;
 using CustomCADs.Application.Models.Roles;
-using CustomCADs.Application.Models.Utilities;
 using CustomCADs.Domain.Contracts;
 using CustomCADs.Domain.Entities;
 
 namespace CustomCADs.Application.Services
 {
-    public class RoleService(IQueries<Role, string> queries, ICommands<Role> commands, IDbTracker tracker, IMapper mapper) : IRoleService
+    public class RoleService(
+        IQueries<Role, string> queries, 
+        ICommands<Role> commands, 
+        IDbTracker tracker, 
+        IMapper mapper) : IRoleService
     {
-        public async Task<RoleResult> GetAllAsync(SearchModel search, PaginationModel pagination, Func<Role, bool>? customFilter = null)
+        public RoleResult GetAll(string? name = null, string? description = null, string sorting = "", int page = 1, int limit = 50, Func<RoleModel, bool>? customFilter = null)
         {
-            IEnumerable<Role> role = await queries.GetAll().ConfigureAwait(false);
+            IQueryable<Role> queryable = queries.GetAll(true);
+            queryable = queryable.Filter(customFilter == null ? null : r => customFilter(mapper.Map<RoleModel>(r)) );
+            queryable = queryable.Search(name, description);
+            queryable = queryable.Sort(sorting);
 
-            RoleModel[] models = mapper.Map<RoleModel[]>(role
-                .Skip((pagination.Page - 1) * pagination.Limit)
-                .Take(pagination.Limit)
-            );
-
+            IEnumerable<Role> roles = [..queryable.Skip((page - 1) * limit).Take(limit)];
             return new()
             {
-                Count = role.Count(),
-                Roles = models,
+                Count = queryable.Count(),
+                Roles = mapper.Map<RoleModel[]>(roles),
             };
         }
 
-        public async Task<RoleModel> GetByNameAsync(string name)
+        public RoleModel GetByNameAsync(string name)
         {
-            IEnumerable<Role> roles = await queries.GetAll(customFilter: r => r.Name == name).ConfigureAwait(false);
+            IQueryable<Role> roles = queries.GetAll(true);
+            roles = roles.Filter(customFilter: r => r.Name == name);
+
             Role role = roles.SingleOrDefault() ?? throw new KeyNotFoundException();
-            
-            RoleModel model = mapper.Map<RoleModel>(role);
-            return model;
+            return mapper.Map<RoleModel>(role);
         }
 
         public async Task<bool> ExistsByIdAsync(string id)
             => await queries.ExistsByIdAsync(id).ConfigureAwait(false);
         
-        public async Task<bool> ExistsByNameAsync(string name)
+        public bool ExistsByName(string name)
         {
-            IEnumerable<Role> roles = await queries.GetAll(customFilter: r => r.Name == name).ConfigureAwait(false);
+            IQueryable<Role> roles = queries.GetAll(true);
+            roles = roles.Filter(customFilter: r => r.Name == name);
+
             return roles.Count() == 1;
         }
 
@@ -55,20 +60,24 @@ namespace CustomCADs.Application.Services
 
         public async Task EditAsync(string name, RoleModel model)
         {
-            IEnumerable<Role> roles = await queries.GetAll(customFilter: r => r.Name == name).ConfigureAwait(false);
-            Role role = roles.SingleOrDefault() ?? throw new KeyNotFoundException();
+            IQueryable<Role> roles = queries.GetAll(true);
+            roles = roles.Filter(customFilter: r => r.Name == name);
 
+            Role role = roles.SingleOrDefault() ?? throw new KeyNotFoundException();
             role.Name = model.Name;
             role.Description = model.Description;
+
             await tracker.SaveChangesAsync().ConfigureAwait(false);
         }
 
         public async Task DeleteAsync(string name)
         {
-            IEnumerable<Role> roles = await queries.GetAll(customFilter: r => r.Name == name).ConfigureAwait(false);
+            IQueryable<Role> roles = queries.GetAll(true);
+            roles = roles.Filter(customFilter: r => r.Name == name);
+
             Role role = roles.SingleOrDefault() ?? throw new KeyNotFoundException();
-            
             commands.Delete(role);
+
             await tracker.SaveChangesAsync().ConfigureAwait(false);
         }
     }

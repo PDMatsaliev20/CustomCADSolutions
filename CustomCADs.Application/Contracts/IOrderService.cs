@@ -1,8 +1,5 @@
 ﻿using CustomCADs.Application.Models.Cads;
 using CustomCADs.Application.Models.Orders;
-using CustomCADs.Application.Models.Utilities;
-using CustomCADs.Domain.Entities;
-using System.Linq.Expressions;
 
 namespace CustomCADs.Application.Contracts
 {
@@ -12,7 +9,7 @@ namespace CustomCADs.Application.Contracts
         ///     Pulls all Orders from the Orders table.
         /// </summary>
         /// <returns>A Task object that represents the Orders.</returns>
-        Task<OrderResult> GetAllAsync(OrderQuery query, SearchModel search, PaginationModel pagination, Func<Order, bool>? customFilter = null);
+        OrderResult GetAll(string? buyer = null, string? status = null, string? category = null, string? name = null, string? owner = null, string sorting = "", int page = 1, int limit = 20, Func<OrderModel, bool>? customFilter = null);
 
         /// <summary>
         ///     Searches for an Order by the given id.

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CustomCADs.Application.Contracts;
+using CustomCADs.Application.Helpers;
 using CustomCADs.Application.Models.Categories;
 using CustomCADs.Domain.Contracts;
 using CustomCADs.Domain.Entities;
@@ -11,11 +12,13 @@ namespace CustomCADs.Application.Services
         ICommands<Category> commands, 
         IMapper mapper) : ICategoryService
     {
-        public async Task<IEnumerable<CategoryModel>> GetAllAsync()
+        public IEnumerable<CategoryModel> GetAll(Func<CategoryModel, bool>? customFilter = null)
         {
-            IEnumerable<Category> entities = await queries.GetAll(asNoTracking: true).ConfigureAwait(false);
-            CategoryModel[] models = mapper.Map<CategoryModel[]>(entities);
-            return models;
+            IQueryable<Category> queryable = queries.GetAll(true);
+            queryable = queryable.Filter(customFilter == null ? null : c => customFilter(mapper.Map<CategoryModel>(c)));
+            
+            IEnumerable<Category> categories = [.. queryable];
+            return mapper.Map<CategoryModel[]>(categories);
         }
 
         public async Task<CategoryModel> GetByIdAsync(int id)

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using CustomCADs.Application.Contracts;
+using CustomCADs.Application.Helpers;
 using CustomCADs.Application.Models.Cads;
-using CustomCADs.Application.Models.Utilities;
 using CustomCADs.Domain.Contracts;
 using CustomCADs.Domain.Entities;
 using CustomCADs.Domain.Enums;
@@ -14,28 +14,18 @@ namespace CustomCADs.Application.Services
         ICommands<Cad> commands,
         IMapper mapper) : ICadService
     {
-        public async Task<CadResult> GetAllAsync(CadQuery query, SearchModel search, PaginationModel pagination, Func<Cad, bool>? customFilter = null)
+        public CadResult GetAllAsync(string? creator = null, string? status = null, string? category = null, string? name = null, string? owner = null, string sorting = "", int page = 1, int limit = 20, Func<CadModel, bool>? customFilter = null)
         {
-            IEnumerable<Cad> cads = await cadQueries.GetAll(
-                user: query.Creator,
-                status: query.Status.ToString(),
-                category: search.Category,
-                name: search.Name,
-                owner: search.Owner,
-                sorting: search.Sorting,
-                customFilter,
-                asNoTracking: true
-            ).ConfigureAwait(false);
+            IQueryable<Cad> queryable = cadQueries.GetAll(true);
+            queryable = queryable.Filter(user: creator, status: status, customFilter: customFilter == null ? null : c => customFilter(mapper.Map<CadModel>(c)));
+            queryable = queryable.Search(category: category, name: name, creator: owner);
+            queryable = queryable.Sort(sorting: sorting);
 
-            CadModel[] models = mapper.Map<CadModel[]>(cads
-                .Skip((pagination.Page - 1) * pagination.Limit)
-                .Take(pagination.Limit)
-            );
-
+            IEnumerable<Cad> cads = [..queryable.Skip((page - 1) * limit).Take(limit)];
             return new()
             {
                 Count = cads.Count(),
-                Cads = models,
+                Cads = mapper.Map<CadModel[]>(cads),
             };
         }
 
@@ -95,10 +85,10 @@ namespace CustomCADs.Application.Services
 
         public async Task DeleteAsync(int id)
         {
-            IEnumerable<Order> orders = await orderQueries.GetAll(
-                customFilter: o => o.CadId == id
-            ).ConfigureAwait(false);
+            IQueryable<Order> queryable = orderQueries.GetAll();
+            queryable = queryable.Filter(customFilter: o => o.CadId == id);
 
+            IEnumerable<Order> orders = [..queryable];
             foreach (Order order in orders)
             {
                 order.Status = OrderStatus.Pending;

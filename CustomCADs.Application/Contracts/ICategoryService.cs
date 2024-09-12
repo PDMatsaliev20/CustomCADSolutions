@@ -8,7 +8,7 @@ namespace CustomCADs.Application.Contracts
         ///     Pulls all Categories from the database
         /// </summary>
         /// <returns>A Task object that represents the Categories</returns>
-        Task<IEnumerable<CategoryModel>> GetAllAsync();
+        IEnumerable<CategoryModel> GetAll(Func<CategoryModel, bool>? customFilter = null);
 
         /// <summary>
         ///     Searches for a Category by the given id

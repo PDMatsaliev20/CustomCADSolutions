@@ -4,7 +4,6 @@ using CustomCADs.API.Identity;
 using CustomCADs.API.Models.Users;
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Users;
-using CustomCADs.Application.Models.Utilities;
 using CustomCADs.Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -14,8 +13,8 @@ using static CustomCADs.Domain.DataConstants;
 
 namespace CustomCADs.API.Controllers.Admin
 {
-    using static StatusCodes;
     using static ApiMessages;
+    using static StatusCodes;
 
     /// <summary>
     ///     Admin Controller for managing Users.
@@ -46,16 +45,17 @@ namespace CustomCADs.API.Controllers.Admin
         [ProducesResponseType(Status404NotFound)]
         [ProducesResponseType(Status500InternalServerError)]
         [ProducesResponseType(Status502BadGateway)]
-        public async Task<ActionResult<UserGetDTO[]>> GetUsersAsync(string? name, string sorting, int limit = 50, int page = 1)
+        public ActionResult<UserGetDTO[]> GetUsersAsync(string? name, string sorting = "", int limit = 50, int page = 1)
         {
-            SearchModel search = new() { Name = name, Sorting = sorting ?? string.Empty };
-            PaginationModel pagination = new() { Limit = limit, Page = page };
-
             try
             {
-                UserResult result = await userService.GetAllAsync(search, pagination).ConfigureAwait(false);
-                UserGetDTO[] gets = mapper.Map<UserGetDTO[]>(result.Users);
-                return gets;
+                UserResult result = userService.GetAll(
+                    username: name,
+                    sorting: sorting,
+                    page: page,
+                    limit: limit
+                );
+                return mapper.Map<UserGetDTO[]>(result.Users);
             }
             catch (Exception ex) when (
                 ex is AutoMapperConfigurationException
@@ -89,15 +89,13 @@ namespace CustomCADs.API.Controllers.Admin
         [ProducesResponseType(Status404NotFound)]
         [ProducesResponseType(Status500InternalServerError)]
         [ProducesResponseType(Status502BadGateway)]
-        public async Task<ActionResult<UserGetDTO>> GetUserAsync(string name)
+        public ActionResult<UserGetDTO> GetUserAsync(string name)
         {
-            UserResult result = await userService.GetAllAsync(new(), new(), u => u.UserName == name).ConfigureAwait(false);
-            UserModel model = result.Users.Single();
-            
             try
             {
-                UserGetDTO get = mapper.Map<UserGetDTO>(model);
-                return get;
+                UserResult result = userService.GetAll(customFilter: u => u.UserName == name);
+                UserModel model = result.Users.Single();
+                return mapper.Map<UserGetDTO>(model);
             }
             catch (Exception ex) when (
                 ex is AutoMapperConfigurationException
@@ -191,10 +189,10 @@ namespace CustomCADs.API.Controllers.Admin
             {
                 return BadRequest(string.Format(ForbiddenPatch, modifiedForbiddenField));
             }
-            
+
             try
             {
-                UserResult result = await userService.GetAllAsync(new(), new(), u => u.UserName == username).ConfigureAwait(false);
+                UserResult result = userService.GetAll(customFilter: u => u.UserName == username);
                 UserModel? model = result.Users.SingleOrDefault();
                 AppUser? user = await appUserManager.FindByNameAsync(username).ConfigureAwait(false);
 
@@ -219,7 +217,7 @@ namespace CustomCADs.API.Controllers.Admin
                     {
                         return BadRequest(string.Format(InvalidRole, string.Join(", ", appRoleManager.Roles)));
                     }
-                    
+
                     await appUserManager.RemoveFromRoleAsync(user, oldRole).ConfigureAwait(false);
                     await appUserManager.AddToRoleAsync(user, newRole).ConfigureAwait(false);
                 }
@@ -255,7 +253,7 @@ namespace CustomCADs.API.Controllers.Admin
             try
             {
                 AppUser? user = await appUserManager.FindByNameAsync(username).ConfigureAwait(false);
-                if (user == null) 
+                if (user == null)
                 {
                     return NotFound(string.Format(ApiMessages.NotFound, "User"));
                 }

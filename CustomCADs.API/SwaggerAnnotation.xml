@@ -330,7 +330,7 @@
             <param name="appSignInManager"></param>
             <param name="config"></param>
         </member>
-        <member name="M:CustomCADs.API.Controllers.IdentityController.Register(System.String,CustomCADs.API.Models.Users.UserRegisterModel)">
+        <member name="M:CustomCADs.API.Controllers.IdentityController.Register(System.String,CustomCADs.API.Models.Identity.UserRegisterModel)">
             <summary>
                 Creates a new account with the specified parameters for the user and logs into it.
             </summary>
@@ -338,7 +338,7 @@
             <param name="register"></param>
             <returns></returns>
         </member>
-        <member name="M:CustomCADs.API.Controllers.IdentityController.Login(CustomCADs.API.Models.Users.UserLoginModel)">
+        <member name="M:CustomCADs.API.Controllers.IdentityController.Login(CustomCADs.API.Models.Identity.UserLoginModel)">
             <summary>
                 Logs into the account with the specified parameters.
             </summary>

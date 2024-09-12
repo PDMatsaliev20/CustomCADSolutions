@@ -6,7 +6,6 @@ using CustomCADs.API.Models.Queries;
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Cads;
 using CustomCADs.Application.Models.Categories;
-using CustomCADs.Application.Models.Utilities;
 using CustomCADs.Domain.Enums;
 using Microsoft.AspNetCore.Mvc;
 
@@ -52,15 +51,20 @@ namespace CustomCADs.API.Controllers
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status500InternalServerError)]
         [ProducesResponseType(Status502BadGateway)]
-        public async Task<ActionResult<CadQueryResultDTO>> GetGalleryAsync(string? sorting, string? category, string? name, string? creator, int page = 1, int limit = 20)
+        public ActionResult<CadQueryResultDTO> GetGalleryAsync(string? sorting, string? category, string? name, string? creator, int page = 1, int limit = 20)
         {
-            CadQuery query = new() { Status = CadStatus.Validated };
-            SearchModel search = new() { Category = category, Name = name, Owner = creator, Sorting = sorting ?? "" };
-            PaginationModel pagination = new() { Page = page, Limit = limit };
-
             try
             {
-                CadResult result = await cadService.GetAllAsync(query, search, pagination).ConfigureAwait(false);
+                CadResult result = cadService.GetAllAsync(
+                    status: nameof(CadStatus.Validated),
+                    category: category,
+                    name:  name,
+                    owner: creator,
+                    sorting: sorting ?? string.Empty,
+                    page: page,
+                    limit: limit
+                    );
+
                 return mapper.Map<CadQueryResultDTO>(result);
             }
             catch (Exception ex) when (
@@ -119,11 +123,11 @@ namespace CustomCADs.API.Controllers
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status500InternalServerError)]
         [ProducesResponseType(Status502BadGateway)]
-        public async Task<ActionResult<CategoryDTO[]>> GetCategoriesAsync()
+        public ActionResult<CategoryDTO[]> GetCategoriesAsync()
         {
             try
             {
-                IEnumerable<CategoryModel> categories = await categoryService.GetAllAsync().ConfigureAwait(false);
+                IEnumerable<CategoryModel> categories = categoryService.GetAll();
                 return mapper.Map<CategoryDTO[]>(categories);
             }
             catch (Exception ex) when (

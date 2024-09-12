@@ -5,9 +5,9 @@ namespace CustomCADs.Tests.ServicesTests.OrderTests
     public class GetAllAsyncTests : BaseOrdersTests
     {
         [Test]
-        public async Task Test_ReturnsCorrectly()
+        public void Test_ReturnsCorrectly()
         {
-            var result = await service.GetAllAsync(new(), new(), new()).ConfigureAwait(false);
+            var result = service.GetAll();
 
             Assert.That(result.Count, Is.EqualTo(orders.Length),
                 string.Format(ModelsCountMismatch, "Orders"));
