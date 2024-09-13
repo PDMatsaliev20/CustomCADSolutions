@@ -38,7 +38,7 @@ namespace CustomCADs.Application.Contracts
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns>An integer holding the result.</returns>
-        Task<int> Count(Func<OrderModel, bool> predicate);
+        Task<int> CountAsync(Func<OrderModel, bool> predicate);
 
         /// <summary>
         ///     Creates the specified Order in the Orders table.

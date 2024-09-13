@@ -29,10 +29,10 @@ namespace CustomCADs.Persistence.Repositories.Cads
                 .ConfigureAwait(false);
 
         public async Task<int> CountAsync(Func<Cad, bool> predicate, bool asNoTracking = false)
-            => await context.Cads
-                .Query(asNoTracking)
-                .Include(c => c.Creator)
-                .CountAsync(c => predicate(c))
+            => await Task.FromResult(context.Cads
+                    .Query(asNoTracking)
+                    .Include(c => c.Creator)
+                    .Count(predicate))
                 .ConfigureAwait(false);
     }
 }

@@ -30,10 +30,10 @@ namespace CustomCADs.Persistence.Repositories.Orders
                 .ConfigureAwait(false);
 
         public async Task<int> CountAsync(Func<Order, bool> predicate, bool asNoTracking = false)
-            => await context.Orders
-                .Query(asNoTracking)
-                .Include(o => o.Buyer)
-                .CountAsync(c => predicate(c))
-                .ConfigureAwait(false);
+            => await Task.FromResult(context.Orders
+                    .Query(asNoTracking)
+                    .Include(o => o.Buyer)
+                    .Count(predicate)
+                ).ConfigureAwait(false);
     }
 }

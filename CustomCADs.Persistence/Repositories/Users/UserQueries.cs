@@ -41,9 +41,9 @@ namespace CustomCADs.Persistence.Repositories.Users
                 .ConfigureAwait(false);
 
         public async Task<int> CountAsync(Func<User, bool> predicate, bool asNoTracking = false)
-            => await context.Users
-                .Query(asNoTracking)
-                .CountAsync(u => predicate(u))
-                .ConfigureAwait(false);
+            => await Task.FromResult(context.Users
+                    .Query(asNoTracking)
+                    .Count(predicate)
+                ).ConfigureAwait(false);
     }
 }

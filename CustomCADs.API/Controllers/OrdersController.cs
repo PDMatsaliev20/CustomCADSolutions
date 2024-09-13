@@ -129,11 +129,11 @@ namespace CustomCADs.API.Controllers
                 bool predicate(OrderModel o, OrderStatus s)
                     => o.Status == s && o.Buyer.UserName == User.Identity!.Name;
 
-                int pendingOrdersCount = await orderService.Count(o => predicate(o, OrderStatus.Pending)).ConfigureAwait(false);
-                int begunOrdersCount = await orderService.Count(o => predicate(o, OrderStatus.Begun)).ConfigureAwait(false);
-                int finishedOrdersCount = await orderService.Count(o => predicate(o, OrderStatus.Finished)).ConfigureAwait(false);
-                int reportedOrdersCount = await orderService.Count(o => predicate(o, OrderStatus.Reported)).ConfigureAwait(false);
-                int removedOrdersCount = await orderService.Count(o => predicate(o, OrderStatus.Removed)).ConfigureAwait(false);
+                int pendingOrdersCount = await orderService.CountAsync(o => predicate(o, OrderStatus.Pending)).ConfigureAwait(false);
+                int begunOrdersCount = await orderService.CountAsync(o => predicate(o, OrderStatus.Begun)).ConfigureAwait(false);
+                int finishedOrdersCount = await orderService.CountAsync(o => predicate(o, OrderStatus.Finished)).ConfigureAwait(false);
+                int reportedOrdersCount = await orderService.CountAsync(o => predicate(o, OrderStatus.Reported)).ConfigureAwait(false);
+                int removedOrdersCount = await orderService.CountAsync(o => predicate(o, OrderStatus.Removed)).ConfigureAwait(false);
 
                 return new { pending = pendingOrdersCount, begun = begunOrdersCount, finished = finishedOrdersCount, reported = reportedOrdersCount, removed = removedOrdersCount };
             }

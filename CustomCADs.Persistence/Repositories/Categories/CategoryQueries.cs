@@ -22,9 +22,9 @@ namespace CustomCADs.Persistence.Repositories.Categories
                 .ConfigureAwait(false);
 
         public async Task<int> CountAsync(Func<Category, bool> predicate, bool asNoTracking = false)
-            => await context.Categories
-                .Query(asNoTracking)
-                .CountAsync(c => predicate(c))
-                .ConfigureAwait(false);
+            => await Task.FromResult(context.Categories
+                    .Query(asNoTracking)
+                    .Count(predicate)
+                ).ConfigureAwait(false);
     }
 }

@@ -33,9 +33,9 @@ namespace CustomCADs.Persistence.Repositories.Roles
                 .ConfigureAwait(false);
 
         public async Task<int> CountAsync(Func<Role, bool> predicate, bool asNoTracking = false)
-            => await context.Roles
-                .Query(asNoTracking)
-                .CountAsync(r => predicate(r))
-                .ConfigureAwait(false);
+            => await Task.FromResult(context.Roles
+                    .Query(asNoTracking)
+                    .Count(predicate)
+                ).ConfigureAwait(false);
     }
 }
