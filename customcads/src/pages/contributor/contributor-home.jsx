@@ -48,7 +48,7 @@ function ContributorHome() {
                             </div>
                         </li>
                         {recentCads.map(cad => <li key={cad.id}>
-                            <RecentItem to={`/contributor/cads/${cad.id}`} item={{ ...cad, category: cad.category.name, date: cad.creationDate }} />
+                            <RecentItem to={`/contributor/cads/${cad.id}`} item={{ ...cad, date: cad.creationDate }} />
                         </li>)}
                     </ol>
                 </div>

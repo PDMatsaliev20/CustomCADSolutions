@@ -197,6 +197,7 @@ namespace CustomCADs.API.Controllers
                 CadModel model = mapper.Map<CadModel>(import);
                 model.CreationDate = DateTime.Now;
                 model.CreatorId = User.GetId();
+                model.Paths = new();
                 model.Status = User.IsInRole(Designer) ?
                     CadStatus.Validated : CadStatus.Unchecked;
 

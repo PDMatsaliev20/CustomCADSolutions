@@ -11,7 +11,7 @@ function RecentItem({ to, item }) {
             </span>
             <div className="grow group-hover/row:text-lg group-hover/row:font-bold">
                 <div className="flex justify-between items-center px-4 py-2">
-                    <p>{tCommon(`categories.${item.category}`)}</p>
+                    <p>{tCommon(`categories.${item.category.name}`)}</p>
                     <p>{item.date}</p>
                     <p>{tCommon(`statuses.${item.status}`)}</p>
                 </div>

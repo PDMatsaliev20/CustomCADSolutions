@@ -14,10 +14,9 @@ axiosInstance.interceptors.response.use(
     response => response,
     async (error) => {
         const { response: { status }, config } = error;
-        const rtUrl = 'API/Identity/RefreshToken';
 
-        if (status === 401 && config.url !== rtUrl) {
-            await axiosInstance.post(rtUrl);
+        if (status === 401 && !config.url.startsWith('/API/Identity')) {
+            await axiosInstance.post('/API/Identity/RefreshToken');
             return axios(config);
         }
         return Promise.reject(error);

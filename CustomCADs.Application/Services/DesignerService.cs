@@ -18,7 +18,7 @@ namespace CustomCADs.Application.Services
         public OrderResult GetOrders(string status = "", string? designerId = null, string? category = null, string? name = null, string? buyer = null, string sorting = "", int page = 1, int limit = 20)
         {
             IQueryable<Order> queryable = orderQueries.GetAll(true);
-            queryable = queryable.Filter(status: status, customFilter: o => o.DesignerId == designerId);
+            queryable = queryable.Filter(status: status, customFilter: string.IsNullOrEmpty(designerId) ? null : o => o.DesignerId == designerId);
             queryable = queryable.Search(category: category, name: name, buyer: buyer);
             queryable = queryable.Sort(sorting: sorting);
 

@@ -9,7 +9,7 @@ function SearchBar({ setSearch }) {
     const { t: tCommon } = useTranslation('common');
     const [sortings, setSortings] = useState([]);
     const [categories, setCategories] = useState([]);
-    const [copySearch, setCopySearch] = useState({ name: '', owner: '', category: '', sorting: 'Newest' });
+    const [copySearch, setCopySearch] = useState({ name: '', category: '', sorting: '' });
 
     useEffect(() => {
         getCategories();

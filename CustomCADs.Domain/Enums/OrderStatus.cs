@@ -6,8 +6,8 @@
         Begun = 1,
         Finished = 2,
         Delivering = 3,
-        Delivered = 3,
-        Reported = 4,
-        Removed = 5,
+        Delivered = 4,
+        Reported = 5,
+        Removed = 6,
     }
 }

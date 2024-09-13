@@ -9,7 +9,11 @@
 
         private static string GetExtension(string path) => '.' + path.Split('.')[^1].ToLower();
 
-        public Paths() { }
+        public Paths() 
+        {
+            ImagePath = "";
+            FilePath = ""; 
+        }
 
         public Paths(string file, string image)
         {

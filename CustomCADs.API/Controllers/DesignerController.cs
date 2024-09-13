@@ -116,7 +116,7 @@ namespace CustomCADs.API.Controllers
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status500InternalServerError)]
         [ProducesResponseType(Status502BadGateway)]
-        public ActionResult<OrderResultDTO> GetOrdersByStatusAsync(string status, string sorting, string? category, string? name, string? buyer, int page = 1, int limit = 20)
+        public ActionResult<OrderResultDTO> GetOrdersByStatusAsync(string status, string sorting = "", string? category = null, string? name = null, string? buyer = null, int page = 1, int limit = 20)
         {
             try
             {
@@ -131,6 +131,7 @@ namespace CustomCADs.API.Controllers
                     category: category,
                     name: name,
                     buyer: buyer,
+                    sorting: sorting,
                     page: page,
                     limit: limit
                     );
@@ -165,8 +166,7 @@ namespace CustomCADs.API.Controllers
             try
             {
                 OrderResult result = designerService.GetOrders(
-                    status: status, 
-                    buyer: User.GetId(),
+                    status: status,
                     sorting: "newest",
                     limit: limit
                     );
