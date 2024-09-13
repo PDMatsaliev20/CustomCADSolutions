@@ -34,7 +34,7 @@ namespace CustomCADs.API.Helpers
 
             user.RefreshToken = newRT;
             user.RefreshTokenEndDate = newEndDate;
-            await userService.EditAsync(user.Id, user).ConfigureAwait(false);
+            await userService.EditAsync(user.UserName, user).ConfigureAwait(false);
 
             return (newRT, newEndDate);
         }

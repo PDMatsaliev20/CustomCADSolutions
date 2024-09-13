@@ -4,12 +4,13 @@ using CustomCADs.Application.Helpers;
 using CustomCADs.Application.Models.Cads;
 using CustomCADs.Application.Models.Orders;
 using CustomCADs.Domain.Contracts;
+using CustomCADs.Domain.Contracts.Queries;
 using CustomCADs.Domain.Entities;
 
 namespace CustomCADs.Application.Services
 {
     public class OrderService(IDbTracker dbTracker,
-        IQueries<Order, int> queries,
+        IOrderQueries queries,
         ICommands<Order> commands,
         IMapper mapper) : IOrderService
     {

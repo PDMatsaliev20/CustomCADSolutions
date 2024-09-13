@@ -13,10 +13,18 @@ namespace CustomCADs.Application.Contracts
         /// <summary>
         ///     Searches for a Role by the given id
         /// </summary>
-        /// <param name="name"></param>
+        /// <param name="id"></param>
         /// <returns>A Task object that represents the Role</returns>
         /// <exception cref="KeyNotFoundException">if no Role with the given id exists.</exception>
-        RoleModel GetByNameAsync(string name);
+        Task<RoleModel> GetByIdAsync(string id);
+        
+        /// <summary>
+        ///     Searches for a Role by the given name
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns>A Task object that represents the Role</returns>
+        /// <exception cref="KeyNotFoundException">if no Role with the given name exists.</exception>
+        Task<RoleModel> GetByNameAsync(string name);
 
         /// <summary>
         ///     Checks whether an Role exists by the given id.
@@ -30,7 +38,7 @@ namespace CustomCADs.Application.Contracts
         /// </summary>
         /// <param name="name"></param>
         /// <exception cref="KeyNotFoundException">if no Role with the given name exists.</exception>
-        bool ExistsByName(string name);
+        Task<bool> ExistsByNameAsync(string name);
 
         /// <summary>
         ///     Creates the specified Role in the Roles table

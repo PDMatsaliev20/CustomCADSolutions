@@ -3,12 +3,13 @@ using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Helpers;
 using CustomCADs.Application.Models.Roles;
 using CustomCADs.Domain.Contracts;
+using CustomCADs.Domain.Contracts.Queries;
 using CustomCADs.Domain.Entities;
 
 namespace CustomCADs.Application.Services
 {
     public class RoleService(
-        IQueries<Role, string> queries, 
+        IRoleQueries queries, 
         ICommands<Role> commands, 
         IDbTracker tracker, 
         IMapper mapper) : IRoleService
@@ -28,25 +29,27 @@ namespace CustomCADs.Application.Services
             };
         }
 
-        public RoleModel GetByNameAsync(string name)
+        public async Task<RoleModel> GetByIdAsync(string id) 
         {
-            IQueryable<Role> roles = queries.GetAll(true);
-            roles = roles.Filter(customFilter: r => r.Name == name);
+            Role? role = await queries.GetByIdAsync(id).ConfigureAwait(false);
+            ArgumentNullException.ThrowIfNull(role);
 
-            Role role = roles.SingleOrDefault() ?? throw new KeyNotFoundException();
+            return mapper.Map<RoleModel>(role);
+        }
+
+        public async Task<RoleModel> GetByNameAsync(string name)
+        {
+            Role? role = await queries.GetByNameAsync(name);
+            ArgumentNullException.ThrowIfNull(role);
+
             return mapper.Map<RoleModel>(role);
         }
 
         public async Task<bool> ExistsByIdAsync(string id)
             => await queries.ExistsByIdAsync(id).ConfigureAwait(false);
         
-        public bool ExistsByName(string name)
-        {
-            IQueryable<Role> roles = queries.GetAll(true);
-            roles = roles.Filter(customFilter: r => r.Name == name);
-
-            return roles.Count() == 1;
-        }
+        public async Task<bool> ExistsByNameAsync(string name)
+            => await queries.ExistsByNameAsync(name).ConfigureAwait(false);
 
         public async Task<string> CreateAsync(RoleModel model)
         {

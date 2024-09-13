@@ -1,10 +1,10 @@
-﻿using CustomCADs.Domain.Contracts;
+﻿using CustomCADs.Domain.Contracts.Queries;
 using CustomCADs.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace CustomCADs.Persistence.Repositories.Users
 {
-    public class UserQueries(ApplicationContext context) : IQueries<User, string>
+    public class UserQueries(ApplicationContext context) : IUserQueries
     {
         public IQueryable<User> GetAll(bool asNoTracking = false)
             => context.Users
@@ -15,12 +15,30 @@ namespace CustomCADs.Persistence.Repositories.Users
                 .Query(asNoTracking)
                 .FirstOrDefaultAsync(u => u.Id == id)
                 .ConfigureAwait(false);
+        
+        public async Task<User?> GetByNameAsync(string name, bool asNoTracking = false)
+            => await context.Users
+                .Query(asNoTracking)
+                .FirstOrDefaultAsync(u => u.UserName == name)
+                .ConfigureAwait(false);
+        
+        public async Task<User?> GetByRefreshTokenAsync(string rt, bool asNoTracking = false)
+            => await context.Users
+                .Query(asNoTracking)
+                .FirstOrDefaultAsync(u => u.RefreshToken == rt)
+                .ConfigureAwait(false);
 
         public async Task<bool> ExistsByIdAsync(string id)
             => await context.Users
+                .AsNoTracking()
                 .AnyAsync(u => u.Id == id)
                 .ConfigureAwait(false);
         
+        public async Task<bool> ExistsByNameAsync(string name)
+            => await context.Users
+                .AsNoTracking()
+                .AnyAsync(u => u.UserName == name)
+                .ConfigureAwait(false);
 
         public async Task<int> CountAsync(Func<User, bool> predicate, bool asNoTracking = false)
             => await context.Users

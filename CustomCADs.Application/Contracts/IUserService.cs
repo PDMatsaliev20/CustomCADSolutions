@@ -21,10 +21,18 @@ namespace CustomCADs.Application.Contracts
         /// <summary>
         ///     Searches for a User by the given name
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="name"></param>
         /// <returns>A Task object that represents the User</returns>
         /// <exception cref="KeyNotFoundException">if no User with the given name exists.</exception>
-        UserModel GetByName(string name);
+        Task<UserModel> GetByName(string name);
+        
+        /// <summary>
+        ///     Searches for a User by the given refresh token
+        /// </summary>
+        /// <param name="rt"></param>
+        /// <returns>A Task object that represents the User</returns>
+        /// <exception cref="KeyNotFoundException">if no User with the given name exists.</exception>
+        Task<UserModel> GetByRefreshToken(string rt);
 
         ///<summary>
         ///     Checks whether an User exists by the given id.
@@ -38,7 +46,7 @@ namespace CustomCADs.Application.Contracts
         ///</summary>
         /// <param name="username"></param>
         /// <exception cref="KeyNotFoundException">if no User with the given name exists.</exception>
-        bool ExistsByName(string username);
+        Task<bool> ExistsByName(string username);
 
         /// <summary>
         ///     Creates the specified User in the Users table

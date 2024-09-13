@@ -4,14 +4,15 @@ using CustomCADs.Application.Helpers;
 using CustomCADs.Application.Models.Cads;
 using CustomCADs.Application.Models.Orders;
 using CustomCADs.Domain.Contracts;
+using CustomCADs.Domain.Contracts.Queries;
 using CustomCADs.Domain.Entities;
 using CustomCADs.Domain.Enums;
 
 namespace CustomCADs.Application.Services
 {
     public class DesignerService(IDbTracker dbTracker,
-        IQueries<Cad, int> cadQueries, 
-        IQueries<Order, int> orderQueries,
+        ICadQueries cadQueries,
+        IOrderQueries orderQueries,
         IMapper mapper) : IDesignerService
     {
         public OrderResult GetOrders(string status = "", string? designerId = null, string? category = null, string? name = null, string? buyer = null, string sorting = "", int page = 1, int limit = 20)

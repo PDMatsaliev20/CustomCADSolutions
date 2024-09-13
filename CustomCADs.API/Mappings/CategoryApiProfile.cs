@@ -3,9 +3,9 @@ using CustomCADs.API.Models.Others;
 using CustomCADs.Application.Models.Categories;
 namespace CustomCADs.API.Mappings
 {
-    public class OtherApiProfile : Profile
+    public class CategoryApiProfile : Profile
     {
-        public OtherApiProfile()
+        public CategoryApiProfile()
         {
             CategoryToDTO();
             DTOToCategory();

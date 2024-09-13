@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using CustomCADs.API.Helpers;
 using CustomCADs.API.Identity;
-using CustomCADs.API.Models.Others;
+using CustomCADs.API.Models.Roles;
+using CustomCADs.Application.Contracts;
+using CustomCADs.Application.Models.Roles;
 using CustomCADs.Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -18,12 +20,13 @@ namespace CustomCADs.API.Controllers.Admin
     /// <summary>
     ///     Admin Controller for managing Roles.
     /// </summary>
+    /// <param name="roleService"></param>
     /// <param name="appRoleManager"></param>
     /// <param name="mapper"></param>
     [ApiController]
     [Route("API/Admin/[controller]")]
     [Authorize(Roles = RoleConstants.Admin)]
-    public class RolesController(AppRoleManager appRoleManager, IMapper mapper) : ControllerBase
+    public class RolesController(IRoleService roleService, AppRoleManager appRoleManager, IMapper mapper) : ControllerBase
     {
         private readonly string createdAtReturnAction = nameof(GetRoleAsync).Replace("Async", "");
 
@@ -36,12 +39,12 @@ namespace CustomCADs.API.Controllers.Admin
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status500InternalServerError)]
         [ProducesResponseType(Status502BadGateway)]
-        public async Task<ActionResult<RoleDTO[]>> GetRolesAsync()
+        public ActionResult<RoleGetDTO[]> GetRolesAsync()
         {
             try
             {
-                AppRole[] roles = await appRoleManager.Roles.ToArrayAsync().ConfigureAwait(false);
-                return mapper.Map<RoleDTO[]>(roles);
+                RoleResult result = roleService.GetAll();
+                return mapper.Map<RoleGetDTO[]>(result.Roles);
             }
             catch (Exception ex) when (
                 ex is AutoMapperConfigurationException
@@ -67,15 +70,16 @@ namespace CustomCADs.API.Controllers.Admin
         [ProducesResponseType(Status404NotFound)]
         [ProducesResponseType(Status500InternalServerError)]
         [ProducesResponseType(Status502BadGateway)]
-        public async Task<ActionResult<RoleDTO>> GetRoleAsync(string name)
+        public async Task<ActionResult<RoleGetDTO>> GetRoleAsync(string name)
         {
             try
             {
-                AppRole? role = await appRoleManager.FindByNameAsync(name).ConfigureAwait(false);
-
-                return role == null 
-                    ? NotFound(string.Format(ApiMessages.NotFound, "Role"))
-                    : mapper.Map<RoleDTO>(role);
+                RoleModel role = await roleService.GetByNameAsync(name).ConfigureAwait(false);
+                return mapper.Map<RoleGetDTO>(role);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound(string.Format(ApiMessages.NotFound, "Role"));
             }
             catch (Exception ex) when (
                 ex is AutoMapperConfigurationException
@@ -93,32 +97,30 @@ namespace CustomCADs.API.Controllers.Admin
         /// <summary>
         ///     Creates a Role with the specified name.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="description"></param>
+        /// <param name="post"></param>
         /// <returns></returns>
-        [HttpPost("{name}")]
+        [HttpPost]
         [ProducesResponseType(Status201Created)]
         [ProducesResponseType(Status400BadRequest)]
         [ProducesResponseType(Status500InternalServerError)]
         [ProducesResponseType(Status502BadGateway)]
-        public async Task<ActionResult> PostRoleAsync(string name, string? description)
+        public async Task<ActionResult> PostRoleAsync(RolePostDTO post)
         {
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                return BadRequest(string.Format(IsRequired, "Name"));
-            }
-            
             try
             {
-                AppRole role = new(name);
-                IdentityResult result = await appRoleManager.CreateAsync(role).ConfigureAwait(false);
+                IdentityResult result = await appRoleManager.CreateAsync(new(post.Name)).ConfigureAwait(false);
                 if (!result.Succeeded)
                 {
                     return StatusCode(Status500InternalServerError, result.Errors);
                 }
 
-                RoleDTO dto = mapper.Map<RoleDTO>(role);
-                return CreatedAtAction(createdAtReturnAction, new { name }, dto);
+                RoleModel model = mapper.Map<RoleModel>(post);
+                string id = await roleService.CreateAsync(model).ConfigureAwait(false);
+
+                RoleModel newModel = await roleService.GetByIdAsync(id).ConfigureAwait(false);
+                RoleGetDTO dto = mapper.Map<RoleGetDTO>(newModel);
+                
+                return CreatedAtAction(createdAtReturnAction, new { post.Name }, dto);
             }
             catch (Exception ex) when (
                 ex is AutoMapperConfigurationException
@@ -144,14 +146,9 @@ namespace CustomCADs.API.Controllers.Admin
         [ProducesResponseType(Status400BadRequest)]
         [ProducesResponseType(Status404NotFound)]
         [ProducesResponseType(Status500InternalServerError)]
-        public async Task<ActionResult> PatchRoleAsync(string name, [FromBody] JsonPatchDocument<AppRole> patchRole)
+        public async Task<ActionResult> PatchRoleAsync(string name, [FromBody] JsonPatchDocument<RoleModel> patchRole)
         {
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                return BadRequest(string.Format(IsRequired, "Name"));
-            }
-
-            string? modifiedForbiddenField = patchRole.CheckForBadChanges("/id", "/normalizedName", "/concurrencyStamp");
+            string? modifiedForbiddenField = patchRole.CheckForBadChanges("/id");
             if (modifiedForbiddenField != null)
             {
                 return BadRequest(string.Format(ForbiddenPatch, modifiedForbiddenField));
@@ -159,20 +156,29 @@ namespace CustomCADs.API.Controllers.Admin
 
             try
             {
-                AppRole? role = await appRoleManager.FindByNameAsync(name).ConfigureAwait(false);
-                if (role == null)
-                {
-                    return NotFound("Role not found.");
-                }
+                RoleModel model = await roleService.GetByNameAsync(name).ConfigureAwait(false);
 
                 string? error = null;
-                patchRole.ApplyTo(role, e => error = e.ErrorMessage);
+                patchRole.ApplyTo(model, e => error = e.ErrorMessage);
 
                 if (!string.IsNullOrEmpty(error))
                 {
                     return BadRequest(error);
                 }
-                await appRoleManager.UpdateAsync(role).ConfigureAwait(false);
+
+                await roleService.EditAsync(name, model);
+
+                if (model.Name != name)
+                {
+                    AppRole? role = await appRoleManager.FindByNameAsync(name).ConfigureAwait(false);
+                    if (role == null) 
+                    {
+                        return BadRequest(string.Format(ApiMessages.NotFound, "Role"));
+                    }
+
+                    role.Name = model.Name;
+                    await appRoleManager.UpdateAsync(role).ConfigureAwait(false);
+                }
 
                 return NoContent();
             }
@@ -196,12 +202,13 @@ namespace CustomCADs.API.Controllers.Admin
             try
             {
                 AppRole? role = await appRoleManager.FindByNameAsync(name).ConfigureAwait(false);
-                if (role == null)
+                if (role == null || !await roleService.ExistsByNameAsync(name).ConfigureAwait(false))
                 {
                     return NotFound(string.Format(ApiMessages.NotFound, "Role"));
                 }
 
                 await appRoleManager.DeleteAsync(role).ConfigureAwait(false);
+                await roleService.DeleteAsync(name).ConfigureAwait(false);
                 return NoContent();
             }
             catch (Exception ex)

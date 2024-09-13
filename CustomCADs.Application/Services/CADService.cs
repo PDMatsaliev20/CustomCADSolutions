@@ -3,14 +3,15 @@ using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Helpers;
 using CustomCADs.Application.Models.Cads;
 using CustomCADs.Domain.Contracts;
+using CustomCADs.Domain.Contracts.Queries;
 using CustomCADs.Domain.Entities;
 using CustomCADs.Domain.Enums;
 
 namespace CustomCADs.Application.Services
 {
     public class CadService(IDbTracker dbTracker,
-        IQueries<Cad, int> cadQueries,
-        IQueries<Order, int> orderQueries,
+        ICadQueries cadQueries,
+        IOrderQueries orderQueries,
         ICommands<Cad> commands,
         IMapper mapper) : ICadService
     {

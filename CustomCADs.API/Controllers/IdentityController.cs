@@ -153,7 +153,7 @@ namespace CustomCADs.API.Controllers
 
                 if (result.Succeeded)
                 {
-                    UserModel model = userService.GetByName(login.Username);
+                    UserModel model = await userService.GetByName(login.Username).ConfigureAwait(false);
                     
                     Response.Cookies.Append("role", model.RoleName);
                     Response.Cookies.Append("username", model.UserName);
@@ -205,7 +205,7 @@ namespace CustomCADs.API.Controllers
 
                 model.RefreshToken = null;
                 model.RefreshTokenEndDate = null;
-                await userService.EditAsync(model.Id, model);
+                await userService.EditAsync(model.UserName, model);
 
                 Response.Cookies.Delete("jwt");
                 Response.Cookies.Delete("rt");
@@ -213,6 +213,10 @@ namespace CustomCADs.API.Controllers
                 Response.Cookies.Delete("role");
 
                 return "Bye-bye.";
+            }
+            catch (ArgumentNullException)
+            {
+                return BadRequest(AlreadyLoggedOut);
             }
             catch (KeyNotFoundException ex)
             {
@@ -237,9 +241,8 @@ namespace CustomCADs.API.Controllers
                 return BadRequest(NoRefreshToken);
             }
 
-            UserResult result = userService.GetAll(customFilter: u => u.RefreshToken == rt);
-            UserModel? model = result.Users.SingleOrDefault();
-            if (model == null || model.RefreshToken != rt || model.RefreshTokenEndDate < DateTime.UtcNow)
+            UserModel model = await userService.GetByRefreshToken(rt).ConfigureAwait(false);
+            if (model.RefreshTokenEndDate < DateTime.UtcNow)
             {
                 return StatusCode(Status401Unauthorized);
             }

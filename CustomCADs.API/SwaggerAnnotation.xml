@@ -8,13 +8,15 @@
             <summary>
                 Admin Controller for managing Roles.
             </summary>
+            <param name="roleService"></param>
             <param name="appRoleManager"></param>
             <param name="mapper"></param>
         </member>
-        <member name="M:CustomCADs.API.Controllers.Admin.RolesController.#ctor(CustomCADs.API.Identity.AppRoleManager,AutoMapper.IMapper)">
+        <member name="M:CustomCADs.API.Controllers.Admin.RolesController.#ctor(CustomCADs.Application.Contracts.IRoleService,CustomCADs.API.Identity.AppRoleManager,AutoMapper.IMapper)">
             <summary>
                 Admin Controller for managing Roles.
             </summary>
+            <param name="roleService"></param>
             <param name="appRoleManager"></param>
             <param name="mapper"></param>
         </member>
@@ -31,15 +33,14 @@
             <param name="name"></param>
             <returns></returns>
         </member>
-        <member name="M:CustomCADs.API.Controllers.Admin.RolesController.PostRoleAsync(System.String,System.String)">
+        <member name="M:CustomCADs.API.Controllers.Admin.RolesController.PostRoleAsync(CustomCADs.API.Models.Roles.RolePostDTO)">
             <summary>
                 Creates a Role with the specified name.
             </summary>
-            <param name="name"></param>
-            <param name="description"></param>
+            <param name="post"></param>
             <returns></returns>
         </member>
-        <member name="M:CustomCADs.API.Controllers.Admin.RolesController.PatchRoleAsync(System.String,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{CustomCADs.Infrastructure.Identity.AppRole})">
+        <member name="M:CustomCADs.API.Controllers.Admin.RolesController.PatchRoleAsync(System.String,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{CustomCADs.Application.Models.Roles.RoleModel})">
             <summary>
                 Updates a Role in the traditional way - with an array of operations.
             </summary>

@@ -3,12 +3,13 @@ using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Helpers;
 using CustomCADs.Application.Models.Users;
 using CustomCADs.Domain.Contracts;
+using CustomCADs.Domain.Contracts.Queries;
 using CustomCADs.Domain.Entities;
 
 namespace CustomCADs.Application.Services
 {
     public class UserService(
-        IQueries<User, string> queries,
+        IUserQueries queries,
         ICommands<User> commands,
         IDbTracker tracker,
         IMapper mapper) : IUserService
@@ -30,32 +31,36 @@ namespace CustomCADs.Application.Services
 
         public async Task<UserModel> GetByIdAsync(string id)
         {
-            User? entity = await queries.GetByIdAsync(id).ConfigureAwait(false);
+            User? entity = await queries.GetByIdAsync(id, true).ConfigureAwait(false);
             ArgumentNullException.ThrowIfNull(entity);
 
             UserModel model = mapper.Map<UserModel>(entity);
             return model;
         }
 
-        public UserModel GetByName(string name)
+        public async Task<UserModel> GetByName(string name)
         {
-            IQueryable<User> users = queries.GetAll(true);
-            users = users.Filter(customFilter: u => u.UserName == name);
+            User? user = await queries.GetByNameAsync(name, true).ConfigureAwait(false);
+            ArgumentNullException.ThrowIfNull(user);
 
-            UserModel model = mapper.Map<UserModel>(users.Single());
+            UserModel model = mapper.Map<UserModel>(user);
+            return model;
+        }
+        
+        public async Task<UserModel> GetByRefreshToken(string rt)
+        {
+            User? user = await queries.GetByRefreshTokenAsync(rt).ConfigureAwait(false);
+            ArgumentNullException.ThrowIfNull(user);
+
+            UserModel model = mapper.Map<UserModel>(user);
             return model;
         }
 
         public async Task<bool> ExistsByIdAsync(string id)
             => await queries.ExistsByIdAsync(id).ConfigureAwait(false);
 
-        public bool ExistsByName(string username)
-        {
-            IQueryable<User> users = queries.GetAll(true);
-            users = users.Filter(customFilter: u => u.UserName == username);
-
-            return users.Count() == 1;
-        }
+        public async Task<bool> ExistsByName(string username)
+            => await queries.ExistsByNameAsync(username).ConfigureAwait(false);
 
         public async Task<string> CreateAsync(UserModel model)
         {
@@ -66,9 +71,9 @@ namespace CustomCADs.Application.Services
             return addedUser.Id;
         }
 
-        public async Task EditAsync(string id, UserModel model)
+        public async Task EditAsync(string username, UserModel model)
         {
-            User? entity = await queries.GetByIdAsync(id).ConfigureAwait(false);
+            User? entity = await queries.GetByNameAsync(username).ConfigureAwait(false);
             ArgumentNullException.ThrowIfNull(entity);
 
             entity.UserName = model.UserName;
@@ -84,10 +89,10 @@ namespace CustomCADs.Application.Services
 
         public async Task DeleteAsync(string username)
         {
-            IQueryable<User> users = queries.GetAll(true);
-            users = users.Filter(customFilter: u => u.UserName == username);
+            User? user = await queries.GetByNameAsync(username).ConfigureAwait(false);
+            ArgumentNullException.ThrowIfNull(user);
             
-            commands.Delete(users.Single());
+            commands.Delete(user);
             await tracker.SaveChangesAsync().ConfigureAwait(false);
         }
     }

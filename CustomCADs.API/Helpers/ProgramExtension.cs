@@ -5,6 +5,7 @@ using CustomCADs.Application.Models.Categories;
 using CustomCADs.Application.Models.Roles;
 using CustomCADs.Application.Services;
 using CustomCADs.Domain.Contracts;
+using CustomCADs.Domain.Contracts.Queries;
 using CustomCADs.Domain.Entities;
 using CustomCADs.Infrastructure.Identity;
 using CustomCADs.Infrastructure.Payment;
@@ -34,11 +35,11 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connectionString));
             services.AddScoped<IDbTracker, DbTracker>();
 
-            services.AddScoped<IQueries<Order, int>, OrderQueries>();
-            services.AddScoped<IQueries<Cad, int>, CadQueries>();
-            services.AddScoped<IQueries<Category, int>, CategoryQueries>();
-            services.AddScoped<IQueries<User, string>, UserQueries>();
-            services.AddScoped<IQueries<Role, string>, RoleQueries>();
+            services.AddScoped<IOrderQueries, OrderQueries>();
+            services.AddScoped<ICadQueries, CadQueries>();
+            services.AddScoped<ICategoryQueries, CategoryQueries>();
+            services.AddScoped<IUserQueries, UserQueries>();
+            services.AddScoped<IRoleQueries, RoleQueries>();
 
             services.AddScoped<ICommands<Order>, OrderCommands>();
             services.AddScoped<ICommands<Cad>, CadCommands>();
@@ -213,7 +214,7 @@ namespace Microsoft.Extensions.DependencyInjection
                     await appRoleManager.CreateAsync(new AppRole(role)).ConfigureAwait(false);
                 }
 
-                if (!roleService.ExistsByName(role))
+                if (!await roleService.ExistsByNameAsync(role).ConfigureAwait(false))
                 {
                     string? description = role switch
                     {
@@ -264,7 +265,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 {
                     await appUserManager.AddUserAsync(username, email, password, role);
 
-                    if (!userService.ExistsByName(username))
+                    if (!await userService.ExistsByName(username).ConfigureAwait(false))
                     {
                         await userService.CreateAsync(new() { UserName = username, Email = email, RoleName = role });
                     }

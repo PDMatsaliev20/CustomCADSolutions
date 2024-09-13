@@ -3,12 +3,13 @@ using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Helpers;
 using CustomCADs.Application.Models.Categories;
 using CustomCADs.Domain.Contracts;
+using CustomCADs.Domain.Contracts.Queries;
 using CustomCADs.Domain.Entities;
 
 namespace CustomCADs.Application.Services
 {
     public class CategoryService(IDbTracker dbTracker,
-        IQueries<Category, int> queries, 
+        ICategoryQueries queries, 
         ICommands<Category> commands, 
         IMapper mapper) : ICategoryService
     {
