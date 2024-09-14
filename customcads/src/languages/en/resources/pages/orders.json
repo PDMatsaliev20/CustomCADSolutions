@@ -8,6 +8,7 @@
   "no_orders": "You have no orders.",
   "category": "Category: ",
   "description": "Description: ",
+  "to_be_delivered": "Delivery Requested",
   "details": "View Details",
   "delete": "Delete Order",
   "contact": "Contact the Designer",

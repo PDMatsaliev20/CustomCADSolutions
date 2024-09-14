@@ -64,6 +64,15 @@ namespace CustomCADs.Application.Services
             ).ConfigureAwait(false);
         }
         
+        public async Task SetImagePathAsync(int id, string imagePath)
+        {
+            Order? order = await queries.GetByIdAsync(id);
+            ArgumentNullException.ThrowIfNull(order);
+
+            order.ImagePath = imagePath;
+            await dbTracker.SaveChangesAsync();
+        }
+
         public async Task<bool> HasCadAsync(int id)
         {
             Order? order = await queries.GetByIdAsync(id).ConfigureAwait(false)

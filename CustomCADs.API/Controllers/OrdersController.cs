@@ -95,8 +95,8 @@ namespace CustomCADs.API.Controllers
             try
             {
                 OrderResult result = orderService.GetAll(
-                    buyer: User.Identity?.Name, 
-                    sorting: nameof(Sorting.Newest), 
+                    buyer: User.Identity?.Name,
+                    sorting: nameof(Sorting.Newest),
                     limit: limit
                     );
 
@@ -127,7 +127,7 @@ namespace CustomCADs.API.Controllers
             try
             {
                 bool predicate(OrderModel o, OrderStatus s)
-                    => o.Status == s && o.Buyer.UserName == User.Identity!.Name;
+                        => o.Status == s && o.Buyer.UserName == User.Identity!.Name;
 
                 int pendingOrdersCount = await orderService.CountAsync(o => predicate(o, OrderStatus.Pending)).ConfigureAwait(false);
                 int begunOrdersCount = await orderService.CountAsync(o => predicate(o, OrderStatus.Begun)).ConfigureAwait(false);
@@ -205,12 +205,12 @@ namespace CustomCADs.API.Controllers
                 OrderModel model = mapper.Map<OrderModel>(dto);
                 model.OrderDate = DateTime.Now;
                 model.BuyerId = User.GetId();
+                model.ImagePath = "";
 
                 int id = await orderService.CreateAsync(model).ConfigureAwait(false);
-                if (dto.Image != null)
-                {
-                    await env.UploadOrderAsync(dto.Image, dto.Name + id + dto.Image.GetFileExtension());
-                }
+                
+                string imagePath = await env.UploadOrderAsync(dto.Image, dto.Name + id + dto.Image.GetFileExtension());
+                await orderService.SetImagePathAsync(id, imagePath);
 
                 model = await orderService.GetByIdAsync(id).ConfigureAwait(false);
                 OrderExportDTO export = mapper.Map<OrderExportDTO>(model);
@@ -287,7 +287,7 @@ namespace CustomCADs.API.Controllers
                 return StatusCode(Status500InternalServerError, ex.GetMessage());
             }
         }
-        
+
         /// <summary>
         ///     Updates Name, Description and CategoryId for Orders have a Pending status.
         /// </summary>

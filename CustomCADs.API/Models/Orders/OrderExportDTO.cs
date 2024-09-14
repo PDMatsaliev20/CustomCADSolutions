@@ -10,7 +10,7 @@ namespace CustomCADs.API.Models.Orders
         public string Description { get; set; } = null!;
         public string Status { get; set; } = null!;
         public string OrderDate { get; set; } = null!;
-        public string? ImagePath { get; set; } 
+        public string ImagePath { get; set; } = null!;
         public string? DesignerName { get; set; }
         public string? DesignerEmail { get; set; }
         public string BuyerName { get; set; } = null!;

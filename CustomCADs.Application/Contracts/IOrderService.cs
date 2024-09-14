@@ -64,6 +64,14 @@ namespace CustomCADs.Application.Contracts
         Task DeleteAsync(int id);
 
         /// <summary>
+        ///     Sets the ImagePath property
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="imagePath"></param>
+        /// <returns></returns>
+        Task SetImagePathAsync(int id, string imagePath);
+
+        /// <summary>
         ///     Checks if an Order has a CadId property.
         /// </summary>
         /// <param name="id"></param>

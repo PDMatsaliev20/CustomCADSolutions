@@ -24,7 +24,8 @@ namespace CustomCADs.Domain.Entities
         [Required]
         public bool ShouldBeDelivered { get; set; }
 
-        public string? ImagePath { get; set; }
+        [Required]
+        public string ImagePath { get; set; } = null!;
 
         [Required]
         public int CategoryId { get; set; }

@@ -32,8 +32,8 @@ namespace CustomCADs.Application.Models.Orders
         [Required(ErrorMessage = RequiredErrorMessage)]
         public bool ShouldBeDelivered { get; set; }
 
-        public string? ImagePath { get; set; }
-        public string? ImageExtension => '.' + ImagePath?.Split('.')[^1].ToLower();
+        public string ImagePath { get; set; } = null!;
+        public string? ImageExtension => '.' + ImagePath.Split('.')[^1].ToLower();
 
         public int? CadId { get; set; }
         public CadModel? Cad { get; set; }
