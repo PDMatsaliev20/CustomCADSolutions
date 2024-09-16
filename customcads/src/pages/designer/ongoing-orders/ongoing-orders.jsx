@@ -3,13 +3,11 @@ import { Link, useLoaderData } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import usePagination from '@/hooks/usePagination';
 import objectToUrl from '@/utils/object-to-url';
-import { GetOrdersByStatus } from '@/requests/private/designer';
+import { BeginOrder, ReportOrder, CancelOrder, GetOrdersByStatus } from '@/requests/private/designer';
 import SearchBar from '@/components/searchbar';
 import Pagination from '@/components/pagination';
 import Tab from '@/components/tab';
-import PendingOrder from './components/pending-order';
-import BegunOrder from './components/begun-order';
-import FinishedOrder from './components/finished-order';
+import Order from '@/components/order';
 
 function OngoingOrders() {
     const { t: tPages } = useTranslation('pages');
@@ -24,15 +22,69 @@ function OngoingOrders() {
         document.documentElement.scrollTo({ top: 0, left: 0, behavior: "instant" });
     }, [status, search, page]);
 
-    const updateOrders = (id) => {
-        setOrders(orders => orders.filter(order => order.id !== id));
-    };
+    const chooseButtons = (order) => {
+        const mainBtn = "bg-indigo-700 border-2 border-indigo-500 py-3 rounded text-center text-indigo-50 hover:opacity-70 hover:border-transparent";
+        const sideBtn = "bg-indigo-50 border-2 border-indigo-600 py-3 rounded text-center text-indigo-950 hover:bg-rose-500 hover:border-transparent hover:text-indigo-50";
 
-    const chooseOrder = (order) => {
-        switch (status) {
-            case 'Pending': return <PendingOrder order={order} updateParent={updateOrders} />;
-            case 'Begun': return <BegunOrder order={order} updateParent={updateOrders} />;
-            case 'Finished': return <FinishedOrder order={order} updateParent={updateOrders} />;
+        switch (status.toLowerCase()) {
+            case 'pending':
+                const handleBegin = async () => {
+                    try {
+                        await BeginOrder(order.id);
+                        setOrders(orders => orders.filter(o => o.id !== order.id));
+                    } catch (e) {
+                        console.error(e);
+                    }
+                };
+
+                const handleReport = async () => {
+                    if (confirm(tPages('designer.confirm_order_report'))) {
+                        try {
+                            await ReportOrder(order.id);
+                            setOrders(orders => orders.filter(o => o.id !== order.id));
+                        } catch (e) {
+                            console.error(e);
+                        }
+                    }
+                };
+
+                return [
+                    <button onClick={handleBegin} className={mainBtn}>
+                        {tPages('designer.accept')}
+                    </button>,
+                    <button onClick={handleReport} className={sideBtn}>
+                        {tPages('designer.report')}
+                    </button>
+                ];
+
+            case 'begun':
+                const handleCancel = async () => {
+                    try {
+                        await CancelOrder(order.id);
+                        setOrders(orders => orders.filter(o => o.id !== order.id));
+                    } catch (e) {
+                        console.error(e);
+                    }
+                };
+
+                return [
+                    <Link to={`/designer/cads/upload/${order.id}`} className={mainBtn}>
+                        {tPages('designer.complete')}
+                    </Link>,
+                    <button onClick={handleCancel} className={sideBtn}>
+                        {tPages('designer.cancel')}
+                    </button>
+                ];
+
+            case 'finished':
+                return [
+                    <button onClick={() => { }} className={mainBtn}>
+                        {tPages('designer.deliver')}
+                    </button>,
+                    <button onClick={() => { }} className={sideBtn}>
+                        {tPages('designer.dismiss')}
+                    </button>
+                ];
         }
     };
 
@@ -52,10 +104,10 @@ function OngoingOrders() {
                 ? <p className="basis-full text-lg text-indigo-900 text-center font-bold">
                     {tPages('designer.no_orders')}
                 </p>
-                : <ul className="basis-full grid grid-cols-3 gap-y-8 gap-x-[5%]">
-                    {orders.map(order =>
-                        <li key={order.id}>{chooseOrder(order)}</li>
-                    )}
+                : <ul className="flex flex-col gap-y-8">
+                    {orders.map(order => <li key={order.id}>
+                        <Order order={order} buttons={chooseButtons(order)} />
+                    </li>)}
                 </ul>}
             <div className="basis-full" hidden={!orders.length}>
                 <Pagination

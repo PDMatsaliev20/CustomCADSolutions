@@ -40,23 +40,26 @@ function UserOrders() {
     };
 
     const chooseButtons = (order) => {
+        const mainBtn = "bg-indigo-700 border-2 border-indigo-500 py-3 rounded text-center text-indigo-50 hover:opacity-70 hover:border-transparent";
+        const sideBtn = "bg-indigo-50 border-2 border-indigo-600 py-3 rounded text-center text-indigo-950 hover:bg-rose-500 hover:border-transparent hover:text-indigo-50";
+
         switch (status.toLowerCase()) {
             case 'pending':
                 return [
-                    <Link to={`${order.id}`} className="bg-indigo-700 border-2 border-indigo-500 px-10 py-3 rounded text-center text-indigo-50 hover:opacity-70 hover:border-transparent">
+                    <Link to={`${order.id}`} className={mainBtn}>
                         {tPages('orders.details')}
                     </Link>,
-                    <button onClick={handleDelete} className="bg-indigo-50 border-2 border-indigo-600 px-10 py-3 rounded text-center text-indigo-950 hover:bg-rose-500 hover:border-transparent hover:text-indigo-50">
+                    <button onClick={handleDelete} className={sideBtn}>
                         {tPages('orders.delete')}
                     </button>
                 ];
 
             case 'begun':
                 return [
-                    <Link to={`mailto:${order.designerEmail}`} className="basis-6/12 bg-indigo-700 border-2 border-indigo-500 px-10 py-3 rounded text-center text-indigo-50 hover:opacity-70 hover:border-transparent">
+                    <Link to={`mailto:${order.designerEmail}`} className={mainBtn}>
                         {tPages('orders.contact')}
                     </Link>,
-                    <button onClick={handleDelete} className="basis-5/12 bg-indigo-50 border-2 border-indigo-600 px-10 py-3 rounded text-center text-indigo-950 hover:bg-rose-500 hover:border-transparent hover:text-indigo-50">
+                    <button onClick={handleDelete} className={sideBtn}>
                         {tPages('orders.cancel_order')}
                     </button>
                 ];
@@ -109,10 +112,10 @@ function UserOrders() {
                 };
 
                 return [
-                    <button onClick={handleDownload} className="basis-6/12 bg-indigo-700 border-2 border-indigo-500 px-10 py-3 rounded text-center text-indigo-50 hover:opacity-70 hover:border-transparent">
+                    <button onClick={handleDownload} className={mainBtn}>
                         {tPages('orders.download')}
                     </button>,
-                    <button onClick={handleRequest} className="basis-5/12 bg-indigo-50 border-2 border-indigo-600 px-10 py-3 rounded text-center text-indigo-950 hover:bg-rose-500 hover:border-transparent hover:text-indigo-50">
+                    <button onClick={handleRequest} className={sideBtn}>
                         {
                             order.shouldBeDelivered
                                 ? tPages('orders.cancel_request')
