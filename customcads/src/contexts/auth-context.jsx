@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { IsAuthenticated } from '@/requests/public/identity';
+import { IsAuthenticated, RefreshToken } from '@/requests/public/identity';
 import { getCookie } from '@/utils/cookie-manager';
 
 const AuthContext = createContext();
@@ -25,6 +25,7 @@ export const AuthProvider = ({ children }) => {
 
     async function checkUserAuthentication() {
         try {
+            await RefreshToken();
             const { data } = await IsAuthenticated();
             if (data) {
                 setIsAuthenticated(true);
