@@ -193,13 +193,15 @@
             <summary>
                 Controller for Updating Status of Cad and Order.
             </summary>
+            <param name="cadService"></param>
             <param name="designerService"></param>
             <param name="mapper"></param>
         </member>
-        <member name="M:CustomCADs.API.Controllers.DesignerController.#ctor(CustomCADs.Application.Contracts.IDesignerService,AutoMapper.IMapper)">
+        <member name="M:CustomCADs.API.Controllers.DesignerController.#ctor(CustomCADs.Application.Contracts.ICadService,CustomCADs.Application.Contracts.IDesignerService,AutoMapper.IMapper)">
             <summary>
                 Controller for Updating Status of Cad and Order.
             </summary>
+            <param name="cadService"></param>
             <param name="designerService"></param>
             <param name="mapper"></param>
         </member>
@@ -213,6 +215,13 @@
             <param name="creator"></param>
             <param name="page"></param>
             <param name="limit"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.DesignerController.GetUncheckedCadAsync(System.Int32)">
+            <summary>
+                Gets the requested Cad, as well as the previous and next ones in line.
+            </summary>
+            <param name="id"></param>
             <returns></returns>
         </member>
         <member name="M:CustomCADs.API.Controllers.DesignerController.UpdateCadStatusAsync(System.Int32,System.String)">

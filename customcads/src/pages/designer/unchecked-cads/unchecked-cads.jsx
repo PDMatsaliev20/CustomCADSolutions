@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import usePagination from '@/hooks/usePagination';
-import objectToUrl from '@/utils/object-to-url';
-import { GetCadsByStatus, PatchCadStatus } from '@/requests/private/designer';
+import { GetCadsByStatus } from '@/requests/private/designer';
+import CadItem from '@/components/cads/item';
 import SearchBar from '@/components/searchbar';
 import Pagination from '@/components/pagination';
-import ContributorCadItem from './components/unchecked-cad';
+import objectToUrl from '@/utils/object-to-url';
 
 function UncheckedCads() {
     const { t: tPages } = useTranslation('pages');
@@ -18,15 +18,6 @@ function UncheckedCads() {
         fetchCads();
         document.documentElement.scrollTo({ top: 0, left: 0, behavior: "instant" });
     }, [search, page]);
-
-    const handlePatch = async (id, status) => {
-        try {
-            await PatchCadStatus(id, status);
-            fetchCads();
-        } catch (e) {
-            console.error(e);
-        }
-    };
 
     return (
         <>
@@ -41,12 +32,7 @@ function UncheckedCads() {
                             {tPages('designer.no_cads')}
                         </p>
                         : <ul className="basis-full grid grid-cols-3 gap-12">
-                            {cads.map(cad =>
-                                <ContributorCadItem key={cad.id}
-                                    item={cad}
-                                    onValidate={() => handlePatch(cad.id, 'Validated')}
-                                    onReport={() => handlePatch(cad.id, 'Reported')} />)
-                            }
+                            {cads.map(cad => <CadItem key={cad.id} item={cad} by />)}
                         </ul>}
                 </section>
                 <div className="basis-full" hidden={!cads.length}>

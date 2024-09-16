@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CustomCADs.API.Helpers;
+using CustomCADs.API.Models.Cads;
 using CustomCADs.API.Models.Queries;
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Cads;
@@ -18,12 +19,13 @@ namespace CustomCADs.API.Controllers
     /// <summary>
     ///     Controller for Updating Status of Cad and Order.
     /// </summary>
+    /// <param name="cadService"></param>
     /// <param name="designerService"></param>
     /// <param name="mapper"></param>
     [ApiController]
     [Route("API/[controller]")]
     [Authorize(Designer)]
-    public class DesignerController(IDesignerService designerService, IMapper mapper) : ControllerBase
+    public class DesignerController(ICadService cadService, IDesignerService designerService, IMapper mapper) : ControllerBase
     {
         /// <summary>
         ///     Gets all Cads with Unchecked status.
@@ -67,6 +69,69 @@ namespace CustomCADs.API.Controllers
             }
         }
 
+        /// <summary>
+        ///     Gets the requested Cad, as well as the previous and next ones in line.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("Cads/{id}")]
+        [ProducesResponseType(Status204NoContent)]
+        [ProducesResponseType(Status404NotFound)]
+        public ActionResult<CadGetDTO> GetUncheckedCadAsync(int id)
+        {
+            try
+            {
+                IEnumerable<CadModel> cads = cadService.GetAllAsync(status: "Unchecked").Cads;
+
+                int? prevId = null, nextId = null;
+                CadModel? requestedCad = null;
+
+                foreach (CadModel cad in cads)
+                {
+                    nextId = cad.Id;
+                    
+                    if (requestedCad != null) 
+                    {
+                        return Ok(new 
+                        {
+                            prevId, 
+                            cad = mapper.Map<CadGetDTO>(requestedCad),
+                            nextId,
+                        });
+                    }
+
+                    if (cad.Id == id)
+                    {
+                        requestedCad = cad;
+                    }
+                    else
+                    {
+                        prevId = cad.Id;
+                    }
+                }
+
+                return requestedCad == null 
+                    ? NotFound()
+                    : Ok(new { prevId, cad = mapper.Map<CadGetDTO>(requestedCad), nextId = (int?)null });
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.GetMessage());
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                return Conflict(ex.GetMessage());
+            }
+            catch (DbUpdateException ex)
+            {
+                return BadRequest(ex.GetMessage());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(Status500InternalServerError, ex.GetMessage());
+            }
+        }
+        
         /// <summary>
         ///     Updates the specified Cad with the specified Status.
         /// </summary>
