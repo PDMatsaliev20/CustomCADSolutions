@@ -193,14 +193,16 @@
             <summary>
                 Controller for Updating Status of Cad and Order.
             </summary>
+            <param name="orderService"></param>
             <param name="cadService"></param>
             <param name="designerService"></param>
             <param name="mapper"></param>
         </member>
-        <member name="M:CustomCADs.API.Controllers.DesignerController.#ctor(CustomCADs.Application.Contracts.ICadService,CustomCADs.Application.Contracts.IDesignerService,AutoMapper.IMapper)">
+        <member name="M:CustomCADs.API.Controllers.DesignerController.#ctor(CustomCADs.Application.Contracts.IOrderService,CustomCADs.Application.Contracts.ICadService,CustomCADs.Application.Contracts.IDesignerService,AutoMapper.IMapper)">
             <summary>
                 Controller for Updating Status of Cad and Order.
             </summary>
+            <param name="orderService"></param>
             <param name="cadService"></param>
             <param name="designerService"></param>
             <param name="mapper"></param>
@@ -243,6 +245,13 @@
             <param name="buyer"></param>
             <param name="page"></param>
             <param name="limit"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.DesignerController.GetOngoingOrder(System.Int32)">
+            <summary>
+                Gets the Order with the specified Id.
+            </summary>
+            <param name="id"></param>
             <returns></returns>
         </member>
         <member name="M:CustomCADs.API.Controllers.DesignerController.GetRecentOrdersAsync(System.String,System.Int32)">

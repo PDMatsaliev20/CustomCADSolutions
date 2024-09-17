@@ -108,7 +108,7 @@ function DesignerHome() {
                             </div>
                         </li>
                         {orders.map(order => <li key={order.id}>
-                            <RecentItem item={{ ...order, date: order.orderDate }} />
+                            <RecentItem to={`/designer/orders/pending/${order.id}`} item={{ ...order, date: order.orderDate }} />
                         </li>)}
                     </ol>
                 </div>

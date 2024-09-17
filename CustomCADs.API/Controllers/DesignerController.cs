@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CustomCADs.API.Helpers;
 using CustomCADs.API.Models.Cads;
+using CustomCADs.API.Models.Orders;
 using CustomCADs.API.Models.Queries;
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Cads;
@@ -19,13 +20,14 @@ namespace CustomCADs.API.Controllers
     /// <summary>
     ///     Controller for Updating Status of Cad and Order.
     /// </summary>
+    /// <param name="orderService"></param>
     /// <param name="cadService"></param>
     /// <param name="designerService"></param>
     /// <param name="mapper"></param>
     [ApiController]
     [Route("API/[controller]")]
     [Authorize(Designer)]
-    public class DesignerController(ICadService cadService, IDesignerService designerService, IMapper mapper) : ControllerBase
+    public class DesignerController(IOrderService orderService, ICadService cadService, IDesignerService designerService, IMapper mapper) : ControllerBase
     {
         /// <summary>
         ///     Gets all Cads with Unchecked status.
@@ -202,6 +204,35 @@ namespace CustomCADs.API.Controllers
                     );
 
                 return mapper.Map<OrderResultDTO>(result);
+            }
+            catch (Exception ex) when (
+                ex is AutoMapperConfigurationException
+                || ex is AutoMapperMappingException
+            )
+            {
+                return StatusCode(Status502BadGateway, ex.GetMessage());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(Status500InternalServerError, ex.GetMessage());
+            }
+        }
+
+        /// <summary>
+        ///     Gets the Order with the specified Id.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("Orders/{id}")]
+        [ProducesResponseType(Status200OK)]
+        [ProducesResponseType(Status500InternalServerError)]
+        [ProducesResponseType(Status502BadGateway)]
+        public async Task<ActionResult<OrderExportDTO>> GetOngoingOrder(int id)
+        {
+            try
+            {
+                OrderModel model = await orderService.GetByIdAsync(id).ConfigureAwait(false);
+                return mapper.Map<OrderExportDTO>(model);
             }
             catch (Exception ex) when (
                 ex is AutoMapperConfigurationException
