@@ -1,6 +1,6 @@
 ﻿using CustomCADs.Application.Models.Categories;
 using CustomCADs.Application.Models.Orders;
-using CustomCADs.Domain.Entities;
+using CustomCADs.Application.Models.Users;
 using CustomCADs.Domain.Enums;
 using CustomCADs.Domain.ValueObjects;
 using System.ComponentModel.DataAnnotations;
@@ -48,7 +48,7 @@ namespace CustomCADs.Application.Models.Cads
 
         [Required(ErrorMessage = RequiredErrorMessage)]
         public string CreatorId { get; set; } = null!;
-        public User Creator { get; set; } = null!;
+        public UserModel Creator { get; set; } = null!;
 
         public ICollection<OrderModel> Orders { get; set; } = [];
         

@@ -1,15 +1,14 @@
 ﻿using AutoMapper;
 using CustomCADs.API.Helpers;
-using CustomCADs.API.Identity;
 using CustomCADs.API.Models.Roles;
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Roles;
 using CustomCADs.Infrastructure.Identity;
+using CustomCADs.Infrastructure.Identity.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using static CustomCADs.Domain.DataConstants;
 
 namespace CustomCADs.API.Controllers.Admin
@@ -26,7 +25,7 @@ namespace CustomCADs.API.Controllers.Admin
     [ApiController]
     [Route("API/Admin/[controller]")]
     [Authorize(Roles = RoleConstants.Admin)]
-    public class RolesController(IRoleService roleService, AppRoleManager appRoleManager, IMapper mapper) : ControllerBase
+    public class RolesController(IRoleService roleService, IAppRoleManager appRoleManager, IMapper mapper) : ControllerBase
     {
         private readonly string createdAtReturnAction = nameof(GetRoleAsync).Replace("Async", "");
 

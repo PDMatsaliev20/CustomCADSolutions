@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using CustomCADs.API.Helpers;
-using CustomCADs.API.Identity;
 using CustomCADs.API.Models.Users;
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Users;
 using CustomCADs.Infrastructure.Identity;
+using CustomCADs.Infrastructure.Identity.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.JsonPatch;
@@ -26,9 +26,11 @@ namespace CustomCADs.API.Controllers.Admin
     [ApiController]
     [Route("API/Admin/[controller]")]
     [Authorize(Roles = RoleConstants.Admin)]
-    public class UsersController(IUserService userService, AppUserManager appUserManager, AppRoleManager appRoleManager, IMapper mapper) : ControllerBase
+    public class UsersController(IUserService userService, IAppUserManager appUserManager, IAppRoleManager appRoleManager, IMapper mapper) : ControllerBase
     {
         private readonly string createdAtReturnAction = nameof(GetUserAsync).Replace("Async", "");
+        private async Task<IEnumerable<string>> RolesAsync() 
+            => await appRoleManager.GetRolesNames().ConfigureAwait(false);
 
         /// <summary>
         ///     Gets All Users.
@@ -132,7 +134,7 @@ namespace CustomCADs.API.Controllers.Admin
         {
             if (!await appRoleManager.RoleExistsAsync(post.Role))
             {
-                return BadRequest(string.Format(InvalidRole, string.Join(", ", appRoleManager.Roles)));
+                return BadRequest(string.Format(InvalidRole, string.Join(", ", await RolesAsync().ConfigureAwait(false))));
             }
 
             try
@@ -215,7 +217,7 @@ namespace CustomCADs.API.Controllers.Admin
                 {
                     if (!await appRoleManager.RoleExistsAsync(newRole).ConfigureAwait(false))
                     {
-                        return BadRequest(string.Format(InvalidRole, string.Join(", ", appRoleManager.Roles)));
+                        return BadRequest(string.Format(InvalidRole, string.Join(", ", await RolesAsync().ConfigureAwait(false))));
                     }
 
                     await appUserManager.RemoveFromRoleAsync(user, oldRole).ConfigureAwait(false);

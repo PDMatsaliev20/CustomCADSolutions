@@ -1,9 +1,9 @@
 ﻿using CustomCADs.API.Helpers;
-using CustomCADs.API.Identity;
 using CustomCADs.API.Models.Identity;
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Users;
 using CustomCADs.Infrastructure.Identity;
+using CustomCADs.Infrastructure.Identity.Contracts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -25,7 +25,7 @@ namespace CustomCADs.API.Controllers
     /// <param name="config"></param>
     [ApiController]
     [Route("API/[controller]")]
-    public class IdentityController(IUserService userService,  AppUserManager appUserManager, AppSignInManager appSignInManager, IConfiguration config) : ControllerBase
+    public class IdentityController(IUserService userService, IAppUserManager appUserManager, SignInManager<AppUser> appSignInManager, IConfiguration config) : ControllerBase
     {
         /// <summary>
         ///     Creates a new account with the specified parameters for the user and logs into it.

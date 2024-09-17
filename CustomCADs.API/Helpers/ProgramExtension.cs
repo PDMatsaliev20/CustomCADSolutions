@@ -1,5 +1,4 @@
-﻿using CustomCADs.API.Identity;
-using CustomCADs.Application;
+﻿using CustomCADs.Application;
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Categories;
 using CustomCADs.Application.Models.Roles;
@@ -8,6 +7,8 @@ using CustomCADs.Domain.Contracts;
 using CustomCADs.Domain.Contracts.Queries;
 using CustomCADs.Domain.Entities;
 using CustomCADs.Infrastructure.Identity;
+using CustomCADs.Infrastructure.Identity.Contracts;
+using CustomCADs.Infrastructure.Identity.Managers;
 using CustomCADs.Infrastructure.Payment;
 using CustomCADs.Persistence;
 using CustomCADs.Persistence.Repositories;
@@ -67,9 +68,8 @@ namespace Microsoft.Extensions.DependencyInjection
             })
             .AddEntityFrameworkStores<IdentityContext>();
 
-            services.AddScoped<AppUserManager>();
-            services.AddScoped<AppSignInManager>();
-            services.AddScoped<AppRoleManager>();
+            services.AddScoped<IAppUserManager, AppUserManager>();
+            services.AddScoped<IAppRoleManager, AppRoleManager>();
         }
 
         public static IServiceCollection AddStripe(this IServiceCollection services, IConfiguration config)
@@ -204,7 +204,7 @@ namespace Microsoft.Extensions.DependencyInjection
         public static async Task UseRolesAsync(this IServiceProvider service, string[] roles)
         {
             using IServiceScope scope = service.CreateScope();
-            var appRoleManager = scope.ServiceProvider.GetRequiredService<AppRoleManager>();
+            var appRoleManager = scope.ServiceProvider.GetRequiredService<IAppRoleManager>();
             var roleService = scope.ServiceProvider.GetRequiredService<IRoleService>();
 
             foreach (string role in roles)
@@ -251,7 +251,7 @@ namespace Microsoft.Extensions.DependencyInjection
         public static async Task UseAppUsers(this IServiceProvider service, IConfiguration config, Dictionary<string, string> users)
         {
             using IServiceScope scope = service.CreateScope();
-            var appUserManager = scope.ServiceProvider.GetRequiredService<AppUserManager>();
+            var appUserManager = scope.ServiceProvider.GetRequiredService<IAppUserManager>();
             var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
 
             int i = 1;
@@ -273,9 +273,9 @@ namespace Microsoft.Extensions.DependencyInjection
             }
         }
 
-        private static async Task AddUserAsync(this AppUserManager appUserManager, string username, string email, string password, string role)
+        private static async Task AddUserAsync(this IAppUserManager appUserManager, string username, string email, string password, string role)
         {
-            if (await appUserManager.FindByEmailAsync(email) == null)
+            if (await appUserManager.FindByNameAsync(username) == null)
             {
                 AppUser user = new(username, email);
 
