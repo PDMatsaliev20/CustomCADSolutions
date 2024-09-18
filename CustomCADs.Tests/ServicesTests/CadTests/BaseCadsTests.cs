@@ -2,6 +2,7 @@
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Mappings;
 using CustomCADs.Application.Models.Cads;
+using CustomCADs.Application.Models.Users;
 using CustomCADs.Application.Services;
 using CustomCADs.Domain.Entities;
 using CustomCADs.Domain.Enums;
@@ -105,13 +106,13 @@ namespace CustomCADs.Tests.ServicesTests.CadTests
             for (int i = 0; i < 5; i++)
             {
                 cads[i].CreatorId = users[0].Id;
-                cads[i].Creator = mapper.Map<User>(users[0]);
+                cads[i].Creator = mapper.Map<UserModel>(users[0]);
             }
 
             for (int i = 5; i < 8; i++)
             {
                 cads[i].CreatorId = users[1].Id;
-                cads[i].Creator = mapper.Map<User>(users[1]);
+                cads[i].Creator = mapper.Map<UserModel>(users[1]);
             }
         }
 

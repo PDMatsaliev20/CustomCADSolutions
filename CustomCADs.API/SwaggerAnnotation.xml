@@ -12,7 +12,7 @@
             <param name="appRoleManager"></param>
             <param name="mapper"></param>
         </member>
-        <member name="M:CustomCADs.API.Controllers.Admin.RolesController.#ctor(CustomCADs.Application.Contracts.IRoleService,CustomCADs.API.Identity.AppRoleManager,AutoMapper.IMapper)">
+        <member name="M:CustomCADs.API.Controllers.Admin.RolesController.#ctor(CustomCADs.Application.Contracts.IRoleService,CustomCADs.Infrastructure.Identity.Contracts.IAppRoleManager,AutoMapper.IMapper)">
             <summary>
                 Admin Controller for managing Roles.
             </summary>
@@ -64,7 +64,7 @@
             <param name="appRoleManager"></param>
             <param name="mapper"></param>
         </member>
-        <member name="M:CustomCADs.API.Controllers.Admin.UsersController.#ctor(CustomCADs.Application.Contracts.IUserService,CustomCADs.API.Identity.AppUserManager,CustomCADs.API.Identity.AppRoleManager,AutoMapper.IMapper)">
+        <member name="M:CustomCADs.API.Controllers.Admin.UsersController.#ctor(CustomCADs.Application.Contracts.IUserService,CustomCADs.Infrastructure.Identity.Contracts.IAppUserManager,CustomCADs.Infrastructure.Identity.Contracts.IAppRoleManager,AutoMapper.IMapper)">
             <summary>
                 Admin Controller for managing Users.
             </summary>
@@ -340,7 +340,7 @@
             <param name="appSignInManager"></param>
             <param name="config"></param>
         </member>
-        <member name="M:CustomCADs.API.Controllers.IdentityController.#ctor(CustomCADs.Application.Contracts.IUserService,CustomCADs.API.Identity.AppUserManager,CustomCADs.API.Identity.AppSignInManager,Microsoft.Extensions.Configuration.IConfiguration)">
+        <member name="M:CustomCADs.API.Controllers.IdentityController.#ctor(CustomCADs.Application.Contracts.IUserService,CustomCADs.Infrastructure.Identity.Contracts.IAppUserManager,Microsoft.AspNetCore.Identity.SignInManager{CustomCADs.Infrastructure.Identity.AppUser},Microsoft.Extensions.Configuration.IConfiguration)">
             <summary>
                 Controller for managing Authentication/Authorization and info about the User's Identity.
             </summary>
