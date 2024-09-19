@@ -6,7 +6,7 @@ namespace CustomCADs.Infrastructure.Identity.Managers
     public class AppUserManager(UserManager<AppUser> manager) : IAppUserManager
     {
         public async Task<AppUser?> FindByNameAsync(string username)
-            => await manager.FindByIdAsync(username).ConfigureAwait(false);
+            => await manager.FindByNameAsync(username).ConfigureAwait(false);
 
         public async Task<IdentityResult> CreateAsync(AppUser user) 
             => await manager.CreateAsync(user).ConfigureAwait(false);

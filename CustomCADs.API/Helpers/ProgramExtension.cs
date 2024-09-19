@@ -6,6 +6,7 @@ using CustomCADs.Application.Services;
 using CustomCADs.Domain.Contracts;
 using CustomCADs.Domain.Contracts.Queries;
 using CustomCADs.Domain.Entities;
+using CustomCADs.Infrastructure.Email;
 using CustomCADs.Infrastructure.Identity;
 using CustomCADs.Infrastructure.Identity.Contracts;
 using CustomCADs.Infrastructure.Identity.Managers;
@@ -88,6 +89,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IDesignerService, DesignerService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IRoleService, RoleService>();
+            services.AddScoped<IEmailService, MailKitService>();
         }
 
         public static IServiceCollection AddMappings(this IServiceCollection services)
