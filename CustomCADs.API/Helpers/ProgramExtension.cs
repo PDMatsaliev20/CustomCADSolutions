@@ -19,6 +19,7 @@ using CustomCADs.Persistence.Repositories.Orders;
 using CustomCADs.Persistence.Repositories.Roles;
 using CustomCADs.Persistence.Repositories.Users;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -58,6 +59,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
             services.AddIdentity<AppUser, AppRole>(options =>
             {
+                options.SignIn.RequireConfirmedEmail = true;
                 options.SignIn.RequireConfirmedAccount = false;
                 options.Password.RequireDigit = false;
                 options.Password.RequireNonAlphanumeric = false;
@@ -67,7 +69,8 @@ namespace Microsoft.Extensions.DependencyInjection
                 options.Lockout.MaxFailedAccessAttempts = 5;
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
             })
-            .AddEntityFrameworkStores<IdentityContext>();
+            .AddEntityFrameworkStores<IdentityContext>()
+            .AddDefaultTokenProviders();
 
             services.AddScoped<IAppUserManager, AppUserManager>();
             services.AddScoped<IAppRoleManager, AppRoleManager>();

@@ -338,23 +338,42 @@
             <param name="userService"></param>
             <param name="appUserManager"></param>
             <param name="appSignInManager"></param>
+            <param name="emailService"></param>
             <param name="config"></param>
+            <param name="env"></param>
         </member>
-        <member name="M:CustomCADs.API.Controllers.IdentityController.#ctor(CustomCADs.Application.Contracts.IUserService,CustomCADs.Infrastructure.Identity.Contracts.IAppUserManager,Microsoft.AspNetCore.Identity.SignInManager{CustomCADs.Infrastructure.Identity.AppUser},Microsoft.Extensions.Configuration.IConfiguration)">
+        <member name="M:CustomCADs.API.Controllers.IdentityController.#ctor(CustomCADs.Application.Contracts.IUserService,CustomCADs.Infrastructure.Identity.Contracts.IAppUserManager,Microsoft.AspNetCore.Identity.SignInManager{CustomCADs.Infrastructure.Identity.AppUser},CustomCADs.Application.Contracts.IEmailService,Microsoft.Extensions.Configuration.IConfiguration,Microsoft.Extensions.Hosting.IHostEnvironment)">
             <summary>
                 Controller for managing Authentication/Authorization and info about the User's Identity.
             </summary>
             <param name="userService"></param>
             <param name="appUserManager"></param>
             <param name="appSignInManager"></param>
+            <param name="emailService"></param>
             <param name="config"></param>
+            <param name="env"></param>
         </member>
         <member name="M:CustomCADs.API.Controllers.IdentityController.Register(System.String,CustomCADs.API.Models.Identity.UserRegisterModel)">
             <summary>
-                Creates a new account with the specified parameters for the user and logs into it.
+                Creates a new account with the specified parameters for the user and verifies the ownership of the email by sending a token.
             </summary>
             <param name="role">Must be Client or Contributor</param>
             <param name="register"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.IdentityController.ConfirmEmailAsync(System.String,System.String)">
+            <summary>
+                Checks the token's validity, and if successful verifies the user's email and  logs the him in.
+            </summary>
+            <param name="username"></param>
+            <param name="ect"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.IdentityController.ResentEmailVerificationAsync(System.String)">
+            <summary>
+                Sends another email with a token.
+            </summary>
+            <param name="username"></param>
             <returns></returns>
         </member>
         <member name="M:CustomCADs.API.Controllers.IdentityController.Login(CustomCADs.API.Models.Identity.UserLoginModel)">

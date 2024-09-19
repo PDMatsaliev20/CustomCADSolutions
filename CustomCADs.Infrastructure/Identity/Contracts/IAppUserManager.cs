@@ -12,5 +12,7 @@ namespace CustomCADs.Infrastructure.Identity.Contracts
         Task RemoveFromRoleAsync(AppUser user, string oldRole);
         Task DeleteAsync(AppUser user);
         Task<bool> IsLockedOutAsync(AppUser user);
+        Task<string> GenerateEmailConfirmationTokenAsync(AppUser user);
+        Task<IdentityResult> ConfirmEmailAsync(AppUser user, string token);
     }
 }

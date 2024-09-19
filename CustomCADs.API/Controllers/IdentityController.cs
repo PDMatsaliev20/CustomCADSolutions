@@ -22,13 +22,22 @@ namespace CustomCADs.API.Controllers
     /// <param name="userService"></param>
     /// <param name="appUserManager"></param>
     /// <param name="appSignInManager"></param>
+    /// <param name="emailService"></param>
     /// <param name="config"></param>
+    /// <param name="env"></param>
     [ApiController]
     [Route("API/[controller]")]
-    public class IdentityController(IUserService userService, IAppUserManager appUserManager, SignInManager<AppUser> appSignInManager, IConfiguration config) : ControllerBase
+    public class IdentityController(IUserService userService, IAppUserManager appUserManager, SignInManager<AppUser> appSignInManager, IEmailService emailService, IConfiguration config, IHostEnvironment env) : ControllerBase
     {
+        private readonly string endpoint = env.EnvironmentName switch
+        {
+            "Production" => "https://customcads.onrender.com",
+            "Development" => "https://localhost:7127",
+            _ => "",
+        } + "/API/Identity/VerifyEmail/{0}?ect={1}";
+
         /// <summary>
-        ///     Creates a new account with the specified parameters for the user and logs into it.
+        ///     Creates a new account with the specified parameters for the user and verifies the ownership of the email by sending a token.
         /// </summary>
         /// <param name="role">Must be Client or Contributor</param>
         /// <param name="register"></param>
@@ -63,31 +72,25 @@ namespace CustomCADs.API.Controllers
                 {
                     return BadRequest(ForbiddenRoleRegister);
                 }
-
                 await appUserManager.AddToRoleAsync(user, role).ConfigureAwait(false);
-                await appSignInManager.SignInAsync(user, false).ConfigureAwait(false);
-
-                Response.Cookies.Append("role", role);
-                Response.Cookies.Append("username", user.UserName!);
 
                 UserModel model = new()
                 {
                     UserName = register.Username,
-                    Email = register.Email,
+                    Email = string.Empty,
                     FirstName = register.FirstName,
                     LastName = register.LastName,
                     RoleName = role,
                 };
-                string id = await userService.CreateAsync(model).ConfigureAwait(false);
+                await userService.CreateAsync(model).ConfigureAwait(false);
 
-                JwtSecurityToken jwt = config.GenerateAccessToken(id, model.UserName, model.RoleName);
-                string signedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
-                Response.Cookies.Append("jwt", signedJwt, new() { HttpOnly = true, Secure = true, Expires = jwt.ValidTo });                
+                string ect = await appUserManager.GenerateEmailConfirmationTokenAsync(user).ConfigureAwait(false);
+                await emailService.SendVerificationEmailAsync(
+                    register.Email, 
+                    string.Format(endpoint, model.UserName, ect)
+                ).ConfigureAwait(false);
 
-                (string newRT, DateTime newEnd) = await userService.RenewRefreshToken(model).ConfigureAwait(false);
-                Response.Cookies.Append("rt", newRT, new() { HttpOnly = true, Secure = true, Expires = newEnd });
-
-                return "Welcome!";
+                return "Check your email.";
             }
             catch (DbUpdateConcurrencyException ex)
             {
@@ -112,6 +115,91 @@ namespace CustomCADs.API.Controllers
         }
 
         /// <summary>
+        ///     Checks the token's validity, and if successful verifies the user's email and  logs the him in.
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="ect"></param>
+        /// <returns></returns>
+        [HttpGet("VerifyEmail/{username}")]
+        public async Task<ActionResult<string>> ConfirmEmailAsync(string username, string ect)
+        {
+            try
+            {
+                AppUser? appUser = await appUserManager.FindByNameAsync(username).ConfigureAwait(false);
+                if (appUser == null)
+                {
+                    return NotFound(string.Format(ApiMessages.NotFound, "Account"));
+                }
+
+                if (appUser.EmailConfirmed)
+                {
+                    return BadRequest(EmailAlreadyVerified);
+                }
+
+                string decodedECT = ect.Replace(' ', '+');
+                IdentityResult result = await appUserManager.ConfirmEmailAsync(appUser, decodedECT).ConfigureAwait(false);
+                if (!result.Succeeded)
+                {
+                    return BadRequest(InvalidEmailToken);
+                }
+
+                await appSignInManager.SignInAsync(appUser, false).ConfigureAwait(false);
+                UserModel model = await userService.GetByName(username).ConfigureAwait(false);
+
+                Response.Cookies.Append("role", model.RoleName);
+                Response.Cookies.Append("username", username);
+
+                JwtSecurityToken jwt = config.GenerateAccessToken(model.Id, model.UserName, model.RoleName);
+                string signedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
+                Response.Cookies.Append("jwt", signedJwt, new() { HttpOnly = true, Secure = true, Expires = jwt.ValidTo });
+
+                (string newRT, DateTime newEnd) = await userService.RenewRefreshToken(model).ConfigureAwait(false);
+                Response.Cookies.Append("rt", newRT, new() { HttpOnly = true, Secure = true, Expires = newEnd });
+
+                return "Welcome!";
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(Status500InternalServerError, ex.GetMessage());
+            }
+        }
+
+        /// <summary>
+        ///     Sends another email with a token.
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
+        [HttpGet("ResendEmailVerification")]
+        public async Task<ActionResult<string>> ResentEmailVerificationAsync(string username)
+        {
+            try
+            {
+                AppUser? user = await appUserManager.FindByNameAsync(username).ConfigureAwait(false);
+                if (user == null)
+                {
+                    return NotFound(string.Format(ApiMessages.NotFound, "Account"));
+                }
+
+                if (user.EmailConfirmed)
+                {
+                    return BadRequest(EmailAlreadyVerified);
+                }
+
+                string ect = await appUserManager.GenerateEmailConfirmationTokenAsync(user).ConfigureAwait(false);
+                await emailService.SendVerificationEmailAsync(
+                    user.Email!,
+                    string.Format(endpoint, username, ect)
+                ).ConfigureAwait(false);
+
+                return "Check your email.";
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(Status500InternalServerError, ex.GetMessage());
+            }
+        }
+
+        /// <summary>
         ///     Logs into the account with the specified parameters.
         /// </summary>
         /// <param name="login"></param>
@@ -128,9 +216,9 @@ namespace CustomCADs.API.Controllers
             try
             {
                 AppUser? user = await appUserManager.FindByNameAsync(login.Username).ConfigureAwait(false);
-                if (user == null)
+                if (user == null || !user.EmailConfirmed)
                 {
-                    return Unauthorized(InvalidLogin);
+                    return Unauthorized(InvalidAccountOrEmail);
                 }
 
                 if (await appUserManager.IsLockedOutAsync(user).ConfigureAwait(false) && user.LockoutEnd.HasValue)

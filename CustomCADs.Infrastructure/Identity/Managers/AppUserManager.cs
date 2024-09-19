@@ -28,5 +28,11 @@ namespace CustomCADs.Infrastructure.Identity.Managers
 
         public async Task<bool> IsLockedOutAsync(AppUser user)
             => await manager.IsLockedOutAsync(user).ConfigureAwait(false);
+
+        public async Task<IdentityResult> ConfirmEmailAsync(AppUser user, string token)
+            => await manager.ConfirmEmailAsync(user, token).ConfigureAwait(false);
+
+        public async Task<string> GenerateEmailConfirmationTokenAsync(AppUser user)
+            => await manager.GenerateEmailConfirmationTokenAsync(user).ConfigureAwait(false);
     }
 }
