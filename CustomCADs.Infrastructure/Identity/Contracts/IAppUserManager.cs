@@ -4,6 +4,7 @@ namespace CustomCADs.Infrastructure.Identity.Contracts
 {
     public interface IAppUserManager
     {
+        Task<AppUser?> FindByIdAsync(string id);
         Task<AppUser?> FindByNameAsync(string username);
         Task<IdentityResult> CreateAsync(AppUser user);
         Task<IdentityResult> CreateAsync(AppUser user, string password);
@@ -14,5 +15,7 @@ namespace CustomCADs.Infrastructure.Identity.Contracts
         Task<bool> IsLockedOutAsync(AppUser user);
         Task<string> GenerateEmailConfirmationTokenAsync(AppUser user);
         Task<IdentityResult> ConfirmEmailAsync(AppUser user, string token);
+        Task<string> GeneratePasswordResetTokenAsync(AppUser user);
+        Task<IdentityResult> ResetPasswordAsync(AppUser user, string token, string newPassword);
     }
 }

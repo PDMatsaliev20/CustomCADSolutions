@@ -158,7 +158,7 @@ namespace CustomCADs.API.Controllers
                 UserModel model = await userService.GetByName(username).ConfigureAwait(false);
 
                 Response.Cookies.Append("role", model.RoleName);
-                Response.Cookies.Append("username", username);
+                Response.Cookies.Append("username", model.UserName);
 
                 JwtSecurityToken jwt = config.GenerateAccessToken(model.Id, model.UserName, model.RoleName);
                 string signedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
@@ -255,7 +255,7 @@ namespace CustomCADs.API.Controllers
                 if (result.Succeeded)
                 {
                     UserModel model = await userService.GetByName(login.Username).ConfigureAwait(false);
-                    
+
                     Response.Cookies.Append("role", model.RoleName);
                     Response.Cookies.Append("username", model.UserName);
 
@@ -283,6 +283,63 @@ namespace CustomCADs.API.Controllers
 
                     return Unauthorized(InvalidLogin);
                 }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(Status500InternalServerError, ex.GetMessage());
+            }
+        }
+
+        [HttpPost("ResetPassword/{username}")]
+        [ProducesResponseType(Status200OK)]
+        [ProducesResponseType(Status500InternalServerError)]
+        public async Task<ActionResult<string>> ResetPassword(string username, string token, string newPassword)
+        {
+            try
+            {
+                AppUser? user = await appUserManager.FindByNameAsync(username).ConfigureAwait(false);
+                if (user == null)
+                {
+                    return NotFound(string.Format(ApiMessages.NotFound, "User"));
+                }
+
+                IdentityResult result = await appUserManager.ResetPasswordAsync(user, token, newPassword).ConfigureAwait(false);
+                if (!result.Succeeded)
+                {
+                    foreach (IdentityError error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                    return BadRequest(ModelState);
+                }
+
+                return "Done!";
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(Status500InternalServerError, ex.GetMessage());
+            }
+        }
+
+        [HttpGet("ForgotPassword/{username}")]
+        [ProducesResponseType(Status200OK)]
+        [ProducesResponseType(Status500InternalServerError)]
+        public async Task<ActionResult<string>> ForgotPassword(string username)
+        {
+            try
+            {
+                AppUser? user = await appUserManager.FindByNameAsync(username).ConfigureAwait(false);
+                if (user == null)
+                {
+                    return NotFound(string.Format(ApiMessages.NotFound, "User"));
+                }
+
+                string token = await appUserManager.GeneratePasswordResetTokenAsync(user).ConfigureAwait(false);
+
+                string endpoint = clientPath + $"/new-password/{username}?token={token}";
+                await emailService.SendForgotPasswordEmailAsync(user.Email!, endpoint).ConfigureAwait(false);
+
+                return "Check your email!";
             }
             catch (Exception ex)
             {
@@ -338,32 +395,32 @@ namespace CustomCADs.API.Controllers
         {
             try
             {
-            string? rt = Request.Cookies.FirstOrDefault(c => c.Key == "rt").Value;
-            if (string.IsNullOrEmpty(rt))
-            {
-                return BadRequest(NoRefreshToken);
+                string? rt = Request.Cookies.FirstOrDefault(c => c.Key == "rt").Value;
+                if (string.IsNullOrEmpty(rt))
+                {
+                    return BadRequest(NoRefreshToken);
+                }
+
+                UserModel model = await userService.GetByRefreshToken(rt).ConfigureAwait(false);
+                if (model.RefreshTokenEndDate < DateTime.UtcNow)
+                {
+                    return StatusCode(Status401Unauthorized);
+                }
+
+                JwtSecurityToken newJwt = config.GenerateAccessToken(model.Id, model.UserName, model.RoleName);
+                string signedJwt = new JwtSecurityTokenHandler().WriteToken(newJwt);
+                Response.Cookies.Append("jwt", signedJwt, new() { HttpOnly = true, Secure = true, Expires = newJwt.ValidTo });
+
+                if (model.RefreshTokenEndDate >= DateTime.UtcNow.AddMinutes(1))
+                {
+                    return NoNeedForNewRT;
+                }
+
+                (string newRT, DateTime newEnd) = await userService.RenewRefreshToken(model).ConfigureAwait(false);
+                Response.Cookies.Append("rt", newRT, new() { HttpOnly = true, Secure = true, Expires = newEnd });
+
+                return AccessTokenRenewed;
             }
-
-            UserModel model = await userService.GetByRefreshToken(rt).ConfigureAwait(false);
-            if (model.RefreshTokenEndDate < DateTime.UtcNow)
-            {
-                return StatusCode(Status401Unauthorized);
-            }
-
-            JwtSecurityToken newJwt = config.GenerateAccessToken(model.Id, model.UserName, model.RoleName);
-            string signedJwt = new JwtSecurityTokenHandler().WriteToken(newJwt);
-            Response.Cookies.Append("jwt", signedJwt, new() { HttpOnly = true, Secure = true, Expires = newJwt.ValidTo });
-
-            if (model.RefreshTokenEndDate >= DateTime.UtcNow.AddMinutes(1))
-            {
-                return NoNeedForNewRT;
-            }
-
-            (string newRT, DateTime newEnd) = await userService.RenewRefreshToken(model).ConfigureAwait(false);
-            Response.Cookies.Append("rt", newRT, new() { HttpOnly = true, Secure = true, Expires = newEnd });
-
-            return AccessTokenRenewed;
-        }
             catch (ArgumentNullException)
             {
                 return NotFound("Your session has ended, you must log in again.");
@@ -373,7 +430,6 @@ namespace CustomCADs.API.Controllers
                 return StatusCode(Status500InternalServerError, ex.GetMessage());
             }
         }
-
 
         /// <summary>
         ///     Gets info about User Authentication.

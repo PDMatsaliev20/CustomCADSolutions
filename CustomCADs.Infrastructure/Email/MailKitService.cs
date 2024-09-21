@@ -63,5 +63,34 @@ namespace CustomCADs.Infrastructure.Email
                 throw;
             }
         }
+
+        public async Task SendForgotPasswordEmailAsync(string to, string endpoint)
+        {
+            try
+            {
+                MailboxAddress toEmail = new("", to), fromEmail = new("", From);
+
+                string html = @$"
+<h2>We've got you!</h2>
+<h6>Click this button to set a new password.</h6>
+<a href='{endpoint}' style='background-color: #4CAF50; color: white; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block; border-radius: 5px;'>Reset Password</a>
+";
+
+                MimeMessage message = new()
+                {
+                    Subject = "Forgot your CustomCADs password?",
+                    Body = new BodyBuilder() { HtmlBody = html }.ToMessageBody()
+                };
+                message.From.Add(fromEmail);
+                message.To.Add(toEmail);
+
+                using SmtpClient client = new();
+                await client.SendMessageAsync(Server, Port, Options, From, password, message).ConfigureAwait(false);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }

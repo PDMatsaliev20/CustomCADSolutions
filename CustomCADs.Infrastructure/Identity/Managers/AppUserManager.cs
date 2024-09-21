@@ -5,6 +5,9 @@ namespace CustomCADs.Infrastructure.Identity.Managers
 {
     public class AppUserManager(UserManager<AppUser> manager) : IAppUserManager
     {
+        public async Task<AppUser?> FindByIdAsync(string id)
+            => await manager.FindByIdAsync(id).ConfigureAwait(false);
+
         public async Task<AppUser?> FindByNameAsync(string username)
             => await manager.FindByNameAsync(username).ConfigureAwait(false);
 
@@ -34,5 +37,11 @@ namespace CustomCADs.Infrastructure.Identity.Managers
 
         public async Task<string> GenerateEmailConfirmationTokenAsync(AppUser user)
             => await manager.GenerateEmailConfirmationTokenAsync(user).ConfigureAwait(false);
+
+        public async Task<string> GeneratePasswordResetTokenAsync(AppUser user)
+            => await manager.GeneratePasswordResetTokenAsync(user).ConfigureAwait(false);
+
+        public async Task<IdentityResult> ResetPasswordAsync(AppUser user, string token, string newPassword)
+            => await manager.ResetPasswordAsync(user, token, newPassword).ConfigureAwait(false);
     }
 }
