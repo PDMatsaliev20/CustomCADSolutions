@@ -8,17 +8,17 @@ namespace CustomCADs.Infrastructure.Email
 {
     public class MailKitService(IConfiguration config) : IEmailService
     {
-        private readonly string server = "smtp.gmail.com";
-        private readonly int port = 587;
+        private const string Server = "smtp.gmail.com";
+        private const int Port = 587;
+        private const string From = "customcads414@gmail.com";
+        private const SecureSocketOptions Options = SecureSocketOptions.StartTls;
         private readonly string password = config["Email:AppPassword"] ?? throw new ArgumentNullException("No App Password provided.");
-        private readonly string from = "customcads414@gmail.com";
-        private readonly SecureSocketOptions options = SecureSocketOptions.StartTls;
 
         public async Task SendEmailAsync(string to, string subject, string body)
         {
             try
             {
-                MailboxAddress toEmail = new("", to), fromEmail = new("", from);
+                MailboxAddress toEmail = new("", to), fromEmail = new("", From);
 
                 MimeMessage message = new()
                 {
@@ -29,10 +29,7 @@ namespace CustomCADs.Infrastructure.Email
                 message.To.Add(toEmail);
 
                 using SmtpClient client = new();
-                await client.ConnectAsync(server, port, options).ConfigureAwait(false);
-                await client.AuthenticateAsync(from, password).ConfigureAwait(false);
-                await client.SendAsync(message).ConfigureAwait(false);
-                await client.DisconnectAsync(quit: true).ConfigureAwait(false);
+                await client.SendMessageAsync(Server, Port, Options, From, password, message).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -44,7 +41,7 @@ namespace CustomCADs.Infrastructure.Email
         {
             try
             {
-                MailboxAddress toEmail = new("", to), fromEmail = new("", from);
+                MailboxAddress toEmail = new("", to), fromEmail = new("", From);
                 string html = @$"
 <h2>Welcome to CustomCADs!</h2>
 <p>Please confirm your email by clicking the button below:</p>
@@ -59,14 +56,11 @@ namespace CustomCADs.Infrastructure.Email
                 message.To.Add(toEmail);
 
                 using SmtpClient client = new();
-                await client.ConnectAsync(server, port, options).ConfigureAwait(false);
-                await client.AuthenticateAsync(from, password).ConfigureAwait(false);
-                await client.SendAsync(message).ConfigureAwait(false);
-                await client.DisconnectAsync(quit: true).ConfigureAwait(false);
+                await client.SendMessageAsync(Server, Port, Options, From, password, message).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                throw;
             }
         }
     }

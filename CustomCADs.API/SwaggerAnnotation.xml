@@ -369,7 +369,7 @@
             <param name="ect"></param>
             <returns></returns>
         </member>
-        <member name="M:CustomCADs.API.Controllers.IdentityController.ResentEmailVerificationAsync(System.String)">
+        <member name="M:CustomCADs.API.Controllers.IdentityController.ResendEmailVerificationAsync(System.String)">
             <summary>
                 Sends another email with a token.
             </summary>

@@ -29,12 +29,19 @@ namespace CustomCADs.API.Controllers
     [Route("API/[controller]")]
     public class IdentityController(IUserService userService, IAppUserManager appUserManager, SignInManager<AppUser> appSignInManager, IEmailService emailService, IConfiguration config, IHostEnvironment env) : ControllerBase
     {
-        private readonly string endpoint = env.EnvironmentName switch
+        private readonly string serverPath = env.EnvironmentName switch
         {
             "Production" => "https://customcads.onrender.com",
             "Development" => "https://localhost:7127",
             _ => "",
-        } + "/API/Identity/VerifyEmail/{0}?ect={1}";
+        } + "/API/Identity";
+
+        private readonly string clientPath = env.EnvironmentName switch
+        {
+            "Production" => "https://customcads.onrender.com",
+            "Development" => "https://localhost:5173",
+            _ => "",
+        };
 
         /// <summary>
         ///     Creates a new account with the specified parameters for the user and verifies the ownership of the email by sending a token.
@@ -46,6 +53,8 @@ namespace CustomCADs.API.Controllers
         [Consumes("application/json")]
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status400BadRequest)]
+        [ProducesResponseType(Status404NotFound)]
+        [ProducesResponseType(Status409Conflict)]
         [ProducesResponseType(Status500InternalServerError)]
         public async Task<ActionResult<string>> Register([FromRoute] string role, [FromBody] UserRegisterModel register)
         {
@@ -85,11 +94,9 @@ namespace CustomCADs.API.Controllers
                 await userService.CreateAsync(model).ConfigureAwait(false);
 
                 string ect = await appUserManager.GenerateEmailConfirmationTokenAsync(user).ConfigureAwait(false);
-                await emailService.SendVerificationEmailAsync(
-                    register.Email, 
-                    string.Format(endpoint, model.UserName, ect)
-                ).ConfigureAwait(false);
+                string endpoint = serverPath + $"/VerifyEmail/{model.UserName}?ect={ect}";
 
+                await emailService.SendVerificationEmailAsync(register.Email, endpoint).ConfigureAwait(false);
                 return "Check your email.";
             }
             catch (DbUpdateConcurrencyException ex)
@@ -121,6 +128,10 @@ namespace CustomCADs.API.Controllers
         /// <param name="ect"></param>
         /// <returns></returns>
         [HttpGet("VerifyEmail/{username}")]
+        [ProducesResponseType(Status200OK)]
+        [ProducesResponseType(Status400BadRequest)]
+        [ProducesResponseType(Status404NotFound)]
+        [ProducesResponseType(Status500InternalServerError)]
         public async Task<ActionResult<string>> ConfirmEmailAsync(string username, string ect)
         {
             try
@@ -170,7 +181,11 @@ namespace CustomCADs.API.Controllers
         /// <param name="username"></param>
         /// <returns></returns>
         [HttpGet("ResendEmailVerification")]
-        public async Task<ActionResult<string>> ResentEmailVerificationAsync(string username)
+        [ProducesResponseType(Status200OK)]
+        [ProducesResponseType(Status400BadRequest)]
+        [ProducesResponseType(Status404NotFound)]
+        [ProducesResponseType(Status500InternalServerError)]
+        public async Task<ActionResult<string>> ResendEmailVerificationAsync(string username)
         {
             try
             {
@@ -186,11 +201,9 @@ namespace CustomCADs.API.Controllers
                 }
 
                 string ect = await appUserManager.GenerateEmailConfirmationTokenAsync(user).ConfigureAwait(false);
-                await emailService.SendVerificationEmailAsync(
-                    user.Email!,
-                    string.Format(endpoint, username, ect)
-                ).ConfigureAwait(false);
+                string endpoint = serverPath + $"/VerifyEmail/{username}?ect={ect}";
 
+                await emailService.SendVerificationEmailAsync(user.Email!, endpoint).ConfigureAwait(false);
                 return "Check your email.";
             }
             catch (Exception ex)
@@ -323,6 +336,8 @@ namespace CustomCADs.API.Controllers
         [HttpPost("RefreshToken")]
         public async Task<ActionResult<string>> RefreshToken()
         {
+            try
+            {
             string? rt = Request.Cookies.FirstOrDefault(c => c.Key == "rt").Value;
             if (string.IsNullOrEmpty(rt))
             {
@@ -348,6 +363,15 @@ namespace CustomCADs.API.Controllers
             Response.Cookies.Append("rt", newRT, new() { HttpOnly = true, Secure = true, Expires = newEnd });
 
             return AccessTokenRenewed;
+        }
+            catch (ArgumentNullException)
+            {
+                return NotFound("Your session has ended, you must log in again.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(Status500InternalServerError, ex.GetMessage());
+            }
         }
 
 
