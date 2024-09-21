@@ -407,6 +407,20 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:CustomCADs.API.Controllers.IdentityController.IsEmailConfirmed(System.String)">
+            <summary>
+                Gets info about User Email Status
+            </summary>
+            <param name="username"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CustomCADs.API.Controllers.IdentityController.DoesUserExist(System.String)">
+            <summary>
+                Gets info about User Existence Status
+            </summary>
+            <param name="username"></param>
+            <returns></returns>
+        </member>
         <member name="T:CustomCADs.API.Controllers.OrdersController">
             <summary>
                 Controller for CRUD operations on Order.

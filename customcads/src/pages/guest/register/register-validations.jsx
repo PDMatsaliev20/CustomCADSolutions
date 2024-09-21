@@ -8,6 +8,7 @@ export default (passwordValue) => {
 
     const firstNameInfo = { field: tCommon('labels.first_name'), min: firstName.minLength, max: firstName.maxLength };
     const firstNameValidation = {
+        setValueAs: value => value === "" ? undefined : value,
         required: {
             value: firstName.isRequired,
             message: tCommon('errors.required', firstNameInfo),
@@ -24,6 +25,7 @@ export default (passwordValue) => {
     
     const lastNameInfo = { field: tCommon('labels.last_name'), min: lastName.minLength, max: lastName.maxLength };
     const lastNameValidation = {
+        setValueAs: value => value === "" ? undefined : value,
         required: {
             value: lastName.isRequired,
             message: tCommon('errors.required', lastNameInfo),

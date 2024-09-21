@@ -471,5 +471,31 @@ namespace CustomCADs.API.Controllers
                 return StatusCode(Status500InternalServerError, ex.GetMessage());
             }
         }
+
+        /// <summary>
+        ///     Gets info about User Email Status
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
+        [HttpGet("IsEmailConfirmed/{username}")]
+        [ProducesResponseType(Status200OK)]
+        public async Task<bool> IsEmailConfirmed(string username)
+        {
+            AppUser? user = await appUserManager.FindByNameAsync(username).ConfigureAwait(false);
+            return user?.EmailConfirmed ?? false;
+        }
+
+        /// <summary>
+        ///     Gets info about User Existence Status
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
+        [HttpGet("DoesUserExist/{username}")]
+        [ProducesResponseType(Status200OK)]
+        public async Task<bool> DoesUserExist(string username)
+        {
+            AppUser? user = await appUserManager.FindByNameAsync(username).ConfigureAwait(false);
+            return user != null;
+        }
     }
 }

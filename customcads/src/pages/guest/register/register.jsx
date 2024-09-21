@@ -1,24 +1,21 @@
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
-import { useAuth } from '@/contexts/auth-context';
 import { Register } from '@/requests/public/identity';
 import ErrorPage from '@/components/error-page';
 import Input from '@/components/fields/input';
 import Password from '@/components/fields/password';
-import { getCookie } from '@/utils/cookie-manager';
 import capitalize from '@/utils/capitalize';
 import registerValidations from './register-validations';
 
 function RegisterPage() {
-    const { setIsAuthenticated } = useAuth();
     const navigate = useNavigate();
     const { t: tCommon } = useTranslation('common');
     const { t: tPages } = useTranslation('pages');
     const { role } = useParams();
     const { register, formState, handleSubmit, watch } = useForm({ mode: 'onTouched' });
     const { firstName, lastName, username, email, password, confirmPassword } = registerValidations(watch('password'));
-    
+
     const isClient = role.toLowerCase() === "client";
     const isContributor = role.toLowerCase() === "contributor";
     if (!(isClient || isContributor)) {
@@ -28,8 +25,7 @@ function RegisterPage() {
     const onSubmit = async (user) => {
         try {
             await Register(isClient ? 'Client' : 'Contributor', user);
-            setIsAuthenticated(true);
-            navigate(`/${getCookie('role').toLowerCase()}`);
+            navigate(`/register/verify-email/${user.username}`);
         } catch (e) {
             console.log(e);
         }

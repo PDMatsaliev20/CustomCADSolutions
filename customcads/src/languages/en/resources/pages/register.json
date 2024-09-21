@@ -10,5 +10,10 @@
   "go_to_login": "Already have an account?",
   "login": "Log in",
   "want": "You want to be a",
-  "switch": "Switch roles"
+  "switch": "Switch roles",
+  "verify-title": "Check the provided email.",
+  "when_verified": "When you verify your email,",
+  "refresh_page": "refresh this page",
+  "no_email": "Didn't receive an email",
+  "send_another": "Send another"
 }

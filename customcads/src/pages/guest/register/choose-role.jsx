@@ -37,7 +37,7 @@ function ChooseRole() {
                         <div className="ms-2">
                             <label htmlFor="client" className="text-lg font-bold">
                                 {tPages('register.client_option')}
-                                <strong className="text-indigo-800">{tCommon('roles.Client')}</strong>
+                                <strong className="text-indigo-800"> {tCommon('roles.Client')}</strong>
                                 <p className="text-sm font-normal">{tPages('register.client_description')}</p>
                             </label>
                         </div>
