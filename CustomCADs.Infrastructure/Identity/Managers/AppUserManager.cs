@@ -10,6 +10,9 @@ namespace CustomCADs.Infrastructure.Identity.Managers
 
         public async Task<AppUser?> FindByNameAsync(string username)
             => await manager.FindByNameAsync(username).ConfigureAwait(false);
+        
+        public async Task<AppUser?> FindByEmailAsync(string email)
+            => await manager.FindByEmailAsync(email).ConfigureAwait(false);
 
         public async Task<IdentityResult> CreateAsync(AppUser user) 
             => await manager.CreateAsync(user).ConfigureAwait(false);

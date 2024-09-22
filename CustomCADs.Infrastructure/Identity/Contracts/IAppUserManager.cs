@@ -6,6 +6,7 @@ namespace CustomCADs.Infrastructure.Identity.Contracts
     {
         Task<AppUser?> FindByIdAsync(string id);
         Task<AppUser?> FindByNameAsync(string username);
+        Task<AppUser?> FindByEmailAsync(string email);
         Task<IdentityResult> CreateAsync(AppUser user);
         Task<IdentityResult> CreateAsync(AppUser user, string password);
         Task UpdateAsync(AppUser user);

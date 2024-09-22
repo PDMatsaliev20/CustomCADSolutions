@@ -290,20 +290,21 @@ namespace CustomCADs.API.Controllers
             }
         }
 
-        [HttpPost("ResetPassword/{username}")]
+        [HttpPost("ResetPassword/{email}")]
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status500InternalServerError)]
-        public async Task<ActionResult<string>> ResetPassword(string username, string token, string newPassword)
+        public async Task<ActionResult<string>> ResetPassword(string email, string token, string newPassword)
         {
             try
             {
-                AppUser? user = await appUserManager.FindByNameAsync(username).ConfigureAwait(false);
+                AppUser? user = await appUserManager.FindByEmailAsync(email).ConfigureAwait(false);
                 if (user == null)
                 {
                     return NotFound(string.Format(ApiMessages.NotFound, "User"));
                 }
 
-                IdentityResult result = await appUserManager.ResetPasswordAsync(user, token, newPassword).ConfigureAwait(false);
+                string encodedToken = token.Replace(' ', '+');
+                IdentityResult result = await appUserManager.ResetPasswordAsync(user, encodedToken, newPassword).ConfigureAwait(false);
                 if (!result.Succeeded)
                 {
                     foreach (IdentityError error in result.Errors)
@@ -321,14 +322,14 @@ namespace CustomCADs.API.Controllers
             }
         }
 
-        [HttpGet("ForgotPassword/{username}")]
+        [HttpGet("ForgotPassword/{email}")]
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status500InternalServerError)]
-        public async Task<ActionResult<string>> ForgotPassword(string username)
+        public async Task<ActionResult<string>> ForgotPassword(string email)
         {
             try
             {
-                AppUser? user = await appUserManager.FindByNameAsync(username).ConfigureAwait(false);
+                AppUser? user = await appUserManager.FindByEmailAsync(email).ConfigureAwait(false);
                 if (user == null)
                 {
                     return NotFound(string.Format(ApiMessages.NotFound, "User"));
@@ -336,8 +337,8 @@ namespace CustomCADs.API.Controllers
 
                 string token = await appUserManager.GeneratePasswordResetTokenAsync(user).ConfigureAwait(false);
 
-                string endpoint = clientPath + $"/new-password/{username}?token={token}";
-                await emailService.SendForgotPasswordEmailAsync(user.Email!, endpoint).ConfigureAwait(false);
+                string endpoint = clientPath + $"/login/reset-password?email={email}&token={token}";
+                await emailService.SendForgotPasswordEmailAsync(email, endpoint).ConfigureAwait(false);
 
                 return "Check your email!";
             }
