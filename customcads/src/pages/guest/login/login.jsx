@@ -77,7 +77,7 @@ function LoginPage() {
                             <label htmlFor="rememberMe" className="ms-1 text-indigo-50">{tPages('login.remember_me')}</label>
                         </div>
                         <div>
-                            <Link to="#" className="text-indigo-900 font-bold underline-offset-2 underline hover:italic">
+                            <Link to="/login/forgot-password" className="text-indigo-900 font-bold underline-offset-2 underline hover:italic">
                                 {tPages('login.forgot_password')}
                             </Link>
                         </div>

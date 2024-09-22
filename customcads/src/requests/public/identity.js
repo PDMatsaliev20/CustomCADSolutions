@@ -16,6 +16,14 @@ const Login = async (user) => {
     return await axios.post(`/API/Identity/Login`, user);
 };
 
+const ResetPassword = async (email, token, password) => {
+    return await axios.post(`/API/Identity/ResetPassword/${email}?token=${token}&newPassword=${password}`);
+};
+
+const ForgotPassword = async (email) => {
+    return await axios.get(`/API/Identity/ForgotPassword/${email}`);
+};
+
 const Logout = async () => {
     return await axios.post(`/API/Identity/Logout`);
 };
@@ -40,4 +48,4 @@ const DoesUserExist = async (username) => {
     return await axios.get(`/API/Identity/DoesUserExist/${username}`);
 };
 
-export { Register, VerifyEmail, ResendEmailVerification, Login, Logout, RefreshToken, IsAuthenticated, GetUserRole, IsEmailConfirmed, DoesUserExist };
+export { Register, VerifyEmail, ResendEmailVerification, Login, ResetPassword, ForgotPassword, Logout, RefreshToken, IsAuthenticated, GetUserRole, IsEmailConfirmed, DoesUserExist };
