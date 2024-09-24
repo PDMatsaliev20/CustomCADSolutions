@@ -7,6 +7,7 @@
         public const string EmailAlreadyVerified = "Email already verified.";
         public const string InvalidEmailToken = "Invalid Email Verification token.";
         public const string NoRefreshToken = "No Refresh Token provided.";
+        public const string RefreshTokenExpired = "Refresh Token expired.";
         public const string NoNeedForNewRT = "Refresh token still valid, no need to refresh.";
         public const string AlreadyLoggedOut = "You're already logged out or don't have an account yet.";
         public const string AccessTokenRenewed = "Access token renewed";

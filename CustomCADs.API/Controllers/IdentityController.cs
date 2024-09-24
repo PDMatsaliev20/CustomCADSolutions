@@ -405,7 +405,7 @@ namespace CustomCADs.API.Controllers
                 UserModel model = await userService.GetByRefreshToken(rt).ConfigureAwait(false);
                 if (model.RefreshTokenEndDate < DateTime.UtcNow)
                 {
-                    return StatusCode(Status401Unauthorized);
+                    return StatusCode(Status401Unauthorized, RefreshTokenExpired);
                 }
 
                 JwtSecurityToken newJwt = config.GenerateAccessToken(model.Id, model.UserName, model.RoleName);
@@ -414,13 +414,13 @@ namespace CustomCADs.API.Controllers
 
                 if (model.RefreshTokenEndDate >= DateTime.UtcNow.AddMinutes(1))
                 {
-                    return NoNeedForNewRT;
+                    return Ok(NoNeedForNewRT);
                 }
 
                 (string newRT, DateTime newEnd) = await userService.RenewRefreshToken(model).ConfigureAwait(false);
                 Response.Cookies.Append("rt", newRT, new() { HttpOnly = true, Secure = true, Expires = newEnd });
 
-                return AccessTokenRenewed;
+                return Ok(AccessTokenRenewed);
             }
             catch (ArgumentNullException)
             {
