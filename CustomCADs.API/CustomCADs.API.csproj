@@ -10,11 +10,13 @@
 		<UserSecretsId>447ca689-9b4b-4d2d-a670-8312356bdb50</UserSecretsId>
 		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
-		<NoWarn>1591</NoWarn>
+		<NoWarn>1591, CA2016</NoWarn>
 		<DocumentationFile>SwaggerAnnotation.xml</DocumentationFile>
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="FastEndpoints" Version="5.29.0" />
+		<PackageReference Include="FastEndpoints.Swagger" Version="5.29.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.5">
 			<PrivateAssets>all</PrivateAssets>

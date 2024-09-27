@@ -11,7 +11,7 @@ string[] roles = [Admin, Designer, Contributor, Client];
 builder.Services.AddAuthWithCookie(builder.Configuration).AddRoles(roles);
 
 builder.Services.AddMappings();
-builder.Services.AddControllers().AddJsonAndXml();
+builder.Services.AddEndpoints().AddJsonAndXml();
 
 builder.Services.AddApiConfigurations();
 builder.Services.AddCorsForReact();
@@ -47,6 +47,8 @@ if (app.Environment.IsDevelopment())
     }).ConfigureAwait(false);
 }
 
+app.UseEndpoints();
 app.MapControllers();
 app.MapFallbackToFile("index.html");
+
 await app.RunAsync().ConfigureAwait(false);

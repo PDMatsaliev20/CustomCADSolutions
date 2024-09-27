@@ -18,6 +18,8 @@ using CustomCADs.Persistence.Repositories.Categories;
 using CustomCADs.Persistence.Repositories.Orders;
 using CustomCADs.Persistence.Repositories.Roles;
 using CustomCADs.Persistence.Repositories.Users;
+using FastEndpoints;
+using FastEndpoints.Swagger;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.StaticFiles;
@@ -26,6 +28,7 @@ using Microsoft.IdentityModel.Tokens;
 using Stripe;
 using System.Text;
 using static CustomCADs.Domain.DataConstants.RoleConstants;
+using Order = CustomCADs.Domain.Entities.Order;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -102,6 +105,13 @@ namespace Microsoft.Extensions.DependencyInjection
                 .AddAutoMapper(typeof(TestsErrorMessages));
         }
 
+        public static IMvcBuilder AddEndpoints(this IServiceCollection services)
+        {
+            return services
+                .AddFastEndpoints()
+                .AddControllers();
+        }
+
         public static void AddJsonAndXml(this IMvcBuilder mvc)
         {
             mvc.AddNewtonsoftJson();
@@ -153,7 +163,7 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 string? secretKey = config["JwtSettings:SecretKey"];
                 ArgumentNullException.ThrowIfNull(secretKey, nameof(secretKey));
-                
+
                 opt.TokenValidationParameters = new()
                 {
                     ValidateAudience = true,
@@ -177,7 +187,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
             return services;
         }
-        
+
         public static void AddRoles(this IServiceCollection services, IEnumerable<string> roles)
         {
             services.AddAuthorization(options =>
@@ -290,6 +300,13 @@ namespace Microsoft.Extensions.DependencyInjection
                     await appUserManager.AddToRoleAsync(user, role);
                 }
             }
+        }
+
+        public static IApplicationBuilder UseEndpoints(this IApplicationBuilder app)
+        {
+            return app
+                .UseFastEndpoints()
+                .UseSwaggerGen();
         }
     }
 }
