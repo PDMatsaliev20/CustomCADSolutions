@@ -1,7 +1,7 @@
 import { AxiosError } from 'axios';
 import { RouteObject } from 'react-router-dom';
 import AuthGuard from '@/routing/auth-guard';
-import { GetCategories } from '@/requests/public/home';
+import { GetCategories } from '@/requests/public/categories';
 import { GetCad } from '@/requests/private/cads';
 import { GetUncheckedCad, GetOngoingOrder } from '@/requests/private/designer';
 import DesignerHomePage from '@/pages/designer/designer-home';

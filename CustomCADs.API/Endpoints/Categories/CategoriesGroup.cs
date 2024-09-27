@@ -9,7 +9,8 @@ namespace CustomCADs.API.Endpoints.Categories
         {
             Configure("API/Categories", ep =>
             {
-                
+                ep.Options(opt => opt.WithTags("Categories"));
+                ep.Roles(Admin);
             });   
         }
     }

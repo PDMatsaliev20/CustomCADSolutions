@@ -1,7 +1,8 @@
 import { useState, useEffect, Dispatch, SetStateAction, FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { GetCategories, GetSortings } from '@/requests/public/home';
+import { GetSortings } from '@/requests/public/home';
+import { GetCategories } from '@/requests/public/categories';
 import Input from './fields/input';
 import Select from './fields/select';
 

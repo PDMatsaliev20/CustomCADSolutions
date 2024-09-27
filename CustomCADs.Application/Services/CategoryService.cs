@@ -31,6 +31,9 @@ namespace CustomCADs.Application.Services
             CategoryModel model = mapper.Map<CategoryModel>(entity);
             return model;
         }
+        
+        public async Task<bool> ExistsByIdAsync(int id)
+            => await queries.ExistsByIdAsync(id).ConfigureAwait(false);
 
         public async Task<int> CreateAsync(CategoryModel model)
         {

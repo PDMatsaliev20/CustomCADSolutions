@@ -1,11 +1,9 @@
 ﻿using AutoMapper;
 using CustomCADs.API.Helpers;
 using CustomCADs.API.Models.Cads;
-using CustomCADs.API.Models.Others;
 using CustomCADs.API.Models.Queries;
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Cads;
-using CustomCADs.Application.Models.Categories;
 using CustomCADs.Domain.Enums;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,11 +15,10 @@ namespace CustomCADs.API.Controllers
     ///     Controller for public data.
     /// </summary>
     /// <param name="cadService"></param>
-    /// <param name="categoryService"></param>
     /// <param name="mapper"></param>
     [ApiController]
     [Route("API/[controller]")]
-    public class HomeController(ICadService cadService, ICategoryService categoryService, IMapper mapper) : ControllerBase
+    public class HomeController(ICadService cadService, IMapper mapper) : ControllerBase
     {
         /// <summary>
         ///     Gets the path and coordinates to the 3D Model for the Home Page.
@@ -100,35 +97,6 @@ namespace CustomCADs.API.Controllers
             catch (KeyNotFoundException ex)
             {
                 return NotFound(ex.GetMessage());
-            }
-            catch (Exception ex) when (
-                ex is AutoMapperConfigurationException
-                || ex is AutoMapperMappingException
-            )
-            {
-                return StatusCode(Status502BadGateway, ex.GetMessage());
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(Status500InternalServerError, ex.GetMessage());
-            }
-        }
-
-        /// <summary>
-        ///     Gets all existing Categories.
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet("Categories")]
-        [Produces("application/json")]
-        [ProducesResponseType(Status200OK)]
-        [ProducesResponseType(Status500InternalServerError)]
-        [ProducesResponseType(Status502BadGateway)]
-        public ActionResult<CategoryDTO[]> GetCategoriesAsync()
-        {
-            try
-            {
-                IEnumerable<CategoryModel> categories = categoryService.GetAll();
-                return mapper.Map<CategoryDTO[]>(categories);
             }
             catch (Exception ex) when (
                 ex is AutoMapperConfigurationException

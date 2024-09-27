@@ -1,7 +1,7 @@
 import { AxiosError } from 'axios';
 import { RouteObject } from 'react-router-dom';
 import AuthGuard from '@/routing/auth-guard';
-import { GetCategories } from '@/requests/public/home';
+import { GetCategories } from '@/requests/public/categories';
 import { GetRecentCads, GetCad, GetCadsCounts } from '@/requests/private/cads';
 import ContributorHomePage from '@/pages/contributor/contributor-home';
 import UserCadsPage from '@/pages/contributor/user-cads/cads';

@@ -283,15 +283,13 @@
                 Controller for public data.
             </summary>
             <param name="cadService"></param>
-            <param name="categoryService"></param>
             <param name="mapper"></param>
         </member>
-        <member name="M:CustomCADs.API.Controllers.HomeController.#ctor(CustomCADs.Application.Contracts.ICadService,CustomCADs.Application.Contracts.ICategoryService,AutoMapper.IMapper)">
+        <member name="M:CustomCADs.API.Controllers.HomeController.#ctor(CustomCADs.Application.Contracts.ICadService,AutoMapper.IMapper)">
             <summary>
                 Controller for public data.
             </summary>
             <param name="cadService"></param>
-            <param name="categoryService"></param>
             <param name="mapper"></param>
         </member>
         <member name="M:CustomCADs.API.Controllers.HomeController.GetHomeCadAsync">
@@ -317,12 +315,6 @@
                 Get info about a 3D Model from the Gallery.
             </summary>
             <param name="id"></param>
-            <returns></returns>
-        </member>
-        <member name="M:CustomCADs.API.Controllers.HomeController.GetCategoriesAsync">
-            <summary>
-                Gets all existing Categories.
-            </summary>
             <returns></returns>
         </member>
         <member name="M:CustomCADs.API.Controllers.HomeController.GetSortingsAsync">

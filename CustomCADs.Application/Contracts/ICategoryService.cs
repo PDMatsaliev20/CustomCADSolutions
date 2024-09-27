@@ -19,6 +19,13 @@ namespace CustomCADs.Application.Contracts
         Task<CategoryModel> GetByIdAsync(int id);
 
         /// <summary>
+        ///     Checks if the Category with the provided id exists.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>A Task object that represents whether the Category exists</returns>
+        Task<bool> ExistsByIdAsync(int id);
+
+        /// <summary>
         ///     Creates the specified Category in the Categories table
         /// </summary>
         /// <param name="entity"></param>

@@ -12,12 +12,8 @@ const GalleryCad = async (id: number) => {
     return await axios.get(`/API/Home/Gallery/${id}`);
 };
 
-const GetCategories = async () => {
-    return await axios.get('/API/Home/Categories');
-};
-
 const GetSortings = async () => {
     return await axios.get('/API/Home/Sortings');
 };
 
-export { GetHomeCad, Gallery, GalleryCad, GetCategories, GetSortings };
+export { GetHomeCad, Gallery, GalleryCad, GetSortings };

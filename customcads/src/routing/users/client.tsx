@@ -1,7 +1,7 @@
 import { AxiosError } from 'axios';
 import { RouteObject } from 'react-router-dom';
 import AuthGuard from '@/routing/auth-guard';
-import { GetCategories } from '@/requests/public/home';
+import { GetCategories } from '@/requests/public/categories';
 import { GetRecentOrders, GetOrder, GetOrdersCounts } from '@/requests/private/orders';
 import ClientHomePage from '@/pages/client/client-home';
 import UserOrdersPage from '@/pages/client/user-orders/orders';

@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
 import ICategory from '@/interfaces/category';
 import useAuth from '@/hooks/useAuth';
-import { GetCategories } from '@/requests/public/home';
+import { GetCategories } from '@/requests/public/categories';
 import { PostCad } from '@/requests/private/cads';
 import { FinishOrder } from '@/requests/private/designer';
 import UploadCadBtn from '@/components/fields/upload-cad-btn';
