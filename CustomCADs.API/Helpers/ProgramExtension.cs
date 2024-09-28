@@ -27,7 +27,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Stripe;
 using System.Text;
+using System.Text.Json;
 using static CustomCADs.Domain.DataConstants.RoleConstants;
+using static Microsoft.AspNetCore.Http.StatusCodes;
 using Order = CustomCADs.Domain.Entities.Order;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -214,6 +216,45 @@ namespace Microsoft.Extensions.DependencyInjection
             });
 
             return app;
+        }
+
+        public static void UseGlobalExceptionHandler(this IApplicationBuilder app)
+        {
+            app.Use(async (context, next) =>
+            {
+                try
+                {
+                    await next.Invoke().ConfigureAwait(false);
+                }
+                catch (KeyNotFoundException ex)
+                {
+                    context.Response.ContentType = "application/json";
+                    context.Response.StatusCode = Status404NotFound;
+                    string result = JsonSerializer.Serialize(new { error = "Resource Not Found", message = ex.Message });
+                    await context.Response.WriteAsync(result).ConfigureAwait(false);
+                }
+                catch (DbUpdateConcurrencyException ex)
+                {
+                    context.Response.ContentType = "application/json";
+                    context.Response.StatusCode = Status409Conflict;
+                    string result = JsonSerializer.Serialize(new { error = "Database Conflict Ocurred", message = ex.Message });
+                    await context.Response.WriteAsync(result).ConfigureAwait(false);
+                }
+                catch (DbUpdateException ex)
+                {
+                    context.Response.ContentType = "application/json";
+                    context.Response.StatusCode = Status400BadRequest;
+                    string result = JsonSerializer.Serialize(new { error = "Database Error", message = ex.Message });
+                    await context.Response.WriteAsync(result).ConfigureAwait(false);
+                }
+                catch (Exception ex)
+                {
+                    context.Response.ContentType = "application/json";
+                    context.Response.StatusCode = Status500InternalServerError;
+                    string result = JsonSerializer.Serialize(new { error = "Internal Server Error", message = ex.Message });
+                    await context.Response.WriteAsync(result).ConfigureAwait(false);
+                }
+            });
         }
 
         public static async Task UseRolesAsync(this IServiceProvider service, string[] roles)
