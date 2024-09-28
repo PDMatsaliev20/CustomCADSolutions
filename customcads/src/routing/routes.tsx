@@ -1,4 +1,5 @@
 import { RouteObject } from 'react-router-dom';
+import { AuthProvider } from '@/contexts/auth-context';
 import ErrorPage from '@/components/error-page';
 import App from '@/app';
 import publicRoutes from './users/public';
@@ -9,7 +10,7 @@ import designerRoutes from './users/designer';
 
 const userRoutes: RouteObject = {
     path: '/',
-    element: <App />,
+    element: <AuthProvider><App /></AuthProvider>,
     children: [
         publicRoutes,
         guestRoutes,

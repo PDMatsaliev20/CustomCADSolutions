@@ -77,7 +77,7 @@ function LoginPage() {
                                 type="checkbox"
                                 name="rememberMe"
                                 checked={rememberMe}
-                                onInput={() => setRememberMe(rm => !rm)}
+                                onChange={() => setRememberMe(rm => !rm)}
                             />
                             <label htmlFor="rememberMe" className="ms-1 text-indigo-50">{tPages('login.remember_me')}</label>
                         </div>

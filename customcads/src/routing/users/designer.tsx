@@ -2,8 +2,8 @@ import { AxiosError } from 'axios';
 import { RouteObject } from 'react-router-dom';
 import AuthGuard from '@/routing/auth-guard';
 import { GetCategories } from '@/requests/public/categories';
-import { GetCad } from '@/requests/private/cads';
-import { GetUncheckedCad, GetOngoingOrder } from '@/requests/private/designer';
+import { GetCad, GetRecentCads } from '@/requests/private/cads';
+import { GetUncheckedCad, GetOngoingOrder, GetRecentOrders } from '@/requests/private/designer';
 import DesignerHomePage from '@/pages/designer/designer-home';
 import UserCadsPage from '@/pages/contributor/user-cads/cads';
 import CadDetailsPage from '@/pages/contributor/cad-details/cad-details';
@@ -18,7 +18,19 @@ const designerRoutes: RouteObject = {
     children: [
         {
             path: '/designer',
-            element: <DesignerHomePage />
+            element: <DesignerHomePage />,
+            loader: async () => {
+                try {
+                    const { data: { cads } } = await GetRecentCads();
+                    return { loadedCads: cads };
+                } catch (e) {
+                    const res = { error: true };
+                    if (!(e instanceof AxiosError)) {
+                        return res;
+                    }
+                    return { ...res, status: e.response!.status };;
+                }
+            }
         },
         {
             path: '/designer/cads',

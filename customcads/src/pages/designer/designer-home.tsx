@@ -1,32 +1,29 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next'
+import { useLoaderData } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ICad from '@/interfaces/cad';
 import IOrder from '@/interfaces/order';
-import { GetRecentCads } from '@/requests/private/cads';
 import { GetRecentOrders } from '@/requests/private/designer';
+import ErrorPage from '@/components/error-page';
 import RecentItem from '@/components/dashboard/recent-item';
 import { getCookie, setCookie } from '@/utils/cookie-manager';
 
 function DesignerHome() {
     const { t: tPages } = useTranslation('pages');
     const { t: tCommon } = useTranslation('common');
-    const [cads, setCads] = useState<ICad[]>([]);
     const [orders, setOrders] = useState<IOrder[]>([]);
     const [status, setStatus] = useState<string>(getCookie('designer_dashboard_orders_status') ?? 'Pending');
 
-    const fetchCads = async () => {
-        try {
-            const { data } = await GetRecentCads();
-            setCads(data.cads);
-        } catch (e) {
-            console.error(e);
-        }
+    const { loadedCads: recentCads, error, status: statusCode } = useLoaderData() as {
+        loadedCads: ICad[]
+        loadedOrders: IOrder[]
+        error: boolean
+        status: number
     };
-    useEffect(() => {
-        fetchCads();
-    }, []);
-
+    if (error) {
+        return <ErrorPage status={statusCode} />;
+    }
     const fetchOrders = async () => {
         try {
             const { data } = await GetRecentOrders(status);
@@ -81,7 +78,7 @@ function DesignerHome() {
                                 </div>
                             </div>
                         </li>
-                        {cads.map(cad => <li key={cad.id}>
+                        {recentCads.map(cad => <li key={cad.id}>
                             <RecentItem to={`/designer/cads/${cad.id}`} item={cad} date={cad.creationDate} />
                         </li>)}
                     </ol>

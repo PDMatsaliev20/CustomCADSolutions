@@ -167,6 +167,9 @@ namespace CustomCADs.API.Controllers
                 (string newRT, DateTime newEnd) = await userService.RenewRefreshToken(model).ConfigureAwait(false);
                 Response.Cookies.Append("rt", newRT, new() { HttpOnly = true, Secure = true, Expires = newEnd });
 
+                Response.Cookies.Append("role", model.RoleName, new() { Expires = newEnd });
+                Response.Cookies.Append("username", model.UserName, new() { Expires = newEnd });
+
                 return "Welcome!";
             }
             catch (Exception ex)
@@ -256,15 +259,15 @@ namespace CustomCADs.API.Controllers
                 {
                     UserModel model = await userService.GetByName(login.Username).ConfigureAwait(false);
 
-                    Response.Cookies.Append("role", model.RoleName);
-                    Response.Cookies.Append("username", model.UserName);
-
                     JwtSecurityToken jwt = config.GenerateAccessToken(model.Id, model.UserName, model.RoleName);
                     string signedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
                     Response.Cookies.Append("jwt", signedJwt, new() { HttpOnly = true, Secure = true, Expires = jwt.ValidTo });
 
                     (string newRT, DateTime newEnd) = await userService.RenewRefreshToken(model).ConfigureAwait(false);
                     Response.Cookies.Append("rt", newRT, new() { HttpOnly = true, Secure = true, Expires = newEnd });
+
+                    Response.Cookies.Append("role", model.RoleName, new() { Expires = newEnd });
+                    Response.Cookies.Append("username", model.UserName, new() { Expires = newEnd });
 
                     return "Welcome back!";
                 }
@@ -405,6 +408,9 @@ namespace CustomCADs.API.Controllers
                 UserModel model = await userService.GetByRefreshToken(rt).ConfigureAwait(false);
                 if (model.RefreshTokenEndDate < DateTime.UtcNow)
                 {
+                    Response.Cookies.Delete("rt");
+                    Response.Cookies.Delete("username");
+                    Response.Cookies.Delete("userRole");
                     return StatusCode(Status401Unauthorized, RefreshTokenExpired);
                 }
 
@@ -420,10 +426,16 @@ namespace CustomCADs.API.Controllers
                 (string newRT, DateTime newEnd) = await userService.RenewRefreshToken(model).ConfigureAwait(false);
                 Response.Cookies.Append("rt", newRT, new() { HttpOnly = true, Secure = true, Expires = newEnd });
 
+                Response.Cookies.Append("role", model.RoleName, new() { Expires = newEnd });
+                Response.Cookies.Append("username", model.UserName, new() { Expires = newEnd });
+
                 return Ok(AccessTokenRenewed);
             }
             catch (ArgumentNullException)
             {
+                Response.Cookies.Delete("rt");
+                Response.Cookies.Delete("username");
+                Response.Cookies.Delete("userRole");
                 return NotFound("Your session has ended, you must log in again.");
             }
             catch (Exception ex)
