@@ -1,7 +1,7 @@
 import axios from '../axios';
 
 const GetHomeCad = async () => {
-    return await axios.get('/API/Home/Cad');
+    return await axios.get('/API/Home/MainCad');
 };
 
 const Gallery = async (searchParams: string) => {

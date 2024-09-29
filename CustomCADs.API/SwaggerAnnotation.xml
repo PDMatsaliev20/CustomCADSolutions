@@ -278,51 +278,6 @@
             <param name="cadId"></param>
             <returns></returns>
         </member>
-        <member name="T:CustomCADs.API.Controllers.HomeController">
-            <summary>
-                Controller for public data.
-            </summary>
-            <param name="cadService"></param>
-            <param name="mapper"></param>
-        </member>
-        <member name="M:CustomCADs.API.Controllers.HomeController.#ctor(CustomCADs.Application.Contracts.ICadService,AutoMapper.IMapper)">
-            <summary>
-                Controller for public data.
-            </summary>
-            <param name="cadService"></param>
-            <param name="mapper"></param>
-        </member>
-        <member name="M:CustomCADs.API.Controllers.HomeController.GetHomeCadAsync">
-            <summary>
-                Gets the path and coordinates to the 3D Model for the Home Page.
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:CustomCADs.API.Controllers.HomeController.GetGalleryAsync(System.String,System.String,System.String,System.String,System.Int32,System.Int32)">
-            <summary>
-                Queries all Validated 3D Models with the specified parameters.
-            </summary>
-            <param name="sorting"></param>
-            <param name="category"></param>
-            <param name="name"></param>
-            <param name="creator"></param>
-            <param name="page"></param>
-            <param name="limit"></param>
-            <returns></returns>
-        </member>
-        <member name="M:CustomCADs.API.Controllers.HomeController.GetGalleryCadAsync(System.Int32)">
-            <summary>
-                Get info about a 3D Model from the Gallery.
-            </summary>
-            <param name="id"></param>
-            <returns></returns>
-        </member>
-        <member name="M:CustomCADs.API.Controllers.HomeController.GetSortingsAsync">
-            <summary>
-                Gets all existing Sortings.
-            </summary>
-            <returns></returns>
-        </member>
         <member name="T:CustomCADs.API.Controllers.IdentityController">
             <summary>
                 Controller for managing Authentication/Authorization and info about the User's Identity.

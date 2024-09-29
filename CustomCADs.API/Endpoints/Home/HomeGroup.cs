@@ -8,7 +8,8 @@ namespace CustomCADs.API.Endpoints.Home
         {
             Configure("API/Home", ep =>
             {
-                
+                ep.Options(opt => opt.WithTags("Home"));
+                ep.AllowAnonymous();
             });
         }
     }
