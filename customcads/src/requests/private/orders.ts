@@ -3,7 +3,7 @@ import IOperation from '@/interfaces/operation';
 import axios from '../axios';
 
 const GetOrders = async (status: string, searchParams: string) => {
-    return await axios.get(`/API/Orders?status=${status}&${searchParams}`);
+    return await axios.get(`/API/Orders/${status}?${searchParams}`);
 }
 
 const GetRecentOrders = async () => {
@@ -34,8 +34,8 @@ const PutOrder = async (id: number, order: {}) => {
     return await axios.put(`/API/Orders/${id}`, order, { headers: { 'Content-Type': 'multipart/form-data' } });
 }
 
-const PatchOrder = async (id: number, operations: IOperation[]) => {
-    return await axios.patch(`/API/Orders/${id}`, operations);
+const PatchOrder = async (id: number, shouldBeDelivered: boolean) => {
+    return await axios.patch(`/API/Orders/${id}`, { shouldBeDelivered });
 }
 
 const DeleteOrder = async (id: number) => {

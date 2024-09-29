@@ -21,8 +21,6 @@ namespace CustomCADs.API.Controllers
     [Route("API/[controller]")]
     public class PaymentController(IPaymentService paymentService, ICadService cadService) : ControllerBase
     {
-        private readonly string createdAtReturnAction = nameof(OrdersController.GetOrderAsync).Replace("Async", "");
-
         /// <summary>
         ///     Gets the Public Key.
         /// </summary>

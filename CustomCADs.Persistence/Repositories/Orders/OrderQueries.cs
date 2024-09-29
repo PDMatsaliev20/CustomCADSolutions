@@ -20,6 +20,7 @@ namespace CustomCADs.Persistence.Repositories.Orders
                 .Include(o => o.Category)
                 .Include(o => o.Buyer)
                 .Include(o => o.Designer)
+                .Include(o => o.Cad)
                 .AsSplitQuery()
                 .FirstOrDefaultAsync(c => c.Id == id)
                 .ConfigureAwait(false);

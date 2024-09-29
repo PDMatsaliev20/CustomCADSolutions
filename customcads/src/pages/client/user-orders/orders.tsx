@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, FormEvent } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import IOrder from '@/interfaces/order';
@@ -68,27 +68,21 @@ function UserOrders() {
                 ];
 
             case 'finished':
-                const handleRequest = async () => {
-                    try {
-                        const flipShouldBeDelivered = {
-                            op: 'replace',
-                            path: '/shouldBeDelivered',
-                            value: !order.shouldBeDelivered
-                        };
-                        await PatchOrder(order.id, [flipShouldBeDelivered]);
+                const handleRequest = async (e: FormEvent) => {
+                    e.preventDefault();
 
-                        if (order.shouldBeDelivered) {
-                            alert(tPages('orders.alert_cancel'));
-                        } else {
-                            alert(tPages('orders.alert_delivery'));
-                        }
-                        setOrders(orders => ([...orders, { ...order, shouldBeDelivered: !order.shouldBeDelivered }]));
+                    try {
+                        const sbd: boolean = order.shouldBeDelivered;
+                        await PatchOrder(order.id, !sbd);
+                        await fetchOrders();
                     } catch (e) {
                         console.error(e);
                     }
                 };
 
-                const handleDownload = async () => {
+                const handleDownload = async (e: FormEvent) => {
+                    e.preventDefault();
+
                     try {
                         const { data, headers: { 'content-type': contentType } } = await DownloadOrderCad(order.id);
                         const blob = new Blob([data], { type: contentType });

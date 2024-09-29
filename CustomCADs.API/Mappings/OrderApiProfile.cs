@@ -11,7 +11,6 @@ namespace CustomCADs.API.Mappings
         {
             ResultToDTO();
             ModelToExport();
-            ImportToModel();
         }
 
         private void ResultToDTO() => CreateMap<OrderResult, OrderResultDTO>();
@@ -31,7 +30,5 @@ namespace CustomCADs.API.Mappings
                 })
             .ForMember(dto => dto.Status, opt => opt.MapFrom(model => model.Status.ToString()))
             .ForMember(dto => dto.OrderDate, opt => opt.MapFrom(model => model.OrderDate.ToString("dd/MM/yyyy HH:mm:ss")));
-
-        public void ImportToModel() => CreateMap<OrderImportDTO, OrderModel>();
     }
 }

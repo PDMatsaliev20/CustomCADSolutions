@@ -2,11 +2,15 @@
 using static CustomCADs.Domain.DataConstants;
 using static CustomCADs.Domain.DataConstants.CadConstants;
 
-namespace CustomCADs.API.Models.Cads
+namespace CustomCADs.API.Endpoints.Cads.PostCad
 {
-    public class CadPutDTO
+    public class PostCadRequest
     {
-        public IFormFile? Image { get; set; }
+        [Required(ErrorMessage = RequiredErrorMessage)]
+        public IFormFile File { get; set; } = null!;
+
+        [Required(ErrorMessage = RequiredErrorMessage)]
+        public IFormFile Image { get; set; } = null!;
 
         [Required(ErrorMessage = RequiredErrorMessage)]
         [StringLength(NameMaxLength, MinimumLength = NameMinLength,
@@ -19,8 +23,6 @@ namespace CustomCADs.API.Models.Cads
         public string Description { get; set; } = null!;
 
         [Required(ErrorMessage = RequiredErrorMessage)]
-        [AllowedValues(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 
-            ErrorMessage = "Existing Categories have IDs: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]")]
         public int CategoryId { get; set; }
 
         [Required(ErrorMessage = RequiredErrorMessage)]

@@ -22,7 +22,7 @@ namespace CustomCADs.Application.Services
             queryable = queryable.Search(category: category, name: name, creator: owner);
             queryable = queryable.Sort(sorting: sorting);
 
-            IEnumerable<Cad> cads = [..queryable.Skip((page - 1) * limit).Take(limit)];
+            IEnumerable<Cad> cads = queryable.Skip((page - 1) * limit).Take(limit);
             return new()
             {
                 Count = cads.Count(),

@@ -14,7 +14,7 @@ function Order({ order, buttons }: OrderProps) {
 
     return (
         <Link to={`${order.id}`} className="hover:no-underline">
-            <div className="flex h-48 items-center gap-x-4 p-2 bg-indigo-200 border-2 border-indigo-700 shadow-md shadow-indigo-500 rounded-lg hover:bg-indigo-300 active:opacity-80">
+            <div className="flex h-48 items-center gap-x-4 p-2 bg-indigo-200 border-2 border-indigo-700 shadow-md shadow-indigo-500 rounded-lg hover:bg-indigo-300 active:opacity-80 has-[button:hover]:bg-indigo-200 has-[button:active]:opacity-100">
                 <div className="basis-[15%] shrink-0 aspect-square flex items-center border-2 border-indigo-300 rounded-2xl overflow-hidden">
                     <img src={order.imagePath} className="object-cover w-full h-full" />
                 </div>
@@ -24,9 +24,9 @@ function Order({ order, buttons }: OrderProps) {
                         <p className="text-2xl line-clamp-1">{order.description}</p>
                     </div>
                     <div className="basis-full self-center flex gap-x-2">
-                        <Tag tag="delivery" label={tPages('orders.to_be_delivered')} hidden={!order.shouldBeDelivered} />
                         <Tag tag="category" label={tCommon(`categories.${order.category.name}`)} />
                         <Tag tag="date" label={order.orderDate} />
+                        <Tag tag="delivery" label={tPages('orders.to_be_delivered')} hidden={!order.shouldBeDelivered} />
                     </div>
                 </div>
                 <div className="basis-[33%] shrink-0">

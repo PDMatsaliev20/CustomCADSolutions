@@ -9,7 +9,7 @@ interface TagProps {
 
 function Tag({ tag, label, hidden }: TagProps) {
     const [element, setElement] = useState(<></>);
-
+    
     useEffect(() => {
         if (!hidden) {
             switch (tag) {
@@ -35,6 +35,8 @@ function Tag({ tag, label, hidden }: TagProps) {
 
                 default: setElement(<></>);
             }
+        } else {
+            setElement(<></>);
         }
     }, [tag, label, hidden]);
 

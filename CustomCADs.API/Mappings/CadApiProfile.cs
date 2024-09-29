@@ -13,8 +13,6 @@ namespace CustomCADs.API.Mappings
             CoordinateToDTO();
             QueryResultToDTO();
             ModelToGet();
-            PostToModel();
-            PutToModel();
         }
 
         public void CoordinateToDTO() => CreateMap<Coordinates, CoordinatesDTO>();
@@ -34,9 +32,5 @@ namespace CustomCADs.API.Mappings
                 opt.MapFrom(model => model.Paths.ImagePath));
 
         public void QueryResultToDTO() => CreateMap<CadResult, CadQueryResultDTO>();
-        
-        public void PostToModel() => CreateMap<CadPostDTO, CadModel>();
-
-        public void PutToModel() => CreateMap<CadPutDTO, CadModel>();
     }
 }

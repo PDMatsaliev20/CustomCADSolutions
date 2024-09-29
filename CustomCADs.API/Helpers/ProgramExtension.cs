@@ -120,6 +120,11 @@ namespace Microsoft.Extensions.DependencyInjection
             mvc.AddXmlDataContractSerializerFormatters();
         }
 
+        public static IWebHostBuilder AddUploadSizeLimitations(this IWebHostBuilder webhost, int limit = 300_000_000)
+        {
+            return webhost.ConfigureKestrel(o => o.Limits.MaxRequestBodySize = limit);
+        }
+
         public static void AddApiConfigurations(this IServiceCollection services)
         {
             services.AddEndpointsApiExplorer();

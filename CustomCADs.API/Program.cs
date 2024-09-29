@@ -9,12 +9,13 @@ builder.Services.AddServices();
 
 string[] roles = [Admin, Designer, Contributor, Client];
 builder.Services.AddAuthWithCookie(builder.Configuration).AddRoles(roles);
-
 builder.Services.AddMappings();
-builder.Services.AddEndpoints().AddJsonAndXml();
 
+builder.Services.AddEndpoints().AddJsonAndXml();
 builder.Services.AddApiConfigurations();
+
 builder.Services.AddCorsForReact();
+builder.WebHost.AddUploadSizeLimitations();
 
 WebApplication app = builder.Build();
 
