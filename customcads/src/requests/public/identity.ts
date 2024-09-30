@@ -10,8 +10,8 @@ const VerifyEmail = async (username: string, ect: string) => {
     return await axios.get(`/API/Identity/VerifyEmail/${username}?ect=${ect}`);
 };
 
-const ResendEmailVerification = async (username: string) => {
-    return await axios.get(`/API/Identity/VerifyEmail/${username}`);
+const RetryVerifyEmail = async (username: string) => {
+    return await axios.get(`/API/Identity/RetryVerifyEmail/${username}`);
 };
 
 const Login = async (user: ILogin) => {
@@ -50,4 +50,4 @@ const DoesUserExist = async (username: string) => {
     return await axios.get(`/API/Identity/DoesUserExist/${username}`);
 };
 
-export { Register, VerifyEmail, ResendEmailVerification, Login, ResetPassword, ForgotPassword, Logout, RefreshToken, IsAuthenticated, GetUserRole, IsEmailConfirmed, DoesUserExist };
+export { Register, VerifyEmail, RetryVerifyEmail, Login, ResetPassword, ForgotPassword, Logout, RefreshToken, IsAuthenticated, GetUserRole, IsEmailConfirmed, DoesUserExist };

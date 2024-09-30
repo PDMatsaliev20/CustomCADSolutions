@@ -1,23 +1,27 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using FastEndpoints;
+using System.ComponentModel.DataAnnotations;
 using static CustomCADs.Domain.DataConstants;
 using static CustomCADs.Domain.DataConstants.UserConstants;
 
-namespace CustomCADs.API.Models.Identity
+namespace CustomCADs.API.Endpoints.Identity.Register
 {
-    public class UserRegisterModel
+    public class RegisterRequest
     {
+        [BindFrom("role")]
+        public required string Role { get; set; }
+
         [Required(ErrorMessage = RequiredErrorMessage)]
         [StringLength(NameMaxLength, MinimumLength = NameMinLength,
             ErrorMessage = LengthErrorMessage)]
-        public string Username { get; set; } = null!;
+        public required string Username { get; set; } 
 
         [Required(ErrorMessage = RequiredErrorMessage)]
         [EmailAddress]
-        public string Email { get; set; } = null!;
+        public required string Email { get; set; } 
 
         [StringLength(NameMaxLength, MinimumLength = NameMinLength,
             ErrorMessage = LengthErrorMessage)]
-        public string? FirstName { get; set; }
+        public required string? FirstName { get; set; }
 
         [StringLength(NameMaxLength, MinimumLength = NameMinLength,
             ErrorMessage = LengthErrorMessage)]
@@ -27,11 +31,11 @@ namespace CustomCADs.API.Models.Identity
         [StringLength(PasswordMaxLength, MinimumLength = PasswordMinLength,
             ErrorMessage = LengthErrorMessage)]
         [DataType(DataType.Password)]
-        public string Password { get; set; } = null!;
+        public required string Password { get; set; } 
 
         [Required(ErrorMessage = RequiredErrorMessage)]
         [DataType(DataType.Password)]
         [Compare(nameof(Password))]
-        public string ConfirmPassword { get; set; } = null!;
+        public required string ConfirmPassword { get; set; } 
     }
 }

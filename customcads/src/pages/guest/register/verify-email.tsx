@@ -1,6 +1,6 @@
 import { useLoaderData } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { ResendEmailVerification } from '@/requests/public/identity';
+import { RetryVerifyEmail } from '@/requests/public/identity';
 import ErrorPage from '@/components/error-page';
 
 function VerifyEmailPage() {
@@ -13,7 +13,7 @@ function VerifyEmailPage() {
 
     const sendVerificationEmail = async () => {
         try {
-            await ResendEmailVerification(username);
+            await RetryVerifyEmail(username);
         } catch (e) {
             console.error(e);
         }

@@ -2,9 +2,9 @@
 using static CustomCADs.Domain.DataConstants;
 using static CustomCADs.Domain.DataConstants.UserConstants;
 
-namespace CustomCADs.API.Models.Identity
+namespace CustomCADs.API.Endpoints.Identity.Login
 {
-    public class UserLoginModel
+    public class LoginRequest
     {
         [Required(ErrorMessage = RequiredErrorMessage)]
         [StringLength(NameMaxLength, MinimumLength = NameMinLength,
