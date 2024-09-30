@@ -138,7 +138,6 @@ namespace Microsoft.Extensions.DependencyInjection
                     Contact = new() { Name = "Ivan", Email = "ivanangelov414@gmail.com" },
                     License = new() { Name = "Apache License 2.0", Url = new Uri("https://www.apache.org/licenses/LICENSE-2.0") }
                 });
-                c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "SwaggerAnnotation.xml"));
             });
         }
 
@@ -305,45 +304,6 @@ namespace Microsoft.Extensions.DependencyInjection
                 if (!existingCategoreis.Select(c => c.Name).Contains(category))
                 {
                     await categoryService.CreateAsync(new CategoryModel() { Name = category });
-                }
-            }
-        }
-
-        public static async Task UseAppUsers(this IServiceProvider service, IConfiguration config, Dictionary<string, string> users)
-        {
-            using IServiceScope scope = service.CreateScope();
-            var appUserManager = scope.ServiceProvider.GetRequiredService<IAppUserManager>();
-            var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
-
-            int i = 1;
-            foreach (KeyValuePair<string, string> user in users)
-            {
-                string role = user.Key;
-                string username = user.Value;
-                string email = $"user{i++}@mail.com";
-                string? password = config[$"Passwords:{role}"];
-                if (password != null)
-                {
-                    await appUserManager.AddUserAsync(username, email, password, role);
-
-                    if (!await userService.ExistsByName(username).ConfigureAwait(false))
-                    {
-                        await userService.CreateAsync(new() { UserName = username, Email = email, RoleName = role });
-                    }
-                }
-            }
-        }
-
-        private static async Task AddUserAsync(this IAppUserManager appUserManager, string username, string email, string password, string role)
-        {
-            if (await appUserManager.FindByNameAsync(username) == null)
-            {
-                AppUser user = new(username, email);
-
-                var result = await appUserManager.CreateAsync(user, password);
-                if (result.Succeeded)
-                {
-                    await appUserManager.AddToRoleAsync(user, role);
                 }
             }
         }

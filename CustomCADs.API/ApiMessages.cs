@@ -13,7 +13,7 @@
         public const string AccessTokenRenewed = "Access token renewed";
         public const string InvalidAccountOrEmail = "Account doesn't exist or hasn't verified their email.";
         public const string ForbiddenAccess = "Not allowed to modify another User's resources.";
-        public const string ForbiddenPatch = "Not allowed to patch field {0}.";
+        public const string ForbiddenPatch = "Cannot patch paths other than {0}.";
         public const string ForbiddenRoleRegister = "You must apply to either be a Client or a Contributor.";
         public const string InvalidRole = "Invalid role - you must choose from [{0}].";
         public const string InvalidStatus = "Invalid status - you must choose from [{0}].";

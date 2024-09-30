@@ -38,17 +38,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 await app.Services.UseRolesAsync(roles).ConfigureAwait(false);
 
-if (app.Environment.IsDevelopment())
-{
-    await app.Services.UseAppUsers(app.Configuration, new()
-    {
-        [Admin] = "NinjataBG",
-        [Designer] = "Designer",
-        [Contributor] = "Contributor",
-        [Client] = "Client",
-    }).ConfigureAwait(false);
-}
-
 app.UseEndpoints();
 app.MapControllers();
 app.MapFallbackToFile("index.html");

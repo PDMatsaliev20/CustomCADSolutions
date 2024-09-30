@@ -24,7 +24,7 @@ namespace CustomCADs.Application.Contracts
         /// <param name="name"></param>
         /// <returns>A Task object that represents the User</returns>
         /// <exception cref="KeyNotFoundException">if no User with the given name exists.</exception>
-        Task<UserModel> GetByName(string name);
+        Task<UserModel> GetByNameAsync(string name);
         
         /// <summary>
         ///     Searches for a User by the given refresh token

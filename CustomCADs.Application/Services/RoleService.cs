@@ -14,20 +14,19 @@ namespace CustomCADs.Application.Services
         IDbTracker tracker, 
         IMapper mapper) : IRoleService
     {
-        public RoleResult GetAll(string? name = null, string? description = null, string sorting = "", int page = 1, int limit = 50, Func<RoleModel, bool>? customFilter = null)
+        public IEnumerable<RoleModel> GetAll(string? name = null, string? description = null, string sorting = "")
         {
             IQueryable<Role> queryable = queries.GetAll(true);
-            queryable = queryable.Filter(customFilter == null ? null : r => customFilter(mapper.Map<RoleModel>(r)) );
             queryable = queryable.Search(name, description);
             queryable = queryable.Sort(sorting);
 
-            IEnumerable<Role> roles = [..queryable.Skip((page - 1) * limit).Take(limit)];
-            return new()
-            {
-                Count = queryable.Count(),
-                Roles = mapper.Map<RoleModel[]>(roles),
-            };
+            IEnumerable<Role> roles = [.. queryable];
+            return mapper.Map<RoleModel[]>(roles);
         }
+
+        public string[] GetAllNames() 
+            => [.. queries.GetAll().Select(c => c.Name)];
+        
 
         public async Task<RoleModel> GetByIdAsync(string id) 
         {

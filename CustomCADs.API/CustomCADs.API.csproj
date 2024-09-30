@@ -9,9 +9,7 @@
 		<SpaProxyServerUrl>https://localhost:5173</SpaProxyServerUrl>
 		<UserSecretsId>447ca689-9b4b-4d2d-a670-8312356bdb50</UserSecretsId>
 		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<NoWarn>1591, CA2016</NoWarn>
-		<DocumentationFile>SwaggerAnnotation.xml</DocumentationFile>
 	</PropertyGroup>
 
 	<ItemGroup>

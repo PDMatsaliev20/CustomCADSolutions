@@ -51,7 +51,7 @@ namespace CustomCADs.API.Endpoints.Identity.VerifyEmail
             }
 
             await signInManager.SignInAsync(appUser, false).ConfigureAwait(false);
-            UserModel model = await service.GetByName(req.Username).ConfigureAwait(false);
+            UserModel model = await service.GetByNameAsync(req.Username).ConfigureAwait(false);
 
             HttpContext.Response.Cookies.Append("role", model.RoleName);
             HttpContext.Response.Cookies.Append("username", model.UserName);

@@ -1,8 +1,6 @@
 ﻿using CustomCADs.API.Helpers;
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Users;
-using CustomCADs.Application.Services;
-using CustomCADs.Infrastructure.Identity.Contracts;
 using FastEndpoints;
 using System.IdentityModel.Tokens.Jwt;
 
@@ -11,7 +9,7 @@ namespace CustomCADs.API.Endpoints.Identity.RefreshToken
     using static ApiMessages;
     using static StatusCodes;
 
-    public class RefreshTokenEndpoint(IAppUserManager manager, IUserService service, IConfiguration config) : EndpointWithoutRequest
+    public class RefreshTokenEndpoint(IUserService service, IConfiguration config) : EndpointWithoutRequest
     {
         public override void Configure()
         {

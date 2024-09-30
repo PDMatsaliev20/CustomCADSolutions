@@ -7,8 +7,14 @@ namespace CustomCADs.Application.Contracts
         /// <summary>
         ///     Pulls all Roles from the database
         /// </summary>
-        /// <returns>A Task object that represents the Roles</returns>
-        RoleResult GetAll(string? name = null, string? description = null, string sorting = "", int page = 1, int limit = 50, Func<RoleModel, bool>? customFilter = null);
+        /// <returns>The Roles</returns>
+        IEnumerable<RoleModel> GetAll(string? name = null, string? description = null, string sorting = "");
+
+        /// <summary>
+        ///     Pulls all Role Names from the database
+        /// </summary>
+        /// <returns>The Role Names</returns>
+        string[] GetAllNames();
 
         /// <summary>
         ///     Searches for a Role by the given id

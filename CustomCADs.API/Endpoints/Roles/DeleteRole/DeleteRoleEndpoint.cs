@@ -1,0 +1,41 @@
+﻿using CustomCADs.Application.Contracts;
+using CustomCADs.Infrastructure.Identity;
+using CustomCADs.Infrastructure.Identity.Contracts;
+using FastEndpoints;
+
+namespace CustomCADs.API.Endpoints.Roles.DeleteRole
+{
+    using static ApiMessages;
+    using static StatusCodes;
+
+    public class DeleteRoleEndpoint(IAppRoleManager manager, IRoleService service) : Endpoint<DeleteRoleRequest>
+    {
+        public override void Configure()
+        {
+            Delete("{name}");
+            Group<RolesGroup>();
+            Description(d => d.WithSummary("Deletes the Role with the specified name."));
+            Options(opt =>
+            {
+                opt.Produces<EmptyResponse>(Status204NoContent);
+                opt.ProducesProblem(Status404NotFound);
+            });
+        }
+
+        public override async Task HandleAsync(DeleteRoleRequest req, CancellationToken ct)
+        {
+            AppRole? role = await manager.FindByNameAsync(req.Name).ConfigureAwait(false);
+            if (role == null || !await service.ExistsByNameAsync(req.Name).ConfigureAwait(false))
+            {
+                string message = string.Format(NotFound, "Role");
+                await SendResultAsync(Results.NotFound(message)).ConfigureAwait(false);
+                return; 
+            }
+
+            await manager.DeleteAsync(role).ConfigureAwait(false);
+            await service.DeleteAsync(req.Name).ConfigureAwait(false);
+            
+            await SendNoContentAsync().ConfigureAwait(false);
+        }
+    }
+}

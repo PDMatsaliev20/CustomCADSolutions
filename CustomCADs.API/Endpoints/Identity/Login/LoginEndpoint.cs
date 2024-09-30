@@ -61,7 +61,7 @@ namespace CustomCADs.API.Endpoints.Identity.Login
                 return;
             }
 
-            UserModel model = await service.GetByName(req.Username).ConfigureAwait(false);
+            UserModel model = await service.GetByNameAsync(req.Username).ConfigureAwait(false);
             JwtSecurityToken jwt = config.GenerateAccessToken(model.Id, model.UserName, model.RoleName);
 
             string signedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);

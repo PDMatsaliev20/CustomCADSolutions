@@ -38,7 +38,7 @@ namespace CustomCADs.Application.Services
             return model;
         }
 
-        public async Task<UserModel> GetByName(string name)
+        public async Task<UserModel> GetByNameAsync(string name)
         {
             User? user = await queries.GetByNameAsync(name, true).ConfigureAwait(false);
             ArgumentNullException.ThrowIfNull(user);
