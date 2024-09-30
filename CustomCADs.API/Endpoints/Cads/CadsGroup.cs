@@ -1,5 +1,5 @@
 ﻿using FastEndpoints;
-using static CustomCADs.Domain.DataConstants.RoleConstants;
+using static CustomCADs.Domain.DataConstants;
 
 namespace CustomCADs.API.Endpoints.Cads
 {
@@ -11,7 +11,7 @@ namespace CustomCADs.API.Endpoints.Cads
         {
             Configure("API/Cads", ep =>
             {
-                ep.Roles(Contributor, Designer);
+                ep.Roles(RoleConstants.Contributor, RoleConstants.Designer);
                 ep.Options(opt =>
                 {
                     opt.WithTags("Cads");

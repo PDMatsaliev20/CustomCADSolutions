@@ -16,6 +16,14 @@ namespace CustomCADs.Application.Contracts
         CadResult GetCadsAsync(string? category = null, string? name = null, string? creator = null, string sorting = "", int page = 1, int limit = 20);
 
         /// <summary>
+        ///     Gets the Cad with the id, as well as the previous and next one (if any).
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task<(int? PrevId, CadModel Current, int? NextId)> GetNextCurrentAndPreviousByIdAsync(int id);
+
+
+        /// <summary>
         ///     Overwrites Cad's Status property with the given.
         /// </summary>
         /// <param name="id"></param>
@@ -31,7 +39,7 @@ namespace CustomCADs.Application.Contracts
         /// <param name="search"></param>
         /// <param name="pagination"></param>
         /// <returns>A Task object that represents the Result.</returns>
-        OrderResult GetOrders(string status = "", string? designerId = null, string? category = null, string? name = null, string? buyer = null, string sorting = "", int page = 1, int limit = 20);
+        OrderResult GetOrders(string status = "", int? id = null, string? designerId = null, string? category = null, string? name = null, string? buyer = null, string sorting = "", int page = 1, int limit = 20);
 
         /// <summary>
         ///     Sets the Order's Status to Begun and DesignerId from null to the given designerId.

@@ -5,7 +5,7 @@ using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Cads;
 using CustomCADs.Domain.Enums;
 using FastEndpoints;
-using static CustomCADs.Domain.DataConstants.RoleConstants;
+using static CustomCADs.Domain.DataConstants;
 
 namespace CustomCADs.API.Endpoints.Cads.PostCad
 {
@@ -36,7 +36,7 @@ namespace CustomCADs.API.Endpoints.Cads.PostCad
                 CreationDate = DateTime.Now,
                 CreatorId = User.GetId(),
                 Paths = new(),
-                Status = User.IsInRole(Designer) ? CadStatus.Validated : CadStatus.Unchecked,
+                Status = User.IsInRole(RoleConstants.Designer) ? CadStatus.Validated : CadStatus.Unchecked,
             };
 
             int id = await service.CreateAsync(model).ConfigureAwait(false);
