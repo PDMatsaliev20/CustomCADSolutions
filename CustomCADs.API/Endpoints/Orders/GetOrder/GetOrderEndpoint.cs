@@ -2,6 +2,7 @@
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Orders;
 using FastEndpoints;
+using static CustomCADs.Domain.DataConstants;
 
 namespace CustomCADs.API.Endpoints.Orders.GetOrder
 {
@@ -29,7 +30,7 @@ namespace CustomCADs.API.Endpoints.Orders.GetOrder
                 return;
             }
 
-            GetOrderResponse response = new()
+            GetOrderResponse result = new()
             {
                 Id = order.Id,
                 Name = order.Name,
@@ -37,14 +38,14 @@ namespace CustomCADs.API.Endpoints.Orders.GetOrder
                 ShouldBeDelivered = order.ShouldBeDelivered,
                 ImagePath = order.ImagePath,
                 BuyerName = order.Buyer.UserName,
-                OrderDate = order.OrderDate.ToString("dd-MM-yyyy HH:mm:ss"),
+                OrderDate = order.OrderDate.ToString(DateFormatString),
                 Status = order.Status.ToString(),
                 DesignerEmail = order.Designer?.Email,
                 DesignerName = order.Designer?.UserName,
                 CadId = order.CadId,
                 Category = new(order.CategoryId, order.Category.Name),
             };
-            await SendAsync(response, Status200OK).ConfigureAwait(false);
+            await SendAsync(result, Status200OK).ConfigureAwait(false);
         }
     }
 }

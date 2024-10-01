@@ -2,6 +2,7 @@
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Cads;
 using FastEndpoints;
+using static CustomCADs.Domain.DataConstants;
 
 namespace CustomCADs.API.Endpoints.Designer.UncheckedCads
 {
@@ -40,7 +41,7 @@ namespace CustomCADs.API.Endpoints.Designer.UncheckedCads
                         Id = cad.Id,
                         Name = cad.Name,
                         ImagePath = cad.Paths.ImagePath,
-                        CreationDate = cad.CreationDate.ToString("dd-MM-yyyy HH:mm:ss"),
+                        CreationDate = cad.CreationDate.ToString(DateFormatString),
                         CreatorName = cad.Creator.UserName,
                         Status = cad.Status.ToString(),
                         Category = new(cad.CategoryId, cad.Category.Name),

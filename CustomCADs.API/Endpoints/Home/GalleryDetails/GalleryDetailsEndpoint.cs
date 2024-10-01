@@ -1,6 +1,7 @@
 ﻿using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Cads;
 using FastEndpoints;
+using static CustomCADs.Domain.DataConstants;
 
 namespace CustomCADs.API.Endpoints.Home.GalleryDetails
 {
@@ -32,7 +33,7 @@ namespace CustomCADs.API.Endpoints.Home.GalleryDetails
                 CadPath = model.Paths.FilePath,
                 Price = model.Price,
                 CreatorName = model.Creator.UserName,
-                CreationDate = model.CreationDate.ToString("dd-MM-yyyy HH:mm:ss"),
+                CreationDate = model.CreationDate.ToString(DateFormatString),
                 CamCoordinates = new(model.CamCoordinates.X, model.CamCoordinates.Y, model.CamCoordinates.X),
                 PanCoordinates = new(model.PanCoordinates.X, model.PanCoordinates.Y, model.PanCoordinates.X),
                 Category = new(model.CategoryId, model.Category.Name),

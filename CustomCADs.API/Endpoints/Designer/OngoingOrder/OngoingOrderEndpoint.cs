@@ -1,6 +1,7 @@
 ﻿using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Orders;
 using FastEndpoints;
+using static CustomCADs.Domain.DataConstants;
 
 namespace CustomCADs.API.Endpoints.Designer.OngoingOrder
 {
@@ -35,7 +36,7 @@ namespace CustomCADs.API.Endpoints.Designer.OngoingOrder
                 Name = model.Name,
                 Description = model.Description,
                 Status = model.Status.ToString(),
-                OrderDate = model.OrderDate.ToString("dd-MM-yyyy HH:mm:ss"),
+                OrderDate = model.OrderDate.ToString(DateFormatString),
                 BuyerName = model.Buyer.UserName,
                 Category = new(model.CategoryId, model.Category.Name)
             };

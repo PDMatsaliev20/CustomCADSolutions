@@ -4,6 +4,7 @@ using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Orders;
 using CustomCADs.Domain.Enums;
 using FastEndpoints;
+using static CustomCADs.Domain.DataConstants;
 
 namespace CustomCADs.API.Endpoints.Orders.RecentOrders
 {
@@ -42,7 +43,7 @@ namespace CustomCADs.API.Endpoints.Orders.RecentOrders
                         ShouldBeDelivered = o.ShouldBeDelivered,
                         ImagePath = o.ImagePath,
                         BuyerName = o.Buyer.UserName,
-                        OrderDate = o.OrderDate.ToString("dd-MM-yyyy HH:mm:ss"),
+                        OrderDate = o.OrderDate.ToString(DateFormatString),
                         Status = o.Status.ToString(),
                         DesignerEmail = o.Designer?.Email,
                         DesignerName = o.Designer?.UserName,

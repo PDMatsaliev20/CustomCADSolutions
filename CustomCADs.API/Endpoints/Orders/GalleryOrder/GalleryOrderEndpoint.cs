@@ -5,6 +5,7 @@ using CustomCADs.Application.Models.Cads;
 using CustomCADs.Application.Models.Orders;
 using CustomCADs.Domain.Enums;
 using FastEndpoints;
+using static CustomCADs.Domain.DataConstants;
 
 namespace CustomCADs.API.Endpoints.Orders.GalleryOrder
 {
@@ -50,7 +51,7 @@ namespace CustomCADs.API.Endpoints.Orders.GalleryOrder
                 ShouldBeDelivered = createdOrder.ShouldBeDelivered,
                 ImagePath = createdOrder.ImagePath,
                 BuyerName = createdOrder.Buyer.UserName,
-                OrderDate = createdOrder.OrderDate.ToString("dd-MM-yyyy HH:mm:ss"),
+                OrderDate = createdOrder.OrderDate.ToString(DateFormatString),
                 Status = createdOrder.Status.ToString(),
                 DesignerEmail = createdOrder.Designer?.Email,
                 DesignerName = createdOrder.Designer?.UserName,

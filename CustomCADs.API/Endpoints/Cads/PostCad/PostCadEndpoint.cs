@@ -56,7 +56,7 @@ namespace CustomCADs.API.Endpoints.Cads.PostCad
                 PanCoordinates = new(createdModel.PanCoordinates.X, createdModel.PanCoordinates.Y, createdModel.PanCoordinates.Z),
                 Price = createdModel.Price,
                 ImagePath = createdModel.Paths.ImagePath,
-                CreationDate = createdModel.CreationDate.ToString("dd-MM-yyyy HH:mm:ss"),
+                CreationDate = createdModel.CreationDate.ToString(DateFormatString),
                 CreatorName = createdModel.Creator.UserName,
                 Status = createdModel.Status.ToString(),
                 Category = new(createdModel.CategoryId, createdModel.Category.Name),

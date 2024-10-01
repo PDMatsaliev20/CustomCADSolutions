@@ -3,6 +3,7 @@ using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Orders;
 using CustomCADs.Domain.Enums;
 using FastEndpoints;
+using static CustomCADs.Domain.DataConstants;
 
 namespace CustomCADs.API.Endpoints.Designer.OngoingOrders
 {
@@ -52,7 +53,7 @@ namespace CustomCADs.API.Endpoints.Designer.OngoingOrders
                         Name = o.Name,
                         Description = o.Description,
                         ImagePath = o.ImagePath,
-                        OrderDate = o.OrderDate.ToString("dd-MM-yyyy HH:mm:ss"),
+                        OrderDate = o.OrderDate.ToString(DateFormatString),
                         ShouldBeDelivered = o.ShouldBeDelivered,
                         Category = new(o.CategoryId, o.Category.Name),
                     }).ToArray()

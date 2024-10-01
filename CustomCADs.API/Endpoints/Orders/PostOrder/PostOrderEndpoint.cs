@@ -3,6 +3,7 @@ using CustomCADs.API.Helpers;
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Orders;
 using FastEndpoints;
+using static CustomCADs.Domain.DataConstants;
 
 namespace CustomCADs.API.Endpoints.Orders.PostOrder
 {
@@ -51,7 +52,7 @@ namespace CustomCADs.API.Endpoints.Orders.PostOrder
                 ShouldBeDelivered = createdOrder.ShouldBeDelivered,
                 ImagePath = imagePath,
                 BuyerName = createdOrder.Buyer.UserName,
-                OrderDate = createdOrder.OrderDate.ToString("dd-MM-yyyy HH:mm:ss"),
+                OrderDate = createdOrder.OrderDate.ToString(DateFormatString),
                 Status = createdOrder.Status.ToString(),
                 Category = new(createdOrder.CategoryId, createdOrder.Category.Name),
             };

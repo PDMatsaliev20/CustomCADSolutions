@@ -3,6 +3,7 @@ using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Orders;
 using CustomCADs.Domain.Enums;
 using FastEndpoints;
+using static CustomCADs.Domain.DataConstants;
 
 namespace CustomCADs.API.Endpoints.Designer.RecentOngoingOrders
 {
@@ -38,7 +39,7 @@ namespace CustomCADs.API.Endpoints.Designer.RecentOngoingOrders
                         Id = o.Id,
                         Name = o.Name,
                         Status = o.Status.ToString(),
-                        OrderDate = o.OrderDate.ToString("dd-MM-yyyy HH:mm:ss"),
+                        OrderDate = o.OrderDate.ToString(DateFormatString),
                         Category = new(o.CategoryId, o.Category.Name),
                     }).ToArray(),
             };

@@ -2,6 +2,7 @@
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Cads;
 using FastEndpoints;
+using static CustomCADs.Domain.DataConstants;
 
 namespace CustomCADs.API.Endpoints.Cads.GetCad
 {
@@ -41,7 +42,7 @@ namespace CustomCADs.API.Endpoints.Cads.GetCad
                 CamCoordinates = new(model.CamCoordinates.X, model.CamCoordinates.Y, model.CamCoordinates.Z),
                 PanCoordinates = new(model.PanCoordinates.X, model.PanCoordinates.Y, model.PanCoordinates.Z),
                 OrdersCount = model.Orders.Count,
-                CreationDate = model.CreationDate.ToString("dd-MM-yyyy HH:mm:ss"),
+                CreationDate = model.CreationDate.ToString(DateFormatString),
                 CreatorName = model.Creator.UserName,
                 Status = model.Status.ToString(),
                 Category = new(model.CategoryId, model.Category.Name),

@@ -2,6 +2,7 @@
 using CustomCADs.Application.Models.Cads;
 using CustomCADs.Domain.Enums;
 using FastEndpoints;
+using static CustomCADs.Domain.DataConstants;
 
 namespace CustomCADs.API.Endpoints.Home.Gallery
 {
@@ -41,7 +42,7 @@ namespace CustomCADs.API.Endpoints.Home.Gallery
                     {
                         Id = c.Id,
                         Name = c.Name,
-                        CreationDate = c.CreationDate.ToString("dd-MM-yyyy HH:mm:ss"),
+                        CreationDate = c.CreationDate.ToString(DateFormatString),
                         CreatorName = c.Creator.UserName,
                         ImagePath = c.Paths.ImagePath,
                     }).ToArray(),
