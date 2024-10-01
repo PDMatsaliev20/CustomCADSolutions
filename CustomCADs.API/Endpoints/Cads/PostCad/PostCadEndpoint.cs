@@ -16,12 +16,10 @@ namespace CustomCADs.API.Endpoints.Cads.PostCad
         {
             Post("");
             Group<CadsGroup>();
-            Description(d => d.WithSummary("Creates a Cad entity in the database, max file size is 300MB."));
-            Options(opt =>
-            {
-                opt.Accepts<PostCadRequest>("multipart/form-data");
-                opt.Produces<PostCadResponse>(Status201Created, "application/json");
-            });
+            Description(d => d
+                .WithSummary("Creates a Cad entity in the database, max file size is 300MB.")
+                .Accepts<PostCadRequest>("multipart/form-data")
+                .Produces<PostCadResponse>(Status201Created, "application/json"));
         }
 
         public override async Task HandleAsync(PostCadRequest req, CancellationToken ct)

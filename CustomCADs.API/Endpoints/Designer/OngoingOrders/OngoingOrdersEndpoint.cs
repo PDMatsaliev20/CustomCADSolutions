@@ -16,11 +16,9 @@ namespace CustomCADs.API.Endpoints.Designer.OngoingOrders
         {
             Get("Orders");
             Group<DesignerGroup>();
-            Description(d => d.WithSummary("Gets all Orders with specified status."));
-            Options(opt =>
-            {
-                opt.Produces<OrderResultDto<OngoingOrdersResponse>>(Status200OK, "application/json");
-            });
+            Description(d => d
+                .WithSummary("Gets all Orders with specified status.")
+                .Produces<OrderResultDto<OngoingOrdersResponse>>(Status200OK, "application/json"));
         }
 
         public override async Task HandleAsync(OngoingOrdersRequest req, CancellationToken ct)

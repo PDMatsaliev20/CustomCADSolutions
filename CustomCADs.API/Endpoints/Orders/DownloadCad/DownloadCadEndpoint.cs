@@ -13,12 +13,10 @@ namespace CustomCADs.API.Endpoints.Orders.DownloadCad
         {
             Get("{id}/DownloadCad");
             Group<OrdersGroup>();
-            Description(d => d.WithSummary("Downloads the Cad of the Order with the specified id, as a .glb or a .zip depending on the way it was uploaded."));
-            Options(opt =>
-            {
-                opt.Produces<byte[]>(Status200OK, "model/gltf-binary");
-                opt.Produces<byte[]>(Status200OK, "application/zip");
-            });
+            Description(d => d
+                .WithSummary("Downloads the Cad of the Order with the specified id, as a .glb or a .zip depending on the way it was uploaded.")
+                .Produces<byte[]>(Status200OK, "model/gltf-binary")
+                .Produces<byte[]>(Status200OK, "application/zip"));
         }
 
         public override async Task HandleAsync(DownloadCadRequest req, CancellationToken ct)

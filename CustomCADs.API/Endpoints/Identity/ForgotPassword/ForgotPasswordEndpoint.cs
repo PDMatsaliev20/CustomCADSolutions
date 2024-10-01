@@ -14,11 +14,9 @@ namespace CustomCADs.API.Endpoints.Identity.ForgotPassword
         {
             Get("ForgotPassword/{email}");
             Group<IdentityGroup>();
-            Description(d => d.WithSummary("Sends an email with link to Reset Password."));
-            Options(opt =>
-            {
-                opt.Produces<EmptyResponse>(Status200OK);
-            });
+            Description(d => d
+                .WithSummary("Sends an email with link to Reset Password.")
+                .Produces<EmptyResponse>(Status200OK));
         }
 
         public override async Task HandleAsync(ForgotPasswordRequest req, CancellationToken ct)

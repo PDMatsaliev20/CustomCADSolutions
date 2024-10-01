@@ -13,12 +13,10 @@ namespace CustomCADs.API.Endpoints.Cads.PutCad
         {
             Put("{id}");
             Group<CadsGroup>();
-            Description(d => d.WithSummary("Updates Name, Description, Price CategoryId and optionally Image properties of Cad."));
-            Options(opt =>
-            {
-                opt.Accepts<PutCadRequest>("multipart/form-data");
-                opt.Produces<EmptyResponse>(Status204NoContent);
-            });
+            Description(d => d
+                .WithSummary("Updates Name, Description, Price CategoryId and optionally Image properties of Cad.")
+                .Accepts<PutCadRequest>("multipart/form-data")
+                .Produces<EmptyResponse>(Status204NoContent));
         }
 
         public override async Task HandleAsync(PutCadRequest req, CancellationToken ct)

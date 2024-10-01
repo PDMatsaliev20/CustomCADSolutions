@@ -14,11 +14,9 @@ namespace CustomCADs.API.Endpoints.Cads.GetCad
         {
             Get("{id}");
             Group<CadsGroup>();
-            Description(d => d.WithSummary("Gets a Cad by the specified id."));
-            Options(opt =>
-            {
-                opt.Produces<GetCadResponse>(Status200OK, "application/json");
-            });
+            Description(d => d
+                .WithSummary("Gets a Cad by the specified id.")
+                .Produces<GetCadResponse>(Status200OK, "application/json"));
         }
 
         public override async Task HandleAsync(GetCadRequest req, CancellationToken ct)

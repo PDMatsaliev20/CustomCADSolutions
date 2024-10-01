@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.API.Endpoints.Roles.Responses
+﻿namespace CustomCADs.API.Dtos
 {
     public class RoleResponseDto
     {

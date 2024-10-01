@@ -12,7 +12,7 @@ namespace CustomCADs.API.Endpoints.Roles
             Configure("API/Roles", ep =>
             {
                 ep.Roles(Admin);
-                ep.Options(opt =>
+                ep.Description(opt =>
                 {
                     opt.WithTags("Roles");
                     opt.ProducesProblem(Status401Unauthorized);

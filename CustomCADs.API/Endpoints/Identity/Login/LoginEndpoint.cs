@@ -18,14 +18,12 @@ namespace CustomCADs.API.Endpoints.Identity.Login
         {
             Post("Login");
             Group<IdentityGroup>();
-            Description(d => d.WithSummary("Logs into the account with the specified parameters."));
-            Options(opt =>
-            {
-                opt.Produces<EmptyResponse>(Status200OK);
-                opt.Produces(Status400BadRequest);
-                opt.Produces(Status401Unauthorized);
-                opt.Produces(Status423Locked);
-            });
+            Description(d => 
+                d.WithSummary("Logs into the account with the specified parameters.")
+                .Produces<EmptyResponse>(Status200OK)
+                .Produces(Status400BadRequest)
+                .Produces(Status401Unauthorized)
+                .Produces(Status423Locked));
         }
 
         public override async Task HandleAsync(LoginRequest req, CancellationToken ct)

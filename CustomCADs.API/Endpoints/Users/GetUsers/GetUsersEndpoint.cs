@@ -1,4 +1,4 @@
-﻿using CustomCADs.API.Endpoints.Users.Responses;
+﻿using CustomCADs.API.Dtos;
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Users;
 using FastEndpoints;
@@ -13,13 +13,11 @@ namespace CustomCADs.API.Endpoints.Users.GetUsers
         {
             Get("");
             Group<UsersGroup>();
-            Description(d => d.WithSummary("Gets All Users."));
-            Options(opt =>
-            {
-                opt.Produces<GetUsersResponse>(Status200OK, "application/json");
-                opt.ProducesProblem(Status400BadRequest);
-                opt.ProducesProblem(Status404NotFound);
-            });
+            Description(d => d
+                .WithSummary("Gets All Users.")
+                .Produces<GetUsersResponse>(Status200OK, "application/json")
+                .ProducesProblem(Status400BadRequest)
+                .ProducesProblem(Status404NotFound));
         }
 
         public override async Task HandleAsync(GetUsersRequest req, CancellationToken ct)

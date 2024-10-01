@@ -16,11 +16,9 @@ namespace CustomCADs.API.Endpoints.Orders.GetOrders
         {
             Get("{status}");
             Group<OrdersGroup>();
-            Description(d => d.WithSummary("Queries the User's Orders with the specified parameters."));
-            Options(opt =>
-            {
-                opt.Produces<OrderResultDto<GetOrdersResponse>>(Status200OK, "application/json");
-            });
+            Description(d => d
+                .WithSummary("Queries the User's Orders with the specified parameters.")
+                .Produces<OrderResultDto<GetOrdersResponse>>(Status200OK, "application/json"));
         }
 
         public override async Task HandleAsync(GetOrdersRequest req, CancellationToken ct)

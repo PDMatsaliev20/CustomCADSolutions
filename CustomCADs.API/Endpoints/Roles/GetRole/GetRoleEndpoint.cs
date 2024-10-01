@@ -1,8 +1,6 @@
-﻿using AutoMapper;
-using CustomCADs.API.Endpoints.Roles.Responses;
+﻿using CustomCADs.API.Dtos;
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Roles;
-using CustomCADs.Application.Services;
 using FastEndpoints;
 
 namespace CustomCADs.API.Endpoints.Roles.GetRole
@@ -15,12 +13,10 @@ namespace CustomCADs.API.Endpoints.Roles.GetRole
         {
             Get("{name}");
             Group<RolesGroup>();
-            Description(d => d.WithSummary("Gets a Role by the specified name."));
-            Options(opt =>
-            {
-                opt.Produces<RoleResponseDto>(Status200OK, "application/json");
-                opt.ProducesProblem(Status404NotFound);
-            });
+            Description(d => d
+                .WithSummary("Gets a Role by the specified name.")
+                .Produces<RoleResponseDto>(Status200OK, "application/json")
+                .ProducesProblem(Status404NotFound));
         }
 
         public override async Task HandleAsync(GetRoleRequest req, CancellationToken ct)

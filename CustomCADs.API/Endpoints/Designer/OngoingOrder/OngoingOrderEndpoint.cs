@@ -13,11 +13,9 @@ namespace CustomCADs.API.Endpoints.Designer.OngoingOrder
         {
             Get("Orders/{id}");
             Group<DesignerGroup>();
-            Description(d => d.WithSummary("Gets the Order with the specified Id."));
-            Options(opt =>
-            {
-                opt.Produces<OngoingOrderResponse>(Status200OK, "application/json");
-            });
+            Description(d => d
+                .WithSummary("Gets the Order with the specified Id.")
+                .Produces<OngoingOrderResponse>(Status200OK, "application/json"));
         }
 
         public override async Task HandleAsync(OngoingOrderRequest req, CancellationToken ct)

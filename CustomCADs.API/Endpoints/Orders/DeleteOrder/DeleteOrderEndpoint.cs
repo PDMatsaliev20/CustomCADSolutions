@@ -13,11 +13,9 @@ namespace CustomCADs.API.Endpoints.Orders.DeleteOrder
         {
             Delete("{id}");
             Group<OrdersGroup>();
-            Description(d => d.WithSummary("Deletes the Order with the specified id."));
-            Options(opt =>
-            {
-                opt.Produces<EmptyResponse>(Status204NoContent);
-            });
+            Description(d => d
+                .WithSummary("Deletes the Order with the specified id.")
+                .Produces<EmptyResponse>(Status204NoContent));
         }
 
         public override async Task HandleAsync(DeleteOrderRequest req, CancellationToken ct)

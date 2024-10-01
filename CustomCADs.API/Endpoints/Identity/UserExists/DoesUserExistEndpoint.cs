@@ -12,11 +12,9 @@ namespace CustomCADs.API.Endpoints.Identity.UserExists
         {
             Get("UserExists/{username}");
             Group<IdentityGroup>();
-            Description(d => d.WithSummary("Gets info about User Existence Status"));
-            Options(opt =>
-            {
-                opt.Produces<EmptyResponse>(Status200OK);
-            });
+            Description(d => d
+                .WithSummary("Gets info about User Existence Status")
+                .Produces<EmptyResponse>(Status200OK));
         }
 
         public override async Task HandleAsync(UserExistsRequest req, CancellationToken ct)

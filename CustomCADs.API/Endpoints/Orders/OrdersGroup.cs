@@ -12,7 +12,7 @@ namespace CustomCADs.API.Endpoints.Orders
             Configure("API/Orders", ep =>
             {
                 ep.Roles(Client);
-                ep.Options(opt =>
+                ep.Description(opt =>
                 {
                     opt.WithTags("Orders");
                     opt.ProducesProblem(Status400BadRequest);

@@ -11,11 +11,9 @@ namespace CustomCADs.API.Endpoints.Home.Sortings
         {
             Get("/Sortings");
             Group<HomeGroup>();
-            Description(s => s.WithSummary("Gets all existing Sortings."));
-            Options(opt =>
-            {
-                opt.Produces<string[]>(Status200OK, "application/json");
-            });
+            Description(d => d
+                .WithSummary("Gets all existing Sortings.")
+                .Produces<string[]>(Status200OK, "application/json"));
         }
 
         public override async Task HandleAsync(CancellationToken ct)

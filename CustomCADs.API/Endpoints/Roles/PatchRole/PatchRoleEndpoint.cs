@@ -16,13 +16,11 @@ namespace CustomCADs.API.Endpoints.Roles.PatchRole
         {
             Patch("{name}");
             Group<RolesGroup>();
-            Description(d => d.WithSummary("Updates a Role in the traditional way - with an array of operations."));
-            Options(opt =>
-            {
-                opt.Produces<EmptyResponse>(Status204NoContent);
-                opt.ProducesProblem(Status400BadRequest);
-                opt.ProducesProblem(Status404NotFound);
-            });
+            Description(d => d
+                .WithSummary("Updates a Role in the traditional way - with an array of operations.")
+                .Produces<EmptyResponse>(Status204NoContent)
+                .ProducesProblem(Status400BadRequest)
+                .ProducesProblem(Status404NotFound));
         }
 
         public override async Task HandleAsync(PatchRoleRequest req, CancellationToken ct)

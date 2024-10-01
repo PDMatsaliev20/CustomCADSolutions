@@ -1,8 +1,6 @@
-﻿using AutoMapper;
-using CustomCADs.API.Endpoints.Users.Responses;
+﻿using CustomCADs.API.Dtos;
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Users;
-using CustomCADs.Application.Services;
 using FastEndpoints;
 
 namespace CustomCADs.API.Endpoints.Users.GetUser
@@ -15,12 +13,10 @@ namespace CustomCADs.API.Endpoints.Users.GetUser
         {
             Get("{username}");
             Group<UsersGroup>();
-            Description(d => d.WithSummary("Gets a User by the specified name."));
-            Options(opt =>
-            {
-                opt.Produces<UserResponseDto>(Status200OK, "application/json");
-                opt.ProducesProblem(Status404NotFound);
-            });
+            Description(d => d
+                .WithSummary("Gets a User by the specified name.")
+                .Produces<UserResponseDto>(Status200OK, "application/json")
+                .ProducesProblem(Status404NotFound));
         }
 
         public override async Task HandleAsync(GetUserRequest req, CancellationToken ct)

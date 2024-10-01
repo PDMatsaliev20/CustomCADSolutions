@@ -1,4 +1,4 @@
-﻿using CustomCADs.API.Endpoints.Roles.Responses;
+﻿using CustomCADs.API.Dtos;
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Roles;
 using FastEndpoints;
@@ -13,11 +13,9 @@ namespace CustomCADs.API.Endpoints.Roles.GetRoles
         {
             Get("");
             Group<RolesGroup>();
-            Description(d => d.WithSummary("Gets All Roles"));
-            Options(opt =>
-            {
-                opt.Produces<RoleModel[]>(Status200OK, "application/json");
-            });
+            Description(d => d
+                .WithSummary("Gets All Roles")
+                .Produces<RoleModel[]>(Status200OK, "application/json"));
         }
 
         public override async Task HandleAsync(CancellationToken ct)

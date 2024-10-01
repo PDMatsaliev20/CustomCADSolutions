@@ -13,13 +13,11 @@ namespace CustomCADs.API.Endpoints.Home.GalleryDetails
         {
             Get("Gallery/{id}");
             Group<HomeGroup>();
-            Description(d => d.WithSummary("Get info about a 3D Model from the Gallery."));
-            Options(opt =>
-            {
-                opt.Produces<GalleryDetailsResponse>(Status200OK, "application/json");
-                opt.ProducesProblem(Status404NotFound);
-                opt.ProducesProblem(Status500InternalServerError);
-            });
+            Description(d => d
+                .WithSummary("Get info about a 3D Model from the Gallery.")
+                .Produces<GalleryDetailsResponse>(Status200OK, "application/json")
+                .ProducesProblem(Status404NotFound)
+                .ProducesProblem(Status500InternalServerError));
         }
 
         public override async Task HandleAsync(GalleryDetailsRequest req, CancellationToken ct)

@@ -13,12 +13,10 @@ namespace CustomCADs.API.Endpoints.Categories.EditCategory
         {
             Put("{id}");
             Group<CategoriesGroup>();
-            Description(s => s.WithSummary("Edits the name of the Category with the provided id."));
-            Options(opt =>
-            {
-                opt.Produces<EmptyResponse>(Status204NoContent);
-                opt.ProducesProblem(Status500InternalServerError);
-            });
+            Description(s => s
+                .WithSummary("Edits the name of the Category with the provided id.")
+                .Produces<EmptyResponse>(Status204NoContent)
+                .ProducesProblem(Status500InternalServerError));
         }
 
         public override async Task HandleAsync(EditCategoryRequest req, CancellationToken ct)

@@ -16,11 +16,9 @@ namespace CustomCADs.API.Endpoints.Orders.RecentOrders
         {
             Get("Recent");
             Group<OrdersGroup>();
-            Description(d => d.WithSummary("Gets the User's most recent Orders."));
-            Options(opt =>
-            {
-                opt.Produces<OrderResultDto<RecentOrdersResponse>>(Status200OK, "application/json");
-            });
+            Description(d => d
+                .WithSummary("Gets the User's most recent Orders.")
+                .Produces<OrderResultDto<RecentOrdersResponse>>(Status200OK, "application/json"));
         }
 
         public override async Task HandleAsync(RecentOrdersRequest req, CancellationToken ct)

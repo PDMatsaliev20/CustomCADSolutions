@@ -13,11 +13,9 @@ namespace CustomCADs.API.Endpoints.Orders.PatchOrder
         {
             Patch("{id}");
             Group<OrdersGroup>();
-            Description(d => d.WithSummary("Updates Order with an array of operations."));
-            Options(opt =>
-            {
-                opt.Produces<EmptyResponse>(Status204NoContent);
-            });
+            Description(d => d
+                .WithSummary("Updates Order with an array of operations.")
+                .Produces<EmptyResponse>(Status204NoContent));
         }
 
         public override async Task HandleAsync(PatchOrderRequest req, CancellationToken ct)

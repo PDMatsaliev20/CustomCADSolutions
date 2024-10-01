@@ -1,4 +1,5 @@
-﻿using CustomCADs.Application.Contracts;
+﻿using CustomCADs.API.Dtos;
+using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Cads;
 using CustomCADs.Domain.Enums;
 using FastEndpoints;
@@ -8,18 +9,16 @@ namespace CustomCADs.API.Endpoints.Home.Gallery
 {
     using static StatusCodes;
 
-    public class GalleryEndpoint(ICadService service) : Endpoint<GalleryRequest, GalleryResponse>
+    public class GalleryEndpoint(ICadService service) : Endpoint<GalleryRequest, CadResultDto<GalleryResponse>>
     {
         public override void Configure()
         {
             Get("Gallery");
             Group<HomeGroup>();
-            Description(d => d.WithSummary("Queries all Validated 3D Models with the specified parameters."));
-            Options(opt =>
-            {
-                opt.Produces<GalleryResponse>(Status200OK, "application/json");
-                opt.ProducesProblem(Status500InternalServerError);
-            });
+            Description(d => d
+                .WithSummary("Queries all Validated 3D Models with the specified parameters.")
+                .Produces<CadResultDto<GalleryResponse>>(Status200OK, "application/json")
+                .ProducesProblem(Status500InternalServerError));
         }
 
         public override async Task HandleAsync(GalleryRequest req, CancellationToken ct)
@@ -34,11 +33,11 @@ namespace CustomCADs.API.Endpoints.Home.Gallery
                     limit: req.Limit
             );
 
-            GalleryResponse response = new()
+            CadResultDto<GalleryResponse> response = new()
             {
                 Count = result.Count,
                 Cads = result.Cads
-                    .Select(c => new GalleryCadDto()
+                    .Select(c => new GalleryResponse()
                     {
                         Id = c.Id,
                         Name = c.Name,

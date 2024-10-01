@@ -11,14 +11,9 @@ namespace CustomCADs.API.Endpoints.Home.MainCad
             Get("MainCad");
             Group<HomeGroup>();
             AllowAnonymous();
-            Description(b =>
-            {
-                b.WithSummary("Gets the path and coordinates to the 3D Model for the Home Page.");
-            });
-            Options(opt =>
-            {
-                opt.Produces<MainCadResponse>(Status200OK, "application/json");
-            });
+            Description(d => d
+                .WithSummary("Gets the path and coordinates to the 3D Model for the Home Page.")
+                .Produces<MainCadResponse>(Status200OK, "application/json"));
         }
 
         public override async Task HandleAsync(CancellationToken ct)

@@ -1,4 +1,4 @@
-﻿using CustomCADs.API.Endpoints.Users.Responses;
+﻿using CustomCADs.API.Dtos;
 
 namespace CustomCADs.API.Endpoints.Users.GetUsers
 {

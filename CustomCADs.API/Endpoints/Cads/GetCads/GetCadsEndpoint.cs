@@ -15,11 +15,9 @@ namespace CustomCADs.API.Endpoints.Cads.GetCads
         {
             Get("");
             Group<CadsGroup>();
-            Description(d => d.WithSummary("Queries the User's Cads with the specified parameters."));
-            Options(opt =>
-            {
-                opt.Produces<CadResultDto<GetCadsResponse>>(Status200OK, "application/json");
-            });
+            Description(d => d
+                .WithSummary("Queries the User's Cads with the specified parameters.")
+                .Produces<CadResultDto<GetCadsResponse>>(Status200OK, "application/json"));
         }
 
         public override async Task HandleAsync(GetCadsRequest req, CancellationToken ct)

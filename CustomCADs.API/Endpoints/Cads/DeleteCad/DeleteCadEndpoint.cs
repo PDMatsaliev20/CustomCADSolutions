@@ -1,7 +1,6 @@
 ﻿using CustomCADs.API.Helpers;
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Cads;
-using CustomCADs.Application.Services;
 using FastEndpoints;
 
 namespace CustomCADs.API.Endpoints.Cads.DeleteCad
@@ -14,11 +13,9 @@ namespace CustomCADs.API.Endpoints.Cads.DeleteCad
         {
             Delete("{id}");
             Group<CadsGroup>();
-            Description(d => d.WithSummary("Deletes the Cad with the specified id."));
-            Options(opt =>
-            {
-                opt.Produces(Status204NoContent);
-            });
+            Description(d => d
+                .WithSummary("Deletes the Cad with the specified id.")
+                .Produces(Status204NoContent));
         }
 
         public override async Task HandleAsync(DeleteCadRequest req, CancellationToken ct)

@@ -12,16 +12,14 @@ namespace CustomCADs.API.Endpoints.Cads
             Configure("API/Cads", ep =>
             {
                 ep.Roles(RoleConstants.Contributor, RoleConstants.Designer);
-                ep.Options(opt =>
-                {
-                    opt.WithTags("Cads");
-                    opt.ProducesProblem(Status400BadRequest);
-                    opt.ProducesProblem(Status401Unauthorized);
-                    opt.ProducesProblem(Status403Forbidden);
-                    opt.ProducesProblem(Status404NotFound);
-                    opt.ProducesProblem(Status409Conflict);
-                    opt.ProducesProblem(Status500InternalServerError);
-                });
+                ep.Description(d => d
+                    .WithTags("Cads")
+                    .ProducesProblem(Status400BadRequest)
+                    .ProducesProblem(Status401Unauthorized)
+                    .ProducesProblem(Status403Forbidden)
+                    .ProducesProblem(Status404NotFound)
+                    .ProducesProblem(Status409Conflict)
+                    .ProducesProblem(Status500InternalServerError));
             });   
         }
     }

@@ -12,7 +12,7 @@ namespace CustomCADs.API.Endpoints.Designer
             Configure("API/Designer", ep =>
             {
                 ep.Roles(RoleConstants.Designer);
-                ep.Options(opt =>
+                ep.Description(opt =>
                 {
                     opt.WithTags("Desigenr");
                     opt.ProducesProblem(Status401Unauthorized);

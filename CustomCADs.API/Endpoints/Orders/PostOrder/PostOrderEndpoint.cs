@@ -15,14 +15,10 @@ namespace CustomCADs.API.Endpoints.Orders.PostOrder
         {
             Post("");
             Group<OrdersGroup>();
-            Description(d => d.WithSummary("Creates an Order entity in the database."));
-            Options(opt =>
-            {
-                opt.Accepts<PostOrderRequest>("multipart/form-data");
-                opt.Produces<PostOrderResponse>(Status201Created, "application/json");
-            });
-            AllowFormData();
-            AllowFileUploads();
+            Description(d => d
+                .WithSummary("Creates an Order entity in the database.")
+                .Accepts<PostOrderRequest>("multipart/form-data")
+                .Produces<PostOrderResponse>(Status201Created, "application/json"));
         }
 
         public override async Task HandleAsync(PostOrderRequest req, CancellationToken ct)

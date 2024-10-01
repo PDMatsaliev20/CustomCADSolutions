@@ -14,11 +14,9 @@ namespace CustomCADs.API.Endpoints.Orders.GetOrder
         {
             Get("{id:int}");
             Group<OrdersGroup>();
-            Description(d => d.WithSummary("Gets an Order by the specified Id."));
-            Options(opt =>
-            {
-                opt.Produces<GetOrderResponse>(Status200OK, "application/json");
-            });
+            Description(d => d
+                .WithSummary("Gets an Order by the specified Id.")
+                .Produces<GetOrderResponse>(Status200OK, "application/json"));
         }
 
         public override async Task HandleAsync(GetOrderRequest req, CancellationToken ct)

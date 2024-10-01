@@ -14,13 +14,11 @@ namespace CustomCADs.API.Endpoints.Identity.RetryVerifyEmail
         {
             Get("RetryVerifyEmail");
             Group<IdentityGroup>();
-            Description(d => d.WithSummary("Sends another email with a token."));
-            Options(opt =>
-            {
-                opt.Produces<EmptyResponse>(Status200OK);
-                opt.ProducesProblem(Status400BadRequest);
-                opt.ProducesProblem(Status404NotFound);
-            });
+            Description(d => d
+                .WithSummary("Sends another email with a token.")
+                .Produces<EmptyResponse>(Status200OK)
+                .ProducesProblem(Status400BadRequest)
+                .ProducesProblem(Status404NotFound));
         }
 
         public override async Task HandleAsync(RetryVerifyEmailRequest req, CancellationToken ct)

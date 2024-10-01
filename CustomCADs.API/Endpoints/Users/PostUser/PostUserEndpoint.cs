@@ -1,15 +1,11 @@
-﻿using AutoMapper;
+﻿using CustomCADs.API.Dtos;
 using CustomCADs.API.Endpoints.Users.GetUser;
-using CustomCADs.API.Endpoints.Users.Responses;
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Users;
-using CustomCADs.Application.Services;
 using CustomCADs.Infrastructure.Identity;
 using CustomCADs.Infrastructure.Identity.Contracts;
-using CustomCADs.Infrastructure.Identity.Managers;
 using FastEndpoints;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Hosting;
 
 namespace CustomCADs.API.Endpoints.Users.PostUser
 {
@@ -22,12 +18,10 @@ namespace CustomCADs.API.Endpoints.Users.PostUser
         {
             Post("");
             Group<UsersGroup>();
-            Description(d => d.WithSummary("Creates a User with the specified name and role."));
-            Options(opt =>
-            {
-                opt.Produces<UserResponseDto>(Status201Created, "application/json");
-                opt.ProducesProblem(Status400BadRequest);
-            });
+            Description(d => d
+                .WithSummary("Creates a User with the specified name and role.")
+                .Produces<UserResponseDto>(Status201Created, "application/json")
+                .ProducesProblem(Status400BadRequest));
         }
 
         public override async Task HandleAsync(PostUserRequest req, CancellationToken ct)

@@ -16,11 +16,9 @@ namespace CustomCADs.API.Endpoints.Cads.RecentCads
         {
             Get("Recent");
             Group<CadsGroup>();
-            Description(d => d.WithSummary("Gets the User's most recent Cads."));
-            Options(opt =>
-            {
-                opt.Produces<CadResultDto<RecentCadsResponse>>(Status200OK, "application/json");
-            });
+            Description(d => d
+                .WithSummary("Gets the User's most recent Cads.")
+                .Produces<CadResultDto<RecentCadsResponse>>(Status200OK, "application/json"));
         }
 
         public override async Task HandleAsync(RecentCadsRequest req, CancellationToken ct)

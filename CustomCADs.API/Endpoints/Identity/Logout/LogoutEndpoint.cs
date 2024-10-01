@@ -16,12 +16,10 @@ namespace CustomCADs.API.Endpoints.Identity.Logout
         {
             Post("Logout");
             Group<IdentityGroup>();
-            Description(d => d.WithSummary("Logs out of the current account."));
-            Options(opt =>
-            {
-                opt.Produces<EmptyResponse>(Status200OK);
-                opt.ProducesProblem(Status400BadRequest);
-            });
+            Description(d => d
+                .WithSummary("Logs out of the current account.")
+                .Produces<EmptyResponse>(Status200OK)
+                .ProducesProblem(Status400BadRequest));
         }
 
         public override async Task HandleAsync(CancellationToken ct)

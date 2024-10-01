@@ -15,11 +15,9 @@ namespace CustomCADs.API.Endpoints.Identity.RefreshToken
         {
             Post("RefreshToken");
             Group<IdentityGroup>();
-            Description(d => d.WithSummary("Returns a Refresh token"));
-            Options(opt =>
-            {
-                opt.Produces<EmptyResponse>(Status200OK);
-            });
+            Description(d => d
+                .WithSummary("Returns a Refresh token")
+                .Produces<EmptyResponse>(Status200OK));
         }
 
         public override async Task HandleAsync(CancellationToken ct)

@@ -1,9 +1,7 @@
 ﻿using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Users;
-using CustomCADs.Application.Services;
 using CustomCADs.Infrastructure.Identity;
 using CustomCADs.Infrastructure.Identity.Contracts;
-using CustomCADs.Infrastructure.Identity.Managers;
 using FastEndpoints;
 using Microsoft.AspNetCore.JsonPatch.Operations;
 
@@ -18,13 +16,11 @@ namespace CustomCADs.API.Endpoints.Users.PatchUser
         {
             Patch("{username}");
             Group<UsersGroup>();
-            Description(d => d.WithSummary("Updates a User in the traditional way - with an array of operations."));
-            Options(opt =>
-            {
-                opt.Produces<EmptyResponse>(Status204NoContent);
-                opt.ProducesProblem(Status400BadRequest);
-                opt.ProducesProblem(Status404NotFound);
-            });
+            Description(d => d
+                .WithSummary("Updates a User in the traditional way - with an array of operations.")
+                .Produces<EmptyResponse>(Status204NoContent)
+                .ProducesProblem(Status400BadRequest)
+                .ProducesProblem(Status404NotFound));
         }
 
         public override async Task HandleAsync(PatchUserRequest req, CancellationToken ct)

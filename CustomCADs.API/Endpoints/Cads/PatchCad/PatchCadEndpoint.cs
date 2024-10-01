@@ -13,12 +13,10 @@ namespace CustomCADs.API.Endpoints.Cads.PatchCad
         {
             Patch("{id}");
             Group<CadsGroup>();
-            Description(d => d.WithSummary("Updates CamCoordinates or PanCoordinates property of Cad."));
-            Options(opt =>
-            {
-                opt.Accepts<PatchCadRequest>("application/json");
-                opt.Produces<EmptyResponse>(Status200OK);
-            });
+            Description(d => d
+                .WithSummary("Updates CamCoordinates or PanCoordinates property of Cad.")
+                .Accepts<PatchCadRequest>("application/json")
+                .Produces<EmptyResponse>(Status200OK));
         }
 
         public override async Task HandleAsync(PatchCadRequest req, CancellationToken ct)

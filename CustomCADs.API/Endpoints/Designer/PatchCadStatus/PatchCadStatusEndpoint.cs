@@ -12,12 +12,10 @@ namespace CustomCADs.API.Endpoints.Designer.PatchCadStatus
         {
             Patch("Cads/{id}");
             Group<DesignerGroup>();
-            Description(d => d.WithSummary("Updates the specified Cad with the specified Status."));
-            Options(opt =>
-            {
-                opt.Produces<EmptyResponse>(Status204NoContent);
-                opt.ProducesProblem(Status404NotFound);
-            });
+            Description(d => d
+                .WithSummary("Updates the specified Cad with the specified Status.")
+                .Produces<EmptyResponse>(Status204NoContent)
+                .ProducesProblem(Status404NotFound));
         }
 
         public override async Task HandleAsync(PatchCadStatusRequest req, CancellationToken ct)

@@ -14,12 +14,10 @@ namespace CustomCADs.API.Endpoints.Roles.DeleteRole
         {
             Delete("{name}");
             Group<RolesGroup>();
-            Description(d => d.WithSummary("Deletes the Role with the specified name."));
-            Options(opt =>
-            {
-                opt.Produces<EmptyResponse>(Status204NoContent);
-                opt.ProducesProblem(Status404NotFound);
-            });
+            Description(d => d
+                .WithSummary("Deletes the Role with the specified name.")
+                .Produces<EmptyResponse>(Status204NoContent)
+                .ProducesProblem(Status404NotFound));
         }
 
         public override async Task HandleAsync(DeleteRoleRequest req, CancellationToken ct)

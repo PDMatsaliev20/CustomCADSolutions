@@ -17,12 +17,10 @@ namespace CustomCADs.API.Endpoints.Identity.Register
         {
             Post("Register/{role}");
             Group<IdentityGroup>();
-            Description(d => d.WithSummary("Creates a new account with the specified parameters for the user and verifies the ownership of the email by sending a token."));
-            Options(opt =>
-            {
-                opt.Produces<EmptyResponse>(Status200OK);
-                opt.ProducesProblem(Status400BadRequest);
-            });
+            Description(d => d
+                .WithSummary("Creates a new account with the specified parameters for the user and verifies the ownership of the email by sending a token.")
+                .Produces<EmptyResponse>(Status200OK)
+                .ProducesProblem(Status400BadRequest));
         }
 
         public override async Task HandleAsync(RegisterRequest req, CancellationToken ct)

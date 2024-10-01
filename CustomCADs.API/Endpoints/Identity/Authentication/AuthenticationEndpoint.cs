@@ -11,11 +11,9 @@ namespace CustomCADs.API.Endpoints.Identity.Authentication
         {
             Get("Authentication");
             Group<IdentityGroup>();
-            Description(d => d.WithSummary("Gets info about User Authentication."));
-            Options(opt =>
-            {
-                opt.Produces<EmptyResponse>(Status200OK);
-            });
+            Description(d => d
+                .WithSummary("Gets info about User Authentication.")
+                .Produces<EmptyResponse>(Status200OK));
         }
 
         public override async Task HandleAsync(CancellationToken ct)

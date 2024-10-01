@@ -14,12 +14,10 @@ namespace CustomCADs.API.Endpoints.Categories.GetCategoryById
             Get("{id}");
             AllowAnonymous();
             Group<CategoriesGroup>();
-            Description(s => s.WithSummary("Gets the Category with the provided id."));
-            Options(opt =>
-            {
-                opt.Produces<GetCategoryByIdRequest>(Status200OK, "application/json");
-                opt.ProducesProblem(Status500InternalServerError);
-            });
+            Description(s => s
+                .WithSummary("Gets the Category with the provided id.")
+                .Produces<GetCategoryByIdRequest>(Status200OK, "application/json")
+                .ProducesProblem(Status500InternalServerError));
         }
 
         public override async Task HandleAsync(GetCategoryByIdRequest req, CancellationToken ct)

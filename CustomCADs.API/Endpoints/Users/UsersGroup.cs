@@ -12,7 +12,7 @@ namespace CustomCADs.API.Endpoints.Users
             Configure("API/Users", ep => 
             {
                 ep.Roles(Admin);
-                ep.Options(opt =>
+                ep.Description(opt =>
                 {
                     opt.WithTags("Users");
                     opt.ProducesProblem(Status401Unauthorized);

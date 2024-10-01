@@ -15,12 +15,10 @@ namespace CustomCADs.API.Endpoints.Payment.Purchase
         {
             Post("{id}/Purchase");
             Group<PaymentGroup>();
-            Description(d => d.WithSummary("Initializes the Payment Intent and returns a Client Secret if an error occurs."));
-            Options(opt =>
-            {
-                opt.Produces<string>(Status200OK);
-                opt.ProducesProblem(Status400BadRequest);
-            });
+            Description(d => d
+                .WithSummary("Initializes the Payment Intent and returns a Client Secret if an error occurs.")
+                .Produces<string>(Status200OK)
+                .ProducesProblem(Status400BadRequest));
         }
 
         public override async Task HandleAsync(PurchaseRequest req, CancellationToken ct)

@@ -1,8 +1,6 @@
 ﻿using CustomCADs.Application.Contracts;
-using CustomCADs.Application.Services;
 using CustomCADs.Infrastructure.Identity;
 using CustomCADs.Infrastructure.Identity.Contracts;
-using CustomCADs.Infrastructure.Identity.Managers;
 using FastEndpoints;
 
 namespace CustomCADs.API.Endpoints.Users.DeleteUser
@@ -15,12 +13,10 @@ namespace CustomCADs.API.Endpoints.Users.DeleteUser
         {
             Delete("{username}");
             Group<UsersGroup>();
-            Description(d => d.WithSummary("Deletes the User with the specified username."));
-            Options(opt =>
-            {
-                opt.Produces<EmptyResponse>(Status204NoContent);
-                opt.ProducesProblem(Status404NotFound);
-            });
+            Description(d => d
+                .WithSummary("Deletes the User with the specified username.")
+                .Produces<EmptyResponse>(Status204NoContent)
+                .ProducesProblem(Status404NotFound));
         }
 
         public override async Task HandleAsync(DeleteUserRequest req, CancellationToken ct)

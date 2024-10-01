@@ -14,11 +14,9 @@ namespace CustomCADs.API.Endpoints.Cads.CountCads
         {
             Get("Count");
             Group<CadsGroup>();
-            Description(d => d.WithSummary("Gets counts of the User's Cads grouped by their status."));
-            Options(opt =>
-            {
-                opt.Produces<CountCadsResponse>(Status200OK, "application/json");
-            });
+            Description(d => d
+                .WithSummary("Gets counts of the User's Cads grouped by their status.")
+                .Produces<CountCadsResponse>(Status200OK, "application/json"));
         }
 
         public override async Task HandleAsync(CancellationToken ct)

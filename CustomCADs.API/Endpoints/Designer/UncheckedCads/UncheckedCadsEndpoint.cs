@@ -14,11 +14,9 @@ namespace CustomCADs.API.Endpoints.Designer.UncheckedCads
         {
             Get("Cads");
             Group<DesignerGroup>();
-            Description(d => d.WithSummary("Gets all Cads with Unchecked status."));
-            Options(opt =>
-            {
-                opt.Produces<UncheckedCadsResponse>(Status200OK, "application/json");
-            });
+            Description(d => d
+                .WithSummary("Gets all Cads with Unchecked status.")
+                .Produces<UncheckedCadsResponse>(Status200OK, "application/json"));
         }
 
         public override async Task HandleAsync(UncheckedCadsRequest req, CancellationToken ct)

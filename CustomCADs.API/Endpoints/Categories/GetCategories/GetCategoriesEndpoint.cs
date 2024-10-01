@@ -13,12 +13,10 @@ namespace CustomCADs.API.Endpoints.Categories.GetCategories
             Get("");
             AllowAnonymous();
             Group<CategoriesGroup>();
-            Description(s => s.WithSummary("Gets all existing Categories."));
-            Options(opt =>
-            {
-                opt.Produces<IEnumerable<CategoryDto>>(Status200OK, "application/json");
-                opt.ProducesProblem(Status500InternalServerError);
-            });
+            Description(s => s
+                .WithSummary("Gets all existing Categories.")
+                .Produces<IEnumerable<CategoryDto>>(Status200OK, "application/json")
+                .ProducesProblem(Status500InternalServerError));
         }
 
         public override async Task HandleAsync(CancellationToken ct)

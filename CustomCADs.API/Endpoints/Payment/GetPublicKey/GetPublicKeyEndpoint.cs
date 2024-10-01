@@ -11,7 +11,9 @@ namespace CustomCADs.API.Endpoints.Payment.GetPublicKey
         {
             Get("GetPublicKey");
             Group<PaymentGroup>();
-            Description(d => d.WithSummary("Gets the Public Key."));
+            Description(d => d
+                .WithSummary("Gets the Public Key.")
+                .Produces<string>(Status200OK));
         }
 
         public override async Task HandleAsync(CancellationToken ct)

@@ -14,12 +14,10 @@ namespace CustomCADs.API.Endpoints.Orders.PutOrder
         {
             Put("{id}");
             Group<OrdersGroup>();
-            Description(d => d.WithSummary("Updates Name, Description and CategoryId for Orders have a Pending status."));
-            Options(opt =>
-            {
-                opt.Accepts<PutOrderRequest>("multipart/form-data");
-                opt.Produces<EmptyResponse>(Status204NoContent);
-            });
+            Description(d => d
+                .WithSummary("Updates Name, Description and CategoryId for Orders have a Pending status.")
+                .Accepts<PutOrderRequest>("multipart/form-data")
+                .Produces<EmptyResponse>(Status204NoContent));
         }
 
         public override async Task HandleAsync(PutOrderRequest req, CancellationToken ct)

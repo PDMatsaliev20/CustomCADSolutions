@@ -2,7 +2,10 @@
 {
     public class GalleryResponse
     {
-        public int Count { get; set; }
-        public ICollection<GalleryCadDto> Cads { get; set; } = [];
+        public int Id { get; set; }
+        public required string Name { get; set; }
+        public required string ImagePath { get; set; }
+        public required string CreatorName { get; set; }
+        public required string CreationDate { get; set; }
     }
 }

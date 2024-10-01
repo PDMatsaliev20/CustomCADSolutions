@@ -1,6 +1,5 @@
 ﻿using CustomCADs.Infrastructure.Identity;
 using CustomCADs.Infrastructure.Identity.Contracts;
-using CustomCADs.Infrastructure.Identity.Managers;
 using FastEndpoints;
 using Microsoft.AspNetCore.Identity;
 
@@ -15,11 +14,9 @@ namespace CustomCADs.API.Endpoints.Identity.ResetPassword
         {
             Post("ResetPassword/{email}");
             Group<IdentityGroup>();
-            Description(d => d.WithSummary("Resets password of User with given email if the token is valid"));
-            Options(opt =>
-            {
-                opt.Produces<EmptyResponse>(Status200OK);
-            });
+            Description(d => d
+                .WithSummary("Resets password of User with given email if the token is valid")
+                .Produces<EmptyResponse>(Status200OK));
         }
 
         public override async Task HandleAsync(ResetPasswordRequest req, CancellationToken ct)

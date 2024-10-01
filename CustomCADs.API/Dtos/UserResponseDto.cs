@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.API.Endpoints.Users.Responses
+﻿namespace CustomCADs.API.Dtos
 {
     public class UserResponseDto
     {

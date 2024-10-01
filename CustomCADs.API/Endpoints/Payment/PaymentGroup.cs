@@ -12,7 +12,7 @@ namespace CustomCADs.API.Endpoints.Payment
             Configure("API/Payment", ep =>
             {
                 ep.Roles(Client);
-                ep.Options(opt =>
+                ep.Description(opt =>
                 {
                     opt.WithTags("Payment");
                     opt.ProducesProblem(Status401Unauthorized);

@@ -12,12 +12,10 @@ namespace CustomCADs.API.Endpoints.Designer.UncheckedCad
         {
             Get("Cads/{id}");
             Group<DesignerGroup>();
-            Description(d => d.WithSummary("Gets the requested Cad, as well as the previous and next ones in line."));
-            Options(opt =>
-            {
-                opt.Produces<UncheckedCadResponse>(Status200OK, "application/json");
-                opt.ProducesProblem(Status404NotFound);
-            });
+            Description(d => d
+                .WithSummary("Gets the requested Cad, as well as the previous and next ones in line.")
+                .Produces<UncheckedCadResponse>(Status200OK, "application/json")
+                .ProducesProblem(Status404NotFound));
         }
 
         public override async Task HandleAsync(UncheckedCadRequest req, CancellationToken ct)

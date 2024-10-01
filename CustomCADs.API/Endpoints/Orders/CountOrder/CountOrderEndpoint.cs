@@ -14,11 +14,9 @@ namespace CustomCADs.API.Endpoints.Orders.CountOrder
         {
             Get("Counts");
             Group<OrdersGroup>();
-            Description(d => d.WithSummary("Gets the counts of the User's Orders grouped by their status."));
-            Options(opt =>
-            {
-                opt.Produces<OrderCountsResponse>(Status200OK, "application/json");
-            });
+            Description(d => d
+                .WithSummary("Gets the counts of the User's Orders grouped by their status.")
+                .Produces<OrderCountsResponse>(Status200OK, "application/json"));
         }
 
         public override async Task HandleAsync(CancellationToken ct)

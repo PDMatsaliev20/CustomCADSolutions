@@ -1,7 +1,6 @@
-﻿using CustomCADs.Infrastructure.Identity.Managers;
-using CustomCADs.Infrastructure.Identity;
-using FastEndpoints;
+﻿using CustomCADs.Infrastructure.Identity;
 using CustomCADs.Infrastructure.Identity.Contracts;
+using FastEndpoints;
 
 namespace CustomCADs.API.Endpoints.Identity.EmailConfirmed
 {
@@ -13,11 +12,9 @@ namespace CustomCADs.API.Endpoints.Identity.EmailConfirmed
         {
             Get("IsEmailConfirmed/{username}");
             Group<IdentityGroup>();
-            Description(d => d.WithSummary("Gets info about User Email Status"));
-            Options(opt =>
-            {
-                opt.Produces<EmptyResponse>(Status200OK);
-            });
+            Description(d => d
+                .WithSummary("Gets info about User Email Status")
+                .Produces<EmptyResponse>(Status200OK));
         }
 
         public override async Task HandleAsync(EmailConfirmedRequest req, CancellationToken ct)

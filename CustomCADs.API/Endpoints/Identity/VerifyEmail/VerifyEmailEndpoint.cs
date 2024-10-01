@@ -18,13 +18,11 @@ namespace CustomCADs.API.Endpoints.Identity.VerifyEmail
         {
             Get("VerifyEmail/{username}");
             Group<IdentityGroup>();
-            Description(d => d.WithSummary("Checks the token's validity, and if successful verifies the user's email and  logs the him in."));
-            Options(opt =>
-            {
-                opt.Produces<EmptyResponse>(Status200OK);
-                opt.ProducesProblem(Status400BadRequest);
-                opt.ProducesProblem(Status404NotFound);
-            });
+            Description(d => d
+                .WithSummary("Checks the token's validity, and if successful verifies the user's email and  logs the him in.")
+                .Produces<EmptyResponse>(Status200OK)
+                .ProducesProblem(Status400BadRequest)
+                .ProducesProblem(Status404NotFound));
         }
 
         public override async Task HandleAsync(VerifyEmailRequest req, CancellationToken ct)

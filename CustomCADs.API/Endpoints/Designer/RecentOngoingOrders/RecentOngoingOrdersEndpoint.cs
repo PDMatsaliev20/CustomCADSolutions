@@ -15,11 +15,9 @@ namespace CustomCADs.API.Endpoints.Designer.RecentOngoingOrders
         {
             Get("Orders/Recent");
             Group<DesignerGroup>();
-            Description(d => d.WithSummary("Gets the User's most recent finished Orders."));
-            Options(opt =>
-            {
-                opt.Produces<OrderResultDto<RecentOngoingOrdersResponse>>(Status200OK);
-            });
+            Description(d => d
+                .WithSummary("Gets the User's most recent finished Orders.")
+                .Produces<OrderResultDto<RecentOngoingOrdersResponse>>(Status200OK));
         }
 
         public override async Task HandleAsync(RecentOngoingOrdersRequest req, CancellationToken ct)

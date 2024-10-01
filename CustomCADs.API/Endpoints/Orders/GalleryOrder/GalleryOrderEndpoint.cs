@@ -18,11 +18,9 @@ namespace CustomCADs.API.Endpoints.Orders.GalleryOrder
         {
             Post("{cadId}");
             Group<OrdersGroup>();
-            Description(d => d.WithSummary("Creates an Order entity with a Relation to the Cad with the specified id in the database."));
-            Options(opt =>
-            {
-                opt.Produces<GalleryOrderResponse>(Status201Created, "application/json");
-            });
+            Description(d => d
+                .WithSummary("Creates an Order entity with a Relation to the Cad with the specified id in the database.")
+                .Produces<GalleryOrderResponse>(Status201Created, "application/json"));
         }
          
         public override async Task HandleAsync(GalleryOrderRequest req, CancellationToken ct)

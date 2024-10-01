@@ -1,14 +1,10 @@
-﻿using AutoMapper;
+﻿using CustomCADs.API.Dtos;
 using CustomCADs.API.Endpoints.Roles.GetRole;
-using CustomCADs.API.Endpoints.Roles.Responses;
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Roles;
-using CustomCADs.Application.Services;
 using CustomCADs.Infrastructure.Identity.Contracts;
-using CustomCADs.Infrastructure.Identity.Managers;
 using FastEndpoints;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Hosting;
 
 namespace CustomCADs.API.Endpoints.Roles.PostRole
 {
@@ -20,12 +16,10 @@ namespace CustomCADs.API.Endpoints.Roles.PostRole
         {
             Post("");
             Group<RolesGroup>();
-            Description(d => d.WithSummary("Creates a Role with the specified name."));
-            Options(opt =>
-            {
-                opt.Produces<RoleResponseDto>(Status201Created, "application/json");
-                opt.ProducesProblem(Status400BadRequest);
-            });
+            Description(d => d
+                .WithSummary("Creates a Role with the specified name.")
+                .Produces<RoleResponseDto>(Status201Created, "application/json")
+                .ProducesProblem(Status400BadRequest));
         }
 
         public override async Task HandleAsync(PostRoleRequest req, CancellationToken ct)
