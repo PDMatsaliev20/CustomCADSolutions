@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using CustomCADs.API.Endpoints.Users.GetUser;
-using CustomCADs.API.Models.Users;
+using CustomCADs.API.Endpoints.Users.Responses;
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Users;
 using CustomCADs.Application.Services;
@@ -16,7 +16,7 @@ namespace CustomCADs.API.Endpoints.Users.PostUser
     using static ApiMessages;
     using static StatusCodes;
 
-    public class PostUserEndpoint(IAppUserManager manager, IUserService service, IRoleService roleService) : Endpoint<PostUserRequest, UserGetDTO>
+    public class PostUserEndpoint(IAppUserManager manager, IUserService service, IRoleService roleService) : Endpoint<PostUserRequest, UserResponseDto>
     {
         public override void Configure()
         {
@@ -25,7 +25,7 @@ namespace CustomCADs.API.Endpoints.Users.PostUser
             Description(d => d.WithSummary("Creates a User with the specified name and role."));
             Options(opt =>
             {
-                opt.Produces<UserGetDTO>(Status201Created, "application/json");
+                opt.Produces<UserResponseDto>(Status201Created, "application/json");
                 opt.ProducesProblem(Status400BadRequest);
             });
         }
@@ -62,7 +62,7 @@ namespace CustomCADs.API.Endpoints.Users.PostUser
 
             UserModel addedUser = await service.GetByIdAsync(id).ConfigureAwait(false);
 
-            UserGetDTO response = new()
+            UserResponseDto response = new()
             {
                 Email = addedUser.Email,
                 Username = addedUser.UserName,

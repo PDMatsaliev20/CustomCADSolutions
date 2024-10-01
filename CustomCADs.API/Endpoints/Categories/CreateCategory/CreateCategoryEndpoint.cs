@@ -1,5 +1,5 @@
 ﻿using CustomCADs.API.Endpoints.Categories.GetCategoryById;
-using CustomCADs.API.Models.Others;
+using CustomCADs.API.Dtos;
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Categories;
 using FastEndpoints;
@@ -8,7 +8,7 @@ namespace CustomCADs.API.Endpoints.Categories.CreateCategory
 {
     using static StatusCodes;
 
-    public class CreateCategoryEndpoint(ICategoryService service) : Endpoint<CreateCategoryRequest, CategoryDTO>
+    public class CreateCategoryEndpoint(ICategoryService service) : Endpoint<CreateCategoryRequest, CategoryDto>
     {
         public override void Configure()
         {
@@ -30,11 +30,7 @@ namespace CustomCADs.API.Endpoints.Categories.CreateCategory
             };
             int id = await service.CreateAsync(model).ConfigureAwait(false);
 
-            CategoryDTO category = new()
-            {
-                Id = id,
-                Name = req.Name,
-            };
+            CategoryDto category = new(id, req.Name);
             await SendAsync(category, Status200OK).ConfigureAwait(false);
         }
     }

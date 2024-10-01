@@ -1,8 +1,11 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using CustomCADs.Application.Contracts;
+using CustomCADs.Application.Models.Users;
+using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using static CustomCADs.Domain.DataConstants.UserConstants;
 
 namespace CustomCADs.API.Helpers
 {
@@ -39,6 +42,18 @@ namespace CustomCADs.API.Helpers
             byte[] randomNumber = new byte[32];
             RandomNumberGenerator.Fill(randomNumber);            
             return Base64UrlEncoder.Encode(randomNumber);
+        }
+
+        public static async Task<(string value, DateTime end)> RenewRefreshToken(this IUserService userService, UserModel user)
+        {
+            string newRT = GenerateRefreshToken();
+            DateTime newEndDate = DateTime.UtcNow.AddDays(RefreshTokenDaysLimit);
+
+            user.RefreshToken = newRT;
+            user.RefreshTokenEndDate = newEndDate;
+            await userService.EditAsync(user.UserName, user).ConfigureAwait(false);
+
+            return (newRT, newEndDate);
         }
     }
 }

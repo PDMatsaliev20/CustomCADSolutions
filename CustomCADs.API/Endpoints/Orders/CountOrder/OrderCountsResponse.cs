@@ -1,6 +1,6 @@
 ﻿namespace CustomCADs.API.Endpoints.Orders.CountOrder
 {
-    public record OrderCountsResponseDTO(
+    public record OrderCountsResponse(
         int Pending,
         int Begun,
         int Finished,

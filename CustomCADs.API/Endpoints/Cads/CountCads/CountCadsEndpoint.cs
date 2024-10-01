@@ -1,4 +1,5 @@
-﻿using CustomCADs.Application.Contracts;
+﻿using CustomCADs.API.Helpers;
+using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Cads;
 using CustomCADs.Domain.Enums;
 using FastEndpoints;
@@ -22,8 +23,7 @@ namespace CustomCADs.API.Endpoints.Cads.CountCads
 
         public override async Task HandleAsync(CancellationToken ct)
         {
-            bool predicate(CadModel cad, CadStatus s)
-                    => cad.Status == s && cad.Creator.UserName == User.Identity!.Name;
+            bool predicate(CadModel c, CadStatus s) => c.Status == s && c.Creator.UserName == User.GetName();
 
             int uncheckedCadsCounts = await service.Count(c => predicate(c, CadStatus.Unchecked)).ConfigureAwait(false);
             int validatedCadsCounts = await service.Count(c => predicate(c, CadStatus.Validated)).ConfigureAwait(false);

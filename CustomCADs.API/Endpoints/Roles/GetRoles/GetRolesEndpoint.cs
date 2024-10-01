@@ -1,4 +1,4 @@
-﻿using CustomCADs.API.Models.Roles;
+﻿using CustomCADs.API.Endpoints.Roles.Responses;
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Roles;
 using FastEndpoints;
@@ -7,7 +7,7 @@ namespace CustomCADs.API.Endpoints.Roles.GetRoles
 {
     using static StatusCodes;
 
-    public class GetRolesEndpoint(IRoleService service) : EndpointWithoutRequest<RoleGetDTO[]>
+    public class GetRolesEndpoint(IRoleService service) : EndpointWithoutRequest<RoleResponseDto[]>
     {
         public override void Configure()
         {
@@ -24,8 +24,8 @@ namespace CustomCADs.API.Endpoints.Roles.GetRoles
         {
             IEnumerable<RoleModel> roles = service.GetAll();
 
-            RoleGetDTO[] response = roles
-                .Select(r => new RoleGetDTO() 
+            RoleResponseDto[] response = roles
+                .Select(r => new RoleResponseDto() 
                 { 
                     Name = r.Name, 
                     Description = r.Description 

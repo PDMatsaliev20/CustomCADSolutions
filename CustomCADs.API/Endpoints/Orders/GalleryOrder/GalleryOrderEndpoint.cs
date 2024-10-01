@@ -1,6 +1,5 @@
 ﻿using CustomCADs.API.Endpoints.Orders.GetOrder;
 using CustomCADs.API.Helpers;
-using CustomCADs.API.Models.Orders;
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Cads;
 using CustomCADs.Application.Models.Orders;
@@ -12,7 +11,7 @@ namespace CustomCADs.API.Endpoints.Orders.GalleryOrder
     using static ApiMessages;
     using static StatusCodes;
 
-    public class GalleryOrderEndpoint(IOrderService orderService, ICadService cadService) : Endpoint<GalleryOrderRequest, OrderExportDTO>
+    public class GalleryOrderEndpoint(IOrderService orderService, ICadService cadService) : Endpoint<GalleryOrderRequest, GalleryOrderResponse>
     {
         public override void Configure()
         {
@@ -21,7 +20,7 @@ namespace CustomCADs.API.Endpoints.Orders.GalleryOrder
             Description(d => d.WithSummary("Creates an Order entity with a Relation to the Cad with the specified id in the database."));
             Options(opt =>
             {
-                opt.Produces<OrderExportDTO>(Status201Created, "application/json");
+                opt.Produces<GalleryOrderResponse>(Status201Created, "application/json");
             });
         }
          
@@ -39,10 +38,11 @@ namespace CustomCADs.API.Endpoints.Orders.GalleryOrder
                 BuyerId = User.GetId(),
                 DesignerId = cad.CreatorId,
             };
-            int id = await orderService.CreateAsync(order).ConfigureAwait(false);
 
+            int id = await orderService.CreateAsync(order).ConfigureAwait(false);
             OrderModel createdOrder = await orderService.GetByIdAsync(id).ConfigureAwait(false);
-            OrderExportDTO export = new()
+
+            GalleryOrderResponse response = new()
             {
                 Id = createdOrder.Id,
                 Name = createdOrder.Name,
@@ -55,9 +55,9 @@ namespace CustomCADs.API.Endpoints.Orders.GalleryOrder
                 DesignerEmail = createdOrder.Designer?.Email,
                 DesignerName = createdOrder.Designer?.UserName,
                 CadId = createdOrder.CadId,
+                Category = new(createdOrder.CategoryId, createdOrder.Category.Name),
             };
-
-            await SendCreatedAtAsync<GetOrderEndpoint>(id, export).ConfigureAwait(false);
+            await SendCreatedAtAsync<GetOrderEndpoint>(id, response).ConfigureAwait(false);
         }
     }
 }

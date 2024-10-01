@@ -1,6 +1,5 @@
 ﻿using CustomCADs.API.Endpoints.Cads.GetCad;
 using CustomCADs.API.Helpers;
-using CustomCADs.API.Models.Cads;
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Cads;
 using CustomCADs.Domain.Enums;
@@ -11,7 +10,7 @@ namespace CustomCADs.API.Endpoints.Cads.PostCad
 {
     using static StatusCodes;
 
-    public class PostCadEndpoint(ICadService service, IWebHostEnvironment env) : Endpoint<PostCadRequest, CadGetDTO>
+    public class PostCadEndpoint(ICadService service, IWebHostEnvironment env) : Endpoint<PostCadRequest, PostCadResponse>
     {
         public override void Configure()
         {
@@ -21,7 +20,7 @@ namespace CustomCADs.API.Endpoints.Cads.PostCad
             Options(opt =>
             {
                 opt.Accepts<PostCadRequest>("multipart/form-data");
-                opt.Produces<CadGetDTO>(Status201Created, "application/json");
+                opt.Produces<PostCadResponse>(Status201Created, "application/json");
             });
         }
 
@@ -47,7 +46,7 @@ namespace CustomCADs.API.Endpoints.Cads.PostCad
             await service.SetPathsAsync(id, cadPath, imagePath).ConfigureAwait(false);
 
             CadModel createdModel = await service.GetByIdAsync(id).ConfigureAwait(false);
-            CadGetDTO response = new()
+            PostCadResponse response = new()
             {
                 Id = createdModel.Id,
                 Name = createdModel.Name,
@@ -57,15 +56,10 @@ namespace CustomCADs.API.Endpoints.Cads.PostCad
                 PanCoordinates = new(createdModel.PanCoordinates.X, createdModel.PanCoordinates.Y, createdModel.PanCoordinates.Z),
                 Price = createdModel.Price,
                 ImagePath = createdModel.Paths.ImagePath,
-                OrdersCount = createdModel.Orders.Count,
                 CreationDate = createdModel.CreationDate.ToString("dd-MM-yyyy HH:mm:ss"),
                 CreatorName = createdModel.Creator.UserName,
                 Status = createdModel.Status.ToString(),
-                Category = new()
-                {
-                    Id = createdModel.Category.Id,
-                    Name = createdModel.Category.Name,
-                },
+                Category = new(createdModel.CategoryId, createdModel.Category.Name),
             };
 
             await SendCreatedAtAsync<GetCadEndpoint>(id, response).ConfigureAwait(false);

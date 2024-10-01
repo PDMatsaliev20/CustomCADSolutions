@@ -1,5 +1,5 @@
-﻿using CustomCADs.API.Models.Queries;
-using CustomCADs.API.Models.Orders;
+﻿using CustomCADs.API.Dtos;
+using CustomCADs.API.Helpers;
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Orders;
 using CustomCADs.Domain.Enums;
@@ -9,7 +9,7 @@ namespace CustomCADs.API.Endpoints.Orders.GetOrders
 {
     using static StatusCodes;
 
-    public class GetOrdersEndpoint(IOrderService service) : Endpoint<GetOrdersRequest, OrderResultDTO>
+    public class GetOrdersEndpoint(IOrderService service) : Endpoint<GetOrdersRequest, OrderResultDto<GetOrdersResponse>>
     {
         public override void Configure()
         {
@@ -18,7 +18,7 @@ namespace CustomCADs.API.Endpoints.Orders.GetOrders
             Description(d => d.WithSummary("Queries the User's Orders with the specified parameters."));
             Options(opt =>
             {
-                opt.Produces<OrderResultDTO>(Status200OK, "application/json");
+                opt.Produces<OrderResultDto<GetOrdersResponse>>(Status200OK, "application/json");
             });
         }
 
@@ -31,7 +31,7 @@ namespace CustomCADs.API.Endpoints.Orders.GetOrders
             }
 
             OrderResult result = service.GetAll(
-                    buyer: User.Identity?.Name,
+                    buyer: User.GetName(),
                     status: req.Status,
                     category: req.Category,
                     name: req.Name,
@@ -40,11 +40,11 @@ namespace CustomCADs.API.Endpoints.Orders.GetOrders
                     limit: req.Limit
                 );
 
-            OrderResultDTO response = new()
+            OrderResultDto<GetOrdersResponse> response = new()
             {
                 Count = result.Count,
                 Orders = result.Orders
-                    .Select(o => new OrderExportDTO()
+                    .Select(o => new GetOrdersResponse()
                     {
                         Id = o.Id,
                         Name = o.Name,
@@ -57,11 +57,7 @@ namespace CustomCADs.API.Endpoints.Orders.GetOrders
                         DesignerEmail = o.Designer?.Email,
                         DesignerName = o.Designer?.UserName,
                         CadId = o.CadId,
-                        Category = new()
-                        {
-                            Id = o.CategoryId,
-                            Name = o.Category.Name,
-                        },
+                        Category = new(o.CategoryId, o.Category.Name),
                     }).ToArray(),
             };
 

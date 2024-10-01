@@ -1,6 +1,6 @@
-﻿namespace CustomCADs.API.Models.Users
+﻿namespace CustomCADs.API.Endpoints.Users.Responses
 {
-    public class UserGetDTO
+    public class UserResponseDto
     {
         public string Username { get; set; } = null!;
         public string? FirstName { get; set; }

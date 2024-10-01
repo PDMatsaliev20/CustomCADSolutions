@@ -1,5 +1,5 @@
-﻿using CustomCADs.API.Models.Cads;
-using CustomCADs.API.Models.Queries;
+﻿using CustomCADs.API.Dtos;
+using CustomCADs.API.Helpers;
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Cads;
 using FastEndpoints;
@@ -8,7 +8,7 @@ namespace CustomCADs.API.Endpoints.Cads.GetCads
 {
     using static StatusCodes;
 
-    public class GetCadsEndpoint(ICadService service) : Endpoint<GetCadsRequest, CadQueryResultDTO>
+    public class GetCadsEndpoint(ICadService service) : Endpoint<GetCadsRequest, CadResultDto<GetCadsResponse>>
     {
         public override void Configure()
         {
@@ -17,14 +17,14 @@ namespace CustomCADs.API.Endpoints.Cads.GetCads
             Description(d => d.WithSummary("Queries the User's Cads with the specified parameters."));
             Options(opt =>
             {
-                opt.Produces<CadQueryResultDTO>(Status200OK, "application/json");
+                opt.Produces<CadResultDto<GetCadsResponse>>(Status200OK, "application/json");
             });
         }
 
         public override async Task HandleAsync(GetCadsRequest req, CancellationToken ct)
         {
             CadResult result = service.GetAllAsync(
-                    creator: User.Identity?.Name,
+                    creator: User.GetName(),
                     category: req.Category,
                     name: req.Name,
                     sorting: req.Sorting ?? string.Empty,
@@ -32,11 +32,11 @@ namespace CustomCADs.API.Endpoints.Cads.GetCads
                     limit: req.Limit
                 );
 
-            CadQueryResultDTO response = new()
+            CadResultDto<GetCadsResponse> response = new()
             {
                 Count = result.Count,
                 Cads = result.Cads
-                    .Select(cad => new CadGetDTO() 
+                    .Select(cad => new GetCadsResponse() 
                     {
                         Id = cad.Id,
                         Name = cad.Name,
@@ -44,11 +44,7 @@ namespace CustomCADs.API.Endpoints.Cads.GetCads
                         CreationDate = cad.CreationDate.ToString("dd-MM-yyyy HH:mm:ss"),
                         CreatorName = cad.Creator.UserName,
                         Status = cad.Status.ToString(),
-                        Category = new()
-                        {
-                            Id = cad.Category.Id,
-                            Name = cad.Category.Name,
-                        },
+                        Category = new(cad.CategoryId, cad.Category.Name),
                     }).ToArray()
             };
 

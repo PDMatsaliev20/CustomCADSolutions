@@ -1,4 +1,5 @@
-﻿using FastEndpoints;
+﻿using CustomCADs.API.Helpers;
+using FastEndpoints;
 
 namespace CustomCADs.API.Endpoints.Identity.Authentication
 {
@@ -19,8 +20,7 @@ namespace CustomCADs.API.Endpoints.Identity.Authentication
 
         public override async Task HandleAsync(CancellationToken ct)
         {
-            bool isAuthenticated = User.Identity?.IsAuthenticated ?? false;
-            await SendAsync(isAuthenticated, Status200OK).ConfigureAwait(false);
+            await SendAsync(User.GetAuth(), Status200OK).ConfigureAwait(false);
         }
     }
 }

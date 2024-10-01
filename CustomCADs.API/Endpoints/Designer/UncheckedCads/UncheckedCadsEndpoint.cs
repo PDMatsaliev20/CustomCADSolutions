@@ -1,5 +1,4 @@
-﻿using CustomCADs.API.Models.Cads;
-using CustomCADs.API.Models.Queries;
+﻿using CustomCADs.API.Dtos;
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Cads;
 using FastEndpoints;
@@ -8,7 +7,7 @@ namespace CustomCADs.API.Endpoints.Designer.UncheckedCads
 {
     using static StatusCodes;
 
-    public class UncheckedEndpoint(IDesignerService service) : Endpoint<UncheckedRequest, CadQueryResultDTO>
+    public class UncheckedCadsEndpoint(IDesignerService service) : Endpoint<UncheckedCadsRequest, CadResultDto<UncheckedCadsResponse>>
     {
         public override void Configure()
         {
@@ -17,11 +16,11 @@ namespace CustomCADs.API.Endpoints.Designer.UncheckedCads
             Description(d => d.WithSummary("Gets all Cads with Unchecked status."));
             Options(opt =>
             {
-                opt.Produces<CadQueryResultDTO>(Status200OK, "application/json");
+                opt.Produces<UncheckedCadsResponse>(Status200OK, "application/json");
             });
         }
 
-        public override async Task HandleAsync(UncheckedRequest req, CancellationToken ct)
+        public override async Task HandleAsync(UncheckedCadsRequest req, CancellationToken ct)
         {
             CadResult result = service.GetCadsAsync(
                 category: req.Category,
@@ -32,11 +31,11 @@ namespace CustomCADs.API.Endpoints.Designer.UncheckedCads
                 limit: req.Limit
             );
 
-            CadQueryResultDTO response = new()
+            CadResultDto<UncheckedCadsResponse> response = new()
             {
                 Count = result.Count,
                 Cads = result.Cads
-                    .Select(cad => new CadGetDTO()
+                    .Select(cad => new UncheckedCadsResponse()
                     {
                         Id = cad.Id,
                         Name = cad.Name,
@@ -44,11 +43,7 @@ namespace CustomCADs.API.Endpoints.Designer.UncheckedCads
                         CreationDate = cad.CreationDate.ToString("dd-MM-yyyy HH:mm:ss"),
                         CreatorName = cad.Creator.UserName,
                         Status = cad.Status.ToString(),
-                        Category = new()
-                        {
-                            Id = cad.Category.Id,
-                            Name = cad.Category.Name,
-                        },
+                        Category = new(cad.CategoryId, cad.Category.Name),
                     }).ToArray(),
             };
 

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using CustomCADs.API.Models.Users;
+using CustomCADs.API.Endpoints.Users.Responses;
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Users;
 using CustomCADs.Application.Services;
@@ -9,7 +9,7 @@ namespace CustomCADs.API.Endpoints.Users.GetUser
 {
     using static StatusCodes;
 
-    public class GetUserEndpoint(IUserService service) : Endpoint<GetUserRequest, UserGetDTO>
+    public class GetUserEndpoint(IUserService service) : Endpoint<GetUserRequest, UserResponseDto>
     {
         public override void Configure()
         {
@@ -18,7 +18,7 @@ namespace CustomCADs.API.Endpoints.Users.GetUser
             Description(d => d.WithSummary("Gets a User by the specified name."));
             Options(opt =>
             {
-                opt.Produces<UserGetDTO>(Status200OK, "application/json");
+                opt.Produces<UserResponseDto>(Status200OK, "application/json");
                 opt.ProducesProblem(Status404NotFound);
             });
         }
@@ -27,7 +27,7 @@ namespace CustomCADs.API.Endpoints.Users.GetUser
         {
             UserModel model = await service.GetByNameAsync(req.Username);
 
-            UserGetDTO response = new()
+            UserResponseDto response = new()
             {
                 Email = model.Email,
                 Username = model.UserName,

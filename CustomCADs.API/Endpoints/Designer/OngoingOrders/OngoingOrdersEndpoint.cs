@@ -1,6 +1,4 @@
-﻿using CustomCADs.API.Helpers;
-using CustomCADs.API.Models.Orders;
-using CustomCADs.API.Models.Queries;
+﻿using CustomCADs.API.Dtos;
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Orders;
 using CustomCADs.Domain.Enums;
@@ -11,7 +9,7 @@ namespace CustomCADs.API.Endpoints.Designer.OngoingOrders
     using static ApiMessages;
     using static StatusCodes;
 
-    public class OngoingOrdersEndpoint(IDesignerService service) : Endpoint<OngoingOrdersRequest, OrderResultDTO>
+    public class OngoingOrdersEndpoint(IDesignerService service) : Endpoint<OngoingOrdersRequest, OrderResultDto<OngoingOrdersResponse>>
     {
         public override void Configure()
         {
@@ -20,14 +18,14 @@ namespace CustomCADs.API.Endpoints.Designer.OngoingOrders
             Description(d => d.WithSummary("Gets all Orders with specified status."));
             Options(opt =>
             {
-                opt.Produces<OrderResultDTO>(Status200OK, "application/json");
+                opt.Produces<OrderResultDto<OngoingOrdersResponse>>(Status200OK, "application/json");
             });
         }
 
         public override async Task HandleAsync(OngoingOrdersRequest req, CancellationToken ct)
         {
-            string[] statuses = Enum.GetNames<OrderStatus>();
-            if (!statuses.Contains(req.Status.Capitalize()))
+            IEnumerable<string> statuses = Enum.GetNames<OrderStatus>().Select(s => s.ToLower());
+            if (!statuses.Contains(req.Status.ToLower()))
             {
                 IResult badReq = Results.BadRequest(string.Format(InvalidStatus, statuses));
                 await SendResultAsync(badReq).ConfigureAwait(false);
@@ -44,11 +42,11 @@ namespace CustomCADs.API.Endpoints.Designer.OngoingOrders
                 limit: req.Limit
             );
 
-            OrderResultDTO response = new()
+            OrderResultDto<OngoingOrdersResponse> response = new()
             {
                 Count = result.Count,
                 Orders = result.Orders
-                    .Select(o => new OrderExportDTO()
+                    .Select(o => new OngoingOrdersResponse()
                     {
                         Id = o.Id,
                         Name = o.Name,
@@ -56,11 +54,7 @@ namespace CustomCADs.API.Endpoints.Designer.OngoingOrders
                         ImagePath = o.ImagePath,
                         OrderDate = o.OrderDate.ToString("dd-MM-yyyy HH:mm:ss"),
                         ShouldBeDelivered = o.ShouldBeDelivered,
-                        Category = new()
-                        {
-                            Id = o.CategoryId,
-                            Name = o.Category.Name,
-                        },
+                        Category = new(o.CategoryId, o.Category.Name),
                     }).ToArray()
             };
 

@@ -23,7 +23,7 @@ namespace CustomCADs.API.Endpoints.Orders.DeleteOrder
         public override async Task HandleAsync(DeleteOrderRequest req, CancellationToken ct)
         {
             OrderModel model = await service.GetByIdAsync(req.Id).ConfigureAwait(false);
-            if (model.Buyer.UserName != User.Identity!.Name)
+            if (model.Buyer.UserName != User.GetName())
             {
                 await SendForbiddenAsync().ConfigureAwait(false);
                 return;

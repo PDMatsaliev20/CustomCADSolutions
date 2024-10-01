@@ -1,6 +1,5 @@
 ﻿using CustomCADs.API.Endpoints.Orders.GetOrder;
 using CustomCADs.API.Helpers;
-using CustomCADs.API.Models.Orders;
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Orders;
 using FastEndpoints;
@@ -9,7 +8,7 @@ namespace CustomCADs.API.Endpoints.Orders.PostOrder
 {
     using static StatusCodes;
 
-    public class PostOrderEndpoint(IOrderService service, IWebHostEnvironment env) : Endpoint<PostOrderRequest, OrderExportDTO>
+    public class PostOrderEndpoint(IOrderService service, IWebHostEnvironment env) : Endpoint<PostOrderRequest, PostOrderResponse>
     {
         public override void Configure()
         {
@@ -19,7 +18,7 @@ namespace CustomCADs.API.Endpoints.Orders.PostOrder
             Options(opt =>
             {
                 opt.Accepts<PostOrderRequest>("multipart/form-data");
-                opt.Produces<OrderExportDTO>(Status201Created, "application/json");
+                opt.Produces<PostOrderResponse>(Status201Created, "application/json");
             });
             AllowFormData();
             AllowFileUploads();
@@ -43,7 +42,8 @@ namespace CustomCADs.API.Endpoints.Orders.PostOrder
             await service.SetImagePathAsync(id, imagePath).ConfigureAwait(false);
 
             OrderModel createdOrder = await service.GetByIdAsync(id).ConfigureAwait(false);
-            OrderExportDTO result = new()
+
+            PostOrderResponse result = new()
             {
                 Id = createdOrder.Id,
                 Name = createdOrder.Name,
@@ -53,13 +53,8 @@ namespace CustomCADs.API.Endpoints.Orders.PostOrder
                 BuyerName = createdOrder.Buyer.UserName,
                 OrderDate = createdOrder.OrderDate.ToString("dd-MM-yyyy HH:mm:ss"),
                 Status = createdOrder.Status.ToString(),
-                Category = new()
-                {
-                    Id = createdOrder.CategoryId,
-                    Name = createdOrder.Category.Name,
-                }
+                Category = new(createdOrder.CategoryId, createdOrder.Category.Name),
             };
-
             await SendCreatedAtAsync<GetOrderEndpoint>(new { id }, result);
         }
     }

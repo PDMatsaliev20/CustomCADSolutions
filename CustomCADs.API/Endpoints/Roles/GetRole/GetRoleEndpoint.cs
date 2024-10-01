@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using CustomCADs.API.Models.Roles;
+using CustomCADs.API.Endpoints.Roles.Responses;
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Roles;
 using CustomCADs.Application.Services;
@@ -9,7 +9,7 @@ namespace CustomCADs.API.Endpoints.Roles.GetRole
 {
     using static StatusCodes;
 
-    public class GetRoleEndpoint(IRoleService service) : Endpoint<GetRoleRequest, RoleGetDTO>
+    public class GetRoleEndpoint(IRoleService service) : Endpoint<GetRoleRequest, RoleResponseDto>
     {
         public override void Configure()
         {
@@ -18,7 +18,7 @@ namespace CustomCADs.API.Endpoints.Roles.GetRole
             Description(d => d.WithSummary("Gets a Role by the specified name."));
             Options(opt =>
             {
-                opt.Produces<RoleGetDTO>(Status200OK, "application/json");
+                opt.Produces<RoleResponseDto>(Status200OK, "application/json");
                 opt.ProducesProblem(Status404NotFound);
             });
         }
@@ -27,7 +27,7 @@ namespace CustomCADs.API.Endpoints.Roles.GetRole
         {
             RoleModel role = await service.GetByNameAsync(req.Name).ConfigureAwait(false);
 
-            RoleGetDTO response = new()
+            RoleResponseDto response = new()
             {
                 Name = role.Name,
                 Description = role.Description,

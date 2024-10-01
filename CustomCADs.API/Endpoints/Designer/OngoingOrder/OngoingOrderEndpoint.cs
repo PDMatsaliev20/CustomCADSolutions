@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-using CustomCADs.API.Models.Orders;
-using CustomCADs.Application.Contracts;
+﻿using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Orders;
 using FastEndpoints;
 
@@ -8,7 +6,7 @@ namespace CustomCADs.API.Endpoints.Designer.OngoingOrder
 {
     using static StatusCodes;
 
-    public class OngoingOrderEndpoint(IDesignerService service) : Endpoint<OngoingOrderRequest, OrderExportDTO>
+    public class OngoingOrderEndpoint(IDesignerService service) : Endpoint<OngoingOrderRequest, OngoingOrderResponse>
     {
         public override void Configure()
         {
@@ -17,7 +15,7 @@ namespace CustomCADs.API.Endpoints.Designer.OngoingOrder
             Description(d => d.WithSummary("Gets the Order with the specified Id."));
             Options(opt =>
             {
-                opt.Produces<OrderExportDTO>(Status200OK, "application/json");
+                opt.Produces<OngoingOrderResponse>(Status200OK, "application/json");
             });
         }
 
@@ -31,7 +29,7 @@ namespace CustomCADs.API.Endpoints.Designer.OngoingOrder
             }
 
             OrderModel model = result.Orders.Single();
-            OrderExportDTO response = new()
+            OngoingOrderResponse response = new()
             {
                 Id = model.Id,
                 Name = model.Name,
@@ -39,13 +37,8 @@ namespace CustomCADs.API.Endpoints.Designer.OngoingOrder
                 Status = model.Status.ToString(),
                 OrderDate = model.OrderDate.ToString("dd-MM-yyyy HH:mm:ss"),
                 BuyerName = model.Buyer.UserName,
-                Category = new()
-                {
-                    Id = model.CategoryId,
-                    Name = model.Category.Name,
-                }
+                Category = new(model.CategoryId, model.Category.Name)
             };
-
             await SendAsync(response, Status200OK).ConfigureAwait(false);
         }
     }

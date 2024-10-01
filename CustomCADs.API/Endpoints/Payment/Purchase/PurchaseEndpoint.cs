@@ -1,4 +1,5 @@
-﻿using CustomCADs.Application.Contracts;
+﻿using CustomCADs.API.Helpers;
+using CustomCADs.Application.Contracts;
 using CustomCADs.Application.DTOs.Payment;
 using CustomCADs.Application.Models.Cads;
 using FastEndpoints;
@@ -29,8 +30,8 @@ namespace CustomCADs.API.Endpoints.Payment.Purchase
             {
                 Product = cad.Name,
                 Price = cad.Price,
-                Seller = cad.Creator!.UserName!,
-                Buyer = User.Identity!.Name!,
+                Seller = cad.Creator.UserName,
+                Buyer = User.GetName(),
             }).ConfigureAwait(false);
 
             string message = await CheckStatus(paymentIntent.Status).ConfigureAwait(false);

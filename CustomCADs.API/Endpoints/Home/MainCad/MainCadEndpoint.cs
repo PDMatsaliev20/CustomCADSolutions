@@ -1,11 +1,10 @@
-﻿using CustomCADs.API.Models.Cads;
-using FastEndpoints;
+﻿using FastEndpoints;
 
 namespace CustomCADs.API.Endpoints.Home.MainCad
 {
     using static StatusCodes;
 
-    public class CategoriesEndpoint : EndpointWithoutRequest<CadGetDTO>
+    public class MainCadEndpoint : EndpointWithoutRequest<MainCadResponse>
     {
         public override void Configure()
         {
@@ -18,13 +17,13 @@ namespace CustomCADs.API.Endpoints.Home.MainCad
             });
             Options(opt =>
             {
-                opt.Produces(Status200OK, typeof(CadGetDTO), "application/json");
+                opt.Produces<MainCadResponse>(Status200OK, "application/json");
             });
         }
 
         public override async Task HandleAsync(CancellationToken ct)
         {
-            CadGetDTO cad = new()
+            MainCadResponse cad = new()
             {
                 CadPath = "/files/HomeCAD.glb",
                 CamCoordinates = new(2, 16, 33),

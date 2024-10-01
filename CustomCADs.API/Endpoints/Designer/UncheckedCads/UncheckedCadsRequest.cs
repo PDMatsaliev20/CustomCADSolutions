@@ -1,6 +1,6 @@
 ﻿namespace CustomCADs.API.Endpoints.Designer.UncheckedCads
 {
-    public class UncheckedRequest
+    public class UncheckedCadsRequest
     {
         public string? Sorting { get; set; }
         public string? Category { get; set; }

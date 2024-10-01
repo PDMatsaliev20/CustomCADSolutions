@@ -29,16 +29,12 @@ namespace CustomCADs.API.Endpoints.Designer.UncheckedCad
             UncheckedCadResponse response = new()
             {
                 PrevId = prevId,
-                Cad = new()
-                {
-                    Id = cad.Id,
-                    CadPath = cad.Paths.FilePath,
-                    CamCoordinates = new(cad.CamCoordinates.X, cad.CamCoordinates.Y, cad.CamCoordinates.Z),
-                    PanCoordinates = new(cad.PanCoordinates.X, cad.PanCoordinates.Y, cad.PanCoordinates.Z),
-                },
+                Id = cad.Id,
+                CadPath = cad.Paths.FilePath,
+                CamCoordinates = new(cad.CamCoordinates.X, cad.CamCoordinates.Y, cad.CamCoordinates.Z),
+                PanCoordinates = new(cad.PanCoordinates.X, cad.PanCoordinates.Y, cad.PanCoordinates.Z),
                 NextId = nextId,
             };
-
             await SendAsync(response, Status200OK).ConfigureAwait(false);
         }
     }

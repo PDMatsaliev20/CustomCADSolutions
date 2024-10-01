@@ -1,11 +1,7 @@
-﻿using AutoMapper;
-using CustomCADs.API.Models.Users;
+﻿using CustomCADs.API.Endpoints.Users.Responses;
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Users;
-using CustomCADs.Application.Services;
-using CustomCADs.Domain.Enums;
 using FastEndpoints;
-using System.Collections.Generic;
 
 namespace CustomCADs.API.Endpoints.Users.GetUsers
 {
@@ -39,7 +35,7 @@ namespace CustomCADs.API.Endpoints.Users.GetUsers
             {
                 Count = result.Count,
                 Users = result.Users
-                    .Select(u => new UserGetDTO()
+                    .Select(u => new UserResponseDto()
                     {
                         Email = u.Email,
                         Username = u.UserName,

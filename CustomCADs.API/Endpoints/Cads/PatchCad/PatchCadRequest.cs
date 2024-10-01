@@ -1,4 +1,4 @@
-﻿using CustomCADs.API.Models.Cads;
+﻿using CustomCADs.API.Dtos;
 
 namespace CustomCADs.API.Endpoints.Cads.PatchCad
 {
@@ -6,6 +6,6 @@ namespace CustomCADs.API.Endpoints.Cads.PatchCad
     {
         public int Id { get; set; }
         public required string Type { get; set; }
-        public required CoordinatesDTO Coordinates { get; set; }
+        public required CoordinatesDto Coordinates { get; set; }
     }
 }

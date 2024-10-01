@@ -1,6 +1,6 @@
-﻿namespace CustomCADs.API.Models.Roles
+﻿namespace CustomCADs.API.Endpoints.Roles.Responses
 {
-    public class RoleGetDTO
+    public class RoleResponseDto
     {
         public string Name { get; set; } = null!;
         public string Description { get; set; } = null!;

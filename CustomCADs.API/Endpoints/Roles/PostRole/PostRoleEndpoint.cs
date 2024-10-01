@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using CustomCADs.API.Endpoints.Roles.GetRole;
-using CustomCADs.API.Models.Roles;
+using CustomCADs.API.Endpoints.Roles.Responses;
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Roles;
 using CustomCADs.Application.Services;
@@ -14,7 +14,7 @@ namespace CustomCADs.API.Endpoints.Roles.PostRole
 {
     using static StatusCodes;
 
-    public class PostRoleEndpoint(IAppRoleManager manager, IRoleService service) : Endpoint<PostRoleRequest, RoleGetDTO>
+    public class PostRoleEndpoint(IAppRoleManager manager, IRoleService service) : Endpoint<PostRoleRequest, RoleResponseDto>
     {
         public override void Configure()
         {
@@ -23,7 +23,7 @@ namespace CustomCADs.API.Endpoints.Roles.PostRole
             Description(d => d.WithSummary("Creates a Role with the specified name."));
             Options(opt =>
             {
-                opt.Produces<RoleGetDTO>(Status201Created, "application/json");
+                opt.Produces<RoleResponseDto>(Status201Created, "application/json");
                 opt.ProducesProblem(Status400BadRequest);
             });
         }
@@ -44,7 +44,7 @@ namespace CustomCADs.API.Endpoints.Roles.PostRole
             };
             await service.CreateAsync(model).ConfigureAwait(false);
 
-            RoleGetDTO response = new()
+            RoleResponseDto response = new()
             {
                 Name = model.Name,
                 Description = model.Description,

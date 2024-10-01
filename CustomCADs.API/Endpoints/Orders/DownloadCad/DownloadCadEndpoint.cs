@@ -7,7 +7,7 @@ namespace CustomCADs.API.Endpoints.Orders.DownloadCad
 {
     using static StatusCodes;
 
-    public class DownloadCadEndpoint(IOrderService service, IWebHostEnvironment env) : Endpoint<DownloadCadRequest>
+    public class DownloadCadEndpoint(IOrderService service, IWebHostEnvironment env) : Endpoint<DownloadCadRequest, byte[]>
     {
         public override void Configure()
         {
@@ -37,7 +37,7 @@ namespace CustomCADs.API.Endpoints.Orders.DownloadCad
                 return;
             }
 
-            bool userOwnsOrder = await service.CheckOwnership(req.Id, User.Identity!.Name!);
+            bool userOwnsOrder = await service.CheckOwnership(req.Id, User.GetName());
             if (!userOwnsOrder)
             {
                 await SendForbiddenAsync().ConfigureAwait(false);

@@ -1,4 +1,4 @@
-﻿using CustomCADs.API.Models.Others;
+﻿using CustomCADs.API.Dtos;
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Categories;
 using FastEndpoints;
@@ -7,7 +7,7 @@ namespace CustomCADs.API.Endpoints.Categories.GetCategoryById
 {
     using static StatusCodes;
 
-    public class GetCategoryByIdEndpoint(ICategoryService service) : Endpoint<GetCategoryByIdRequest, CategoryDTO>
+    public class GetCategoryByIdEndpoint(ICategoryService service) : Endpoint<GetCategoryByIdRequest, CategoryDto>
     {
         public override void Configure()
         {
@@ -25,11 +25,7 @@ namespace CustomCADs.API.Endpoints.Categories.GetCategoryById
         public override async Task HandleAsync(GetCategoryByIdRequest req, CancellationToken ct)
         {
             CategoryModel model = await service.GetByIdAsync(req.Id).ConfigureAwait(false);
-            CategoryDTO category = new()
-            {
-                Id = model.Id,
-                Name = model.Name,
-            };
+            CategoryDto category = new(model.Id, model.Name);
 
             await SendAsync(category, Status200OK).ConfigureAwait(false);
         }

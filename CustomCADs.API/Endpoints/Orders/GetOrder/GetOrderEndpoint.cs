@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-using CustomCADs.API.Helpers;
-using CustomCADs.API.Models.Orders;
+﻿using CustomCADs.API.Helpers;
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Orders;
 using FastEndpoints;
@@ -9,7 +7,7 @@ namespace CustomCADs.API.Endpoints.Orders.GetOrder
 {
     using static StatusCodes;
 
-    public class GetOrderEndpoint(IOrderService service) : Endpoint<GetOrderRequest, OrderExportDTO>
+    public class GetOrderEndpoint(IOrderService service) : Endpoint<GetOrderRequest, GetOrderResponse>
     {
         public override void Configure()
         {
@@ -18,7 +16,7 @@ namespace CustomCADs.API.Endpoints.Orders.GetOrder
             Description(d => d.WithSummary("Gets an Order by the specified Id."));
             Options(opt =>
             {
-                opt.Produces<OrderExportDTO>(Status200OK, "application/json");
+                opt.Produces<GetOrderResponse>(Status200OK, "application/json");
             });
         }
 
@@ -31,7 +29,7 @@ namespace CustomCADs.API.Endpoints.Orders.GetOrder
                 return;
             }
 
-            OrderExportDTO result = new()
+            GetOrderResponse response = new()
             {
                 Id = order.Id,
                 Name = order.Name,
@@ -44,13 +42,9 @@ namespace CustomCADs.API.Endpoints.Orders.GetOrder
                 DesignerEmail = order.Designer?.Email,
                 DesignerName = order.Designer?.UserName,
                 CadId = order.CadId,
-                Category = new()
-                {
-                    Id = order.CategoryId,
-                    Name = order.Category.Name,
-                },
+                Category = new(order.CategoryId, order.Category.Name),
             };
-            await SendAsync(result, Status200OK).ConfigureAwait(false);
+            await SendAsync(response, Status200OK).ConfigureAwait(false);
         }
     }
 }
