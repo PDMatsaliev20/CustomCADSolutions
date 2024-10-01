@@ -3,7 +3,7 @@ using CustomCADs.API.Helpers;
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Cads;
 using FastEndpoints;
-using static CustomCADs.Domain.DataConstants;
+using Mapster;
 
 namespace CustomCADs.API.Endpoints.Cads.GetCads
 {
@@ -34,19 +34,8 @@ namespace CustomCADs.API.Endpoints.Cads.GetCads
             CadResultDto<GetCadsResponse> response = new()
             {
                 Count = result.Count,
-                Cads = result.Cads
-                    .Select(cad => new GetCadsResponse() 
-                    {
-                        Id = cad.Id,
-                        Name = cad.Name,
-                        ImagePath = cad.Paths.ImagePath,
-                        CreationDate = cad.CreationDate.ToString(DateFormatString),
-                        CreatorName = cad.Creator.UserName,
-                        Status = cad.Status.ToString(),
-                        Category = new(cad.CategoryId, cad.Category.Name),
-                    }).ToArray()
+                Cads = result.Cads.Select(cad => cad.Adapt<GetCadsResponse>()).ToArray()
             };
-
             await SendAsync(response, Status200OK).ConfigureAwait(false);
         }
     }

@@ -10,6 +10,7 @@ namespace CustomCADs.API.Endpoints.Identity
         {
             Configure("API/Identity", ep =>
             {
+                ep.AllowAnonymous();
                 ep.Description(opt =>
                 {
                     opt.WithTags("Identity");

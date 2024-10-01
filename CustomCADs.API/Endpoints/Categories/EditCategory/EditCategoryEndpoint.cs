@@ -25,7 +25,7 @@ namespace CustomCADs.API.Endpoints.Categories.EditCategory
             model.Name = req.Name;
 
             await service.EditAsync(req.Id, model).ConfigureAwait(false);
-            await SendAsync(new EmptyResponse(), Status204NoContent).ConfigureAwait(false);
+            await SendNoContentAsync().ConfigureAwait(false);
         }
     }
 }

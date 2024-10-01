@@ -5,7 +5,7 @@ using CustomCADs.Application.Models.Cads;
 using CustomCADs.Application.Models.Orders;
 using CustomCADs.Domain.Enums;
 using FastEndpoints;
-using static CustomCADs.Domain.DataConstants;
+using Mapster;
 
 namespace CustomCADs.API.Endpoints.Orders.GalleryOrder
 {
@@ -41,21 +41,7 @@ namespace CustomCADs.API.Endpoints.Orders.GalleryOrder
             int id = await orderService.CreateAsync(order).ConfigureAwait(false);
             OrderModel createdOrder = await orderService.GetByIdAsync(id).ConfigureAwait(false);
 
-            GalleryOrderResponse response = new()
-            {
-                Id = createdOrder.Id,
-                Name = createdOrder.Name,
-                Description = createdOrder.Description,
-                ShouldBeDelivered = createdOrder.ShouldBeDelivered,
-                ImagePath = createdOrder.ImagePath,
-                BuyerName = createdOrder.Buyer.UserName,
-                OrderDate = createdOrder.OrderDate.ToString(DateFormatString),
-                Status = createdOrder.Status.ToString(),
-                DesignerEmail = createdOrder.Designer?.Email,
-                DesignerName = createdOrder.Designer?.UserName,
-                CadId = createdOrder.CadId,
-                Category = new(createdOrder.CategoryId, createdOrder.Category.Name),
-            };
+            GalleryOrderResponse response = createdOrder.Adapt<GalleryOrderResponse>();
             await SendCreatedAtAsync<GetOrderEndpoint>(id, response).ConfigureAwait(false);
         }
     }

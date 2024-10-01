@@ -2,6 +2,7 @@
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.DTOs.Payment;
 using CustomCADs.Application.Models.Cads;
+using CustomCADs.Application.Models.Payment;
 using FastEndpoints;
 
 namespace CustomCADs.API.Endpoints.Payment.Purchase
@@ -24,13 +25,15 @@ namespace CustomCADs.API.Endpoints.Payment.Purchase
         public override async Task HandleAsync(PurchaseRequest req, CancellationToken ct)
         {
             CadModel cad = await cadService.GetByIdAsync(req.Id).ConfigureAwait(false);
-            PaymentResult paymentIntent = await service.InitializePayment(req.PaymentMethodId, new()
+
+            PurchaseInfo purchase = new()
             {
                 Product = cad.Name,
                 Price = cad.Price,
                 Seller = cad.Creator.UserName,
                 Buyer = User.GetName(),
-            }).ConfigureAwait(false);
+            };
+            PaymentResult paymentIntent = await service.InitializePayment(req.PaymentMethodId, purchase).ConfigureAwait(false);
 
             string message = await CheckStatus(paymentIntent.Status).ConfigureAwait(false);
 

@@ -11,7 +11,6 @@ namespace CustomCADs.API.Endpoints.Cads.GetCad
         public required string CreationDate { get; set; } 
         public decimal Price { get; set; }
         public required string CadPath { get; set; } 
-        public required string ImagePath { get; set; }
         public CoordinatesDto CamCoordinates { get; set; } = new(0, 0, 0);
         public CoordinatesDto PanCoordinates { get; set; } = new(0, 0, 0);
         public required string Status { get; set; }

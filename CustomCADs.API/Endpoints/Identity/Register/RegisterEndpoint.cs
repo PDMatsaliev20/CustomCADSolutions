@@ -3,6 +3,7 @@ using CustomCADs.Application.Models.Users;
 using CustomCADs.Infrastructure.Identity;
 using CustomCADs.Infrastructure.Identity.Contracts;
 using FastEndpoints;
+using Mapster;
 using Microsoft.AspNetCore.Identity;
 using static CustomCADs.Domain.DataConstants.RoleConstants;
 
@@ -41,14 +42,7 @@ namespace CustomCADs.API.Endpoints.Identity.Register
             }
             await manager.AddToRoleAsync(user, req.Role).ConfigureAwait(false);
 
-            UserModel model = new()
-            {
-                Email = req.Email,
-                UserName = req.Username,
-                FirstName = req.FirstName,
-                LastName = req.LastName,
-                RoleName = req.Role,
-            };
+            UserModel model = req.Adapt<UserModel>();
             await service.CreateAsync(model).ConfigureAwait(false);
 
             string serverUrl = config["URLs:Server"] ?? "https://customcads.onrender.com";

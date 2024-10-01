@@ -24,7 +24,7 @@ namespace CustomCADs.API.Endpoints.Categories.DeleteCategory
                 await service.DeleteAsync(req.Id).ConfigureAwait(false);
             }
 
-            await SendAsync(new { }, Status204NoContent).ConfigureAwait(false);
+            await SendNoContentAsync().ConfigureAwait(false);
         }
     }
 }

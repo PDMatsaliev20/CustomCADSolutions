@@ -38,7 +38,7 @@ namespace CustomCADs.Application.Models.Cads
         public Coordinates PanCoordinates { get; set; } = new(0, 0, 0);
 
         [Required(ErrorMessage = RequiredErrorMessage)]
-        public Paths Paths { get; set; } = null!;
+        public Paths Paths { get; set; } = new();
 
         [Required(ErrorMessage = RequiredErrorMessage)]
         [AllowedValues(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,

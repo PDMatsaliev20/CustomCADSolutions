@@ -4,7 +4,7 @@ using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Orders;
 using CustomCADs.Domain.Enums;
 using FastEndpoints;
-using static CustomCADs.Domain.DataConstants;
+using Mapster;
 
 namespace CustomCADs.API.Endpoints.Orders.GetOrders
 {
@@ -42,22 +42,7 @@ namespace CustomCADs.API.Endpoints.Orders.GetOrders
             OrderResultDto<GetOrdersResponse> response = new()
             {
                 Count = result.Count,
-                Orders = result.Orders
-                    .Select(o => new GetOrdersResponse()
-                    {
-                        Id = o.Id,
-                        Name = o.Name,
-                        Description = o.Description,
-                        ShouldBeDelivered = o.ShouldBeDelivered,
-                        ImagePath = o.ImagePath,
-                        BuyerName = o.Buyer.UserName,
-                        OrderDate = o.OrderDate.ToString(DateFormatString),
-                        Status = o.Status.ToString(),
-                        DesignerEmail = o.Designer?.Email,
-                        DesignerName = o.Designer?.UserName,
-                        CadId = o.CadId,
-                        Category = new(o.CategoryId, o.Category.Name),
-                    }).ToArray(),
+                Orders = result.Orders.Select(order => order.Adapt<GetOrdersResponse>()).ToArray(),
             };
 
             await SendAsync(response, Status200OK).ConfigureAwait(false);

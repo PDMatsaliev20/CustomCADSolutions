@@ -40,7 +40,7 @@ namespace CustomCADs.API.Endpoints.Cads.PatchCad
             bool isValid = model.Validate(out IList<string> errors);
             if (!isValid)
             {
-                await SendErrorsAsync().ConfigureAwait(false);
+                await SendAsync(errors, Status400BadRequest).ConfigureAwait(false);
                 return;
             }
 

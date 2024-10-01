@@ -2,7 +2,7 @@
 {
     public static class DataConstants
     {
-        public const string DateFormatString = "dd/MM/yyyy HH:mm:ss";
+        public const string DateFormatString = "dd.MM.yyyy HH:mm:ss";
 
         public const string RequiredErrorMessage = "{0} is required!";
         public const string LengthErrorMessage = "{0} length must be between {2} and {1} characters";

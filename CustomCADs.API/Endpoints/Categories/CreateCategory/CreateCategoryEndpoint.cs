@@ -22,12 +22,7 @@ namespace CustomCADs.API.Endpoints.Categories.CreateCategory
 
         public override async Task HandleAsync(CreateCategoryRequest req, CancellationToken ct)
         {
-            CategoryModel model = new()
-            {
-                Name = req.Name,
-            };
-            int id = await service.CreateAsync(model).ConfigureAwait(false);
-
+            int id = await service.CreateAsync(new() { Name = req.Name }).ConfigureAwait(false);
             CategoryDto category = new(id, req.Name);
             await SendAsync(category, Status200OK).ConfigureAwait(false);
         }

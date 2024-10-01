@@ -2,6 +2,7 @@
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Users;
 using FastEndpoints;
+using Mapster;
 
 namespace CustomCADs.API.Endpoints.Users.GetUsers
 {
@@ -32,15 +33,7 @@ namespace CustomCADs.API.Endpoints.Users.GetUsers
             GetUsersResponse response = new()
             {
                 Count = result.Count,
-                Users = result.Users
-                    .Select(u => new UserResponseDto()
-                    {
-                        Email = u.Email,
-                        Username = u.UserName,
-                        Role = u.RoleName,
-                        FirstName = u.FirstName,
-                        LastName = u.LastName,
-                    }).ToArray()
+                Users = result.Users.Select(user => user.Adapt<UserResponseDto>()).ToArray()
             };
             await SendAsync(response, Status200OK).ConfigureAwait(false);
         }

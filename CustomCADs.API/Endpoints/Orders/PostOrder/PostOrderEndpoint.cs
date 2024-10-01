@@ -3,7 +3,7 @@ using CustomCADs.API.Helpers;
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Orders;
 using FastEndpoints;
-using static CustomCADs.Domain.DataConstants;
+using Mapster;
 
 namespace CustomCADs.API.Endpoints.Orders.PostOrder
 {
@@ -23,16 +23,11 @@ namespace CustomCADs.API.Endpoints.Orders.PostOrder
 
         public override async Task HandleAsync(PostOrderRequest req, CancellationToken ct)
         {
-            OrderModel model = new()
-            {
-                Name = req.Name,
-                Description = req.Description,
-                CategoryId = req.CategoryId,
-                ShouldBeDelivered = req.ShouldBeDelivered,
-                OrderDate = DateTime.Now,
-                BuyerId = User.GetId(),
-                ImagePath = string.Empty,
-            };
+            OrderModel model = req.Adapt<OrderModel>();
+            model.OrderDate = DateTime.Now;
+            model.BuyerId = User.GetId();
+            model.ImagePath = string.Empty;
+
             int id = await service.CreateAsync(model).ConfigureAwait(false);
 
             string imagePath = await env.UploadOrderAsync(req.Image, req.Name + id + req.Image.GetFileExtension()).ConfigureAwait(false);
@@ -40,19 +35,8 @@ namespace CustomCADs.API.Endpoints.Orders.PostOrder
 
             OrderModel createdOrder = await service.GetByIdAsync(id).ConfigureAwait(false);
 
-            PostOrderResponse result = new()
-            {
-                Id = createdOrder.Id,
-                Name = createdOrder.Name,
-                Description = createdOrder.Description,
-                ShouldBeDelivered = createdOrder.ShouldBeDelivered,
-                ImagePath = imagePath,
-                BuyerName = createdOrder.Buyer.UserName,
-                OrderDate = createdOrder.OrderDate.ToString(DateFormatString),
-                Status = createdOrder.Status.ToString(),
-                Category = new(createdOrder.CategoryId, createdOrder.Category.Name),
-            };
-            await SendCreatedAtAsync<GetOrderEndpoint>(new { id }, result);
+            PostOrderResponse response = createdOrder.Adapt<PostOrderResponse>();
+            await SendCreatedAtAsync<GetOrderEndpoint>(new { id }, response);
         }
     }
 }

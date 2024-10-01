@@ -3,7 +3,7 @@ using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Orders;
 using CustomCADs.Domain.Enums;
 using FastEndpoints;
-using static CustomCADs.Domain.DataConstants;
+using Mapster;
 
 namespace CustomCADs.API.Endpoints.Designer.RecentOngoingOrders
 {
@@ -31,15 +31,7 @@ namespace CustomCADs.API.Endpoints.Designer.RecentOngoingOrders
             OrderResultDto<RecentOngoingOrdersResponse> response = new()
             {
                 Count = result.Count,
-                Orders = result.Orders
-                    .Select(o => new RecentOngoingOrdersResponse()
-                    {
-                        Id = o.Id,
-                        Name = o.Name,
-                        Status = o.Status.ToString(),
-                        OrderDate = o.OrderDate.ToString(DateFormatString),
-                        Category = new(o.CategoryId, o.Category.Name),
-                    }).ToArray(),
+                Orders = result.Orders.Select(order => order.Adapt<RecentOngoingOrdersResponse>()).ToArray(),
             };
 
             await SendAsync(response, Status200OK).ConfigureAwait(false);

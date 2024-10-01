@@ -2,7 +2,7 @@
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Cads;
 using FastEndpoints;
-using static CustomCADs.Domain.DataConstants;
+using Mapster;
 
 namespace CustomCADs.API.Endpoints.Designer.UncheckedCads
 {
@@ -33,17 +33,7 @@ namespace CustomCADs.API.Endpoints.Designer.UncheckedCads
             CadResultDto<UncheckedCadsResponse> response = new()
             {
                 Count = result.Count,
-                Cads = result.Cads
-                    .Select(cad => new UncheckedCadsResponse()
-                    {
-                        Id = cad.Id,
-                        Name = cad.Name,
-                        ImagePath = cad.Paths.ImagePath,
-                        CreationDate = cad.CreationDate.ToString(DateFormatString),
-                        CreatorName = cad.Creator.UserName,
-                        Status = cad.Status.ToString(),
-                        Category = new(cad.CategoryId, cad.Category.Name),
-                    }).ToArray(),
+                Cads = result.Cads.Select(cad => cad.Adapt<UncheckedCadsResponse>()).ToArray() 
             };
 
             await SendAsync(response, Status200OK).ConfigureAwait(false);

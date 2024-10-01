@@ -17,9 +17,6 @@
 
         public Paths(string file, string image)
         {
-            ArgumentNullException.ThrowIfNull(image, nameof(image));
-            ArgumentNullException.ThrowIfNull(file, nameof(file));
-            
             ImagePath = image;
             FilePath = file;
         }

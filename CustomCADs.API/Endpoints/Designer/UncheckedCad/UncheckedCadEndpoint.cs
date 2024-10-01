@@ -1,6 +1,7 @@
 ﻿using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Cads;
 using FastEndpoints;
+using Mapster;
 
 namespace CustomCADs.API.Endpoints.Designer.UncheckedCad
 {
@@ -24,15 +25,10 @@ namespace CustomCADs.API.Endpoints.Designer.UncheckedCad
                 .GetNextCurrentAndPreviousByIdAsync(req.Id)
                 .ConfigureAwait(false);
 
-            UncheckedCadResponse response = new()
-            {
-                PrevId = prevId,
-                Id = cad.Id,
-                CadPath = cad.Paths.FilePath,
-                CamCoordinates = new(cad.CamCoordinates.X, cad.CamCoordinates.Y, cad.CamCoordinates.Z),
-                PanCoordinates = new(cad.PanCoordinates.X, cad.PanCoordinates.Y, cad.PanCoordinates.Z),
-                NextId = nextId,
-            };
+            UncheckedCadResponse response = cad.Adapt<UncheckedCadResponse>();
+            response.PrevId = prevId;
+            response.NextId = nextId;
+
             await SendAsync(response, Status200OK).ConfigureAwait(false);
         }
     }

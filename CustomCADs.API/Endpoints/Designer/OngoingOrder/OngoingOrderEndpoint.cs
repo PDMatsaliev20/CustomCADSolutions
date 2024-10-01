@@ -1,7 +1,7 @@
 ﻿using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Orders;
 using FastEndpoints;
-using static CustomCADs.Domain.DataConstants;
+using Mapster;
 
 namespace CustomCADs.API.Endpoints.Designer.OngoingOrder
 {
@@ -26,18 +26,9 @@ namespace CustomCADs.API.Endpoints.Designer.OngoingOrder
                 await SendErrorsAsync(result.Count == 0 ? Status404NotFound : Status500InternalServerError).ConfigureAwait(false);
                 return;
             }
-
             OrderModel model = result.Orders.Single();
-            OngoingOrderResponse response = new()
-            {
-                Id = model.Id,
-                Name = model.Name,
-                Description = model.Description,
-                Status = model.Status.ToString(),
-                OrderDate = model.OrderDate.ToString(DateFormatString),
-                BuyerName = model.Buyer.UserName,
-                Category = new(model.CategoryId, model.Category.Name)
-            };
+
+            OngoingOrderResponse response = model.Adapt<OngoingOrderResponse>();
             await SendAsync(response, Status200OK).ConfigureAwait(false);
         }
     }

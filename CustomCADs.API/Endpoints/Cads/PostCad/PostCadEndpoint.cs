@@ -4,6 +4,7 @@ using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Cads;
 using CustomCADs.Domain.Enums;
 using FastEndpoints;
+using Mapster;
 using static CustomCADs.Domain.DataConstants;
 
 namespace CustomCADs.API.Endpoints.Cads.PostCad
@@ -24,17 +25,10 @@ namespace CustomCADs.API.Endpoints.Cads.PostCad
 
         public override async Task HandleAsync(PostCadRequest req, CancellationToken ct)
         {
-            CadModel model = new()
-            {
-                Name = req.Name,
-                Description = req.Description,
-                CategoryId = req.CategoryId,
-                Price = req.Price,
-                CreationDate = DateTime.Now,
-                CreatorId = User.GetId(),
-                Paths = new(),
-                Status = User.IsInRole(RoleConstants.Designer) ? CadStatus.Validated : CadStatus.Unchecked,
-            };
+            CadModel model = req.Adapt<CadModel>();
+            model.CreatorId = User.GetId();
+            model.CreationDate = DateTime.Now;
+            model.Status = User.IsInRole(RoleConstants.Designer) ? CadStatus.Validated : CadStatus.Unchecked;
 
             int id = await service.CreateAsync(model).ConfigureAwait(false);
             model = await service.GetByIdAsync(id).ConfigureAwait(false);
@@ -44,21 +38,7 @@ namespace CustomCADs.API.Endpoints.Cads.PostCad
             await service.SetPathsAsync(id, cadPath, imagePath).ConfigureAwait(false);
 
             CadModel createdModel = await service.GetByIdAsync(id).ConfigureAwait(false);
-            PostCadResponse response = new()
-            {
-                Id = createdModel.Id,
-                Name = createdModel.Name,
-                Description = createdModel.Description,
-                CadPath = createdModel.Paths.FilePath,
-                CamCoordinates = new(createdModel.CamCoordinates.X, createdModel.CamCoordinates.Y, createdModel.CamCoordinates.Z),
-                PanCoordinates = new(createdModel.PanCoordinates.X, createdModel.PanCoordinates.Y, createdModel.PanCoordinates.Z),
-                Price = createdModel.Price,
-                ImagePath = createdModel.Paths.ImagePath,
-                CreationDate = createdModel.CreationDate.ToString(DateFormatString),
-                CreatorName = createdModel.Creator.UserName,
-                Status = createdModel.Status.ToString(),
-                Category = new(createdModel.CategoryId, createdModel.Category.Name),
-            };
+            PostCadResponse response = createdModel.Adapt<PostCadResponse>();
 
             await SendCreatedAtAsync<GetCadEndpoint>(id, response).ConfigureAwait(false);
         }

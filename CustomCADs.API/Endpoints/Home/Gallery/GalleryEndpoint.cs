@@ -3,7 +3,7 @@ using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Cads;
 using CustomCADs.Domain.Enums;
 using FastEndpoints;
-using static CustomCADs.Domain.DataConstants;
+using Mapster;
 
 namespace CustomCADs.API.Endpoints.Home.Gallery
 {
@@ -36,15 +36,7 @@ namespace CustomCADs.API.Endpoints.Home.Gallery
             CadResultDto<GalleryResponse> response = new()
             {
                 Count = result.Count,
-                Cads = result.Cads
-                    .Select(c => new GalleryResponse()
-                    {
-                        Id = c.Id,
-                        Name = c.Name,
-                        CreationDate = c.CreationDate.ToString(DateFormatString),
-                        CreatorName = c.Creator.UserName,
-                        ImagePath = c.Paths.ImagePath,
-                    }).ToArray(),
+                Cads = result.Cads.Select(cad => cad.Adapt<GalleryResponse>()).ToArray(),
             };
             await SendAsync(response, Status200OK).ConfigureAwait(false);
         }

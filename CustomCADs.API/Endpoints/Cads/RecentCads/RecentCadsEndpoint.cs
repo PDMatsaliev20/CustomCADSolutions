@@ -4,7 +4,7 @@ using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Cads;
 using CustomCADs.Domain.Enums;
 using FastEndpoints;
-using static CustomCADs.Domain.DataConstants;
+using Mapster;
 
 namespace CustomCADs.API.Endpoints.Cads.RecentCads
 {
@@ -32,16 +32,7 @@ namespace CustomCADs.API.Endpoints.Cads.RecentCads
             CadResultDto<RecentCadsResponse> response = new()
             {
                 Count = result.Count,
-                Cads = result.Cads
-                    .Select(cad => new RecentCadsResponse()
-                    {
-                        Id = cad.Id,
-                        Name = cad.Name,
-                        CreationDate = cad.CreationDate.ToString(DateFormatString),
-                        CreatorName = cad.Creator.UserName,
-                        Status = cad.Status.ToString(),
-                        Category = new(cad.CategoryId, cad.Category.Name),
-                    }).ToArray()
+                Cads = result.Cads.Select(cad => cad.Adapt<RecentCadsResponse>()).ToArray()
             };
 
             await SendAsync(response, Status200OK).ConfigureAwait(false);

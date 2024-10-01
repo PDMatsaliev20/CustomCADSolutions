@@ -1,4 +1,5 @@
-﻿using CustomCADs.Application;
+﻿using CustomCADs.API.Mappers;
+using CustomCADs.Application;
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Categories;
 using CustomCADs.Application.Models.Roles;
@@ -32,7 +33,9 @@ using static CustomCADs.Domain.DataConstants.RoleConstants;
 using static Microsoft.AspNetCore.Http.StatusCodes;
 using Order = CustomCADs.Domain.Entities.Order;
 
+#pragma warning disable IDE0130
 namespace Microsoft.Extensions.DependencyInjection
+#pragma warning restore IDE0130
 {
     public static class ProgramExtension
     {
@@ -102,9 +105,10 @@ namespace Microsoft.Extensions.DependencyInjection
 
         public static IServiceCollection AddMappings(this IServiceCollection services)
         {
-            return services
-                .AddAutoMapper(typeof(Program))
-                .AddAutoMapper(typeof(TestsErrorMessages));
+            CadsMapper.Map();
+            OrdersMapper.Map();
+            UsersMapper.Map();
+            return services.AddAutoMapper(typeof(TestsErrorMessages));
         }
 
         public static IMvcBuilder AddEndpoints(this IServiceCollection services)
