@@ -1,16 +1,16 @@
 import { useNavigate, useLoaderData } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import ICad from '@/interfaces/cad';
 import { PatchCadStatus } from '@/requests/private/designer';
 import ErrorPage from '@/components/error-page';
 import ThreeJS from '@/components/cads/three';
+import UncheckedCadDetailsCad from './unchecked-cad-details.interface';
 
 function UncheckedCadDetails() {
     const navigate = useNavigate();
 
     const { prevId, loadedCad, nextId, error, status } = useLoaderData() as {
         prevId: number
-        loadedCad: ICad
+        loadedCad: UncheckedCadDetailsCad
         nextId: number
         error: boolean
         status: number

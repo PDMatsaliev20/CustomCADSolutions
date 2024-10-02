@@ -1,8 +1,8 @@
 import ThreeJS from './three.js';
-import ICad from '@/interfaces/cad.js';
+import ThreeJSCad from './three.interface.js';
 
 interface CadProps {
-    cad?: ICad
+    cad?: ThreeJSCad
     isHomeCad?: boolean
 }
 

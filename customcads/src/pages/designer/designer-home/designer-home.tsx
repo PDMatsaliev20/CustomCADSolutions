@@ -2,22 +2,22 @@ import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next'
 import { useLoaderData } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import ICad from '@/interfaces/cad';
-import IOrder from '@/interfaces/order';
 import { GetRecentOrders } from '@/requests/private/designer';
 import ErrorPage from '@/components/error-page';
 import RecentItem from '@/components/dashboard/recent-item';
 import { getCookie, setCookie } from '@/utils/cookie-manager';
+import DesignerHomeOrder from './designer-home.interface-order';
+import DesignerHomeCad from './designer-home.interface-cad';
 
 function DesignerHome() {
     const { t: tPages } = useTranslation('pages');
     const { t: tCommon } = useTranslation('common');
-    const [orders, setOrders] = useState<IOrder[]>([]);
+    const [orders, setOrders] = useState<DesignerHomeOrder[]>([]);
     const [status, setStatus] = useState<string>(getCookie('designer_dashboard_orders_status') ?? 'Pending');
 
     const { loadedCads: recentCads, error, status: statusCode } = useLoaderData() as {
-        loadedCads: ICad[]
-        loadedOrders: IOrder[]
+        loadedCads: DesignerHomeCad[]
+        loadedOrders: DesignerHomeOrder[]
         error: boolean
         status: number
     };

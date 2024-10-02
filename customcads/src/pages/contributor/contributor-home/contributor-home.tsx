@@ -1,9 +1,9 @@
 import { useLoaderData } from 'react-router-dom';
 import { useTranslation } from 'react-i18next'
-import ICad from '@/interfaces/cad';
 import RecentItem from '@/components/dashboard/recent-item';
 import CadsCount from '@/components/dashboard/count-item';
 import ErrorPage from '@/components/error-page';
+import ContributorHomeCad from './contributor-home.interface';
 
 function ContributorHome() {
     const { t: tPages } = useTranslation('pages');
@@ -16,7 +16,7 @@ function ContributorHome() {
         banned: number
     }
     const { loadedCads: recentCads, loadedCounts: counts, error, status } = useLoaderData() as {
-        loadedCads: ICad[]
+        loadedCads: ContributorHomeCad[]
         loadedCounts: CountByStatus
         error: boolean
         status: number

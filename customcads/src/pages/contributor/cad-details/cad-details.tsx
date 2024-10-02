@@ -3,14 +3,27 @@ import { useForm } from 'react-hook-form';
 import { useNavigate, useLoaderData } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import ICategory from '@/interfaces/category';
-import ICad from '@/interfaces/cad';
+import Category from '@/interfaces/category';
 import { PutCad, PatchCad, DeleteCad } from '@/requests/private/cads';
 import useAuth from '@/hooks/useAuth';
 import ThreeJS from '@/components/cads/three';
 import { dateToMachineReadable } from '@/utils/date-manager';
 import ErrorPage from '@/components/error-page';
-import { SavePositionEvent } from '@/interfaces/events';
+import ICoordinates from '@/interfaces/coordinates';
+import CadDetailsCad from './cad-details.interface';
+
+interface SavePositionEvent {
+    camCoords: ICoordinates
+    panCoords: ICoordinates
+}
+
+interface CadForm {
+    name: string
+    description: string
+    categoryId: number
+    price: number
+    image: FileList | null
+}
 
 function EditCadPage() {
     const { userRole } = useAuth();
@@ -20,21 +33,13 @@ function EditCadPage() {
 
     const { id, loadedCategories, loadedCad, error, status } = useLoaderData() as {
         id: number
-        loadedCategories: ICategory[]
-        loadedCad: ICad
+        loadedCategories: Category[]
+        loadedCad: CadDetailsCad
         error: boolean
         status: number
     };
     if (error) {
         return <ErrorPage status={status} />
-    }
-
-    interface CadForm {
-        name: string
-        description: string
-        categoryId: number
-        price: number
-        image: FileList | null
     }
 
     const loadedValues: CadForm = {

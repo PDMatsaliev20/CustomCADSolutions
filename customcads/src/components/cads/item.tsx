@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import ICad from '@/interfaces/cad';
 import { dateToMachineReadable } from '@/utils/date-manager';
+import ICadItem from './item.interface';
 
 interface CadItemProps {
-    cad: ICad
+    cad: ICadItem
     by?: boolean
     on?: boolean
 }

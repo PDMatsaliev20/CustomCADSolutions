@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import IOrder from '@/interfaces/order';
 import usePagination from '@/hooks/usePagination';
 import objectToUrl from '@/utils/object-to-url';
 import { BeginOrder, ReportOrder, CancelOrder, GetOrdersByStatus } from '@/requests/private/designer';
@@ -10,12 +9,13 @@ import SearchBar from '@/components/searchbar';
 import Pagination from '@/components/pagination';
 import Tab from '@/components/tab';
 import Order from '@/components/order';
+import OngoingOrdersOrder from './ongoing-orders.interface';
 
 function OngoingOrders() {
     const { t: tPages } = useTranslation('pages');
     const status = capitalize(useParams().status ?? '');
     const navigate = useNavigate();
-    const [orders, setOrders] = useState<IOrder[]>([]);
+    const [orders, setOrders] = useState<OngoingOrdersOrder[]>([]);
     const [search, setSearch] = useState({ name: '', category: '', sorting: '' });
     const [total, setTotal] = useState(0);
     const { page, limit, handlePageChange } = usePagination(total, 12);
@@ -25,7 +25,7 @@ function OngoingOrders() {
         document.documentElement.scrollTo({ top: 0, left: 0, behavior: "instant" });
     }, [status, search, page]);
 
-    const chooseButtons = (order: IOrder) => {
+    const chooseButtons = (order: OngoingOrdersOrder) => {
         const mainBtn = "bg-indigo-700 border-2 border-indigo-500 py-3 rounded text-center text-indigo-50 hover:opacity-70 hover:border-transparent";
         const sideBtn = "bg-indigo-50 border-2 border-indigo-600 py-3 rounded text-center text-indigo-950 hover:bg-rose-500 hover:border-transparent hover:text-indigo-50";
 

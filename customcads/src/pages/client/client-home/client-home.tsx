@@ -1,9 +1,9 @@
 import { useLoaderData } from 'react-router-dom';
 import { useTranslation } from 'react-i18next'
-import IOrder from '@/interfaces/order';
 import RecentItem from '@/components/dashboard/recent-item';
 import OrdersCount from '@/components/dashboard/count-item';
 import ErrorPage from '@/components/error-page';
+import ClientHomeOrder from './client-home.interface';
 
 function ClientHome() {
     const { t: tCommon } = useTranslation('common');
@@ -18,7 +18,7 @@ function ClientHome() {
     }
 
     const { loadedOrders: recent, loadedCounts: counts, error, status, } = useLoaderData() as {
-        loadedOrders: IOrder[],
+        loadedOrders: ClientHomeOrder[],
         loadedCounts: CountByStatus,
         error: boolean,
         status: number,

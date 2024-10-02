@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
-import ICategory from '@/interfaces/category';
+import Category from '@/interfaces/category';
 import useAuth from '@/hooks/useAuth';
 import { GetCategories } from '@/requests/public/categories';
 import { PostCad } from '@/requests/private/cads';
@@ -54,7 +54,7 @@ function UploadCad() {
         }
     };
 
-    const categoryMap = (category: ICategory) =>
+    const categoryMap = (category: Category) =>
         <option key={category.id} value={category.id}>
             {tCommon(`categories.${category.name}`)}
         </option>;

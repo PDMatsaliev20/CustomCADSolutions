@@ -1,12 +1,11 @@
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import ICad from '@/interfaces/cad';
-import IOrder from '@/interfaces/order';
 import { dateToMachineReadable } from '@/utils/date-manager';
+import IRecentItem from './recent-item.interface';
 
 interface RecentItemsProps {
     to: string
-    item: ICad | IOrder
+    item: IRecentItem
     date: string
 }
 

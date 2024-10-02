@@ -1,5 +1,3 @@
-import IOrder from '@/interfaces/order';
-import IOperation from '@/interfaces/operation';
 import axios from '../axios';
 
 const GetOrders = async (status: string, searchParams: string) => {

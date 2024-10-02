@@ -3,7 +3,7 @@ import { RouteObject } from 'react-router-dom';
 import AuthGuard from '@/routing/auth-guard';
 import { GetCategories } from '@/requests/public/categories';
 import { GetRecentOrders, GetOrder, GetOrdersCounts } from '@/requests/private/orders';
-import ClientHomePage from '@/pages/client/client-home';
+import ClientHomePage from '@/pages/client/client-home/client-home';
 import UserOrdersPage from '@/pages/client/user-orders/orders';
 import OrderDetailsPage from '@/pages/client/order-details/order-details';
 import PurchasePage from '@/pages/client/purchase/purchase';

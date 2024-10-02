@@ -1,15 +1,15 @@
 import { useLoaderData } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import IOrder from '@/interfaces/order';
 import ErrorPage from '@/components/error-page';
 import { dateToMachineReadable } from '@/utils/date-manager';
+import OngoingOrderDetailsOrder from './ongoing-order-details.interface';
 
 function OngoingOrderDetails() {
     const { t: tPages } = useTranslation('pages');
     const { t: tCommon } = useTranslation('common');
 
     const { loadedOrder, error, status } = useLoaderData() as {
-        loadedOrder: IOrder
+        loadedOrder: OngoingOrderDetailsOrder
         error: boolean
         status: number
     };

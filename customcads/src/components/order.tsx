@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import IOrder from '@/interfaces/order';
 import Tag from '@/components/tag';
+import OrderItem from './order.interface';
 
 interface OrderProps {
-    order: IOrder
+    order: OrderItem
     buttons: JSX.Element[]
 }
 

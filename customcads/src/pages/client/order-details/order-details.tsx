@@ -2,11 +2,11 @@ import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useLoaderData } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import ICategory from '@/interfaces/category';
-import IOrder from '@/interfaces/order';
+import Category from '@/interfaces/category';
 import { PutOrder } from '@/requests/private/orders';
 import { dateToMachineReadable } from '@/utils/date-manager';
 import ErrorPage from '@/components/error-page';
+import OrderDetailsOrder from './order-details.interface';
 
 function OrderDetails() {
     const { t: tPages } = useTranslation('pages');
@@ -15,8 +15,8 @@ function OrderDetails() {
 
     const { id, loadedCategories, loadedOrder, error, status } = useLoaderData() as {
         id: number,
-        loadedCategories: ICategory[],
-        loadedOrder: IOrder,
+        loadedCategories: Category[],
+        loadedOrder: OrderDetailsOrder,
         error: boolean,
         status: number,
     };

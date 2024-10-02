@@ -1,14 +1,14 @@
 import { useLoaderData, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import ICad from '@/interfaces/cad';
 import useAuth from '@/hooks/useAuth';
 import ThreeJS from '@/components/cads/three';
+import GalleryDetailsCad from './gallery-details.interface';
 
 function GalleryDetailsPage() {
     const { t: tPages } = useTranslation('pages');
     const { t: tCommon } = useTranslation('common');
     const { userRole } = useAuth();
-    const { loadedCad } = useLoaderData() as { loadedCad: ICad };
+    const { loadedCad } = useLoaderData() as { loadedCad: GalleryDetailsCad };
     const navigate = useNavigate();
 
     const handleBuy = async () => {

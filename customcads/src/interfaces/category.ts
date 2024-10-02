@@ -1,9 +1,9 @@
-export default interface ICategory {
+export default interface Category {
     id: number
     name: string
 }
 
-export const emptyCategory: ICategory = {
+export const emptyCategory: Category = {
     id: 0,
     name: '',
 };

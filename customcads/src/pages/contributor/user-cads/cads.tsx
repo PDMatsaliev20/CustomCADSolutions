@@ -1,16 +1,16 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import ICad from '@/interfaces/cad';
 import usePagination from '@/hooks/usePagination';
 import objectToUrl from '@/utils/object-to-url';
 import { GetCads } from '@/requests/private/cads';
 import SearchBar from '@/components/searchbar';
 import Pagination from '@/components/pagination';
 import CadItem from '@/components/cads/item';
+import UserCadsCad from './cads.interface';
 
 function UserCads() {
     const { t: tPages } = useTranslation('pages');
-    const [cads, setCads] = useState<ICad[]>([]);
+    const [cads, setCads] = useState<UserCadsCad[]>([]);
     const [search, setSearch] = useState({ name: '', category: '', sorting: '' });
     const [total, setTotal] = useState(0);
     const { page, limit, handlePageChange } = usePagination(total, 12);

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
-import ICategory from '@/interfaces/category';
+import Category from '@/interfaces/category';
 import { GetCategories } from '@/requests/public/categories';
 import { PostOrder } from '@/requests/private/orders';
 import Input from '@/components/fields/input';
@@ -11,6 +11,12 @@ import TextArea from '@/components/fields/textarea';
 import FileInput from '@/components/fields/file-input';
 import orderValidations from './order-validations';
 
+interface OrderForm {
+    name: string
+    description: string
+    categoryId: string
+}
+
 function CustomOrder() {
     const { t: tCommon } = useTranslation('common');
     const { t: tPages } = useTranslation('pages');
@@ -18,12 +24,6 @@ function CustomOrder() {
     const [categories, setCategories] = useState([]);
     const [shouldBeDelivered, setShouldBeDelivered] = useState(false);
     const [image, setImage] = useState<File | null>(null);
-
-    interface OrderForm {
-        name: string
-        description: string
-        categoryId: string
-    }
 
     const { register, formState, handleSubmit } = useForm<OrderForm>({ mode: 'onTouched' });
     const { name, description, categoryId } = orderValidations();
@@ -42,7 +42,7 @@ function CustomOrder() {
         }
     };
 
-    const categoryMap = (category: ICategory) =>
+    const categoryMap = (category: Category) =>
         <option key={category.id} value={category.id}>
             {tCommon(`categories.${category.name}`)}
         </option>;
