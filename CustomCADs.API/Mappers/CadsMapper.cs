@@ -41,7 +41,6 @@ namespace CustomCADs.API.Mappers
 
             TypeAdapterConfig<CadModel, RecentCadsResponse>.NewConfig()
                 .Map(r => r.CreationDate, m => mapCreationDate(m))
-                .Map(r => r.CreatorName, m => mapCreatorName(m))
                 .Map(r => r.Status, m => mapStatus(m))
                 .Map(r => r.Category, m => mapCategory(m));
 
@@ -59,25 +58,19 @@ namespace CustomCADs.API.Mappers
                 .Map(r => r.CadPath, m => mapCadPath(m))
                 .Map(r => r.CamCoordinates, m => mapCamCoordinates(m))
                 .Map(r => r.PanCoordinates, m => mapPanCoordinates(m))
-                .Map(r => r.OrdersCount, m => mapOrdersCount(m))
                 .Map(r => r.CreationDate, m => mapCreationDate(m))
-                .Map(r => r.CreatorName, m => mapCreatorName(m))
-                .Map(r => r.Status, m => mapStatus(m))
                 .Map(r => r.Category, m => mapCategory(m));
 
             TypeAdapterConfig<CadModel, GetCadsResponse>.NewConfig()
                 .Map(r => r.ImagePath, m => mapImagePath(m))
                 .Map(r => r.CreationDate, m => mapCreationDate(m))
                 .Map(r => r.CreatorName, m => mapCreatorName(m))
-                .Map(r => r.Status, m => mapStatus(m))
                 .Map(r => r.Category, m => mapCategory(m));
             
             TypeAdapterConfig<CadModel, UncheckedCadsResponse>.NewConfig()
                 .Map(r => r.ImagePath, m => mapImagePath(m))
                 .Map(r => r.CreationDate, m => mapCreationDate(m))
-                .Map(r => r.CreatorName, m => mapCreatorName(m))
-                .Map(r => r.Status, m => mapStatus(m))
-                .Map(r => r.Category, m => mapCategory(m));
+                .Map(r => r.CreatorName, m => mapCreatorName(m));
 
             TypeAdapterConfig<CadModel, UncheckedCadResponse>.NewConfig()
                 .Map(r => r.CadPath, m => mapCadPath(m))

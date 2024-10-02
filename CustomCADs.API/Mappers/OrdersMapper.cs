@@ -33,14 +33,10 @@ namespace CustomCADs.API.Mappers
                 .Map(r => r.BuyerName, m => mapBuyerName(m))
                 .Map(r => r.OrderDate, m => mapOrderDate(m))
                 .Map(r => r.Status, m => mapStatus(m))
-                .Map(r => r.DesignerEmail, m => mapDesignerEmail(m))
-                .Map(r => r.DesignerName, m => mapDesignerName(m))
                 .Map(r => r.Category, m => mapCategory(m));
 
             TypeAdapterConfig<OrderModel, GetOrdersResponse>.NewConfig()
-                .Map(r => r.BuyerName, m => mapBuyerName(m))
                 .Map(r => r.OrderDate, m => mapOrderDate(m))
-                .Map(r => r.Status, m => mapStatus(m))
                 .Map(r => r.DesignerEmail, m => mapDesignerEmail(m))
                 .Map(r => r.DesignerName, m => mapDesignerName(m))
                 .Map(r => r.Category, m => mapCategory(m));
@@ -54,11 +50,8 @@ namespace CustomCADs.API.Mappers
                 .Map(r => r.Category, m => mapCategory(m));
 
             TypeAdapterConfig<OrderModel, RecentOrdersResponse>.NewConfig()
-                .Map(r => r.BuyerName, m => mapBuyerName(m))
                 .Map(r => r.OrderDate, m => mapOrderDate(m))
                 .Map(r => r.Status, m => mapStatus(m))
-                .Map(r => r.DesignerEmail, m => mapDesignerEmail(m))
-                .Map(r => r.DesignerName, m => mapDesignerName(m))
                 .Map(r => r.Category, m => mapCategory(m));
 
             TypeAdapterConfig<OrderModel, OngoingOrdersResponse>.NewConfig()
@@ -66,9 +59,7 @@ namespace CustomCADs.API.Mappers
                 .Map(r => r.Category, m => mapCategory(m));
 
             TypeAdapterConfig<OrderModel, OngoingOrderResponse>.NewConfig()
-                .Map(r => r.Status, m => mapStatus(m))
                 .Map(r => r.OrderDate, m => mapOrderDate(m))
-                .Map(r => r.BuyerName, m => mapBuyerName(m))
                 .Map(r => r.Category, m => mapCategory(m));
 
             TypeAdapterConfig<OrderModel, RecentOngoingOrdersResponse>.NewConfig()
