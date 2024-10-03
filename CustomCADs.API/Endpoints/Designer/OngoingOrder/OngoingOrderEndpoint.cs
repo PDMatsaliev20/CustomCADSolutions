@@ -11,7 +11,7 @@ namespace CustomCADs.API.Endpoints.Designer.OngoingOrder
     {
         public override void Configure()
         {
-            Get("Orders/{id}");
+            Get("Orders/{id:int}");
             Group<DesignerGroup>();
             Description(d => d
                 .WithSummary("Gets the Order with the specified Id.")

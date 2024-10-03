@@ -43,33 +43,25 @@ namespace CustomCADs.Application.Services
 
         public async Task<(int? PrevId, CadModel Current, int? NextId)> GetNextCurrentAndPreviousByIdAsync(int id)
         {
-            IQueryable<Cad> cads = cadQueries.GetAll(true);
-            
-            int? prevId = null, nextId = null;
-            Cad? requestedCad = null;
+            List<Cad> cads = [.. cadQueries.GetAll(true).OrderBy(c => c.Id)];
 
-            foreach (Cad cad in cads)
+            Cad cad = cads.FirstOrDefault(c => c.Id == id)
+                ?? throw new KeyNotFoundException();
+            int cadIndex = cads.IndexOf(cad);
+
+            int? prevId = null;
+            if (cad.Id != (cads.FirstOrDefault()?.Id ?? 0))
             {
-                nextId = cad.Id;
-
-                if (requestedCad != null)
-                {
-                    return (prevId, mapper.Map<CadModel>(requestedCad), nextId);
-                }
-
-                if (cad.Id == id)
-                {
-                    requestedCad = cad;
-                }
-                else
-                {
-                    prevId = cad.Id;
-                }
+                prevId = cads[cadIndex - 1].Id;   
+            }
+            
+            int? nextId = null;
+            if (cad.Id != (cads.LastOrDefault()?.Id ?? 0))
+            {
+                nextId = cads[cadIndex + 1].Id;                   
             }
 
-            ArgumentNullException.ThrowIfNull(requestedCad, nameof(requestedCad));
-
-            return (prevId, mapper.Map<CadModel>(requestedCad), nextId);
+            return (prevId, mapper.Map<CadModel>(cad), nextId);
         }
 
         public async Task EditCadStatusAsync(int id, CadStatus status)
@@ -88,7 +80,7 @@ namespace CustomCADs.Application.Services
             queryable = queryable.Search(category: category, name: name, creator: creator);
             queryable = queryable.Sort(sorting);
 
-            IEnumerable<Cad> cads = [..queryable.Skip((page - 1) * limit).Take(limit)];
+            IEnumerable<Cad> cads = [.. queryable.Skip((page - 1) * limit).Take(limit)];
             return new()
             {
                 Count = cads.Count(),

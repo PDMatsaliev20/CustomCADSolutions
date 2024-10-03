@@ -17,6 +17,7 @@
         public const string ForbiddenRoleRegister = "You must apply to either be a Client or a Contributor.";
         public const string InvalidRole = "Invalid role - you must choose from [{0}].";
         public const string InvalidStatus = "Invalid status - you must choose from [{0}].";
+        public const string InvalidAction = "Invalid action - you must choose from [{0}].";
         public const string InvalidLogin = "Invalid Username or Password.";
         public const string InvalidSize = "Size must not be 0";
         public const string InvalidZip = "Zip is not valid";

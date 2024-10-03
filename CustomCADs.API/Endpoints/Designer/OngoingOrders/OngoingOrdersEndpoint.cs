@@ -14,7 +14,7 @@ namespace CustomCADs.API.Endpoints.Designer.OngoingOrders
     {
         public override void Configure()
         {
-            Get("Orders");
+            Get("Orders/{status}");
             Group<DesignerGroup>();
             Description(d => d
                 .WithSummary("Gets all Orders with specified status.")

@@ -20,7 +20,7 @@ namespace CustomCADs.API.Endpoints.Designer.PatchCadStatus
 
         public override async Task HandleAsync(PatchCadStatusRequest req, CancellationToken ct)
         {
-            CadStatus status = Enum.Parse<CadStatus>(req.Status);
+            CadStatus status = Enum.Parse<CadStatus>(req.Action);
             await service.EditCadStatusAsync(req.Id, status).ConfigureAwait(false);
 
             await SendAsync(new EmptyResponse(), Status204NoContent).ConfigureAwait(false);
