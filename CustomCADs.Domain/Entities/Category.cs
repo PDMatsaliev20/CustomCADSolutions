@@ -1,13 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace CustomCADs.Domain.Entities
+﻿namespace CustomCADs.Domain.Entities
 {
-    public class Category 
+    public class Category
     {
-        [Key]
         public int Id { get; set; }
-
-        [Required]
-        public string Name { get; set; } = null!;
+        public required string Name { get; set; }
     }
 }

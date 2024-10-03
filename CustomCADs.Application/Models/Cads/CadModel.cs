@@ -25,7 +25,7 @@ namespace CustomCADs.Application.Models.Cads
         public CadStatus Status { get; set; }
 
         [Required(ErrorMessage = RequiredErrorMessage)]
-        [Range(CadConstants.PriceMin, CadConstants.PriceMax)]
+        [Range(typeof(decimal), CadConstants.PriceMinString, CadConstants.PriceMaxString)]
         public decimal Price { get; set; }
 
         [Required(ErrorMessage = RequiredErrorMessage)]
