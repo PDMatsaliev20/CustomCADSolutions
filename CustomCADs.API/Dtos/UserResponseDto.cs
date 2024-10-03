@@ -2,10 +2,10 @@
 {
     public class UserResponseDto
     {
-        public string Username { get; set; } = null!;
+        public required string Username { get; set; } 
+        public required string Email { get; set; } 
+        public required string Role { get; set; } 
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
-        public string Email { get; set; } = null!;
-        public string Role { get; set; } = null!;
     }
 }

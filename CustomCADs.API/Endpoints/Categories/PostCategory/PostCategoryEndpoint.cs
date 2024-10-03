@@ -4,11 +4,11 @@ using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Categories;
 using FastEndpoints;
 
-namespace CustomCADs.API.Endpoints.Categories.CreateCategory
+namespace CustomCADs.API.Endpoints.Categories.PostCategory
 {
     using static StatusCodes;
 
-    public class CreateCategoryEndpoint(ICategoryService service) : Endpoint<CreateCategoryRequest, CategoryDto>
+    public class PostCategoryEndpoint(ICategoryService service) : Endpoint<PostCategoryRequest, CategoryDto>
     {
         public override void Configure()
         {
@@ -20,7 +20,7 @@ namespace CustomCADs.API.Endpoints.Categories.CreateCategory
                 .ProducesProblem(Status500InternalServerError));
         }
 
-        public override async Task HandleAsync(CreateCategoryRequest req, CancellationToken ct)
+        public override async Task HandleAsync(PostCategoryRequest req, CancellationToken ct)
         {
             int id = await service.CreateAsync(new() { Name = req.Name }).ConfigureAwait(false);
             CategoryDto category = new(id, req.Name);

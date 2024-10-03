@@ -21,6 +21,20 @@ namespace CustomCADs.API.Endpoints.Identity.ResetPassword
 
         public override async Task HandleAsync(ResetPasswordRequest req, CancellationToken ct)
         {
+            if (string.IsNullOrEmpty(req.Token))
+            {
+                object details = new { error = "Bad Request", message = string.Format(IsRequired, "Reset Password Token") };
+                await SendResultAsync(Results.BadRequest(details)).ConfigureAwait(false);
+                return;
+            }
+            
+            if (string.IsNullOrEmpty(req.NewPassword))
+            {
+                object details = new { error = "Bad Request", message = string.Format(IsRequired, "New Password") };
+                await SendResultAsync(Results.BadRequest(details)).ConfigureAwait(false);
+                return;
+            }
+
             AppUser? user = await manager.FindByEmailAsync(req.Email).ConfigureAwait(false);
             if (user == null)
             {

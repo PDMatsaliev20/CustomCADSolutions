@@ -6,12 +6,8 @@ namespace CustomCADs.API.Endpoints.Identity.ResetPassword
     {
         [BindFrom("email")]
         public required string Email { get; set; }
-
-        [QueryParam]
-        public required string Token { get; set; }
-
-        [QueryParam]
-        public required string NewPassword { get; set; }
+        public string? Token { get; set; }
+        public string? NewPassword { get; set; }
 
     }
 }

@@ -20,7 +20,7 @@ namespace CustomCADs.API.Helpers
             ArgumentNullException.ThrowIfNull(image, nameof(image));
             if (image.Length == 0)
             {
-                throw new ArgumentException(InvalidSize, nameof(image.Length));
+                throw new ArgumentException(InvalidSize, "Image");
             }
 
             using FileStream stream = new(env.GetPath("orders", fileName), FileMode.Create);
@@ -34,7 +34,7 @@ namespace CustomCADs.API.Helpers
             ArgumentNullException.ThrowIfNull(image, nameof(image));
             if (image.Length == 0)
             {
-                throw new ArgumentException(InvalidSize, nameof(image.Length));
+                throw new ArgumentException(InvalidSize, "Image");
             }
 
             using FileStream stream = new(env.GetPath("images", fileName), FileMode.Create);
@@ -48,7 +48,7 @@ namespace CustomCADs.API.Helpers
             ArgumentNullException.ThrowIfNull(cad, nameof(cad));
             if (cad.Length == 0)
             {
-                throw new ArgumentException(InvalidSize, nameof(cad.Length));
+                throw new ArgumentException(InvalidSize, "File");
             }
 
             string uploadedFilePath = env.GetPath("cads", $"{name}{extension}");

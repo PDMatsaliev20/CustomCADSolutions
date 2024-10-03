@@ -1,13 +1,12 @@
 ﻿using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Categories;
 using FastEndpoints;
-using Microsoft.EntityFrameworkCore;
 
-namespace CustomCADs.API.Endpoints.Categories.EditCategory
+namespace CustomCADs.API.Endpoints.Categories.PutCategory
 {
     using static StatusCodes;
 
-    public class EditCategoryEndpoint(ICategoryService service) : Endpoint<EditCategoryRequest>
+    public class PutCategoryEndpoint(ICategoryService service) : Endpoint<PutCategoryRequest>
     {
         public override void Configure()
         {
@@ -19,7 +18,7 @@ namespace CustomCADs.API.Endpoints.Categories.EditCategory
                 .ProducesProblem(Status500InternalServerError));
         }
 
-        public override async Task HandleAsync(EditCategoryRequest req, CancellationToken ct)
+        public override async Task HandleAsync(PutCategoryRequest req, CancellationToken ct)
         {
             CategoryModel model = await service.GetByIdAsync(req.Id).ConfigureAwait(false);
             model.Name = req.Name;

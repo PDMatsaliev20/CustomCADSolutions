@@ -4,9 +4,9 @@
     {
         public const string DateFormatString = "dd.MM.yyyy HH:mm:ss";
 
-        public const string RequiredErrorMessage = "{0} is required!";
-        public const string LengthErrorMessage = "{0} length must be between {2} and {1} characters";
-        public const string RangeErrorMessage = "{0} must be between {2} and {1}";
+        public const string RequiredErrorMessage = "{PropertyName} is required!";
+        public const string LengthErrorMessage = "{PropertyName} length must be between {MinLength} and {MaxLength} characters";
+        public const string RangeErrorMessage = "{PropertyName} must be between {From} and {To}";
 
         public class CadConstants
         {

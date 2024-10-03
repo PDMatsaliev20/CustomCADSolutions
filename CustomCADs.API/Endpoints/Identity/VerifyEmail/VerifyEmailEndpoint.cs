@@ -27,6 +27,13 @@ namespace CustomCADs.API.Endpoints.Identity.VerifyEmail
 
         public override async Task HandleAsync(VerifyEmailRequest req, CancellationToken ct)
         {
+            if (string.IsNullOrEmpty(req.Token))
+            {
+                object details = new { error = "Bad Request", message = string.Format(IsRequired, "Verify Email Token") };
+                await SendResultAsync(Results.BadRequest(details)).ConfigureAwait(false);
+                return;
+            }
+
             AppUser? appUser = await manager.FindByNameAsync(req.Username).ConfigureAwait(false);
             if (appUser == null)
             {

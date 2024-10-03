@@ -3,6 +3,7 @@
     public class PurchaseRequest
     {
         public int Id { get; set; }
-        public required string PaymentMethodId { get; set; }
+        
+        public string? PaymentMethodId { get; set; }
     }
 }

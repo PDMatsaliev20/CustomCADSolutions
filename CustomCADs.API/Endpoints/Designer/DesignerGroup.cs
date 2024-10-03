@@ -14,7 +14,7 @@ namespace CustomCADs.API.Endpoints.Designer
                 ep.Roles(RoleConstants.Designer);
                 ep.Description(opt =>
                 {
-                    opt.WithTags("Desigenr");
+                    opt.WithTags("Designer");
                     opt.ProducesProblem(Status401Unauthorized);
                     opt.ProducesProblem(Status403Forbidden);
                     opt.ProducesProblem(Status500InternalServerError);

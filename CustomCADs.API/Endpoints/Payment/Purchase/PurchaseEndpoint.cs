@@ -24,6 +24,13 @@ namespace CustomCADs.API.Endpoints.Payment.Purchase
 
         public override async Task HandleAsync(PurchaseRequest req, CancellationToken ct)
         {
+            if (string.IsNullOrEmpty(req.PaymentMethodId))
+            {
+                object details = new { error = "Bad Request", message = string.Format(IsRequired, "Payment Method Id") };
+                await SendResultAsync(Results.BadRequest(details)).ConfigureAwait(false);
+                return;
+            }
+
             CadModel cad = await cadService.GetByIdAsync(req.Id).ConfigureAwait(false);
 
             PurchaseInfo purchase = new()
@@ -61,8 +68,7 @@ namespace CustomCADs.API.Endpoints.Payment.Purchase
         }
 
         private async Task<string> CheckStatus(string status, string? id = null)
-        {
-            return status switch
+            => status switch
             {
                 "succeeded" => SuccessfulPayment,
                 "processing" => ProcessingPayment,
@@ -76,6 +82,5 @@ namespace CustomCADs.API.Endpoints.Payment.Purchase
                         : FailedPaymentCapture,
                 _ => string.Format(UnhandledPayment, status)
             };
-        }
     }
 }
