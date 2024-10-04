@@ -8,6 +8,7 @@ builder.Services.AddIdentityContext(builder.Configuration);
 
 // Add External services
 builder.Services.AddStripe(builder.Configuration);
+builder.Services.AddEmail(builder.Configuration);
 
 // Add Core services
 builder.Services.AddServices();

@@ -1,8 +1,8 @@
-﻿using CustomCADs.Infrastructure.Identity.Contracts;
+﻿using CustomCADs.Auth.Contracts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace CustomCADs.Infrastructure.Identity.Managers
+namespace CustomCADs.Auth.Managers
 {
     public class AppRoleManager(RoleManager<AppRole> manager) : IAppRoleManager
     {

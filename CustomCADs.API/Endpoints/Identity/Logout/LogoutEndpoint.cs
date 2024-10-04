@@ -1,8 +1,7 @@
 ﻿using CustomCADs.API.Helpers;
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Users;
-using CustomCADs.Infrastructure.Identity;
-using CustomCADs.Infrastructure.Identity.Contracts;
+using CustomCADs.Auth;
 using FastEndpoints;
 using Microsoft.AspNetCore.Identity;
 

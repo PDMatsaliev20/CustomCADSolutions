@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace CustomCADs.Infrastructure.Identity.Migrations
+namespace CustomCADs.Auth.Migrations
 {
     /// <inheritdoc />
     public partial class Initial_Migration : Migration

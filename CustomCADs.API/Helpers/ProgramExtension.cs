@@ -3,13 +3,13 @@ using CustomCADs.Application;
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Roles;
 using CustomCADs.Application.Services;
+using CustomCADs.Auth;
+using CustomCADs.Auth.Contracts;
+using CustomCADs.Auth.Managers;
 using CustomCADs.Domain.Contracts;
 using CustomCADs.Domain.Contracts.Queries;
 using CustomCADs.Domain.Entities;
 using CustomCADs.Infrastructure.Email;
-using CustomCADs.Infrastructure.Identity;
-using CustomCADs.Infrastructure.Identity.Contracts;
-using CustomCADs.Infrastructure.Identity.Managers;
 using CustomCADs.Infrastructure.Payment;
 using CustomCADs.Persistence;
 using CustomCADs.Persistence.Repositories;
@@ -90,6 +90,13 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IPaymentService, StripeService>();
             return services;
         }
+        
+        public static IServiceCollection AddEmail(this IServiceCollection services, IConfiguration config)
+        {
+            services.Configure<EmailOptions>(config.GetSection("Email"));
+            services.AddScoped<IEmailService, MailKitService>();
+            return services;
+        }
 
         public static void AddServices(this IServiceCollection services)
         {
@@ -99,7 +106,6 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IDesignerService, DesignerService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IRoleService, RoleService>();
-            services.AddScoped<IEmailService, MailKitService>();
         }
 
         public static IServiceCollection AddMappings(this IServiceCollection services)

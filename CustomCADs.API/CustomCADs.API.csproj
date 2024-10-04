@@ -32,6 +32,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\CustomCADs.Auth\CustomCADs.Auth.csproj" />
 		<ProjectReference Include="..\CustomCADs.Infrastructure\CustomCADs.Infrastructure.csproj" />
 		<ProjectReference Include="..\CustomCADs.Persistence\CustomCADs.Persistence.csproj" />
 		<ProjectReference Include="..\customcads\customcads.esproj">

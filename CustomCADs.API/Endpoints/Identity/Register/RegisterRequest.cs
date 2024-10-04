@@ -1,7 +1,4 @@
 ﻿using FastEndpoints;
-using System.ComponentModel.DataAnnotations;
-using static CustomCADs.Domain.DataConstants;
-using static CustomCADs.Domain.DataConstants.UserConstants;
 
 namespace CustomCADs.API.Endpoints.Identity.Register
 {

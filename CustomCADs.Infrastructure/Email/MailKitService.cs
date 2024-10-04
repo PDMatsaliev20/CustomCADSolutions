@@ -1,18 +1,18 @@
 ﻿using CustomCADs.Application.Contracts;
 using MailKit.Net.Smtp;
 using MailKit.Security;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using MimeKit;
 
 namespace CustomCADs.Infrastructure.Email
 {
-    public class MailKitService(IConfiguration config) : IEmailService
+    public class MailKitService(IOptions<EmailOptions> options) : IEmailService
     {
         private const string Server = "smtp.gmail.com";
-        private const int Port = 587;
         private const string From = "customcads414@gmail.com";
         private const SecureSocketOptions Options = SecureSocketOptions.StartTls;
-        private readonly string password = config["Email:AppPassword"] ?? throw new ArgumentNullException("No App Password provided.");
+        private readonly int port = options.Value.Port;
+        private readonly string password = options.Value.Password;
 
         public async Task SendEmailAsync(string to, string subject, string body)
         {
@@ -29,7 +29,7 @@ namespace CustomCADs.Infrastructure.Email
                 message.To.Add(toEmail);
 
                 using SmtpClient client = new();
-                await client.SendMessageAsync(Server, Port, Options, From, password, message).ConfigureAwait(false);
+                await client.SendMessageAsync(Server, port, Options, From, password, message).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -56,7 +56,7 @@ namespace CustomCADs.Infrastructure.Email
                 message.To.Add(toEmail);
 
                 using SmtpClient client = new();
-                await client.SendMessageAsync(Server, Port, Options, From, password, message).ConfigureAwait(false);
+                await client.SendMessageAsync(Server, port, Options, From, password, message).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -85,7 +85,7 @@ namespace CustomCADs.Infrastructure.Email
                 message.To.Add(toEmail);
 
                 using SmtpClient client = new();
-                await client.SendMessageAsync(Server, Port, Options, From, password, message).ConfigureAwait(false);
+                await client.SendMessageAsync(Server, port, Options, From, password, message).ConfigureAwait(false);
             }
             catch (Exception)
             {

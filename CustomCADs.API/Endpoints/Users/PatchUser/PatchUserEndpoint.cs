@@ -1,7 +1,7 @@
 ﻿using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Users;
-using CustomCADs.Infrastructure.Identity;
-using CustomCADs.Infrastructure.Identity.Contracts;
+using CustomCADs.Auth;
+using CustomCADs.Auth.Contracts;
 using FastEndpoints;
 using Microsoft.AspNetCore.JsonPatch.Operations;
 

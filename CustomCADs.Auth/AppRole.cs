@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace CustomCADs.Infrastructure.Identity
+namespace CustomCADs.Auth
 {
     public class AppRole : IdentityRole
     {

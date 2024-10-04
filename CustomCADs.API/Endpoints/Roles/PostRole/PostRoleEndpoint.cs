@@ -2,7 +2,7 @@
 using CustomCADs.API.Endpoints.Roles.GetRole;
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Roles;
-using CustomCADs.Infrastructure.Identity.Contracts;
+using CustomCADs.Auth.Contracts;
 using FastEndpoints;
 using Microsoft.AspNetCore.Identity;
 
