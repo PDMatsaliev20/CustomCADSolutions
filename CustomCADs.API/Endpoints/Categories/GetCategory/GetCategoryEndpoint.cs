@@ -7,7 +7,7 @@ namespace CustomCADs.API.Endpoints.Categories.GetCategoryById
 {
     using static StatusCodes;
 
-    public class GetCategoryByIdEndpoint(ICategoryService service) : Endpoint<GetCategoryByIdRequest, CategoryDto>
+    public class GetCategoryEndpoint(ICategoryService service) : Endpoint<GetCategoryRequest, CategoryDto>
     {
         public override void Configure()
         {
@@ -16,11 +16,11 @@ namespace CustomCADs.API.Endpoints.Categories.GetCategoryById
             Group<CategoriesGroup>();
             Description(s => s
                 .WithSummary("Gets the Category with the provided id.")
-                .Produces<GetCategoryByIdRequest>(Status200OK, "application/json")
+                .Produces<GetCategoryRequest>(Status200OK, "application/json")
                 .ProducesProblem(Status500InternalServerError));
         }
 
-        public override async Task HandleAsync(GetCategoryByIdRequest req, CancellationToken ct)
+        public override async Task HandleAsync(GetCategoryRequest req, CancellationToken ct)
         {
             CategoryModel model = await service.GetByIdAsync(req.Id).ConfigureAwait(false);
             CategoryDto category = new(model.Id, model.Name);

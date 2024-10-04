@@ -1,7 +1,6 @@
 ﻿using CustomCADs.API.Mappers;
 using CustomCADs.Application;
 using CustomCADs.Application.Contracts;
-using CustomCADs.Application.Models.Categories;
 using CustomCADs.Application.Models.Roles;
 using CustomCADs.Application.Services;
 using CustomCADs.Domain.Contracts;
@@ -145,13 +144,14 @@ namespace Microsoft.Extensions.DependencyInjection
             });
         }
 
-        public static void AddCorsForReact(this IServiceCollection services)
+        public static void AddCorsForReact(this IServiceCollection services, IConfiguration config)
         {
+            string clientUrl = config["URLs:Client"] ?? throw new ArgumentNullException("No Client URL provided.");
             services.AddCors(opt =>
             {
                 opt.AddDefaultPolicy(builder =>
                 {
-                    builder.WithOrigins("https://localhost:5173")
+                    builder.WithOrigins(clientUrl)
                             .AllowAnyHeader()
                             .AllowAnyMethod()
                             .AllowCredentials();
@@ -297,25 +297,10 @@ namespace Microsoft.Extensions.DependencyInjection
             }
         }
 
-        public static async Task UseCategoriesAsync(this IServiceProvider service)
-        {
-            using IServiceScope scope = service.CreateScope();
-            var categoryService = scope.ServiceProvider.GetRequiredService<ICategoryService>();
-
-            IEnumerable<CategoryModel> existingCategoreis = categoryService.GetAll();
-            foreach (string category in new string[] { "Animals", "Characters", "Electronics", "Fashion", "Furniture", "Nature", "Science", "Sports", "Toys", "Vehicles", "Others" })
-            {
-                if (!existingCategoreis.Select(c => c.Name).Contains(category))
-                {
-                    await categoryService.CreateAsync(new CategoryModel() { Name = category });
-                }
-            }
-        }
-
         public static IApplicationBuilder UseEndpoints(this IApplicationBuilder app)
         {
             return app
-                .UseFastEndpoints()
+                .UseFastEndpoints(cfg => cfg.Endpoints.RoutePrefix = "API")
                 .UseSwaggerGen();
         }
     }

@@ -6,7 +6,7 @@ namespace CustomCADs.API.Endpoints.Home
     {
         public HomeGroup()
         {
-            Configure("API/Home", ep =>
+            Configure("Home", ep =>
             {
                 ep.AllowAnonymous();
                 ep.Description(opt => opt.WithTags("Home"));

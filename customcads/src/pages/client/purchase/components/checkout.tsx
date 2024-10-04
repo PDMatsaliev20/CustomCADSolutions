@@ -49,7 +49,7 @@ function CheckoutForm({ id, onSubmit }: CheckoutFormProps) {
         if (!card) {
             return;
         }
-        const { error, paymentMethod } = await stripe.createPaymentMethod({ type: 'card', card: card!, });
+        const { error, paymentMethod } = await stripe.createPaymentMethod({ type: 'card', card: card });
 
         if (error) {
             setStatus(errorState);

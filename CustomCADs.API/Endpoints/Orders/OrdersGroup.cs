@@ -9,7 +9,7 @@ namespace CustomCADs.API.Endpoints.Orders
     {
         public OrdersGroup()
         {
-            Configure("API/Orders", ep =>
+            Configure("Orders", ep =>
             {
                 ep.Roles(Client);
                 ep.Description(opt =>

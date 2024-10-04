@@ -9,7 +9,7 @@ namespace CustomCADs.API.Endpoints.Cads
     {
         public CadsGroup()
         {
-            Configure("API/Cads", ep =>
+            Configure("Cads", ep =>
             {
                 ep.Roles(RoleConstants.Contributor, RoleConstants.Designer);
                 ep.Description(d => d

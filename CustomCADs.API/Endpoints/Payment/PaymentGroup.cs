@@ -9,7 +9,7 @@ namespace CustomCADs.API.Endpoints.Payment
     {
         public PaymentGroup()
         {
-            Configure("API/Payment", ep =>
+            Configure("Payment", ep =>
             {
                 ep.Roles(Client);
                 ep.Description(opt =>

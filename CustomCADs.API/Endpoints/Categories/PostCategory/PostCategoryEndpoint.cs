@@ -16,7 +16,7 @@ namespace CustomCADs.API.Endpoints.Categories.PostCategory
             Group<CategoriesGroup>();
             Description(s => s
                 .WithSummary("Creates a new Category with the provided name.")
-                .Produces<GetCategoryByIdRequest>(Status200OK, "application/json")
+                .Produces<GetCategoryRequest>(Status200OK, "application/json")
                 .ProducesProblem(Status500InternalServerError));
         }
 

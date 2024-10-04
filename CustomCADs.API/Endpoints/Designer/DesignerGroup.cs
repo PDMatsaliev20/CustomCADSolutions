@@ -9,7 +9,7 @@ namespace CustomCADs.API.Endpoints.Designer
     {
         public DesignerGroup()
         {
-            Configure("API/Designer", ep =>
+            Configure("Designer", ep =>
             {
                 ep.Roles(RoleConstants.Designer);
                 ep.Description(opt =>

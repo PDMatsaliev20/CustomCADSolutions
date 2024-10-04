@@ -9,7 +9,7 @@ namespace CustomCADs.API.Endpoints.Roles
     {
         public RolesGroup()
         {
-            Configure("API/Roles", ep =>
+            Configure("Roles", ep =>
             {
                 ep.Roles(Admin);
                 ep.Description(opt =>

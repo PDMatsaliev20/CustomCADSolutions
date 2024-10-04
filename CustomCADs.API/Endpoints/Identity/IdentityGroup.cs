@@ -8,7 +8,7 @@ namespace CustomCADs.API.Endpoints.Identity
     {
         public IdentityGroup()
         {
-            Configure("API/Identity", ep =>
+            Configure("Identity", ep =>
             {
                 ep.AllowAnonymous();
                 ep.Description(opt =>

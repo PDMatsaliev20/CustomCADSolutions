@@ -9,7 +9,7 @@ namespace CustomCADs.API.Endpoints.Users
     {
         public UsersGroup()
         {
-            Configure("API/Users", ep => 
+            Configure("Users", ep => 
             {
                 ep.Roles(Admin);
                 ep.Description(opt =>
