@@ -4,6 +4,7 @@ using CustomCADs.Application.Models.Orders;
 using CustomCADs.Domain.Enums;
 using FastEndpoints;
 using Mapster;
+using Microsoft.EntityFrameworkCore;
 
 namespace CustomCADs.API.Endpoints.Designer.OngoingOrders
 {
@@ -14,7 +15,7 @@ namespace CustomCADs.API.Endpoints.Designer.OngoingOrders
     {
         public override void Configure()
         {
-            Get("Orders/{status}");
+            Get("Orders");
             Group<DesignerGroup>();
             Description(d => d
                 .WithSummary("Gets all Orders with specified status.")
@@ -23,12 +24,15 @@ namespace CustomCADs.API.Endpoints.Designer.OngoingOrders
 
         public override async Task HandleAsync(OngoingOrdersRequest req, CancellationToken ct)
         {
-            IEnumerable<string> statuses = Enum.GetNames<OrderStatus>().Select(s => s.ToLower());
-            if (!statuses.Contains(req.Status.ToLower()))
+            if (!string.IsNullOrEmpty(req.Status))
             {
-                IResult badReq = Results.BadRequest(string.Format(InvalidStatus, statuses));
-                await SendResultAsync(badReq).ConfigureAwait(false);
-                return;
+                IEnumerable<string> statuses = Enum.GetNames<OrderStatus>().Select(s => s.ToLower());
+                if (!statuses.Contains(req.Status.ToLower()))
+                {
+                    string message = string.Format(InvalidStatus, statuses);
+                    await SendResultAsync(Results.BadRequest(message)).ConfigureAwait(false);
+                    return;
+                }
             }
 
             OrderResult result = service.GetOrders(

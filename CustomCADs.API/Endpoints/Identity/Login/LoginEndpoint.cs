@@ -82,7 +82,7 @@ namespace CustomCADs.API.Endpoints.Identity.Login
             var response = new
             {
                 Seconds = Convert.ToInt16(timeLeft.TotalSeconds),
-                Error = string.Format(LockedOutUser, timeLeft.TotalSeconds),
+                Error = string.Format(LockedOutUser, Convert.ToInt16(timeLeft.TotalSeconds)),
             };
 
             await SendAsync(response, Status423Locked).ConfigureAwait(false);

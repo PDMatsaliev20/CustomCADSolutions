@@ -17,7 +17,7 @@ const clientRoutes: RouteObject = {
             element: <ClientHomePage />,
             loader: async () => {
                 try {
-                    const { data: { orders } } = await GetRecentOrders();
+                    const { data: orders } = await GetRecentOrders();
                     const { data: loadedCounts } = await GetOrdersCounts();
                     return { loadedOrders: orders, loadedCounts };
                 } catch (e) {

@@ -26,8 +26,8 @@ function DesignerHome() {
     }
     const fetchOrders = async () => {
         try {
-            const { data } = await GetRecentOrders(status);
-            setOrders(data.orders);
+            const { data: orders } = await GetRecentOrders(status);
+            setOrders(orders);
         } catch (e) {
             console.error(e);
         }

@@ -24,13 +24,6 @@ namespace CustomCADs.API.Endpoints.Payment.Purchase
 
         public override async Task HandleAsync(PurchaseRequest req, CancellationToken ct)
         {
-            if (string.IsNullOrEmpty(req.PaymentMethodId))
-            {
-                object details = new { error = "Bad Request", message = string.Format(IsRequired, "Payment Method Id") };
-                await SendResultAsync(Results.BadRequest(details)).ConfigureAwait(false);
-                return;
-            }
-
             CadModel cad = await cadService.GetByIdAsync(req.Id).ConfigureAwait(false);
 
             PurchaseInfo purchase = new()
@@ -43,8 +36,8 @@ namespace CustomCADs.API.Endpoints.Payment.Purchase
             PaymentResult paymentIntent = await service.InitializePayment(req.PaymentMethodId, purchase).ConfigureAwait(false);
 
             string message = await CheckStatus(paymentIntent.Status).ConfigureAwait(false);
-
             string[] errorMessages = [CanceledPayment, FailedPaymentMethod, FailedPayment, FailedPaymentCapture, string.Format(UnhandledPayment, paymentIntent.Status)];
+
             if (!errorMessages.Contains(message))
             {
                 await SendAsync(message, Status200OK).ConfigureAwait(false);

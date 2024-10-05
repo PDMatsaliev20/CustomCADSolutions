@@ -1,11 +1,8 @@
-﻿using FastEndpoints;
-
-namespace CustomCADs.API.Endpoints.Designer.OngoingOrders
+﻿namespace CustomCADs.API.Endpoints.Designer.OngoingOrders
 {
     public class OngoingOrdersRequest
     {
-        [BindFrom("status")]
-        public string Status { get; set; } = string.Empty;
+        public string? Status { get; set; } 
         public string? Sorting { get; set; }
         public string? Category { get; set; }
         public string? Name { get; set; }

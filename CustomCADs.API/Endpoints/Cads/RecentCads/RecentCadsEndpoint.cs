@@ -10,7 +10,7 @@ namespace CustomCADs.API.Endpoints.Cads.RecentCads
 {
     using static StatusCodes;
 
-    public class RecentCadsEndpoint(ICadService service) : Endpoint<RecentCadsRequest, CadResultDto<RecentCadsResponse>>
+    public class RecentCadsEndpoint(ICadService service) : Endpoint<RecentCadsRequest, IEnumerable<RecentCadsResponse>>
     {
         public override void Configure()
         {
@@ -18,23 +18,18 @@ namespace CustomCADs.API.Endpoints.Cads.RecentCads
             Group<CadsGroup>();
             Description(d => d
                 .WithSummary("Gets the User's most recent Cads.")
-                .Produces<CadResultDto<RecentCadsResponse>>(Status200OK, "application/json"));
+                .Produces<IEnumerable<RecentCadsResponse>>(Status200OK, "application/json"));
         }
 
         public override async Task HandleAsync(RecentCadsRequest req, CancellationToken ct)
         {
             CadResult result = service.GetAllAsync(
-                    creator: User.GetName(),
-                    sorting: nameof(Sorting.Newest),
-                    limit: req.Limit
-                    );
+                creator: User.GetName(),
+                sorting: nameof(Sorting.Newest),
+                limit: req.Limit
+            );
 
-            CadResultDto<RecentCadsResponse> response = new()
-            {
-                Count = result.Count,
-                Cads = result.Cads.Select(cad => cad.Adapt<RecentCadsResponse>()).ToArray()
-            };
-
+            var response = result.Cads.Select(cad => cad.Adapt<RecentCadsResponse>());
             await SendAsync(response, Status200OK).ConfigureAwait(false);
         }
     }

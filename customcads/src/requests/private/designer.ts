@@ -8,8 +8,8 @@ const PatchCadStatus = async (id: number, status: string) => {
     return await axios.patch(`/API/Designer/Cads/${id}?status=${status}`);
 };
 
-const GetOrdersByStatus = async (status: string, searchParams: string) => {
-    return await axios.get(`/API/Designer/Orders?status=${status}&${searchParams}`);
+const GetOrdersByStatus = async (action: string, searchParams: string) => {
+    return await axios.get(`/API/Designer/Orders?action=${action}&${searchParams}`);
 };
 
 const GetOngoingOrder = async (id: number) => {

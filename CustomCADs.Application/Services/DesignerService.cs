@@ -15,7 +15,7 @@ namespace CustomCADs.Application.Services
         IOrderQueries orderQueries,
         IMapper mapper) : IDesignerService
     {
-        public OrderResult GetOrders(string status = "", int? id = null, string? designerId = null, string? category = null, string? name = null, string? buyer = null, string sorting = "", int page = 1, int limit = 20)
+        public OrderResult GetOrders(string? status = "", int? id = null, string? designerId = null, string? category = null, string? name = null, string? buyer = null, string sorting = "", int page = 1, int limit = 20)
         {
             IQueryable<Order> queryable = orderQueries.GetAll(true);
             if (id != null)
@@ -41,9 +41,13 @@ namespace CustomCADs.Application.Services
             };
         }
 
-        public async Task<(int? PrevId, CadModel Current, int? NextId)> GetNextCurrentAndPreviousByIdAsync(int id)
+        public (int? PrevId, CadModel Current, int? NextId) GetNextCurrentAndPreviousById(int id)
         {
-            List<Cad> cads = [.. cadQueries.GetAll(true).OrderBy(c => c.Id)];
+            IQueryable<Cad> queryable = cadQueries.GetAll(true);
+            queryable = queryable.OrderBy(c => c.Id);
+            queryable = queryable.Filter(status: nameof(CadStatus.Unchecked));
+
+            List<Cad> cads = [.. queryable];
 
             Cad cad = cads.FirstOrDefault(c => c.Id == id)
                 ?? throw new KeyNotFoundException();

@@ -12,7 +12,7 @@ namespace CustomCADs.API.Endpoints.Cads.CountCads
     {
         public override void Configure()
         {
-            Get("Count");
+            Get("Counts");
             Group<CadsGroup>();
             Description(d => d
                 .WithSummary("Gets counts of the User's Cads grouped by their status.")

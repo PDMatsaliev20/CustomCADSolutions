@@ -19,7 +19,7 @@ const Login = async (user: ILogin) => {
 };
 
 const ResetPassword = async (email: string, token: string, password: string) => {
-    return await axios.post(`/API/Identity/ResetPassword/${email}?token=${token}&newPassword=${password}`);
+    return await axios.post('/API/Identity/ResetPassword', { email: email, token: token, newPassword: password });
 };
 
 const ForgotPassword = async (email: string) => {

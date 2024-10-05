@@ -14,7 +14,7 @@ namespace CustomCADs.API.Endpoints.Orders.GetOrders
     {
         public override void Configure()
         {
-            Get("{status}");
+            Get("");
             Group<OrdersGroup>();
             Description(d => d
                 .WithSummary("Queries the User's Orders with the specified parameters.")
@@ -23,7 +23,7 @@ namespace CustomCADs.API.Endpoints.Orders.GetOrders
 
         public override async Task HandleAsync(GetOrdersRequest req, CancellationToken ct)
         {
-            if (!Enum.GetNames<OrderStatus>().Contains(req.Status))
+            if (!string.IsNullOrEmpty(req.Status) && !Enum.GetNames<OrderStatus>().Contains(req.Status))
             {
                 await SendErrorsAsync(Status400BadRequest).ConfigureAwait(false);
                 return;

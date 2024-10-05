@@ -1,6 +1,5 @@
 ﻿using CustomCADs.API.Helpers;
 using CustomCADs.Application.Contracts;
-using CustomCADs.Domain.Enums;
 using FastEndpoints;
 
 namespace CustomCADs.API.Endpoints.Designer.PatchOrderStatus

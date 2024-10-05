@@ -5,7 +5,7 @@ namespace CustomCADs.API.Endpoints.Identity.Register
     public class RegisterRequest
     {
         [BindFrom("role")]
-        public required string Role { get; set; }
+        public string Role { get; set; } = string.Empty;
         public required string Username { get; set; } 
         public required string Email { get; set; } 
         public required string Password { get; set; } 

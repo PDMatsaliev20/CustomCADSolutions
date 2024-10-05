@@ -12,7 +12,7 @@ namespace CustomCADs.API.Endpoints.Identity.ForgotPassword
     {
         public override void Configure()
         {
-            Get("ForgotPassword/{email}");
+            Get("ForgotPassword");
             Group<IdentityGroup>();
             Description(d => d
                 .WithSummary("Sends an email with link to Reset Password.")

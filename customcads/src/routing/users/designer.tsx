@@ -21,7 +21,7 @@ const designerRoutes: RouteObject = {
             element: <DesignerHomePage />,
             loader: async () => {
                 try {
-                    const { data: { cads } } = await GetRecentCads();
+                    const { data: cads } = await GetRecentCads();
                     return { loadedCads: cads };
                 } catch (e) {
                     const res = { error: true };

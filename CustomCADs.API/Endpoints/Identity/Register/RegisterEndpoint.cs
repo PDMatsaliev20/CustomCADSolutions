@@ -43,12 +43,13 @@ namespace CustomCADs.API.Endpoints.Identity.Register
             await manager.AddToRoleAsync(user, req.Role).ConfigureAwait(false);
 
             UserModel model = req.Adapt<UserModel>();
+            model.Role = null!;
             await service.CreateAsync(model).ConfigureAwait(false);
 
             string serverUrl = config["URLs:Server"] ?? "https://customcads.onrender.com";
             string token = await manager.GenerateEmailConfirmationTokenAsync(user).ConfigureAwait(false);
 
-            string endpoint = Path.Combine(serverUrl, $"API/Identity/VerifyEmail/{model.UserName}") + $"?token=${token}";
+            string endpoint = Path.Combine(serverUrl, $"API/Identity/VerifyEmail/{model.UserName}") + $"?token={token}";
             await email.SendVerificationEmailAsync(req.Email, endpoint).ConfigureAwait(false);
             
             await SendAsync("Check your email.", Status200OK).ConfigureAwait(false);

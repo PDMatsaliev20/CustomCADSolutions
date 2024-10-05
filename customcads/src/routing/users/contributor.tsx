@@ -16,7 +16,7 @@ const contributorRoutes: RouteObject = {
             element: <ContributorHomePage />,
             loader: async () => {
                 try {
-                    const { data: { cads } } = await GetRecentCads();
+                    const { data: cads } = await GetRecentCads();
                     const { data: loadedCounts } = await GetCadsCounts();
                     return { loadedCads: cads, loadedCounts };
                 } catch (e) {

@@ -12,7 +12,7 @@ namespace CustomCADs.API.Endpoints.Identity.RetryVerifyEmail
     {
         public override void Configure()
         {
-            Get("RetryVerifyEmail");
+            Get("RetryVerifyEmail/{username}");
             Group<IdentityGroup>();
             Description(d => d
                 .WithSummary("Sends another email with a token.")

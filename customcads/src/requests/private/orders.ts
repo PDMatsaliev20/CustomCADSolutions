@@ -1,7 +1,7 @@
 import axios from '../axios';
 
 const GetOrders = async (status: string, searchParams: string) => {
-    return await axios.get(`/API/Orders/${status}?${searchParams}`);
+    return await axios.get(`/API/Orders?status=${status}&${searchParams}`);
 }
 
 const GetRecentOrders = async () => {
@@ -25,7 +25,7 @@ const PostOrder = async (order: {}) => {
 }
 
 const OrderExisting = async (id: number) => {
-    return await axios.post(`/API/Orders/${id}`);
+    return await axios.post(`/API/Orders/${id}`, {});
 }
 
 const PutOrder = async (id: number, order: {}) => {

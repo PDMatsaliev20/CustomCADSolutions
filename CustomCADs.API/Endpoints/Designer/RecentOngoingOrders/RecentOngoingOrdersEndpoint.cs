@@ -1,5 +1,4 @@
-﻿using CustomCADs.API.Dtos;
-using CustomCADs.Application.Contracts;
+﻿using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Orders;
 using CustomCADs.Domain.Enums;
 using FastEndpoints;
@@ -9,7 +8,7 @@ namespace CustomCADs.API.Endpoints.Designer.RecentOngoingOrders
 {
     using static StatusCodes;
 
-    public class RecentOngoingOrdersEndpoint(IDesignerService service) : Endpoint<RecentOngoingOrdersRequest, OrderResultDto<RecentOngoingOrdersResponse>>
+    public class RecentOngoingOrdersEndpoint(IDesignerService service) : Endpoint<RecentOngoingOrdersRequest, IEnumerable<RecentOngoingOrdersResponse>>
     {
         public override void Configure()
         {
@@ -17,7 +16,7 @@ namespace CustomCADs.API.Endpoints.Designer.RecentOngoingOrders
             Group<DesignerGroup>();
             Description(d => d
                 .WithSummary("Gets the User's most recent finished Orders.")
-                .Produces<OrderResultDto<RecentOngoingOrdersResponse>>(Status200OK));
+                .Produces<IEnumerable<RecentOngoingOrdersResponse>>(Status200OK));
         }
 
         public override async Task HandleAsync(RecentOngoingOrdersRequest req, CancellationToken ct)
@@ -28,12 +27,7 @@ namespace CustomCADs.API.Endpoints.Designer.RecentOngoingOrders
                 limit: req.Limit
             );
 
-            OrderResultDto<RecentOngoingOrdersResponse> response = new()
-            {
-                Count = result.Count,
-                Orders = result.Orders.Select(order => order.Adapt<RecentOngoingOrdersResponse>()).ToArray(),
-            };
-
+            var response = result.Orders.Select(order => order.Adapt<RecentOngoingOrdersResponse>());
             await SendAsync(response, Status200OK).ConfigureAwait(false);
         }
     }

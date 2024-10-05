@@ -36,6 +36,7 @@ namespace CustomCADs.API.Endpoints.Orders.GalleryOrder
                 CadId = req.CadId,
                 BuyerId = User.GetId(),
                 DesignerId = cad.CreatorId,
+                ImagePath = cad.Paths.ImagePath,
             };
 
             int id = await orderService.CreateAsync(order).ConfigureAwait(false);

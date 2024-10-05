@@ -23,13 +23,13 @@ namespace CustomCADs.API.Endpoints.Cads.GetCads
         public override async Task HandleAsync(GetCadsRequest req, CancellationToken ct)
         {
             CadResult result = service.GetAllAsync(
-                    creator: User.GetName(),
-                    category: req.Category,
-                    name: req.Name,
-                    sorting: req.Sorting ?? string.Empty,
-                    page: req.Page,
-                    limit: req.Limit
-                );
+                creator: User.GetName(),
+                category: req.Category,
+                name: req.Name,
+                sorting: req.Sorting ?? string.Empty,
+                page: req.Page,
+                limit: req.Limit
+            );
 
             CadResultDto<GetCadsResponse> response = new()
             {

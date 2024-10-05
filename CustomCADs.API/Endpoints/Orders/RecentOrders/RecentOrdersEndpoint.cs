@@ -1,17 +1,15 @@
 ﻿using CustomCADs.API.Helpers;
-using CustomCADs.API.Dtos;
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Orders;
 using CustomCADs.Domain.Enums;
 using FastEndpoints;
-using static CustomCADs.Domain.DataConstants;
 using Mapster;
 
 namespace CustomCADs.API.Endpoints.Orders.RecentOrders
 {
     using static StatusCodes;
 
-    public class RecentOrdersEndpoint(IOrderService service) : Endpoint<RecentOrdersRequest, OrderResultDto<RecentOrdersResponse>>
+    public class RecentOrdersEndpoint(IOrderService service) : Endpoint<RecentOrdersRequest, IEnumerable<RecentOrdersResponse>>
     {
         public override void Configure()
         {
@@ -19,7 +17,7 @@ namespace CustomCADs.API.Endpoints.Orders.RecentOrders
             Group<OrdersGroup>();
             Description(d => d
                 .WithSummary("Gets the User's most recent Orders.")
-                .Produces<OrderResultDto<RecentOrdersResponse>>(Status200OK, "application/json"));
+                .Produces<IEnumerable<RecentOrdersResponse>>(Status200OK, "application/json"));
         }
 
         public override async Task HandleAsync(RecentOrdersRequest req, CancellationToken ct)
@@ -30,11 +28,7 @@ namespace CustomCADs.API.Endpoints.Orders.RecentOrders
                 limit: req.Limit
             );
 
-            OrderResultDto<RecentOrdersResponse> response = new()
-            {
-                Count = result.Count,
-                Orders = result.Orders.Select(order => order.Adapt<RecentOrdersResponse>()).ToArray(),
-            };
+            var response = result.Orders.Select(order => order.Adapt<RecentOrdersResponse>());
             await SendAsync(response, Status200OK).ConfigureAwait(false);
         }
     }

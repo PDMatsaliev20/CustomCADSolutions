@@ -21,9 +21,7 @@ namespace CustomCADs.API.Endpoints.Designer.UncheckedCad
 
         public override async Task HandleAsync(UncheckedCadRequest req, CancellationToken ct)
         {
-            (int? prevId, CadModel cad, int? nextId) = await service
-                .GetNextCurrentAndPreviousByIdAsync(req.Id)
-                .ConfigureAwait(false);
+            (int? prevId, CadModel cad, int? nextId) = service.GetNextCurrentAndPreviousById(req.Id);
 
             UncheckedCadResponse response = cad.Adapt<UncheckedCadResponse>();
             response.PrevId = prevId;

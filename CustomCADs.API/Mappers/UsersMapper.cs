@@ -1,5 +1,6 @@
 ﻿using CustomCADs.API.Dtos;
 using CustomCADs.API.Endpoints.Identity.Register;
+using CustomCADs.Application.Models.Roles;
 using CustomCADs.Application.Models.Users;
 using Mapster;
 
@@ -15,7 +16,8 @@ namespace CustomCADs.API.Mappers
 
             TypeAdapterConfig<RegisterRequest, UserModel>.NewConfig()
                 .Map(u => u.UserName, r => r.Username)
-                .Map(u => u.RoleName, r => r.Role);
+                .Map(u => u.RoleName, r => r.Role)
+                .Map(u => u.Role, r => new RoleModel());
         }
     }
 }
