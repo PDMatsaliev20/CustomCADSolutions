@@ -74,7 +74,8 @@ const designerRoutes: RouteObject = {
                 const { id } = params;
                 try {
                     const res = await GetUncheckedCad(Number(id));
-                    return { prevId: res.data.prevId, loadedCad: res.data.cad, nextId: res.data.nextId };
+                    const { prevId, nextId, ...cad } = res.data;
+                    return { prevId: prevId, loadedCad: cad, nextId: nextId };
                 } catch (e) {
                     const res = { error: true };
                     if (!(e instanceof AxiosError)) {

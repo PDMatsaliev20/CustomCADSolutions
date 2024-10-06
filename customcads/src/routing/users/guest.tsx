@@ -1,7 +1,7 @@
 import { AxiosError } from 'axios';
 import { RouteObject } from 'react-router-dom';
 import AuthGuard from '@/routing/auth-guard';
-import { IsEmailConfirmed, DoesUserExist } from '@/requests/public/identity';
+import { IsEmailConfirmed, UserExists } from '@/requests/public/identity';
 import HomePage from '@/pages/guest/home/home';
 import LoginPage from '@/pages/guest/login/login';
 import ForgotPasswordPage from '@/pages/guest/login/forgot-password';
@@ -41,7 +41,7 @@ const guestRoutes : RouteObject = {
                 const { username } = params;
                 try {
                     const { data: isEmailConfirmed } = await IsEmailConfirmed(username ?? '');
-                    const { data: doesUserExist } = await DoesUserExist(username ?? '');
+                    const { data: doesUserExist } = await UserExists(username ?? '');
                     return { username, isEmailConfirmed, doesUserExist };
                 } catch (e) {
                     const res = { error: true };

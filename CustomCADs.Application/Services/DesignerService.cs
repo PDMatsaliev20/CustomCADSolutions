@@ -36,7 +36,7 @@ namespace CustomCADs.Application.Services
             IEnumerable<Order> orders = queryable.Skip((page - 1) * limit).Take(limit);
             return new()
             {
-                Count = orders.Count(),
+                Count = queryable.Count(),
                 Orders = mapper.Map<OrderModel[]>(orders),
             };
         }
@@ -87,7 +87,7 @@ namespace CustomCADs.Application.Services
             IEnumerable<Cad> cads = [.. queryable.Skip((page - 1) * limit).Take(limit)];
             return new()
             {
-                Count = cads.Count(),
+                Count = queryable.Count(),
                 Cads = mapper.Map<CadModel[]>(cads),
             };
         }

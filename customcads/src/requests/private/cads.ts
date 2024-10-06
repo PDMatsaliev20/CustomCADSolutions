@@ -26,7 +26,7 @@ const PutCad = async (id: number, cad: {}) => {
 }
 
 const PatchCad = async (id: number, type: string, coords: ICoordinates) => {
-    return await axios.patch(`/API/Cads/${id}?type=${type}`, coords);
+    return await axios.patch(`/API/Cads/${id}`, { type: type, coordinates: coords });
 }
 
 const DeleteCad = async (id: number) => {

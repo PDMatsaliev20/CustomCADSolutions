@@ -55,14 +55,14 @@ function EditCadPage() {
     const [isPositionChanged, setIsPositionChanged] = useState(false);
 
     useEffect(() => {
-        const [newName, newDescription, newCategoryId, newPrice, newImage] = Object.values(watch());
-        const [oldName, oldDescription, oldCategoryId, oldPrice, oldImage] = Object.values(loadedValues);
+        const newVal = watch();
+        const oldVal = loadedValues;
 
-        const nameIsChanged = newName.trim() !== oldName;
-        const descriptionIsChanged = newDescription.trim() !== oldDescription;
-        const categoryIdIsChanged = Number(newCategoryId) !== oldCategoryId;
-        const priceIsChanged = Number(newPrice) !== oldPrice;
-        const imageIsChanged = newImage[0] !== oldImage;
+        const nameIsChanged = newVal.name.trim() !== oldVal.name;
+        const descriptionIsChanged = newVal.description.trim() !== oldVal.description;
+        const categoryIdIsChanged = Number(newVal.categoryId) !== oldVal.categoryId;
+        const priceIsChanged = Number(newVal.price) !== oldVal.price;
+        const imageIsChanged = newVal.image?.item(0) != oldVal.image;
 
         setIsEditing(nameIsChanged || descriptionIsChanged || categoryIdIsChanged || priceIsChanged || imageIsChanged);
     }, [watch()]);
@@ -107,7 +107,15 @@ function EditCadPage() {
 
     const onSubmit = async (data: CadForm) => {
         try {
-            await PutCad(id, data);
+            const dto = { 
+                name: data.name, 
+                description: data.description, 
+                categoryId: data.categoryId, 
+                price: data.price,
+                image: data.image?.item(0)
+            };
+            await PutCad(id, dto);
+
             setIsEditing(false);
             reset(data || {});
             navigate('');

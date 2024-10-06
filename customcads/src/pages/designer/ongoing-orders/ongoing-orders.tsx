@@ -125,7 +125,7 @@ function OngoingOrders() {
         </div>
     );
     async function fetchOrders() {
-        const requestSearchParams = objectToUrl({ ...search });
+        const requestSearchParams = objectToUrl({ ...search, page, limit, status });
         try {
             const { data: { orders, count } } = await GetOrdersByStatus(status, requestSearchParams);
             setOrders(orders);

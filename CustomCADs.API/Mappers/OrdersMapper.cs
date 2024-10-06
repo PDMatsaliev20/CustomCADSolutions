@@ -60,7 +60,9 @@ namespace CustomCADs.API.Mappers
 
             TypeAdapterConfig<OrderModel, OngoingOrderResponse>.NewConfig()
                 .Map(r => r.OrderDate, m => mapOrderDate(m))
-                .Map(r => r.Category, m => mapCategory(m));
+                .Map(r => r.Category, m => mapCategory(m))
+                .Map(r => r.BuyerName, m => mapBuyerName(m))
+                .Map(r => r.Status, m => mapStatus(m));
 
             TypeAdapterConfig<OrderModel, RecentOngoingOrdersResponse>.NewConfig()
                 .Map(r => r.Status, m => mapStatus(m))
