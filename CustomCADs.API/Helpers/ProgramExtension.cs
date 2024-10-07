@@ -90,7 +90,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IPaymentService, StripeService>();
             return services;
         }
-        
+
         public static IServiceCollection AddEmail(this IServiceCollection services, IConfiguration config)
         {
             services.Configure<EmailOptions>(config.GetSection("Email"));
@@ -226,6 +226,12 @@ namespace Microsoft.Extensions.DependencyInjection
                         [".glb"] = "model/gltf-binary",
                         [".gltf"] = "model/gltf+json"
                     }
+                },
+                OnPrepareResponse = sfrc =>
+                {
+                    sfrc.Context.Response.Headers.Append("Access-Control-Allow-Origin", "*");
+                    sfrc.Context.Response.Headers.Append("Access-Control-Allow-Methods", "GET, OPTIONS");
+                    sfrc.Context.Response.Headers.Append("Access-Control-Allow-Headers", "Content-Type");
                 }
             });
 

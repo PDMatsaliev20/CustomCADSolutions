@@ -115,6 +115,7 @@ function ThreeJS({ cad, isHomeCad }: ThreeJSProps) {
             controls.update();
 
             const loader = new GLTFLoader();
+            loader.path = import.meta.env.VITE_API_BASE_URL;
             loader.load(model.cadPath,
                 (cad) => scene.add(cad.scene),
                 (xhr) => xhr.loaded === xhr.total && setLoader(false),
