@@ -1,4 +1,5 @@
 import { RouteObject } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from '@/contexts/auth-context';
 import ErrorPage from '@/components/error-page';
 import App from '@/app';
@@ -10,7 +11,12 @@ import designerRoutes from './users/designer';
 
 const userRoutes: RouteObject = {
     path: '/',
-    element: <AuthProvider><App /></AuthProvider>,
+    element:
+        <AuthProvider>
+            <QueryClientProvider client={new QueryClient()}>
+                <App />
+            </QueryClientProvider>
+        </AuthProvider>,
     children: [
         publicRoutes,
         guestRoutes,
