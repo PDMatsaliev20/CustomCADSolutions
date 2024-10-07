@@ -1,10 +1,10 @@
+import { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Disclosure, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import { Logout } from '@/requests/public/identity';
 import useAuth from '@/hooks/useAuth';
 import HeaderBtn from './header-btn';
-import { AxiosError } from 'axios';
 
 function AccountBtn() {
     const navigate = useNavigate();

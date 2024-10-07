@@ -3,11 +3,11 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from '@/contexts/auth-context';
 import ErrorPage from '@/components/error-page';
 import App from '@/app';
-import publicRoutes from './users/public';
-import guestRoutes from './users/guest';
-import clientRoutes from './users/client';
-import contributorRoutes from './users/contributor';
-import designerRoutes from './users/designer';
+import publicRoutes from './routes/public';
+import guestRoutes from './routes/guest';
+import clientRoutes from './routes/client';
+import contributorRoutes from './routes/contributor';
+import designerRoutes from './routes/designer';
 
 const userRoutes: RouteObject = {
     path: '/',

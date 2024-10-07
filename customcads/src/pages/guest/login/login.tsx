@@ -1,15 +1,15 @@
+import { AxiosError } from 'axios';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
-import useAuth from '@/hooks/useAuth';
 import { Login } from '@/requests/public/identity';
+import useAuth from '@/hooks/useAuth';
 import Input from '@/components/fields/input';
 import Password from '@/components/fields/password';
 import { getCookie } from '@/utils/cookie-manager';
 import loginValidations from './login-validations';
 import ILogin from '@/interfaces/login';
-import { AxiosError } from 'axios';
 
 function LoginPage() {
     const { setIsAuthenticated } = useAuth();
