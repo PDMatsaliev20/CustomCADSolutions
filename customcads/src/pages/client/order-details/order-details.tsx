@@ -1,27 +1,50 @@
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate, useLoaderData } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useQuery } from '@tanstack/react-query';
+import { GetOrder, PutOrder } from '@/requests/private/orders';
 import Category from '@/interfaces/category';
-import { PutOrder } from '@/requests/private/orders';
 import { dateToMachineReadable } from '@/utils/date-manager';
 import ErrorPage from '@/components/error-page';
-import OrderDetailsOrder from './order-details.interface';
+import OrderDetailsOrder, { emptyOrderDetailsOrder } from './order-details.interface';
+import useCategories from '@/hooks/useCategories';
+import getStatusCode from '@/utils/get-status-code';
 
 function OrderDetails() {
     const { t: tPages } = useTranslation('pages');
     const { t: tCommon } = useTranslation('common');
     const navigate = useNavigate();
+    const { id } = useParams();
 
-    const { id, loadedCategories, loadedOrder, error, status } = useLoaderData() as {
-        id: number,
-        loadedCategories: Category[],
-        loadedOrder: OrderDetailsOrder,
-        error: boolean,
-        status: number,
-    };
-    if (error) {
+    let categories: Category[] = [];
+    const { data: categoriesData, isError: categoriesIsError, error: categoriesError, isLoading: categoriesIsLoading } = useCategories();
+    if (categoriesIsError) {
+        const status = getStatusCode(categoriesError);
         return <ErrorPage status={status} />
+    }
+    if (categoriesData) {
+        categories = categoriesData;
+    }
+
+    let order: OrderDetailsOrder = emptyOrderDetailsOrder;
+    const { data: orderData, isError: orderIsError, error: orderError, isLoading: orderIsLoading } = useQuery({
+        queryKey: ['order-details', id],
+        queryFn: async () => {
+            const { data } = await GetOrder(Number(id));
+            return data;
+        }
+    });
+    if (orderIsError) {
+        const status = getStatusCode(orderError);
+        return <ErrorPage status={status} />
+    }
+    if (orderData) {
+        order = orderData;
+    }
+
+    if (categoriesIsLoading || orderIsLoading) {
+        return <div>Loading...</div>;
     }
 
     interface OrderForm {
@@ -31,28 +54,28 @@ function OrderDetails() {
     }
 
     const loadedValues: OrderForm = {
-        name: loadedOrder.name,
-        description: loadedOrder.description,
-        categoryId: loadedOrder.category.id
+        name: order.name,
+        description: order.description,
+        categoryId: order.category.id
     };
 
     const { register, watch, reset, handleSubmit } = useForm<OrderForm>({ defaultValues: loadedValues });
     const [isEditing, setIsEditing] = useState(false);
 
     useEffect(() => {
-        const [newName, newDescription, newCategoryId] = Object.values(watch());
-        const [oldName, oldDescription, oldCategoryId] = Object.values(loadedValues);
+        const oldVal = watch();
+        const newVal = loadedValues;
 
-        const nameIsChanged = String(newName).trim() !== oldName;
-        const descriptionIsChanged = String(newDescription).trim() !== oldDescription;
-        const categoryIdIsChanged = Number(newCategoryId) !== oldCategoryId;
+        const nameIsChanged = newVal.name.trim() !== oldVal.name;
+        const descriptionIsChanged = newVal.description.trim() !== oldVal.description;
+        const categoryIdIsChanged = newVal.categoryId !== oldVal.categoryId;
 
         setIsEditing(nameIsChanged || descriptionIsChanged || categoryIdIsChanged);
     }, [watch()]);
 
     const onSubmit = async (order: OrderForm) => {
         try {
-            await PutOrder(id, order);
+            await PutOrder(Number(id), order);
             setIsEditing(false);
             reset(order);
             navigate('');
@@ -86,7 +109,7 @@ function OrderDetails() {
                                     <select {...register('categoryId')}
                                         className="bg-indigo-200 text-indigo-700 px-3 py-3 rounded-xl font-bold focus:outline-none border-2 border-indigo-400 shadow-lg shadow-indigo-900"
                                     >
-                                        {loadedCategories.map(category =>
+                                        {categories.map(category =>
                                             <option key={category.id} value={category.id} className="bg-indigo-50">
                                                 {tCommon(`categories.${category.name}`)}
                                             </option>)}
@@ -95,7 +118,7 @@ function OrderDetails() {
                                         className="bg-indigo-400 text-3xl text-center font-bold focus:outline-none py-2 rounded-xl border-4 border-indigo-300 shadow-xl shadow-indigo-900"
                                     />
                                     <span className="bg-indigo-200 text-indigo-700 px-4 py-2 rounded-xl italic border-4 border-indigo-300 shadow-md shadow-indigo-950">
-                                        {tCommon(`statuses.${loadedOrder.status}`)}
+                                        {tCommon(`statuses.${order.status}`)}
                                     </span>
                                 </div>
                             </header>
@@ -116,13 +139,13 @@ function OrderDetails() {
                                 <div className="text-start">
                                     <span className="font-semibold">{tPages('orders.ordered_by')} </span>
                                     <span className="underline underline-offset-4 italic">
-                                        {loadedOrder.buyerName}
+                                        {order.buyerName}
                                     </span>
                                 </div>
                                 <div className="text-end">
                                     <span className="font-semibold">{tPages('orders.ordered_on')}</span>
-                                    <time dateTime={dateToMachineReadable(loadedOrder.orderDate)} className="italic">
-                                        {loadedOrder.orderDate}
+                                    <time dateTime={dateToMachineReadable(order.orderDate)} className="italic">
+                                        {order.orderDate}
                                     </time>
                                 </div>
                             </footer>

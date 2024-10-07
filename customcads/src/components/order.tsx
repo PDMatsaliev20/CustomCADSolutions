@@ -16,7 +16,7 @@ function Order({ order, buttons }: OrderProps) {
         <Link to={`${order.id}`} className="hover:no-underline">
             <div className="flex h-48 items-center gap-x-4 p-2 bg-indigo-200 border-2 border-indigo-700 shadow-md shadow-indigo-500 rounded-lg hover:bg-indigo-300 active:opacity-80 has-[button:hover]:bg-indigo-200 has-[button:active]:opacity-100">
                 <div className="basis-[15%] shrink-0 aspect-square flex items-center border-2 border-indigo-300 rounded-2xl overflow-hidden">
-                    <img src={order.imagePath} className="object-cover w-full h-full" />
+                    <img src={import.meta.env.VITE_API_BASE_URL + order.imagePath} className="object-cover w-full h-full" />
                 </div>
                 <div className="grow min-h-full flex flex-wrap items-between">
                     <div className="basis-full flex items-end gap-x-2">

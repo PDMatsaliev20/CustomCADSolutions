@@ -1,14 +1,16 @@
-import { useLoaderData } from 'react-router-dom';
 import { useTranslation } from 'react-i18next'
+import { useQuery } from '@tanstack/react-query';
+import { GetRecentOrders, GetOrdersCounts } from '@/requests/private/orders';
 import RecentItem from '@/components/dashboard/recent-item';
 import OrdersCount from '@/components/dashboard/count-item';
 import ErrorPage from '@/components/error-page';
+import getStatusCode from '@/utils/get-status-code';
 import ClientHomeOrder from './client-home.interface';
 
 function ClientHome() {
     const { t: tCommon } = useTranslation('common');
     const { t: tPages } = useTranslation('pages');
-    
+
     interface CountByStatus {
         pending: number
         begun: number
@@ -17,14 +19,36 @@ function ClientHome() {
         removed: number
     }
 
-    const { loadedOrders: recent, loadedCounts: counts, error, status, } = useLoaderData() as {
-        loadedOrders: ClientHomeOrder[],
-        loadedCounts: CountByStatus,
-        error: boolean,
-        status: number,
-    };
-    if (error) {
-        return <ErrorPage status={status} />;
+    let orders: ClientHomeOrder[] = [];
+    const { data: recentData, isError: recentIsError, error: recentError } = useQuery({
+        queryKey: ['client-home', 'recent-orders'],
+        queryFn: async () => {
+            const { data } = await GetRecentOrders();
+            return data;
+        }
+    });
+    if (recentIsError) {
+        const status = getStatusCode(recentError);
+        return <ErrorPage status={status} />
+    }
+    if (recentData) {
+        orders = recentData;
+    }
+
+    let counts: CountByStatus = { pending: 0, begun: 0, finished: 0, reported: 0, removed: 0 };
+    const { data: countsData, isError: countsIsError, error: countsError } = useQuery({
+        queryKey: ['client-home', 'counts'],
+        queryFn: async () => {
+            const { data } = await GetOrdersCounts();
+            return data;
+        }
+    });
+    if (countsIsError) {
+        const status = getStatusCode(countsError);
+        return <ErrorPage status={status} />
+    }
+    if (countsData) {
+        counts = countsData;
     }
 
     return (
@@ -53,7 +77,7 @@ function ClientHome() {
                                 </div>
                             </div>
                         </li>
-                        {recent.map(order => <li key={order.id}>
+                        {orders.map(order => <li key={order.id}>
                             <RecentItem
                                 item={order}
                                 date={order.orderDate}

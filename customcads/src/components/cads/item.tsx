@@ -17,7 +17,7 @@ function CadItem({ cad, by, on }: CadItemProps) {
             <h3 className="basis-full text-center text-indigo-950 text-xl font-extrabold">{cad.name}</h3>
             <Link to={`${cad.id}`}>
                 <div className="basis-full aspect-square bg-indigo-100 rounded-2xl border border-indigo-600 w-full overflow-hidden">
-                    <img src={cad.imagePath} className="w-full h-full" />
+                    <img src={import.meta.env.VITE_API_BASE_URL + cad.imagePath} className="w-full h-full" />
                 </div>
             </Link>
             <p className="basis-full text-center text-indigo-950 font-semibold">
