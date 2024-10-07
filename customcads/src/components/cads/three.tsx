@@ -2,8 +2,11 @@ import { useState, useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import { GetHomeCad } from '@/requests/public/home.js';
-import Spinner from '@/components/spinner.jsx';
+import { useQuery } from '@tanstack/react-query';
+import { GetHomeCad } from '@/requests/public/home';
+import ErrorPage from '@/components/error-page';
+import Spinner from '@/components/spinner';
+import getStatusCode from '@/utils/get-status-code';
 import ThreeJSCad, { emptyThreeJSCad } from './three.interface';
 
 interface ThreeJSProps {
@@ -14,20 +17,27 @@ interface ThreeJSProps {
 function ThreeJS({ cad, isHomeCad }: ThreeJSProps) {
     const mountRef = useRef<HTMLDivElement>(null);
     const isTouchedRef = useRef(false);
-    const [model, setModel] = useState<ThreeJSCad>(emptyThreeJSCad);
     const [loader, setLoader] = useState(true);
-
-    useEffect(() => {
-        if (isHomeCad) {
-            fetchHomeCad();
+    
+    let model: ThreeJSCad = emptyThreeJSCad;
+    if (cad) {
+        model = cad;
+    } else {
+        const { data, isError, error } = useQuery({
+            queryKey: ['MainCad', isHomeCad],
+            queryFn: async () => {
+                const { data } = await GetHomeCad();
+                return data;
+            },
+            enabled: isHomeCad
+        });
+        if (isError) {
+            return <ErrorPage status={getStatusCode(error)} />;
         }
-    }, [isHomeCad]);
-
-    useEffect(() => {
-        if (cad) {
-            setModel(cad);
+        if (data) {
+            model = data;
         }
-    }, [cad]);
+    }
 
     useEffect(() => {
         if (model.cadPath) {
@@ -160,16 +170,6 @@ function ThreeJS({ cad, isHomeCad }: ThreeJSProps) {
             <Spinner />
         </>
         : <div ref={mountRef} className="w-full h-full" />;
-
-    async function fetchHomeCad() {
-        try {
-            const { data } = await GetHomeCad();
-            setModel(data);
-
-        } catch (error) {
-            console.error('Error fetching CAD:', error);
-        }
-    }
 }
 
 export default ThreeJS;

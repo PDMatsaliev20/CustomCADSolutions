@@ -9,7 +9,7 @@ import './index.css';
 function App() {
     const { isLoading } = useAuth();
     useLanguages();
-    
+
     return isLoading ? <></> : (
         <div className="flex flex-col min-h-screen bg-indigo-50">
             <div className="sticky top-0 z-50">
@@ -23,5 +23,5 @@ function App() {
         </div>
     );
 }
- 
+
 export default App;

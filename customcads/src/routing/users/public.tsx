@@ -1,7 +1,5 @@
-import { AxiosError } from 'axios';
 import { RouteObject } from 'react-router-dom';
 import AuthGuard from '@/routing/auth-guard';
-import { GalleryCad } from '@/requests/public/home';
 import capitalize from '@/utils/capitalize';
 import GalleryPage from '@/pages/public/gallery/gallery';
 import GalleryDetailsPage from '@/pages/public/gallery-details/gallery-details';
@@ -18,20 +16,7 @@ const publicRoutes: RouteObject = {
         },
         {
             path: '/gallery/:id',
-            element: <GalleryDetailsPage />,
-            loader: async ({ params }) => {
-                const { id } = params;
-                try {
-                    const { data } = await GalleryCad(Number(id));
-                    return { loadedCad: data };
-                } catch (e) {
-                    const res = { error: true };
-                    if (!(e instanceof AxiosError)) {
-                        return res;
-                    }
-                    return { ...res, status: e.response!.status };;
-                }
-            }
+            element: <GalleryDetailsPage />
         },
         {
             path: '/about',

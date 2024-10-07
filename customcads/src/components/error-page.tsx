@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import useAuth from '@/hooks/useAuth';
 
 interface ErrorPageParams {
-    status: number
+    status: number | undefined
 }
 
 function ErrorPage({ status }: ErrorPageParams) {
