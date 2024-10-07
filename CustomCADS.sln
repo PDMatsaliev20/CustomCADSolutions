@@ -18,13 +18,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomCADs.API", "CustomCAD
 		{FD68ACFD-29B1-4F52-A7C9-5203DF60FE7C} = {FD68ACFD-29B1-4F52-A7C9-5203DF60FE7C}
 	EndProjectSection
 EndProject
-Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "customcads", "customcads\customcads.esproj", "{8E90CB15-C504-4DB7-9AFC-F0DBBD09627E}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomCADs.Domain", "CustomCADs.Domain\CustomCADs.Domain.csproj", "{CBBE6C1C-CE41-4960-956C-BFE5765F3FFC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomCADs.Persistence", "CustomCADs.Persistence\CustomCADs.Persistence.csproj", "{477B4E1F-F816-4848-932A-6AAE4B9C446D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomCADs.Auth", "CustomCADs.Auth\CustomCADs.Auth.csproj", "{7CB700DB-4402-4C58-BFCF-CFB8421CC944}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomCADs.Auth", "CustomCADs.Auth\CustomCADs.Auth.csproj", "{7CB700DB-4402-4C58-BFCF-CFB8421CC944}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,12 +42,6 @@ Global
 		{2E7298D5-E4D2-4844-83FD-0467955C6C8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2E7298D5-E4D2-4844-83FD-0467955C6C8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2E7298D5-E4D2-4844-83FD-0467955C6C8B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8E90CB15-C504-4DB7-9AFC-F0DBBD09627E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8E90CB15-C504-4DB7-9AFC-F0DBBD09627E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8E90CB15-C504-4DB7-9AFC-F0DBBD09627E}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{8E90CB15-C504-4DB7-9AFC-F0DBBD09627E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8E90CB15-C504-4DB7-9AFC-F0DBBD09627E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8E90CB15-C504-4DB7-9AFC-F0DBBD09627E}.Release|Any CPU.Deploy.0 = Release|Any CPU
 		{CBBE6C1C-CE41-4960-956C-BFE5765F3FFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CBBE6C1C-CE41-4960-956C-BFE5765F3FFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CBBE6C1C-CE41-4960-956C-BFE5765F3FFC}.Release|Any CPU.ActiveCfg = Release|Any CPU

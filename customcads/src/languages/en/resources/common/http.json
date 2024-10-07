@@ -1,9 +1,0 @@
-{
-  "400": "Um, excuse me... you can't do that.",
-  "401": "Woah, caught you! You need an account to continue.",
-  "403": "You shouldn't be here. Check your rights!",
-  "404": "Sorry, I haven't developed a page with a URL like that.",
-  "general": "Something went wrong, please be patient while I fix it.",
-  "authenticate": "You can log into your account here.",
-  "authorize": "You can see info about your role here."
-}
