@@ -20,6 +20,7 @@ namespace CustomCADs.API.Endpoints.Home.MainCad
         {
             MainCadResponse cad = new()
             {
+                Id = 0,
                 CadPath = "/files/HomeCAD.glb",
                 CamCoordinates = new(2, 16, 33),
                 PanCoordinates = new(0, 6, -3),
