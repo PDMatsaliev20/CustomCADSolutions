@@ -26,13 +26,21 @@ namespace CustomCADs.API.Endpoints.Identity.RetryVerifyEmail
             AppUser? user = await manager.FindByNameAsync(req.Username).ConfigureAwait(false);
             if (user == null)
             {
-                await SendAsync(string.Format(NotFound, "Account"), Status404NotFound).ConfigureAwait(false);
+                ValidationFailures.Add(new()
+                {
+                    ErrorMessage = string.Format(NotFound, "Account"), 
+                });
+                await SendErrorsAsync(Status404NotFound).ConfigureAwait(false);
                 return;
             }
 
             if (user.EmailConfirmed)
             {
-                await SendAsync(EmailAlreadyVerified, Status400BadRequest).ConfigureAwait(false);
+                ValidationFailures.Add(new() 
+                {
+                    ErrorMessage  = EmailAlreadyVerified,
+                });
+                await SendErrorsAsync().ConfigureAwait(false);
                 return;
             }
 
@@ -42,7 +50,7 @@ namespace CustomCADs.API.Endpoints.Identity.RetryVerifyEmail
             string endpoint = Path.Combine(serverUrl, $"API/Identity/VerifyEmail/{req.Username}") + $"?token={token}";
 
             await email.SendVerificationEmailAsync(user.Email ?? "", endpoint).ConfigureAwait(false);
-            await SendAsync("Check your email.", Status200OK).ConfigureAwait(false);
+            await SendOkAsync("Check your email.").ConfigureAwait(false);
         }
     }
 }

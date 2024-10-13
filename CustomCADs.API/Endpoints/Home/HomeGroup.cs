@@ -2,6 +2,8 @@
 
 namespace CustomCADs.API.Endpoints.Home
 {
+    using static StatusCodes;
+
     public class HomeGroup : Group
     {
         public HomeGroup()
@@ -9,7 +11,11 @@ namespace CustomCADs.API.Endpoints.Home
             Configure("Home", ep =>
             {
                 ep.AllowAnonymous();
-                ep.Description(opt => opt.WithTags("Home"));
+                ep.Description(opt =>
+                {
+                    opt.WithTags("Home");
+                    opt.ProducesProblem(Status500InternalServerError);
+                });
             });
         }
     }

@@ -31,7 +31,7 @@ namespace CustomCADs.API.Endpoints.Orders.CountOrder
             int removed = await service.CountAsync(o => predicate(o, OrderStatus.Removed)).ConfigureAwait(false);
 
             OrderCountsResponse response = new(pending, begun, finished, reported, removed);
-            await SendAsync(response, Status200OK).ConfigureAwait(false);
+            await SendOkAsync(response).ConfigureAwait(false);
         }
     }
 }

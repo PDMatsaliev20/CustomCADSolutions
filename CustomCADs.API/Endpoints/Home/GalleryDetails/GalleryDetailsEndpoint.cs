@@ -24,7 +24,7 @@ namespace CustomCADs.API.Endpoints.Home.GalleryDetails
         {
             CadModel model = await service.GetByIdAsync(req.Id).ConfigureAwait(false);
             GalleryDetailsResponse response = model.Adapt<GalleryDetailsResponse>();
-            await SendAsync(response, Status200OK).ConfigureAwait(false);
+            await SendOkAsync(response).ConfigureAwait(false);
         }
     }
 }

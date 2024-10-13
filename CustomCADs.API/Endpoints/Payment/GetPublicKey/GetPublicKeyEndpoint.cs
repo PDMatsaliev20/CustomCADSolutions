@@ -19,7 +19,7 @@ namespace CustomCADs.API.Endpoints.Payment.GetPublicKey
         public override async Task HandleAsync(CancellationToken ct)
         {
             string pk = service.GetPublicKey();
-            await SendAsync(pk, Status200OK).ConfigureAwait(false);
+            await SendOkAsync(pk).ConfigureAwait(false);
         }
     }
 }

@@ -22,7 +22,7 @@ namespace CustomCADs.API.Endpoints.Identity.EmailConfirmed
             AppUser? user = await manager.FindByNameAsync(req.Username).ConfigureAwait(false);
             bool isEmailConfirmed = user?.EmailConfirmed ?? false;
 
-            await SendAsync(isEmailConfirmed, Status200OK).ConfigureAwait(false);
+            await SendOkAsync(isEmailConfirmed).ConfigureAwait(false);
         }
     }
 }

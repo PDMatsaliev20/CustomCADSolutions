@@ -29,7 +29,7 @@ namespace CustomCADs.API.Endpoints.Cads.CountCads
             int bannedCadsCounts = await service.Count(c => predicate(c, CadStatus.Banned)).ConfigureAwait(false);
 
             CountCadsResponse response = new(uncheckedCadsCounts, validatedCadsCounts, reportedCadsCounts, bannedCadsCounts);
-            await SendAsync(response, Status200OK).ConfigureAwait(false);
+            await SendOkAsync(response).ConfigureAwait(false);
         }
     }
 }

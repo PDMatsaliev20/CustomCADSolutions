@@ -25,7 +25,7 @@ namespace CustomCADs.API.Endpoints.Categories.GetCategoryById
             CategoryModel model = await service.GetByIdAsync(req.Id).ConfigureAwait(false);
             CategoryDto category = new(model.Id, model.Name);
 
-            await SendAsync(category, Status200OK).ConfigureAwait(false);
+            await SendOkAsync(category).ConfigureAwait(false);
         }
     }
 }

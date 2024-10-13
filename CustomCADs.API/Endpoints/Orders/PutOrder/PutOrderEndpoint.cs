@@ -6,6 +6,7 @@ using FastEndpoints;
 
 namespace CustomCADs.API.Endpoints.Orders.PutOrder
 {
+    using static ApiMessages;
     using static StatusCodes;
 
     public class PutOrderEndpoint(IOrderService service) : Endpoint<PutOrderRequest>
@@ -26,7 +27,11 @@ namespace CustomCADs.API.Endpoints.Orders.PutOrder
 
             if (order.BuyerId != User.GetId())
             {
-                await SendForbiddenAsync().ConfigureAwait(false);
+                ValidationFailures.Add(new()
+                {
+                    ErrorMessage = ForbiddenAccess,
+                });
+                await SendErrorsAsync().ConfigureAwait(false);
                 return;
             }
 

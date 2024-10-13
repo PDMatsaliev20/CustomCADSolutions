@@ -18,7 +18,7 @@ namespace CustomCADs.API.Endpoints.Identity.Authentication
 
         public override async Task HandleAsync(CancellationToken ct)
         {
-            await SendAsync(User.GetAuth(), Status200OK).ConfigureAwait(false);
+            await SendOkAsync(User.GetIsAuthenticated()).ConfigureAwait(false);
         }
     }
 }

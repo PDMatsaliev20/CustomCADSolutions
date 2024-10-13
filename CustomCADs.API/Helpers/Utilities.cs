@@ -6,6 +6,6 @@ namespace CustomCADs.API.Helpers
     {
         public static string GetId(this ClaimsPrincipal user) => user.FindFirstValue(ClaimTypes.NameIdentifier) ?? string.Empty;
         public static string GetName(this ClaimsPrincipal user) => user.FindFirstValue(ClaimTypes.Name) ?? string.Empty;
-        public static bool GetAuth(this ClaimsPrincipal user) => user.Identity?.IsAuthenticated ?? false;
+        public static bool GetIsAuthenticated(this ClaimsPrincipal user) => user.Identity?.IsAuthenticated ?? false;
     }
 }

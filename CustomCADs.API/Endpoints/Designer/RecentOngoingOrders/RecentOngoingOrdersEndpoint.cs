@@ -28,7 +28,7 @@ namespace CustomCADs.API.Endpoints.Designer.RecentOngoingOrders
             );
 
             var response = result.Orders.Select(order => order.Adapt<RecentOngoingOrdersResponse>());
-            await SendAsync(response, Status200OK).ConfigureAwait(false);
+            await SendOkAsync(response).ConfigureAwait(false);
         }
     }
 }

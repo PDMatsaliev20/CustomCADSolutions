@@ -21,7 +21,7 @@ namespace CustomCADs.API.Endpoints.Identity.Authorization
         public override async Task HandleAsync(CancellationToken ct)
         {
             UserModel model = await service.GetByIdAsync(User.GetId());
-            await SendAsync(model.RoleName, Status200OK).ConfigureAwait(false);
+            await SendOkAsync(model.RoleName).ConfigureAwait(false);
         }
     }
 }

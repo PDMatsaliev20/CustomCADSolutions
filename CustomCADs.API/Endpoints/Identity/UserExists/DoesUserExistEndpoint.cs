@@ -22,7 +22,7 @@ namespace CustomCADs.API.Endpoints.Identity.UserExists
             AppUser? user = await manager.FindByNameAsync(req.Username).ConfigureAwait(false);
             bool response = user != null;
 
-            await SendAsync(response, Status200OK).ConfigureAwait(false);
+            await SendOkAsync(response).ConfigureAwait(false);
         }
     }
 }

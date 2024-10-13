@@ -29,7 +29,7 @@ namespace CustomCADs.API.Endpoints.Orders.RecentOrders
             );
 
             var response = result.Orders.Select(order => order.Adapt<RecentOrdersResponse>());
-            await SendAsync(response, Status200OK).ConfigureAwait(false);
+            await SendOkAsync(response).ConfigureAwait(false);
         }
     }
 }

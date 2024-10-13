@@ -31,7 +31,11 @@ namespace CustomCADs.API.Endpoints.Identity.Login
             AppUser? user = await manager.FindByNameAsync(req.Username).ConfigureAwait(false);
             if (user == null || !user.EmailConfirmed)
             {
-                await SendAsync(InvalidAccountOrEmail, Status401Unauthorized).ConfigureAwait(false);
+                ValidationFailures.Add(new()
+                {
+                    ErrorMessage = InvalidAccountOrEmail,
+                });
+                await SendErrorsAsync(Status401Unauthorized).ConfigureAwait(false);
                 return;
             }
 
@@ -55,7 +59,11 @@ namespace CustomCADs.API.Endpoints.Identity.Login
                     return;
                 }
 
-                await SendAsync(InvalidLogin, Status401Unauthorized).ConfigureAwait(false);
+                ValidationFailures.Add(new()
+                {
+                    ErrorMessage = InvalidLogin,
+                });
+                await SendErrorsAsync(Status401Unauthorized).ConfigureAwait(false);
                 return;
             }
 
@@ -74,7 +82,7 @@ namespace CustomCADs.API.Endpoints.Identity.Login
             HttpContext.Response.Cookies.Append("role", model.RoleName, userInfoOptions);
             HttpContext.Response.Cookies.Append("username", model.UserName, userInfoOptions);
 
-            await SendAsync("Welcome back!", Status200OK).ConfigureAwait(false);
+            await SendOkAsync("Welcome back!").ConfigureAwait(false);
         }
 
         private async Task SendLockedOutAsync(TimeSpan timeLeft)

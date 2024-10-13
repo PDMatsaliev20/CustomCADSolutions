@@ -36,7 +36,7 @@ namespace CustomCADs.API.Endpoints.Cads.GetCads
                 Count = result.Count,
                 Cads = result.Cads.Select(cad => cad.Adapt<GetCadsResponse>()).ToArray()
             };
-            await SendAsync(response, Status200OK).ConfigureAwait(false);
+            await SendOkAsync(response).ConfigureAwait(false);
         }
     }
 }

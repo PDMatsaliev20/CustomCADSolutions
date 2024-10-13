@@ -6,6 +6,7 @@ using Mapster;
 
 namespace CustomCADs.API.Endpoints.Cads.GetCad
 {
+    using static ApiMessages;
     using static StatusCodes;
 
     public class GetCadEndpoint(ICadService service) : Endpoint<GetCadRequest, GetCadResponse>
@@ -25,12 +26,16 @@ namespace CustomCADs.API.Endpoints.Cads.GetCad
 
             if (model.CreatorId != User.GetId())
             {
-                await SendForbiddenAsync().ConfigureAwait(false);
+                ValidationFailures.Add(new()
+                {
+                    ErrorMessage = ForbiddenAccess,
+                });
+                await SendErrorsAsync().ConfigureAwait(false);
                 return;
             }
 
             GetCadResponse response = model.Adapt<GetCadResponse>();
-            await SendAsync(response, Status200OK).ConfigureAwait(false);
+            await SendOkAsync(response).ConfigureAwait(false);
         }
     }
 }

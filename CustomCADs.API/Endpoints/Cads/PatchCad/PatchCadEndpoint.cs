@@ -2,9 +2,11 @@
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Cads;
 using FastEndpoints;
+using FluentValidation.Results;
 
 namespace CustomCADs.API.Endpoints.Cads.PatchCad
 {
+    using static ApiMessages;
     using static StatusCodes;
 
     public class PatchCadEndpoint(ICadService service) : Endpoint<PatchCadRequest>
@@ -25,7 +27,11 @@ namespace CustomCADs.API.Endpoints.Cads.PatchCad
 
             if (model.CreatorId != User.GetId())
             {
-                await SendForbiddenAsync().ConfigureAwait(false);
+                ValidationFailures.Add(new()
+                {
+                    ErrorMessage = ForbiddenAccess,
+                });
+                await SendErrorsAsync().ConfigureAwait(false);
                 return;
             }
 
@@ -34,13 +40,23 @@ namespace CustomCADs.API.Endpoints.Cads.PatchCad
             {
                 case "camera": model.CamCoordinates = new(x, y, z); break;
                 case "pan": model.PanCoordinates = new(x, y, z); break;
-                default: await SendErrorsAsync().ConfigureAwait(false); return;
+                default:
+                    ValidationFailures.Add(new()
+                    {
+                        PropertyName = nameof(req.Type),
+                        AttemptedValue = req.Type,
+                        ErrorMessage = "Type property must be either 'camera' or 'pan'",
+                    });
+                    await SendErrorsAsync().ConfigureAwait(false);
+                    return;
             }
 
             bool isValid = model.Validate(out IList<string> errors);
             if (!isValid)
             {
-                await SendAsync(errors, Status400BadRequest).ConfigureAwait(false);
+                var failures = errors.Select(e => new ValidationFailure() { ErrorMessage = e });
+                ValidationFailures.AddRange(failures);
+                await SendErrorsAsync().ConfigureAwait(false);
                 return;
             }
 

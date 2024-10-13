@@ -25,8 +25,11 @@ namespace CustomCADs.API.Endpoints.Roles.DeleteRole
             AppRole? role = await manager.FindByNameAsync(req.Name).ConfigureAwait(false);
             if (role == null || !await service.ExistsByNameAsync(req.Name).ConfigureAwait(false))
             {
-                string message = string.Format(NotFound, "Role");
-                await SendResultAsync(Results.NotFound(message)).ConfigureAwait(false);
+                ValidationFailures.Add(new()
+                {
+                    ErrorMessage = string.Format(NotFound, "Role"),
+                });
+                await SendErrorsAsync().ConfigureAwait(false);
                 return; 
             }
 

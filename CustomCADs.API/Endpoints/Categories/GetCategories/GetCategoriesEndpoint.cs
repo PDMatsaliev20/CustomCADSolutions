@@ -24,7 +24,7 @@ namespace CustomCADs.API.Endpoints.Categories.GetCategories
             IEnumerable<CategoryDto> categories = service.GetAll()
                 .Select(c => new CategoryDto(c.Id, c.Name));
 
-            await SendAsync(categories, Status200OK).ConfigureAwait(false);
+            await SendOkAsync(categories).ConfigureAwait(false);
         }
     }
 }

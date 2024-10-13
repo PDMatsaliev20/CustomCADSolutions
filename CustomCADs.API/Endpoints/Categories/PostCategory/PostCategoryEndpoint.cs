@@ -24,7 +24,7 @@ namespace CustomCADs.API.Endpoints.Categories.PostCategory
         {
             int id = await service.CreateAsync(new() { Name = req.Name }).ConfigureAwait(false);
             CategoryDto category = new(id, req.Name);
-            await SendAsync(category, Status200OK).ConfigureAwait(false);
+            await SendCreatedAtAsync<GetCategoryEndpoint>(new { id }, category).ConfigureAwait(false);
         }
     }
 }

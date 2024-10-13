@@ -36,7 +36,7 @@ namespace CustomCADs.API.Endpoints.Designer.UncheckedCads
                 Cads = result.Cads.Select(cad => cad.Adapt<UncheckedCadsResponse>()).ToArray() 
             };
 
-            await SendAsync(response, Status200OK).ConfigureAwait(false);
+            await SendOkAsync(response).ConfigureAwait(false);
         }
     }
 }

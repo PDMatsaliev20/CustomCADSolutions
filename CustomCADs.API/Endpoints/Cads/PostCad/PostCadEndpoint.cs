@@ -40,7 +40,7 @@ namespace CustomCADs.API.Endpoints.Cads.PostCad
             CadModel createdModel = await service.GetByIdAsync(id).ConfigureAwait(false);
             PostCadResponse response = createdModel.Adapt<PostCadResponse>();
 
-            await SendCreatedAtAsync<GetCadEndpoint>(id, response).ConfigureAwait(false);
+            await SendCreatedAtAsync<GetCadEndpoint>(new { id }, response).ConfigureAwait(false);
         }
     }
 }

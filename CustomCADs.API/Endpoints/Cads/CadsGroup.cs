@@ -14,11 +14,8 @@ namespace CustomCADs.API.Endpoints.Cads
                 ep.Roles(RoleConstants.Contributor, RoleConstants.Designer);
                 ep.Description(d => d
                     .WithTags("Cads")
-                    .ProducesProblem(Status400BadRequest)
                     .ProducesProblem(Status401Unauthorized)
                     .ProducesProblem(Status403Forbidden)
-                    .ProducesProblem(Status404NotFound)
-                    .ProducesProblem(Status409Conflict)
                     .ProducesProblem(Status500InternalServerError));
             });   
         }

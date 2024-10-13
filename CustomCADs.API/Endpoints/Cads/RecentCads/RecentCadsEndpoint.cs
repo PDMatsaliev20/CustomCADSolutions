@@ -30,7 +30,7 @@ namespace CustomCADs.API.Endpoints.Cads.RecentCads
             );
 
             var response = result.Cads.Select(cad => cad.Adapt<RecentCadsResponse>());
-            await SendAsync(response, Status200OK).ConfigureAwait(false);
+            await SendOkAsync(response).ConfigureAwait(false);
         }
     }
 }

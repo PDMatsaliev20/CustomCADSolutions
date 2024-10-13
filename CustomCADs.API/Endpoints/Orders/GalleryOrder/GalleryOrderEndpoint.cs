@@ -22,7 +22,7 @@ namespace CustomCADs.API.Endpoints.Orders.GalleryOrder
                 .WithSummary("Creates an Order entity with a Relation to the Cad with the specified id in the database.")
                 .Produces<GalleryOrderResponse>(Status201Created, "application/json"));
         }
-         
+
         public override async Task HandleAsync(GalleryOrderRequest req, CancellationToken ct)
         {
             CadModel cad = await cadService.GetByIdAsync(req.CadId).ConfigureAwait(false);
@@ -43,7 +43,7 @@ namespace CustomCADs.API.Endpoints.Orders.GalleryOrder
             OrderModel createdOrder = await orderService.GetByIdAsync(id).ConfigureAwait(false);
 
             GalleryOrderResponse response = createdOrder.Adapt<GalleryOrderResponse>();
-            await SendCreatedAtAsync<GetOrderEndpoint>(id, response).ConfigureAwait(false);
+            await SendCreatedAtAsync<GetOrderEndpoint>(new { id }, response).ConfigureAwait(false);
         }
     }
 }

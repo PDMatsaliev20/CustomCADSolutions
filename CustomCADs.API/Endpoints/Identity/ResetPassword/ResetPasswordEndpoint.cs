@@ -1,6 +1,7 @@
 ﻿using CustomCADs.Auth;
 using CustomCADs.Auth.Contracts;
 using FastEndpoints;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Identity;
 
 namespace CustomCADs.API.Endpoints.Identity.ResetPassword
@@ -24,7 +25,11 @@ namespace CustomCADs.API.Endpoints.Identity.ResetPassword
             AppUser? user = await manager.FindByEmailAsync(req.Email).ConfigureAwait(false);
             if (user == null)
             {
-                await SendAsync(string.Format(NotFound, "User"), Status404NotFound);
+                ValidationFailures.Add(new()
+                {
+                    ErrorMessage = string.Format(NotFound, "User"),
+                });
+                await SendErrorsAsync(Status404NotFound);
                 return;
             }
 
@@ -32,11 +37,17 @@ namespace CustomCADs.API.Endpoints.Identity.ResetPassword
             IdentityResult result = await manager.ResetPasswordAsync(user, encodedToken, req.NewPassword).ConfigureAwait(false);
             if (!result.Succeeded)
             {
-                await SendAsync(result.Errors, Status400BadRequest).ConfigureAwait(false);
+                var failures = result.Errors.Select(e => new ValidationFailure()
+                {
+                    ErrorMessage = e.Description
+                });
+                ValidationFailures.AddRange(failures);
+
+                await SendErrorsAsync().ConfigureAwait(false);
                 return;
             }
 
-            await SendAsync("Done!", Status200OK).ConfigureAwait(false);
+            await SendOkAsync("Done!").ConfigureAwait(false);
         }
     }
 }

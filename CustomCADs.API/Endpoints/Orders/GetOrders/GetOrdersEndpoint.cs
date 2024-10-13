@@ -45,7 +45,7 @@ namespace CustomCADs.API.Endpoints.Orders.GetOrders
                 Orders = result.Orders.Select(order => order.Adapt<GetOrdersResponse>()).ToArray(),
             };
 
-            await SendAsync(response, Status200OK).ConfigureAwait(false);
+            await SendOkAsync(response).ConfigureAwait(false);
         }
     }
 }

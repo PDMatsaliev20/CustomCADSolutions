@@ -40,24 +40,32 @@ namespace CustomCADs.API.Endpoints.Payment.Purchase
 
             if (!errorMessages.Contains(message))
             {
-                await SendAsync(message, Status200OK).ConfigureAwait(false);
+                await SendOkAsync(message).ConfigureAwait(false);
                 return;
             }
 
             if (message != FailedPayment)
             {
-                await SendAsync(message, Status400BadRequest).ConfigureAwait(false);
+                ValidationFailures.Add(new()
+                {
+                    ErrorMessage = message,
+                });
+                await SendErrorsAsync().ConfigureAwait(false);
                 return;
             }
 
             string retry = await CheckStatus(paymentIntent.Status, paymentIntent.Id).ConfigureAwait(false);
             if (retry != SuccessfulPayment)
             {
+                ValidationFailures.Add(new()
+                {
+                    ErrorMessage = message,
+                });
                 await SendAsync(paymentIntent.ClientSecret, Status400BadRequest).ConfigureAwait(false);
                 return;
             }
 
-            await SendAsync(message, Status200OK).ConfigureAwait(false);
+            await SendOkAsync(message).ConfigureAwait(false);
         }
 
         private async Task<string> CheckStatus(string status, string? id = null)

@@ -24,7 +24,11 @@ namespace CustomCADs.API.Endpoints.Identity.ForgotPassword
             AppUser? user = await manager.FindByEmailAsync(req.Email).ConfigureAwait(false);
             if (user == null)
             {
-                await SendAsync(string.Format(NotFound, "User"), Status404NotFound).ConfigureAwait(false);
+                ValidationFailures.Add(new()
+                {
+                    ErrorMessage = string.Format(NotFound, "User"),
+                });
+                await SendErrorsAsync(Status404NotFound).ConfigureAwait(false);
                 return;
             }
 
@@ -34,7 +38,7 @@ namespace CustomCADs.API.Endpoints.Identity.ForgotPassword
             string endpoint = Path.Combine(clientUrl + "/login/reset-password") + $"?email={req.Email}&token={token}";
             await email.SendForgotPasswordEmailAsync(req.Email, endpoint).ConfigureAwait(false);
 
-            await SendAsync("Check your email!", Status200OK).ConfigureAwait(false);
+            await SendOkAsync("Check your email!").ConfigureAwait(false);
         }
     }
 }

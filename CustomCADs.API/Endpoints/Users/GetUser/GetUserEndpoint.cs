@@ -24,7 +24,7 @@ namespace CustomCADs.API.Endpoints.Users.GetUser
         {
             UserModel model = await service.GetByNameAsync(req.Username);
             UserResponseDto response = model.Adapt<UserResponseDto>();
-            await SendAsync(response, Status200OK).ConfigureAwait(false);
+            await SendOkAsync(response).ConfigureAwait(false);
         }
     }
 }

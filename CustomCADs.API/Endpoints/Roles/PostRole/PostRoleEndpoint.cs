@@ -4,6 +4,7 @@ using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Roles;
 using CustomCADs.Auth.Contracts;
 using FastEndpoints;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Identity;
 
 namespace CustomCADs.API.Endpoints.Roles.PostRole
@@ -27,7 +28,13 @@ namespace CustomCADs.API.Endpoints.Roles.PostRole
             IdentityResult result = await manager.CreateAsync(new(req.Name)).ConfigureAwait(false);
             if (!result.Succeeded)
             {
-                await SendResultAsync(Results.BadRequest(result.Errors)).ConfigureAwait(false);
+                var failures = result.Errors.Select(e => new ValidationFailure()
+                {
+                    ErrorMessage = e.Description
+                });
+                ValidationFailures.AddRange(failures);
+
+                await SendErrorsAsync().ConfigureAwait(false);
                 return;
             }
 
@@ -43,7 +50,7 @@ namespace CustomCADs.API.Endpoints.Roles.PostRole
                 Name = model.Name,
                 Description = model.Description,
             };
-            await SendCreatedAtAsync<GetRoleEndpoint>(model.Name, response).ConfigureAwait(false);
+            await SendCreatedAtAsync<GetRoleEndpoint>(new { model.Name }, response).ConfigureAwait(false);
         }
     }
 }

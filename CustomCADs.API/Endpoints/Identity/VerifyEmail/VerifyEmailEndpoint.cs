@@ -29,21 +29,32 @@ namespace CustomCADs.API.Endpoints.Identity.VerifyEmail
         {
             if (string.IsNullOrEmpty(req.Token))
             {
-                object details = new { error = "Bad Request", message = string.Format(IsRequired, "Verify Email Token") };
-                await SendResultAsync(Results.BadRequest(details)).ConfigureAwait(false);
+                ValidationFailures.Add(new()
+                {
+                    ErrorMessage = string.Format(IsRequired, "Verify Email Token"),
+                });
+                await SendErrorsAsync().ConfigureAwait(false);
                 return;
             }
 
             AppUser? appUser = await manager.FindByNameAsync(req.Username).ConfigureAwait(false);
             if (appUser == null)
             {
-                await SendAsync(string.Format(NotFound, "Account"), Status404NotFound).ConfigureAwait(false);
+                ValidationFailures.Add(new()
+                {
+                    ErrorMessage = string.Format(NotFound, "Account"),
+                });
+                await SendErrorsAsync(Status404NotFound).ConfigureAwait(false);
                 return;
             }
 
             if (appUser.EmailConfirmed)
             {
-                await SendAsync(EmailAlreadyVerified, Status400BadRequest).ConfigureAwait(false);
+                ValidationFailures.Add(new()
+                {
+                    ErrorMessage = EmailAlreadyVerified,
+                });
+                await SendErrorsAsync().ConfigureAwait(false);
                 return;
             }
 
@@ -51,7 +62,11 @@ namespace CustomCADs.API.Endpoints.Identity.VerifyEmail
             IdentityResult result = await manager.ConfirmEmailAsync(appUser, decodedECT).ConfigureAwait(false);
             if (!result.Succeeded)
             {
-                await SendAsync(InvalidEmailToken, Status400BadRequest).ConfigureAwait(false);
+                ValidationFailures.Add(new()
+                {
+                    ErrorMessage = InvalidEmailToken,
+                });
+                await SendErrorsAsync().ConfigureAwait(false);
                 return;
             }
 
@@ -71,7 +86,7 @@ namespace CustomCADs.API.Endpoints.Identity.VerifyEmail
             HttpContext.Response.Cookies.Append("role", model.RoleName, new() { Expires = newEnd });
             HttpContext.Response.Cookies.Append("username", model.UserName, new() { Expires = newEnd });
 
-            await SendAsync("Welcome!", Status200OK).ConfigureAwait(false);
+            await SendOkAsync("Welcome!").ConfigureAwait(false);
         }
     }
 }

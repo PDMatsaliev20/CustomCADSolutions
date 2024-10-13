@@ -5,6 +5,7 @@ using FastEndpoints;
 
 namespace CustomCADs.API.Endpoints.Orders.PatchOrder
 {
+    using static ApiMessages;
     using static StatusCodes;
 
     public class PatchOrderEndpoint(IOrderService service) : Endpoint<PatchOrderRequest>
@@ -23,7 +24,11 @@ namespace CustomCADs.API.Endpoints.Orders.PatchOrder
             OrderModel model = await service.GetByIdAsync(req.Id).ConfigureAwait(false);
             if (model.BuyerId != User.GetId())
             {
-                await SendForbiddenAsync().ConfigureAwait(false);
+                ValidationFailures.Add(new()
+                {
+                    ErrorMessage = ForbiddenAccess,
+                });
+                await SendErrorsAsync().ConfigureAwait(false);
             }
 
             model.ShouldBeDelivered = req.ShouldBeDelivered;

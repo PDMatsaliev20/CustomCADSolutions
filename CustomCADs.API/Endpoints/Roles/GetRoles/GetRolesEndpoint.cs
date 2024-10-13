@@ -29,7 +29,7 @@ namespace CustomCADs.API.Endpoints.Roles.GetRoles
                     Description = r.Description 
                 }).ToArray();
 
-            await SendAsync(response, Status200OK).ConfigureAwait(false);
+            await SendOkAsync(response).ConfigureAwait(false);
         }
     }
 }

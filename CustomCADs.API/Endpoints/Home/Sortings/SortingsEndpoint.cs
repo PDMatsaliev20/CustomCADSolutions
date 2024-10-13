@@ -19,7 +19,7 @@ namespace CustomCADs.API.Endpoints.Home.Sortings
         public override async Task HandleAsync(CancellationToken ct)
         {
             string[] sortings = Enum.GetNames<Sorting>();
-            await SendAsync(sortings, Status200OK).ConfigureAwait(false);
+            await SendOkAsync(sortings).ConfigureAwait(false);
         }
     }
 }

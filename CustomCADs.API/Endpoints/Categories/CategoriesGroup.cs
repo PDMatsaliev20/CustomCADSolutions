@@ -3,6 +3,8 @@ using FastEndpoints;
 
 namespace CustomCADs.API.Endpoints.Categories
 {
+    using static StatusCodes;
+
     public class CategoriesGroup : Group
     {
         public CategoriesGroup()
@@ -10,7 +12,11 @@ namespace CustomCADs.API.Endpoints.Categories
             Configure("Categories", ep =>
             {
                 ep.Roles(Admin);
-                ep.Description(opt => opt.WithTags("Categories"));
+                ep.Description(opt =>
+                {
+                    opt.WithTags("Categories");
+                    opt.ProducesProblem(Status500InternalServerError);
+                });
             });   
         }
     }

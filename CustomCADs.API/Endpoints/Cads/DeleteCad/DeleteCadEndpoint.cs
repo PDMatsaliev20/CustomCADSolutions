@@ -5,6 +5,7 @@ using FastEndpoints;
 
 namespace CustomCADs.API.Endpoints.Cads.DeleteCad
 {
+    using static ApiMessages;
     using static StatusCodes;
 
     public class DeleteCadEndpoint(ICadService service, IWebHostEnvironment env) : Endpoint<DeleteCadRequest>
@@ -24,7 +25,11 @@ namespace CustomCADs.API.Endpoints.Cads.DeleteCad
 
             if (model.CreatorId != User.GetId())
             {
-                await SendForbiddenAsync().ConfigureAwait(false);
+                ValidationFailures.Add(new()
+                {
+                    ErrorMessage = ForbiddenAccess,
+                });
+                await SendErrorsAsync().ConfigureAwait(false);
                 return;
             }
 

@@ -16,9 +16,7 @@ namespace CustomCADs.API.Endpoints.Users.GetUsers
             Group<UsersGroup>();
             Description(d => d
                 .WithSummary("Gets All Users.")
-                .Produces<GetUsersResponse>(Status200OK, "application/json")
-                .ProducesProblem(Status400BadRequest)
-                .ProducesProblem(Status404NotFound));
+                .Produces<GetUsersResponse>(Status200OK, "application/json"));
         }
 
         public override async Task HandleAsync(GetUsersRequest req, CancellationToken ct)
@@ -35,7 +33,7 @@ namespace CustomCADs.API.Endpoints.Users.GetUsers
                 Count = result.Count,
                 Users = result.Users.Select(user => user.Adapt<UserResponseDto>()).ToArray()
             };
-            await SendAsync(response, Status200OK).ConfigureAwait(false);
+            await SendOkAsync(response).ConfigureAwait(false);
         }
     }
 }

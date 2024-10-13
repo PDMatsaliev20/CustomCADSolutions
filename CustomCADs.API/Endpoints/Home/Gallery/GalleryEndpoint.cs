@@ -38,7 +38,7 @@ namespace CustomCADs.API.Endpoints.Home.Gallery
                 Count = result.Count,
                 Cads = result.Cads.Select(cad => cad.Adapt<GalleryResponse>()).ToArray(),
             };
-            await SendAsync(response, Status200OK).ConfigureAwait(false);
+            await SendOkAsync(response).ConfigureAwait(false);
         }
     }
 }

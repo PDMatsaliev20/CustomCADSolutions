@@ -27,7 +27,7 @@ namespace CustomCADs.API.Endpoints.Designer.UncheckedCad
             response.PrevId = prevId;
             response.NextId = nextId;
 
-            await SendAsync(response, Status200OK).ConfigureAwait(false);
+            await SendOkAsync(response).ConfigureAwait(false);
         }
     }
 }

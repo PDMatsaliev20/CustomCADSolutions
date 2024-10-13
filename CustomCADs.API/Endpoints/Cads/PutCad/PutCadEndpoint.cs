@@ -5,6 +5,7 @@ using FastEndpoints;
 
 namespace CustomCADs.API.Endpoints.Cads.PutCad
 {
+    using static ApiMessages;
     using static StatusCodes;
 
     public class PutCadEndpoint(ICadService service, IWebHostEnvironment env) : Endpoint<PutCadRequest>
@@ -25,7 +26,11 @@ namespace CustomCADs.API.Endpoints.Cads.PutCad
 
             if (cad.CreatorId != User.GetId())
             {
-                await SendForbiddenAsync().ConfigureAwait(false);
+                ValidationFailures.Add(new()
+                {
+                    ErrorMessage = ForbiddenAccess,
+                });
+                await SendErrorsAsync().ConfigureAwait(false);
                 return;
             }
 

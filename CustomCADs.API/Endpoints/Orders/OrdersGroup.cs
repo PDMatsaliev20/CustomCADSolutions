@@ -15,11 +15,8 @@ namespace CustomCADs.API.Endpoints.Orders
                 ep.Description(opt =>
                 {
                     opt.WithTags("Orders");
-                    opt.ProducesProblem(Status400BadRequest);
                     opt.ProducesProblem(Status401Unauthorized);
                     opt.ProducesProblem(Status403Forbidden);
-                    opt.ProducesProblem(Status404NotFound);
-                    opt.ProducesProblem(Status409Conflict);
                     opt.ProducesProblem(Status500InternalServerError);
                 });
             });

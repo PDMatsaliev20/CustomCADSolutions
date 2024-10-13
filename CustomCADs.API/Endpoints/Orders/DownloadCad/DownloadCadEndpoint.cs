@@ -5,6 +5,7 @@ using FastEndpoints;
 
 namespace CustomCADs.API.Endpoints.Orders.DownloadCad
 {
+    using static ApiMessages;
     using static StatusCodes;
 
     public class DownloadCadEndpoint(IOrderService service, IWebHostEnvironment env) : Endpoint<DownloadCadRequest, byte[]>
@@ -38,7 +39,11 @@ namespace CustomCADs.API.Endpoints.Orders.DownloadCad
             bool userOwnsOrder = await service.CheckOwnership(req.Id, User.GetName());
             if (!userOwnsOrder)
             {
-                await SendForbiddenAsync().ConfigureAwait(false);
+                ValidationFailures.Add(new()
+                {
+                    ErrorMessage = ForbiddenAccess,
+                });
+                await SendErrorsAsync().ConfigureAwait(false);
                 return;
             }
 

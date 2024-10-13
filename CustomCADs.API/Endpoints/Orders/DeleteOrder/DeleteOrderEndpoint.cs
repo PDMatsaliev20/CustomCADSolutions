@@ -5,6 +5,7 @@ using FastEndpoints;
 
 namespace CustomCADs.API.Endpoints.Orders.DeleteOrder
 {
+    using static ApiMessages;
     using static StatusCodes;
 
     public class DeleteOrderEndpoint(IOrderService service, IWebHostEnvironment env) : Endpoint<DeleteOrderRequest>
@@ -21,9 +22,13 @@ namespace CustomCADs.API.Endpoints.Orders.DeleteOrder
         public override async Task HandleAsync(DeleteOrderRequest req, CancellationToken ct)
         {
             OrderModel model = await service.GetByIdAsync(req.Id).ConfigureAwait(false);
-            if (model.Buyer.UserName != User.GetName())
+            if (model.BuyerId != User.GetId())
             {
-                await SendForbiddenAsync().ConfigureAwait(false);
+                ValidationFailures.Add(new()
+                {
+                    ErrorMessage = ForbiddenAccess,
+                });
+                await SendErrorsAsync().ConfigureAwait(false);
                 return;
             }
 

@@ -26,7 +26,7 @@ namespace CustomCADs.API.Endpoints.Home.MainCad
                 PanCoordinates = new(0, 6, -3),
             };
 
-            await SendAsync(cad, Status200OK).ConfigureAwait(false);
+            await SendOkAsync(cad).ConfigureAwait(false);
         }
     }
 }

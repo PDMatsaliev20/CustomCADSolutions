@@ -29,8 +29,13 @@ namespace CustomCADs.API.Endpoints.Designer.OngoingOrders
                 IEnumerable<string> statuses = Enum.GetNames<OrderStatus>().Select(s => s.ToLower());
                 if (!statuses.Contains(req.Status.ToLower()))
                 {
-                    string message = string.Format(InvalidStatus, statuses);
-                    await SendResultAsync(Results.BadRequest(message)).ConfigureAwait(false);
+                    ValidationFailures.Add(new()
+                    {
+                        PropertyName = nameof(req.Status),
+                        AttemptedValue = req.Status,
+                        ErrorMessage = string.Format(InvalidStatus, statuses)
+                    });
+                    await SendErrorsAsync().ConfigureAwait(false);
                     return;
                 }
             }
@@ -50,7 +55,7 @@ namespace CustomCADs.API.Endpoints.Designer.OngoingOrders
                 Count = result.Count,
                 Orders = result.Orders.Select(order => order.Adapt<OngoingOrdersResponse>()).ToArray(),
             };
-            await SendAsync(response, Status200OK).ConfigureAwait(false);
+            await SendOkAsync(response).ConfigureAwait(false);
         }
     }
 }

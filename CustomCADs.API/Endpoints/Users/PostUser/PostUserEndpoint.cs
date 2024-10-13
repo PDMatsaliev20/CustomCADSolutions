@@ -5,6 +5,7 @@ using CustomCADs.Application.Models.Users;
 using CustomCADs.Auth;
 using CustomCADs.Auth.Contracts;
 using FastEndpoints;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Identity;
 
 namespace CustomCADs.API.Endpoints.Users.PostUser
@@ -30,8 +31,12 @@ namespace CustomCADs.API.Endpoints.Users.PostUser
             if (!roleExists)
             {
                 string roles = string.Join(", ", roleService.GetAllNames());
-                string message = string.Format(InvalidRole, roles);
-                await SendResultAsync(Results.BadRequest(message)).ConfigureAwait(false);
+                ValidationFailures.Add(new()
+                {
+                    ErrorMessage = string.Format(InvalidRole, roles)
+                });
+
+                await SendErrorsAsync().ConfigureAwait(false);
                 return;
             }
 
@@ -39,7 +44,13 @@ namespace CustomCADs.API.Endpoints.Users.PostUser
             IdentityResult result = await manager.CreateAsync(user).ConfigureAwait(false);
             if (!result.Succeeded)
             {
-                await SendResultAsync(Results.BadRequest(result.Errors)).ConfigureAwait(false);
+                var failures = result.Errors.Select(e => new ValidationFailure()
+                {
+                    ErrorMessage = e.Description
+                });
+                ValidationFailures.AddRange(failures);
+
+                await SendErrorsAsync().ConfigureAwait(false);
                 return;
             }
             await manager.AddToRoleAsync(user, req.Role).ConfigureAwait(false);
@@ -64,7 +75,7 @@ namespace CustomCADs.API.Endpoints.Users.PostUser
                 FirstName = addedUser.FirstName,
                 LastName = addedUser.LastName,
             };
-            await SendCreatedAtAsync<GetUserEndpoint>(req.Username, response).ConfigureAwait(false);
+            await SendCreatedAtAsync<GetUserEndpoint>(new { req.Username }, response).ConfigureAwait(false);
         }
     }
 }

@@ -25,7 +25,11 @@ namespace CustomCADs.API.Endpoints.Identity.RefreshToken
             string? rt = HttpContext.Request.Cookies.FirstOrDefault(c => c.Key == "rt").Value;
             if (string.IsNullOrEmpty(rt))
             {
-                await SendAsync(NoRefreshToken, Status400BadRequest).ConfigureAwait(false);
+                ValidationFailures.Add(new()
+                {
+                    ErrorMessage = NoRefreshToken,
+                });
+                await SendErrorsAsync().ConfigureAwait(false);
                 return;
             }
 
@@ -36,7 +40,11 @@ namespace CustomCADs.API.Endpoints.Identity.RefreshToken
                 HttpContext.Response.Cookies.Delete("username");
                 HttpContext.Response.Cookies.Delete("userRole");
 
-                await SendAsync(RefreshTokenExpired, Status401Unauthorized).ConfigureAwait(false);
+                ValidationFailures.Add(new() 
+                {
+                    ErrorMessage = RefreshTokenExpired,
+                });
+                await SendErrorsAsync(Status401Unauthorized).ConfigureAwait(false);
                 return;
             }
             JwtSecurityToken newJwt = config.GenerateAccessToken(model.Id, model.UserName, model.RoleName);
@@ -47,7 +55,7 @@ namespace CustomCADs.API.Endpoints.Identity.RefreshToken
 
             if (model.RefreshTokenEndDate >= DateTime.UtcNow.AddMinutes(1))
             {
-                await SendAsync(NoNeedForNewRT, Status200OK).ConfigureAwait(false);
+                await SendOkAsync(NoNeedForNewRT).ConfigureAwait(false);
                 return;
             }
 
@@ -59,7 +67,7 @@ namespace CustomCADs.API.Endpoints.Identity.RefreshToken
             HttpContext.Response.Cookies.Append("role", model.RoleName, userInfoOptions);
             HttpContext.Response.Cookies.Append("username", model.UserName, userInfoOptions);
 
-            await SendAsync(AccessTokenRenewed, Status200OK).ConfigureAwait(false);
+            await SendOkAsync(AccessTokenRenewed).ConfigureAwait(false);
         }
     }
 }

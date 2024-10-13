@@ -35,7 +35,7 @@ namespace CustomCADs.API.Endpoints.Identity.Logout
             HttpContext.Response.Cookies.Delete("username");
             HttpContext.Response.Cookies.Delete("role");
 
-            await SendAsync("Bye-bye.", Status200OK).ConfigureAwait(false);
+            await SendOkAsync("Bye-bye.").ConfigureAwait(false);
         }
     }
 }

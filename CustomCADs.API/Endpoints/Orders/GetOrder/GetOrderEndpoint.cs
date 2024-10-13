@@ -6,6 +6,7 @@ using Mapster;
 
 namespace CustomCADs.API.Endpoints.Orders.GetOrder
 {
+    using static ApiMessages;
     using static StatusCodes;
 
     public class GetOrderEndpoint(IOrderService service) : Endpoint<GetOrderRequest, GetOrderResponse>
@@ -24,12 +25,16 @@ namespace CustomCADs.API.Endpoints.Orders.GetOrder
             OrderModel order = await service.GetByIdAsync(req.Id).ConfigureAwait(false);
             if (order.BuyerId != User.GetId())
             {
-                await SendForbiddenAsync().ConfigureAwait(false);
+                ValidationFailures.Add(new()
+                {
+                    ErrorMessage = ForbiddenAccess,
+                });
+                await SendErrorsAsync().ConfigureAwait(false);
                 return;
             }
 
             GetOrderResponse response = order.Adapt<GetOrderResponse>();
-            await SendAsync(response, Status200OK).ConfigureAwait(false);
+            await SendOkAsync(response).ConfigureAwait(false);
         }
     }
 }

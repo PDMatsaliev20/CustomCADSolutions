@@ -23,7 +23,7 @@ namespace CustomCADs.API.Endpoints.Designer.PatchCadStatus
             CadStatus status = Enum.Parse<CadStatus>(req.Status);
             await service.EditCadStatusAsync(req.Id, status).ConfigureAwait(false);
 
-            await SendAsync(new EmptyResponse(), Status204NoContent).ConfigureAwait(false);
+            await SendNoContentAsync().ConfigureAwait(false);
         }
     }
 }

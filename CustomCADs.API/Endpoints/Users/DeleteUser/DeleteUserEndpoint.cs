@@ -24,8 +24,11 @@ namespace CustomCADs.API.Endpoints.Users.DeleteUser
             AppUser? user = await manager.FindByNameAsync(req.Username).ConfigureAwait(false);
             if (user == null)
             {
-                string message = string.Format(ApiMessages.NotFound, "User");
-                await SendResultAsync(Results.NotFound(message)).ConfigureAwait(false);
+                ValidationFailures.Add(new()
+                {
+                    ErrorMessage = string.Format(ApiMessages.NotFound, "User"),
+                });
+                await SendErrorsAsync().ConfigureAwait(false);
                 return; 
             }
 

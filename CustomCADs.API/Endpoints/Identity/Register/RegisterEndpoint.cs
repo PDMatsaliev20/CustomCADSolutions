@@ -3,6 +3,7 @@ using CustomCADs.Application.Models.Users;
 using CustomCADs.Auth;
 using CustomCADs.Auth.Contracts;
 using FastEndpoints;
+using FluentValidation.Results;
 using Mapster;
 using Microsoft.AspNetCore.Identity;
 using static CustomCADs.Domain.DataConstants.RoleConstants;
@@ -31,13 +32,23 @@ namespace CustomCADs.API.Endpoints.Identity.Register
 
             if (!result.Succeeded)
             {
-                await SendAsync(result.Errors, Status400BadRequest).ConfigureAwait(false);
+                var failures = result.Errors.Select(e => new ValidationFailure() 
+                {
+                    ErrorMessage = e.Description 
+                });
+                ValidationFailures.AddRange(failures);
+
+                await SendErrorsAsync().ConfigureAwait(false);
                 return;
             }
 
             if (!(req.Role == Client || req.Role == Contributor))
             {
-                await SendAsync(ForbiddenRoleRegister, Status400BadRequest);
+                ValidationFailures.Add(new()
+                {
+                    ErrorMessage = ForbiddenRoleRegister,
+                });
+                await SendErrorsAsync();
                 return;
             }
             await manager.AddToRoleAsync(user, req.Role).ConfigureAwait(false);
@@ -52,7 +63,7 @@ namespace CustomCADs.API.Endpoints.Identity.Register
             string endpoint = Path.Combine(serverUrl, $"API/Identity/VerifyEmail/{model.UserName}") + $"?token={token}";
             await email.SendVerificationEmailAsync(req.Email, endpoint).ConfigureAwait(false);
             
-            await SendAsync("Check your email.", Status200OK).ConfigureAwait(false);
+            await SendOkAsync("Check your email.").ConfigureAwait(false);
         }
     }
 }

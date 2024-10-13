@@ -42,10 +42,15 @@ namespace CustomCADs.API.Endpoints.Designer.PatchOrderStatus
                     break;
 
                 default:
-                    string[] actions = ["begin", "report", "cancel", "complete", "finish"];
-                    string message = string.Format(InvalidAction, string.Join(", ", actions));
+                    string[] actions = ["begin", "report", "cancel", "complete", "finish"];                    
+                    ValidationFailures.Add(new()
+                    {
+                        PropertyName = nameof(req.Action),
+                        AttemptedValue = req.Action,
+                        ErrorMessage = string.Format(InvalidAction, string.Join(", ", actions)),
+                    });
 
-                    await SendResultAsync(Results.BadRequest(message)).ConfigureAwait(false);
+                    await SendErrorsAsync().ConfigureAwait(false);
                     return;
             }
             await SendNoContentAsync().ConfigureAwait(false);
