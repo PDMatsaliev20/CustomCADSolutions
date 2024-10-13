@@ -1,4 +1,5 @@
-﻿using CustomCADs.Application.Models.Categories;
+﻿using CustomCADs.Application.Exceptions;
+using CustomCADs.Application.Models.Categories;
 
 namespace CustomCADs.Application.Contracts
 {
@@ -15,7 +16,7 @@ namespace CustomCADs.Application.Contracts
         /// </summary>
         /// <param name="id"></param>
         /// <returns>A Task object that represents the Category</returns>
-        /// <exception cref="KeyNotFoundException">if no Category with the given id exists.</exception>
+        /// <exception cref="CategoryNotFoundException">if no Category with the given id exists.</exception>
         Task<CategoryModel> GetByIdAsync(int id);
 
         /// <summary>
@@ -38,7 +39,7 @@ namespace CustomCADs.Application.Contracts
         /// <param name="id"></param>
         /// <param name="model"></param>
         /// <returns>A Task object that represents the asynchronous Save Changes operation after the edit.</returns>
-        /// <exception cref="KeyNotFoundException">if no Category with the given id exists.</exception>
+        /// <exception cref="CategoryNotFoundException">if no Category with the given id exists.</exception>
         Task EditAsync(int id, CategoryModel model);
 
         /// <summary>
@@ -46,7 +47,7 @@ namespace CustomCADs.Application.Contracts
         /// </summary>
         /// <param name="id"></param>
         /// <returns>A Task object that represents the asynchronous Save Changes operation after the deletion.</returns>
-        /// <exception cref="KeyNotFoundException">if no Category with the given id exists.</exception>
+        /// <exception cref="CategoryNotFoundException">if no Category with the given id exists.</exception>
         Task DeleteAsync(int id);
     }
 }

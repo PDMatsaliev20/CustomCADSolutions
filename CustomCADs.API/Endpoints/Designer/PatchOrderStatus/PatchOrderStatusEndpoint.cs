@@ -24,7 +24,7 @@ namespace CustomCADs.API.Endpoints.Designer.PatchOrderStatus
             switch (req.Action.ToLower())
             {
                 case "begin":
-                    await service.BeginAsync(req.Id, User.GetId()).ConfigureAwait(false);
+                    await service.BeginAsync(req.Id, User.GetName()).ConfigureAwait(false);
                     break;
 
                 case "report":
@@ -32,13 +32,13 @@ namespace CustomCADs.API.Endpoints.Designer.PatchOrderStatus
                     break;
 
                 case "cancel":
-                    await service.CancelAsync(req.Id, User.GetId()).ConfigureAwait(false);
+                    await service.CancelAsync(req.Id, User.GetName()).ConfigureAwait(false);
                     break;
 
                 case "complete":
                 case "finish":
                     int cadId = req.CadId ?? throw new ArgumentNullException();
-                    await service.CompleteAsync(req.Id, cadId, User.GetId()).ConfigureAwait(false);
+                    await service.CompleteAsync(req.Id, cadId, User.GetName()).ConfigureAwait(false);
                     break;
 
                 default:

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CustomCADs.Application.Contracts;
+using CustomCADs.Application.Exceptions;
 using CustomCADs.Application.Helpers;
 using CustomCADs.Application.Models.Users;
 using CustomCADs.Domain.Contracts;
@@ -14,6 +15,8 @@ namespace CustomCADs.Application.Services
         IDbTracker tracker,
         IMapper mapper) : IUserService
     {
+        private const string UserNotFoundMessage = "The User with {0}: {1} does not exist.";
+
         public UserResult GetAll(bool? hasRT, string? username, string? email, string? firstName, string? lastName, DateTime? rtEndDateBefore, DateTime? rtEndDateAfter, string sorting = "", int page = 1, int limit = 20, Func<UserModel, bool>? customFilter = null)
         {
             IQueryable<User> queryable = queries.GetAll(true);
@@ -31,17 +34,17 @@ namespace CustomCADs.Application.Services
 
         public async Task<UserModel> GetByIdAsync(string id)
         {
-            User? entity = await queries.GetByIdAsync(id, true).ConfigureAwait(false);
-            ArgumentNullException.ThrowIfNull(entity);
-
+            User entity = await queries.GetByIdAsync(id, true).ConfigureAwait(false)
+                ?? throw new UserNotFoundException(string.Format(UserNotFoundMessage, "id", id));
+            
             UserModel model = mapper.Map<UserModel>(entity);
             return model;
         }
 
         public async Task<UserModel> GetByNameAsync(string name)
         {
-            User? user = await queries.GetByNameAsync(name, true).ConfigureAwait(false);
-            ArgumentNullException.ThrowIfNull(user);
+            User user = await queries.GetByNameAsync(name, true).ConfigureAwait(false)
+                ?? throw new UserNotFoundException(string.Format(UserNotFoundMessage, "name", name));
 
             UserModel model = mapper.Map<UserModel>(user);
             return model;
@@ -49,8 +52,8 @@ namespace CustomCADs.Application.Services
         
         public async Task<UserModel> GetByRefreshToken(string rt)
         {
-            User? user = await queries.GetByRefreshTokenAsync(rt).ConfigureAwait(false);
-            ArgumentNullException.ThrowIfNull(user);
+            User? user = await queries.GetByRefreshTokenAsync(rt).ConfigureAwait(false)
+                ?? throw new UserNotFoundException(string.Format(UserNotFoundMessage, "refresh token", rt));
 
             UserModel model = mapper.Map<UserModel>(user);
             return model;
@@ -73,8 +76,8 @@ namespace CustomCADs.Application.Services
 
         public async Task EditAsync(string username, UserModel model)
         {
-            User? entity = await queries.GetByNameAsync(username).ConfigureAwait(false);
-            ArgumentNullException.ThrowIfNull(entity);
+            User? entity = await queries.GetByNameAsync(username).ConfigureAwait(false)
+                ?? throw new UserNotFoundException(string.Format(UserNotFoundMessage, "username", username));
 
             entity.UserName = model.UserName;
             entity.FirstName = model.FirstName;
@@ -89,9 +92,10 @@ namespace CustomCADs.Application.Services
 
         public async Task DeleteAsync(string username)
         {
-            User? user = await queries.GetByNameAsync(username).ConfigureAwait(false);
-            ArgumentNullException.ThrowIfNull(user);
-            
+            User? user = await queries.GetByNameAsync(username).ConfigureAwait(false)
+                ?? throw new UserNotFoundException(string.Format(UserNotFoundMessage, "username", username));
+
+
             commands.Delete(user);
             await tracker.SaveChangesAsync().ConfigureAwait(false);
         }

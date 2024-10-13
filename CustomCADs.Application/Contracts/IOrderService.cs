@@ -1,4 +1,5 @@
-﻿using CustomCADs.Application.Models.Cads;
+﻿using CustomCADs.Application.Exceptions;
+using CustomCADs.Application.Models.Cads;
 using CustomCADs.Application.Models.Orders;
 
 namespace CustomCADs.Application.Contracts
@@ -16,7 +17,7 @@ namespace CustomCADs.Application.Contracts
         /// </summary>
         /// <param name="id"></param>
         /// <returns>A Task that represents the Order as a service model.</returns>
-        /// <exception cref="KeyNotFoundException">if no Order with the given id exists.</exception>
+        /// <exception cref="OrderNotFoundException">if no Order with the given id exists.</exception>
         Task<OrderModel> GetByIdAsync(int id);
         
         /// <summary>
@@ -24,13 +25,13 @@ namespace CustomCADs.Application.Contracts
         /// </summary>
         /// <param name="id"></param>
         /// <returns>A Task that represents the Order as a service model.</returns>
-        /// <exception cref="KeyNotFoundException">if no Order with the given id exists.</exception>
+        /// <exception cref="OrderNotFoundException">if no Order with the given id exists.</exception>
         Task<CadModel> GetCadAsync(int id);
 
         ///<summary>
         ///     Checks whether an Order exists by the given id.
         ///</summary>
-        /// <exception cref="KeyNotFoundException">if no Order with the given id exists.</exception>
+        /// <exception cref="OrderNotFoundException">if no Order with the given id exists.</exception>
         Task<bool> ExistsByIdAsync(int id);
         
         /// <summary>
@@ -52,7 +53,7 @@ namespace CustomCADs.Application.Contracts
         /// </summary>
         /// <param name="model"></param>
         /// <returns>A Task object that represents the asynchronous Save Changes operation after the edit.</returns>
-        /// <exception cref="KeyNotFoundException">if no Order with the given id exists.</exception>
+        /// <exception cref="OrderNotFoundException">if no Order with the given id exists.</exception>
         Task EditAsync(int id, OrderModel entity);
 
         /// <summary>
@@ -60,7 +61,7 @@ namespace CustomCADs.Application.Contracts
         /// </summary>
         /// <param name="id"></param>
         /// <returns>A Task object that represents the asynchronous Save Changes operation after the deletion.</returns>
-        /// <exception cref="KeyNotFoundException">if no Order with the given id exists.</exception>
+        /// <exception cref="OrderNotFoundException">if no Order with the given id exists.</exception>
         Task DeleteAsync(int id);
 
         /// <summary>
@@ -76,7 +77,7 @@ namespace CustomCADs.Application.Contracts
         /// </summary>
         /// <param name="id"></param>
         /// <returns>Whether it does or not.</returns>
-        /// <exception cref="KeyNotFoundException">if no Order with the given id exists.</exception>/// <summary>
+        /// <exception cref="OrderNotFoundException">if no Order with the given id exists.</exception>/// <summary>
         Task<bool> HasCadAsync(int id);
 
         /// <summary>
@@ -85,7 +86,7 @@ namespace CustomCADs.Application.Contracts
         /// <param name="id"></param>
         /// <param name="username"></param>
         /// <returns>Whether it is or not.</returns>
-        /// <exception cref="KeyNotFoundException">if no Order with the given id exists.</exception>
+        /// <exception cref="OrderNotFoundException">if no Order with the given id exists.</exception>
         Task<bool> CheckOwnership(int id, string username);
     }
 }

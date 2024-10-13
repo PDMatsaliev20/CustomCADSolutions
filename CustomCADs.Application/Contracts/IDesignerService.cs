@@ -1,4 +1,5 @@
-﻿using CustomCADs.Application.Models.Cads;
+﻿using CustomCADs.Application.Exceptions;
+using CustomCADs.Application.Models.Cads;
 using CustomCADs.Application.Models.Orders;
 using CustomCADs.Domain.Enums;
 
@@ -9,9 +10,12 @@ namespace CustomCADs.Application.Contracts
         /// <summary>
         ///     Queries Cads from database.
         /// </summary>
-        /// <param name="query"></param>
-        /// <param name="search"></param>
-        /// <param name="pagination"></param>
+        /// <param name="category"></param>
+        /// <param name="name"></param>
+        /// <param name="creator"></param>
+        /// <param name="sorting"></param>
+        /// <param name="page"></param>
+        /// <param name="limit"></param>
         /// <returns>A Task object that represents the Result.</returns>
         CadResult GetCadsAsync(string? category = null, string? name = null, string? creator = null, string sorting = "", int page = 1, int limit = 20);
 
@@ -20,6 +24,7 @@ namespace CustomCADs.Application.Contracts
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        /// <exception cref="CadNotFoundException"></exception>
         (int? PrevId, CadModel Current, int? NextId) GetNextCurrentAndPreviousById(int id);
 
 
@@ -29,6 +34,7 @@ namespace CustomCADs.Application.Contracts
         /// <param name="id"></param>
         /// <param name="status"></param>
         /// <returns>A Task object that represents the asynchronous Save Changes operation after the edit.</returns>
+        /// <exception cref="CadNotFoundException"></exception>
         Task EditCadStatusAsync(int id, CadStatus status);
 
         /// <summary>
@@ -47,6 +53,7 @@ namespace CustomCADs.Application.Contracts
         /// <param name="id"></param>
         /// <param name="designerId"></param>
         /// <returns>A Task object that represents the asynchronous Save Changes operation after the edit.</returns>
+        /// <exception cref="OrderNotFoundException"></exception>
         Task BeginAsync(int id, string designerId);
 
         /// <summary>
@@ -54,6 +61,7 @@ namespace CustomCADs.Application.Contracts
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        /// <exception cref="OrderNotFoundException"></exception>
         Task ReportAsync(int id);
 
         /// <summary>
@@ -61,6 +69,7 @@ namespace CustomCADs.Application.Contracts
         /// </summary>
         /// <param name="id"></param>
         /// <returns>A Task object that represents the asynchronous Save Changes operation after the edit.</returns>
+        /// <exception cref="OrderNotFoundException"></exception>
         Task CancelAsync(int id, string designerId);
 
         /// <summary>
@@ -69,6 +78,7 @@ namespace CustomCADs.Application.Contracts
         /// <param name="id"></param>
         /// <param name="cadId"></param>
         /// <returns>A Task object that represents the asynchronous Save Changes operation after the edit.</returns>
+        /// <exception cref="OrderNotFoundException"></exception>
         Task CompleteAsync(int id, int cadId, string designerId);
     }
 }

@@ -1,4 +1,5 @@
-﻿using CustomCADs.Application.Models.Users;
+﻿using CustomCADs.Application.Exceptions;
+using CustomCADs.Application.Models.Users;
 
 namespace CustomCADs.Application.Contracts
 {
@@ -15,7 +16,7 @@ namespace CustomCADs.Application.Contracts
         /// </summary>
         /// <param name="id"></param>
         /// <returns>A Task object that represents the User</returns>
-        /// <exception cref="KeyNotFoundException">if no User with the given id exists.</exception>
+        /// <exception cref="UserNotFoundException">if no User with the given id exists.</exception>
         Task<UserModel> GetByIdAsync(string id);
         
         /// <summary>
@@ -23,7 +24,7 @@ namespace CustomCADs.Application.Contracts
         /// </summary>
         /// <param name="name"></param>
         /// <returns>A Task object that represents the User</returns>
-        /// <exception cref="KeyNotFoundException">if no User with the given name exists.</exception>
+        /// <exception cref="UserNotFoundException">if no User with the given name exists.</exception>
         Task<UserModel> GetByNameAsync(string name);
         
         /// <summary>
@@ -31,21 +32,21 @@ namespace CustomCADs.Application.Contracts
         /// </summary>
         /// <param name="rt"></param>
         /// <returns>A Task object that represents the User</returns>
-        /// <exception cref="KeyNotFoundException">if no User with the given name exists.</exception>
+        /// <exception cref="UserNotFoundException">if no User with the given name exists.</exception>
         Task<UserModel> GetByRefreshToken(string rt);
 
         ///<summary>
         ///     Checks whether an User exists by the given id.
         ///</summary>
         /// <param name="id"></param>
-        /// <exception cref="KeyNotFoundException">if no User with the given id exists.</exception>
+        /// <exception cref="UserNotFoundException">if no User with the given id exists.</exception>
         Task<bool> ExistsByIdAsync(string id);
 
         ///<summary>
         ///     Checks whether an User exists by the given name.
         ///</summary>
         /// <param name="username"></param>
-        /// <exception cref="KeyNotFoundException">if no User with the given name exists.</exception>
+        /// <exception cref=UserNotFoundException">if no User with the given name exists.</exception>
         Task<bool> ExistsByName(string username);
 
         /// <summary>
@@ -61,7 +62,7 @@ namespace CustomCADs.Application.Contracts
         /// <param name="id"></param>
         /// <param name="model"></param>
         /// <returns>A Task object that represents the asynchronous Save Changes operation after the edit.</returns>
-        /// <exception cref="KeyNotFoundException">if no User with the given id exists.</exception>
+        /// <exception cref="UserNotFoundException">if no User with the given id exists.</exception>
         Task EditAsync(string id, UserModel model);
 
         /// <summary>
@@ -69,7 +70,7 @@ namespace CustomCADs.Application.Contracts
         /// </summary>
         /// <param name="username"></param>
         /// <returns>A Task object that represents the asynchronous Save Changes operation after the deletion.</returns>
-        /// <exception cref="KeyNotFoundException">if no User with the given id exists.</exception>
+        /// <exception cref="UsrNotFoundException">if no User with the given id exists.</exception>
         Task DeleteAsync(string username);
     }
 }

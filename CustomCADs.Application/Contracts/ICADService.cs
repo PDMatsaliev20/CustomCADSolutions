@@ -1,4 +1,5 @@
-﻿using CustomCADs.Application.Models.Cads;
+﻿using CustomCADs.Application.Exceptions;
+using CustomCADs.Application.Models.Cads;
 
 namespace CustomCADs.Application.Contracts
 {
@@ -16,7 +17,7 @@ namespace CustomCADs.Application.Contracts
         /// </summary>
         /// <param name="id"></param>
         /// <returns>A Task object that represents the Cad as a Service model.</returns>
-        /// <exception cref="KeyNotFoundException">if no Cad with the given id exists.</exception>
+        /// <exception cref="CadNotFoundException">if no Cad with the given id exists.</exception>
         Task<CadModel> GetByIdAsync(int id);
 
         /// <summary>
@@ -39,8 +40,7 @@ namespace CustomCADs.Application.Contracts
         /// <param name="id"></param>
         /// <param name="cadPath"></param>
         /// <param name="imagePath"></param>
-        /// <param name="otherFilesPaths"></param>
-        /// <exception cref="KeyNotFoundException">if no Cad with the given id exists.</exception>
+        /// <exception cref="CadNotFoundException">if no Cad with the given id exists.</exception>
         Task SetPathsAsync(int id, string cadPath, string imagePath);
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace CustomCADs.Application.Contracts
         /// <param name="id"></param>
         /// <param name="model"></param>
         /// <returns>A Task object that represents the asynchronous Save Changes operation after the edit.</returns>
-        /// <exception cref="KeyNotFoundException">if no Cad with the given id exists.</exception>
+        /// <exception cref="CadNotFoundException">if no Cad with the given id exists.</exception>
         Task EditAsync(int id, CadModel model);
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace CustomCADs.Application.Contracts
         /// </summary>
         /// <param name="id"></param>
         /// <returns>A Task object that represents the asynchronous Save Changes operation after the deletion.</returns>
-        /// <exception cref="KeyNotFoundException">if no Category with the given id exists.</exception>
+        /// <exception cref="CadNotFoundException">if no Category with the given id exists.</exception>
         Task DeleteAsync(int id);
     }
 }

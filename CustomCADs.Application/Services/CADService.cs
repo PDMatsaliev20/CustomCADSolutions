@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CustomCADs.Application.Contracts;
+using CustomCADs.Application.Exceptions;
 using CustomCADs.Application.Helpers;
 using CustomCADs.Application.Models.Cads;
 using CustomCADs.Domain.Contracts;
@@ -33,7 +34,7 @@ namespace CustomCADs.Application.Services
         public async Task<CadModel> GetByIdAsync(int id)
         {
             Cad cad = await cadQueries.GetByIdAsync(id, true).ConfigureAwait(false)
-                ?? throw new KeyNotFoundException($"Model with id: {id} doesn't exist");
+                ?? throw new CadNotFoundException(id);
 
             CadModel model = mapper.Map<CadModel>(cad);
             return model;
@@ -53,7 +54,7 @@ namespace CustomCADs.Application.Services
         public async Task SetPathsAsync(int id, string cadPath, string imagePath)
         {
             Cad cad = await cadQueries.GetByIdAsync(id).ConfigureAwait(false)
-                ?? throw new KeyNotFoundException("No such Cad exists.");
+                ?? throw new CadNotFoundException(id);
 
             cad.Paths = new(cadPath, imagePath);
             await dbTracker.SaveChangesAsync().ConfigureAwait(false);
@@ -71,7 +72,7 @@ namespace CustomCADs.Application.Services
         public async Task EditAsync(int id, CadModel model)
         {
             Cad cad = await cadQueries.GetByIdAsync(id).ConfigureAwait(false)
-                ?? throw new KeyNotFoundException("Model doesn't exist!");
+                ?? throw new CadNotFoundException(id);
 
             cad.Name = model.Name;
             cad.Description = model.Description;
@@ -100,7 +101,7 @@ namespace CustomCADs.Application.Services
             }
             
             Cad cad = await cadQueries.GetByIdAsync(id).ConfigureAwait(false)
-                ?? throw new KeyNotFoundException();
+                ?? throw new CadNotFoundException(id);
 
             commands.Delete(cad);
             await dbTracker.SaveChangesAsync().ConfigureAwait(false);

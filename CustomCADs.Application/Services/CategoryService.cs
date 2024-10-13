@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CustomCADs.Application.Contracts;
+using CustomCADs.Application.Exceptions;
 using CustomCADs.Application.Helpers;
 using CustomCADs.Application.Models.Categories;
 using CustomCADs.Domain.Contracts;
@@ -26,7 +27,7 @@ namespace CustomCADs.Application.Services
         {
             Category entity = await queries.GetByIdAsync(id, asNoTracking: true)
                 .ConfigureAwait(false)
-                ?? throw new KeyNotFoundException();
+                ?? throw new CategoryNotFoundException(id);
 
             CategoryModel model = mapper.Map<CategoryModel>(entity);
             return model;
@@ -48,7 +49,7 @@ namespace CustomCADs.Application.Services
         public async Task EditAsync(int id, CategoryModel model)
         {
             Category entity = await queries.GetByIdAsync(id).ConfigureAwait(false)
-                ?? throw new KeyNotFoundException();
+                ?? throw new CategoryNotFoundException(id);
 
             entity.Name = model.Name;
 
@@ -58,7 +59,7 @@ namespace CustomCADs.Application.Services
         public async Task DeleteAsync(int id)
         {
             Category entity = await queries.GetByIdAsync(id).ConfigureAwait(false)
-                ?? throw new KeyNotFoundException();
+                ?? throw new CategoryNotFoundException(id);
 
             commands.Delete(entity);
             await dbTracker.SaveChangesAsync().ConfigureAwait(false);

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CustomCADs.Application.Contracts;
+using CustomCADs.Application.Exceptions;
 using CustomCADs.Application.Helpers;
 using CustomCADs.Application.Models.Roles;
 using CustomCADs.Domain.Contracts;
@@ -14,6 +15,8 @@ namespace CustomCADs.Application.Services
         IDbTracker tracker, 
         IMapper mapper) : IRoleService
     {
+        private const string RoleNotFoundMessage = "The Role with name: {0} does not exist.";
+
         public IEnumerable<RoleModel> GetAll(string? name = null, string? description = null, string sorting = "")
         {
             IQueryable<Role> queryable = queries.GetAll(true);
@@ -30,16 +33,16 @@ namespace CustomCADs.Application.Services
 
         public async Task<RoleModel> GetByIdAsync(string id) 
         {
-            Role? role = await queries.GetByIdAsync(id).ConfigureAwait(false);
-            ArgumentNullException.ThrowIfNull(role);
+            Role role = await queries.GetByIdAsync(id).ConfigureAwait(false)
+                ?? throw new RoleNotFoundException(id);
 
             return mapper.Map<RoleModel>(role);
         }
 
         public async Task<RoleModel> GetByNameAsync(string name)
         {
-            Role? role = await queries.GetByNameAsync(name);
-            ArgumentNullException.ThrowIfNull(role);
+            Role role = await queries.GetByNameAsync(name)
+                ?? throw new RoleNotFoundException(string.Format(RoleNotFoundMessage, name));
 
             return mapper.Map<RoleModel>(role);
         }
@@ -62,10 +65,9 @@ namespace CustomCADs.Application.Services
 
         public async Task EditAsync(string name, RoleModel model)
         {
-            IQueryable<Role> roles = queries.GetAll(true);
-            roles = roles.Filter(customFilter: r => r.Name == name);
-
-            Role role = roles.SingleOrDefault() ?? throw new KeyNotFoundException();
+            Role role = await queries.GetByNameAsync(name).ConfigureAwait(false)
+                ?? throw new RoleNotFoundException(string.Format(RoleNotFoundMessage, name));
+            
             role.Name = model.Name;
             role.Description = model.Description;
 
@@ -74,10 +76,9 @@ namespace CustomCADs.Application.Services
 
         public async Task DeleteAsync(string name)
         {
-            IQueryable<Role> roles = queries.GetAll(true);
-            roles = roles.Filter(customFilter: r => r.Name == name);
+            Role role = await queries.GetByNameAsync(name).ConfigureAwait(false)
+                ?? throw new RoleNotFoundException(string.Format(RoleNotFoundMessage, name));
 
-            Role role = roles.SingleOrDefault() ?? throw new KeyNotFoundException();
             commands.Delete(role);
 
             await tracker.SaveChangesAsync().ConfigureAwait(false);

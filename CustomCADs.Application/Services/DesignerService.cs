@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CustomCADs.Application.Contracts;
+using CustomCADs.Application.Exceptions;
 using CustomCADs.Application.Helpers;
 using CustomCADs.Application.Models.Cads;
 using CustomCADs.Application.Models.Orders;
@@ -46,11 +47,10 @@ namespace CustomCADs.Application.Services
             IQueryable<Cad> queryable = cadQueries.GetAll(true);
             queryable = queryable.OrderBy(c => c.Id);
             queryable = queryable.Filter(status: nameof(CadStatus.Unchecked));
+            Cad cad = queryable.FirstOrDefault(c => c.Id == id)
+                ?? throw new CadNotFoundException(id);
 
             List<Cad> cads = [.. queryable];
-
-            Cad cad = cads.FirstOrDefault(c => c.Id == id)
-                ?? throw new KeyNotFoundException();
             int cadIndex = cads.IndexOf(cad);
 
             int? prevId = null;
@@ -71,7 +71,7 @@ namespace CustomCADs.Application.Services
         public async Task EditCadStatusAsync(int id, CadStatus status)
         {
             Cad cad = await cadQueries.GetByIdAsync(id).ConfigureAwait(false)
-                ?? throw new KeyNotFoundException("Model doesn't exist!");
+                ?? throw new CadNotFoundException(id);
 
             cad.Status = status;
             await dbTracker.SaveChangesAsync().ConfigureAwait(false);
@@ -95,7 +95,7 @@ namespace CustomCADs.Application.Services
         public async Task BeginAsync(int id, string designerId)
         {
             Order order = await orderQueries.GetByIdAsync(id).ConfigureAwait(false)
-                ?? throw new KeyNotFoundException();
+                ?? throw new OrderNotFoundException(id);
 
             order.Status = OrderStatus.Begun;
             order.DesignerId = designerId;
@@ -106,20 +106,20 @@ namespace CustomCADs.Application.Services
         public async Task ReportAsync(int id)
         {
             Order order = await orderQueries.GetByIdAsync(id).ConfigureAwait(false)
-            ?? throw new KeyNotFoundException();
+                ?? throw new OrderNotFoundException(id);
 
             order.Status = OrderStatus.Reported;
             await dbTracker.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        public async Task CancelAsync(int id, string designerId)
+        public async Task CancelAsync(int id, string designerName)
         {
             Order order = await orderQueries.GetByIdAsync(id).ConfigureAwait(false)
-                ?? throw new KeyNotFoundException();
+                ?? throw new OrderNotFoundException(id);
 
-            if (order.DesignerId != designerId)
+            if (order.Designer?.UserName != designerName)
             {
-                throw new UnauthorizedAccessException();
+                throw new DesignerNotAssociatedWithOrderException(id, designerName);
             }
 
             order.DesignerId = null;
@@ -128,14 +128,14 @@ namespace CustomCADs.Application.Services
             await dbTracker.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        public async Task CompleteAsync(int id, int cadId, string designerId)
+        public async Task CompleteAsync(int id, int cadId, string designerName)
         {
             Order order = await orderQueries.GetByIdAsync(id).ConfigureAwait(false)
-                ?? throw new KeyNotFoundException();
+                ?? throw new OrderNotFoundException(id);
 
-            if (order.DesignerId != designerId)
+            if (order.Designer?.UserName != designerName)
             {
-                throw new UnauthorizedAccessException();
+                throw new DesignerNotAssociatedWithOrderException(id, designerName);
             }
 
             order.CadId = cadId;

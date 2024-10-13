@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CustomCADs.Application.Contracts;
+using CustomCADs.Application.Exceptions;
 using CustomCADs.Application.Helpers;
 using CustomCADs.Application.Models.Cads;
 using CustomCADs.Application.Models.Orders;
@@ -33,7 +34,7 @@ namespace CustomCADs.Application.Services
         {
             Order order = await queries.GetByIdAsync(id, asNoTracking: true)
                 .ConfigureAwait(false)
-                ?? throw new KeyNotFoundException();
+                ?? throw new OrderNotFoundException(id);
 
             OrderModel model = mapper.Map<OrderModel>(order);
             return model;
@@ -46,7 +47,7 @@ namespace CustomCADs.Application.Services
 
             if (order == null || order.CadId == null)
             {
-                throw new KeyNotFoundException();
+                throw new OrderMissingCadException(id);
             }
 
             CadModel model = mapper.Map<CadModel>(order.Cad);
@@ -76,14 +77,14 @@ namespace CustomCADs.Application.Services
         public async Task<bool> HasCadAsync(int id)
         {
             Order? order = await queries.GetByIdAsync(id).ConfigureAwait(false)
-                ?? throw new KeyNotFoundException();
+                ?? throw new OrderNotFoundException(id);
             return order.CadId != null;
         }
         
         public async Task<bool> CheckOwnership(int id, string username)
         {
             Order? order = await queries.GetByIdAsync(id).ConfigureAwait(false)
-                ?? throw new KeyNotFoundException();
+                ?? throw new OrderNotFoundException(id);
             return order.Buyer.UserName == username;
         }
 
@@ -100,7 +101,7 @@ namespace CustomCADs.Application.Services
         public async Task EditAsync(int id, OrderModel model)
         {
             Order order = await queries.GetByIdAsync(id).ConfigureAwait(false)
-                ?? throw new KeyNotFoundException();
+                ?? throw new OrderNotFoundException(id);
 
             order.Name = model.Name;
             order.Description = model.Description;
@@ -113,7 +114,7 @@ namespace CustomCADs.Application.Services
         public async Task DeleteAsync(int id)
         {
             Order order = await queries.GetByIdAsync(id).ConfigureAwait(false)
-                ?? throw new KeyNotFoundException();
+                ?? throw new OrderNotFoundException(id);
 
             commands.Delete(order);
             await dbTracker.SaveChangesAsync().ConfigureAwait(false);

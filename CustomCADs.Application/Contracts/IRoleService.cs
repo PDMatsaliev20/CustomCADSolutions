@@ -1,4 +1,5 @@
-﻿using CustomCADs.Application.Models.Roles;
+﻿using CustomCADs.Application.Exceptions;
+using CustomCADs.Application.Models.Roles;
 
 namespace CustomCADs.Application.Contracts
 {
@@ -21,7 +22,7 @@ namespace CustomCADs.Application.Contracts
         /// </summary>
         /// <param name="id"></param>
         /// <returns>A Task object that represents the Role</returns>
-        /// <exception cref="KeyNotFoundException">if no Role with the given id exists.</exception>
+        /// <exception cref="RoleNotFoundException">if no Role with the given id exists.</exception>
         Task<RoleModel> GetByIdAsync(string id);
         
         /// <summary>
@@ -29,21 +30,21 @@ namespace CustomCADs.Application.Contracts
         /// </summary>
         /// <param name="name"></param>
         /// <returns>A Task object that represents the Role</returns>
-        /// <exception cref="KeyNotFoundException">if no Role with the given name exists.</exception>
+        /// <exception cref="RoleNotFoundException">if no Role with the given name exists.</exception>
         Task<RoleModel> GetByNameAsync(string name);
 
         /// <summary>
         ///     Checks whether an Role exists by the given id.
         /// </summary>
         /// <param name="id"></param>
-        /// <exception cref="KeyNotFoundException">if no Role with the given id exists.</exception>
+        /// <exception cref="RoleNotFoundException">if no Role with the given id exists.</exception>
         Task<bool> ExistsByIdAsync(string id);
 
         /// <summary>
         ///     Checks whether an Role exists by the given name.
         /// </summary>
         /// <param name="name"></param>
-        /// <exception cref="KeyNotFoundException">if no Role with the given name exists.</exception>
+        /// <exception cref="RoleNotFoundException">if no Role with the given name exists.</exception>
         Task<bool> ExistsByNameAsync(string name);
 
         /// <summary>
@@ -59,7 +60,7 @@ namespace CustomCADs.Application.Contracts
         /// <param name="name"></param>
         /// <param name="model"></param>
         /// <returns>A Task object that represents the asynchronous Save Changes operation after the edit.</returns>
-        /// <exception cref="KeyNotFoundException">if no Role with the given name exists.</exception>
+        /// <exception cref="RoleNotFoundException">if no Role with the given name exists.</exception>
         Task EditAsync(string name, RoleModel model);
 
         /// <summary>
@@ -67,7 +68,7 @@ namespace CustomCADs.Application.Contracts
         /// </summary>
         /// <param name="name"></param>
         /// <returns>A Task object that represents the asynchronous Save Changes operation after the deletion.</returns>
-        /// <exception cref="KeyNotFoundException">if no Role with the given id exists.</exception>
+        /// <exception cref="RoleNotFoundException">if no Role with the given id exists.</exception>
         Task DeleteAsync(string name);
     }
 }
