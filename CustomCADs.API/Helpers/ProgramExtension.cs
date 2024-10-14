@@ -43,7 +43,7 @@ namespace Microsoft.Extensions.DependencyInjection
             string connectionString = config.GetConnectionString("RealConnection")
                     ?? throw new KeyNotFoundException("Could not find connection string 'RealConnection'.");
             services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connectionString));
-            services.AddScoped<IDbTracker, DbTracker>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddScoped<IOrderQueries, OrderQueries>();
             services.AddScoped<ICadQueries, CadQueries>();

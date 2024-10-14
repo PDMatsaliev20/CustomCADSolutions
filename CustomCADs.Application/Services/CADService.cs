@@ -10,7 +10,7 @@ using CustomCADs.Domain.Enums;
 
 namespace CustomCADs.Application.Services
 {
-    public class CadService(IDbTracker dbTracker,
+    public class CadService(IUnitOfWork unitOfWork,
         ICadQueries cadQueries,
         IOrderQueries orderQueries,
         ICommands<Cad> commands,
@@ -57,14 +57,14 @@ namespace CustomCADs.Application.Services
                 ?? throw new CadNotFoundException(id);
 
             cad.Paths = new(cadPath, imagePath);
-            await dbTracker.SaveChangesAsync().ConfigureAwait(false);
+            await unitOfWork.SaveChangesAsync().ConfigureAwait(false);
         }
 
         public async Task<int> CreateAsync(CadModel model)
         {
             Cad cad = mapper.Map<Cad>(model);
             await commands.AddAsync(cad).ConfigureAwait(false);
-            await dbTracker.SaveChangesAsync().ConfigureAwait(false);
+            await unitOfWork.SaveChangesAsync().ConfigureAwait(false);
 
             return cad.Id;
         }
@@ -82,7 +82,7 @@ namespace CustomCADs.Application.Services
             cad.CamCoordinates = model.CamCoordinates;
             cad.PanCoordinates = model.PanCoordinates;
 
-            await dbTracker.SaveChangesAsync().ConfigureAwait(false);
+            await unitOfWork.SaveChangesAsync().ConfigureAwait(false);
         }
 
         public async Task DeleteAsync(int id)
@@ -104,7 +104,7 @@ namespace CustomCADs.Application.Services
                 ?? throw new CadNotFoundException(id);
 
             commands.Delete(cad);
-            await dbTracker.SaveChangesAsync().ConfigureAwait(false);
+            await unitOfWork.SaveChangesAsync().ConfigureAwait(false);
         }
     }
 }

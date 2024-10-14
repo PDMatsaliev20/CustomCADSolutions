@@ -11,7 +11,7 @@ using CustomCADs.Domain.Enums;
 
 namespace CustomCADs.Application.Services
 {
-    public class DesignerService(IDbTracker dbTracker,
+    public class DesignerService(IUnitOfWork unitOfWork,
         ICadQueries cadQueries,
         IOrderQueries orderQueries,
         IMapper mapper) : IDesignerService
@@ -74,7 +74,7 @@ namespace CustomCADs.Application.Services
                 ?? throw new CadNotFoundException(id);
 
             cad.Status = status;
-            await dbTracker.SaveChangesAsync().ConfigureAwait(false);
+            await unitOfWork.SaveChangesAsync().ConfigureAwait(false);
         }
 
         public CadResult GetCadsAsync(string? category = null, string? name = null, string? creator = null, string sorting = "", int page = 1, int limit = 20)
@@ -100,7 +100,7 @@ namespace CustomCADs.Application.Services
             order.Status = OrderStatus.Begun;
             order.DesignerId = designerId;
 
-            await dbTracker.SaveChangesAsync().ConfigureAwait(false);
+            await unitOfWork.SaveChangesAsync().ConfigureAwait(false);
         }
 
         public async Task ReportAsync(int id)
@@ -109,7 +109,7 @@ namespace CustomCADs.Application.Services
                 ?? throw new OrderNotFoundException(id);
 
             order.Status = OrderStatus.Reported;
-            await dbTracker.SaveChangesAsync().ConfigureAwait(false);
+            await unitOfWork.SaveChangesAsync().ConfigureAwait(false);
         }
 
         public async Task CancelAsync(int id, string designerName)
@@ -125,7 +125,7 @@ namespace CustomCADs.Application.Services
             order.DesignerId = null;
             order.Status = OrderStatus.Pending;
 
-            await dbTracker.SaveChangesAsync().ConfigureAwait(false);
+            await unitOfWork.SaveChangesAsync().ConfigureAwait(false);
         }
 
         public async Task CompleteAsync(int id, int cadId, string designerName)
@@ -141,7 +141,7 @@ namespace CustomCADs.Application.Services
             order.CadId = cadId;
             order.Status = OrderStatus.Finished;
 
-            await dbTracker.SaveChangesAsync().ConfigureAwait(false);
+            await unitOfWork.SaveChangesAsync().ConfigureAwait(false);
         }
     }
 }

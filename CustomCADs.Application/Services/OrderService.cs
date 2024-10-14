@@ -10,7 +10,7 @@ using CustomCADs.Domain.Entities;
 
 namespace CustomCADs.Application.Services
 {
-    public class OrderService(IDbTracker dbTracker,
+    public class OrderService(IUnitOfWork unitOfWork,
         IOrderQueries queries,
         ICommands<Order> commands,
         IMapper mapper) : IOrderService
@@ -71,7 +71,7 @@ namespace CustomCADs.Application.Services
             ArgumentNullException.ThrowIfNull(order);
 
             order.ImagePath = imagePath;
-            await dbTracker.SaveChangesAsync();
+            await unitOfWork.SaveChangesAsync();
         }
 
         public async Task<bool> HasCadAsync(int id)
@@ -93,7 +93,7 @@ namespace CustomCADs.Application.Services
             Order order = mapper.Map<Order>(model);
 
             await commands.AddAsync(order).ConfigureAwait(false);
-            await dbTracker.SaveChangesAsync().ConfigureAwait(false);
+            await unitOfWork.SaveChangesAsync().ConfigureAwait(false);
 
             return order.Id;
         }
@@ -108,7 +108,7 @@ namespace CustomCADs.Application.Services
             order.ShouldBeDelivered = model.ShouldBeDelivered;
             order.CategoryId = model.CategoryId;
 
-            await dbTracker.SaveChangesAsync().ConfigureAwait(false);
+            await unitOfWork.SaveChangesAsync().ConfigureAwait(false);
         }
 
         public async Task DeleteAsync(int id)
@@ -117,7 +117,7 @@ namespace CustomCADs.Application.Services
                 ?? throw new OrderNotFoundException(id);
 
             commands.Delete(order);
-            await dbTracker.SaveChangesAsync().ConfigureAwait(false);
+            await unitOfWork.SaveChangesAsync().ConfigureAwait(false);
         }
     }
 }

@@ -9,7 +9,7 @@ using CustomCADs.Domain.Entities;
 
 namespace CustomCADs.Application.Services
 {
-    public class CategoryService(IDbTracker dbTracker,
+    public class CategoryService(IUnitOfWork unitOfWork,
         ICategoryQueries queries, 
         ICommands<Category> commands, 
         IMapper mapper) : ICategoryService
@@ -41,7 +41,7 @@ namespace CustomCADs.Application.Services
             Category entity = mapper.Map<Category>(model);  
             
             await commands.AddAsync(entity).ConfigureAwait(false);
-            await dbTracker.SaveChangesAsync().ConfigureAwait(false);
+            await unitOfWork.SaveChangesAsync().ConfigureAwait(false);
             
             return entity.Id;
         }
@@ -53,7 +53,7 @@ namespace CustomCADs.Application.Services
 
             entity.Name = model.Name;
 
-            await dbTracker.SaveChangesAsync().ConfigureAwait(false);
+            await unitOfWork.SaveChangesAsync().ConfigureAwait(false);
         }
 
         public async Task DeleteAsync(int id)
@@ -62,7 +62,7 @@ namespace CustomCADs.Application.Services
                 ?? throw new CategoryNotFoundException(id);
 
             commands.Delete(entity);
-            await dbTracker.SaveChangesAsync().ConfigureAwait(false);
+            await unitOfWork.SaveChangesAsync().ConfigureAwait(false);
         }
     }
 }

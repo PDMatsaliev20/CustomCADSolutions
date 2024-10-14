@@ -1,6 +1,6 @@
 ﻿namespace CustomCADs.Domain.Contracts
 {
-    public interface IDbTracker
+    public interface IUnitOfWork
     {
         Task<int> SaveChangesAsync();   
     }

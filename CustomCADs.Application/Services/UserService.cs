@@ -12,7 +12,7 @@ namespace CustomCADs.Application.Services
     public class UserService(
         IUserQueries queries,
         ICommands<User> commands,
-        IDbTracker tracker,
+        IUnitOfWork unitOfWork,
         IMapper mapper) : IUserService
     {
         private const string UserNotFoundMessage = "The User with {0}: {1} does not exist.";
@@ -70,7 +70,7 @@ namespace CustomCADs.Application.Services
             User user = mapper.Map<User>(model);
             User addedUser = await commands.AddAsync(user).ConfigureAwait(false);
 
-            await tracker.SaveChangesAsync().ConfigureAwait(false);
+            await unitOfWork.SaveChangesAsync().ConfigureAwait(false);
             return addedUser.Id;
         }
 
@@ -87,7 +87,7 @@ namespace CustomCADs.Application.Services
             entity.RefreshToken = model.RefreshToken;
             entity.RefreshTokenEndDate = model.RefreshTokenEndDate;
 
-            await tracker.SaveChangesAsync().ConfigureAwait(false);
+            await unitOfWork.SaveChangesAsync().ConfigureAwait(false);
         }
 
         public async Task DeleteAsync(string username)
@@ -97,7 +97,7 @@ namespace CustomCADs.Application.Services
 
 
             commands.Delete(user);
-            await tracker.SaveChangesAsync().ConfigureAwait(false);
+            await unitOfWork.SaveChangesAsync().ConfigureAwait(false);
         }
     }
 }

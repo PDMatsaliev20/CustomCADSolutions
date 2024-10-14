@@ -12,7 +12,7 @@ namespace CustomCADs.Application.Services
     public class RoleService(
         IRoleQueries queries, 
         ICommands<Role> commands, 
-        IDbTracker tracker, 
+        IUnitOfWork unitOfWork, 
         IMapper mapper) : IRoleService
     {
         private const string RoleNotFoundMessage = "The Role with name: {0} does not exist.";
@@ -58,7 +58,7 @@ namespace CustomCADs.Application.Services
             Role role = mapper.Map<Role>(model);
             
             await commands.AddAsync(role);
-            await tracker.SaveChangesAsync().ConfigureAwait(false);
+            await unitOfWork.SaveChangesAsync().ConfigureAwait(false);
 
             return role.Id;
         }
@@ -71,7 +71,7 @@ namespace CustomCADs.Application.Services
             role.Name = model.Name;
             role.Description = model.Description;
 
-            await tracker.SaveChangesAsync().ConfigureAwait(false);
+            await unitOfWork.SaveChangesAsync().ConfigureAwait(false);
         }
 
         public async Task DeleteAsync(string name)
@@ -81,7 +81,7 @@ namespace CustomCADs.Application.Services
 
             commands.Delete(role);
 
-            await tracker.SaveChangesAsync().ConfigureAwait(false);
+            await unitOfWork.SaveChangesAsync().ConfigureAwait(false);
         }
     }
 }
