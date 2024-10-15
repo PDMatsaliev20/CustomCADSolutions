@@ -2,5 +2,5 @@
 
 namespace CustomCADs.Application.UseCases.Categories.Commands.Delete
 {
-    public record DeleteCategoryCommand(int Id) : IRequest { }
+    public record DeleteCategoryCommand(int Id) : IRequest;
 }

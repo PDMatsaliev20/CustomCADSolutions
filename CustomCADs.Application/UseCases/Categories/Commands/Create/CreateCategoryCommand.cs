@@ -3,5 +3,5 @@ using MediatR;
 
 namespace CustomCADs.Application.UseCases.Categories.Commands.Create
 {
-    public record CreateCategoryCommand(CategoryModel Model) : IRequest<int> { }
+    public record CreateCategoryCommand(CategoryModel Model) : IRequest<int>;
 }

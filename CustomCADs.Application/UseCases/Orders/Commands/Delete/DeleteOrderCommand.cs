@@ -2,5 +2,5 @@
 
 namespace CustomCADs.Application.UseCases.Orders.Commands.Delete
 {
-    public record DeleteOrderCommand(int Id) : IRequest { }
+    public record DeleteOrderCommand(int Id) : IRequest;
 }

@@ -10,6 +10,5 @@ namespace CustomCADs.Application.UseCases.Cads.Queries.GetAll
         string? Name = null,
         string Sorting = "",
         int Page = 1,
-        int Limit = 20) : IRequest<CadResult>
-    { }
+        int Limit = 20) : IRequest<CadResult>;
 }

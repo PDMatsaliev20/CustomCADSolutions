@@ -3,5 +3,5 @@ using MediatR;
 
 namespace CustomCADs.Application.UseCases.Orders.Queries.GetCadById
 {
-    public record GetOrderCadByIdQuery(int Id) : IRequest<CadModel> {}
+    public record GetOrderCadByIdQuery(int Id) : IRequest<CadModel>;
 }

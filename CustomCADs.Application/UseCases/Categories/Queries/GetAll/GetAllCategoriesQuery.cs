@@ -3,5 +3,5 @@ using MediatR;
 
 namespace CustomCADs.Application.UseCases.Categories.Queries.GetAll
 {
-    public record GetAllCategoriesQuery : IRequest<IEnumerable<CategoryModel>> { }
+    public record GetAllCategoriesQuery : IRequest<IEnumerable<CategoryModel>>;
 }

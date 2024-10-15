@@ -3,5 +3,5 @@ using MediatR;
 
 namespace CustomCADs.Application.UseCases.Cads.Queries.Count
 {
-    public record CadsCountQuery(Func<CadModel, bool> Predicate) : IRequest<int> { }
+    public record CadsCountQuery(Func<CadModel, bool> Predicate) : IRequest<int>;
 }

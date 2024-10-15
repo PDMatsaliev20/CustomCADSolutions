@@ -3,5 +3,5 @@ using MediatR;
 
 namespace CustomCADs.Application.UseCases.Cads.Commands.Create
 {
-    public record CreateCadCommand(CadModel Model) : IRequest<int> { }
+    public record CreateCadCommand(CadModel Model) : IRequest<int>;
 }

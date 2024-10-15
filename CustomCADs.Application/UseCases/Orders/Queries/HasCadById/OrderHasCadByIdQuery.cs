@@ -2,5 +2,5 @@
 
 namespace CustomCADs.Application.UseCases.Orders.Queries.HasCadById
 {
-    public record OrderHasCadByIdQuery(int Id) : IRequest<bool> { }
+    public record OrderHasCadByIdQuery(int Id) : IRequest<bool>;
 }

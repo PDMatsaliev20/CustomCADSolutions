@@ -3,5 +3,5 @@ using MediatR;
 
 namespace CustomCADs.Application.UseCases.Orders.Commands.Edit
 {
-    public record EditOrderCommand(int Id, OrderModel Model) : IRequest { }
+    public record EditOrderCommand(int Id, OrderModel Model) : IRequest;
 }
