@@ -1,15 +1,17 @@
 ﻿using CustomCADs.API.Helpers;
-using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Cads;
+using CustomCADs.Application.UseCases.Cads.Commands.Edit;
+using CustomCADs.Application.UseCases.Cads.Queries.GetById;
+using CustomCADs.Application.UseCases.Cads.Queries.IsCreator;
 using FastEndpoints;
-using FluentValidation.Results;
+using MediatR;
 
 namespace CustomCADs.API.Endpoints.Cads.PatchCad
 {
     using static ApiMessages;
     using static StatusCodes;
 
-    public class PatchCadEndpoint(ICadService service) : Endpoint<PatchCadRequest>
+    public class PatchCadEndpoint(IMediator mediator) : Endpoint<PatchCadRequest>
     {
         public override void Configure()
         {
@@ -23,9 +25,10 @@ namespace CustomCADs.API.Endpoints.Cads.PatchCad
 
         public override async Task HandleAsync(PatchCadRequest req, CancellationToken ct)
         {
-            CadModel model = await service.GetByIdAsync(req.Id).ConfigureAwait(false);
+            IsCadCreatorQuery isCreatorQuery = new(req.Id, User.GetName());
+            bool userIsCreator = await mediator.Send(isCreatorQuery).ConfigureAwait(false);
 
-            if (model.CreatorId != User.GetId())
+            if (userIsCreator)
             {
                 ValidationFailures.Add(new()
                 {
@@ -34,6 +37,9 @@ namespace CustomCADs.API.Endpoints.Cads.PatchCad
                 await SendErrorsAsync().ConfigureAwait(false);
                 return;
             }
+
+            GetCadByIdQuery getCadQuery = new(req.Id);
+            CadModel model = await mediator.Send(getCadQuery).ConfigureAwait(false);
 
             double x = req.Coordinates.X, y = req.Coordinates.Y, z = req.Coordinates.Z;
             switch (req.Type.ToLower())
@@ -51,16 +57,9 @@ namespace CustomCADs.API.Endpoints.Cads.PatchCad
                     return;
             }
 
-            bool isValid = model.Validate(out IList<string> errors);
-            if (!isValid)
-            {
-                var failures = errors.Select(e => new ValidationFailure() { ErrorMessage = e });
-                ValidationFailures.AddRange(failures);
-                await SendErrorsAsync().ConfigureAwait(false);
-                return;
-            }
+            EditCadCommand command = new(req.Id, model);
+            await mediator.Send(command).ConfigureAwait(false);
 
-            await service.EditAsync(req.Id, model).ConfigureAwait(false);
             await SendNoContentAsync().ConfigureAwait(false);
         }
     }

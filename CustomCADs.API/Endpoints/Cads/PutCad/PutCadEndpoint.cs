@@ -1,14 +1,17 @@
 ﻿using CustomCADs.API.Helpers;
-using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Cads;
+using CustomCADs.Application.UseCases.Cads.Commands.Edit;
+using CustomCADs.Application.UseCases.Cads.Commands.SetPaths;
+using CustomCADs.Application.UseCases.Cads.Queries.GetById;
 using FastEndpoints;
+using MediatR;
 
 namespace CustomCADs.API.Endpoints.Cads.PutCad
 {
     using static ApiMessages;
     using static StatusCodes;
 
-    public class PutCadEndpoint(ICadService service, IWebHostEnvironment env) : Endpoint<PutCadRequest>
+    public class PutCadEndpoint(IMediator mediator, IWebHostEnvironment env) : Endpoint<PutCadRequest>
     {
         public override void Configure()
         {
@@ -22,7 +25,8 @@ namespace CustomCADs.API.Endpoints.Cads.PutCad
 
         public override async Task HandleAsync(PutCadRequest req, CancellationToken ct)
         {
-            CadModel cad = await service.GetByIdAsync(req.Id).ConfigureAwait(false);
+            GetCadByIdQuery query = new(req.Id);
+            CadModel cad = await mediator.Send(query).ConfigureAwait(false);
 
             if (cad.CreatorId != User.GetId())
             {
@@ -38,14 +42,18 @@ namespace CustomCADs.API.Endpoints.Cads.PutCad
             {
                 env.DeleteFile("images", cad.Name + cad.Id, cad.Paths.ImageExtension);
                 string imagePath = await env.UploadImageAsync(req.Image, req.Name + req.Id + req.Image.GetFileExtension()).ConfigureAwait(false);
-                await service.SetPathsAsync(req.Id, cad.Paths.FilePath, imagePath).ConfigureAwait(false);
+
+                SetCadPathsCommand setPathsCommand = new(cad.Id, cad.Paths.FilePath, imagePath);
+                await mediator.Send(setPathsCommand).ConfigureAwait(false);
             }
 
             cad.Name = req.Name;
             cad.Description = req.Description;
             cad.CategoryId = req.CategoryId;
             cad.Price = req.Price;
-            await service.EditAsync(req.Id, cad).ConfigureAwait(false);
+
+            EditCadCommand editCommand = new(req.Id, cad);
+            await mediator.Send(editCommand).ConfigureAwait(false);
 
             await SendNoContentAsync().ConfigureAwait(false);
         }

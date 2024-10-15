@@ -1,14 +1,17 @@
 ﻿using CustomCADs.API.Helpers;
-using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Cads;
+using CustomCADs.Application.UseCases.Cads.Commands.Delete;
+using CustomCADs.Application.UseCases.Cads.Queries.GetById;
+using CustomCADs.Application.UseCases.Cads.Queries.IsCreator;
 using FastEndpoints;
+using MediatR;
 
 namespace CustomCADs.API.Endpoints.Cads.DeleteCad
 {
     using static ApiMessages;
     using static StatusCodes;
 
-    public class DeleteCadEndpoint(ICadService service, IWebHostEnvironment env) : Endpoint<DeleteCadRequest>
+    public class DeleteCadEndpoint(IMediator mediator, IWebHostEnvironment env) : Endpoint<DeleteCadRequest>
     {
         public override void Configure()
         {
@@ -21,9 +24,10 @@ namespace CustomCADs.API.Endpoints.Cads.DeleteCad
 
         public override async Task HandleAsync(DeleteCadRequest req, CancellationToken ct)
         {
-            CadModel model = await service.GetByIdAsync(req.Id).ConfigureAwait(false);
+            IsCadCreatorQuery isCreatorQuery = new(req.Id, User.GetName());
+            bool userIsCreator = await mediator.Send(isCreatorQuery).ConfigureAwait(false);
 
-            if (model.CreatorId != User.GetId())
+            if (userIsCreator)
             {
                 ValidationFailures.Add(new()
                 {
@@ -33,10 +37,15 @@ namespace CustomCADs.API.Endpoints.Cads.DeleteCad
                 return;
             }
 
+            GetCadByIdQuery getCadQuery = new(req.Id);
+            CadModel model = await mediator.Send(getCadQuery).ConfigureAwait(false);
+
             string cadFileName = model.Name + req.Id, cadExtension = model.Paths.FileExtension;
             string imageFileName = model.Name + req.Id, imageExtension = model.Paths.ImageExtension;
 
-            await service.DeleteAsync(req.Id).ConfigureAwait(false);
+            DeleteCadCommand command = new(req.Id);
+            await mediator.Send(command).ConfigureAwait(false);
+            
             env.DeleteFile("images", imageFileName, imageExtension);
             env.DeleteFile("cads", cadFileName, cadExtension);
 

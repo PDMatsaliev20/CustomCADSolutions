@@ -1,14 +1,15 @@
 ﻿using CustomCADs.API.Helpers;
-using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Cads;
+using CustomCADs.Application.UseCases.Cads.Queries.Count;
 using CustomCADs.Domain.Enums;
 using FastEndpoints;
+using MediatR;
 
 namespace CustomCADs.API.Endpoints.Cads.CountCads
 {
     using static StatusCodes;
 
-    public class CountCadsEndpoint(ICadService service) : EndpointWithoutRequest<CountCadsResponse>
+    public class CountCadsEndpoint(IMediator mediator) : EndpointWithoutRequest<CountCadsResponse>
     {
         public override void Configure()
         {
@@ -21,12 +22,21 @@ namespace CustomCADs.API.Endpoints.Cads.CountCads
 
         public override async Task HandleAsync(CancellationToken ct)
         {
-            bool predicate(CadModel c, CadStatus s) => c.Status == s && c.Creator.UserName == User.GetName();
+            CadsCountQuery query;
+            bool predicate(CadModel c, CadStatus s) 
+                => c.Status == s && c.Creator.UserName == User.GetName();
+            
+            query = new(c => predicate(c, CadStatus.Unchecked));
+            int uncheckedCadsCounts = await mediator.Send(query).ConfigureAwait(false);
+            
+            query = new(c => predicate(c, CadStatus.Validated));
+            int validatedCadsCounts = await mediator.Send(query).ConfigureAwait(false);
+            
+            query = new(c => predicate(c, CadStatus.Reported));
+            int reportedCadsCounts = await mediator.Send(query).ConfigureAwait(false);
 
-            int uncheckedCadsCounts = await service.Count(c => predicate(c, CadStatus.Unchecked)).ConfigureAwait(false);
-            int validatedCadsCounts = await service.Count(c => predicate(c, CadStatus.Validated)).ConfigureAwait(false);
-            int reportedCadsCounts = await service.Count(c => predicate(c, CadStatus.Reported)).ConfigureAwait(false);
-            int bannedCadsCounts = await service.Count(c => predicate(c, CadStatus.Banned)).ConfigureAwait(false);
+            query = new(c => predicate(c, CadStatus.Banned));
+            int bannedCadsCounts = await mediator.Send(query).ConfigureAwait(false);
 
             CountCadsResponse response = new(uncheckedCadsCounts, validatedCadsCounts, reportedCadsCounts, bannedCadsCounts);
             await SendOkAsync(response).ConfigureAwait(false);

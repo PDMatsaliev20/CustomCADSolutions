@@ -3,14 +3,16 @@ using CustomCADs.Application.Contracts;
 using CustomCADs.Application.DTOs.Payment;
 using CustomCADs.Application.Models.Cads;
 using CustomCADs.Application.Models.Payment;
+using CustomCADs.Application.UseCases.Cads.Queries.GetById;
 using FastEndpoints;
+using MediatR;
 
 namespace CustomCADs.API.Endpoints.Payment.Purchase
 {
     using static ApiMessages;
     using static StatusCodes;
 
-    public class PurchaseEndpoint(IPaymentService service, ICadService cadService) : Endpoint<PurchaseRequest, string>
+    public class PurchaseEndpoint(IMediator mediator, IPaymentService service) : Endpoint<PurchaseRequest, string>
     {
         public override void Configure()
         {
@@ -24,7 +26,8 @@ namespace CustomCADs.API.Endpoints.Payment.Purchase
 
         public override async Task HandleAsync(PurchaseRequest req, CancellationToken ct)
         {
-            CadModel cad = await cadService.GetByIdAsync(req.Id).ConfigureAwait(false);
+            GetCadByIdQuery query = new(req.Id);
+            CadModel cad = await mediator.Send(query).ConfigureAwait(false);
 
             PurchaseInfo purchase = new()
             {

@@ -1,15 +1,16 @@
 ﻿using CustomCADs.API.Dtos;
-using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Cads;
+using CustomCADs.Application.UseCases.Cads.Queries.GetAll;
 using CustomCADs.Domain.Enums;
 using FastEndpoints;
 using Mapster;
+using MediatR;
 
 namespace CustomCADs.API.Endpoints.Home.Gallery
 {
     using static StatusCodes;
 
-    public class GalleryEndpoint(ICadService service) : Endpoint<GalleryRequest, CadResultDto<GalleryResponse>>
+    public class GalleryEndpoint(IMediator mediator) : Endpoint<GalleryRequest, CadResultDto<GalleryResponse>>
     {
         public override void Configure()
         {
@@ -23,15 +24,16 @@ namespace CustomCADs.API.Endpoints.Home.Gallery
 
         public override async Task HandleAsync(GalleryRequest req, CancellationToken ct)
         {
-            CadResult result = service.GetAllAsync(
-                    status: nameof(CadStatus.Validated),
-                    category: req.Category,
-                    name: req.Name,
-                    owner: req.Creator,
-                    sorting: req.Sorting ?? string.Empty,
-                    page: req.Page,
-                    limit: req.Limit
+            GetAllCadsQuery query = new(
+                    Status: nameof(CadStatus.Validated),
+                    Category: req.Category,
+                    Name: req.Name,
+                    Creator: req.Creator,
+                    Sorting: req.Sorting ?? string.Empty,
+                    Page: req.Page,
+                    Limit: req.Limit
             );
+            CadResult result = await mediator.Send(query).ConfigureAwait(false);
 
             CadResultDto<GalleryResponse> response = new()
             {

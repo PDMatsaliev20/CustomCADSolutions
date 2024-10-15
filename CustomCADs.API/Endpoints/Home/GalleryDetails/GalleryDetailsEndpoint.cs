@@ -1,13 +1,14 @@
-﻿using CustomCADs.Application.Contracts;
-using CustomCADs.Application.Models.Cads;
+﻿using CustomCADs.Application.Models.Cads;
+using CustomCADs.Application.UseCases.Cads.Queries.GetById;
 using FastEndpoints;
 using Mapster;
+using MediatR;
 
 namespace CustomCADs.API.Endpoints.Home.GalleryDetails
 {
     using static StatusCodes;
 
-    public class GalleryDetailsEndpoint(ICadService service) : Endpoint<GalleryDetailsRequest, GalleryDetailsResponse>
+    public class GalleryDetailsEndpoint(IMediator mediator) : Endpoint<GalleryDetailsRequest, GalleryDetailsResponse>
     {
         public override void Configure()
         {
@@ -22,7 +23,9 @@ namespace CustomCADs.API.Endpoints.Home.GalleryDetails
 
         public override async Task HandleAsync(GalleryDetailsRequest req, CancellationToken ct)
         {
-            CadModel model = await service.GetByIdAsync(req.Id).ConfigureAwait(false);
+            GetCadByIdQuery query = new(req.Id);
+            CadModel model = await mediator.Send(query).ConfigureAwait(false);
+
             GalleryDetailsResponse response = model.Adapt<GalleryDetailsResponse>();
             await SendOkAsync(response).ConfigureAwait(false);
         }

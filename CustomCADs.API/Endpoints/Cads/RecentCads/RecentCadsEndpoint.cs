@@ -1,16 +1,16 @@
-﻿using CustomCADs.API.Dtos;
-using CustomCADs.API.Helpers;
-using CustomCADs.Application.Contracts;
+﻿using CustomCADs.API.Helpers;
 using CustomCADs.Application.Models.Cads;
+using CustomCADs.Application.UseCases.Cads.Queries.GetAll;
 using CustomCADs.Domain.Enums;
 using FastEndpoints;
 using Mapster;
+using MediatR;
 
 namespace CustomCADs.API.Endpoints.Cads.RecentCads
 {
     using static StatusCodes;
 
-    public class RecentCadsEndpoint(ICadService service) : Endpoint<RecentCadsRequest, IEnumerable<RecentCadsResponse>>
+    public class RecentCadsEndpoint(IMediator mediator) : Endpoint<RecentCadsRequest, IEnumerable<RecentCadsResponse>>
     {
         public override void Configure()
         {
@@ -23,11 +23,12 @@ namespace CustomCADs.API.Endpoints.Cads.RecentCads
 
         public override async Task HandleAsync(RecentCadsRequest req, CancellationToken ct)
         {
-            CadResult result = service.GetAllAsync(
-                creator: User.GetName(),
-                sorting: nameof(Sorting.Newest),
-                limit: req.Limit
+            GetAllCadsQuery query = new(
+                Creator: User.GetName(),
+                Sorting: nameof(Sorting.Newest),
+                Limit: req.Limit
             );
+            CadResult result = await mediator.Send(query).ConfigureAwait(false);
 
             var response = result.Cads.Select(cad => cad.Adapt<RecentCadsResponse>());
             await SendOkAsync(response).ConfigureAwait(false);

@@ -3,6 +3,7 @@ using CustomCADs.API.Helpers;
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Cads;
 using CustomCADs.Application.Models.Orders;
+using CustomCADs.Application.UseCases.Cads.Queries.GetById;
 using CustomCADs.Application.UseCases.Orders.Commands.Create;
 using CustomCADs.Application.UseCases.Orders.Queries.GetById;
 using CustomCADs.Domain.Enums;
@@ -15,7 +16,7 @@ namespace CustomCADs.API.Endpoints.Orders.GalleryOrder
     using static ApiMessages;
     using static StatusCodes;
 
-    public class GalleryOrderEndpoint(IMediator mediator, ICadService cadService) : Endpoint<GalleryOrderRequest, GalleryOrderResponse>
+    public class GalleryOrderEndpoint(IMediator mediator) : Endpoint<GalleryOrderRequest, GalleryOrderResponse>
     {
         public override void Configure()
         {
@@ -28,7 +29,9 @@ namespace CustomCADs.API.Endpoints.Orders.GalleryOrder
 
         public override async Task HandleAsync(GalleryOrderRequest req, CancellationToken ct)
         {
-            CadModel cad = await cadService.GetByIdAsync(req.CadId).ConfigureAwait(false);
+            GetCadByIdQuery query = new(req.CadId);
+            CadModel cad = await mediator.Send(query).ConfigureAwait(false);
+
             OrderModel order = new()
             {
                 Name = cad.Name,
