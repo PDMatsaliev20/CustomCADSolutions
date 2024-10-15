@@ -29,8 +29,8 @@ namespace CustomCADs.Application.Services
                 };
             }
 
-            queryable = queryable.Filter(status: status, customFilter: string.IsNullOrEmpty(designerId) ? null : o => o.DesignerId == designerId);
-            queryable = queryable.Search(category: category, name: name, buyer: buyer);
+            queryable = queryable.Filter(status: status, designerId: designerId);
+            queryable = queryable.Search(category: category, name: name);
             queryable = queryable.Sort(sorting: sorting);
 
 

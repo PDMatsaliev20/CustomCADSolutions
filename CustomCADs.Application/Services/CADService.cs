@@ -87,10 +87,7 @@ namespace CustomCADs.Application.Services
 
         public async Task DeleteAsync(int id)
         {
-            IQueryable<Order> queryable = orderQueries.GetAll();
-            queryable = queryable.Filter(customFilter: o => o.CadId == id);
-
-            IEnumerable<Order> orders = [..queryable];
+            IEnumerable<Order> orders = [.. orderQueries.GetAll().Filter(cadId: id)];
             foreach (Order order in orders)
             {
                 order.Status = OrderStatus.Pending;
@@ -99,7 +96,7 @@ namespace CustomCADs.Application.Services
                 order.CadId = null;
                 order.Cad = null;
             }
-            
+
             Cad cad = await cadQueries.GetByIdAsync(id).ConfigureAwait(false)
                 ?? throw new CadNotFoundException(id);
 

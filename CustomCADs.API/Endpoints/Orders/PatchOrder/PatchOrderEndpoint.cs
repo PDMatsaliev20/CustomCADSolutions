@@ -1,14 +1,15 @@
 ﻿using CustomCADs.API.Helpers;
-using CustomCADs.Application.Contracts;
-using CustomCADs.Application.Models.Orders;
+using CustomCADs.Application.UseCases.Orders.Commands.SetShouldBeDelivered;
+using CustomCADs.Application.UseCases.Orders.Queries.IsBuyer;
 using FastEndpoints;
+using MediatR;
 
 namespace CustomCADs.API.Endpoints.Orders.PatchOrder
 {
     using static ApiMessages;
     using static StatusCodes;
 
-    public class PatchOrderEndpoint(IOrderService service) : Endpoint<PatchOrderRequest>
+    public class PatchOrderEndpoint(IMediator mediator) : Endpoint<PatchOrderRequest>
     {
         public override void Configure()
         {
@@ -21,8 +22,10 @@ namespace CustomCADs.API.Endpoints.Orders.PatchOrder
 
         public override async Task HandleAsync(PatchOrderRequest req, CancellationToken ct)
         {
-            OrderModel model = await service.GetByIdAsync(req.Id).ConfigureAwait(false);
-            if (model.BuyerId != User.GetId())
+            IsOrderBuyerQuery isBuyerQuery = new(req.Id, User.GetName());
+            bool userIsBuyer = await mediator.Send(isBuyerQuery).ConfigureAwait(false);
+
+            if (!userIsBuyer)
             {
                 ValidationFailures.Add(new()
                 {
@@ -31,8 +34,8 @@ namespace CustomCADs.API.Endpoints.Orders.PatchOrder
                 await SendErrorsAsync().ConfigureAwait(false);
             }
 
-            model.ShouldBeDelivered = req.ShouldBeDelivered;
-            await service.EditAsync(req.Id, model).ConfigureAwait(false);
+            SetOrderShouldBeDeliveredCommand command = new(req.Id, req.ShouldBeDelivered);
+            await mediator.Send(command).ConfigureAwait(false);
 
             await SendNoContentAsync().ConfigureAwait(false);
         }

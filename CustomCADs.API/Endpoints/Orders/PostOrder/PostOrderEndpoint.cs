@@ -1,15 +1,18 @@
 ﻿using CustomCADs.API.Endpoints.Orders.GetOrder;
 using CustomCADs.API.Helpers;
-using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Orders;
+using CustomCADs.Application.UseCases.Orders.Commands.Create;
+using CustomCADs.Application.UseCases.Orders.Commands.SetImagePath;
+using CustomCADs.Application.UseCases.Orders.Queries.GetById;
 using FastEndpoints;
 using Mapster;
+using MediatR;
 
 namespace CustomCADs.API.Endpoints.Orders.PostOrder
 {
     using static StatusCodes;
 
-    public class PostOrderEndpoint(IOrderService service, IWebHostEnvironment env) : Endpoint<PostOrderRequest, PostOrderResponse>
+    public class PostOrderEndpoint(IMediator mediator, IWebHostEnvironment env) : Endpoint<PostOrderRequest, PostOrderResponse>
     {
         public override void Configure()
         {
@@ -28,12 +31,16 @@ namespace CustomCADs.API.Endpoints.Orders.PostOrder
             model.BuyerId = User.GetId();
             model.ImagePath = string.Empty;
 
-            int id = await service.CreateAsync(model).ConfigureAwait(false);
+            CreateOrderCommand createCommand = new(model);
+            int id = await mediator.Send(createCommand).ConfigureAwait(false);
 
             string imagePath = await env.UploadOrderAsync(req.Image, req.Name + id + req.Image.GetFileExtension()).ConfigureAwait(false);
-            await service.SetImagePathAsync(id, imagePath).ConfigureAwait(false);
+            
+            SetOrderImagePathCommand setImagePathCommand = new(id, imagePath);
+            await mediator.Send(setImagePathCommand).ConfigureAwait(false);
 
-            OrderModel createdOrder = await service.GetByIdAsync(id).ConfigureAwait(false);
+            GetOrderByIdQuery query = new(id);
+            OrderModel createdOrder = await mediator.Send(query).ConfigureAwait(false);
 
             PostOrderResponse response = createdOrder.Adapt<PostOrderResponse>();
             await SendCreatedAtAsync<GetOrderEndpoint>(new { id }, response);

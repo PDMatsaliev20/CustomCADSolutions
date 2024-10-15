@@ -1,15 +1,17 @@
 ﻿using CustomCADs.API.Helpers;
-using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Orders;
+using CustomCADs.Application.UseCases.Orders.Commands.Edit;
+using CustomCADs.Application.UseCases.Orders.Queries.GetById;
 using CustomCADs.Domain.Enums;
 using FastEndpoints;
+using MediatR;
 
 namespace CustomCADs.API.Endpoints.Orders.PutOrder
 {
     using static ApiMessages;
     using static StatusCodes;
 
-    public class PutOrderEndpoint(IOrderService service) : Endpoint<PutOrderRequest>
+    public class PutOrderEndpoint(IMediator mediator) : Endpoint<PutOrderRequest>
     {
         public override void Configure()
         {
@@ -23,7 +25,8 @@ namespace CustomCADs.API.Endpoints.Orders.PutOrder
 
         public override async Task HandleAsync(PutOrderRequest req, CancellationToken ct)
         {
-            OrderModel order = await service.GetByIdAsync(req.Id).ConfigureAwait(false);
+            GetOrderByIdQuery query = new(req.Id);
+            OrderModel order = await mediator.Send(query).ConfigureAwait(false);
 
             if (order.BuyerId != User.GetId())
             {
@@ -44,7 +47,9 @@ namespace CustomCADs.API.Endpoints.Orders.PutOrder
             order.Name = req.Name;
             order.Description = req.Description;
             order.CategoryId = req.CategoryId;
-            await service.EditAsync(req.Id, order).ConfigureAwait(false);
+
+            EditOrderCommand command = new(req.Id, order);
+            await mediator.Send(command).ConfigureAwait(false);
 
             await SendNoContentAsync().ConfigureAwait(false);
         }

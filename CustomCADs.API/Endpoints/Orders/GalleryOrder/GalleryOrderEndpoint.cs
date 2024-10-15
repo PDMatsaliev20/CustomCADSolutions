@@ -3,16 +3,19 @@ using CustomCADs.API.Helpers;
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Cads;
 using CustomCADs.Application.Models.Orders;
+using CustomCADs.Application.UseCases.Orders.Commands.Create;
+using CustomCADs.Application.UseCases.Orders.Queries.GetById;
 using CustomCADs.Domain.Enums;
 using FastEndpoints;
 using Mapster;
+using MediatR;
 
 namespace CustomCADs.API.Endpoints.Orders.GalleryOrder
 {
     using static ApiMessages;
     using static StatusCodes;
 
-    public class GalleryOrderEndpoint(IOrderService orderService, ICadService cadService) : Endpoint<GalleryOrderRequest, GalleryOrderResponse>
+    public class GalleryOrderEndpoint(IMediator mediator, ICadService cadService) : Endpoint<GalleryOrderRequest, GalleryOrderResponse>
     {
         public override void Configure()
         {
@@ -39,8 +42,11 @@ namespace CustomCADs.API.Endpoints.Orders.GalleryOrder
                 ImagePath = cad.Paths.ImagePath,
             };
 
-            int id = await orderService.CreateAsync(order).ConfigureAwait(false);
-            OrderModel createdOrder = await orderService.GetByIdAsync(id).ConfigureAwait(false);
+            CreateOrderCommand command = new(order);
+            int id = await mediator.Send(command).ConfigureAwait(false);
+
+            GetOrderByIdQuery orderByIdQuery = new(id);
+            OrderModel createdOrder = await mediator.Send(orderByIdQuery).ConfigureAwait(false);
 
             GalleryOrderResponse response = createdOrder.Adapt<GalleryOrderResponse>();
             await SendCreatedAtAsync<GetOrderEndpoint>(new { id }, response).ConfigureAwait(false);

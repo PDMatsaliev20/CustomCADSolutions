@@ -22,7 +22,7 @@ namespace CustomCADs.Application.Helpers
             return query;
         }
 
-        public static IQueryable<Order> Search(this IQueryable<Order> query, string? category = null, string? name = null, string? buyer = null)
+        public static IQueryable<Order> Search(this IQueryable<Order> query, string? category = null, string? name = null)
         {
             if (!string.IsNullOrWhiteSpace(category))
             {
@@ -32,14 +32,10 @@ namespace CustomCADs.Application.Helpers
             {
                 query = query.Where(o => o.Name.Contains(name));
             }
-            if (!string.IsNullOrWhiteSpace(buyer))
-            {
-                query = query.Where(o => o.Buyer.UserName.Contains(buyer));
-            }
 
             return query;
         }
-        
+
         public static IQueryable<User> Search(this IQueryable<User> query, string? username = null, string? email = null, string? firstName = null, string? lastName = null, DateTime? rtEndDateBefore = null, DateTime? rtEndDateAfter = null)
         {
             if (!string.IsNullOrWhiteSpace(username))
@@ -66,7 +62,7 @@ namespace CustomCADs.Application.Helpers
             {
                 query = query.Where(u => u.RefreshTokenEndDate.HasValue && u.RefreshTokenEndDate < rtEndDateAfter);
             }
-            
+
             return query;
         }
 

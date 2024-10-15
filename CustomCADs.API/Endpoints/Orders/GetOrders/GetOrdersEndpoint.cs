@@ -1,16 +1,17 @@
 ﻿using CustomCADs.API.Dtos;
 using CustomCADs.API.Helpers;
-using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Orders;
+using CustomCADs.Application.UseCases.Orders.Queries.GetAll;
 using CustomCADs.Domain.Enums;
 using FastEndpoints;
 using Mapster;
+using MediatR;
 
 namespace CustomCADs.API.Endpoints.Orders.GetOrders
 {
     using static StatusCodes;
 
-    public class GetOrdersEndpoint(IOrderService service) : Endpoint<GetOrdersRequest, OrderResultDto<GetOrdersResponse>>
+    public class GetOrdersEndpoint(IMediator mediator) : Endpoint<GetOrdersRequest, OrderResultDto<GetOrdersResponse>>
     {
         public override void Configure()
         {
@@ -29,22 +30,22 @@ namespace CustomCADs.API.Endpoints.Orders.GetOrders
                 return;
             }
 
-            OrderResult result = service.GetAll(
-                    buyer: User.GetName(),
-                    status: req.Status,
-                    category: req.Category,
-                    name: req.Name,
-                    sorting: req.Sorting ?? "",
-                    page: req.Page,
-                    limit: req.Limit
-                );
+            GetAllOrdersQuery query = new(
+                Buyer: User.GetName(),
+                Status: req.Status,
+                Category: req.Category,
+                Name: req.Name,
+                Sorting: req.Sorting ?? string.Empty,
+                Page: req.Page,
+                Limit: req.Limit
+            );
+            OrderResult result = await mediator.Send(query).ConfigureAwait(false);
 
             OrderResultDto<GetOrdersResponse> response = new()
             {
                 Count = result.Count,
-                Orders = result.Orders.Select(order => order.Adapt<GetOrdersResponse>()).ToArray(),
+                Orders = result.Orders.Adapt<ICollection<GetOrdersResponse>>(),
             };
-
             await SendOkAsync(response).ConfigureAwait(false);
         }
     }

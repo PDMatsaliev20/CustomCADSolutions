@@ -33,7 +33,7 @@ namespace CustomCADs.Application.Helpers
 
             return query;
         }
-        
+
         public static IQueryable<Category> Sort(this IQueryable<Category> query, string sorting = "")
         {
             query = sorting.ToLower() switch

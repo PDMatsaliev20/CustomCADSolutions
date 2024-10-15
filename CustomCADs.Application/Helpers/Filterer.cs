@@ -23,8 +23,8 @@ namespace CustomCADs.Application.Helpers
 
             return query;
         }
-        
-        public static IQueryable<Order> Filter(this IQueryable<Order> query, string? user = null, string? status = null, Expression<Func<Order, bool>>? customFilter = null)
+
+        public static IQueryable<Order> Filter(this IQueryable<Order> query, string? user = null, string? status = null, int? cadId = null, string? designerId = null)
         {
             if (user != null)
             {
@@ -34,24 +34,18 @@ namespace CustomCADs.Application.Helpers
             {
                 query = query.Where(o => o.Status == orderStatus);
             }
-            if (customFilter != null)
+            if (cadId != null)
             {
-                query = query.Where(customFilter);
+                query = query.Where(o => o.CadId == cadId);
+            }
+            if (designerId != null)
+            {
+                query = query.Where(o => o.DesignerId == designerId);
             }
 
             return query;
         }
-        
-        public static IQueryable<Category> Filter(this IQueryable<Category> query, Expression<Func<Category, bool>>? customFilter = null)
-        {
-            if (customFilter != null)
-            {
-                query = query.Where(customFilter);
-            }
 
-            return query;
-        }
-        
         public static IQueryable<User> Filter(this IQueryable<User> query, bool? hasRT = null, Expression<Func<User, bool>>? customFilter = null)
         {
             if (hasRT.HasValue)
@@ -65,16 +59,5 @@ namespace CustomCADs.Application.Helpers
 
             return query;
         }
-        
-        public static IQueryable<Role> Filter(this IQueryable<Role> query, Expression<Func<Role, bool>>? customFilter = null)
-        {
-            if (customFilter != null)
-            {
-                query = query.Where(customFilter);
-            }
-
-            return query;
-        }
-
     }
 }

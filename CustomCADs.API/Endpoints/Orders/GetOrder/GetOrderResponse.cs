@@ -6,6 +6,7 @@ namespace CustomCADs.API.Endpoints.Orders.GetOrder
     {
         public required string Name { get; set; }
         public required string Description { get; set; }
+        public required bool ShouldBeDelivered { get; set; }
         public required string Status { get; set; }
         public required string OrderDate { get; set; }
         public required string BuyerName { get; set; }

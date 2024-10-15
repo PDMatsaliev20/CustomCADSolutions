@@ -1,14 +1,18 @@
 ﻿using CustomCADs.API.Helpers;
-using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Cads;
+using CustomCADs.Application.UseCases.Orders.Queries.ExistsById;
+using CustomCADs.Application.UseCases.Orders.Queries.GetCadById;
+using CustomCADs.Application.UseCases.Orders.Queries.HasCadById;
+using CustomCADs.Application.UseCases.Orders.Queries.IsBuyer;
 using FastEndpoints;
+using MediatR;
 
 namespace CustomCADs.API.Endpoints.Orders.DownloadCad
 {
     using static ApiMessages;
     using static StatusCodes;
 
-    public class DownloadCadEndpoint(IOrderService service, IWebHostEnvironment env) : Endpoint<DownloadCadRequest, byte[]>
+    public class DownloadCadEndpoint(IMediator mediator, IWebHostEnvironment env) : Endpoint<DownloadCadRequest, byte[]>
     {
         public override void Configure()
         {
@@ -22,22 +26,28 @@ namespace CustomCADs.API.Endpoints.Orders.DownloadCad
 
         public override async Task HandleAsync(DownloadCadRequest req, CancellationToken ct)
         {
-            bool orderExists = await service.ExistsByIdAsync(req.Id).ConfigureAwait(false);
+            OrderExistsByIdQuery existsQuery = new(req.Id);
+            bool orderExists = await mediator.Send(existsQuery).ConfigureAwait(false);
+
             if (!orderExists)
             {
                 await SendNotFoundAsync().ConfigureAwait(false);
                 return;
             }
 
-            bool orderHasCad = await service.HasCadAsync(req.Id).ConfigureAwait(false);
+            OrderHasCadByIdQuery hasCadQuery = new(req.Id);
+            bool orderHasCad = await mediator.Send(existsQuery).ConfigureAwait(false);
+
             if (!orderHasCad)
             {
                 await SendErrorsAsync().ConfigureAwait(false);
                 return;
             }
 
-            bool userOwnsOrder = await service.CheckOwnership(req.Id, User.GetName());
-            if (!userOwnsOrder)
+            IsOrderBuyerQuery isBuyerQuery = new(req.Id, User.GetName());
+            bool userIsOrderBuyer = await mediator.Send(isBuyerQuery);
+
+            if (!userIsOrderBuyer)
             {
                 ValidationFailures.Add(new()
                 {
@@ -47,7 +57,8 @@ namespace CustomCADs.API.Endpoints.Orders.DownloadCad
                 return;
             }
 
-            CadModel model = await service.GetCadAsync(req.Id).ConfigureAwait(false);
+            GetOrderCadByIdQuery orderCadQuery = new(req.Id);
+            CadModel model = await mediator.Send(orderCadQuery).ConfigureAwait(false);
 
             byte[] bytes = await env.GetCadBytes(model.Name + model.Id, model.Paths.FileExtension).ConfigureAwait(false);
             bool isGlb = model.Paths.FileExtension == ".glb";

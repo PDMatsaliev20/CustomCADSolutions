@@ -1,15 +1,16 @@
 ﻿using CustomCADs.API.Helpers;
-using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Orders;
+using CustomCADs.Application.UseCases.Orders.Queries.GetAll;
 using CustomCADs.Domain.Enums;
 using FastEndpoints;
 using Mapster;
+using MediatR;
 
 namespace CustomCADs.API.Endpoints.Orders.RecentOrders
 {
     using static StatusCodes;
 
-    public class RecentOrdersEndpoint(IOrderService service) : Endpoint<RecentOrdersRequest, IEnumerable<RecentOrdersResponse>>
+    public class RecentOrdersEndpoint(IMediator mediator) : Endpoint<RecentOrdersRequest, IEnumerable<RecentOrdersResponse>>
     {
         public override void Configure()
         {
@@ -22,12 +23,13 @@ namespace CustomCADs.API.Endpoints.Orders.RecentOrders
 
         public override async Task HandleAsync(RecentOrdersRequest req, CancellationToken ct)
         {
-            OrderResult result = service.GetAll(
-                buyer: User.GetName(),
-                sorting: nameof(Sorting.Newest),
-                limit: req.Limit
+            GetAllOrdersQuery query = new(
+                Buyer: User.GetName(),
+                Sorting: nameof(Sorting.Newest),
+                Limit: req.Limit
             );
-
+            OrderResult result = await mediator.Send(query).ConfigureAwait(false);
+            
             var response = result.Orders.Select(order => order.Adapt<RecentOrdersResponse>());
             await SendOkAsync(response).ConfigureAwait(false);
         }

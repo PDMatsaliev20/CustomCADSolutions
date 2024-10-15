@@ -1,14 +1,15 @@
 ﻿using CustomCADs.API.Helpers;
-using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Orders;
+using CustomCADs.Application.UseCases.Orders.Queries.Count;
 using CustomCADs.Domain.Enums;
 using FastEndpoints;
+using MediatR;
 
 namespace CustomCADs.API.Endpoints.Orders.CountOrder
 {
     using static StatusCodes;
 
-    public class CountOrderEndpoint(IOrderService service) : EndpointWithoutRequest<OrderCountsResponse>
+    public class CountOrderEndpoint(IMediator mediator) : EndpointWithoutRequest<OrderCountsResponse>
     {
         public override void Configure()
         {
@@ -21,14 +22,24 @@ namespace CustomCADs.API.Endpoints.Orders.CountOrder
 
         public override async Task HandleAsync(CancellationToken ct)
         {
+            OrdersCountQuery query;
             bool predicate(OrderModel o, OrderStatus s)
                            => o.Status == s && o.Buyer.UserName == User.GetName();
 
-            int pending = await service.CountAsync(o => predicate(o, OrderStatus.Pending)).ConfigureAwait(false);
-            int begun = await service.CountAsync(o => predicate(o, OrderStatus.Begun)).ConfigureAwait(false);
-            int finished = await service.CountAsync(o => predicate(o, OrderStatus.Finished)).ConfigureAwait(false);
-            int reported = await service.CountAsync(o => predicate(o, OrderStatus.Reported)).ConfigureAwait(false);
-            int removed = await service.CountAsync(o => predicate(o, OrderStatus.Removed)).ConfigureAwait(false);
+            query = new(o => predicate(o, OrderStatus.Pending));
+            int pending = await mediator.Send(query);
+            
+            query = new(o => predicate(o, OrderStatus.Begun));
+            int begun = await mediator.Send(query);
+
+            query = new(o => predicate(o, OrderStatus.Finished));
+            int finished = await mediator.Send(query).ConfigureAwait(false);
+            
+            query = new(o => predicate(o, OrderStatus.Reported));
+            int reported = await mediator.Send(query).ConfigureAwait(false);
+            
+            query = new(o => predicate(o, OrderStatus.Removed));
+            int removed = await mediator.Send(query).ConfigureAwait(false);
 
             OrderCountsResponse response = new(pending, begun, finished, reported, removed);
             await SendOkAsync(response).ConfigureAwait(false);

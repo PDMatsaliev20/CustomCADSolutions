@@ -1,14 +1,17 @@
 ﻿using CustomCADs.API.Helpers;
-using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Orders;
+using CustomCADs.Application.UseCases.Orders.Commands.Delete;
+using CustomCADs.Application.UseCases.Orders.Queries.GetById;
+using CustomCADs.Application.UseCases.Orders.Queries.IsBuyer;
 using FastEndpoints;
+using MediatR;
 
 namespace CustomCADs.API.Endpoints.Orders.DeleteOrder
 {
     using static ApiMessages;
     using static StatusCodes;
 
-    public class DeleteOrderEndpoint(IOrderService service, IWebHostEnvironment env) : Endpoint<DeleteOrderRequest>
+    public class DeleteOrderEndpoint(IMediator mediator, IWebHostEnvironment env) : Endpoint<DeleteOrderRequest>
     {
         public override void Configure()
         {
@@ -21,8 +24,10 @@ namespace CustomCADs.API.Endpoints.Orders.DeleteOrder
 
         public override async Task HandleAsync(DeleteOrderRequest req, CancellationToken ct)
         {
-            OrderModel model = await service.GetByIdAsync(req.Id).ConfigureAwait(false);
-            if (model.BuyerId != User.GetId())
+            IsOrderBuyerQuery isBuyerQuery = new(req.Id, User.GetName());
+            bool userIsBuyer = await mediator.Send(isBuyerQuery).ConfigureAwait(false);
+
+            if (!userIsBuyer)
             {
                 ValidationFailures.Add(new()
                 {
@@ -32,11 +37,13 @@ namespace CustomCADs.API.Endpoints.Orders.DeleteOrder
                 return;
             }
 
-            if (string.IsNullOrEmpty(model.ImagePath))
-            {
-                env.DeleteFile("orders", model.Name + model.Id, model.ImageExtension!);
-            }
-            await service.DeleteAsync(req.Id).ConfigureAwait(false);
+            GetOrderByIdQuery getOrderQuery = new(req.Id);
+            OrderModel model = await mediator.Send(getOrderQuery).ConfigureAwait(false);
+
+            env.DeleteFile("orders", model.Name + model.Id, model.ImageExtension);
+
+            DeleteOrderCommand command = new(req.Id);
+            await mediator.Send(command).ConfigureAwait(false);
 
             await SendNoContentAsync().ConfigureAwait(false);
         }

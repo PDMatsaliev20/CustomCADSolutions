@@ -1,5 +1,4 @@
-﻿using CustomCADs.Application.Contracts;
-using CustomCADs.Application.UseCases.Categories.Commands.Delete;
+﻿using CustomCADs.Application.UseCases.Categories.Commands.Delete;
 using CustomCADs.Application.UseCases.Categories.Queries.ExistsById;
 using FastEndpoints;
 using MediatR;
