@@ -1,7 +1,6 @@
-﻿namespace CustomCADs.API.Endpoints.Designer.OngoingOrder
+﻿namespace CustomCADs.API.Endpoints.Designer.OngoingOrder;
+
+public class OngoingOrderRequest
 {
-    public class OngoingOrderRequest
-    {
-        public int Id { get; set; }
-    }
+    public int Id { get; set; }
 }

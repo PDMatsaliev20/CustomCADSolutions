@@ -1,25 +1,24 @@
 ﻿using FastEndpoints;
 using static CustomCADs.Domain.DataConstants;
 
-namespace CustomCADs.API.Endpoints.Designer
-{
-    using static StatusCodes;
+namespace CustomCADs.API.Endpoints.Designer;
 
-    public class DesignerGroup : Group
+using static StatusCodes;
+
+public class DesignerGroup : Group
+{
+    public DesignerGroup()
     {
-        public DesignerGroup()
+        Configure("Designer", ep =>
         {
-            Configure("Designer", ep =>
+            ep.Roles(RoleConstants.Designer);
+            ep.Description(opt =>
             {
-                ep.Roles(RoleConstants.Designer);
-                ep.Description(opt =>
-                {
-                    opt.WithTags("Designer");
-                    opt.ProducesProblem(Status401Unauthorized);
-                    opt.ProducesProblem(Status403Forbidden);
-                    opt.ProducesProblem(Status500InternalServerError);
-                });
+                opt.WithTags("Designer");
+                opt.ProducesProblem(Status401Unauthorized);
+                opt.ProducesProblem(Status403Forbidden);
+                opt.ProducesProblem(Status500InternalServerError);
             });
-        }
+        });
     }
 }

@@ -1,10 +1,9 @@
 ﻿using FastEndpoints;
 
-namespace CustomCADs.API.Endpoints.Identity.EmailConfirmed
+namespace CustomCADs.API.Endpoints.Identity.EmailConfirmed;
+
+public class EmailConfirmedRequest
 {
-    public class EmailConfirmedRequest
-    {
-        [BindFrom("username")]
-        public required string Username { get; set; }
-    }
+    [BindFrom("username")]
+    public required string Username { get; set; }
 }

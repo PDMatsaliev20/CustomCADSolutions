@@ -1,9 +1,8 @@
-﻿namespace CustomCADs.Application.Contracts
+﻿namespace CustomCADs.Application.Contracts;
+
+public interface IEmailService
 {
-    public interface IEmailService
-    {
-        Task SendEmailAsync(string to, string subject, string body);
-        Task SendVerificationEmailAsync(string to, string endpoint);
-        Task SendForgotPasswordEmailAsync(string to, string endpoint);
-    }
+    Task SendEmailAsync(string to, string subject, string body);
+    Task SendVerificationEmailAsync(string to, string endpoint);
+    Task SendForgotPasswordEmailAsync(string to, string endpoint);
 }

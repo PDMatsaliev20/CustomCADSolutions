@@ -1,7 +1,6 @@
-﻿namespace CustomCADs.API.Endpoints.Categories.DeleteCategory
+﻿namespace CustomCADs.API.Endpoints.Categories.DeleteCategory;
+
+public class DeleteCategoryRequest
 {
-    public class DeleteCategoryRequest
-    {
-        public required int Id { get; set; }
-    }
+    public required int Id { get; set; }
 }

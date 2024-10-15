@@ -4,70 +4,69 @@ using CustomCADs.Application.Models.Users;
 using FastEndpoints;
 using System.IdentityModel.Tokens.Jwt;
 
-namespace CustomCADs.API.Endpoints.Identity.RefreshToken
+namespace CustomCADs.API.Endpoints.Identity.RefreshToken;
+
+using static ApiMessages;
+using static StatusCodes;
+
+public class RefreshTokenEndpoint(IUserService service, IConfiguration config) : EndpointWithoutRequest
 {
-    using static ApiMessages;
-    using static StatusCodes;
-
-    public class RefreshTokenEndpoint(IUserService service, IConfiguration config) : EndpointWithoutRequest
+    public override void Configure()
     {
-        public override void Configure()
+        Post("RefreshToken");
+        Group<IdentityGroup>();
+        Description(d => d
+            .WithSummary("Returns a Refresh token")
+            .Produces<EmptyResponse>(Status200OK));
+    }
+
+    public override async Task HandleAsync(CancellationToken ct)
+    {
+        string? rt = HttpContext.Request.Cookies.FirstOrDefault(c => c.Key == "rt").Value;
+        if (string.IsNullOrEmpty(rt))
         {
-            Post("RefreshToken");
-            Group<IdentityGroup>();
-            Description(d => d
-                .WithSummary("Returns a Refresh token")
-                .Produces<EmptyResponse>(Status200OK));
+            ValidationFailures.Add(new()
+            {
+                ErrorMessage = NoRefreshToken,
+            });
+            await SendErrorsAsync().ConfigureAwait(false);
+            return;
         }
 
-        public override async Task HandleAsync(CancellationToken ct)
+        UserModel model = await service.GetByRefreshToken(rt).ConfigureAwait(false);
+        if (model.RefreshTokenEndDate < DateTime.UtcNow)
         {
-            string? rt = HttpContext.Request.Cookies.FirstOrDefault(c => c.Key == "rt").Value;
-            if (string.IsNullOrEmpty(rt))
+            HttpContext.Response.Cookies.Delete("rt");
+            HttpContext.Response.Cookies.Delete("username");
+            HttpContext.Response.Cookies.Delete("userRole");
+
+            ValidationFailures.Add(new() 
             {
-                ValidationFailures.Add(new()
-                {
-                    ErrorMessage = NoRefreshToken,
-                });
-                await SendErrorsAsync().ConfigureAwait(false);
-                return;
-            }
-
-            UserModel model = await service.GetByRefreshToken(rt).ConfigureAwait(false);
-            if (model.RefreshTokenEndDate < DateTime.UtcNow)
-            {
-                HttpContext.Response.Cookies.Delete("rt");
-                HttpContext.Response.Cookies.Delete("username");
-                HttpContext.Response.Cookies.Delete("userRole");
-
-                ValidationFailures.Add(new() 
-                {
-                    ErrorMessage = RefreshTokenExpired,
-                });
-                await SendErrorsAsync(Status401Unauthorized).ConfigureAwait(false);
-                return;
-            }
-            JwtSecurityToken newJwt = config.GenerateAccessToken(model.Id, model.UserName, model.RoleName);
-
-            string signedJwt = new JwtSecurityTokenHandler().WriteToken(newJwt);
-            CookieOptions jwtOptions = new() { HttpOnly = true, Secure = true, Expires = newJwt.ValidTo };
-            HttpContext.Response.Cookies.Append("jwt", signedJwt, jwtOptions);
-
-            if (model.RefreshTokenEndDate >= DateTime.UtcNow.AddMinutes(1))
-            {
-                await SendOkAsync(NoNeedForNewRT).ConfigureAwait(false);
-                return;
-            }
-
-            (string newRT, DateTime newEnd) = await service.RenewRefreshToken(model).ConfigureAwait(false);
-            CookieOptions rtOptions = new() { HttpOnly = true, Secure = true, Expires = newEnd };
-            HttpContext.Response.Cookies.Append("rt", newRT, rtOptions);
-
-            CookieOptions userInfoOptions = new() { Expires = newEnd };
-            HttpContext.Response.Cookies.Append("role", model.RoleName, userInfoOptions);
-            HttpContext.Response.Cookies.Append("username", model.UserName, userInfoOptions);
-
-            await SendOkAsync(AccessTokenRenewed).ConfigureAwait(false);
+                ErrorMessage = RefreshTokenExpired,
+            });
+            await SendErrorsAsync(Status401Unauthorized).ConfigureAwait(false);
+            return;
         }
+        JwtSecurityToken newJwt = config.GenerateAccessToken(model.Id, model.UserName, model.RoleName);
+
+        string signedJwt = new JwtSecurityTokenHandler().WriteToken(newJwt);
+        CookieOptions jwtOptions = new() { HttpOnly = true, Secure = true, Expires = newJwt.ValidTo };
+        HttpContext.Response.Cookies.Append("jwt", signedJwt, jwtOptions);
+
+        if (model.RefreshTokenEndDate >= DateTime.UtcNow.AddMinutes(1))
+        {
+            await SendOkAsync(NoNeedForNewRT).ConfigureAwait(false);
+            return;
+        }
+
+        (string newRT, DateTime newEnd) = await service.RenewRefreshToken(model).ConfigureAwait(false);
+        CookieOptions rtOptions = new() { HttpOnly = true, Secure = true, Expires = newEnd };
+        HttpContext.Response.Cookies.Append("rt", newRT, rtOptions);
+
+        CookieOptions userInfoOptions = new() { Expires = newEnd };
+        HttpContext.Response.Cookies.Append("role", model.RoleName, userInfoOptions);
+        HttpContext.Response.Cookies.Append("username", model.UserName, userInfoOptions);
+
+        await SendOkAsync(AccessTokenRenewed).ConfigureAwait(false);
     }
 }

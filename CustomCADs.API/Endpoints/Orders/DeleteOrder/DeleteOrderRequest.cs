@@ -1,7 +1,6 @@
-﻿namespace CustomCADs.API.Endpoints.Orders.DeleteOrder
+﻿namespace CustomCADs.API.Endpoints.Orders.DeleteOrder;
+
+public class DeleteOrderRequest
 {
-    public class DeleteOrderRequest
-    {
-        public int Id { get; set; }
-    }
+    public int Id { get; set; }
 }

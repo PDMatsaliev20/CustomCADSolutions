@@ -1,7 +1,6 @@
-﻿namespace CustomCADs.API.Endpoints.Categories.GetCategoryById
+﻿namespace CustomCADs.API.Endpoints.Categories.GetCategoryById;
+
+public class GetCategoryRequest
 {
-    public class GetCategoryRequest
-    {
-        public int Id { get; set; }
-    }
+    public int Id { get; set; }
 }

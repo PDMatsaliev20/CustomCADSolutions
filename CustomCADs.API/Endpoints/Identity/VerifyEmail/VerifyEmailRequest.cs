@@ -1,12 +1,11 @@
 ﻿using FastEndpoints;
 
-namespace CustomCADs.API.Endpoints.Identity.VerifyEmail
+namespace CustomCADs.API.Endpoints.Identity.VerifyEmail;
+
+public class VerifyEmailRequest
 {
-    public class VerifyEmailRequest
-    {
-        [BindFrom("username")]
-        public required string Username { get; set; }
-        
-        public string? Token { get; set; }
-    }
+    [BindFrom("username")]
+    public required string Username { get; set; }
+    
+    public string? Token { get; set; }
 }

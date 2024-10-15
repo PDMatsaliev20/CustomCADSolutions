@@ -1,10 +1,9 @@
 ﻿using FastEndpoints;
 
-namespace CustomCADs.API.Endpoints.Users.GetUser
+namespace CustomCADs.API.Endpoints.Users.GetUser;
+
+public class GetUserRequest
 {
-    public class GetUserRequest
-    {
-        [BindFrom("username")]
-        public required string Username { get; set; }
-    }
+    [BindFrom("username")]
+    public required string Username { get; set; }
 }

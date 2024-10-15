@@ -4,20 +4,19 @@ using CustomCADs.Application.Models.Roles;
 using CustomCADs.Application.Models.Users;
 using Mapster;
 
-namespace CustomCADs.API.Mappers
-{
-    public class UsersMapper
-    {
-        public static void Map()
-        {
-            TypeAdapterConfig<UserModel, UserResponseDto>.NewConfig()
-                .Map(r => r.Username, u => u.UserName)
-                .Map(r => r.Role, u => u.RoleName);
+namespace CustomCADs.API.Mappers;
 
-            TypeAdapterConfig<RegisterRequest, UserModel>.NewConfig()
-                .Map(u => u.UserName, r => r.Username)
-                .Map(u => u.RoleName, r => r.Role)
-                .Map(u => u.Role, r => new RoleModel());
-        }
+public class UsersMapper
+{
+    public static void Map()
+    {
+        TypeAdapterConfig<UserModel, UserResponseDto>.NewConfig()
+            .Map(r => r.Username, u => u.UserName)
+            .Map(r => r.Role, u => u.RoleName);
+
+        TypeAdapterConfig<RegisterRequest, UserModel>.NewConfig()
+            .Map(u => u.UserName, r => r.Username)
+            .Map(u => u.RoleName, r => r.Role)
+            .Map(u => u.Role, r => new RoleModel());
     }
 }

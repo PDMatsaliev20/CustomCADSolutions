@@ -2,14 +2,13 @@
 using FluentValidation;
 using static CustomCADs.Domain.DataConstants;
 
-namespace CustomCADs.API.Endpoints.Categories.PutCategory
+namespace CustomCADs.API.Endpoints.Categories.PutCategory;
+
+public class PutCategoryRequestValidator : Validator<PutCategoryRequest>
 {
-    public class PutCategoryRequestValidator : Validator<PutCategoryRequest>
+    public PutCategoryRequestValidator()
     {
-        public PutCategoryRequestValidator()
-        {
-            RuleFor(r => r.Name)
-                .NotEmpty().WithMessage(RequiredErrorMessage);
-        }
+        RuleFor(r => r.Name)
+            .NotEmpty().WithMessage(RequiredErrorMessage);
     }
 }

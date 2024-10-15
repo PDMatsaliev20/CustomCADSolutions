@@ -1,10 +1,9 @@
-﻿namespace CustomCADs.Domain.Enums
+﻿namespace CustomCADs.Domain.Enums;
+
+public enum CadStatus
 {
-    public enum CadStatus
-    {
-        Unchecked,
-        Validated,
-        Reported,
-        Banned
-    }
+    Unchecked,
+    Validated,
+    Reported,
+    Banned
 }

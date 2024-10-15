@@ -7,86 +7,85 @@ using FastEndpoints;
 using Microsoft.AspNetCore.Identity;
 using System.IdentityModel.Tokens.Jwt;
 
-namespace CustomCADs.API.Endpoints.Identity.VerifyEmail
+namespace CustomCADs.API.Endpoints.Identity.VerifyEmail;
+
+using static ApiMessages;
+using static StatusCodes;
+
+public class VerifyEmailEndpoint(IAppUserManager manager, IUserService service, SignInManager<AppUser> signInManager, IConfiguration config) : Endpoint<VerifyEmailRequest>
 {
-    using static ApiMessages;
-    using static StatusCodes;
-
-    public class VerifyEmailEndpoint(IAppUserManager manager, IUserService service, SignInManager<AppUser> signInManager, IConfiguration config) : Endpoint<VerifyEmailRequest>
+    public override void Configure()
     {
-        public override void Configure()
+        Get("VerifyEmail/{username}");
+        Group<IdentityGroup>();
+        Description(d => d
+            .WithSummary("Checks the token's validity, and if successful verifies the user's email and  logs the him in.")
+            .Produces<EmptyResponse>(Status200OK)
+            .ProducesProblem(Status400BadRequest)
+            .ProducesProblem(Status404NotFound));
+    }
+
+    public override async Task HandleAsync(VerifyEmailRequest req, CancellationToken ct)
+    {
+        if (string.IsNullOrEmpty(req.Token))
         {
-            Get("VerifyEmail/{username}");
-            Group<IdentityGroup>();
-            Description(d => d
-                .WithSummary("Checks the token's validity, and if successful verifies the user's email and  logs the him in.")
-                .Produces<EmptyResponse>(Status200OK)
-                .ProducesProblem(Status400BadRequest)
-                .ProducesProblem(Status404NotFound));
+            ValidationFailures.Add(new()
+            {
+                ErrorMessage = string.Format(IsRequired, "Verify Email Token"),
+            });
+            await SendErrorsAsync().ConfigureAwait(false);
+            return;
         }
 
-        public override async Task HandleAsync(VerifyEmailRequest req, CancellationToken ct)
+        AppUser? appUser = await manager.FindByNameAsync(req.Username).ConfigureAwait(false);
+        if (appUser == null)
         {
-            if (string.IsNullOrEmpty(req.Token))
+            ValidationFailures.Add(new()
             {
-                ValidationFailures.Add(new()
-                {
-                    ErrorMessage = string.Format(IsRequired, "Verify Email Token"),
-                });
-                await SendErrorsAsync().ConfigureAwait(false);
-                return;
-            }
-
-            AppUser? appUser = await manager.FindByNameAsync(req.Username).ConfigureAwait(false);
-            if (appUser == null)
-            {
-                ValidationFailures.Add(new()
-                {
-                    ErrorMessage = string.Format(NotFound, "Account"),
-                });
-                await SendErrorsAsync(Status404NotFound).ConfigureAwait(false);
-                return;
-            }
-
-            if (appUser.EmailConfirmed)
-            {
-                ValidationFailures.Add(new()
-                {
-                    ErrorMessage = EmailAlreadyVerified,
-                });
-                await SendErrorsAsync().ConfigureAwait(false);
-                return;
-            }
-
-            string decodedECT = req.Token.Replace(' ', '+');
-            IdentityResult result = await manager.ConfirmEmailAsync(appUser, decodedECT).ConfigureAwait(false);
-            if (!result.Succeeded)
-            {
-                ValidationFailures.Add(new()
-                {
-                    ErrorMessage = InvalidEmailToken,
-                });
-                await SendErrorsAsync().ConfigureAwait(false);
-                return;
-            }
-
-            await signInManager.SignInAsync(appUser, false).ConfigureAwait(false);
-            UserModel model = await service.GetByNameAsync(req.Username).ConfigureAwait(false);
-
-            HttpContext.Response.Cookies.Append("role", model.RoleName);
-            HttpContext.Response.Cookies.Append("username", model.UserName);
-
-            JwtSecurityToken jwt = config.GenerateAccessToken(model.Id, model.UserName, model.RoleName);
-            string signedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
-            HttpContext.Response.Cookies.Append("jwt", signedJwt, new() { HttpOnly = true, Secure = true, Expires = jwt.ValidTo });
-
-            (string newRT, DateTime newEnd) = await service.RenewRefreshToken(model).ConfigureAwait(false);
-            HttpContext.Response.Cookies.Append("rt", newRT, new() { HttpOnly = true, Secure = true, Expires = newEnd });
-
-            HttpContext.Response.Cookies.Append("role", model.RoleName, new() { Expires = newEnd });
-            HttpContext.Response.Cookies.Append("username", model.UserName, new() { Expires = newEnd });
-
-            await SendOkAsync("Welcome!").ConfigureAwait(false);
+                ErrorMessage = string.Format(NotFound, "Account"),
+            });
+            await SendErrorsAsync(Status404NotFound).ConfigureAwait(false);
+            return;
         }
+
+        if (appUser.EmailConfirmed)
+        {
+            ValidationFailures.Add(new()
+            {
+                ErrorMessage = EmailAlreadyVerified,
+            });
+            await SendErrorsAsync().ConfigureAwait(false);
+            return;
+        }
+
+        string decodedECT = req.Token.Replace(' ', '+');
+        IdentityResult result = await manager.ConfirmEmailAsync(appUser, decodedECT).ConfigureAwait(false);
+        if (!result.Succeeded)
+        {
+            ValidationFailures.Add(new()
+            {
+                ErrorMessage = InvalidEmailToken,
+            });
+            await SendErrorsAsync().ConfigureAwait(false);
+            return;
+        }
+
+        await signInManager.SignInAsync(appUser, false).ConfigureAwait(false);
+        UserModel model = await service.GetByNameAsync(req.Username).ConfigureAwait(false);
+
+        HttpContext.Response.Cookies.Append("role", model.RoleName);
+        HttpContext.Response.Cookies.Append("username", model.UserName);
+
+        JwtSecurityToken jwt = config.GenerateAccessToken(model.Id, model.UserName, model.RoleName);
+        string signedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
+        HttpContext.Response.Cookies.Append("jwt", signedJwt, new() { HttpOnly = true, Secure = true, Expires = jwt.ValidTo });
+
+        (string newRT, DateTime newEnd) = await service.RenewRefreshToken(model).ConfigureAwait(false);
+        HttpContext.Response.Cookies.Append("rt", newRT, new() { HttpOnly = true, Secure = true, Expires = newEnd });
+
+        HttpContext.Response.Cookies.Append("role", model.RoleName, new() { Expires = newEnd });
+        HttpContext.Response.Cookies.Append("username", model.UserName, new() { Expires = newEnd });
+
+        await SendOkAsync("Welcome!").ConfigureAwait(false);
     }
 }

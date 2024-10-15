@@ -1,7 +1,6 @@
-﻿namespace CustomCADs.API.Endpoints.Cads.GetCad
+﻿namespace CustomCADs.API.Endpoints.Cads.GetCad;
+
+public class GetCadRequest
 {
-    public class GetCadRequest
-    {
-        public int Id { get; set; }
-    }
+    public int Id { get; set; }
 }

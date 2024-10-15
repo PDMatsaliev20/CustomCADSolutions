@@ -1,46 +1,45 @@
 ﻿using static CustomCADs.Domain.DataConstants.CadConstants;
 
-namespace CustomCADs.Domain.ValueObjects
+namespace CustomCADs.Domain.ValueObjects;
+
+public class Coordinates
 {
-    public class Coordinates
+    public double X { get; }
+    public double Y { get; }
+    public double Z { get; }
+
+    public Coordinates() { }
+
+    public Coordinates(double x, double y, double z)
     {
-        public double X { get; }
-        public double Y { get; }
-        public double Z { get; }
+        static bool RangeCheck(double coord) => coord > CoordMin && coord < CoordMax;
 
-        public Coordinates() { }
-
-        public Coordinates(double x, double y, double z)
+        if (RangeCheck(x) && RangeCheck(y) && RangeCheck(z))
         {
-            static bool RangeCheck(double coord) => coord > CoordMin && coord < CoordMax;
-
-            if (RangeCheck(x) && RangeCheck(y) && RangeCheck(z))
-            {
-                X = x;
-                Y = y;
-                Z = z;
-            }
-            else throw new ArgumentOutOfRangeException();
+            X = x;
+            Y = y;
+            Z = z;
         }
+        else throw new ArgumentOutOfRangeException();
+    }
 
-        public bool Equals(Coordinates other)
-            => X == other.X && Y == other.Y && Z == other.Z;        
+    public bool Equals(Coordinates other)
+        => X == other.X && Y == other.Y && Z == other.Z;        
 
-        public override bool Equals(object? obj)
+    public override bool Equals(object? obj)
+    {
+        if (obj == null) return false;
+        
+        if (obj is Coordinates coords)
         {
-            if (obj == null) return false;
-            
-            if (obj is Coordinates coords)
-            {
-                return Equals(coords);
-            }
-            
-            return base.Equals(obj);
+            return Equals(coords);
         }
+        
+        return base.Equals(obj);
+    }
 
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(X, Y, Z);
-        }
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(X, Y, Z);
     }
 }

@@ -1,11 +1,10 @@
-﻿namespace CustomCADs.Domain.Enums
+﻿namespace CustomCADs.Domain.Enums;
+
+public enum Sorting
 {
-    public enum Sorting
-    {
-        Newest = 1,
-        Oldest = 2,
-        Alphabetical = 3,
-        Unalphabetical = 4,
-        Category = 5,
-    }
+    Newest = 1,
+    Oldest = 2,
+    Alphabetical = 3,
+    Unalphabetical = 4,
+    Category = 5,
 }

@@ -2,18 +2,17 @@
 using CustomCADs.Application.Models.Users;
 using CustomCADs.Domain.Entities;
 
-namespace CustomCADs.Application.Mappings
+namespace CustomCADs.Application.Mappings;
+
+public class UserProfile : Profile
 {
-    public class UserProfile : Profile
+    public UserProfile()
     {
-        public UserProfile()
-        {
-            EntityToModel();
-            ModelToEntity();
-        }
-
-        private void EntityToModel() => CreateMap<User, UserModel>();
-
-        private void ModelToEntity() => CreateMap<UserModel, User>();
+        EntityToModel();
+        ModelToEntity();
     }
+
+    private void EntityToModel() => CreateMap<User, UserModel>();
+
+    private void ModelToEntity() => CreateMap<UserModel, User>();
 }

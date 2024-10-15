@@ -1,6 +1,5 @@
-﻿namespace CustomCADs.API.Endpoints.Payment.GetPublicKey
+﻿namespace CustomCADs.API.Endpoints.Payment.GetPublicKey;
+
+public class GetPublicKeyResponse
 {
-    public class GetPublicKeyResponse
-    {
-    }
 }

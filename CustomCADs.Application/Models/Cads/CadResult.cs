@@ -1,8 +1,7 @@
-﻿namespace CustomCADs.Application.Models.Cads
+﻿namespace CustomCADs.Application.Models.Cads;
+
+public class CadResult
 {
-    public class CadResult
-    {
-        public int Count { get; set; }
-        public ICollection<CadModel> Cads { get; set; } = [];
-    }
+    public int Count { get; set; }
+    public ICollection<CadModel> Cads { get; set; } = [];
 }

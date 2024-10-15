@@ -4,33 +4,32 @@ using CustomCADs.Application.UseCases.Categories.Queries.GetById;
 using FastEndpoints;
 using MediatR;
 
-namespace CustomCADs.API.Endpoints.Categories.PutCategory
+namespace CustomCADs.API.Endpoints.Categories.PutCategory;
+
+using static StatusCodes;
+
+public class PutCategoryEndpoint(IMediator mediator) : Endpoint<PutCategoryRequest>
 {
-    using static StatusCodes;
-
-    public class PutCategoryEndpoint(IMediator mediator) : Endpoint<PutCategoryRequest>
+    public override void Configure()
     {
-        public override void Configure()
-        {
-            Put("{id}");
-            Group<CategoriesGroup>();
-            Description(s => s
-                .WithSummary("Edits the name of the Category with the provided id.")
-                .Produces<EmptyResponse>(Status204NoContent)
-                .ProducesProblem(Status500InternalServerError));
-        }
+        Put("{id}");
+        Group<CategoriesGroup>();
+        Description(s => s
+            .WithSummary("Edits the name of the Category with the provided id.")
+            .Produces<EmptyResponse>(Status204NoContent)
+            .ProducesProblem(Status500InternalServerError));
+    }
 
-        public override async Task HandleAsync(PutCategoryRequest req, CancellationToken ct)
-        {
-            GetCategoryByIdQuery query = new(req.Id);
-            CategoryModel model = await mediator.Send(query).ConfigureAwait(false);
+    public override async Task HandleAsync(PutCategoryRequest req, CancellationToken ct)
+    {
+        GetCategoryByIdQuery query = new(req.Id);
+        CategoryModel model = await mediator.Send(query).ConfigureAwait(false);
 
-            model.Name = req.Name;
+        model.Name = req.Name;
 
-            EditCategoryCommand command = new(req.Id, model);
-            await mediator.Send(command).ConfigureAwait(false);
+        EditCategoryCommand command = new(req.Id, model);
+        await mediator.Send(command).ConfigureAwait(false);
 
-            await SendNoContentAsync().ConfigureAwait(false);
-        }
+        await SendNoContentAsync().ConfigureAwait(false);
     }
 }

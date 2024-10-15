@@ -1,11 +1,10 @@
 ﻿using FastEndpoints;
 
-namespace CustomCADs.API.Endpoints.Designer.RecentOngoingOrders
+namespace CustomCADs.API.Endpoints.Designer.RecentOngoingOrders;
+
+public class RecentOngoingOrdersRequest
 {
-    public class RecentOngoingOrdersRequest
-    {
-        [BindFrom("status")]
-        public required string Status { get; set; }
-        public int Limit { get; set; } = 4;
-    }
+    [BindFrom("status")]
+    public required string Status { get; set; }
+    public int Limit { get; set; } = 4;
 }

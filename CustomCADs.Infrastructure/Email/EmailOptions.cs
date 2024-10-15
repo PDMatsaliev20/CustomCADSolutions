@@ -1,8 +1,7 @@
-﻿namespace CustomCADs.Infrastructure.Email
+﻿namespace CustomCADs.Infrastructure.Email;
+
+public class EmailOptions
 {
-    public class EmailOptions
-    {
-        public string Password { get; set; } = string.Empty;
-        public int Port { get; set; }
-    }
+    public string Password { get; set; } = string.Empty;
+    public int Port { get; set; }
 }

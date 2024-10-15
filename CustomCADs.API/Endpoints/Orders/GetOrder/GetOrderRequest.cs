@@ -1,7 +1,6 @@
-﻿namespace CustomCADs.API.Endpoints.Orders.GetOrder
+﻿namespace CustomCADs.API.Endpoints.Orders.GetOrder;
+
+public class GetOrderRequest
 {
-    public class GetOrderRequest
-    {
-        public int Id { get; set; }
-    }
+    public int Id { get; set; }
 }

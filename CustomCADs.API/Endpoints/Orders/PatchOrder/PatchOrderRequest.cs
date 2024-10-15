@@ -1,8 +1,7 @@
-﻿namespace CustomCADs.API.Endpoints.Orders.PatchOrder
+﻿namespace CustomCADs.API.Endpoints.Orders.PatchOrder;
+
+public class PatchOrderRequest
 {
-    public class PatchOrderRequest
-    {
-        public int Id { get; set; }
-        public bool ShouldBeDelivered { get; set; }
-    }
+    public int Id { get; set; }
+    public bool ShouldBeDelivered { get; set; }
 }

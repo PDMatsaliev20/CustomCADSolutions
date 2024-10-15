@@ -1,8 +1,7 @@
-﻿namespace CustomCADs.Application.Models.Orders
+﻿namespace CustomCADs.Application.Models.Orders;
+
+public class OrderResult
 {
-    public class OrderResult
-    {
-        public int Count { get; set; }
-        public ICollection<OrderModel> Orders { get; set; } = [];
-    }
+    public int Count { get; set; }
+    public ICollection<OrderModel> Orders { get; set; } = [];
 }

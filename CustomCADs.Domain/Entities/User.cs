@@ -1,15 +1,14 @@
-﻿namespace CustomCADs.Domain.Entities
+﻿namespace CustomCADs.Domain.Entities;
+
+public class User
 {
-    public class User
-    {
-        public required string Id { get; set; } 
-        public required string UserName { get; set; } 
-        public required string Email { get; set; } 
-        public string? FirstName { get; set; } 
-        public string? LastName { get; set; } 
-        public string? RefreshToken { get; set; }
-        public DateTime? RefreshTokenEndDate { get; set; }
-        public required string RoleName { get; set; } 
-        public required Role Role { get; set; } 
-    }
+    public required string Id { get; set; } 
+    public required string UserName { get; set; } 
+    public required string Email { get; set; } 
+    public string? FirstName { get; set; } 
+    public string? LastName { get; set; } 
+    public string? RefreshToken { get; set; }
+    public DateTime? RefreshTokenEndDate { get; set; }
+    public required string RoleName { get; set; } 
+    public required Role Role { get; set; } 
 }

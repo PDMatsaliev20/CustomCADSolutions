@@ -1,25 +1,24 @@
 ﻿using FastEndpoints;
 using static CustomCADs.Domain.DataConstants.RoleConstants;
 
-namespace CustomCADs.API.Endpoints.Users
-{
-    using static StatusCodes;
+namespace CustomCADs.API.Endpoints.Users;
 
-    public class UsersGroup : Group
+using static StatusCodes;
+
+public class UsersGroup : Group
+{
+    public UsersGroup()
     {
-        public UsersGroup()
+        Configure("Users", ep => 
         {
-            Configure("Users", ep => 
+            ep.Roles(Admin);
+            ep.Description(opt =>
             {
-                ep.Roles(Admin);
-                ep.Description(opt =>
-                {
-                    opt.WithTags("Users");
-                    opt.ProducesProblem(Status401Unauthorized);
-                    opt.ProducesProblem(Status403Forbidden);
-                    opt.ProducesProblem(Status500InternalServerError);
-                });
+                opt.WithTags("Users");
+                opt.ProducesProblem(Status401Unauthorized);
+                opt.ProducesProblem(Status403Forbidden);
+                opt.ProducesProblem(Status500InternalServerError);
             });
-        }
+        });
     }
 }

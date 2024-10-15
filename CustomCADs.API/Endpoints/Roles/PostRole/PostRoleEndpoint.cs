@@ -7,50 +7,49 @@ using FastEndpoints;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Identity;
 
-namespace CustomCADs.API.Endpoints.Roles.PostRole
+namespace CustomCADs.API.Endpoints.Roles.PostRole;
+
+using static StatusCodes;
+
+public class PostRoleEndpoint(IAppRoleManager manager, IRoleService service) : Endpoint<PostRoleRequest, RoleResponseDto>
 {
-    using static StatusCodes;
-
-    public class PostRoleEndpoint(IAppRoleManager manager, IRoleService service) : Endpoint<PostRoleRequest, RoleResponseDto>
+    public override void Configure()
     {
-        public override void Configure()
+        Post("");
+        Group<RolesGroup>();
+        Description(d => d
+            .WithSummary("Creates a Role with the specified name.")
+            .Produces<RoleResponseDto>(Status201Created, "application/json")
+            .ProducesProblem(Status400BadRequest));
+    }
+
+    public override async Task HandleAsync(PostRoleRequest req, CancellationToken ct)
+    {
+        IdentityResult result = await manager.CreateAsync(new(req.Name)).ConfigureAwait(false);
+        if (!result.Succeeded)
         {
-            Post("");
-            Group<RolesGroup>();
-            Description(d => d
-                .WithSummary("Creates a Role with the specified name.")
-                .Produces<RoleResponseDto>(Status201Created, "application/json")
-                .ProducesProblem(Status400BadRequest));
+            var failures = result.Errors.Select(e => new ValidationFailure()
+            {
+                ErrorMessage = e.Description
+            });
+            ValidationFailures.AddRange(failures);
+
+            await SendErrorsAsync().ConfigureAwait(false);
+            return;
         }
 
-        public override async Task HandleAsync(PostRoleRequest req, CancellationToken ct)
+        RoleModel model = new()
         {
-            IdentityResult result = await manager.CreateAsync(new(req.Name)).ConfigureAwait(false);
-            if (!result.Succeeded)
-            {
-                var failures = result.Errors.Select(e => new ValidationFailure()
-                {
-                    ErrorMessage = e.Description
-                });
-                ValidationFailures.AddRange(failures);
+            Name = req.Name,
+            Description = req.Description,
+        };
+        await service.CreateAsync(model).ConfigureAwait(false);
 
-                await SendErrorsAsync().ConfigureAwait(false);
-                return;
-            }
-
-            RoleModel model = new()
-            {
-                Name = req.Name,
-                Description = req.Description,
-            };
-            await service.CreateAsync(model).ConfigureAwait(false);
-
-            RoleResponseDto response = new()
-            {
-                Name = model.Name,
-                Description = model.Description,
-            };
-            await SendCreatedAtAsync<GetRoleEndpoint>(new { model.Name }, response).ConfigureAwait(false);
-        }
+        RoleResponseDto response = new()
+        {
+            Name = model.Name,
+            Description = model.Description,
+        };
+        await SendCreatedAtAsync<GetRoleEndpoint>(new { model.Name }, response).ConfigureAwait(false);
     }
 }

@@ -1,10 +1,9 @@
 ﻿using FastEndpoints;
 
-namespace CustomCADs.API.Endpoints.Identity.UserExists
+namespace CustomCADs.API.Endpoints.Identity.UserExists;
+
+public class UserExistsRequest
 {
-    public class UserExistsRequest
-    {
-        [BindFrom("username")]
-        public required string Username { get; set; }
-    }
+    [BindFrom("username")]
+    public required string Username { get; set; }
 }

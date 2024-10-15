@@ -1,11 +1,10 @@
-﻿namespace CustomCADs.Application.Exceptions
+﻿namespace CustomCADs.Application.Exceptions;
+
+[Serializable]
+public class CadNotFoundException : Exception
 {
-    [Serializable]
-    public class CadNotFoundException : Exception
-    {
-        public CadNotFoundException(): base("The requested Cad does not exist.") { }
-        public CadNotFoundException(int id): base($"The Cad with id: {id} does not exist.") { }
-        public CadNotFoundException(string message) : base(message) { }
-        public CadNotFoundException(string message, Exception inner) : base(message, inner) { }
-    }
+    public CadNotFoundException(): base("The requested Cad does not exist.") { }
+    public CadNotFoundException(int id): base($"The Cad with id: {id} does not exist.") { }
+    public CadNotFoundException(string message) : base(message) { }
+    public CadNotFoundException(string message, Exception inner) : base(message, inner) { }
 }

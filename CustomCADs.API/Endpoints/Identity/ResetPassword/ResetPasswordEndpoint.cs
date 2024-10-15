@@ -4,50 +4,49 @@ using FastEndpoints;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Identity;
 
-namespace CustomCADs.API.Endpoints.Identity.ResetPassword
+namespace CustomCADs.API.Endpoints.Identity.ResetPassword;
+
+using static ApiMessages;
+using static StatusCodes;
+
+public class ResetPasswordEndpoint(IAppUserManager manager) : Endpoint<ResetPasswordRequest>
 {
-    using static ApiMessages;
-    using static StatusCodes;
-
-    public class ResetPasswordEndpoint(IAppUserManager manager) : Endpoint<ResetPasswordRequest>
+    public override void Configure()
     {
-        public override void Configure()
+        Post("ResetPassword");
+        Group<IdentityGroup>();
+        Description(d => d
+            .WithSummary("Resets password of User with given email if the token is valid")
+            .Produces<EmptyResponse>(Status200OK));
+    }
+
+    public override async Task HandleAsync(ResetPasswordRequest req, CancellationToken ct)
+    {
+        AppUser? user = await manager.FindByEmailAsync(req.Email).ConfigureAwait(false);
+        if (user == null)
         {
-            Post("ResetPassword");
-            Group<IdentityGroup>();
-            Description(d => d
-                .WithSummary("Resets password of User with given email if the token is valid")
-                .Produces<EmptyResponse>(Status200OK));
+            ValidationFailures.Add(new()
+            {
+                ErrorMessage = string.Format(NotFound, "User"),
+            });
+            await SendErrorsAsync(Status404NotFound);
+            return;
         }
 
-        public override async Task HandleAsync(ResetPasswordRequest req, CancellationToken ct)
+        string encodedToken = req.Token.Replace(' ', '+');
+        IdentityResult result = await manager.ResetPasswordAsync(user, encodedToken, req.NewPassword).ConfigureAwait(false);
+        if (!result.Succeeded)
         {
-            AppUser? user = await manager.FindByEmailAsync(req.Email).ConfigureAwait(false);
-            if (user == null)
+            var failures = result.Errors.Select(e => new ValidationFailure()
             {
-                ValidationFailures.Add(new()
-                {
-                    ErrorMessage = string.Format(NotFound, "User"),
-                });
-                await SendErrorsAsync(Status404NotFound);
-                return;
-            }
+                ErrorMessage = e.Description
+            });
+            ValidationFailures.AddRange(failures);
 
-            string encodedToken = req.Token.Replace(' ', '+');
-            IdentityResult result = await manager.ResetPasswordAsync(user, encodedToken, req.NewPassword).ConfigureAwait(false);
-            if (!result.Succeeded)
-            {
-                var failures = result.Errors.Select(e => new ValidationFailure()
-                {
-                    ErrorMessage = e.Description
-                });
-                ValidationFailures.AddRange(failures);
-
-                await SendErrorsAsync().ConfigureAwait(false);
-                return;
-            }
-
-            await SendOkAsync("Done!").ConfigureAwait(false);
+            await SendErrorsAsync().ConfigureAwait(false);
+            return;
         }
+
+        await SendOkAsync("Done!").ConfigureAwait(false);
     }
 }

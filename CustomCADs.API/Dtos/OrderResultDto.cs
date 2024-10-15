@@ -1,8 +1,7 @@
-﻿namespace CustomCADs.API.Dtos
+﻿namespace CustomCADs.API.Dtos;
+
+public class OrderResultDto<TOrder> where TOrder : class
 {
-    public class OrderResultDto<TOrder> where TOrder : class
-    {
-        public int Count { get; set; }
-        public ICollection<TOrder> Orders { get; set; } = [];
-    }
+    public int Count { get; set; }
+    public ICollection<TOrder> Orders { get; set; } = [];
 }

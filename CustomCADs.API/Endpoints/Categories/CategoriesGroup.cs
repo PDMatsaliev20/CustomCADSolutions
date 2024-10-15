@@ -1,23 +1,22 @@
 ﻿using static CustomCADs.Domain.DataConstants.RoleConstants;
 using FastEndpoints;
 
-namespace CustomCADs.API.Endpoints.Categories
-{
-    using static StatusCodes;
+namespace CustomCADs.API.Endpoints.Categories;
 
-    public class CategoriesGroup : Group
+using static StatusCodes;
+
+public class CategoriesGroup : Group
+{
+    public CategoriesGroup()
     {
-        public CategoriesGroup()
+        Configure("Categories", ep =>
         {
-            Configure("Categories", ep =>
+            ep.Roles(Admin);
+            ep.Description(opt =>
             {
-                ep.Roles(Admin);
-                ep.Description(opt =>
-                {
-                    opt.WithTags("Categories");
-                    opt.ProducesProblem(Status500InternalServerError);
-                });
-            });   
-        }
+                opt.WithTags("Categories");
+                opt.ProducesProblem(Status500InternalServerError);
+            });
+        });   
     }
 }

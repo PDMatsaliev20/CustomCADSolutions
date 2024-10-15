@@ -1,7 +1,6 @@
-﻿namespace CustomCADs.API.Endpoints.Home.GalleryDetails
+﻿namespace CustomCADs.API.Endpoints.Home.GalleryDetails;
+
+public class GalleryDetailsRequest
 {
-    public class GalleryDetailsRequest
-    {
-        public int Id { get; set; }
-    }
+    public int Id { get; set; }
 }

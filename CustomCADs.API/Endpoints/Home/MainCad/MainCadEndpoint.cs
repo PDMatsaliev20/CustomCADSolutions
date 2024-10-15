@@ -1,32 +1,31 @@
 ﻿using FastEndpoints;
 
-namespace CustomCADs.API.Endpoints.Home.MainCad
+namespace CustomCADs.API.Endpoints.Home.MainCad;
+
+using static StatusCodes;
+
+public class MainCadEndpoint : EndpointWithoutRequest<MainCadResponse>
 {
-    using static StatusCodes;
-
-    public class MainCadEndpoint : EndpointWithoutRequest<MainCadResponse>
+    public override void Configure()
     {
-        public override void Configure()
-        {
-            Get("MainCad");
-            Group<HomeGroup>();
-            AllowAnonymous();
-            Description(d => d
-                .WithSummary("Gets the path and coordinates to the 3D Model for the Home Page.")
-                .Produces<MainCadResponse>(Status200OK, "application/json"));
-        }
+        Get("MainCad");
+        Group<HomeGroup>();
+        AllowAnonymous();
+        Description(d => d
+            .WithSummary("Gets the path and coordinates to the 3D Model for the Home Page.")
+            .Produces<MainCadResponse>(Status200OK, "application/json"));
+    }
 
-        public override async Task HandleAsync(CancellationToken ct)
+    public override async Task HandleAsync(CancellationToken ct)
+    {
+        MainCadResponse cad = new()
         {
-            MainCadResponse cad = new()
-            {
-                Id = 0,
-                CadPath = "/files/HomeCAD.glb",
-                CamCoordinates = new(2, 16, 33),
-                PanCoordinates = new(0, 6, -3),
-            };
+            Id = 0,
+            CadPath = "/files/HomeCAD.glb",
+            CamCoordinates = new(2, 16, 33),
+            PanCoordinates = new(0, 6, -3),
+        };
 
-            await SendOkAsync(cad).ConfigureAwait(false);
-        }
+        await SendOkAsync(cad).ConfigureAwait(false);
     }
 }

@@ -1,25 +1,24 @@
 ﻿using FastEndpoints;
 using static CustomCADs.Domain.DataConstants.RoleConstants;
 
-namespace CustomCADs.API.Endpoints.Payment
-{
-    using static StatusCodes;
+namespace CustomCADs.API.Endpoints.Payment;
 
-    public class PaymentGroup : Group
+using static StatusCodes;
+
+public class PaymentGroup : Group
+{
+    public PaymentGroup()
     {
-        public PaymentGroup()
+        Configure("Payment", ep =>
         {
-            Configure("Payment", ep =>
+            ep.Roles(Client);
+            ep.Description(opt =>
             {
-                ep.Roles(Client);
-                ep.Description(opt =>
-                {
-                    opt.WithTags("Payment");
-                    opt.ProducesProblem(Status401Unauthorized);
-                    opt.ProducesProblem(Status403Forbidden);
-                    opt.ProducesProblem(Status500InternalServerError);
-                });
+                opt.WithTags("Payment");
+                opt.ProducesProblem(Status401Unauthorized);
+                opt.ProducesProblem(Status403Forbidden);
+                opt.ProducesProblem(Status500InternalServerError);
             });
-        }
+        });
     }
 }

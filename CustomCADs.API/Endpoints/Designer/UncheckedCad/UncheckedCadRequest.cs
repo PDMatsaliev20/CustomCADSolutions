@@ -1,7 +1,6 @@
-﻿namespace CustomCADs.API.Endpoints.Designer.UncheckedCad
+﻿namespace CustomCADs.API.Endpoints.Designer.UncheckedCad;
+
+public class UncheckedCadRequest
 {
-    public class UncheckedCadRequest
-    {
-        public int Id { get; set; }
-    }
+    public int Id { get; set; }
 }

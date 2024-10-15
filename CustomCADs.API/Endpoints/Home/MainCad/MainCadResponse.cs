@@ -1,12 +1,11 @@
 ﻿using CustomCADs.API.Dtos;
 
-namespace CustomCADs.API.Endpoints.Home.MainCad
+namespace CustomCADs.API.Endpoints.Home.MainCad;
+
+public class MainCadResponse
 {
-    public class MainCadResponse
-    {
-        public required int Id { get; set; }
-        public required string CadPath { get; set; }
-        public required CoordinatesDto CamCoordinates { get; set; }
-        public required CoordinatesDto PanCoordinates { get; set; }
-    }
+    public required int Id { get; set; }
+    public required string CadPath { get; set; }
+    public required CoordinatesDto CamCoordinates { get; set; }
+    public required CoordinatesDto PanCoordinates { get; set; }
 }

@@ -1,7 +1,6 @@
-﻿namespace CustomCADs.API.Endpoints.Cads.DeleteCad
+﻿namespace CustomCADs.API.Endpoints.Cads.DeleteCad;
+
+public class DeleteCadRequest
 {
-    public class DeleteCadRequest
-    {
-        public int Id { get; set; }
-    }
+    public int Id { get; set; }
 }

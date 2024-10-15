@@ -7,46 +7,45 @@ using FastEndpoints;
 using Mapster;
 using MediatR;
 
-namespace CustomCADs.API.Endpoints.Orders.GetOrders
+namespace CustomCADs.API.Endpoints.Orders.GetOrders;
+
+using static StatusCodes;
+
+public class GetOrdersEndpoint(IMediator mediator) : Endpoint<GetOrdersRequest, OrderResultDto<GetOrdersResponse>>
 {
-    using static StatusCodes;
-
-    public class GetOrdersEndpoint(IMediator mediator) : Endpoint<GetOrdersRequest, OrderResultDto<GetOrdersResponse>>
+    public override void Configure()
     {
-        public override void Configure()
+        Get("");
+        Group<OrdersGroup>();
+        Description(d => d
+            .WithSummary("Queries the User's Orders with the specified parameters.")
+            .Produces<OrderResultDto<GetOrdersResponse>>(Status200OK, "application/json"));
+    }
+
+    public override async Task HandleAsync(GetOrdersRequest req, CancellationToken ct)
+    {
+        if (!string.IsNullOrEmpty(req.Status) && !Enum.GetNames<OrderStatus>().Contains(req.Status))
         {
-            Get("");
-            Group<OrdersGroup>();
-            Description(d => d
-                .WithSummary("Queries the User's Orders with the specified parameters.")
-                .Produces<OrderResultDto<GetOrdersResponse>>(Status200OK, "application/json"));
+            await SendErrorsAsync(Status400BadRequest).ConfigureAwait(false);
+            return;
         }
 
-        public override async Task HandleAsync(GetOrdersRequest req, CancellationToken ct)
+        GetAllOrdersQuery query = new(
+            Buyer: User.GetName(),
+            Status: req.Status,
+            Category: req.Category,
+            Name: req.Name,
+            Sorting: req.Sorting ?? string.Empty,
+            Page: req.Page,
+            Limit: req.Limit
+        );
+        OrderResult result = await mediator.Send(query).ConfigureAwait(false);
+
+        OrderResultDto<GetOrdersResponse> response = new()
         {
-            if (!string.IsNullOrEmpty(req.Status) && !Enum.GetNames<OrderStatus>().Contains(req.Status))
-            {
-                await SendErrorsAsync(Status400BadRequest).ConfigureAwait(false);
-                return;
-            }
-
-            GetAllOrdersQuery query = new(
-                Buyer: User.GetName(),
-                Status: req.Status,
-                Category: req.Category,
-                Name: req.Name,
-                Sorting: req.Sorting ?? string.Empty,
-                Page: req.Page,
-                Limit: req.Limit
-            );
-            OrderResult result = await mediator.Send(query).ConfigureAwait(false);
-
-            OrderResultDto<GetOrdersResponse> response = new()
-            {
-                Count = result.Count,
-                Orders = result.Orders.Adapt<ICollection<GetOrdersResponse>>(),
-            };
-            await SendOkAsync(response).ConfigureAwait(false);
-        }
+            Count = result.Count,
+            Orders = result.Orders.Adapt<ICollection<GetOrdersResponse>>(),
+        };
+        await SendOkAsync(response).ConfigureAwait(false);
     }
 }

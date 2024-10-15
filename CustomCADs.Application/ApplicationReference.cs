@@ -1,4 +1,3 @@
-﻿namespace CustomCADs.Application
-{
-    public class ApplicationReference { }
-}
+﻿namespace CustomCADs.Application;
+
+public class ApplicationReference { }

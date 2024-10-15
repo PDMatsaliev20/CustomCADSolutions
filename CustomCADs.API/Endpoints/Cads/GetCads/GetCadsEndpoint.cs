@@ -6,39 +6,38 @@ using FastEndpoints;
 using Mapster;
 using MediatR;
 
-namespace CustomCADs.API.Endpoints.Cads.GetCads
+namespace CustomCADs.API.Endpoints.Cads.GetCads;
+
+using static StatusCodes;
+
+public class GetCadsEndpoint(IMediator mediator) : Endpoint<GetCadsRequest, CadResultDto<GetCadsResponse>>
 {
-    using static StatusCodes;
-
-    public class GetCadsEndpoint(IMediator mediator) : Endpoint<GetCadsRequest, CadResultDto<GetCadsResponse>>
+    public override void Configure()
     {
-        public override void Configure()
-        {
-            Get("");
-            Group<CadsGroup>();
-            Description(d => d
-                .WithSummary("Queries the User's Cads with the specified parameters.")
-                .Produces<CadResultDto<GetCadsResponse>>(Status200OK, "application/json"));
-        }
+        Get("");
+        Group<CadsGroup>();
+        Description(d => d
+            .WithSummary("Queries the User's Cads with the specified parameters.")
+            .Produces<CadResultDto<GetCadsResponse>>(Status200OK, "application/json"));
+    }
 
-        public override async Task HandleAsync(GetCadsRequest req, CancellationToken ct)
+    public override async Task HandleAsync(GetCadsRequest req, CancellationToken ct)
+    {
+        GetAllCadsQuery query = new(
+            Creator: User.GetName(),
+            Category: req.Category,
+            Name: req.Name,
+            Sorting: req.Sorting ?? string.Empty,
+            Page: req.Page,
+            Limit: req.Limit
+        );
+        CadResult result = await mediator.Send(query).ConfigureAwait(false);
+        
+        CadResultDto<GetCadsResponse> response = new()
         {
-            GetAllCadsQuery query = new(
-                Creator: User.GetName(),
-                Category: req.Category,
-                Name: req.Name,
-                Sorting: req.Sorting ?? string.Empty,
-                Page: req.Page,
-                Limit: req.Limit
-            );
-            CadResult result = await mediator.Send(query).ConfigureAwait(false);
-            
-            CadResultDto<GetCadsResponse> response = new()
-            {
-                Count = result.Count,
-                Cads = result.Cads.Select(cad => cad.Adapt<GetCadsResponse>()).ToArray()
-            };
-            await SendOkAsync(response).ConfigureAwait(false);
-        }
+            Count = result.Count,
+            Cads = result.Cads.Select(cad => cad.Adapt<GetCadsResponse>()).ToArray()
+        };
+        await SendOkAsync(response).ConfigureAwait(false);
     }
 }

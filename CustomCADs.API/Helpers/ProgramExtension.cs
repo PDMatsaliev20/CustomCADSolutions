@@ -33,286 +33,285 @@ using static Microsoft.AspNetCore.Http.StatusCodes;
 using Order = CustomCADs.Domain.Entities.Order;
 
 #pragma warning disable IDE0130
-namespace Microsoft.Extensions.DependencyInjection
+namespace Microsoft.Extensions.DependencyInjection;
 #pragma warning restore IDE0130
+
+public static class ProgramExtension
 {
-    public static class ProgramExtension
+    public static void AddApplicationContext(this IServiceCollection services, IConfiguration config)
     {
-        public static void AddApplicationContext(this IServiceCollection services, IConfiguration config)
+        string connectionString = config.GetConnectionString("RealConnection")
+                ?? throw new KeyNotFoundException("Could not find connection string 'RealConnection'.");
+        services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connectionString));
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+        services.AddScoped<IOrderQueries, OrderQueries>();
+        services.AddScoped<ICadQueries, CadQueries>();
+        services.AddScoped<ICategoryQueries, CategoryQueries>();
+        services.AddScoped<IUserQueries, UserQueries>();
+        services.AddScoped<IRoleQueries, RoleQueries>();
+
+        services.AddScoped<ICommands<Order>, OrderCommands>();
+        services.AddScoped<ICommands<Cad>, CadCommands>();
+        services.AddScoped<ICommands<Category>, CategoryCommands>();
+        services.AddScoped<ICommands<User>, UserCommands>();
+        services.AddScoped<ICommands<Role>, RoleCommands>();
+    }
+
+    public static void AddIdentityContext(this IServiceCollection services, IConfiguration config)
+    {
+        string connectionString = config.GetConnectionString("IdentityConnection")
+                ?? throw new KeyNotFoundException("Could not find connection string 'IdentityConnection'.");
+        services.AddDbContext<IdentityContext>(options => options.UseSqlServer(connectionString));
+
+        services.AddIdentity<AppUser, AppRole>(options =>
         {
-            string connectionString = config.GetConnectionString("RealConnection")
-                    ?? throw new KeyNotFoundException("Could not find connection string 'RealConnection'.");
-            services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connectionString));
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            options.SignIn.RequireConfirmedEmail = true;
+            options.SignIn.RequireConfirmedAccount = false;
+            options.Password.RequireDigit = false;
+            options.Password.RequireNonAlphanumeric = false;
+            options.Password.RequireLowercase = false;
+            options.Password.RequireUppercase = false;
+            options.User.RequireUniqueEmail = true;
+            options.Lockout.MaxFailedAccessAttempts = 5;
+            options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+        })
+        .AddEntityFrameworkStores<IdentityContext>()
+        .AddDefaultTokenProviders();
 
-            services.AddScoped<IOrderQueries, OrderQueries>();
-            services.AddScoped<ICadQueries, CadQueries>();
-            services.AddScoped<ICategoryQueries, CategoryQueries>();
-            services.AddScoped<IUserQueries, UserQueries>();
-            services.AddScoped<IRoleQueries, RoleQueries>();
+        services.AddScoped<IAppUserManager, AppUserManager>();
+        services.AddScoped<IAppRoleManager, AppRoleManager>();
+    }
 
-            services.AddScoped<ICommands<Order>, OrderCommands>();
-            services.AddScoped<ICommands<Cad>, CadCommands>();
-            services.AddScoped<ICommands<Category>, CategoryCommands>();
-            services.AddScoped<ICommands<User>, UserCommands>();
-            services.AddScoped<ICommands<Role>, RoleCommands>();
-        }
+    public static IServiceCollection AddStripe(this IServiceCollection services, IConfiguration config)
+    {
+        services.Configure<StripeKeys>(config.GetSection("Stripe"));
+        services.AddScoped<PaymentIntentService>();
+        services.AddScoped<IPaymentService, StripeService>();
+        return services;
+    }
 
-        public static void AddIdentityContext(this IServiceCollection services, IConfiguration config)
+    public static IServiceCollection AddEmail(this IServiceCollection services, IConfiguration config)
+    {
+        services.Configure<EmailOptions>(config.GetSection("Email"));
+        services.AddScoped<IEmailService, MailKitService>();
+        return services;
+    }
+
+    public static void AddMediator(this IServiceCollection services)
+    {
+        services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<ApplicationReference>());
+    }
+
+    public static void AddServices(this IServiceCollection services)
+    {
+        services.AddScoped<IDesignerService, DesignerService>();
+        services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IRoleService, RoleService>();
+    }
+
+    public static IServiceCollection AddMappings(this IServiceCollection services)
+    {
+        CadsMapper.Map();
+        OrdersMapper.Map();
+        UsersMapper.Map();
+        return services.AddAutoMapper(typeof(TestsErrorMessages));
+    }
+
+    public static IMvcBuilder AddEndpoints(this IServiceCollection services)
+    {
+        return services
+            .AddFastEndpoints()
+            .AddControllers();
+    }
+
+    public static void AddJsonAndXml(this IMvcBuilder mvc)
+    {
+        mvc.AddNewtonsoftJson();
+        mvc.AddXmlDataContractSerializerFormatters();
+    }
+
+    public static IWebHostBuilder AddUploadSizeLimitations(this IWebHostBuilder webhost, int limit = 300_000_000)
+    {
+        return webhost.ConfigureKestrel(o => o.Limits.MaxRequestBodySize = limit);
+    }
+
+    public static void AddApiConfigurations(this IServiceCollection services)
+    {
+        services.AddEndpointsApiExplorer();
+        services.AddSwaggerGen(c =>
         {
-            string connectionString = config.GetConnectionString("IdentityConnection")
-                    ?? throw new KeyNotFoundException("Could not find connection string 'IdentityConnection'.");
-            services.AddDbContext<IdentityContext>(options => options.UseSqlServer(connectionString));
-
-            services.AddIdentity<AppUser, AppRole>(options =>
+            c.EnableAnnotations();
+            c.SwaggerDoc("v1", new()
             {
-                options.SignIn.RequireConfirmedEmail = true;
-                options.SignIn.RequireConfirmedAccount = false;
-                options.Password.RequireDigit = false;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireLowercase = false;
-                options.Password.RequireUppercase = false;
-                options.User.RequireUniqueEmail = true;
-                options.Lockout.MaxFailedAccessAttempts = 5;
-                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-            })
-            .AddEntityFrameworkStores<IdentityContext>()
-            .AddDefaultTokenProviders();
-
-            services.AddScoped<IAppUserManager, AppUserManager>();
-            services.AddScoped<IAppRoleManager, AppRoleManager>();
-        }
-
-        public static IServiceCollection AddStripe(this IServiceCollection services, IConfiguration config)
-        {
-            services.Configure<StripeKeys>(config.GetSection("Stripe"));
-            services.AddScoped<PaymentIntentService>();
-            services.AddScoped<IPaymentService, StripeService>();
-            return services;
-        }
-
-        public static IServiceCollection AddEmail(this IServiceCollection services, IConfiguration config)
-        {
-            services.Configure<EmailOptions>(config.GetSection("Email"));
-            services.AddScoped<IEmailService, MailKitService>();
-            return services;
-        }
-
-        public static void AddMediator(this IServiceCollection services)
-        {
-            services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<ApplicationReference>());
-        }
-
-        public static void AddServices(this IServiceCollection services)
-        {
-            services.AddScoped<IDesignerService, DesignerService>();
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IRoleService, RoleService>();
-        }
-
-        public static IServiceCollection AddMappings(this IServiceCollection services)
-        {
-            CadsMapper.Map();
-            OrdersMapper.Map();
-            UsersMapper.Map();
-            return services.AddAutoMapper(typeof(TestsErrorMessages));
-        }
-
-        public static IMvcBuilder AddEndpoints(this IServiceCollection services)
-        {
-            return services
-                .AddFastEndpoints()
-                .AddControllers();
-        }
-
-        public static void AddJsonAndXml(this IMvcBuilder mvc)
-        {
-            mvc.AddNewtonsoftJson();
-            mvc.AddXmlDataContractSerializerFormatters();
-        }
-
-        public static IWebHostBuilder AddUploadSizeLimitations(this IWebHostBuilder webhost, int limit = 300_000_000)
-        {
-            return webhost.ConfigureKestrel(o => o.Limits.MaxRequestBodySize = limit);
-        }
-
-        public static void AddApiConfigurations(this IServiceCollection services)
-        {
-            services.AddEndpointsApiExplorer();
-            services.AddSwaggerGen(c =>
-            {
-                c.EnableAnnotations();
-                c.SwaggerDoc("v1", new()
-                {
-                    Title = "CustomCADs API",
-                    Description = "An API to Order, Purchase, Upload and Validate 3D Models",
-                    Contact = new() { Name = "Ivan", Email = "ivanangelov414@gmail.com" },
-                    License = new() { Name = "Apache License 2.0", Url = new Uri("https://www.apache.org/licenses/LICENSE-2.0") }
-                });
+                Title = "CustomCADs API",
+                Description = "An API to Order, Purchase, Upload and Validate 3D Models",
+                Contact = new() { Name = "Ivan", Email = "ivanangelov414@gmail.com" },
+                License = new() { Name = "Apache License 2.0", Url = new Uri("https://www.apache.org/licenses/LICENSE-2.0") }
             });
-        }
+        });
+    }
 
-        public static void AddCorsForReact(this IServiceCollection services, IConfiguration config)
+    public static void AddCorsForReact(this IServiceCollection services, IConfiguration config)
+    {
+        string clientUrl = config["URLs:Client"] ?? throw new ArgumentNullException("No Client URL provided.");
+        services.AddCors(opt =>
         {
-            string clientUrl = config["URLs:Client"] ?? throw new ArgumentNullException("No Client URL provided.");
-            services.AddCors(opt =>
+            opt.AddDefaultPolicy(builder =>
             {
-                opt.AddDefaultPolicy(builder =>
-                {
-                    builder.WithOrigins(clientUrl)
-                            .AllowAnyHeader()
-                            .AllowAnyMethod()
-                            .AllowCredentials();
-                });
+                builder.WithOrigins(clientUrl)
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials();
             });
-        }
+        });
+    }
 
-        public static IServiceCollection AddAuthWithCookie(this IServiceCollection services, IConfiguration config)
+    public static IServiceCollection AddAuthWithCookie(this IServiceCollection services, IConfiguration config)
+    {
+        services.AddAuthentication(opt =>
         {
-            services.AddAuthentication(opt =>
-            {
-                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                opt.DefaultForbidScheme = JwtBearerDefaults.AuthenticationScheme;
-                opt.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
-                opt.DefaultSignOutScheme = JwtBearerDefaults.AuthenticationScheme;
-                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                opt.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(opt =>
-            {
-                string? secretKey = config["JwtSettings:SecretKey"];
-                ArgumentNullException.ThrowIfNull(secretKey, nameof(secretKey));
-
-                opt.TokenValidationParameters = new()
-                {
-                    ValidateAudience = true,
-                    ValidateIssuer = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    ValidIssuer = config["JwtSettings:Issuer"],
-                    ValidAudience = config["JwtSettings:Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey)),
-                };
-
-                opt.Events = new()
-                {
-                    OnMessageReceived = context =>
-                    {
-                        context.Token = context.Request.Cookies["jwt"];
-                        return Task.CompletedTask;
-                    },
-                };
-            });
-
-            return services;
-        }
-
-        public static void AddRoles(this IServiceCollection services, IEnumerable<string> roles)
+            opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            opt.DefaultForbidScheme = JwtBearerDefaults.AuthenticationScheme;
+            opt.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
+            opt.DefaultSignOutScheme = JwtBearerDefaults.AuthenticationScheme;
+            opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            opt.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+        }).AddJwtBearer(opt =>
         {
-            services.AddAuthorization(options =>
-            {
-                foreach (string role in roles)
-                {
-                    options.AddPolicy(role, policy => policy.RequireRole(role));
-                }
-            });
-        }
+            string? secretKey = config["JwtSettings:SecretKey"];
+            ArgumentNullException.ThrowIfNull(secretKey, nameof(secretKey));
 
-        public static IApplicationBuilder UseStaticFilesAndCads(this IApplicationBuilder app)
-        {
-            app.UseStaticFiles(new StaticFileOptions()
+            opt.TokenValidationParameters = new()
             {
-                ContentTypeProvider = new FileExtensionContentTypeProvider()
+                ValidateAudience = true,
+                ValidateIssuer = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = config["JwtSettings:Issuer"],
+                ValidAudience = config["JwtSettings:Audience"],
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey)),
+            };
+
+            opt.Events = new()
+            {
+                OnMessageReceived = context =>
                 {
-                    Mappings =
-                    {
-                        [".glb"] = "model/gltf-binary",
-                        [".gltf"] = "model/gltf+json"
-                    }
+                    context.Token = context.Request.Cookies["jwt"];
+                    return Task.CompletedTask;
                 },
-                OnPrepareResponse = sfrc =>
-                {
-                    sfrc.Context.Response.Headers.Append("Access-Control-Allow-Origin", "*");
-                    sfrc.Context.Response.Headers.Append("Access-Control-Allow-Methods", "GET, OPTIONS");
-                    sfrc.Context.Response.Headers.Append("Access-Control-Allow-Headers", "Content-Type");
-                }
-            });
+            };
+        });
 
-            return app;
-        }
+        return services;
+    }
 
-        public static void UseGlobalExceptionHandler(this IApplicationBuilder app)
+    public static void AddRoles(this IServiceCollection services, IEnumerable<string> roles)
+    {
+        services.AddAuthorization(options =>
         {
-            app.Use(async (context, next) =>
-            {
-                try
-                {
-                    await next().ConfigureAwait(false);
-                }
-                catch (Exception ex) when (ex is CadNotFoundException or OrderNotFoundException or CategoryNotFoundException or UserNotFoundException or RoleNotFoundException)
-                {
-                    context.Response.StatusCode = Status404NotFound;
-                    await context.Response.WriteAsJsonAsync(new { error = "Resource Not Found", message = ex.Message }).ConfigureAwait(false);
-                }
-                catch (Exception ex) when (ex is OrderMissingCadException or DesignerNotAssociatedWithOrderException)
-                {
-                    context.Response.StatusCode = Status400BadRequest;
-                    await context.Response.WriteAsJsonAsync(new { error = "Invalid Operation", message = ex.Message }).ConfigureAwait(false);
-                }
-                catch (DbUpdateConcurrencyException ex)
-                {
-                    context.Response.StatusCode = Status409Conflict;
-                    await context.Response.WriteAsJsonAsync(new { error = "Database Conflict Ocurred", message = ex.Message }).ConfigureAwait(false);
-                }
-                catch (DbUpdateException ex)
-                {
-                    context.Response.StatusCode = Status400BadRequest;
-                    await context.Response.WriteAsJsonAsync(new { error = "Database Error", message = ex.Message }).ConfigureAwait(false);
-                }
-                catch (Exception ex)
-                {
-                    context.Response.StatusCode = Status500InternalServerError;
-                    await context.Response.WriteAsJsonAsync(new { error = "Internal Server Error", message = ex.Message }).ConfigureAwait(false);
-                }
-            });
-        }
-
-        public static async Task UseRolesAsync(this IServiceProvider service, string[] roles)
-        {
-            using IServiceScope scope = service.CreateScope();
-            var appRoleManager = scope.ServiceProvider.GetRequiredService<IAppRoleManager>();
-            var roleService = scope.ServiceProvider.GetRequiredService<IRoleService>();
-
             foreach (string role in roles)
             {
-                if (!await appRoleManager.RoleExistsAsync(role).ConfigureAwait(false))
-                {
-                    await appRoleManager.CreateAsync(new AppRole(role)).ConfigureAwait(false);
-                }
+                options.AddPolicy(role, policy => policy.RequireRole(role));
+            }
+        });
+    }
 
-                if (!await roleService.ExistsByNameAsync(role).ConfigureAwait(false))
+    public static IApplicationBuilder UseStaticFilesAndCads(this IApplicationBuilder app)
+    {
+        app.UseStaticFiles(new StaticFileOptions()
+        {
+            ContentTypeProvider = new FileExtensionContentTypeProvider()
+            {
+                Mappings =
                 {
-                    string? description = role switch
-                    {
-                        Client => ClientDescription,
-                        Contributor => ContributorDescription,
-                        Designer => DesignerDescription,
-                        Admin => AdminDescription,
-                        _ => "Description missing."
-                    };
-                    await roleService.CreateAsync(new RoleModel()
-                    {
-                        Name = role,
-                        Description = description
-                    }).ConfigureAwait(false);
+                    [".glb"] = "model/gltf-binary",
+                    [".gltf"] = "model/gltf+json"
                 }
+            },
+            OnPrepareResponse = sfrc =>
+            {
+                sfrc.Context.Response.Headers.Append("Access-Control-Allow-Origin", "*");
+                sfrc.Context.Response.Headers.Append("Access-Control-Allow-Methods", "GET, OPTIONS");
+                sfrc.Context.Response.Headers.Append("Access-Control-Allow-Headers", "Content-Type");
+            }
+        });
+
+        return app;
+    }
+
+    public static void UseGlobalExceptionHandler(this IApplicationBuilder app)
+    {
+        app.Use(async (context, next) =>
+        {
+            try
+            {
+                await next().ConfigureAwait(false);
+            }
+            catch (Exception ex) when (ex is CadNotFoundException or OrderNotFoundException or CategoryNotFoundException or UserNotFoundException or RoleNotFoundException)
+            {
+                context.Response.StatusCode = Status404NotFound;
+                await context.Response.WriteAsJsonAsync(new { error = "Resource Not Found", message = ex.Message }).ConfigureAwait(false);
+            }
+            catch (Exception ex) when (ex is OrderMissingCadException or DesignerNotAssociatedWithOrderException)
+            {
+                context.Response.StatusCode = Status400BadRequest;
+                await context.Response.WriteAsJsonAsync(new { error = "Invalid Operation", message = ex.Message }).ConfigureAwait(false);
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                context.Response.StatusCode = Status409Conflict;
+                await context.Response.WriteAsJsonAsync(new { error = "Database Conflict Ocurred", message = ex.Message }).ConfigureAwait(false);
+            }
+            catch (DbUpdateException ex)
+            {
+                context.Response.StatusCode = Status400BadRequest;
+                await context.Response.WriteAsJsonAsync(new { error = "Database Error", message = ex.Message }).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                context.Response.StatusCode = Status500InternalServerError;
+                await context.Response.WriteAsJsonAsync(new { error = "Internal Server Error", message = ex.Message }).ConfigureAwait(false);
+            }
+        });
+    }
+
+    public static async Task UseRolesAsync(this IServiceProvider service, string[] roles)
+    {
+        using IServiceScope scope = service.CreateScope();
+        var appRoleManager = scope.ServiceProvider.GetRequiredService<IAppRoleManager>();
+        var roleService = scope.ServiceProvider.GetRequiredService<IRoleService>();
+
+        foreach (string role in roles)
+        {
+            if (!await appRoleManager.RoleExistsAsync(role).ConfigureAwait(false))
+            {
+                await appRoleManager.CreateAsync(new AppRole(role)).ConfigureAwait(false);
+            }
+
+            if (!await roleService.ExistsByNameAsync(role).ConfigureAwait(false))
+            {
+                string? description = role switch
+                {
+                    Client => ClientDescription,
+                    Contributor => ContributorDescription,
+                    Designer => DesignerDescription,
+                    Admin => AdminDescription,
+                    _ => "Description missing."
+                };
+                await roleService.CreateAsync(new RoleModel()
+                {
+                    Name = role,
+                    Description = description
+                }).ConfigureAwait(false);
             }
         }
+    }
 
-        public static IApplicationBuilder UseEndpoints(this IApplicationBuilder app)
-        {
-            return app
-                .UseFastEndpoints(cfg => cfg.Endpoints.RoutePrefix = "API")
-                .UseSwaggerGen();
-        }
+    public static IApplicationBuilder UseEndpoints(this IApplicationBuilder app)
+    {
+        return app
+            .UseFastEndpoints(cfg => cfg.Endpoints.RoutePrefix = "API")
+            .UseSwaggerGen();
     }
 }

@@ -7,53 +7,52 @@ using System.Security.Cryptography;
 using System.Text;
 using static CustomCADs.Domain.DataConstants.UserConstants;
 
-namespace CustomCADs.API.Helpers
+namespace CustomCADs.API.Helpers;
+
+public static class JwtHelper
 {
-    public static class JwtHelper
+    public static JwtSecurityToken GenerateAccessToken(this IConfiguration config, string id, string username, string role)
     {
-        public static JwtSecurityToken GenerateAccessToken(this IConfiguration config, string id, string username, string role)
-        {
-            List<Claim> claims =
-            [
-                new(ClaimTypes.Name, username),
-                new(ClaimTypes.Role, role),
-                new(ClaimTypes.NameIdentifier, id),
-            ];
+        List<Claim> claims =
+        [
+            new(ClaimTypes.Name, username),
+            new(ClaimTypes.Role, role),
+            new(ClaimTypes.NameIdentifier, id),
+        ];
 
-            string? key = config["JwtSettings:SecretKey"];
-            ArgumentNullException.ThrowIfNull(key, nameof(key));
+        string? key = config["JwtSettings:SecretKey"];
+        ArgumentNullException.ThrowIfNull(key, nameof(key));
 
-            SymmetricSecurityKey security = new(Encoding.UTF8.GetBytes(key));
-            string algorithm = SecurityAlgorithms.HmacSha256;
+        SymmetricSecurityKey security = new(Encoding.UTF8.GetBytes(key));
+        string algorithm = SecurityAlgorithms.HmacSha256;
 
-            JwtSecurityToken token = new(
-                issuer: config["JwtSettings:Issuer"],
-                audience: config["JwtSettings:Audience"],
-                claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(15),
-                signingCredentials: new SigningCredentials(security, algorithm)
-            );
+        JwtSecurityToken token = new(
+            issuer: config["JwtSettings:Issuer"],
+            audience: config["JwtSettings:Audience"],
+            claims: claims,
+            expires: DateTime.UtcNow.AddMinutes(15),
+            signingCredentials: new SigningCredentials(security, algorithm)
+        );
 
-            return token;
-        }
+        return token;
+    }
 
-        public static string GenerateRefreshToken()
-        {
-            byte[] randomNumber = new byte[32];
-            RandomNumberGenerator.Fill(randomNumber);            
-            return Base64UrlEncoder.Encode(randomNumber);
-        }
+    public static string GenerateRefreshToken()
+    {
+        byte[] randomNumber = new byte[32];
+        RandomNumberGenerator.Fill(randomNumber);            
+        return Base64UrlEncoder.Encode(randomNumber);
+    }
 
-        public static async Task<(string value, DateTime end)> RenewRefreshToken(this IUserService userService, UserModel user)
-        {
-            string newRT = GenerateRefreshToken();
-            DateTime newEndDate = DateTime.UtcNow.AddDays(RefreshTokenDaysLimit);
+    public static async Task<(string value, DateTime end)> RenewRefreshToken(this IUserService userService, UserModel user)
+    {
+        string newRT = GenerateRefreshToken();
+        DateTime newEndDate = DateTime.UtcNow.AddDays(RefreshTokenDaysLimit);
 
-            user.RefreshToken = newRT;
-            user.RefreshTokenEndDate = newEndDate;
-            await userService.EditAsync(user.UserName, user).ConfigureAwait(false);
+        user.RefreshToken = newRT;
+        user.RefreshTokenEndDate = newEndDate;
+        await userService.EditAsync(user.UserName, user).ConfigureAwait(false);
 
-            return (newRT, newEndDate);
-        }
+        return (newRT, newEndDate);
     }
 }

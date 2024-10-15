@@ -1,22 +1,21 @@
 ﻿using FastEndpoints;
 
-namespace CustomCADs.API.Endpoints.Home
-{
-    using static StatusCodes;
+namespace CustomCADs.API.Endpoints.Home;
 
-    public class HomeGroup : Group
+using static StatusCodes;
+
+public class HomeGroup : Group
+{
+    public HomeGroup()
     {
-        public HomeGroup()
+        Configure("Home", ep =>
         {
-            Configure("Home", ep =>
+            ep.AllowAnonymous();
+            ep.Description(opt =>
             {
-                ep.AllowAnonymous();
-                ep.Description(opt =>
-                {
-                    opt.WithTags("Home");
-                    opt.ProducesProblem(Status500InternalServerError);
-                });
+                opt.WithTags("Home");
+                opt.ProducesProblem(Status500InternalServerError);
             });
-        }
+        });
     }
 }

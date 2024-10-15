@@ -6,61 +6,60 @@ using CustomCADs.Application.UseCases.Cads.Queries.IsCreator;
 using FastEndpoints;
 using MediatR;
 
-namespace CustomCADs.API.Endpoints.Cads.PatchCad
-{
-    using static ApiMessages;
-    using static StatusCodes;
+namespace CustomCADs.API.Endpoints.Cads.PatchCad;
 
-    public class PatchCadEndpoint(IMediator mediator) : Endpoint<PatchCadRequest>
+using static ApiMessages;
+using static StatusCodes;
+
+public class PatchCadEndpoint(IMediator mediator) : Endpoint<PatchCadRequest>
+{
+    public override void Configure()
     {
-        public override void Configure()
+        Patch("{id}");
+        Group<CadsGroup>();
+        Description(d => d
+            .WithSummary("Updates CamCoordinates or PanCoordinates property of Cad.")
+            .Accepts<PatchCadRequest>("application/json")
+            .Produces<EmptyResponse>(Status200OK));
+    }
+
+    public override async Task HandleAsync(PatchCadRequest req, CancellationToken ct)
+    {
+        IsCadCreatorQuery isCreatorQuery = new(req.Id, User.GetName());
+        bool userIsCreator = await mediator.Send(isCreatorQuery).ConfigureAwait(false);
+
+        if (userIsCreator)
         {
-            Patch("{id}");
-            Group<CadsGroup>();
-            Description(d => d
-                .WithSummary("Updates CamCoordinates or PanCoordinates property of Cad.")
-                .Accepts<PatchCadRequest>("application/json")
-                .Produces<EmptyResponse>(Status200OK));
+            ValidationFailures.Add(new()
+            {
+                ErrorMessage = ForbiddenAccess,
+            });
+            await SendErrorsAsync().ConfigureAwait(false);
+            return;
         }
 
-        public override async Task HandleAsync(PatchCadRequest req, CancellationToken ct)
-        {
-            IsCadCreatorQuery isCreatorQuery = new(req.Id, User.GetName());
-            bool userIsCreator = await mediator.Send(isCreatorQuery).ConfigureAwait(false);
+        GetCadByIdQuery getCadQuery = new(req.Id);
+        CadModel model = await mediator.Send(getCadQuery).ConfigureAwait(false);
 
-            if (userIsCreator)
-            {
+        double x = req.Coordinates.X, y = req.Coordinates.Y, z = req.Coordinates.Z;
+        switch (req.Type.ToLower())
+        {
+            case "camera": model.CamCoordinates = new(x, y, z); break;
+            case "pan": model.PanCoordinates = new(x, y, z); break;
+            default:
                 ValidationFailures.Add(new()
                 {
-                    ErrorMessage = ForbiddenAccess,
+                    PropertyName = nameof(req.Type),
+                    AttemptedValue = req.Type,
+                    ErrorMessage = "Type property must be either 'camera' or 'pan'",
                 });
                 await SendErrorsAsync().ConfigureAwait(false);
                 return;
-            }
-
-            GetCadByIdQuery getCadQuery = new(req.Id);
-            CadModel model = await mediator.Send(getCadQuery).ConfigureAwait(false);
-
-            double x = req.Coordinates.X, y = req.Coordinates.Y, z = req.Coordinates.Z;
-            switch (req.Type.ToLower())
-            {
-                case "camera": model.CamCoordinates = new(x, y, z); break;
-                case "pan": model.PanCoordinates = new(x, y, z); break;
-                default:
-                    ValidationFailures.Add(new()
-                    {
-                        PropertyName = nameof(req.Type),
-                        AttemptedValue = req.Type,
-                        ErrorMessage = "Type property must be either 'camera' or 'pan'",
-                    });
-                    await SendErrorsAsync().ConfigureAwait(false);
-                    return;
-            }
-
-            EditCadCommand command = new(req.Id, model);
-            await mediator.Send(command).ConfigureAwait(false);
-
-            await SendNoContentAsync().ConfigureAwait(false);
         }
+
+        EditCadCommand command = new(req.Id, model);
+        await mediator.Send(command).ConfigureAwait(false);
+
+        await SendNoContentAsync().ConfigureAwait(false);
     }
 }
