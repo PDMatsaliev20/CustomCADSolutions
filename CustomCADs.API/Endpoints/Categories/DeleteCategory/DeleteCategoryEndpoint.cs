@@ -1,11 +1,15 @@
 ﻿using CustomCADs.Application.Contracts;
+using CustomCADs.Application.UseCases.Categories.Commands.Delete;
+using CustomCADs.Application.UseCases.Categories.Queries.ExistsById;
 using FastEndpoints;
+using MediatR;
 
 namespace CustomCADs.API.Endpoints.Categories.DeleteCategory
 {
+    using static ApiMessages;
     using static StatusCodes;
 
-    public class DeleteCategoryEndpoint(ICategoryService service) : Endpoint<DeleteCategoryRequest>
+    public class DeleteCategoryEndpoint(IMediator mediator) : Endpoint<DeleteCategoryRequest>
     {
         public override void Configure()
         {
@@ -19,10 +23,21 @@ namespace CustomCADs.API.Endpoints.Categories.DeleteCategory
 
         public override async Task HandleAsync(DeleteCategoryRequest req, CancellationToken ct)
         {
-            if (await service.ExistsByIdAsync(req.Id).ConfigureAwait(false))
+            CategoryExistsByIdQuery query = new(req.Id);
+            bool exists = await mediator.Send(query).ConfigureAwait(false);
+            
+            if (!exists)
             {
-                await service.DeleteAsync(req.Id).ConfigureAwait(false);
+                ValidationFailures.Add(new() 
+                {
+                    ErrorMessage = string.Format(NotFound, "Category")
+                });
+                await SendErrorsAsync().ConfigureAwait(false);
+                return;
             }
+
+            DeleteCategoryCommand command = new(req.Id);
+            await mediator.Send(command).ConfigureAwait(false);
 
             await SendNoContentAsync().ConfigureAwait(false);
         }

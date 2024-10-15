@@ -1,12 +1,14 @@
-﻿using CustomCADs.Application.Contracts;
-using CustomCADs.Application.Models.Categories;
+﻿using CustomCADs.Application.Models.Categories;
+using CustomCADs.Application.UseCases.Categories.Commands.Edit;
+using CustomCADs.Application.UseCases.Categories.Queries.GetById;
 using FastEndpoints;
+using MediatR;
 
 namespace CustomCADs.API.Endpoints.Categories.PutCategory
 {
     using static StatusCodes;
 
-    public class PutCategoryEndpoint(ICategoryService service) : Endpoint<PutCategoryRequest>
+    public class PutCategoryEndpoint(IMediator mediator) : Endpoint<PutCategoryRequest>
     {
         public override void Configure()
         {
@@ -20,10 +22,14 @@ namespace CustomCADs.API.Endpoints.Categories.PutCategory
 
         public override async Task HandleAsync(PutCategoryRequest req, CancellationToken ct)
         {
-            CategoryModel model = await service.GetByIdAsync(req.Id).ConfigureAwait(false);
+            GetCategoryByIdQuery query = new(req.Id);
+            CategoryModel model = await mediator.Send(query).ConfigureAwait(false);
+
             model.Name = req.Name;
 
-            await service.EditAsync(req.Id, model).ConfigureAwait(false);
+            EditCategoryCommand command = new(req.Id, model);
+            await mediator.Send(command).ConfigureAwait(false);
+
             await SendNoContentAsync().ConfigureAwait(false);
         }
     }

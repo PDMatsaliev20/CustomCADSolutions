@@ -1,12 +1,14 @@
 ﻿using CustomCADs.API.Dtos;
-using CustomCADs.Application.Contracts;
+using CustomCADs.Application.Models.Categories;
+using CustomCADs.Application.UseCases.Categories.Queries.GetAll;
 using FastEndpoints;
+using MediatR;
 
 namespace CustomCADs.API.Endpoints.Categories.GetCategories
 {
     using static StatusCodes;
 
-    public class GetCategoriesEndpoint(ICategoryService service) : EndpointWithoutRequest<IEnumerable<CategoryDto>>
+    public class GetCategoriesEndpoint(IMediator mediator) : EndpointWithoutRequest<IEnumerable<CategoryDto>>
     {
         public override void Configure()
         {
@@ -21,10 +23,11 @@ namespace CustomCADs.API.Endpoints.Categories.GetCategories
 
         public override async Task HandleAsync(CancellationToken ct)
         {
-            IEnumerable<CategoryDto> categories = service.GetAll()
-                .Select(c => new CategoryDto(c.Id, c.Name));
+            GetAllCategoriesQuery query = new();
+            IEnumerable<CategoryModel> categories = await mediator.Send(query, ct).ConfigureAwait(false);
 
-            await SendOkAsync(categories).ConfigureAwait(false);
+            var response = categories.Select(c => new CategoryDto(c.Id, c.Name));
+            await SendOkAsync(response).ConfigureAwait(false);
         }
     }
 }

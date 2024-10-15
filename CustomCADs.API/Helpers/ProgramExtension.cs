@@ -105,7 +105,6 @@ namespace Microsoft.Extensions.DependencyInjection
 
         public static void AddServices(this IServiceCollection services)
         {
-            services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<ICadService, CadService>();
             services.AddScoped<IDesignerService, DesignerService>();

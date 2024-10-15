@@ -1,14 +1,14 @@
-﻿using CustomCADs.API.Endpoints.Categories.GetCategoryById;
-using CustomCADs.API.Dtos;
-using CustomCADs.Application.Contracts;
-using CustomCADs.Application.Models.Categories;
+﻿using CustomCADs.API.Dtos;
+using CustomCADs.API.Endpoints.Categories.GetCategoryById;
+using CustomCADs.Application.UseCases.Categories.Commands.Create;
 using FastEndpoints;
+using MediatR;
 
 namespace CustomCADs.API.Endpoints.Categories.PostCategory
 {
     using static StatusCodes;
 
-    public class PostCategoryEndpoint(ICategoryService service) : Endpoint<PostCategoryRequest, CategoryDto>
+    public class PostCategoryEndpoint(IMediator mediator) : Endpoint<PostCategoryRequest, CategoryDto>
     {
         public override void Configure()
         {
@@ -22,9 +22,11 @@ namespace CustomCADs.API.Endpoints.Categories.PostCategory
 
         public override async Task HandleAsync(PostCategoryRequest req, CancellationToken ct)
         {
-            int id = await service.CreateAsync(new() { Name = req.Name }).ConfigureAwait(false);
-            CategoryDto category = new(id, req.Name);
-            await SendCreatedAtAsync<GetCategoryEndpoint>(new { id }, category).ConfigureAwait(false);
+            CreateCategoryCommand command = new(new() { Name = req.Name });
+            int id = await mediator.Send(command).ConfigureAwait(false);
+
+            CategoryDto response = new(id, req.Name);
+            await SendCreatedAtAsync<GetCategoryEndpoint>(new { id }, response).ConfigureAwait(false);
         }
     }
 }
