@@ -11,6 +11,7 @@ builder.Services.AddStripe(builder.Configuration);
 builder.Services.AddEmail(builder.Configuration);
 
 // Add Core services
+builder.Services.AddMediator();
 builder.Services.AddServices();
 
 // Add Authentication and Authorization with JWT in a Cookie

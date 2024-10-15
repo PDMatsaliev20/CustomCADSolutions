@@ -98,6 +98,11 @@ namespace Microsoft.Extensions.DependencyInjection
             return services;
         }
 
+        public static void AddMediator(this IServiceCollection services)
+        {
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<ApplicationReference>());
+        }
+
         public static void AddServices(this IServiceCollection services)
         {
             services.AddScoped<ICategoryService, CategoryService>();
