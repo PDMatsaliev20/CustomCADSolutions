@@ -1,68 +1,36 @@
-﻿using CustomCADs.API.Mappers;
-using CustomCADs.Application;
+﻿using CustomCADs.API.Helpers;
+using CustomCADs.API.Mappers;
 using CustomCADs.Application.Contracts;
-using CustomCADs.Application.Exceptions;
 using CustomCADs.Application.Models.Roles;
-using CustomCADs.Application.Services;
 using CustomCADs.Auth;
 using CustomCADs.Auth.Contracts;
-using CustomCADs.Auth.Managers;
-using CustomCADs.Domain.Contracts;
-using CustomCADs.Domain.Contracts.Queries;
-using CustomCADs.Domain.Entities;
 using CustomCADs.Infrastructure.Email;
 using CustomCADs.Infrastructure.Payment;
-using CustomCADs.Persistence;
-using CustomCADs.Persistence.Repositories;
-using CustomCADs.Persistence.Repositories.Cads;
-using CustomCADs.Persistence.Repositories.Categories;
-using CustomCADs.Persistence.Repositories.Orders;
-using CustomCADs.Persistence.Repositories.Roles;
-using CustomCADs.Persistence.Repositories.Users;
 using FastEndpoints;
 using FastEndpoints.Swagger;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.StaticFiles;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Stripe;
 using System.Text;
 using static CustomCADs.Domain.DataConstants.RoleConstants;
-using static Microsoft.AspNetCore.Http.StatusCodes;
-using Order = CustomCADs.Domain.Entities.Order;
 
 #pragma warning disable IDE0130
 namespace Microsoft.Extensions.DependencyInjection;
-#pragma warning restore IDE0130
 
 public static class ProgramExtension
 {
-    public static void AddApplicationContext(this IServiceCollection services, IConfiguration config)
+    public static void AddPersistence(this IServiceCollection services, IConfiguration config)
     {
-        string connectionString = config.GetConnectionString("RealConnection")
-                ?? throw new KeyNotFoundException("Could not find connection string 'RealConnection'.");
-        services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connectionString));
-        services.AddScoped<IUnitOfWork, UnitOfWork>();
-
-        services.AddScoped<IOrderQueries, OrderQueries>();
-        services.AddScoped<ICadQueries, CadQueries>();
-        services.AddScoped<ICategoryQueries, CategoryQueries>();
-        services.AddScoped<IUserQueries, UserQueries>();
-        services.AddScoped<IRoleQueries, RoleQueries>();
-
-        services.AddScoped<ICommands<Order>, OrderCommands>();
-        services.AddScoped<ICommands<Cad>, CadCommands>();
-        services.AddScoped<ICommands<Category>, CategoryCommands>();
-        services.AddScoped<ICommands<User>, UserCommands>();
-        services.AddScoped<ICommands<Role>, RoleCommands>();
+        services.AddApplicationContext(config);
+        services.AddQueries();
+        services.AddCommands();
     }
-
-    public static void AddIdentityContext(this IServiceCollection services, IConfiguration config)
+    public static void AddIdentity(this IServiceCollection services, IConfiguration config)
     {
-        string connectionString = config.GetConnectionString("IdentityConnection")
-                ?? throw new KeyNotFoundException("Could not find connection string 'IdentityConnection'.");
-        services.AddDbContext<IdentityContext>(options => options.UseSqlServer(connectionString));
+        services.AddIdentityContext(config);
+        services.AddIdentityAppManagers();
 
         services.AddIdentity<AppUser, AppRole>(options =>
         {
@@ -78,64 +46,39 @@ public static class ProgramExtension
         })
         .AddEntityFrameworkStores<IdentityContext>()
         .AddDefaultTokenProviders();
-
-        services.AddScoped<IAppUserManager, AppUserManager>();
-        services.AddScoped<IAppRoleManager, AppRoleManager>();
     }
 
-    public static IServiceCollection AddStripe(this IServiceCollection services, IConfiguration config)
+    public static void AddStripe(this IServiceCollection services, IConfiguration config)
     {
         services.Configure<StripeKeys>(config.GetSection("Stripe"));
-        services.AddScoped<PaymentIntentService>();
-        services.AddScoped<IPaymentService, StripeService>();
-        return services;
+        services.AddStripeServices();
     }
 
-    public static IServiceCollection AddEmail(this IServiceCollection services, IConfiguration config)
+    public static void AddEmail(this IServiceCollection services, IConfiguration config)
     {
         services.Configure<EmailOptions>(config.GetSection("Email"));
-        services.AddScoped<IEmailService, MailKitService>();
-        return services;
+        services.AddEmailServices();
     }
 
-    public static void AddMediator(this IServiceCollection services)
+    public static void AddMappings(this IServiceCollection services)
     {
-        services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<ApplicationReference>());
-    }
-
-    public static void AddServices(this IServiceCollection services)
-    {
-        services.AddScoped<IUserService, UserService>();
-        services.AddScoped<IRoleService, RoleService>();
-    }
-
-    public static IServiceCollection AddMappings(this IServiceCollection services)
-    {
+        services.AddApplicationMappings();
         CadsMapper.Map();
         OrdersMapper.Map();
         UsersMapper.Map();
-        return services.AddAutoMapper(typeof(TestsErrorMessages));
     }
 
-    public static IMvcBuilder AddEndpoints(this IServiceCollection services)
+    public static void AddEndpoints(this IServiceCollection services)
     {
-        return services
-            .AddFastEndpoints()
-            .AddControllers();
+        services.AddFastEndpoints();
     }
 
-    public static void AddJsonAndXml(this IMvcBuilder mvc)
+    public static void AddUploadSizeLimitations(this IWebHostBuilder webhost, int limit = 300_000_000)
     {
-        mvc.AddNewtonsoftJson();
-        mvc.AddXmlDataContractSerializerFormatters();
+        webhost.ConfigureKestrel(o => o.Limits.MaxRequestBodySize = limit);
     }
 
-    public static IWebHostBuilder AddUploadSizeLimitations(this IWebHostBuilder webhost, int limit = 300_000_000)
-    {
-        return webhost.ConfigureKestrel(o => o.Limits.MaxRequestBodySize = limit);
-    }
-
-    public static void AddApiConfigurations(this IServiceCollection services)
+    public static void AddApiDocumentation(this IServiceCollection services)
     {
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen(c =>
@@ -166,7 +109,7 @@ public static class ProgramExtension
         });
     }
 
-    public static IServiceCollection AddAuthWithCookie(this IServiceCollection services, IConfiguration config)
+    public static void AddAuthAndJwt(this IServiceCollection services, IConfiguration config)
     {
         services.AddAuthentication(opt =>
         {
@@ -201,8 +144,6 @@ public static class ProgramExtension
                 },
             };
         });
-
-        return services;
     }
 
     public static void AddRoles(this IServiceCollection services, IEnumerable<string> roles)
@@ -216,7 +157,7 @@ public static class ProgramExtension
         });
     }
 
-    public static IApplicationBuilder UseStaticFilesAndCads(this IApplicationBuilder app)
+    public static void UseStaticFilesAndCads(this IApplicationBuilder app)
     {
         app.UseStaticFiles(new StaticFileOptions()
         {
@@ -235,43 +176,23 @@ public static class ProgramExtension
                 sfrc.Context.Response.Headers.Append("Access-Control-Allow-Headers", "Content-Type");
             }
         });
-
-        return app;
     }
 
     public static void UseGlobalExceptionHandler(this IApplicationBuilder app)
     {
-        app.Use(async (context, next) =>
+        app.UseExceptionHandler(errorApp =>
         {
-            try
+            errorApp.Run(async context =>
             {
-                await next().ConfigureAwait(false);
-            }
-            catch (Exception ex) when (ex is CadNotFoundException or OrderNotFoundException or CategoryNotFoundException or UserNotFoundException or RoleNotFoundException)
-            {
-                context.Response.StatusCode = Status404NotFound;
-                await context.Response.WriteAsJsonAsync(new { error = "Resource Not Found", message = ex.Message }).ConfigureAwait(false);
-            }
-            catch (Exception ex) when (ex is OrderMissingCadException or DesignerNotAssociatedWithOrderException)
-            {
-                context.Response.StatusCode = Status400BadRequest;
-                await context.Response.WriteAsJsonAsync(new { error = "Invalid Operation", message = ex.Message }).ConfigureAwait(false);
-            }
-            catch (DbUpdateConcurrencyException ex)
-            {
-                context.Response.StatusCode = Status409Conflict;
-                await context.Response.WriteAsJsonAsync(new { error = "Database Conflict Ocurred", message = ex.Message }).ConfigureAwait(false);
-            }
-            catch (DbUpdateException ex)
-            {
-                context.Response.StatusCode = Status400BadRequest;
-                await context.Response.WriteAsJsonAsync(new { error = "Database Error", message = ex.Message }).ConfigureAwait(false);
-            }
-            catch (Exception ex)
-            {
-                context.Response.StatusCode = Status500InternalServerError;
-                await context.Response.WriteAsJsonAsync(new { error = "Internal Server Error", message = ex.Message }).ConfigureAwait(false);
-            }
+                var ehf = context.Features.Get<IExceptionHandlerFeature>();
+                var ex = ehf?.Error;
+
+                if (ex != null)
+                {
+                    var handler = new GlobalExceptionHandler();
+                    await handler.TryHandleAsync(context, ex, context.RequestAborted).ConfigureAwait(false);
+                }
+            });
         });
     }
 
@@ -307,10 +228,8 @@ public static class ProgramExtension
         }
     }
 
-    public static IApplicationBuilder UseEndpoints(this IApplicationBuilder app)
+    public static void UseEndpoints(this IApplicationBuilder app)
     {
-        return app
-            .UseFastEndpoints(cfg => cfg.Endpoints.RoutePrefix = "API")
-            .UseSwaggerGen();
+        app.UseFastEndpoints(cfg => cfg.Endpoints.RoutePrefix = "API").UseSwaggerGen();
     }
 }

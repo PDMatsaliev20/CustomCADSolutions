@@ -2,9 +2,9 @@ using static CustomCADs.Domain.DataConstants.RoleConstants;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add Application and Identity contexts
-builder.Services.AddApplicationContext(builder.Configuration);
-builder.Services.AddIdentityContext(builder.Configuration);
+// Add Persistence and Identity
+builder.Services.AddPersistence(builder.Configuration);
+builder.Services.AddIdentity(builder.Configuration);
 
 // Add External services
 builder.Services.AddStripe(builder.Configuration);
@@ -14,17 +14,18 @@ builder.Services.AddEmail(builder.Configuration);
 builder.Services.AddMediator();
 builder.Services.AddServices();
 
-// Add Authentication and Authorization with JWT in a Cookie
+// Add AuthN and AuthZ with JWT in a Cookie
 string[] roles = [Admin, Designer, Contributor, Client];
-builder.Services.AddAuthWithCookie(builder.Configuration).AddRoles(roles);
+builder.Services.AddAuthAndJwt(builder.Configuration);
+builder.Services.AddRoles(roles);
 
 // Add Mapper classes/profiles
 builder.Services.AddMappings();
 
-// Add API/Endpoints + configs
-builder.Services.AddEndpoints().AddJsonAndXml();
-builder.Services.AddApiConfigurations();
+// Add Endpoints + configs
+builder.Services.AddEndpoints();
 builder.WebHost.AddUploadSizeLimitations();
+builder.Services.AddApiDocumentation();
 
 // Add CORS for Client
 builder.Services.AddCorsForReact(builder.Configuration);
