@@ -1,11 +1,15 @@
 ﻿using CustomCADs.API.Dtos;
 using CustomCADs.API.Endpoints.Users.GetUser;
-using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Users;
+using CustomCADs.Application.UseCases.Roles.Queries.ExistsByName;
+using CustomCADs.Application.UseCases.Roles.Queries.GetAllNames;
+using CustomCADs.Application.UseCases.Users.Commands.Create;
+using CustomCADs.Application.UseCases.Users.Queries.GetById;
 using CustomCADs.Auth;
 using CustomCADs.Auth.Contracts;
 using FastEndpoints;
 using FluentValidation.Results;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 
 namespace CustomCADs.API.Endpoints.Users.PostUser;
@@ -13,7 +17,7 @@ namespace CustomCADs.API.Endpoints.Users.PostUser;
 using static ApiMessages;
 using static StatusCodes;
 
-public class PostUserEndpoint(IAppUserManager manager, IUserService service, IRoleService roleService) : Endpoint<PostUserRequest, UserResponseDto>
+public class PostUserEndpoint(IMediator mediator, IAppUserManager manager) : Endpoint<PostUserRequest, UserResponseDto>
 {
     public override void Configure()
     {
@@ -27,15 +31,18 @@ public class PostUserEndpoint(IAppUserManager manager, IUserService service, IRo
 
     public override async Task HandleAsync(PostUserRequest req, CancellationToken ct)
     {
-        bool roleExists = await roleService.ExistsByNameAsync(req.Role).ConfigureAwait(false);
+        RoleExistsByNameQuery existsByNameQuery = new(req.Role);
+        bool roleExists = await mediator.Send(existsByNameQuery).ConfigureAwait(false);
+
         if (!roleExists)
         {
-            string roles = string.Join(", ", roleService.GetAllNames());
+            GetAllRoleNamesQuery getRoleNamesQuery = new();
+            var roleNames = await mediator.Send(getRoleNamesQuery).ConfigureAwait(false);
+
             ValidationFailures.Add(new()
             {
-                ErrorMessage = string.Format(InvalidRole, roles)
+                ErrorMessage = string.Format(InvalidRole, string.Join(", ", roleNames))
             });
-
             await SendErrorsAsync().ConfigureAwait(false);
             return;
         }
@@ -63,9 +70,11 @@ public class PostUserEndpoint(IAppUserManager manager, IUserService service, IRo
             FirstName = req.FirstName,
             LastName = req.LastName,
         };
-        string id = await service.CreateAsync(model);
+        CreateUserCommand command = new(model);
+        string id = await mediator.Send(command).ConfigureAwait(false);
 
-        UserModel addedUser = await service.GetByIdAsync(id).ConfigureAwait(false);
+        GetUserByIdQuery query = new(id);
+        UserModel addedUser = await mediator.Send(query).ConfigureAwait(false);
 
         UserResponseDto response = new()
         {

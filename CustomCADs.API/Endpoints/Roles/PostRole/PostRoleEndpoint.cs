@@ -2,16 +2,18 @@
 using CustomCADs.API.Endpoints.Roles.GetRole;
 using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Roles;
+using CustomCADs.Application.UseCases.Roles.Commands.Create;
 using CustomCADs.Auth.Contracts;
 using FastEndpoints;
 using FluentValidation.Results;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 
 namespace CustomCADs.API.Endpoints.Roles.PostRole;
 
 using static StatusCodes;
 
-public class PostRoleEndpoint(IAppRoleManager manager, IRoleService service) : Endpoint<PostRoleRequest, RoleResponseDto>
+public class PostRoleEndpoint(IMediator mediator, IAppRoleManager manager) : Endpoint<PostRoleRequest, RoleResponseDto>
 {
     public override void Configure()
     {
@@ -43,7 +45,8 @@ public class PostRoleEndpoint(IAppRoleManager manager, IRoleService service) : E
             Name = req.Name,
             Description = req.Description,
         };
-        await service.CreateAsync(model).ConfigureAwait(false);
+        CreateRoleCommand command = new(model);
+        await mediator.Send(command).ConfigureAwait(false);
 
         RoleResponseDto response = new()
         {

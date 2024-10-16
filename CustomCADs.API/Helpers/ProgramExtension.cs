@@ -1,13 +1,15 @@
 ﻿using CustomCADs.API.Helpers;
 using CustomCADs.API.Mappers;
-using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Roles;
+using CustomCADs.Application.UseCases.Roles.Commands.Create;
+using CustomCADs.Application.UseCases.Roles.Queries.ExistsByName;
 using CustomCADs.Auth;
 using CustomCADs.Auth.Contracts;
 using CustomCADs.Infrastructure.Email;
 using CustomCADs.Infrastructure.Payment;
 using FastEndpoints;
 using FastEndpoints.Swagger;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Identity;
@@ -200,7 +202,7 @@ public static class ProgramExtension
     {
         using IServiceScope scope = service.CreateScope();
         var appRoleManager = scope.ServiceProvider.GetRequiredService<IAppRoleManager>();
-        var roleService = scope.ServiceProvider.GetRequiredService<IRoleService>();
+        var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
 
         foreach (string role in roles)
         {
@@ -209,7 +211,8 @@ public static class ProgramExtension
                 await appRoleManager.CreateAsync(new AppRole(role)).ConfigureAwait(false);
             }
 
-            if (!await roleService.ExistsByNameAsync(role).ConfigureAwait(false))
+            RoleExistsByNameQuery query = new(role);
+            if (!await mediator.Send(query).ConfigureAwait(false))
             {
                 string? description = role switch
                 {
@@ -219,11 +222,14 @@ public static class ProgramExtension
                     Admin => AdminDescription,
                     _ => "Description missing."
                 };
-                await roleService.CreateAsync(new RoleModel()
+
+                RoleModel model = new()
                 {
                     Name = role,
                     Description = description
-                }).ConfigureAwait(false);
+                };
+                CreateRoleCommand command = new(model);
+                await mediator.Send(command).ConfigureAwait(false);
             }
         }
     }

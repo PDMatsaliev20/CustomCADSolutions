@@ -1,10 +1,12 @@
 ﻿using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Users;
+using CustomCADs.Application.UseCases.Users.Commands.Create;
 using CustomCADs.Auth;
 using CustomCADs.Auth.Contracts;
 using FastEndpoints;
 using FluentValidation.Results;
 using Mapster;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 using static CustomCADs.Domain.DataConstants.RoleConstants;
 
@@ -13,7 +15,7 @@ namespace CustomCADs.API.Endpoints.Identity.Register;
 using static ApiMessages;
 using static StatusCodes;
 
-public class RegisterEndpoint(IAppUserManager manager, IUserService service, IEmailService email, IConfiguration config) : Endpoint<RegisterRequest>
+public class RegisterEndpoint(IMediator mediator, IAppUserManager manager, IEmailService email, IConfiguration config) : Endpoint<RegisterRequest>
 {
     public override void Configure()
     {
@@ -54,8 +56,10 @@ public class RegisterEndpoint(IAppUserManager manager, IUserService service, IEm
         await manager.AddToRoleAsync(user, req.Role).ConfigureAwait(false);
 
         UserModel model = req.Adapt<UserModel>();
-        model.Role = null!;
-        await service.CreateAsync(model).ConfigureAwait(false);
+        model.Role = null!; // For EF Core
+
+        CreateUserCommand command = new(model);
+        await mediator.Send(command).ConfigureAwait(false);
 
         string serverUrl = config["URLs:Server"] ?? "https://customcads.onrender.com";
         string token = await manager.GenerateEmailConfirmationTokenAsync(user).ConfigureAwait(false);

@@ -12,7 +12,6 @@ builder.Services.AddEmail(builder.Configuration);
 
 // Add Core services
 builder.Services.AddMediator();
-builder.Services.AddServices();
 
 // Add AuthN and AuthZ with JWT in a Cookie
 string[] roles = [Admin, Designer, Contributor, Client];

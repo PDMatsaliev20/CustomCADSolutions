@@ -1,9 +1,10 @@
 ﻿using CustomCADs.API.Helpers;
-using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Users;
+using CustomCADs.Application.UseCases.Users.Queries.GetByUsername;
 using CustomCADs.Auth;
 using CustomCADs.Auth.Contracts;
 using FastEndpoints;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 using System.IdentityModel.Tokens.Jwt;
 
@@ -12,7 +13,7 @@ namespace CustomCADs.API.Endpoints.Identity.VerifyEmail;
 using static ApiMessages;
 using static StatusCodes;
 
-public class VerifyEmailEndpoint(IAppUserManager manager, IUserService service, SignInManager<AppUser> signInManager, IConfiguration config) : Endpoint<VerifyEmailRequest>
+public class VerifyEmailEndpoint(IMediator mediator, IAppUserManager manager, SignInManager<AppUser> signInManager, IConfiguration config) : Endpoint<VerifyEmailRequest>
 {
     public override void Configure()
     {
@@ -71,7 +72,9 @@ public class VerifyEmailEndpoint(IAppUserManager manager, IUserService service, 
         }
 
         await signInManager.SignInAsync(appUser, false).ConfigureAwait(false);
-        UserModel model = await service.GetByNameAsync(req.Username).ConfigureAwait(false);
+
+        GetUserByUsernameQuery query = new(req.Username);
+        UserModel model = await mediator.Send(query).ConfigureAwait(false);
 
         HttpContext.Response.Cookies.Append("role", model.RoleName);
         HttpContext.Response.Cookies.Append("username", model.UserName);
@@ -80,7 +83,7 @@ public class VerifyEmailEndpoint(IAppUserManager manager, IUserService service, 
         string signedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
         HttpContext.Response.Cookies.Append("jwt", signedJwt, new() { HttpOnly = true, Secure = true, Expires = jwt.ValidTo });
 
-        (string newRT, DateTime newEnd) = await service.RenewRefreshToken(model).ConfigureAwait(false);
+        (string newRT, DateTime newEnd) = await model.RenewRefreshToken(mediator).ConfigureAwait(false);
         HttpContext.Response.Cookies.Append("rt", newRT, new() { HttpOnly = true, Secure = true, Expires = newEnd });
 
         HttpContext.Response.Cookies.Append("role", model.RoleName, new() { Expires = newEnd });

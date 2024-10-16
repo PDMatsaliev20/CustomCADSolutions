@@ -1,14 +1,15 @@
 ﻿using CustomCADs.API.Dtos;
-using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Users;
+using CustomCADs.Application.UseCases.Users.Queries.GetAll;
 using FastEndpoints;
 using Mapster;
+using MediatR;
 
 namespace CustomCADs.API.Endpoints.Users.GetUsers;
 
 using static StatusCodes;
 
-public class GetUsersEndpoint(IUserService service) : Endpoint<GetUsersRequest, GetUsersResponse>
+public class GetUsersEndpoint(IMediator mediator) : Endpoint<GetUsersRequest, GetUsersResponse>
 {
     public override void Configure()
     {
@@ -21,17 +22,18 @@ public class GetUsersEndpoint(IUserService service) : Endpoint<GetUsersRequest, 
 
     public override async Task HandleAsync(GetUsersRequest req, CancellationToken ct)
     {
-        UserResult result = service.GetAll(
-            username: req.Name,
-            sorting: req.Sorting ?? "",
-            page: req.Page,
-            limit: req.Limit
+        GetAllUsersQuery query = new(
+            Username: req.Name,
+            Sorting: req.Sorting ?? "",
+            Page: req.Page,
+            Limit: req.Limit
         );
+        UserResult result = await mediator.Send(query).ConfigureAwait(false);
         
         GetUsersResponse response = new()
         {
             Count = result.Count,
-            Users = result.Users.Select(user => user.Adapt<UserResponseDto>()).ToArray()
+            Users = result.Users.Adapt<UserResponseDto[]>(),
         };
         await SendOkAsync(response).ConfigureAwait(false);
     }

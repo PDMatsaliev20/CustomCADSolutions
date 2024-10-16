@@ -1,5 +1,6 @@
-﻿using CustomCADs.Application.Contracts;
-using CustomCADs.Application.Models.Users;
+﻿using CustomCADs.Application.Models.Users;
+using CustomCADs.Application.UseCases.Users.Commands.EditByName;
+using MediatR;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -44,14 +45,16 @@ public static class JwtHelper
         return Base64UrlEncoder.Encode(randomNumber);
     }
 
-    public static async Task<(string value, DateTime end)> RenewRefreshToken(this IUserService userService, UserModel user)
+    public static async Task<(string value, DateTime end)> RenewRefreshToken(this UserModel user, IMediator mediator)
     {
         string newRT = GenerateRefreshToken();
         DateTime newEndDate = DateTime.UtcNow.AddDays(RefreshTokenDaysLimit);
 
         user.RefreshToken = newRT;
         user.RefreshTokenEndDate = newEndDate;
-        await userService.EditAsync(user.UserName, user).ConfigureAwait(false);
+
+        EditUserByNameCommand command = new(user.UserName, user);
+        await mediator.Send(command).ConfigureAwait(false);
 
         return (newRT, newEndDate);
     }

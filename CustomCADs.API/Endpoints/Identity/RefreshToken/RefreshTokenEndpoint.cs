@@ -1,7 +1,8 @@
 ﻿using CustomCADs.API.Helpers;
-using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Users;
+using CustomCADs.Application.UseCases.Users.Queries.GetByRefreshToken;
 using FastEndpoints;
+using MediatR;
 using System.IdentityModel.Tokens.Jwt;
 
 namespace CustomCADs.API.Endpoints.Identity.RefreshToken;
@@ -9,7 +10,7 @@ namespace CustomCADs.API.Endpoints.Identity.RefreshToken;
 using static ApiMessages;
 using static StatusCodes;
 
-public class RefreshTokenEndpoint(IUserService service, IConfiguration config) : EndpointWithoutRequest
+public class RefreshTokenEndpoint(IMediator mediator, IConfiguration config) : EndpointWithoutRequest
 {
     public override void Configure()
     {
@@ -33,7 +34,9 @@ public class RefreshTokenEndpoint(IUserService service, IConfiguration config) :
             return;
         }
 
-        UserModel model = await service.GetByRefreshToken(rt).ConfigureAwait(false);
+        GetUserByRefreshTokenQuery query = new(rt);
+        UserModel model = await mediator.Send(query).ConfigureAwait(false);
+
         if (model.RefreshTokenEndDate < DateTime.UtcNow)
         {
             HttpContext.Response.Cookies.Delete("rt");
@@ -59,7 +62,7 @@ public class RefreshTokenEndpoint(IUserService service, IConfiguration config) :
             return;
         }
 
-        (string newRT, DateTime newEnd) = await service.RenewRefreshToken(model).ConfigureAwait(false);
+        (string newRT, DateTime newEnd) = await model.RenewRefreshToken(mediator).ConfigureAwait(false);
         CookieOptions rtOptions = new() { HttpOnly = true, Secure = true, Expires = newEnd };
         HttpContext.Response.Cookies.Append("rt", newRT, rtOptions);
 

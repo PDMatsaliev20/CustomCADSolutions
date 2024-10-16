@@ -1,13 +1,14 @@
-﻿using CustomCADs.Application.Contracts;
+﻿using CustomCADs.Application.UseCases.Users.Commands.DeleteByName;
 using CustomCADs.Auth;
 using CustomCADs.Auth.Contracts;
 using FastEndpoints;
+using MediatR;
 
 namespace CustomCADs.API.Endpoints.Users.DeleteUser;
 
 using static StatusCodes;
 
-public class DeleteUserEndpoint(IAppUserManager manager, IUserService service) : Endpoint<DeleteUserRequest>
+public class DeleteUserEndpoint(IMediator mediator, IAppUserManager manager) : Endpoint<DeleteUserRequest>
 {
     public override void Configure()
     {
@@ -32,8 +33,9 @@ public class DeleteUserEndpoint(IAppUserManager manager, IUserService service) :
             return; 
         }
 
+        DeleteUserByNameCommand command = new(req.Username);
+        await mediator.Send(command).ConfigureAwait(false);
         await manager.DeleteAsync(user).ConfigureAwait(false);
-        await service.DeleteAsync(req.Username).ConfigureAwait(false);
 
         await SendNoContentAsync().ConfigureAwait(false);
     }

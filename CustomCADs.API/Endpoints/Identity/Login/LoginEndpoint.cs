@@ -1,9 +1,10 @@
 ﻿using CustomCADs.API.Helpers;
-using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Users;
+using CustomCADs.Application.UseCases.Users.Queries.GetByUsername;
 using CustomCADs.Auth;
 using CustomCADs.Auth.Contracts;
 using FastEndpoints;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 using System.IdentityModel.Tokens.Jwt;
 
@@ -12,13 +13,13 @@ namespace CustomCADs.API.Endpoints.Identity.Login;
 using static ApiMessages;
 using static StatusCodes;
 
-public class LoginEndpoint(IAppUserManager manager, IUserService service, SignInManager<AppUser> signInManager, IConfiguration config) : Endpoint<LoginRequest>
+public class LoginEndpoint(IMediator mediator, IAppUserManager manager, SignInManager<AppUser> signInManager, IConfiguration config) : Endpoint<LoginRequest>
 {
     public override void Configure()
     {
         Post("Login");
         Group<IdentityGroup>();
-        Description(d => 
+        Description(d =>
             d.WithSummary("Logs into the account with the specified parameters.")
             .Produces<EmptyResponse>(Status200OK)
             .Produces(Status400BadRequest)
@@ -67,14 +68,16 @@ public class LoginEndpoint(IAppUserManager manager, IUserService service, SignIn
             return;
         }
 
-        UserModel model = await service.GetByNameAsync(req.Username).ConfigureAwait(false);
+        GetUserByUsernameQuery query = new(req.Username);
+        UserModel model = await mediator.Send(query).ConfigureAwait(false);
+
         JwtSecurityToken jwt = config.GenerateAccessToken(model.Id, model.UserName, model.RoleName);
 
         string signedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
         CookieOptions jwtOptions = new() { HttpOnly = true, Secure = true, Expires = jwt.ValidTo };
         HttpContext.Response.Cookies.Append("jwt", signedJwt, jwtOptions);
 
-        (string newRT, DateTime newEnd) = await service.RenewRefreshToken(model).ConfigureAwait(false);
+        (string newRT, DateTime newEnd) = await model.RenewRefreshToken(mediator).ConfigureAwait(false);
         CookieOptions rtOptions = new() { HttpOnly = true, Secure = true, Expires = newEnd };
         HttpContext.Response.Cookies.Append("rt", newRT, rtOptions);
 

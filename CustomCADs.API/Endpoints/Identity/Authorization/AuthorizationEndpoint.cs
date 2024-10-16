@@ -1,13 +1,14 @@
 ﻿using CustomCADs.API.Helpers;
-using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Users;
+using CustomCADs.Application.UseCases.Users.Queries.GetById;
 using FastEndpoints;
+using MediatR;
 
 namespace CustomCADs.API.Endpoints.Identity.Authorization;
 
 using static StatusCodes;
 
-public class AuthorizationEndpoint(IUserService service) : EndpointWithoutRequest
+public class AuthorizationEndpoint(IMediator mediator) : EndpointWithoutRequest
 {
     public override void Configure()
     {
@@ -20,7 +21,9 @@ public class AuthorizationEndpoint(IUserService service) : EndpointWithoutReques
 
     public override async Task HandleAsync(CancellationToken ct)
     {
-        UserModel model = await service.GetByIdAsync(User.GetId());
+        GetUserByIdQuery query = new(User.GetId());
+        UserModel model = await mediator.Send(query);
+
         await SendOkAsync(model.RoleName).ConfigureAwait(false);
     }
 }

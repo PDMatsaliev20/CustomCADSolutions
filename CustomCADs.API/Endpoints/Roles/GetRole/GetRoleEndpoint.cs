@@ -1,13 +1,14 @@
 ﻿using CustomCADs.API.Dtos;
-using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Roles;
+using CustomCADs.Application.UseCases.Roles.Queries.GetByName;
 using FastEndpoints;
+using MediatR;
 
 namespace CustomCADs.API.Endpoints.Roles.GetRole;
 
 using static StatusCodes;
 
-public class GetRoleEndpoint(IRoleService service) : Endpoint<GetRoleRequest, RoleResponseDto>
+public class GetRoleEndpoint(IMediator mediator) : Endpoint<GetRoleRequest, RoleResponseDto>
 {
     public override void Configure()
     {
@@ -21,7 +22,8 @@ public class GetRoleEndpoint(IRoleService service) : Endpoint<GetRoleRequest, Ro
 
     public override async Task HandleAsync(GetRoleRequest req, CancellationToken ct)
     {
-        RoleModel role = await service.GetByNameAsync(req.Name).ConfigureAwait(false);
+        GetRoleByNameQuery query = new(req.Name);
+        RoleModel role = await mediator.Send(query).ConfigureAwait(false);
 
         RoleResponseDto response = new()
         {

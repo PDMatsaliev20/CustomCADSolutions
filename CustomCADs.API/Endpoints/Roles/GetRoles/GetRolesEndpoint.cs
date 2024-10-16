@@ -1,13 +1,15 @@
 ﻿using CustomCADs.API.Dtos;
-using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Roles;
+using CustomCADs.Application.UseCases.Roles.Queries.GetAll;
 using FastEndpoints;
+using Mapster;
+using MediatR;
 
 namespace CustomCADs.API.Endpoints.Roles.GetRoles;
 
 using static StatusCodes;
 
-public class GetRolesEndpoint(IRoleService service) : EndpointWithoutRequest<RoleResponseDto[]>
+public class GetRolesEndpoint(IMediator mediator) : EndpointWithoutRequest<RoleResponseDto[]>
 {
     public override void Configure()
     {
@@ -20,15 +22,10 @@ public class GetRolesEndpoint(IRoleService service) : EndpointWithoutRequest<Rol
 
     public override async Task HandleAsync(CancellationToken ct)
     {
-        IEnumerable<RoleModel> roles = service.GetAll();
+        GetAllRolesQuery query = new();
+        IEnumerable<RoleModel> roles = await mediator.Send(query).ConfigureAwait(false);
 
-        RoleResponseDto[] response = roles
-            .Select(r => new RoleResponseDto() 
-            { 
-                Name = r.Name, 
-                Description = r.Description 
-            }).ToArray();
-
+        var response = roles.Adapt<RoleResponseDto[]>();
         await SendOkAsync(response).ConfigureAwait(false);
     }
 }
