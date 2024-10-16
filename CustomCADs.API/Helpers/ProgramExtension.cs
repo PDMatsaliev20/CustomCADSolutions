@@ -1,5 +1,5 @@
-﻿using CustomCADs.API.Helpers;
-using CustomCADs.API.Mappers;
+﻿using CustomCADs.API;
+using CustomCADs.API.Helpers;
 using CustomCADs.Application.Models.Roles;
 using CustomCADs.Application.UseCases.Roles.Commands.Create;
 using CustomCADs.Application.UseCases.Roles.Queries.ExistsByName;
@@ -9,6 +9,7 @@ using CustomCADs.Infrastructure.Email;
 using CustomCADs.Infrastructure.Payment;
 using FastEndpoints;
 using FastEndpoints.Swagger;
+using Mapster;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics;
@@ -65,9 +66,7 @@ public static class ProgramExtension
     public static void AddMappings(this IServiceCollection services)
     {
         services.AddApplicationMappings();
-        CadsMapper.Map();
-        OrdersMapper.Map();
-        UsersMapper.Map();
+        TypeAdapterConfig.GlobalSettings.Scan(typeof(ApiReference).Assembly);
     }
 
     public static void AddEndpoints(this IServiceCollection services)

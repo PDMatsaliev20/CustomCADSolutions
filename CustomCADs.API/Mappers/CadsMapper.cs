@@ -13,7 +13,7 @@ using static CustomCADs.Domain.DataConstants;
 
 namespace CustomCADs.API.Mappers;
 
-public class CadsMapper
+public class CadsMapper : IRegister
 {
     private static readonly Func<CadModel, string> mapCreationDate = m => m.CreationDate.ToString(DateFormatString);
     private static readonly Func<CadModel, string> mapCreatorName = m => m.Creator.UserName;
@@ -24,9 +24,10 @@ public class CadsMapper
     private static readonly Func<CadModel, CoordinatesDto> mapCamCoordinates = m => new(m.CamCoordinates.X, m.CamCoordinates.Y, m.CamCoordinates.Z);
     private static readonly Func<CadModel, CoordinatesDto> mapPanCoordinates = m => new(m.PanCoordinates.X, m.PanCoordinates.Y, m.PanCoordinates.Z);
     private static readonly Func<CadModel, CategoryDto> mapCategory = m => new(m.CategoryId, m.Category.Name);
-    public static void Map()
+    
+    public void Register(TypeAdapterConfig config)
     {
-        TypeAdapterConfig<CadModel, GalleryDetailsResponse>.NewConfig()
+        config.NewConfig<CadModel, GalleryDetailsResponse>()
             .Map(r => r.CadPath, m => mapCadPath(m))
             .Map(r => r.CreatorName, m => mapCreatorName(m))
             .Map(r => r.CreationDate, m => mapCreationDate(m))
@@ -34,17 +35,17 @@ public class CadsMapper
             .Map(r => r.PanCoordinates, m => mapPanCoordinates(m))
             .Map(r => r.Category, m => mapCategory(m));
 
-        TypeAdapterConfig<CadModel, GalleryResponse>.NewConfig()
+        config.NewConfig<CadModel, GalleryResponse>()
             .Map(r => r.CreationDate, m => mapCreationDate(m))
             .Map(r => r.CreatorName, m => mapCreatorName(m))
             .Map(r => r.ImagePath, m => mapImagePath(m));
 
-        TypeAdapterConfig<CadModel, RecentCadsResponse>.NewConfig()
+        config.NewConfig<CadModel, RecentCadsResponse>()
             .Map(r => r.CreationDate, m => mapCreationDate(m))
             .Map(r => r.Status, m => mapStatus(m))
             .Map(r => r.Category, m => mapCategory(m));
 
-        TypeAdapterConfig<CadModel, PostCadResponse>.NewConfig()
+        config.NewConfig<CadModel, PostCadResponse>()
             .Map(r => r.CadPath, m => mapCadPath(m))
             .Map(r => r.ImagePath, m => mapImagePath(m))
             .Map(r => r.CamCoordinates, m => mapCamCoordinates(m))
@@ -54,25 +55,25 @@ public class CadsMapper
             .Map(r => r.Status, m => mapStatus(m))
             .Map(r => r.Category, m => mapCategory(m));
 
-        TypeAdapterConfig<CadModel, GetCadResponse>.NewConfig()
+        config.NewConfig<CadModel, GetCadResponse>()
             .Map(r => r.CadPath, m => mapCadPath(m))
             .Map(r => r.CamCoordinates, m => mapCamCoordinates(m))
             .Map(r => r.PanCoordinates, m => mapPanCoordinates(m))
             .Map(r => r.CreationDate, m => mapCreationDate(m))
             .Map(r => r.Category, m => mapCategory(m));
 
-        TypeAdapterConfig<CadModel, GetCadsResponse>.NewConfig()
+        config.NewConfig<CadModel, GetCadsResponse>()
             .Map(r => r.ImagePath, m => mapImagePath(m))
             .Map(r => r.CreationDate, m => mapCreationDate(m))
             .Map(r => r.CreatorName, m => mapCreatorName(m))
             .Map(r => r.Category, m => mapCategory(m));
         
-        TypeAdapterConfig<CadModel, UncheckedCadsResponse>.NewConfig()
+        config.NewConfig<CadModel, UncheckedCadsResponse>()
             .Map(r => r.ImagePath, m => mapImagePath(m))
             .Map(r => r.CreationDate, m => mapCreationDate(m))
             .Map(r => r.CreatorName, m => mapCreatorName(m));
 
-        TypeAdapterConfig<CadModel, UncheckedCadResponse>.NewConfig()
+        config.NewConfig<CadModel, UncheckedCadResponse>()
             .Map(r => r.CadPath, m => mapCadPath(m))
             .Map(r => r.CamCoordinates, m => mapCamCoordinates(m))
             .Map(r => r.PanCoordinates, m => mapPanCoordinates(m));

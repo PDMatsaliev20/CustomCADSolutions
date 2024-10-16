@@ -6,15 +6,15 @@ using Mapster;
 
 namespace CustomCADs.API.Mappers;
 
-public class UsersMapper
+public class UsersMapper : IRegister
 {
-    public static void Map()
+    public void Register(TypeAdapterConfig config)
     {
-        TypeAdapterConfig<UserModel, UserResponseDto>.NewConfig()
+        config.NewConfig<UserModel, UserResponseDto>()
             .Map(r => r.Username, u => u.UserName)
             .Map(r => r.Role, u => u.RoleName);
 
-        TypeAdapterConfig<RegisterRequest, UserModel>.NewConfig()
+        config.NewConfig<RegisterRequest, UserModel>()
             .Map(u => u.UserName, r => r.Username)
             .Map(u => u.RoleName, r => r.Role)
             .Map(u => u.Role, r => new RoleModel());

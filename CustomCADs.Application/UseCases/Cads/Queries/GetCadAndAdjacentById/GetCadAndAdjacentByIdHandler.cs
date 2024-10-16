@@ -11,7 +11,7 @@ namespace CustomCADs.Application.UseCases.Cads.Queries.GetCadAndAdjacentById;
 
 public class GetCadAndAdjacentByIdHandler(ICadQueries queries) : IRequestHandler<GetCadAndAdjacentByIdQuery, (int? PrevId, CadModel Current, int? NextId)>
 {
-    public async Task<(int? PrevId, CadModel Current, int? NextId)> Handle(GetCadAndAdjacentByIdQuery request, CancellationToken cancellationToken)
+    public Task<(int? PrevId, CadModel Current, int? NextId)> Handle(GetCadAndAdjacentByIdQuery request, CancellationToken cancellationToken)
     {
         IQueryable<Cad> queryable = queries.GetAll(true)
             .Sort(nameof(Sorting.Oldest))
@@ -35,6 +35,6 @@ public class GetCadAndAdjacentByIdHandler(ICadQueries queries) : IRequestHandler
             nextId = cads[cadIndex + 1].Id;
         }
 
-        return (prevId, cad.Adapt<CadModel>(), nextId);
+        return Task.FromResult((prevId, cad.Adapt<CadModel>(), nextId));
     }
 }

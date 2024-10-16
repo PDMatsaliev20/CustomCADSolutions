@@ -12,6 +12,6 @@ public static class ApplicationProgramExtensions
 
     public static void AddApplicationMappings(this IServiceCollection services)
     {
-        services.AddAutoMapper(typeof(ApplicationReference));
+
     }
 }

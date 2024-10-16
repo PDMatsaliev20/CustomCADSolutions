@@ -13,7 +13,7 @@ using static CustomCADs.Domain.DataConstants;
 
 namespace CustomCADs.API.Mappers;
 
-public class OrdersMapper
+public class OrdersMapper : IRegister
 {
     private static readonly Func<OrderModel, string> mapOrderDate = m => m.OrderDate.ToString(DateFormatString);
     private static readonly Func<OrderModel, string> mapBuyerName = m => m.Buyer.UserName;
@@ -22,26 +22,26 @@ public class OrdersMapper
     private static readonly Func<OrderModel, string?> mapDesignerEmail = m => m.Designer?.Email;
     private static readonly Func<OrderModel, string?> mapDesignerName = m => m.Designer?.UserName;
 
-    public static void Map()
+    public void Register(TypeAdapterConfig config)
     {
-        TypeAdapterConfig<OrderModel, GalleryOrderResponse>.NewConfig()
+        config.NewConfig<OrderModel, GalleryOrderResponse>()
             .Map(r => r.DesignerName, m => mapDesignerName(m))
             .Map(r => r.DesignerEmail, m => mapDesignerEmail(m))
             .Map(r => r.Category, m => mapCategory(m));
 
-        TypeAdapterConfig<OrderModel, GetOrderResponse>.NewConfig()
+        config.NewConfig<OrderModel, GetOrderResponse>()
             .Map(r => r.BuyerName, m => mapBuyerName(m))
             .Map(r => r.OrderDate, m => mapOrderDate(m))
             .Map(r => r.Status, m => mapStatus(m))
             .Map(r => r.Category, m => mapCategory(m));
 
-        TypeAdapterConfig<OrderModel, GetOrdersResponse>.NewConfig()
+        config.NewConfig<OrderModel, GetOrdersResponse>()
             .Map(r => r.OrderDate, m => mapOrderDate(m))
             .Map(r => r.DesignerEmail, m => mapDesignerEmail(m))
             .Map(r => r.DesignerName, m => mapDesignerName(m))
             .Map(r => r.Category, m => mapCategory(m));
 
-        TypeAdapterConfig<OrderModel, PostOrderResponse>.NewConfig()
+        config.NewConfig<OrderModel, PostOrderResponse>()
             .Map(r => r.BuyerName, m => mapBuyerName(m))
             .Map(r => r.OrderDate, m => mapOrderDate(m))
             .Map(r => r.Status, m => mapStatus(m))
@@ -49,22 +49,22 @@ public class OrdersMapper
             .Map(r => r.DesignerName, m => mapDesignerName(m))
             .Map(r => r.Category, m => mapCategory(m));
 
-        TypeAdapterConfig<OrderModel, RecentOrdersResponse>.NewConfig()
+        config.NewConfig<OrderModel, RecentOrdersResponse>()
             .Map(r => r.OrderDate, m => mapOrderDate(m))
             .Map(r => r.Status, m => mapStatus(m))
             .Map(r => r.Category, m => mapCategory(m));
 
-        TypeAdapterConfig<OrderModel, OngoingOrdersResponse>.NewConfig()
+        config.NewConfig<OrderModel, OngoingOrdersResponse>()
             .Map(r => r.OrderDate, m => mapOrderDate(m))
             .Map(r => r.Category, m => mapCategory(m));
 
-        TypeAdapterConfig<OrderModel, OngoingOrderResponse>.NewConfig()
+        config.NewConfig<OrderModel, OngoingOrderResponse>()
             .Map(r => r.OrderDate, m => mapOrderDate(m))
             .Map(r => r.Category, m => mapCategory(m))
             .Map(r => r.BuyerName, m => mapBuyerName(m))
             .Map(r => r.Status, m => mapStatus(m));
 
-        TypeAdapterConfig<OrderModel, RecentOngoingOrdersResponse>.NewConfig()
+        config.NewConfig<OrderModel, RecentOngoingOrdersResponse>()
             .Map(r => r.Status, m => mapStatus(m))
             .Map(r => r.OrderDate, m => mapOrderDate(m))
             .Map(r => r.Category, m => mapCategory(m));
