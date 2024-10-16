@@ -1,13 +1,16 @@
-﻿using CustomCADs.Application.Contracts;
-using CustomCADs.Domain.Enums;
+﻿using CustomCADs.Application.UseCases.Cads.Commands.SetStatus;
 using FastEndpoints;
+using MediatR;
 
 namespace CustomCADs.API.Endpoints.Designer.PatchCadStatus;
 
+using static ApiMessages;
 using static StatusCodes;
 
-public class PatchCadStatusEndpoint(IDesignerService service) : Endpoint<PatchCadStatusRequest>
+public class PatchCadStatusEndpoint(IMediator mediator) : Endpoint<PatchCadStatusRequest>
 {
+    private readonly string[] actions = ["validate", "report"];
+
     public override void Configure()
     {
         Patch("Cads/{id}");
@@ -20,8 +23,27 @@ public class PatchCadStatusEndpoint(IDesignerService service) : Endpoint<PatchCa
 
     public override async Task HandleAsync(PatchCadStatusRequest req, CancellationToken ct)
     {
-        CadStatus status = Enum.Parse<CadStatus>(req.Status);
-        await service.EditCadStatusAsync(req.Id, status).ConfigureAwait(false);
+        string action = req.Action.ToLower();
+        SetCadStatusCommand? command = action switch
+        {
+            "validate" => new(req.Id, action),
+            "report" => new(req.Id, action),
+            _ => null,
+        };
+
+        if (command == null)
+        {
+            ValidationFailures.Add(new()
+            {
+                PropertyName = nameof(req.Action),
+                AttemptedValue = req.Action,
+                ErrorMessage = string.Format(InvalidAction, string.Join(", ", actions)),
+            });
+
+            await SendErrorsAsync().ConfigureAwait(false);
+            return;
+        }
+        await mediator.Send(command).ConfigureAwait(false);
 
         await SendNoContentAsync().ConfigureAwait(false);
     }

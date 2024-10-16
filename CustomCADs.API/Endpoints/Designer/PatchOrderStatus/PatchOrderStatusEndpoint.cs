@@ -1,14 +1,17 @@
 ﻿using CustomCADs.API.Helpers;
-using CustomCADs.Application.Contracts;
+using CustomCADs.Application.UseCases.Orders.Commands.SetStatus;
 using FastEndpoints;
+using MediatR;
 
 namespace CustomCADs.API.Endpoints.Designer.PatchOrderStatus;
 
 using static ApiMessages;
 using static StatusCodes;
 
-public class PatchOrderStatusEndpoint(IDesignerService service) : Endpoint<PatchOrderStatusRequest>
+public class PatchOrderStatusEndpoint(IMediator mediator) : Endpoint<PatchOrderStatusRequest>
 {
+    private readonly string[] actions = ["begin", "report", "cancel", "finish"];
+
     public override void Configure()
     {
         Patch("Orders/{id}");
@@ -21,38 +24,30 @@ public class PatchOrderStatusEndpoint(IDesignerService service) : Endpoint<Patch
 
     public override async Task HandleAsync(PatchOrderStatusRequest req, CancellationToken ct)
     {
-        switch (req.Action.ToLower())
+        string action = req.Action.ToLower();
+        SetOrderStatusCommand? command = action switch
         {
-            case "begin":
-                await service.BeginAsync(req.Id, User.GetName()).ConfigureAwait(false);
-                break;
+            "begin" => new(req.Id, action, User.GetId()),
+            "report" => new(req.Id, action),
+            "cancel" => new(req.Id, action, User.GetId()),
+            "finish" => new(req.Id, action, CadId: req.CadId),
+            _ => null,
+        };
+        
+        if (command == null)
+        {
+            ValidationFailures.Add(new()
+            {
+                PropertyName = nameof(req.Action),
+                AttemptedValue = req.Action,
+                ErrorMessage = string.Format(InvalidAction, string.Join(", ", actions)),
+            });
 
-            case "report":
-                await service.ReportAsync(req.Id).ConfigureAwait(false);
-                break;
-
-            case "cancel":
-                await service.CancelAsync(req.Id, User.GetName()).ConfigureAwait(false);
-                break;
-
-            case "complete":
-            case "finish":
-                int cadId = req.CadId ?? throw new ArgumentNullException();
-                await service.CompleteAsync(req.Id, cadId, User.GetName()).ConfigureAwait(false);
-                break;
-
-            default:
-                string[] actions = ["begin", "report", "cancel", "complete", "finish"];                    
-                ValidationFailures.Add(new()
-                {
-                    PropertyName = nameof(req.Action),
-                    AttemptedValue = req.Action,
-                    ErrorMessage = string.Format(InvalidAction, string.Join(", ", actions)),
-                });
-
-                await SendErrorsAsync().ConfigureAwait(false);
-                return;
+            await SendErrorsAsync().ConfigureAwait(false);
+            return;
         }
+        await mediator.Send(command).ConfigureAwait(false);
+
         await SendNoContentAsync().ConfigureAwait(false);
     }
 }

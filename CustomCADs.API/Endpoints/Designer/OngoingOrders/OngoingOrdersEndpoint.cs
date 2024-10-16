@@ -1,9 +1,10 @@
 ﻿using CustomCADs.API.Dtos;
-using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Orders;
+using CustomCADs.Application.UseCases.Orders.Queries.GetAll;
 using CustomCADs.Domain.Enums;
 using FastEndpoints;
 using Mapster;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace CustomCADs.API.Endpoints.Designer.OngoingOrders;
@@ -11,7 +12,7 @@ namespace CustomCADs.API.Endpoints.Designer.OngoingOrders;
 using static ApiMessages;
 using static StatusCodes;
 
-public class OngoingOrdersEndpoint(IDesignerService service) : Endpoint<OngoingOrdersRequest, OrderResultDto<OngoingOrdersResponse>>
+public class OngoingOrdersEndpoint(IMediator mediator) : Endpoint<OngoingOrdersRequest, OrderResultDto<OngoingOrdersResponse>>
 {
     public override void Configure()
     {
@@ -40,15 +41,16 @@ public class OngoingOrdersEndpoint(IDesignerService service) : Endpoint<OngoingO
             }
         }
 
-        OrderResult result = service.GetOrders(
-            status: req.Status,
-            category: req.Category,
-            name: req.Name,
-            buyer: req.Buyer,
-            sorting: req.Sorting ?? "",
-            page: req.Page,
-            limit: req.Limit
+        GetAllOrdersQuery query = new(
+            Status: req.Status,
+            Category: req.Category,
+            Name: req.Name,
+            Buyer: req.Buyer,
+            Sorting: req.Sorting ?? "",
+            Page: req.Page,
+            Limit: req.Limit
         );
+        OrderResult result = await mediator.Send(query).ConfigureAwait(false);
 
         OrderResultDto<OngoingOrdersResponse> response = new()
         {

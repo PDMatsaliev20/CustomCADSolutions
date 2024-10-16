@@ -1,13 +1,14 @@
-﻿using CustomCADs.Application.Contracts;
-using CustomCADs.Application.Models.Cads;
+﻿using CustomCADs.Application.Models.Cads;
+using CustomCADs.Application.UseCases.Cads.Queries.GetCadAndAdjacentById;
 using FastEndpoints;
 using Mapster;
+using MediatR;
 
 namespace CustomCADs.API.Endpoints.Designer.UncheckedCad;
 
 using static StatusCodes;
 
-public class UncheckedCadEndpoint(IDesignerService service) : Endpoint<UncheckedCadRequest, UncheckedCadResponse>
+public class UncheckedCadEndpoint(IMediator mediator) : Endpoint<UncheckedCadRequest, UncheckedCadResponse>
 {
     public override void Configure()
     {
@@ -21,9 +22,10 @@ public class UncheckedCadEndpoint(IDesignerService service) : Endpoint<Unchecked
 
     public override async Task HandleAsync(UncheckedCadRequest req, CancellationToken ct)
     {
-        (int? prevId, CadModel cad, int? nextId) = service.GetNextCurrentAndPreviousById(req.Id);
+        GetCadAndAdjacentByIdQuery query = new(req.Id);
+        (int? prevId, CadModel cad, int? nextId) = await mediator.Send(query).ConfigureAwait(false);
 
-        UncheckedCadResponse response = cad.Adapt<UncheckedCadResponse>();
+        var response = cad.Adapt<UncheckedCadResponse>();
         response.PrevId = prevId;
         response.NextId = nextId;
 

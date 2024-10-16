@@ -1,14 +1,15 @@
-﻿using CustomCADs.Application.Contracts;
-using CustomCADs.Application.Models.Orders;
+﻿using CustomCADs.Application.Models.Orders;
+using CustomCADs.Application.UseCases.Orders.Queries.GetAll;
 using CustomCADs.Domain.Enums;
 using FastEndpoints;
 using Mapster;
+using MediatR;
 
 namespace CustomCADs.API.Endpoints.Designer.RecentOngoingOrders;
 
 using static StatusCodes;
 
-public class RecentOngoingOrdersEndpoint(IDesignerService service) : Endpoint<RecentOngoingOrdersRequest, IEnumerable<RecentOngoingOrdersResponse>>
+public class RecentOngoingOrdersEndpoint(IMediator mediator) : Endpoint<RecentOngoingOrdersRequest, IEnumerable<RecentOngoingOrdersResponse>>
 {
     public override void Configure()
     {
@@ -21,11 +22,12 @@ public class RecentOngoingOrdersEndpoint(IDesignerService service) : Endpoint<Re
 
     public override async Task HandleAsync(RecentOngoingOrdersRequest req, CancellationToken ct)
     {
-        OrderResult result = service.GetOrders(
-            status: req.Status,
-            sorting: nameof(Sorting.Newest),
-            limit: req.Limit
+        GetAllOrdersQuery query = new(
+            Status: req.Status, 
+            Sorting: nameof(Sorting.Newest), 
+            Limit: req.Limit
         );
+        OrderResult result = await mediator.Send(query).ConfigureAwait(false);
 
         var response = result.Orders.Select(order => order.Adapt<RecentOngoingOrdersResponse>());
         await SendOkAsync(response).ConfigureAwait(false);

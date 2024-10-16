@@ -105,7 +105,6 @@ public static class ProgramExtension
 
     public static void AddServices(this IServiceCollection services)
     {
-        services.AddScoped<IDesignerService, DesignerService>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IRoleService, RoleService>();
     }
