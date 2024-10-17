@@ -1,4 +1,4 @@
-﻿using CustomCADs.Application.Contracts;
+﻿using CustomCADs.Application.Common.Contracts;
 using FastEndpoints;
 
 namespace CustomCADs.API.Endpoints.Payment.GetPublicKey;

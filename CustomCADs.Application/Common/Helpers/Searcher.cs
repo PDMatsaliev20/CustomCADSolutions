@@ -1,6 +1,6 @@
 ﻿using CustomCADs.Domain.Entities;
 
-namespace CustomCADs.Application.Helpers;
+namespace CustomCADs.Application.Common.Helpers;
 
 public static class Searcher
 {

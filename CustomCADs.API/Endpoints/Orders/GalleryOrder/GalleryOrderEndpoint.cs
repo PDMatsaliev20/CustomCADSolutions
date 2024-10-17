@@ -1,6 +1,5 @@
 ﻿using CustomCADs.API.Endpoints.Orders.GetOrder;
 using CustomCADs.API.Helpers;
-using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Cads;
 using CustomCADs.Application.Models.Orders;
 using CustomCADs.Application.UseCases.Cads.Queries.GetById;

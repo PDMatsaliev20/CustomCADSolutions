@@ -1,4 +1,4 @@
-﻿using CustomCADs.Application.Contracts;
+﻿using CustomCADs.Application.Common.Contracts;
 using CustomCADs.Application.Models.Users;
 using CustomCADs.Application.UseCases.Users.Commands.Create;
 using CustomCADs.Auth;

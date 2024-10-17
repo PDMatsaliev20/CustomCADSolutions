@@ -1,4 +1,4 @@
-﻿using CustomCADs.Application.Contracts;
+﻿using CustomCADs.Application.Common.Contracts;
 using CustomCADs.Infrastructure.Email;
 using CustomCADs.Infrastructure.Payment;
 using Stripe;

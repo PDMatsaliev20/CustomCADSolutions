@@ -1,5 +1,5 @@
-﻿using CustomCADs.Application.Contracts;
-using CustomCADs.Application.DTOs.Payment;
+﻿using CustomCADs.Application.Common.Contracts;
+using CustomCADs.Application.Common.Dtos;
 using CustomCADs.Application.Models.Payment;
 using Microsoft.Extensions.Options;
 using Stripe;

@@ -2,7 +2,7 @@
 using CustomCADs.Domain.Enums;
 using System.Linq.Expressions;
 
-namespace CustomCADs.Application.Helpers;
+namespace CustomCADs.Application.Common.Helpers;
 
 public static class Filterer
 {

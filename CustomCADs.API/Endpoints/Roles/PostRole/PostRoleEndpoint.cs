@@ -1,6 +1,5 @@
 ﻿using CustomCADs.API.Dtos;
 using CustomCADs.API.Endpoints.Roles.GetRole;
-using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Roles;
 using CustomCADs.Application.UseCases.Roles.Commands.Create;
 using CustomCADs.Auth.Contracts;

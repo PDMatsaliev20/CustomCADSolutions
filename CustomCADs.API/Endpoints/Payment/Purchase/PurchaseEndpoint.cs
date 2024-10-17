@@ -1,6 +1,6 @@
 ﻿using CustomCADs.API.Helpers;
-using CustomCADs.Application.Contracts;
-using CustomCADs.Application.DTOs.Payment;
+using CustomCADs.Application.Common.Contracts;
+using CustomCADs.Application.Common.Dtos;
 using CustomCADs.Application.Models.Cads;
 using CustomCADs.Application.Models.Payment;
 using CustomCADs.Application.UseCases.Cads.Queries.GetById;

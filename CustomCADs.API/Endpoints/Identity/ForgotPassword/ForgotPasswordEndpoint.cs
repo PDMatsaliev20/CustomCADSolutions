@@ -1,4 +1,4 @@
-﻿using CustomCADs.Application.Contracts;
+﻿using CustomCADs.Application.Common.Contracts;
 using CustomCADs.Auth;
 using CustomCADs.Auth.Contracts;
 using FastEndpoints;

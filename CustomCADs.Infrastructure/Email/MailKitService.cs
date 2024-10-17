@@ -1,4 +1,4 @@
-﻿using CustomCADs.Application.Contracts;
+﻿using CustomCADs.Application.Common.Contracts;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.Extensions.Options;

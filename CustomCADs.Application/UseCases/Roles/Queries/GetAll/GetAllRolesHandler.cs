@@ -1,4 +1,4 @@
-﻿using CustomCADs.Application.Helpers;
+﻿using CustomCADs.Application.Common.Helpers;
 using CustomCADs.Application.Models.Roles;
 using CustomCADs.Domain.Contracts.Queries;
 using CustomCADs.Domain.Entities;

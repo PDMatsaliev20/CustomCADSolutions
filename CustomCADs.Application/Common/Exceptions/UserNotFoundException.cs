@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Application.Exceptions;
+﻿namespace CustomCADs.Application.Common.Exceptions;
 
 [Serializable]
 public class UserNotFoundException : Exception

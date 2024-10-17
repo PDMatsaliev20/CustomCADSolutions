@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Application.Contracts;
+﻿namespace CustomCADs.Application.Common.Contracts;
 
 public interface IEmailService
 {

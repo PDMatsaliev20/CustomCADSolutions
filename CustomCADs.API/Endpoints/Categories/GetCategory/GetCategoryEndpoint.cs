@@ -1,5 +1,4 @@
 ﻿using CustomCADs.API.Dtos;
-using CustomCADs.Application.Contracts;
 using CustomCADs.Application.Models.Categories;
 using CustomCADs.Application.UseCases.Categories.Queries.GetById;
 using FastEndpoints;

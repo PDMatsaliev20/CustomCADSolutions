@@ -1,5 +1,4 @@
-﻿using CustomCADs.Application.Contracts;
-using CustomCADs.Application.UseCases.Roles.Commands.DeleteByName;
+﻿using CustomCADs.Application.UseCases.Roles.Commands.DeleteByName;
 using CustomCADs.Application.UseCases.Roles.Queries.ExistsByName;
 using CustomCADs.Auth;
 using CustomCADs.Auth.Contracts;

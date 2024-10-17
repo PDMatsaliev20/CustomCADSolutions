@@ -1,4 +1,4 @@
-﻿using CustomCADs.Application.Exceptions;
+﻿using CustomCADs.Application.Common.Exceptions;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using static Microsoft.AspNetCore.Http.StatusCodes;
