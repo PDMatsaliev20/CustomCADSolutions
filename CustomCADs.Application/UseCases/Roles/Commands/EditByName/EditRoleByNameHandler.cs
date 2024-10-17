@@ -8,13 +8,13 @@ namespace CustomCADs.Application.UseCases.Roles.Commands.EditByName;
 
 public class EditRoleByNameHandler(IRoleQueries queries, IUnitOfWork unitOfWork) : IRequestHandler<EditRoleByNameCommand>
 {
-    public async Task Handle(EditRoleByNameCommand request, CancellationToken cancellationToken)
+    public async Task Handle(EditRoleByNameCommand req, CancellationToken ct)
     {
-        Role role = await queries.GetByNameAsync(request.Name).ConfigureAwait(false)
-            ?? throw new RoleNotFoundException($"The Role with name: {request.Name} does not exist.");
+        Role role = await queries.GetByNameAsync(req.Name, ct: ct).ConfigureAwait(false)
+            ?? throw new RoleNotFoundException($"The Role with name: {req.Name} does not exist.");
 
-        role.Name = request.Model.Name;
-        role.Description = request.Model.Description;
+        role.Name = req.Model.Name;
+        role.Description = req.Model.Description;
 
         await unitOfWork.SaveChangesAsync().ConfigureAwait(false);
     }

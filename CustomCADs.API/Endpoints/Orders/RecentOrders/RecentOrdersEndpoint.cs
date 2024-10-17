@@ -28,7 +28,7 @@ public class RecentOrdersEndpoint(IMediator mediator) : Endpoint<RecentOrdersReq
             Sorting: nameof(Sorting.Newest),
             Limit: req.Limit
         );
-        OrderResult result = await mediator.Send(query).ConfigureAwait(false);
+        OrderResult result = await mediator.Send(query, ct).ConfigureAwait(false);
         
         var response = result.Orders.Select(order => order.Adapt<RecentOrdersResponse>());
         await SendOkAsync(response).ConfigureAwait(false);

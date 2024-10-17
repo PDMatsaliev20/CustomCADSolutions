@@ -34,7 +34,7 @@ public class DeleteUserEndpoint(IMediator mediator, IAppUserManager manager) : E
         }
 
         DeleteUserByNameCommand command = new(req.Username);
-        await mediator.Send(command).ConfigureAwait(false);
+        await mediator.Send(command, ct).ConfigureAwait(false);
         await manager.DeleteAsync(user).ConfigureAwait(false);
 
         await SendNoContentAsync().ConfigureAwait(false);

@@ -27,7 +27,7 @@ public class RecentOngoingOrdersEndpoint(IMediator mediator) : Endpoint<RecentOn
             Sorting: nameof(Sorting.Newest), 
             Limit: req.Limit
         );
-        OrderResult result = await mediator.Send(query).ConfigureAwait(false);
+        OrderResult result = await mediator.Send(query, ct).ConfigureAwait(false);
 
         var response = result.Orders.Select(order => order.Adapt<RecentOngoingOrdersResponse>());
         await SendOkAsync(response).ConfigureAwait(false);

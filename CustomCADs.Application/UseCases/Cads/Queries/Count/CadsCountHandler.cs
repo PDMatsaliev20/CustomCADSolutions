@@ -7,9 +7,9 @@ namespace CustomCADs.Application.UseCases.Cads.Queries.Count;
 
 public class CadsCountHandler(ICadQueries queries) : IRequestHandler<CadsCountQuery, int>
 {
-    public Task<int> Handle(CadsCountQuery request, CancellationToken cancellationToken)
+    public Task<int> Handle(CadsCountQuery req, CancellationToken ct)
     {
-        int count = queries.Count(cad => request.Predicate(cad.Adapt<CadModel>()));
+        int count = queries.Count(cad => req.Predicate(cad.Adapt<CadModel>()));
 
         return Task.FromResult(count);
     }

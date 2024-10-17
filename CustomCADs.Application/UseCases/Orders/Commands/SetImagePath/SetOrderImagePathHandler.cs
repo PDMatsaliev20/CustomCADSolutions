@@ -10,12 +10,12 @@ public class SetOrderImagePathHandler(
     IOrderQueries queries,
     IUnitOfWork unitOfWork) : IRequestHandler<SetOrderImagePathCommand>
 {
-    public async Task Handle(SetOrderImagePathCommand request, CancellationToken cancellationToken)
+    public async Task Handle(SetOrderImagePathCommand req, CancellationToken ct)
     {
-        Order order = await queries.GetByIdAsync(request.Id).ConfigureAwait(false)
-            ?? throw new OrderNotFoundException(request.Id);
+        Order order = await queries.GetByIdAsync(req.Id, ct: ct).ConfigureAwait(false)
+            ?? throw new OrderNotFoundException(req.Id);
 
-        order.ImagePath = request.ImagePath;
+        order.ImagePath = req.ImagePath;
         await unitOfWork.SaveChangesAsync().ConfigureAwait(false);
     }
 }

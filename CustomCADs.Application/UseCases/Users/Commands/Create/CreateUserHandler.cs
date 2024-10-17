@@ -7,11 +7,11 @@ namespace CustomCADs.Application.UseCases.Users.Commands.Create;
 
 public class CreateUserHandler(ICommands<User> commands, IUnitOfWork unitOfWork) : IRequestHandler<CreateUserCommand, string>
 {
-    public async Task<string> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+    public async Task<string> Handle(CreateUserCommand req, CancellationToken ct)
     {
-        User user = request.Model.Adapt<User>();
+        User user = req.Model.Adapt<User>();
 
-        await commands.AddAsync(user).ConfigureAwait(false);
+        await commands.AddAsync(user, ct).ConfigureAwait(false);
         await unitOfWork.SaveChangesAsync().ConfigureAwait(false);
 
         return user.Id;

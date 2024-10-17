@@ -5,8 +5,8 @@ namespace CustomCADs.Persistence.Repositories.Categories;
 
 public class CategoryCommands(ApplicationContext context) : ICommands<Category>
 {
-    public async Task<Category> AddAsync(Category category)
-        => (await context.Categories.AddAsync(category).ConfigureAwait(false)).Entity;
+    public async Task<Category> AddAsync(Category category, CancellationToken ct)
+        => (await context.Categories.AddAsync(category, ct).ConfigureAwait(false)).Entity;
     
     public async Task AddRangeAsync(params Category[] categories)
         => await context.Categories.AddRangeAsync(categories).ConfigureAwait(false);

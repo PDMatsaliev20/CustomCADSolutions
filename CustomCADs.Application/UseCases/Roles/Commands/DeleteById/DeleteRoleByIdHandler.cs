@@ -11,10 +11,10 @@ public class DeleteRoleByIdHandler(
     ICommands<Role> commands,
     IUnitOfWork unitOfWork): IRequestHandler<DeleteRoleByIdCommand>
 {
-    public async Task Handle(DeleteRoleByIdCommand request, CancellationToken cancellationToken)
+    public async Task Handle(DeleteRoleByIdCommand req, CancellationToken ct)
     {
-        Role role = await queries.GetByIdAsync(request.Id).ConfigureAwait(false)
-            ?? throw new RoleNotFoundException($"The Role with id: {request.Id} does not exist.");
+        Role role = await queries.GetByIdAsync(req.Id, ct: ct).ConfigureAwait(false)
+            ?? throw new RoleNotFoundException($"The Role with id: {req.Id} does not exist.");
 
         commands.Delete(role);
         await unitOfWork.SaveChangesAsync().ConfigureAwait(false);

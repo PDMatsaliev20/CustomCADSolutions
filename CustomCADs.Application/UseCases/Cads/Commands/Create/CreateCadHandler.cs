@@ -11,25 +11,25 @@ public class CreateCadHandler(
     ICommands<Cad> commands, 
     IUnitOfWork unitOfWork) : IRequestHandler<CreateCadCommand, int>
 {
-    public async Task<int> Handle(CreateCadCommand request, CancellationToken cancellationToken)
+    public async Task<int> Handle(CreateCadCommand req, CancellationToken ct)
     {
-        bool categoryExists = await queries.ExistsByIdAsync(request.Model.CategoryId).ConfigureAwait(false);
+        bool categoryExists = await queries.ExistsByIdAsync(req.Model.CategoryId, ct: ct).ConfigureAwait(false);
         if (!categoryExists)
         {
-            throw new CategoryNotFoundException(request.Model.CategoryId);
+            throw new CategoryNotFoundException(req.Model.CategoryId);
         }
 
         Cad cad = new()
         {
-            Name = request.Model.Name,
-            Description = request.Model.Description,
-            CategoryId = request.Model.CategoryId,
-            Price = request.Model.Price,
-            CreatorId = request.Model.CreatorId,
-            Status = request.Model.Status,
+            Name = req.Model.Name,
+            Description = req.Model.Description,
+            CategoryId = req.Model.CategoryId,
+            Price = req.Model.Price,
+            CreatorId = req.Model.CreatorId,
+            Status = req.Model.Status,
             CreationDate = DateTime.Now,
         };
-        await commands.AddAsync(cad).ConfigureAwait(false);
+        await commands.AddAsync(cad, ct).ConfigureAwait(false);
 
         await unitOfWork.SaveChangesAsync().ConfigureAwait(false);
         return cad.Id;

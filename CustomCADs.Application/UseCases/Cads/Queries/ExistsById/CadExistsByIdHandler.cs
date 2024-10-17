@@ -5,9 +5,9 @@ namespace CustomCADs.Application.UseCases.Cads.Queries.ExistsById;
 
 public class CadExistsByIdHandler(ICadQueries queries) : IRequestHandler<CadExistsByIdQuery, bool>
 {
-    public async Task<bool> Handle(CadExistsByIdQuery request, CancellationToken cancellationToken)
+    public async Task<bool> Handle(CadExistsByIdQuery req, CancellationToken ct)
     {
-        bool cadExists = await queries.ExistsByIdAsync(request.Id).ConfigureAwait(false);
+        bool cadExists = await queries.ExistsByIdAsync(req.Id, ct: ct).ConfigureAwait(false);
 
         return cadExists;
     }

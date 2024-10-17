@@ -5,9 +5,9 @@ namespace CustomCADs.Application.UseCases.Roles.Queries.ExistsByName;
 
 public class RoleExistsByNameHandler(IRoleQueries queries) : IRequestHandler<RoleExistsByNameQuery, bool>
 {
-    public async Task<bool> Handle(RoleExistsByNameQuery request, CancellationToken cancellationToken)
+    public async Task<bool> Handle(RoleExistsByNameQuery req, CancellationToken ct)
     {
-        bool roleExists = await queries.ExistsByNameAsync(request.Name).ConfigureAwait(false);
+        bool roleExists = await queries.ExistsByNameAsync(req.Name, ct: ct).ConfigureAwait(false);
 
         return roleExists;
     }

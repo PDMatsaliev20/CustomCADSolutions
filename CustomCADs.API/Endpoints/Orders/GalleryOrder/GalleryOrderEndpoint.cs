@@ -29,7 +29,7 @@ public class GalleryOrderEndpoint(IMediator mediator) : Endpoint<GalleryOrderReq
     public override async Task HandleAsync(GalleryOrderRequest req, CancellationToken ct)
     {
         GetCadByIdQuery query = new(req.CadId);
-        CadModel cad = await mediator.Send(query).ConfigureAwait(false);
+        CadModel cad = await mediator.Send(query, ct).ConfigureAwait(false);
 
         OrderModel order = new()
         {
@@ -45,10 +45,10 @@ public class GalleryOrderEndpoint(IMediator mediator) : Endpoint<GalleryOrderReq
         };
 
         CreateOrderCommand command = new(order);
-        int id = await mediator.Send(command).ConfigureAwait(false);
+        int id = await mediator.Send(command, ct).ConfigureAwait(false);
 
         GetOrderByIdQuery orderByIdQuery = new(id);
-        OrderModel createdOrder = await mediator.Send(orderByIdQuery).ConfigureAwait(false);
+        OrderModel createdOrder = await mediator.Send(orderByIdQuery, ct).ConfigureAwait(false);
 
         GalleryOrderResponse response = createdOrder.Adapt<GalleryOrderResponse>();
         await SendCreatedAtAsync<GetOrderEndpoint>(new { id }, response).ConfigureAwait(false);

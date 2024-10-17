@@ -24,7 +24,7 @@ public class GetCategoryEndpoint(IMediator mediator) : Endpoint<GetCategoryReque
     public override async Task HandleAsync(GetCategoryRequest req, CancellationToken ct)
     {
         GetCategoryByIdQuery query = new(req.Id);
-        CategoryModel model = await mediator.Send(query).ConfigureAwait(false);
+        CategoryModel model = await mediator.Send(query, ct).ConfigureAwait(false);
         
         CategoryDto response = new(model.Id, model.Name);
         await SendOkAsync(response).ConfigureAwait(false);

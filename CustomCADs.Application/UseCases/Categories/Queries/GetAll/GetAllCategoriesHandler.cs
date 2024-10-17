@@ -8,7 +8,7 @@ namespace CustomCADs.Application.UseCases.Categories.Queries.GetAll;
 
 public class GetAllCategoriesHandler(ICategoryQueries queries) : IRequestHandler<GetAllCategoriesQuery, IEnumerable<CategoryModel>>
 {
-    public Task<IEnumerable<CategoryModel>> Handle(GetAllCategoriesQuery request, CancellationToken cancellationToken)
+    public Task<IEnumerable<CategoryModel>> Handle(GetAllCategoriesQuery req, CancellationToken ct)
     {
         IEnumerable<Category> categories = [.. queries.GetAll(asNoTracking: true)];
 

@@ -34,16 +34,16 @@ public class PostCadEndpoint(IMediator mediator, IWebHostEnvironment env) : Endp
         model.Status = User.IsInRole(RoleConstants.Designer) ? CadStatus.Validated : CadStatus.Unchecked;
 
         CreateCadCommand createCommand = new(model);
-        int id = await mediator.Send(createCommand).ConfigureAwait(false);
+        int id = await mediator.Send(createCommand, ct).ConfigureAwait(false);
         
         string imagePath = await env.UploadImageAsync(req.Image, model.Name + id + req.Image.GetFileExtension()).ConfigureAwait(false);
         string cadPath = await env.UploadCadAsync(req.File, model.Name + id, req.File.GetFileExtension()).ConfigureAwait(false);
 
         SetCadPathsCommand command = new(id, cadPath, imagePath);
-        await mediator.Send(command).ConfigureAwait(false);
+        await mediator.Send(command, ct).ConfigureAwait(false);
 
         GetCadByIdQuery query = new(id);
-        CadModel createdModel = await mediator.Send(query).ConfigureAwait(false);
+        CadModel createdModel = await mediator.Send(query, ct).ConfigureAwait(false);
 
         PostCadResponse response = createdModel.Adapt<PostCadResponse>();
         await SendCreatedAtAsync<GetCadEndpoint>(new { id }, response).ConfigureAwait(false);

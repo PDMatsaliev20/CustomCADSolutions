@@ -9,10 +9,10 @@ namespace CustomCADs.Application.UseCases.Users.Queries.GetById;
 
 public class GetUserByIdHandler(IUserQueries queries) : IRequestHandler<GetUserByIdQuery, UserModel>
 {
-    public async Task<UserModel> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
+    public async Task<UserModel> Handle(GetUserByIdQuery req, CancellationToken ct)
     {
-        User user = await queries.GetByIdAsync(request.Id, asNoTracking: true).ConfigureAwait(false)
-            ?? throw new UserNotFoundException($"The User with id: {request.Id} doesn't exist.");
+        User user = await queries.GetByIdAsync(req.Id, asNoTracking: true, ct: ct).ConfigureAwait(false)
+            ?? throw new UserNotFoundException($"The User with id: {req.Id} doesn't exist.");
 
         var response = user.Adapt<UserModel>();
         return response;

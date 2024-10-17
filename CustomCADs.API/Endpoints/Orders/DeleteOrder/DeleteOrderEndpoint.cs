@@ -25,7 +25,7 @@ public class DeleteOrderEndpoint(IMediator mediator, IWebHostEnvironment env) : 
     public override async Task HandleAsync(DeleteOrderRequest req, CancellationToken ct)
     {
         IsOrderBuyerQuery isBuyerQuery = new(req.Id, User.GetName());
-        bool userIsBuyer = await mediator.Send(isBuyerQuery).ConfigureAwait(false);
+        bool userIsBuyer = await mediator.Send(isBuyerQuery, ct).ConfigureAwait(false);
 
         if (!userIsBuyer)
         {
@@ -38,12 +38,12 @@ public class DeleteOrderEndpoint(IMediator mediator, IWebHostEnvironment env) : 
         }
 
         GetOrderByIdQuery getOrderQuery = new(req.Id);
-        OrderModel model = await mediator.Send(getOrderQuery).ConfigureAwait(false);
+        OrderModel model = await mediator.Send(getOrderQuery, ct).ConfigureAwait(false);
 
         env.DeleteFile("orders", model.Name + model.Id, model.ImageExtension);
 
         DeleteOrderCommand command = new(req.Id);
-        await mediator.Send(command).ConfigureAwait(false);
+        await mediator.Send(command, ct).ConfigureAwait(false);
 
         await SendNoContentAsync().ConfigureAwait(false);
     }

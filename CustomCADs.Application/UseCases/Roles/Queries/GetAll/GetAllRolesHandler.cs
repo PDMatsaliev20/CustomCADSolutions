@@ -9,11 +9,11 @@ namespace CustomCADs.Application.UseCases.Roles.Queries.GetAll;
 
 public class GetAllRolesHandler(IRoleQueries queries) : IRequestHandler<GetAllRolesQuery, IEnumerable<RoleModel>>
 {
-    public Task<IEnumerable<RoleModel>> Handle(GetAllRolesQuery request, CancellationToken cancellationToken)
+    public Task<IEnumerable<RoleModel>> Handle(GetAllRolesQuery req, CancellationToken ct)
     {
         IQueryable<Role> queryable = queries.GetAll(asNoTracking: true)
-            .Search(request.Name, request.Description)
-            .Sort(request.Sorting);
+            .Search(req.Name, req.Description)
+            .Sort(req.Sorting);
 
         IEnumerable<Role> roles = [.. queryable];
 

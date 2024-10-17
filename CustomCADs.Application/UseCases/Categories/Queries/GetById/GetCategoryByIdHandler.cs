@@ -9,10 +9,10 @@ namespace CustomCADs.Application.UseCases.Categories.Queries.GetById;
 
 public class GetCategoryByIdHandler(ICategoryQueries queries) : IRequestHandler<GetCategoryByIdQuery, CategoryModel>
 {
-    public async Task<CategoryModel> Handle(GetCategoryByIdQuery request, CancellationToken cancellationToken)
+    public async Task<CategoryModel> Handle(GetCategoryByIdQuery req, CancellationToken ct)
     {
-        Category? category = await queries.GetByIdAsync(request.Id).ConfigureAwait(false)
-            ?? throw new CategoryNotFoundException(request.Id);
+        Category? category = await queries.GetByIdAsync(req.Id, ct: ct).ConfigureAwait(false)
+            ?? throw new CategoryNotFoundException(req.Id);
 
         var response = category.Adapt<CategoryModel>();
         return response;

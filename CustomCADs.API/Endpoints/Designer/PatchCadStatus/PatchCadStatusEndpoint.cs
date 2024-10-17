@@ -43,7 +43,7 @@ public class PatchCadStatusEndpoint(IMediator mediator) : Endpoint<PatchCadStatu
             await SendErrorsAsync().ConfigureAwait(false);
             return;
         }
-        await mediator.Send(command).ConfigureAwait(false);
+        await mediator.Send(command, ct).ConfigureAwait(false);
 
         await SendNoContentAsync().ConfigureAwait(false);
     }

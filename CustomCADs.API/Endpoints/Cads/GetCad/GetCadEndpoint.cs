@@ -24,7 +24,7 @@ public class GetCadEndpoint(IMediator mediator) : Endpoint<GetCadRequest, GetCad
     public override async Task HandleAsync(GetCadRequest req, CancellationToken ct)
     {
         GetCadByIdQuery query = new(req.Id);
-        CadModel model = await mediator.Send(query).ConfigureAwait(false);
+        CadModel model = await mediator.Send(query, ct).ConfigureAwait(false);
 
         if (model.CreatorId != User.GetId())
         {

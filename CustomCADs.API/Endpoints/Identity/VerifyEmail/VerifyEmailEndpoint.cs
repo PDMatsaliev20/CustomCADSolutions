@@ -74,7 +74,7 @@ public class VerifyEmailEndpoint(IMediator mediator, IAppUserManager manager, Si
         await signInManager.SignInAsync(appUser, false).ConfigureAwait(false);
 
         GetUserByUsernameQuery query = new(req.Username);
-        UserModel model = await mediator.Send(query).ConfigureAwait(false);
+        UserModel model = await mediator.Send(query, ct).ConfigureAwait(false);
 
         HttpContext.Response.Cookies.Append("role", model.RoleName);
         HttpContext.Response.Cookies.Append("username", model.UserName);
@@ -83,7 +83,7 @@ public class VerifyEmailEndpoint(IMediator mediator, IAppUserManager manager, Si
         string signedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
         HttpContext.Response.Cookies.Append("jwt", signedJwt, new() { HttpOnly = true, Secure = true, Expires = jwt.ValidTo });
 
-        (string newRT, DateTime newEnd) = await model.RenewRefreshToken(mediator).ConfigureAwait(false);
+        (string newRT, DateTime newEnd) = await model.RenewRefreshToken(mediator, ct).ConfigureAwait(false);
         HttpContext.Response.Cookies.Append("rt", newRT, new() { HttpOnly = true, Secure = true, Expires = newEnd });
 
         HttpContext.Response.Cookies.Append("role", model.RoleName, new() { Expires = newEnd });

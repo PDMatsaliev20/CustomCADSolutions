@@ -23,7 +23,7 @@ public class UncheckedCadEndpoint(IMediator mediator) : Endpoint<UncheckedCadReq
     public override async Task HandleAsync(UncheckedCadRequest req, CancellationToken ct)
     {
         GetCadAndAdjacentByIdQuery query = new(req.Id);
-        (int? prevId, CadModel cad, int? nextId) = await mediator.Send(query).ConfigureAwait(false);
+        (int? prevId, CadModel cad, int? nextId) = await mediator.Send(query, ct).ConfigureAwait(false);
 
         var response = cad.Adapt<UncheckedCadResponse>();
         response.PrevId = prevId;

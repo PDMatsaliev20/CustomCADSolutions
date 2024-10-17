@@ -26,7 +26,7 @@ public class PatchCadEndpoint(IMediator mediator) : Endpoint<PatchCadRequest>
     public override async Task HandleAsync(PatchCadRequest req, CancellationToken ct)
     {
         IsCadCreatorQuery isCreatorQuery = new(req.Id, User.GetName());
-        bool userIsCreator = await mediator.Send(isCreatorQuery).ConfigureAwait(false);
+        bool userIsCreator = await mediator.Send(isCreatorQuery, ct).ConfigureAwait(false);
 
         if (userIsCreator)
         {
@@ -39,7 +39,7 @@ public class PatchCadEndpoint(IMediator mediator) : Endpoint<PatchCadRequest>
         }
 
         GetCadByIdQuery getCadQuery = new(req.Id);
-        CadModel model = await mediator.Send(getCadQuery).ConfigureAwait(false);
+        CadModel model = await mediator.Send(getCadQuery, ct).ConfigureAwait(false);
 
         double x = req.Coordinates.X, y = req.Coordinates.Y, z = req.Coordinates.Z;
         switch (req.Type.ToLower())
@@ -58,7 +58,7 @@ public class PatchCadEndpoint(IMediator mediator) : Endpoint<PatchCadRequest>
         }
 
         EditCadCommand command = new(req.Id, model);
-        await mediator.Send(command).ConfigureAwait(false);
+        await mediator.Send(command, ct).ConfigureAwait(false);
 
         await SendNoContentAsync().ConfigureAwait(false);
     }

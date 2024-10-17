@@ -22,7 +22,7 @@ public class AuthorizationEndpoint(IMediator mediator) : EndpointWithoutRequest
     public override async Task HandleAsync(CancellationToken ct)
     {
         GetUserByIdQuery query = new(User.GetId());
-        UserModel model = await mediator.Send(query);
+        UserModel model = await mediator.Send(query, ct);
 
         await SendOkAsync(model.RoleName).ConfigureAwait(false);
     }

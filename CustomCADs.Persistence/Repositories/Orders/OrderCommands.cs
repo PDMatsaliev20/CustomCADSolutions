@@ -5,8 +5,8 @@ namespace CustomCADs.Persistence.Repositories.Orders;
 
 public class OrderCommands(ApplicationContext context) : ICommands<Order>
 {
-    public async Task<Order> AddAsync(Order order)
-        => (await context.Orders.AddAsync(order).ConfigureAwait(false)).Entity;
+    public async Task<Order> AddAsync(Order order, CancellationToken ct)
+        => (await context.Orders.AddAsync(order, ct).ConfigureAwait(false)).Entity;
     
     public async Task AddRangeAsync(params Order[] orders)
         => await context.Orders.AddRangeAsync(orders).ConfigureAwait(false);

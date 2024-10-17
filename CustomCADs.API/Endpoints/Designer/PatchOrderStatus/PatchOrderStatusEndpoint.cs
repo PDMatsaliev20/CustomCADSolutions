@@ -46,7 +46,7 @@ public class PatchOrderStatusEndpoint(IMediator mediator) : Endpoint<PatchOrderS
             await SendErrorsAsync().ConfigureAwait(false);
             return;
         }
-        await mediator.Send(command).ConfigureAwait(false);
+        await mediator.Send(command, ct).ConfigureAwait(false);
 
         await SendNoContentAsync().ConfigureAwait(false);
     }

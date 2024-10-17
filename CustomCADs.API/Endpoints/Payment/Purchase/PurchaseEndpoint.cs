@@ -26,7 +26,7 @@ public class PurchaseEndpoint(IMediator mediator, IPaymentService service) : End
     public override async Task HandleAsync(PurchaseRequest req, CancellationToken ct)
     {
         GetCadByIdQuery query = new(req.Id);
-        CadModel cad = await mediator.Send(query).ConfigureAwait(false);
+        CadModel cad = await mediator.Send(query, ct).ConfigureAwait(false);
 
         PurchaseInfo purchase = new()
         {

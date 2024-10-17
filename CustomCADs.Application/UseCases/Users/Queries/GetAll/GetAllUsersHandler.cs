@@ -9,18 +9,18 @@ namespace CustomCADs.Application.UseCases.Users.Queries.GetAll;
 
 public class GetAllUsersHandler(IUserQueries queries) : IRequestHandler<GetAllUsersQuery, UserResult>
 {
-    public Task<UserResult> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
+    public Task<UserResult> Handle(GetAllUsersQuery req, CancellationToken ct)
     {
         IQueryable<User> queryable = queries.GetAll(asNoTracking: true)
-            .Filter(request.HasRT)
-            .Search(request.Username, request.Email, request.FirstName, request.LastName, request.RtEndDateBefore, request.RtEndDateAfter)
-            .Sort(request.Sorting);
+            .Filter(req.HasRT)
+            .Search(req.Username, req.Email, req.FirstName, req.LastName, req.RtEndDateBefore, req.RtEndDateAfter)
+            .Sort(req.Sorting);
 
         IEnumerable<User> users =
         [
             .. queryable
-            .Skip((request.Page - 1) * request.Limit)
-            .Take(request.Limit)
+            .Skip((req.Page - 1) * req.Limit)
+            .Take(req.Limit)
         ];
 
         UserResult response = new()

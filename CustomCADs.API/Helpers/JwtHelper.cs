@@ -45,7 +45,7 @@ public static class JwtHelper
         return Base64UrlEncoder.Encode(randomNumber);
     }
 
-    public static async Task<(string value, DateTime end)> RenewRefreshToken(this UserModel user, IMediator mediator)
+    public static async Task<(string value, DateTime end)> RenewRefreshToken(this UserModel user, IMediator mediator, CancellationToken ct = default)
     {
         string newRT = GenerateRefreshToken();
         DateTime newEndDate = DateTime.UtcNow.AddDays(RefreshTokenDaysLimit);
@@ -54,7 +54,7 @@ public static class JwtHelper
         user.RefreshTokenEndDate = newEndDate;
 
         EditUserByNameCommand command = new(user.UserName, user);
-        await mediator.Send(command).ConfigureAwait(false);
+        await mediator.Send(command, ct).ConfigureAwait(false);
 
         return (newRT, newEndDate);
     }

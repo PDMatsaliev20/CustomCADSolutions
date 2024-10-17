@@ -9,16 +9,16 @@ namespace CustomCADs.Application.UseCases.Orders.Commands.SetStatus;
 
 public class SetOrderStatusHandler(IOrderQueries queries, IUnitOfWork unitOfWork) : IRequestHandler<SetOrderStatusCommand>
 {
-    public async Task Handle(SetOrderStatusCommand request, CancellationToken cancellationToken)
+    public async Task Handle(SetOrderStatusCommand req, CancellationToken ct)
     {
-        Order order = await queries.GetByIdAsync(request.Id).ConfigureAwait(false)
-            ?? throw new OrderNotFoundException(request.Id);
+        Order order = await queries.GetByIdAsync(req.Id, ct: ct).ConfigureAwait(false)
+            ?? throw new OrderNotFoundException(req.Id);
 
-        switch (request.Action)
+        switch (req.Action)
         {
             case "begin":
-                ArgumentNullException.ThrowIfNull(request.DesignerId, nameof(request.DesignerId));
-                BeginOrder(order, request.DesignerId);
+                ArgumentNullException.ThrowIfNull(req.DesignerId, nameof(req.DesignerId));
+                BeginOrder(order, req.DesignerId);
                 break;
 
             case "report":
@@ -26,17 +26,17 @@ public class SetOrderStatusHandler(IOrderQueries queries, IUnitOfWork unitOfWork
                 break;
 
             case "cancel":
-                DesignerOrderRelationCheck(order.DesignerId, request.DesignerId);
+                DesignerOrderRelationCheck(order.DesignerId, req.DesignerId);
                 CancelOrder(order);
                 break;
 
             case "finish":
-                ArgumentNullException.ThrowIfNull(request.CadId, nameof(request.CadId));
-                DesignerOrderRelationCheck(order.DesignerId, request.DesignerId);
-                FinishOrder(order, request.CadId.Value);
+                ArgumentNullException.ThrowIfNull(req.CadId, nameof(req.CadId));
+                DesignerOrderRelationCheck(order.DesignerId, req.DesignerId);
+                FinishOrder(order, req.CadId.Value);
                 break;
 
-            default: throw new OrderStatusException(request.Id, request.Action);
+            default: throw new OrderStatusException(req.Id, req.Action);
         }
 
         await unitOfWork.SaveChangesAsync().ConfigureAwait(false);

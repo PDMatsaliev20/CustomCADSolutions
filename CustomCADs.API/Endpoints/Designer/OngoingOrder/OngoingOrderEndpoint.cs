@@ -22,7 +22,7 @@ public class OngoingOrderEndpoint(IMediator mediator) : Endpoint<OngoingOrderReq
     public override async Task HandleAsync(OngoingOrderRequest req, CancellationToken ct)
     {
         GetOrderByIdQuery query = new(req.Id);
-        OrderModel model = await mediator.Send(query).ConfigureAwait(false);
+        OrderModel model = await mediator.Send(query, ct).ConfigureAwait(false);
         
         OngoingOrderResponse response = model.Adapt<OngoingOrderResponse>();
         await SendOkAsync(response).ConfigureAwait(false);

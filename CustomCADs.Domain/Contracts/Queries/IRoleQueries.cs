@@ -5,9 +5,9 @@ namespace CustomCADs.Domain.Contracts.Queries;
 public interface IRoleQueries
 {
     IQueryable<Role> GetAll(bool asNoTracking = false);
-    Task<Role?> GetByIdAsync(string id, bool asNoTracking = false);
-    Task<Role?> GetByNameAsync(string name, bool asNoTracking = false);
-    Task<bool> ExistsByIdAsync(string id);
-    Task<bool> ExistsByNameAsync(string name);
+    Task<Role?> GetByIdAsync(string id, bool asNoTracking = false, CancellationToken ct = default);
+    Task<Role?> GetByNameAsync(string name, bool asNoTracking = false, CancellationToken ct = default);
+    Task<bool> ExistsByIdAsync(string id, CancellationToken ct = default);
+    Task<bool> ExistsByNameAsync(string name, CancellationToken ct = default);
     int Count(Func<Role, bool> predicate);
 }

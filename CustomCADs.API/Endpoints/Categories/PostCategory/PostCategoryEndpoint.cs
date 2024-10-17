@@ -23,7 +23,7 @@ public class PostCategoryEndpoint(IMediator mediator) : Endpoint<PostCategoryReq
     public override async Task HandleAsync(PostCategoryRequest req, CancellationToken ct)
     {
         CreateCategoryCommand command = new(new() { Name = req.Name });
-        int id = await mediator.Send(command).ConfigureAwait(false);
+        int id = await mediator.Send(command, ct).ConfigureAwait(false);
 
         CategoryDto response = new(id, req.Name);
         await SendCreatedAtAsync<GetCategoryEndpoint>(new { id }, response).ConfigureAwait(false);

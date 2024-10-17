@@ -39,7 +39,7 @@ public class GetOrdersEndpoint(IMediator mediator) : Endpoint<GetOrdersRequest, 
             Page: req.Page,
             Limit: req.Limit
         );
-        OrderResult result = await mediator.Send(query).ConfigureAwait(false);
+        OrderResult result = await mediator.Send(query, ct).ConfigureAwait(false);
 
         OrderResultDto<GetOrdersResponse> response = new()
         {

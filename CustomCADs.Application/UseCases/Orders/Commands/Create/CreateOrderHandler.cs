@@ -12,16 +12,16 @@ public class CreateOrderHandler(
     ICommands<Order> commands, 
     IUnitOfWork unitOfWork) : IRequestHandler<CreateOrderCommand, int>
 {
-    public async Task<int> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
+    public async Task<int> Handle(CreateOrderCommand req, CancellationToken ct)
     {
-        bool categoryExists = await queries.ExistsByIdAsync(request.Model.CategoryId).ConfigureAwait(false);
+        bool categoryExists = await queries.ExistsByIdAsync(req.Model.CategoryId, ct).ConfigureAwait(false);
         if (!categoryExists)
         {
-            throw new CategoryNotFoundException(request.Model.CategoryId);
+            throw new CategoryNotFoundException(req.Model.CategoryId);
         }
 
-        Order order = request.Model.Adapt<Order>();
-        await commands.AddAsync(order).ConfigureAwait(false);
+        Order order = req.Model.Adapt<Order>();
+        await commands.AddAsync(order, ct).ConfigureAwait(false);
         await unitOfWork.SaveChangesAsync().ConfigureAwait(false);
 
         return order.Id;

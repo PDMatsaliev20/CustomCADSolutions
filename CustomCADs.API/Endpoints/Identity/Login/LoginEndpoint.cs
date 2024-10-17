@@ -69,7 +69,7 @@ public class LoginEndpoint(IMediator mediator, IAppUserManager manager, SignInMa
         }
 
         GetUserByUsernameQuery query = new(req.Username);
-        UserModel model = await mediator.Send(query).ConfigureAwait(false);
+        UserModel model = await mediator.Send(query, ct).ConfigureAwait(false);
 
         JwtSecurityToken jwt = config.GenerateAccessToken(model.Id, model.UserName, model.RoleName);
 
@@ -77,7 +77,7 @@ public class LoginEndpoint(IMediator mediator, IAppUserManager manager, SignInMa
         CookieOptions jwtOptions = new() { HttpOnly = true, Secure = true, Expires = jwt.ValidTo };
         HttpContext.Response.Cookies.Append("jwt", signedJwt, jwtOptions);
 
-        (string newRT, DateTime newEnd) = await model.RenewRefreshToken(mediator).ConfigureAwait(false);
+        (string newRT, DateTime newEnd) = await model.RenewRefreshToken(mediator, ct).ConfigureAwait(false);
         CookieOptions rtOptions = new() { HttpOnly = true, Secure = true, Expires = newEnd };
         HttpContext.Response.Cookies.Append("rt", newRT, rtOptions);
 

@@ -24,7 +24,7 @@ public class GetOrderEndpoint(IMediator mediator) : Endpoint<GetOrderRequest, Ge
     public override async Task HandleAsync(GetOrderRequest req, CancellationToken ct)
     {
         GetOrderByIdQuery query = new(req.Id);
-        OrderModel order = await mediator.Send(query).ConfigureAwait(false);
+        OrderModel order = await mediator.Send(query, ct).ConfigureAwait(false);
         
         if (order.BuyerId != User.GetId())
         {

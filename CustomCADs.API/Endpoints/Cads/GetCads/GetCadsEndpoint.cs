@@ -31,7 +31,7 @@ public class GetCadsEndpoint(IMediator mediator) : Endpoint<GetCadsRequest, CadR
             Page: req.Page,
             Limit: req.Limit
         );
-        CadResult result = await mediator.Send(query).ConfigureAwait(false);
+        CadResult result = await mediator.Send(query, ct).ConfigureAwait(false);
         
         CadResultDto<GetCadsResponse> response = new()
         {

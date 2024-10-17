@@ -25,7 +25,7 @@ public class DeleteCadEndpoint(IMediator mediator, IWebHostEnvironment env) : En
     public override async Task HandleAsync(DeleteCadRequest req, CancellationToken ct)
     {
         IsCadCreatorQuery isCreatorQuery = new(req.Id, User.GetName());
-        bool userIsCreator = await mediator.Send(isCreatorQuery).ConfigureAwait(false);
+        bool userIsCreator = await mediator.Send(isCreatorQuery, ct).ConfigureAwait(false);
 
         if (userIsCreator)
         {
@@ -38,13 +38,13 @@ public class DeleteCadEndpoint(IMediator mediator, IWebHostEnvironment env) : En
         }
 
         GetCadByIdQuery getCadQuery = new(req.Id);
-        CadModel model = await mediator.Send(getCadQuery).ConfigureAwait(false);
+        CadModel model = await mediator.Send(getCadQuery, ct).ConfigureAwait(false);
 
         string cadFileName = model.Name + req.Id, cadExtension = model.Paths.FileExtension;
         string imageFileName = model.Name + req.Id, imageExtension = model.Paths.ImageExtension;
 
         DeleteCadCommand command = new(req.Id);
-        await mediator.Send(command).ConfigureAwait(false);
+        await mediator.Send(command, ct).ConfigureAwait(false);
         
         env.DeleteFile("images", imageFileName, imageExtension);
         env.DeleteFile("cads", cadFileName, cadExtension);

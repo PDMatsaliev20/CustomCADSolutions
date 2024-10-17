@@ -9,12 +9,12 @@ namespace CustomCADs.Application.UseCases.Cads.Commands.SetStatus;
 
 public class SetCadStatusHandler(ICadQueries queries, IUnitOfWork unitOfWork) : IRequestHandler<SetCadStatusCommand>
 {
-    public async Task Handle(SetCadStatusCommand request, CancellationToken cancellationToken)
+    public async Task Handle(SetCadStatusCommand req, CancellationToken ct)
     {
-        Cad cad = await queries.GetByIdAsync(request.Id)
-            ?? throw new CadNotFoundException(request.Id);
+        Cad cad = await queries.GetByIdAsync(req.Id, ct: ct)
+            ?? throw new CadNotFoundException(req.Id);
 
-        switch (request.Action)
+        switch (req.Action)
         {
             case "validate":
                 ValidateCad(cad);
@@ -24,7 +24,7 @@ public class SetCadStatusHandler(ICadQueries queries, IUnitOfWork unitOfWork) : 
                 ReportCad(cad);
                 break;
 
-            default: throw new CadStatusException(request.Id, request.Action);
+            default: throw new CadStatusException(req.Id, req.Action);
         }
 
         await unitOfWork.SaveChangesAsync().ConfigureAwait(false);

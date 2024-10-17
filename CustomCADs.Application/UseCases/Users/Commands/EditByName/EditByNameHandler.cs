@@ -8,18 +8,18 @@ namespace CustomCADs.Application.UseCases.Users.Commands.EditByName;
 
 public class EditUserByNameHandler(IUserQueries queries, IUnitOfWork unitOfWork) : IRequestHandler<EditUserByNameCommand>
 {
-    public async Task Handle(EditUserByNameCommand request, CancellationToken cancellationToken)
+    public async Task Handle(EditUserByNameCommand req, CancellationToken ct)
     {
-        User user = await queries.GetByNameAsync(request.Name).ConfigureAwait(false)
-            ?? throw new UserNotFoundException($"The User with name: {request.Name} does not exist.");
+        User user = await queries.GetByNameAsync(req.Name, ct: ct).ConfigureAwait(false)
+            ?? throw new UserNotFoundException($"The User with name: {req.Name} does not exist.");
 
-        user.UserName = request.Model.UserName;
-        user.FirstName = request.Model.FirstName;
-        user.LastName = request.Model.LastName;
-        user.Email = request.Model.Email;
-        user.RoleName = request.Model.RoleName;
-        user.RefreshToken = request.Model.RefreshToken;
-        user.RefreshTokenEndDate = request.Model.RefreshTokenEndDate;
+        user.UserName = req.Model.UserName;
+        user.FirstName = req.Model.FirstName;
+        user.LastName = req.Model.LastName;
+        user.Email = req.Model.Email;
+        user.RoleName = req.Model.RoleName;
+        user.RefreshToken = req.Model.RefreshToken;
+        user.RefreshTokenEndDate = req.Model.RefreshTokenEndDate;
 
         await unitOfWork.SaveChangesAsync().ConfigureAwait(false);
     }

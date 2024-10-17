@@ -45,7 +45,7 @@ public class PostRoleEndpoint(IMediator mediator, IAppRoleManager manager) : End
             Description = req.Description,
         };
         CreateRoleCommand command = new(model);
-        await mediator.Send(command).ConfigureAwait(false);
+        await mediator.Send(command, ct).ConfigureAwait(false);
 
         RoleResponseDto response = new()
         {

@@ -50,7 +50,7 @@ public class OngoingOrdersEndpoint(IMediator mediator) : Endpoint<OngoingOrdersR
             Page: req.Page,
             Limit: req.Limit
         );
-        OrderResult result = await mediator.Send(query).ConfigureAwait(false);
+        OrderResult result = await mediator.Send(query, ct).ConfigureAwait(false);
 
         OrderResultDto<OngoingOrdersResponse> response = new()
         {

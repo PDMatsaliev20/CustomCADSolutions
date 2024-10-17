@@ -25,7 +25,7 @@ public class DeleteRoleEndpoint(IMediator mediator, IAppRoleManager manager) : E
     public override async Task HandleAsync(DeleteRoleRequest req, CancellationToken ct)
     {
         RoleExistsByNameQuery query = new(req.Name);
-        bool roleExists = await mediator.Send(query).ConfigureAwait(false);
+        bool roleExists = await mediator.Send(query, ct).ConfigureAwait(false);
 
         AppRole? role = await manager.FindByNameAsync(req.Name).ConfigureAwait(false);
         if (role == null || !roleExists)
@@ -39,7 +39,7 @@ public class DeleteRoleEndpoint(IMediator mediator, IAppRoleManager manager) : E
         }
 
         DeleteRoleByNameCommand command = new(req.Name);
-        await mediator.Send(command).ConfigureAwait(false);
+        await mediator.Send(command, ct).ConfigureAwait(false);
         await manager.DeleteAsync(role).ConfigureAwait(false);
         
         await SendNoContentAsync().ConfigureAwait(false);

@@ -26,14 +26,14 @@ public class LogoutEndpoint(IMediator mediator, SignInManager<AppUser> signInMan
     public override async Task HandleAsync(CancellationToken ct)
     {
         GetUserByIdQuery query = new(User.GetId());
-        UserModel model = await mediator.Send(query).ConfigureAwait(false);
+        UserModel model = await mediator.Send(query, ct).ConfigureAwait(false);
         await signInManager.SignOutAsync().ConfigureAwait(false);
 
         model.RefreshToken = null;
         model.RefreshTokenEndDate = null;
 
         EditUserByNameCommand command = new(model.UserName, model);
-        await mediator.Send(command).ConfigureAwait(false);
+        await mediator.Send(command, ct).ConfigureAwait(false);
 
         HttpContext.Response.Cookies.Delete("jwt");
         HttpContext.Response.Cookies.Delete("rt");

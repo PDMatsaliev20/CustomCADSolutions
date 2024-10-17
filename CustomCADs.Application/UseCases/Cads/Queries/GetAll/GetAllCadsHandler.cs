@@ -9,18 +9,18 @@ namespace CustomCADs.Application.UseCases.Cads.Queries.GetAll;
 
 public class GetAllCadsHandler(ICadQueries queries) : IRequestHandler<GetAllCadsQuery, CadResult>
 {
-    public Task<CadResult> Handle(GetAllCadsQuery request, CancellationToken cancellationToken)
+    public Task<CadResult> Handle(GetAllCadsQuery req, CancellationToken ct)
     {
         IQueryable<Cad> queryable = queries.GetAll(asNoTracking: true)
-            .Filter(request.Creator, request.Status)
-            .Search(request.Category, request.Name)
-            .Sort(request.Sorting);
+            .Filter(req.Creator, req.Status)
+            .Search(req.Category, req.Name)
+            .Sort(req.Sorting);
 
         IEnumerable<Cad> cads = 
         [
             .. queryable
-                .Skip((request.Page - 1) * request.Limit)
-                .Take(request.Limit)
+                .Skip((req.Page - 1) * req.Limit)
+                .Take(req.Limit)
         ];
 
         CadResult response = new()

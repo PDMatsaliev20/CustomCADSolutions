@@ -11,10 +11,10 @@ public class DeleteOrderHandler(
     ICommands<Order> commands, 
     IUnitOfWork unitOfWork) : IRequestHandler<DeleteOrderCommand>
 {
-    public async Task Handle(DeleteOrderCommand request, CancellationToken cancellationToken)
+    public async Task Handle(DeleteOrderCommand req, CancellationToken ct)
     {
-        Order order = await queries.GetByIdAsync(request.Id).ConfigureAwait(false)
-            ?? throw new OrderNotFoundException(request.Id);
+        Order order = await queries.GetByIdAsync(req.Id, ct: ct).ConfigureAwait(false)
+            ?? throw new OrderNotFoundException(req.Id);
 
         commands.Delete(order);
         await unitOfWork.SaveChangesAsync().ConfigureAwait(false);

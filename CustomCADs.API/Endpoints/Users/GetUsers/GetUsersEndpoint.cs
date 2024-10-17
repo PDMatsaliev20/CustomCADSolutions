@@ -28,7 +28,7 @@ public class GetUsersEndpoint(IMediator mediator) : Endpoint<GetUsersRequest, Ge
             Page: req.Page,
             Limit: req.Limit
         );
-        UserResult result = await mediator.Send(query).ConfigureAwait(false);
+        UserResult result = await mediator.Send(query, ct).ConfigureAwait(false);
         
         GetUsersResponse response = new()
         {

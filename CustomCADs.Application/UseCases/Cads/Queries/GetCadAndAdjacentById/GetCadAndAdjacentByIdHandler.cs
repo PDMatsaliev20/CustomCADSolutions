@@ -11,15 +11,15 @@ namespace CustomCADs.Application.UseCases.Cads.Queries.GetCadAndAdjacentById;
 
 public class GetCadAndAdjacentByIdHandler(ICadQueries queries) : IRequestHandler<GetCadAndAdjacentByIdQuery, (int? PrevId, CadModel Current, int? NextId)>
 {
-    public Task<(int? PrevId, CadModel Current, int? NextId)> Handle(GetCadAndAdjacentByIdQuery request, CancellationToken cancellationToken)
+    public Task<(int? PrevId, CadModel Current, int? NextId)> Handle(GetCadAndAdjacentByIdQuery req, CancellationToken ct)
     {
         IQueryable<Cad> queryable = queries.GetAll(asNoTracking: true)
             .Sort(nameof(Sorting.Oldest))
             .Filter(status: nameof(CadStatus.Unchecked));
 
         List<Cad> cads = [.. queryable];
-        Cad cad = queryable.FirstOrDefault(c => c.Id == request.Id)
-            ?? throw new CadNotFoundException(request.Id);
+        Cad cad = queryable.FirstOrDefault(c => c.Id == req.Id)
+            ?? throw new CadNotFoundException(req.Id);
 
         int cadIndex = cads.IndexOf(cad);
 

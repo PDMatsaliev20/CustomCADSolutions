@@ -8,12 +8,12 @@ namespace CustomCADs.Application.UseCases.Orders.Commands.SetShouldBeDelivered;
 
 public class SetOrderShouldBeDeliveredHandler(IOrderQueries queries, IUnitOfWork unitOfWork) : IRequestHandler<SetOrderShouldBeDeliveredCommand>
 {
-    public async Task Handle(SetOrderShouldBeDeliveredCommand request, CancellationToken cancellationToken)
+    public async Task Handle(SetOrderShouldBeDeliveredCommand req, CancellationToken ct)
     {
-        Order order = await queries.GetByIdAsync(request.Id)
-            ?? throw new OrderNotFoundException(request.Id);
+        Order order = await queries.GetByIdAsync(req.Id, ct: ct)
+            ?? throw new OrderNotFoundException(req.Id);
 
-        order.ShouldBeDelivered = request.ShouldBeDelivered;
+        order.ShouldBeDelivered = req.ShouldBeDelivered;
 
         await unitOfWork.SaveChangesAsync().ConfigureAwait(false);
     }

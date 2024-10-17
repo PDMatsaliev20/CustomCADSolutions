@@ -24,7 +24,7 @@ public class GetUserEndpoint(IMediator mediator) : Endpoint<GetUserRequest, User
     public override async Task HandleAsync(GetUserRequest req, CancellationToken ct)
     {
         GetUserByUsernameQuery query = new(req.Username);
-        UserModel model = await mediator.Send(query);
+        UserModel model = await mediator.Send(query, ct);
 
         UserResponseDto response = model.Adapt<UserResponseDto>();
         await SendOkAsync(response).ConfigureAwait(false);

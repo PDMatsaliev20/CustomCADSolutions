@@ -7,12 +7,12 @@ namespace CustomCADs.Application.UseCases.Orders.Queries.IsBuyer;
 
 public class IsOrderBuyerHandler(IOrderQueries queries) : IRequestHandler<IsOrderBuyerQuery, bool>
 {
-    public async Task<bool> Handle(IsOrderBuyerQuery request, CancellationToken cancellationToken)
+    public async Task<bool> Handle(IsOrderBuyerQuery req, CancellationToken ct)
     {
-        Order order = await queries.GetByIdAsync(request.Id, asNoTracking: true).ConfigureAwait(false)
-            ?? throw new OrderNotFoundException(request.Id);
+        Order order = await queries.GetByIdAsync(req.Id, asNoTracking: true, ct: ct).ConfigureAwait(false)
+            ?? throw new OrderNotFoundException(req.Id);
 
-        var response = order.Buyer.UserName == request.Username;
+        var response = order.Buyer.UserName == req.Username;
         return response;
     }
 }

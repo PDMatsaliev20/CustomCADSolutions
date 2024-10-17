@@ -10,15 +10,15 @@ public class CategoryQueries(ApplicationContext context) : ICategoryQueries
         => context.Categories
             .Query(asNoTracking);
 
-    public async Task<Category?> GetByIdAsync(int id, bool asNoTracking = false)
+    public async Task<Category?> GetByIdAsync(int id, bool asNoTracking = false, CancellationToken ct = default)
         => await context.Categories
             .Query(asNoTracking)
-            .FirstOrDefaultAsync(c => c.Id == id)
+            .FirstOrDefaultAsync(c => c.Id == id, ct)
             .ConfigureAwait(false);
 
-    public async Task<bool> ExistsByIdAsync(int id)
+    public async Task<bool> ExistsByIdAsync(int id, CancellationToken ct = default)
         => await context.Categories
-            .AnyAsync(c => c.Id == id)
+            .AnyAsync(c => c.Id == id, ct)
             .ConfigureAwait(false);
 
     public int Count(Func<Category, bool> predicate)

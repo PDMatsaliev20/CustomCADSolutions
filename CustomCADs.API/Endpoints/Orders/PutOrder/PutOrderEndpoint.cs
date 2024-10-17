@@ -26,7 +26,7 @@ public class PutOrderEndpoint(IMediator mediator) : Endpoint<PutOrderRequest>
     public override async Task HandleAsync(PutOrderRequest req, CancellationToken ct)
     {
         GetOrderByIdQuery query = new(req.Id);
-        OrderModel order = await mediator.Send(query).ConfigureAwait(false);
+        OrderModel order = await mediator.Send(query, ct).ConfigureAwait(false);
 
         if (order.BuyerId != User.GetId())
         {
@@ -49,7 +49,7 @@ public class PutOrderEndpoint(IMediator mediator) : Endpoint<PutOrderRequest>
         order.CategoryId = req.CategoryId;
 
         EditOrderCommand command = new(req.Id, order);
-        await mediator.Send(command).ConfigureAwait(false);
+        await mediator.Send(command, ct).ConfigureAwait(false);
 
         await SendNoContentAsync().ConfigureAwait(false);
     }

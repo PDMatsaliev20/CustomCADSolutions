@@ -14,12 +14,12 @@ public class DeleteCadHandler(
     ICommands<Cad> commands,
     IUnitOfWork unitOfWork) : IRequestHandler<DeleteCadCommand>
 {
-    public async Task Handle(DeleteCadCommand request, CancellationToken cancellationToken)
+    public async Task Handle(DeleteCadCommand req, CancellationToken ct)
     {
-        Cad cad = await queries.GetByIdAsync(request.Id).ConfigureAwait(false)
-            ?? throw new OrderNotFoundException(request.Id);
+        Cad cad = await queries.GetByIdAsync(req.Id, ct: ct).ConfigureAwait(false)
+            ?? throw new OrderNotFoundException(req.Id);
 
-        ResetOrders(request.Id);
+        ResetOrders(req.Id);
         commands.Delete(cad);
 
         await unitOfWork.SaveChangesAsync().ConfigureAwait(false);

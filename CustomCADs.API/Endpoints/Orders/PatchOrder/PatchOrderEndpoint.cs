@@ -23,7 +23,7 @@ public class PatchOrderEndpoint(IMediator mediator) : Endpoint<PatchOrderRequest
     public override async Task HandleAsync(PatchOrderRequest req, CancellationToken ct)
     {
         IsOrderBuyerQuery isBuyerQuery = new(req.Id, User.GetName());
-        bool userIsBuyer = await mediator.Send(isBuyerQuery).ConfigureAwait(false);
+        bool userIsBuyer = await mediator.Send(isBuyerQuery, ct).ConfigureAwait(false);
 
         if (!userIsBuyer)
         {
@@ -35,7 +35,7 @@ public class PatchOrderEndpoint(IMediator mediator) : Endpoint<PatchOrderRequest
         }
 
         SetOrderShouldBeDeliveredCommand command = new(req.Id, req.ShouldBeDelivered);
-        await mediator.Send(command).ConfigureAwait(false);
+        await mediator.Send(command, ct).ConfigureAwait(false);
 
         await SendNoContentAsync().ConfigureAwait(false);
     }

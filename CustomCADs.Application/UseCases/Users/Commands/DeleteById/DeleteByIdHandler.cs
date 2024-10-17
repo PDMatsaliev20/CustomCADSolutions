@@ -11,10 +11,10 @@ public class DeleteUserByIdHandler(
     ICommands<User> commands,
     IUnitOfWork unitOfWork) : IRequestHandler<DeleteUserByIdCommand>
 {
-    public async Task Handle(DeleteUserByIdCommand request, CancellationToken cancellationToken)
+    public async Task Handle(DeleteUserByIdCommand req, CancellationToken ct)
     {
-        User user = await queries.GetByIdAsync(request.Id).ConfigureAwait(false)
-            ?? throw new UserNotFoundException($"The User with id: {request.Id} does not exist.");
+        User user = await queries.GetByIdAsync(req.Id, ct: ct).ConfigureAwait(false)
+            ?? throw new UserNotFoundException($"The User with id: {req.Id} does not exist.");
 
         commands.Delete(user);
         await unitOfWork.SaveChangesAsync().ConfigureAwait(false);

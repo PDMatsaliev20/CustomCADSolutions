@@ -32,12 +32,12 @@ public class PostUserEndpoint(IMediator mediator, IAppUserManager manager) : End
     public override async Task HandleAsync(PostUserRequest req, CancellationToken ct)
     {
         RoleExistsByNameQuery existsByNameQuery = new(req.Role);
-        bool roleExists = await mediator.Send(existsByNameQuery).ConfigureAwait(false);
+        bool roleExists = await mediator.Send(existsByNameQuery, ct).ConfigureAwait(false);
 
         if (!roleExists)
         {
             GetAllRoleNamesQuery getRoleNamesQuery = new();
-            var roleNames = await mediator.Send(getRoleNamesQuery).ConfigureAwait(false);
+            var roleNames = await mediator.Send(getRoleNamesQuery, ct).ConfigureAwait(false);
 
             ValidationFailures.Add(new()
             {
@@ -71,10 +71,10 @@ public class PostUserEndpoint(IMediator mediator, IAppUserManager manager) : End
             LastName = req.LastName,
         };
         CreateUserCommand command = new(model);
-        string id = await mediator.Send(command).ConfigureAwait(false);
+        string id = await mediator.Send(command, ct).ConfigureAwait(false);
 
         GetUserByIdQuery query = new(id);
-        UserModel addedUser = await mediator.Send(query).ConfigureAwait(false);
+        UserModel addedUser = await mediator.Send(query, ct).ConfigureAwait(false);
 
         UserResponseDto response = new()
         {

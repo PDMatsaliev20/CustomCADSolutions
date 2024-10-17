@@ -59,7 +59,7 @@ public class RegisterEndpoint(IMediator mediator, IAppUserManager manager, IEmai
         model.Role = null!; // For EF Core
 
         CreateUserCommand command = new(model);
-        await mediator.Send(command).ConfigureAwait(false);
+        await mediator.Send(command, ct).ConfigureAwait(false);
 
         string serverUrl = config["URLs:Server"] ?? "https://customcads.onrender.com";
         string token = await manager.GenerateEmailConfirmationTokenAsync(user).ConfigureAwait(false);

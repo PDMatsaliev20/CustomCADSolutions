@@ -23,7 +23,7 @@ public class GetRolesEndpoint(IMediator mediator) : EndpointWithoutRequest<RoleR
     public override async Task HandleAsync(CancellationToken ct)
     {
         GetAllRolesQuery query = new();
-        IEnumerable<RoleModel> roles = await mediator.Send(query).ConfigureAwait(false);
+        IEnumerable<RoleModel> roles = await mediator.Send(query, ct).ConfigureAwait(false);
 
         var response = roles.Adapt<RoleResponseDto[]>();
         await SendOkAsync(response).ConfigureAwait(false);

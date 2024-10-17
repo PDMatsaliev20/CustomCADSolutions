@@ -5,8 +5,8 @@ namespace CustomCADs.Persistence.Repositories.Users;
 
 public class UserCommands(ApplicationContext context) : ICommands<User>
 {
-    public async Task<User> AddAsync(User user)
-        => (await context.Users.AddAsync(user).ConfigureAwait(false)).Entity;
+    public async Task<User> AddAsync(User user, CancellationToken ct)
+        => (await context.Users.AddAsync(user, ct).ConfigureAwait(false)).Entity;
 
     public async Task AddRangeAsync(params User[] users)
         => await context.Users.AddRangeAsync(users).ConfigureAwait(false);

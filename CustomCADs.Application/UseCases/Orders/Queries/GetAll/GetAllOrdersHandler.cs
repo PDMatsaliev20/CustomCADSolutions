@@ -9,18 +9,18 @@ namespace CustomCADs.Application.UseCases.Orders.Queries.GetAll;
 
 public class GetAllOrdersHandler(IOrderQueries queries) : IRequestHandler<GetAllOrdersQuery, OrderResult>
 {
-    public Task<OrderResult> Handle(GetAllOrdersQuery request, CancellationToken cancellationToken)
+    public Task<OrderResult> Handle(GetAllOrdersQuery req, CancellationToken ct)
     {
         IQueryable<Order> queryable = queries.GetAll(asNoTracking: true)
-            .Filter(request.Buyer, request.Status)
-            .Search(request.Category, request.Name)
-            .Sort(request.Sorting);
+            .Filter(req.Buyer, req.Status)
+            .Search(req.Category, req.Name)
+            .Sort(req.Sorting);
 
         IEnumerable<Order> orders =
         [
             .. queryable
-            .Skip((request.Page - 1) * request.Limit)
-            .Take(request.Limit)
+            .Skip((req.Page - 1) * req.Limit)
+            .Take(req.Limit)
         ];
 
         OrderResult response = new()

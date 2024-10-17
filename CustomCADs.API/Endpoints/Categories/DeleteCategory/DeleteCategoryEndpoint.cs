@@ -23,7 +23,7 @@ public class DeleteCategoryEndpoint(IMediator mediator) : Endpoint<DeleteCategor
     public override async Task HandleAsync(DeleteCategoryRequest req, CancellationToken ct)
     {
         CategoryExistsByIdQuery query = new(req.Id);
-        bool exists = await mediator.Send(query).ConfigureAwait(false);
+        bool exists = await mediator.Send(query, ct).ConfigureAwait(false);
         
         if (!exists)
         {
@@ -36,7 +36,7 @@ public class DeleteCategoryEndpoint(IMediator mediator) : Endpoint<DeleteCategor
         }
 
         DeleteCategoryCommand command = new(req.Id);
-        await mediator.Send(command).ConfigureAwait(false);
+        await mediator.Send(command, ct).ConfigureAwait(false);
 
         await SendNoContentAsync().ConfigureAwait(false);
     }

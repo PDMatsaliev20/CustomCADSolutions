@@ -14,7 +14,7 @@ public class OrderQueries(ApplicationContext context) : IOrderQueries
             .Include(o => o.Designer)
             .AsSplitQuery();
 
-    public async Task<Order?> GetByIdAsync(int id, bool asNoTracking = false)
+    public async Task<Order?> GetByIdAsync(int id, bool asNoTracking = false, CancellationToken ct = default)
         => await context.Orders
             .Query(asNoTracking)
             .Include(o => o.Category)
@@ -22,12 +22,12 @@ public class OrderQueries(ApplicationContext context) : IOrderQueries
             .Include(o => o.Designer)
             .Include(o => o.Cad)
             .AsSplitQuery()
-            .FirstOrDefaultAsync(c => c.Id == id)
+            .FirstOrDefaultAsync(c => c.Id == id, ct)
             .ConfigureAwait(false);
 
-    public async Task<bool> ExistsByIdAsync(int id)
+    public async Task<bool> ExistsByIdAsync(int id, CancellationToken ct = default)
         => await context.Orders
-            .AnyAsync(o => o.Id == id)
+            .AnyAsync(o => o.Id == id, ct)
             .ConfigureAwait(false);
 
     public int Count(Func<Order, bool> predicate)

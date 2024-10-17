@@ -5,8 +5,8 @@ namespace CustomCADs.Persistence.Repositories.Roles;
 
 public class RoleCommands(ApplicationContext context) : ICommands<Role>
 {
-    public async Task<Role> AddAsync(Role role)
-        => (await context.Roles.AddAsync(role).ConfigureAwait(false)).Entity;
+    public async Task<Role> AddAsync(Role role, CancellationToken ct)
+        => (await context.Roles.AddAsync(role, ct).ConfigureAwait(false)).Entity;
 
     public async Task AddRangeAsync(params Role[] roles)
         => await context.Roles.AddRangeAsync(roles).ConfigureAwait(false);

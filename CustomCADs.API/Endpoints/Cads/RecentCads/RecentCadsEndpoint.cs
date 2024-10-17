@@ -28,7 +28,7 @@ public class RecentCadsEndpoint(IMediator mediator) : Endpoint<RecentCadsRequest
             Sorting: nameof(Sorting.Newest),
             Limit: req.Limit
         );
-        CadResult result = await mediator.Send(query).ConfigureAwait(false);
+        CadResult result = await mediator.Send(query, ct).ConfigureAwait(false);
 
         var response = result.Cads.Select(cad => cad.Adapt<RecentCadsResponse>());
         await SendOkAsync(response).ConfigureAwait(false);

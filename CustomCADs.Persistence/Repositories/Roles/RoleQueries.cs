@@ -10,26 +10,26 @@ public class RoleQueries(ApplicationContext context) : IRoleQueries
         => context.Roles
             .Query(asNoTracking);
 
-    public async Task<Role?> GetByIdAsync(string id, bool asNoTracking = false)
+    public async Task<Role?> GetByIdAsync(string id, bool asNoTracking = false, CancellationToken ct = default)
         => await context.Roles
             .Query(asNoTracking)
-            .FirstOrDefaultAsync(r => r.Id == id)
+            .FirstOrDefaultAsync(r => r.Id == id, ct)
             .ConfigureAwait(false);
     
-    public async Task<Role?> GetByNameAsync(string name, bool asNoTracking = false)
+    public async Task<Role?> GetByNameAsync(string name, bool asNoTracking = false, CancellationToken ct = default)
         => await context.Roles
             .Query(asNoTracking)
-            .FirstOrDefaultAsync(r => r.Name == name)
+            .FirstOrDefaultAsync(r => r.Name == name, ct)
             .ConfigureAwait(false);
 
-    public async Task<bool> ExistsByIdAsync(string id)
+    public async Task<bool> ExistsByIdAsync(string id, CancellationToken ct = default)
     => await context.Roles
-            .AnyAsync(r => r.Id == id)
+            .AnyAsync(r => r.Id == id, ct)
             .ConfigureAwait(false);
     
-    public async Task<bool> ExistsByNameAsync(string name)
+    public async Task<bool> ExistsByNameAsync(string name, CancellationToken ct = default)
     => await context.Roles
-            .AnyAsync(r => r.Name == name)
+            .AnyAsync(r => r.Name == name, ct)
             .ConfigureAwait(false);
 
     public int Count(Func<Role, bool> predicate)

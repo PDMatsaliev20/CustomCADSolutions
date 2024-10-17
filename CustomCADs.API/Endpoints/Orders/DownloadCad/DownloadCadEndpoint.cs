@@ -27,7 +27,7 @@ public class DownloadCadEndpoint(IMediator mediator, IWebHostEnvironment env) : 
     public override async Task HandleAsync(DownloadCadRequest req, CancellationToken ct)
     {
         OrderExistsByIdQuery existsQuery = new(req.Id);
-        bool orderExists = await mediator.Send(existsQuery).ConfigureAwait(false);
+        bool orderExists = await mediator.Send(existsQuery, ct).ConfigureAwait(false);
 
         if (!orderExists)
         {
@@ -36,7 +36,7 @@ public class DownloadCadEndpoint(IMediator mediator, IWebHostEnvironment env) : 
         }
 
         OrderHasCadByIdQuery hasCadQuery = new(req.Id);
-        bool orderHasCad = await mediator.Send(existsQuery).ConfigureAwait(false);
+        bool orderHasCad = await mediator.Send(existsQuery, ct).ConfigureAwait(false);
 
         if (!orderHasCad)
         {
@@ -45,7 +45,7 @@ public class DownloadCadEndpoint(IMediator mediator, IWebHostEnvironment env) : 
         }
 
         IsOrderBuyerQuery isBuyerQuery = new(req.Id, User.GetName());
-        bool userIsOrderBuyer = await mediator.Send(isBuyerQuery);
+        bool userIsOrderBuyer = await mediator.Send(isBuyerQuery, ct);
 
         if (!userIsOrderBuyer)
         {
@@ -58,7 +58,7 @@ public class DownloadCadEndpoint(IMediator mediator, IWebHostEnvironment env) : 
         }
 
         GetOrderCadByIdQuery orderCadQuery = new(req.Id);
-        CadModel model = await mediator.Send(orderCadQuery).ConfigureAwait(false);
+        CadModel model = await mediator.Send(orderCadQuery, ct).ConfigureAwait(false);
 
         byte[] bytes = await env.GetCadBytes(model.Name + model.Id, model.Paths.FileExtension).ConfigureAwait(false);
         bool isGlb = model.Paths.FileExtension == ".glb";

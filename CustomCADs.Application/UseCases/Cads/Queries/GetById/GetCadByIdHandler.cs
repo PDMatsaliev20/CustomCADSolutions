@@ -9,10 +9,10 @@ namespace CustomCADs.Application.UseCases.Cads.Queries.GetById;
 
 public class GetCadByIdHandler(ICadQueries queries) : IRequestHandler<GetCadByIdQuery, CadModel>
 {
-    public async Task<CadModel> Handle(GetCadByIdQuery request, CancellationToken cancellationToken)
+    public async Task<CadModel> Handle(GetCadByIdQuery req, CancellationToken ct)
     {
-        Cad cad = await queries.GetByIdAsync(request.Id, asNoTracking: true).ConfigureAwait(false)
-            ?? throw new CadNotFoundException(request.Id);
+        Cad cad = await queries.GetByIdAsync(req.Id, asNoTracking: true, ct: ct).ConfigureAwait(false)
+            ?? throw new CadNotFoundException(req.Id);
         
         var result = cad.Adapt<CadModel>();
         return result;

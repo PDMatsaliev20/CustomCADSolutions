@@ -9,10 +9,11 @@ namespace CustomCADs.Application.UseCases.Users.Queries.GetByRefreshToken;
 
 public class GetUserByRefreshTokenHandler(IUserQueries queries) : IRequestHandler<GetUserByRefreshTokenQuery, UserModel>
 {
-    public async Task<UserModel> Handle(GetUserByRefreshTokenQuery request, CancellationToken cancellationToken)
+    public async Task<UserModel> Handle(GetUserByRefreshTokenQuery req, CancellationToken cancellationToken
+        )
     {
-        User user = await queries.GetByRefreshTokenAsync(request.RefreshToken).ConfigureAwait(false)
-            ?? throw new UserNotFoundException($"The User with refresh token: {request.RefreshToken} doesn't exist.");
+        User user = await queries.GetByRefreshTokenAsync(req.RefreshToken, ct: cancellationToken).ConfigureAwait(false)
+            ?? throw new UserNotFoundException($"The User with refresh token: {req.RefreshToken} doesn't exist.");
 
         var response = user.Adapt<UserModel>();
         return response;

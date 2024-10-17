@@ -5,8 +5,8 @@ namespace CustomCADs.Persistence.Repositories.Cads;
 
 public class CadCommands(ApplicationContext context) : ICommands<Cad>
 {
-    public async Task<Cad> AddAsync(Cad cad)
-        => (await context.Cads.AddAsync(cad).ConfigureAwait(false)).Entity;
+    public async Task<Cad> AddAsync(Cad cad, CancellationToken ct = default)
+        => (await context.Cads.AddAsync(cad, ct).ConfigureAwait(false)).Entity;
     
     public async Task AddRangeAsync(params Cad[] cads)
         => await context.Cads.AddRangeAsync(cads).ConfigureAwait(false);

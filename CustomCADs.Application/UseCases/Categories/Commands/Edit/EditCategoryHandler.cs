@@ -8,12 +8,12 @@ namespace CustomCADs.Application.UseCases.Categories.Commands.Edit;
 
 public class EditCategoryHandler(ICategoryQueries queries, IUnitOfWork unitOfWork) : IRequestHandler<EditCategoryCommand>
 {
-    public async Task Handle(EditCategoryCommand request, CancellationToken cancellationToken)
+    public async Task Handle(EditCategoryCommand req, CancellationToken ct)
     {
-        Category category = await queries.GetByIdAsync(request.Id).ConfigureAwait(false)
-            ?? throw new CategoryNotFoundException(request.Id);
+        Category category = await queries.GetByIdAsync(req.Id, ct: ct).ConfigureAwait(false)
+            ?? throw new CategoryNotFoundException(req.Id);
 
-        category.Name = request.Model.Name;
+        category.Name = req.Model.Name;
 
         await unitOfWork.SaveChangesAsync().ConfigureAwait(false);
     }

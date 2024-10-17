@@ -8,15 +8,15 @@ namespace CustomCADs.Application.UseCases.Orders.Commands.Edit;
 
 public class EditOrderHandler(IOrderQueries queries, IUnitOfWork unitOfWork) : IRequestHandler<EditOrderCommand>
 {
-    public async Task Handle(EditOrderCommand request, CancellationToken cancellationToken)
+    public async Task Handle(EditOrderCommand req, CancellationToken ct)
     {
-        Order order = await queries.GetByIdAsync(request.Id).ConfigureAwait(false)
-            ?? throw new OrderNotFoundException(request.Id);
+        Order order = await queries.GetByIdAsync(req.Id, ct: ct).ConfigureAwait(false)
+            ?? throw new OrderNotFoundException(req.Id);
 
-        order.Name = request.Model.Name;
-        order.Description = request.Model.Description;
-        order.ShouldBeDelivered = request.Model.ShouldBeDelivered;
-        order.CategoryId = request.Model.CategoryId;
+        order.Name = req.Model.Name;
+        order.Description = req.Model.Description;
+        order.ShouldBeDelivered = req.Model.ShouldBeDelivered;
+        order.CategoryId = req.Model.CategoryId;
 
         await unitOfWork.SaveChangesAsync().ConfigureAwait(false);
     }

@@ -24,7 +24,7 @@ public class GalleryDetailsEndpoint(IMediator mediator) : Endpoint<GalleryDetail
     public override async Task HandleAsync(GalleryDetailsRequest req, CancellationToken ct)
     {
         GetCadByIdQuery query = new(req.Id);
-        CadModel model = await mediator.Send(query).ConfigureAwait(false);
+        CadModel model = await mediator.Send(query, ct).ConfigureAwait(false);
 
         GalleryDetailsResponse response = model.Adapt<GalleryDetailsResponse>();
         await SendOkAsync(response).ConfigureAwait(false);

@@ -27,19 +27,19 @@ public class CountOrderEndpoint(IMediator mediator) : EndpointWithoutRequest<Ord
                        => o.Status == s && o.Buyer.UserName == User.GetName();
 
         query = new(o => predicate(o, OrderStatus.Pending));
-        int pending = await mediator.Send(query);
+        int pending = await mediator.Send(query, ct);
         
         query = new(o => predicate(o, OrderStatus.Begun));
-        int begun = await mediator.Send(query);
+        int begun = await mediator.Send(query, ct);
 
         query = new(o => predicate(o, OrderStatus.Finished));
-        int finished = await mediator.Send(query).ConfigureAwait(false);
+        int finished = await mediator.Send(query, ct).ConfigureAwait(false);
         
         query = new(o => predicate(o, OrderStatus.Reported));
-        int reported = await mediator.Send(query).ConfigureAwait(false);
+        int reported = await mediator.Send(query, ct).ConfigureAwait(false);
         
         query = new(o => predicate(o, OrderStatus.Removed));
-        int removed = await mediator.Send(query).ConfigureAwait(false);
+        int removed = await mediator.Send(query, ct).ConfigureAwait(false);
 
         OrderCountsResponse response = new(pending, begun, finished, reported, removed);
         await SendOkAsync(response).ConfigureAwait(false);

@@ -32,7 +32,7 @@ public class UncheckedCadsEndpoint(IMediator mediator) : Endpoint<UncheckedCadsR
             Page: req.Page,
             Limit: req.Limit
         );
-        CadResult result = await mediator.Send(query).ConfigureAwait(false);
+        CadResult result = await mediator.Send(query, ct).ConfigureAwait(false);
 
         CadResultDto<UncheckedCadsResponse> response = new()
         {

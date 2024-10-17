@@ -26,7 +26,7 @@ public class PutCadEndpoint(IMediator mediator, IWebHostEnvironment env) : Endpo
     public override async Task HandleAsync(PutCadRequest req, CancellationToken ct)
     {
         GetCadByIdQuery query = new(req.Id);
-        CadModel cad = await mediator.Send(query).ConfigureAwait(false);
+        CadModel cad = await mediator.Send(query, ct).ConfigureAwait(false);
 
         if (cad.CreatorId != User.GetId())
         {
@@ -44,7 +44,7 @@ public class PutCadEndpoint(IMediator mediator, IWebHostEnvironment env) : Endpo
             string imagePath = await env.UploadImageAsync(req.Image, req.Name + req.Id + req.Image.GetFileExtension()).ConfigureAwait(false);
 
             SetCadPathsCommand setPathsCommand = new(cad.Id, cad.Paths.FilePath, imagePath);
-            await mediator.Send(setPathsCommand).ConfigureAwait(false);
+            await mediator.Send(setPathsCommand, ct).ConfigureAwait(false);
         }
 
         cad.Name = req.Name;
@@ -53,7 +53,7 @@ public class PutCadEndpoint(IMediator mediator, IWebHostEnvironment env) : Endpo
         cad.Price = req.Price;
 
         EditCadCommand editCommand = new(req.Id, cad);
-        await mediator.Send(editCommand).ConfigureAwait(false);
+        await mediator.Send(editCommand, ct).ConfigureAwait(false);
 
         await SendNoContentAsync().ConfigureAwait(false);
     }

@@ -35,7 +35,7 @@ public class RefreshTokenEndpoint(IMediator mediator, IConfiguration config) : E
         }
 
         GetUserByRefreshTokenQuery query = new(rt);
-        UserModel model = await mediator.Send(query).ConfigureAwait(false);
+        UserModel model = await mediator.Send(query, ct).ConfigureAwait(false);
 
         if (model.RefreshTokenEndDate < DateTime.UtcNow)
         {
@@ -62,7 +62,7 @@ public class RefreshTokenEndpoint(IMediator mediator, IConfiguration config) : E
             return;
         }
 
-        (string newRT, DateTime newEnd) = await model.RenewRefreshToken(mediator).ConfigureAwait(false);
+        (string newRT, DateTime newEnd) = await model.RenewRefreshToken(mediator, ct).ConfigureAwait(false);
         CookieOptions rtOptions = new() { HttpOnly = true, Secure = true, Expires = newEnd };
         HttpContext.Response.Cookies.Append("rt", newRT, rtOptions);
 

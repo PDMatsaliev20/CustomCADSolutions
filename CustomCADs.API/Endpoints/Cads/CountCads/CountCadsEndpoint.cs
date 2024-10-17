@@ -27,16 +27,16 @@ public class CountCadsEndpoint(IMediator mediator) : EndpointWithoutRequest<Coun
             => c.Status == s && c.Creator.UserName == User.GetName();
         
         query = new(c => predicate(c, CadStatus.Unchecked));
-        int uncheckedCadsCounts = await mediator.Send(query).ConfigureAwait(false);
+        int uncheckedCadsCounts = await mediator.Send(query, ct).ConfigureAwait(false);
         
         query = new(c => predicate(c, CadStatus.Validated));
-        int validatedCadsCounts = await mediator.Send(query).ConfigureAwait(false);
+        int validatedCadsCounts = await mediator.Send(query, ct).ConfigureAwait(false);
         
         query = new(c => predicate(c, CadStatus.Reported));
-        int reportedCadsCounts = await mediator.Send(query).ConfigureAwait(false);
+        int reportedCadsCounts = await mediator.Send(query, ct).ConfigureAwait(false);
 
         query = new(c => predicate(c, CadStatus.Banned));
-        int bannedCadsCounts = await mediator.Send(query).ConfigureAwait(false);
+        int bannedCadsCounts = await mediator.Send(query, ct).ConfigureAwait(false);
 
         CountCadsResponse response = new(uncheckedCadsCounts, validatedCadsCounts, reportedCadsCounts, bannedCadsCounts);
         await SendOkAsync(response).ConfigureAwait(false);

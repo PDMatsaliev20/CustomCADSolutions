@@ -32,15 +32,15 @@ public class PostOrderEndpoint(IMediator mediator, IWebHostEnvironment env) : En
         model.ImagePath = string.Empty;
 
         CreateOrderCommand createCommand = new(model);
-        int id = await mediator.Send(createCommand).ConfigureAwait(false);
+        int id = await mediator.Send(createCommand, ct).ConfigureAwait(false);
 
         string imagePath = await env.UploadOrderAsync(req.Image, req.Name + id + req.Image.GetFileExtension()).ConfigureAwait(false);
         
         SetOrderImagePathCommand setImagePathCommand = new(id, imagePath);
-        await mediator.Send(setImagePathCommand).ConfigureAwait(false);
+        await mediator.Send(setImagePathCommand, ct).ConfigureAwait(false);
 
         GetOrderByIdQuery query = new(id);
-        OrderModel createdOrder = await mediator.Send(query).ConfigureAwait(false);
+        OrderModel createdOrder = await mediator.Send(query, ct).ConfigureAwait(false);
 
         PostOrderResponse response = createdOrder.Adapt<PostOrderResponse>();
         await SendCreatedAtAsync<GetOrderEndpoint>(new { id }, response);
