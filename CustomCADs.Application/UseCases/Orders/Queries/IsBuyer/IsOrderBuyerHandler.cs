@@ -1,6 +1,6 @@
 ﻿using CustomCADs.Application.Common.Exceptions;
-using CustomCADs.Domain.Contracts.Queries;
-using CustomCADs.Domain.Entities;
+using CustomCADs.Domain.Orders;
+using CustomCADs.Domain.Orders.Queries;
 using MediatR;
 
 namespace CustomCADs.Application.UseCases.Orders.Queries.IsBuyer;

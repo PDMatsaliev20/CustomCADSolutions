@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Domain.ValueObjects;
+﻿namespace CustomCADs.Domain.Cads.ValueObjects;
 
 public class Paths
 {
@@ -9,10 +9,10 @@ public class Paths
 
     private static string GetExtension(string path) => '.' + path.Split('.')[^1].ToLower();
 
-    public Paths() 
+    public Paths()
     {
         ImagePath = "";
-        FilePath = ""; 
+        FilePath = "";
     }
 
     public Paths(string file, string image)

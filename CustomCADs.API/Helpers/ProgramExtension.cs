@@ -17,7 +17,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using static CustomCADs.Domain.DataConstants.RoleConstants;
+using static CustomCADs.Domain.Roles.RoleConstants;
 
 #pragma warning disable IDE0130
 namespace Microsoft.Extensions.DependencyInjection;

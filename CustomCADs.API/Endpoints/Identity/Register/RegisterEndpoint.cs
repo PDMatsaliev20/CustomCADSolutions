@@ -8,7 +8,7 @@ using FluentValidation.Results;
 using Mapster;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using static CustomCADs.Domain.DataConstants.RoleConstants;
+using static CustomCADs.Domain.Roles.RoleConstants;
 
 namespace CustomCADs.API.Endpoints.Identity.Register;
 

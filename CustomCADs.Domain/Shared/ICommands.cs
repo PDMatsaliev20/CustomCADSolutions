@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Domain.Contracts;
+﻿namespace CustomCADs.Domain.Shared;
 
 public interface ICommands<T> where T : class
 {

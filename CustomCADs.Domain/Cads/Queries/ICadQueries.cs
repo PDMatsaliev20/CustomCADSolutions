@@ -1,6 +1,6 @@
-﻿using CustomCADs.Domain.Entities;
+﻿using CustomCADs.Domain.Cads;
 
-namespace CustomCADs.Domain.Contracts.Queries;
+namespace CustomCADs.Domain.Cads.Queries;
 
 public interface ICadQueries
 {

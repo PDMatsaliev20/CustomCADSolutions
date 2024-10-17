@@ -4,11 +4,11 @@ using CustomCADs.Application.Models.Cads;
 using CustomCADs.Application.UseCases.Cads.Commands.Create;
 using CustomCADs.Application.UseCases.Cads.Commands.SetPaths;
 using CustomCADs.Application.UseCases.Cads.Queries.GetById;
-using CustomCADs.Domain.Enums;
+using CustomCADs.Domain.Cads.Enums;
+using CustomCADs.Domain.Roles;
 using FastEndpoints;
 using Mapster;
 using MediatR;
-using static CustomCADs.Domain.DataConstants;
 
 namespace CustomCADs.API.Endpoints.Cads.PostCad;
 

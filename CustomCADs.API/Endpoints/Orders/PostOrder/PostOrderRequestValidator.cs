@@ -1,7 +1,7 @@
 ﻿using FastEndpoints;
 using FluentValidation;
-using static CustomCADs.Domain.DataConstants;
-using static CustomCADs.Domain.DataConstants.OrderConstants;
+using static CustomCADs.Domain.Orders.OrderConstants;
+using static CustomCADs.Domain.Shared.SharedConstants;
 
 namespace CustomCADs.API.Endpoints.Orders.PostOrder;
 

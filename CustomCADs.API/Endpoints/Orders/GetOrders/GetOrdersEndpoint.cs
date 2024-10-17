@@ -2,7 +2,7 @@
 using CustomCADs.API.Helpers;
 using CustomCADs.Application.Models.Orders;
 using CustomCADs.Application.UseCases.Orders.Queries.GetAll;
-using CustomCADs.Domain.Enums;
+using CustomCADs.Domain.Orders.Enums;
 using FastEndpoints;
 using Mapster;
 using MediatR;

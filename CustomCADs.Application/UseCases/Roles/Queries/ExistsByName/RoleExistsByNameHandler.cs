@@ -1,4 +1,4 @@
-﻿using CustomCADs.Domain.Contracts.Queries;
+﻿using CustomCADs.Domain.Roles.Queries;
 using MediatR;
 
 namespace CustomCADs.Application.UseCases.Roles.Queries.ExistsByName;

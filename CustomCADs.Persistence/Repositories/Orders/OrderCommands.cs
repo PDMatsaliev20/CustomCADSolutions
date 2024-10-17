@@ -1,5 +1,5 @@
-﻿using CustomCADs.Domain.Contracts;
-using CustomCADs.Domain.Entities;
+﻿using CustomCADs.Domain.Orders;
+using CustomCADs.Domain.Shared;
 
 namespace CustomCADs.Persistence.Repositories.Orders;
 

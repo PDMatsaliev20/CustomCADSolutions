@@ -1,7 +1,7 @@
 ﻿using CustomCADs.Application.Common.Helpers;
 using CustomCADs.Application.Models.Orders;
-using CustomCADs.Domain.Contracts.Queries;
-using CustomCADs.Domain.Entities;
+using CustomCADs.Domain.Orders;
+using CustomCADs.Domain.Orders.Queries;
 using Mapster;
 using MediatR;
 

@@ -1,4 +1,4 @@
-﻿using static CustomCADs.Domain.DataConstants.RoleConstants;
+﻿using static CustomCADs.Domain.Roles.RoleConstants;
 using FastEndpoints;
 
 namespace CustomCADs.API.Endpoints.Categories;

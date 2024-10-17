@@ -1,5 +1,5 @@
-﻿using CustomCADs.Domain.Contracts.Queries;
-using CustomCADs.Domain.Entities;
+﻿using CustomCADs.Domain.Cads;
+using CustomCADs.Domain.Cads.Queries;
 using Microsoft.EntityFrameworkCore;
 
 namespace CustomCADs.Persistence.Repositories.Cads;

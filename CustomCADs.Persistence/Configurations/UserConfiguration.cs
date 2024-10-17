@@ -1,7 +1,7 @@
-﻿using CustomCADs.Domain.Entities;
+﻿using CustomCADs.Domain.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using static CustomCADs.Domain.DataConstants.UserConstants;
+using static CustomCADs.Domain.Users.UserConstants;
 
 namespace CustomCADs.Persistence.Configurations;
 

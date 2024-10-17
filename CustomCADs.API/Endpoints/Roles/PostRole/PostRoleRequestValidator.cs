@@ -1,7 +1,7 @@
 ﻿using FastEndpoints;
 using FluentValidation;
-using static CustomCADs.Domain.DataConstants;
-using static CustomCADs.Domain.DataConstants.RoleConstants;
+using static CustomCADs.Domain.Shared.SharedConstants;
+using static CustomCADs.Domain.Roles.RoleConstants;
 
 namespace CustomCADs.API.Endpoints.Roles.PostRole;
 

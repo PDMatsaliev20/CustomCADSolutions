@@ -1,5 +1,5 @@
-﻿using FastEndpoints;
-using static CustomCADs.Domain.DataConstants;
+﻿using CustomCADs.Domain.Roles;
+using FastEndpoints;
 
 namespace CustomCADs.API.Endpoints.Cads;
 

@@ -1,8 +1,8 @@
-﻿using CustomCADs.Domain.Entities;
-using CustomCADs.Domain.Enums;
+﻿using CustomCADs.Domain.Orders;
+using CustomCADs.Domain.Orders.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using static CustomCADs.Domain.DataConstants.OrderConstants;
+using static CustomCADs.Domain.Orders.OrderConstants;
 
 namespace CustomCADs.Persistence.Configurations;
 

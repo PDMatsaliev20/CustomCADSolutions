@@ -1,7 +1,7 @@
 ﻿using CustomCADs.Application.Common.Exceptions;
-using CustomCADs.Domain.Contracts;
-using CustomCADs.Domain.Contracts.Queries;
-using CustomCADs.Domain.Entities;
+using CustomCADs.Domain.Categories.Queries;
+using CustomCADs.Domain.Orders;
+using CustomCADs.Domain.Shared;
 using Mapster;
 using MediatR;
 

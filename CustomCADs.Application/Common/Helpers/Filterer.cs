@@ -1,5 +1,8 @@
-﻿using CustomCADs.Domain.Entities;
-using CustomCADs.Domain.Enums;
+﻿using CustomCADs.Domain.Cads;
+using CustomCADs.Domain.Cads.Enums;
+using CustomCADs.Domain.Orders;
+using CustomCADs.Domain.Orders.Enums;
+using CustomCADs.Domain.Users;
 using System.Linq.Expressions;
 
 namespace CustomCADs.Application.Common.Helpers;

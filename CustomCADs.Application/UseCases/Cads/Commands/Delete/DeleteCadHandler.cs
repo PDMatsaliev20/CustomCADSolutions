@@ -1,9 +1,11 @@
 ﻿using CustomCADs.Application.Common.Exceptions;
 using CustomCADs.Application.Common.Helpers;
-using CustomCADs.Domain.Contracts;
-using CustomCADs.Domain.Contracts.Queries;
-using CustomCADs.Domain.Entities;
-using CustomCADs.Domain.Enums;
+using CustomCADs.Domain.Cads;
+using CustomCADs.Domain.Cads.Queries;
+using CustomCADs.Domain.Orders;
+using CustomCADs.Domain.Orders.Enums;
+using CustomCADs.Domain.Orders.Queries;
+using CustomCADs.Domain.Shared;
 using MediatR;
 
 namespace CustomCADs.Application.UseCases.Cads.Commands.Delete;

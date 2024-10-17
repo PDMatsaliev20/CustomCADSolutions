@@ -1,6 +1,14 @@
-﻿using CustomCADs.Domain.Contracts;
-using CustomCADs.Domain.Contracts.Queries;
-using CustomCADs.Domain.Entities;
+﻿using CustomCADs.Domain.Cads;
+using CustomCADs.Domain.Cads.Queries;
+using CustomCADs.Domain.Categories;
+using CustomCADs.Domain.Categories.Queries;
+using CustomCADs.Domain.Orders;
+using CustomCADs.Domain.Orders.Queries;
+using CustomCADs.Domain.Roles;
+using CustomCADs.Domain.Roles.Queries;
+using CustomCADs.Domain.Shared;
+using CustomCADs.Domain.Users;
+using CustomCADs.Domain.Users.Queries;
 using CustomCADs.Persistence;
 using CustomCADs.Persistence.Repositories;
 using CustomCADs.Persistence.Repositories.Cads;

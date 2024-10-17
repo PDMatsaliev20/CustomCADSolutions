@@ -1,10 +1,10 @@
 ﻿using CustomCADs.Application.Models.Cads;
 using CustomCADs.Application.Models.Categories;
 using CustomCADs.Application.Models.Users;
-using CustomCADs.Domain.Enums;
+using CustomCADs.Domain.Orders.Enums;
 using System.ComponentModel.DataAnnotations;
-using static CustomCADs.Domain.DataConstants;
-using static CustomCADs.Domain.DataConstants.OrderConstants;
+using static CustomCADs.Domain.Orders.OrderConstants;
+using static CustomCADs.Domain.Shared.SharedConstants;
 
 namespace CustomCADs.Application.Models.Orders;
 

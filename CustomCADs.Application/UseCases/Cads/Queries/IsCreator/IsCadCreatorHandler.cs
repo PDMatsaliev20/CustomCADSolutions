@@ -1,6 +1,6 @@
 ﻿using CustomCADs.Application.Common.Exceptions;
-using CustomCADs.Domain.Contracts.Queries;
-using CustomCADs.Domain.Entities;
+using CustomCADs.Domain.Cads;
+using CustomCADs.Domain.Cads.Queries;
 using MediatR;
 
 namespace CustomCADs.Application.UseCases.Cads.Queries.IsCreator;

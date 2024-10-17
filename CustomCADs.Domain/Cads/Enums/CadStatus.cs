@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Domain.Enums;
+﻿namespace CustomCADs.Domain.Cads.Enums;
 
 public enum CadStatus
 {

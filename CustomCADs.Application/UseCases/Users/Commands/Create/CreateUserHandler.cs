@@ -1,5 +1,5 @@
-﻿using CustomCADs.Domain.Contracts;
-using CustomCADs.Domain.Entities;
+﻿using CustomCADs.Domain.Shared;
+using CustomCADs.Domain.Users;
 using Mapster;
 using MediatR;
 

@@ -1,6 +1,6 @@
-﻿using CustomCADs.Domain.Entities;
+﻿using CustomCADs.Domain.Roles;
 
-namespace CustomCADs.Domain.Contracts.Queries;
+namespace CustomCADs.Domain.Roles.Queries;
 
 public interface IRoleQueries
 {

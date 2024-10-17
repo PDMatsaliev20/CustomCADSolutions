@@ -1,6 +1,6 @@
-﻿using CustomCADs.Domain.Entities;
+﻿using CustomCADs.Domain.Categories;
 
-namespace CustomCADs.Domain.Contracts.Queries;
+namespace CustomCADs.Domain.Categories.Queries;
 
 public interface ICategoryQueries
 {

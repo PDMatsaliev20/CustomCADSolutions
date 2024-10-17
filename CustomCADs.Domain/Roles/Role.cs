@@ -1,4 +1,6 @@
-﻿namespace CustomCADs.Domain.Entities;
+﻿using CustomCADs.Domain.Users;
+
+namespace CustomCADs.Domain.Roles;
 
 public class Role
 {

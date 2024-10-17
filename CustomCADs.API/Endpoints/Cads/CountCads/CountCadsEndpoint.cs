@@ -1,7 +1,7 @@
 ﻿using CustomCADs.API.Helpers;
 using CustomCADs.Application.Models.Cads;
 using CustomCADs.Application.UseCases.Cads.Queries.Count;
-using CustomCADs.Domain.Enums;
+using CustomCADs.Domain.Cads.Enums;
 using FastEndpoints;
 using MediatR;
 

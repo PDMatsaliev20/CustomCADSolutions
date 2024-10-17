@@ -1,4 +1,8 @@
-﻿using CustomCADs.Domain.Entities;
+﻿using CustomCADs.Domain.Cads;
+using CustomCADs.Domain.Categories;
+using CustomCADs.Domain.Orders;
+using CustomCADs.Domain.Roles;
+using CustomCADs.Domain.Users;
 using Microsoft.EntityFrameworkCore;
 
 namespace CustomCADs.Persistence;

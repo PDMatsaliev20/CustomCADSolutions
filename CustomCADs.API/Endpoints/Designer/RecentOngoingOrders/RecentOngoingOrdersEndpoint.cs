@@ -1,6 +1,6 @@
 ﻿using CustomCADs.Application.Models.Orders;
 using CustomCADs.Application.UseCases.Orders.Queries.GetAll;
-using CustomCADs.Domain.Enums;
+using CustomCADs.Domain.Shared.Enums;
 using FastEndpoints;
 using Mapster;
 using MediatR;

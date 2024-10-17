@@ -1,11 +1,12 @@
 ﻿using CustomCADs.Application.Common.Helpers;
 using CustomCADs.Application.Common.Exceptions;
 using CustomCADs.Application.Models.Cads;
-using CustomCADs.Domain.Contracts.Queries;
-using CustomCADs.Domain.Entities;
-using CustomCADs.Domain.Enums;
 using Mapster;
 using MediatR;
+using CustomCADs.Domain.Cads;
+using CustomCADs.Domain.Cads.Queries;
+using CustomCADs.Domain.Cads.Enums;
+using CustomCADs.Domain.Shared.Enums;
 
 namespace CustomCADs.Application.UseCases.Cads.Queries.GetCadAndAdjacentById;
 

@@ -1,7 +1,7 @@
 ﻿using CustomCADs.Application.Common.Exceptions;
-using CustomCADs.Domain.Contracts;
-using CustomCADs.Domain.Contracts.Queries;
-using CustomCADs.Domain.Entities;
+using CustomCADs.Domain.Orders;
+using CustomCADs.Domain.Orders.Queries;
+using CustomCADs.Domain.Shared;
 using MediatR;
 
 namespace CustomCADs.Application.UseCases.Orders.Commands.Edit;

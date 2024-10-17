@@ -1,6 +1,9 @@
-﻿using CustomCADs.Domain.Enums;
+﻿using CustomCADs.Domain.Cads;
+using CustomCADs.Domain.Categories;
+using CustomCADs.Domain.Orders.Enums;
+using CustomCADs.Domain.Users;
 
-namespace CustomCADs.Domain.Entities;
+namespace CustomCADs.Domain.Orders;
 
 public class Order
 {

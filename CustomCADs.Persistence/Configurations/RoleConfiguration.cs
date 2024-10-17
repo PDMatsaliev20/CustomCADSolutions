@@ -1,7 +1,7 @@
-﻿using CustomCADs.Domain.Entities;
+﻿using CustomCADs.Domain.Roles;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using static CustomCADs.Domain.DataConstants.RoleConstants;
+using static CustomCADs.Domain.Roles.RoleConstants;
 
 namespace CustomCADs.Persistence.Configurations;
 

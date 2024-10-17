@@ -9,7 +9,7 @@ using CustomCADs.API.Endpoints.Orders.PostOrder;
 using CustomCADs.API.Endpoints.Orders.RecentOrders;
 using CustomCADs.Application.Models.Orders;
 using Mapster;
-using static CustomCADs.Domain.DataConstants;
+using static CustomCADs.Domain.Shared.SharedConstants;
 
 namespace CustomCADs.API.Mappers;
 

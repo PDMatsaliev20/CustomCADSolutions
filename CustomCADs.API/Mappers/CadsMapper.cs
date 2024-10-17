@@ -9,7 +9,7 @@ using CustomCADs.API.Endpoints.Home.Gallery;
 using CustomCADs.API.Endpoints.Home.GalleryDetails;
 using CustomCADs.Application.Models.Cads;
 using Mapster;
-using static CustomCADs.Domain.DataConstants;
+using static CustomCADs.Domain.Shared.SharedConstants;
 
 namespace CustomCADs.API.Mappers;
 

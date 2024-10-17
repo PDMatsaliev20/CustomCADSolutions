@@ -6,7 +6,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using static CustomCADs.Domain.DataConstants.UserConstants;
+using static CustomCADs.Domain.Users.UserConstants;
 
 namespace CustomCADs.API.Helpers;
 

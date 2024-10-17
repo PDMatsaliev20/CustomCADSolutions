@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Domain.Entities;
+﻿namespace CustomCADs.Domain.Categories;
 
 public class Category
 {

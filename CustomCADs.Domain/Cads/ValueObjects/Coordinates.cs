@@ -1,6 +1,6 @@
-﻿using static CustomCADs.Domain.DataConstants.CadConstants;
+﻿using static CustomCADs.Domain.Cads.CadConstants;
 
-namespace CustomCADs.Domain.ValueObjects;
+namespace CustomCADs.Domain.Cads.ValueObjects;
 
 public class Coordinates
 {
@@ -24,17 +24,17 @@ public class Coordinates
     }
 
     public bool Equals(Coordinates other)
-        => X == other.X && Y == other.Y && Z == other.Z;        
+        => X == other.X && Y == other.Y && Z == other.Z;
 
     public override bool Equals(object? obj)
     {
         if (obj == null) return false;
-        
+
         if (obj is Coordinates coords)
         {
             return Equals(coords);
         }
-        
+
         return base.Equals(obj);
     }
 

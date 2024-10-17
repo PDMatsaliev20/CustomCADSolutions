@@ -1,7 +1,9 @@
-﻿using CustomCADs.Domain.Enums;
-using CustomCADs.Domain.ValueObjects;
+﻿using CustomCADs.Domain.Cads.Enums;
+using CustomCADs.Domain.Cads.ValueObjects;
+using CustomCADs.Domain.Categories;
+using CustomCADs.Domain.Users;
 
-namespace CustomCADs.Domain.Entities;
+namespace CustomCADs.Domain.Cads;
 
 public class Cad
 {

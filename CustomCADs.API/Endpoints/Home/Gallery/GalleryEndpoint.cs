@@ -1,7 +1,7 @@
 ﻿using CustomCADs.API.Dtos;
 using CustomCADs.Application.Models.Cads;
 using CustomCADs.Application.UseCases.Cads.Queries.GetAll;
-using CustomCADs.Domain.Enums;
+using CustomCADs.Domain.Cads.Enums;
 using FastEndpoints;
 using Mapster;
 using MediatR;

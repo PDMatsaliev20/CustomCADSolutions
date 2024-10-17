@@ -1,5 +1,5 @@
-﻿using CustomCADs.Domain.Contracts.Queries;
-using CustomCADs.Domain.Entities;
+﻿using CustomCADs.Domain.Roles;
+using CustomCADs.Domain.Roles.Queries;
 using Microsoft.EntityFrameworkCore;
 
 namespace CustomCADs.Persistence.Repositories.Roles;

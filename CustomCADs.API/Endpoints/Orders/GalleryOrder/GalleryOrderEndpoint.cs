@@ -5,7 +5,7 @@ using CustomCADs.Application.Models.Orders;
 using CustomCADs.Application.UseCases.Cads.Queries.GetById;
 using CustomCADs.Application.UseCases.Orders.Commands.Create;
 using CustomCADs.Application.UseCases.Orders.Queries.GetById;
-using CustomCADs.Domain.Enums;
+using CustomCADs.Domain.Orders.Enums;
 using FastEndpoints;
 using Mapster;
 using MediatR;

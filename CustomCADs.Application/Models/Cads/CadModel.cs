@@ -1,9 +1,10 @@
 ﻿using CustomCADs.Application.Models.Categories;
 using CustomCADs.Application.Models.Users;
-using CustomCADs.Domain.Enums;
-using CustomCADs.Domain.ValueObjects;
+using CustomCADs.Domain.Cads.Enums;
+using CustomCADs.Domain.Cads.ValueObjects;
 using System.ComponentModel.DataAnnotations;
-using static CustomCADs.Domain.DataConstants;
+using static CustomCADs.Domain.Cads.CadConstants;
+using static CustomCADs.Domain.Shared.SharedConstants;
 
 namespace CustomCADs.Application.Models.Cads;
 
@@ -13,18 +14,18 @@ public class CadModel
     public int Id { get; set; }
 
     [Required(ErrorMessage = RequiredErrorMessage)]
-    [StringLength(CadConstants.NameMaxLength, MinimumLength = CadConstants.NameMinLength, ErrorMessage = LengthErrorMessage)]
+    [StringLength(NameMaxLength, MinimumLength = NameMinLength, ErrorMessage = LengthErrorMessage)]
     public string Name { get; set; } = null!;
 
     [Required(ErrorMessage = RequiredErrorMessage)]
-    [StringLength(CadConstants.DescriptionMaxLength, MinimumLength = CadConstants.DescriptionMinLength, ErrorMessage = LengthErrorMessage)]
+    [StringLength(DescriptionMaxLength, MinimumLength = DescriptionMinLength, ErrorMessage = LengthErrorMessage)]
     public string Description { get; set; } = null!;
 
     [Required(ErrorMessage = RequiredErrorMessage)]
     public CadStatus Status { get; set; }
 
     [Required(ErrorMessage = RequiredErrorMessage)]
-    [Range(typeof(decimal), CadConstants.PriceMinString, CadConstants.PriceMaxString)]
+    [Range(typeof(decimal), PriceMinString, PriceMaxString)]
     public decimal Price { get; set; }
 
     [Required(ErrorMessage = RequiredErrorMessage)]
@@ -40,8 +41,6 @@ public class CadModel
     public Paths Paths { get; set; } = new();
 
     [Required(ErrorMessage = RequiredErrorMessage)]
-    [AllowedValues(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
-        ErrorMessage = "Existing Categories have IDs: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]")]
     public int CategoryId { get; set; }
     public CategoryModel Category { get; set; } = null!;
 

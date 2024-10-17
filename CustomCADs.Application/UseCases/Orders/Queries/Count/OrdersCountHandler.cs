@@ -1,5 +1,5 @@
 ﻿using CustomCADs.Application.Models.Orders;
-using CustomCADs.Domain.Contracts.Queries;
+using CustomCADs.Domain.Orders.Queries;
 using Mapster;
 using MediatR;
 

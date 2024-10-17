@@ -1,7 +1,7 @@
 ﻿using FastEndpoints;
 using FluentValidation;
-using static CustomCADs.Domain.DataConstants;
-using static CustomCADs.Domain.DataConstants.UserConstants;
+using static CustomCADs.Domain.Shared.SharedConstants;
+using static CustomCADs.Domain.Users.UserConstants;
 
 namespace CustomCADs.API.Endpoints.Identity.Register;
 

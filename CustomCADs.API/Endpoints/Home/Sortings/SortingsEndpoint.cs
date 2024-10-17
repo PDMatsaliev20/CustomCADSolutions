@@ -1,4 +1,4 @@
-﻿using CustomCADs.Domain.Enums;
+﻿using CustomCADs.Domain.Shared.Enums;
 using FastEndpoints;
 
 namespace CustomCADs.API.Endpoints.Home.Sortings;
