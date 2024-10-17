@@ -18,7 +18,6 @@ public class CadsMapper : IRegister
     private static readonly Func<CadModel, string> mapCreationDate = m => m.CreationDate.ToString(DateFormatString);
     private static readonly Func<CadModel, string> mapCreatorName = m => m.Creator.UserName;
     private static readonly Func<CadModel, string> mapStatus = m => m.Status.ToString();
-    private static readonly Func<CadModel, int> mapOrdersCount = m => m.Orders.Count;
     private static readonly Func<CadModel, string> mapCadPath = m => m.Paths.FilePath;
     private static readonly Func<CadModel, string> mapImagePath = m => m.Paths.ImagePath;
     private static readonly Func<CadModel, CoordinatesDto> mapCamCoordinates = m => new(m.CamCoordinates.X, m.CamCoordinates.Y, m.CamCoordinates.Z);

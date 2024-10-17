@@ -13,8 +13,7 @@ public class GetCadByIdHandler(ICadQueries queries) : IRequestHandler<GetCadById
     {
         Cad cad = await queries.GetByIdAsync(request.Id, true).ConfigureAwait(false)
             ?? throw new CadNotFoundException(request.Id);
-        ;
-        ;
+        
         var result = cad.Adapt<CadModel>();
         return result;
     }

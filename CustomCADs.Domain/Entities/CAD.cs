@@ -3,20 +3,19 @@ using CustomCADs.Domain.ValueObjects;
 
 namespace CustomCADs.Domain.Entities;
 
-public class Cad 
+public class Cad
 {
     public int Id { get; set; }
-    public required string Name { get; set; } 
-    public required string Description { get; set; } 
+    public required string Name { get; set; }
+    public required string Description { get; set; }
     public CadStatus Status { get; set; }
     public decimal Price { get; set; }
     public DateTime CreationDate { get; set; }
-    public required Coordinates CamCoordinates { get; set; } 
-    public required Coordinates PanCoordinates { get; set; } 
-    public Paths Paths { get; set; } = null!;
-    public int CategoryId { get; set; } 
-    public required Category Category { get; set; } 
-    public required string CreatorId { get; set; } 
-    public required User Creator { get; set; } 
-    public ICollection<Order> Orders { get; set; } = [];
+    public Coordinates CamCoordinates { get; set; } = new();
+    public Coordinates PanCoordinates { get; set; } = new();
+    public Paths Paths { get; set; } = new();
+    public int CategoryId { get; set; }
+    public Category Category { get; set; } = null!;
+    public required string CreatorId { get; set; }
+    public User Creator { get; set; } = null!;
 }

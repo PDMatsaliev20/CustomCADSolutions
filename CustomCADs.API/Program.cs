@@ -20,6 +20,7 @@ builder.Services.AddRoles(roles);
 
 // Add Mapper classes/profiles
 builder.Services.AddMappings();
+builder.Services.AddApplicationMappings();
 
 // Add Endpoints + configs
 builder.Services.AddEndpoints();

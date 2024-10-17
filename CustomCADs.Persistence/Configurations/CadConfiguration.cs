@@ -38,10 +38,6 @@ static class CadConfigUtils
             .HasForeignKey(c => c.CreatorId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder
-            .HasMany(c => c.Orders).WithOne(o => o.Cad)
-            .OnDelete(DeleteBehavior.NoAction);
-
         return builder;
     }
     

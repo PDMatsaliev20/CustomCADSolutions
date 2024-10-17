@@ -40,28 +40,12 @@ public class OrderModel
 
     public string? DesignerId { get; set; }
     public UserModel? Designer { get; set; }
-    
+
     [Required(ErrorMessage = RequiredErrorMessage)]
-    [AllowedValues(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
-        ErrorMessage = "Existing Categories have IDs: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]")]
     public int CategoryId { get; set; }
     public CategoryModel Category { get; set; } = null!;
 
     [Required(ErrorMessage = RequiredErrorMessage)]
     public string BuyerId { get; set; } = null!;
     public UserModel Buyer { get; set; } = null!;
-    
-    public bool Validate(out IList<string> errors)
-    {
-        List<ValidationResult> validationResults = [];
-        errors = [];
-
-        if (!Validator.TryValidateObject(this, new(this), validationResults, true))
-        {
-            errors = validationResults.Select(result => result.ErrorMessage ?? string.Empty).ToList();
-            return false;
-        }
-
-        return true;
-    }
 }

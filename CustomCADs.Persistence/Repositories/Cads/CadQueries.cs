@@ -18,7 +18,6 @@ public class CadQueries(ApplicationContext context) : ICadQueries
             .Query(asNoTracking)
             .Include(o => o.Category)
             .Include(o => o.Creator)
-            .Include(o => o.Orders)
             .AsSplitQuery()
             .FirstOrDefaultAsync(c => c.Id == id)
             .ConfigureAwait(false);

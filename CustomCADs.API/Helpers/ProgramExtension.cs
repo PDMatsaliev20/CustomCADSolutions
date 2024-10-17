@@ -65,7 +65,6 @@ public static class ProgramExtension
 
     public static void AddMappings(this IServiceCollection services)
     {
-        services.AddApplicationMappings();
         TypeAdapterConfig.GlobalSettings.Scan(typeof(ApiReference).Assembly);
     }
 
