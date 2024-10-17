@@ -10,5 +10,5 @@ public interface IUserQueries
     Task<User?> GetByRefreshTokenAsync(string rt, bool asNoTracking = false);
     Task<bool> ExistsByIdAsync(string id);
     Task<bool> ExistsByNameAsync(string name);
-    Task<int> CountAsync(Func<User, bool> predicate, bool asNoTracking = false);
+    int Count(Func<User, bool> predicate);
 }

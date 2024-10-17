@@ -21,9 +21,8 @@ public class CategoryQueries(ApplicationContext context) : ICategoryQueries
             .AnyAsync(c => c.Id == id)
             .ConfigureAwait(false);
 
-    public async Task<int> CountAsync(Func<Category, bool> predicate, bool asNoTracking = false)
-        => await Task.FromResult(context.Categories
-                .Query(asNoTracking)
-                .Count(predicate)
-            ).ConfigureAwait(false);
+    public int Count(Func<Category, bool> predicate)
+        => context.Categories
+            .AsNoTracking()
+            .Count(predicate);
 }

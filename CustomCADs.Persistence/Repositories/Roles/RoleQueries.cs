@@ -32,9 +32,8 @@ public class RoleQueries(ApplicationContext context) : IRoleQueries
             .AnyAsync(r => r.Name == name)
             .ConfigureAwait(false);
 
-    public async Task<int> CountAsync(Func<Role, bool> predicate, bool asNoTracking = false)
-        => await Task.FromResult(context.Roles
-                .Query(asNoTracking)
-                .Count(predicate)
-            ).ConfigureAwait(false);
+    public int Count(Func<Role, bool> predicate)
+        => context.Roles
+            .AsNoTracking()
+            .Count(predicate);
 }

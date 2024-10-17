@@ -13,7 +13,7 @@ public class GetCadAndAdjacentByIdHandler(ICadQueries queries) : IRequestHandler
 {
     public Task<(int? PrevId, CadModel Current, int? NextId)> Handle(GetCadAndAdjacentByIdQuery request, CancellationToken cancellationToken)
     {
-        IQueryable<Cad> queryable = queries.GetAll(true)
+        IQueryable<Cad> queryable = queries.GetAll(asNoTracking: true)
             .Sort(nameof(Sorting.Oldest))
             .Filter(status: nameof(CadStatus.Unchecked));
 

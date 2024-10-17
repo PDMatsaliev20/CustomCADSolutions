@@ -1,5 +1,4 @@
 ﻿using CustomCADs.Application.Common.Dtos;
-using CustomCADs.Application.Models.Payment;
 
 namespace CustomCADs.Application.Common.Contracts;
 

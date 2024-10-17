@@ -7,13 +7,10 @@ namespace CustomCADs.Application.UseCases.Orders.Queries.Count;
 
 public class OrdersCountHandler(IOrderQueries queries) : IRequestHandler<OrdersCountQuery, int>
 {
-    public async Task<int> Handle(OrdersCountQuery request, CancellationToken cancellationToken)
+    public Task<int> Handle(OrdersCountQuery request, CancellationToken cancellationToken)
     {
-        var response = await queries.CountAsync(
-            order => request.Predicate(order.Adapt<OrderModel>()),
-            asNoTracking: true
-        ).ConfigureAwait(false);
+        var response = queries.Count(order => request.Predicate(order.Adapt<OrderModel>()));
 
-        return response;
+        return Task.FromResult(response);
     }
 }

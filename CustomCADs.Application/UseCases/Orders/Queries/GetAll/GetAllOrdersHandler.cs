@@ -11,7 +11,7 @@ public class GetAllOrdersHandler(IOrderQueries queries) : IRequestHandler<GetAll
 {
     public Task<OrderResult> Handle(GetAllOrdersQuery request, CancellationToken cancellationToken)
     {
-        IQueryable<Order> queryable = queries.GetAll(true)
+        IQueryable<Order> queryable = queries.GetAll(asNoTracking: true)
             .Filter(request.Buyer, request.Status)
             .Search(request.Category, request.Name)
             .Sort(request.Sorting);

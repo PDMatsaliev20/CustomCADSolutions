@@ -11,7 +11,7 @@ public class GetCadByIdHandler(ICadQueries queries) : IRequestHandler<GetCadById
 {
     public async Task<CadModel> Handle(GetCadByIdQuery request, CancellationToken cancellationToken)
     {
-        Cad cad = await queries.GetByIdAsync(request.Id, true).ConfigureAwait(false)
+        Cad cad = await queries.GetByIdAsync(request.Id, asNoTracking: true).ConfigureAwait(false)
             ?? throw new CadNotFoundException(request.Id);
         
         var result = cad.Adapt<CadModel>();

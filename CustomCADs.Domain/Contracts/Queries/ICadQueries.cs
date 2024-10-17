@@ -7,5 +7,5 @@ public interface ICadQueries
     IQueryable<Cad> GetAll(bool asNoTracking = false);
     Task<Cad?> GetByIdAsync(int id, bool asNoTracking = false);
     Task<bool> ExistsByIdAsync(int id);
-    Task<int> CountAsync(Func<Cad, bool> predicate, bool asNoTracking = false);
+    int Count(Func<Cad, bool> predicate);
 }

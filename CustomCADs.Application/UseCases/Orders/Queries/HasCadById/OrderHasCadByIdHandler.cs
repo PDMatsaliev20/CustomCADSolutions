@@ -9,7 +9,7 @@ public class OrderHasCadByIdHandler(IOrderQueries queries) : IRequestHandler<Ord
 {
     public async Task<bool> Handle(OrderHasCadByIdQuery request, CancellationToken cancellationToken)
     {
-        Order order = await queries.GetByIdAsync(request.Id).ConfigureAwait(false)
+        Order order = await queries.GetByIdAsync(request.Id, asNoTracking: true).ConfigureAwait(false)
             ?? throw new OrderNotFoundException(request.Id);
 
         var response = order.CadId != null && order.Cad != null;

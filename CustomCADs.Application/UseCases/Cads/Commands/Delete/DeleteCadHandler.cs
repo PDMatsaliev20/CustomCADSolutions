@@ -16,7 +16,19 @@ public class DeleteCadHandler(
 {
     public async Task Handle(DeleteCadCommand request, CancellationToken cancellationToken)
     {
-        IEnumerable<Order> ordersWithCad = [.. orderQueries.GetAll(true).Filter(cadId: request.Id)];
+        Cad cad = await queries.GetByIdAsync(request.Id).ConfigureAwait(false)
+            ?? throw new OrderNotFoundException(request.Id);
+
+        ResetOrders(request.Id);
+        commands.Delete(cad);
+
+        await unitOfWork.SaveChangesAsync().ConfigureAwait(false);
+    }
+
+    private void ResetOrders(int id)
+    {
+        IEnumerable<Order> ordersWithCad = [ .. orderQueries.GetAll().Filter(cadId: id)];
+
         foreach (Order order in ordersWithCad)
         {
             order.Status = OrderStatus.Pending;
@@ -25,11 +37,5 @@ public class DeleteCadHandler(
             order.CadId = null;
             order.Cad = null;
         }
-
-        Cad cad = await queries.GetByIdAsync(request.Id).ConfigureAwait(false)
-            ?? throw new OrderNotFoundException(request.Id);
-
-        commands.Delete(cad);
-        await unitOfWork.SaveChangesAsync().ConfigureAwait(false);
     }
 }

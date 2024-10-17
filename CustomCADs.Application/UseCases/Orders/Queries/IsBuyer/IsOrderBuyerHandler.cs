@@ -9,7 +9,7 @@ public class IsOrderBuyerHandler(IOrderQueries queries) : IRequestHandler<IsOrde
 {
     public async Task<bool> Handle(IsOrderBuyerQuery request, CancellationToken cancellationToken)
     {
-        Order order = await queries.GetByIdAsync(request.Id).ConfigureAwait(false)
+        Order order = await queries.GetByIdAsync(request.Id, asNoTracking: true).ConfigureAwait(false)
             ?? throw new OrderNotFoundException(request.Id);
 
         var response = order.Buyer.UserName == request.Username;

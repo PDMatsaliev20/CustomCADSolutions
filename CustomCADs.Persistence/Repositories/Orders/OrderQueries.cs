@@ -30,10 +30,9 @@ public class OrderQueries(ApplicationContext context) : IOrderQueries
             .AnyAsync(o => o.Id == id)
             .ConfigureAwait(false);
 
-    public async Task<int> CountAsync(Func<Order, bool> predicate, bool asNoTracking = false)
-        => await Task.FromResult(context.Orders
-                .Query(asNoTracking)
-                .Include(o => o.Buyer)
-                .Count(predicate)
-            ).ConfigureAwait(false);
+    public int Count(Func<Order, bool> predicate)
+        => context.Orders
+            .AsNoTracking()
+            .Include(o => o.Buyer)
+            .Count(predicate);
 }

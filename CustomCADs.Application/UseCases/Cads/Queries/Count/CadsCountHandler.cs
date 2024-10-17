@@ -7,13 +7,10 @@ namespace CustomCADs.Application.UseCases.Cads.Queries.Count;
 
 public class CadsCountHandler(ICadQueries queries) : IRequestHandler<CadsCountQuery, int>
 {
-    public async Task<int> Handle(CadsCountQuery request, CancellationToken cancellationToken)
+    public Task<int> Handle(CadsCountQuery request, CancellationToken cancellationToken)
     {
-        int count = await queries.CountAsync(
-            cad => request.Predicate(cad.Adapt<CadModel>()),
-            asNoTracking: true
-        ).ConfigureAwait(false);
+        int count = queries.Count(cad => request.Predicate(cad.Adapt<CadModel>()));
 
-        return count;
+        return Task.FromResult(count);
     }
 }

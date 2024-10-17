@@ -9,5 +9,5 @@ public interface IRoleQueries
     Task<Role?> GetByNameAsync(string name, bool asNoTracking = false);
     Task<bool> ExistsByIdAsync(string id);
     Task<bool> ExistsByNameAsync(string name);
-    Task<int> CountAsync(Func<Role, bool> predicate, bool asNoTracking = false);
+    int Count(Func<Role, bool> predicate);
 }

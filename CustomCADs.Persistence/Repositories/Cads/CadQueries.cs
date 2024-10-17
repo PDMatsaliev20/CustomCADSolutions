@@ -27,10 +27,9 @@ public class CadQueries(ApplicationContext context) : ICadQueries
             .AnyAsync(o => o.Id == id)
             .ConfigureAwait(false);
 
-    public async Task<int> CountAsync(Func<Cad, bool> predicate, bool asNoTracking = false)
-        => await Task.FromResult(context.Cads
-                .Query(asNoTracking)
-                .Include(c => c.Creator)
-                .Count(predicate))
-            .ConfigureAwait(false);
+    public int Count(Func<Cad, bool> predicate)
+        => context.Cads
+            .AsNoTracking()
+            .Include(c => c.Creator)
+            .Count(predicate);
 }

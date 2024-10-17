@@ -11,7 +11,7 @@ public class GetAllRolesHandler(IRoleQueries queries) : IRequestHandler<GetAllRo
 {
     public Task<IEnumerable<RoleModel>> Handle(GetAllRolesQuery request, CancellationToken cancellationToken)
     {
-        IQueryable<Role> queryable = queries.GetAll(true)
+        IQueryable<Role> queryable = queries.GetAll(asNoTracking: true)
             .Search(request.Name, request.Description)
             .Sort(request.Sorting);
 

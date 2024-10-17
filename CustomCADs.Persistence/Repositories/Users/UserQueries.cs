@@ -40,9 +40,8 @@ public class UserQueries(ApplicationContext context) : IUserQueries
             .AnyAsync(u => u.UserName == name)
             .ConfigureAwait(false);
 
-    public async Task<int> CountAsync(Func<User, bool> predicate, bool asNoTracking = false)
-        => await Task.FromResult(context.Users
-                .Query(asNoTracking)
-                .Count(predicate)
-            ).ConfigureAwait(false);
+    public int Count(Func<User, bool> predicate)
+        => context.Users
+            .AsNoTracking()
+            .Count(predicate);
 }

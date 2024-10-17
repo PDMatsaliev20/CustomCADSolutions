@@ -11,7 +11,7 @@ public class GetOrderByIdHandler(IOrderQueries queries) : IRequestHandler<GetOrd
 {
     public async Task<OrderModel> Handle(GetOrderByIdQuery request, CancellationToken cancellationToken)
     {
-        Order order = await queries.GetByIdAsync(request.Id).ConfigureAwait(false)
+        Order order = await queries.GetByIdAsync(request.Id, asNoTracking: true).ConfigureAwait(false)
             ?? throw new OrderNotFoundException(request.Id);
 
         var response = order.Adapt<OrderModel>();

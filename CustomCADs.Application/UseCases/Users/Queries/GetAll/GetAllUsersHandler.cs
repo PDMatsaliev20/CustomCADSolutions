@@ -11,7 +11,7 @@ public class GetAllUsersHandler(IUserQueries queries) : IRequestHandler<GetAllUs
 {
     public Task<UserResult> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
     {
-        IQueryable<User> queryable = queries.GetAll(true)
+        IQueryable<User> queryable = queries.GetAll(asNoTracking: true)
             .Filter(request.HasRT)
             .Search(request.Username, request.Email, request.FirstName, request.LastName, request.RtEndDateBefore, request.RtEndDateAfter)
             .Sort(request.Sorting);

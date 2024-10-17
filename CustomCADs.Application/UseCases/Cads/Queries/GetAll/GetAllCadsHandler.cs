@@ -11,7 +11,7 @@ public class GetAllCadsHandler(ICadQueries queries) : IRequestHandler<GetAllCads
 {
     public Task<CadResult> Handle(GetAllCadsQuery request, CancellationToken cancellationToken)
     {
-        IQueryable<Cad> queryable = queries.GetAll(true)
+        IQueryable<Cad> queryable = queries.GetAll(asNoTracking: true)
             .Filter(request.Creator, request.Status)
             .Search(request.Category, request.Name)
             .Sort(request.Sorting);

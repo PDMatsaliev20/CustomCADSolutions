@@ -11,7 +11,7 @@ public class GetRoleByIdHandler(IRoleQueries queries) : IRequestHandler<GetRoleB
 {
     public async Task<RoleModel> Handle(GetRoleByIdQuery request, CancellationToken cancellationToken)
     {
-        Role role = await queries.GetByIdAsync(request.Id, false).ConfigureAwait(false)
+        Role role = await queries.GetByIdAsync(request.Id, asNoTracking: true).ConfigureAwait(false)
             ?? throw new RoleNotFoundException($"The Role with id: {request.Id} does not exist.");
 
         var response = role.Adapt<RoleModel>();

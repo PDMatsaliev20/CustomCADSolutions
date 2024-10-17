@@ -2,7 +2,6 @@
 using CustomCADs.Application.Common.Contracts;
 using CustomCADs.Application.Common.Dtos;
 using CustomCADs.Application.Models.Cads;
-using CustomCADs.Application.Models.Payment;
 using CustomCADs.Application.UseCases.Cads.Queries.GetById;
 using FastEndpoints;
 using MediatR;

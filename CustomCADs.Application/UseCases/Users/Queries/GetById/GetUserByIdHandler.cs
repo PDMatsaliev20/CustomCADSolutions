@@ -11,7 +11,7 @@ public class GetUserByIdHandler(IUserQueries queries) : IRequestHandler<GetUserB
 {
     public async Task<UserModel> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
     {
-        User user = await queries.GetByIdAsync(request.Id).ConfigureAwait(false)
+        User user = await queries.GetByIdAsync(request.Id, asNoTracking: true).ConfigureAwait(false)
             ?? throw new UserNotFoundException($"The User with id: {request.Id} doesn't exist.");
 
         var response = user.Adapt<UserModel>();
