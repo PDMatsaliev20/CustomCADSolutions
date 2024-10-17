@@ -27,8 +27,8 @@ public static class ProgramExtension
     public static void AddPersistence(this IServiceCollection services, IConfiguration config)
     {
         services.AddApplicationContext(config);
-        services.AddQueries();
-        services.AddCommands();
+        services.AddReads();
+        services.AddWrites();
     }
     public static void AddIdentity(this IServiceCollection services, IConfiguration config)
     {

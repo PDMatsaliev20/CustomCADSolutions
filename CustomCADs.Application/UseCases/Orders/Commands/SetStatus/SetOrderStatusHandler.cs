@@ -1,17 +1,17 @@
 ﻿using CustomCADs.Application.Common.Exceptions;
 using CustomCADs.Domain.Orders;
 using CustomCADs.Domain.Orders.Enums;
-using CustomCADs.Domain.Orders.Queries;
+using CustomCADs.Domain.Orders.Reads;
 using CustomCADs.Domain.Shared;
 using MediatR;
 
 namespace CustomCADs.Application.UseCases.Orders.Commands.SetStatus;
 
-public class SetOrderStatusHandler(IOrderQueries queries, IUnitOfWork unitOfWork) : IRequestHandler<SetOrderStatusCommand>
+public class SetOrderStatusHandler(IOrderReads reads, IUnitOfWork uow) : IRequestHandler<SetOrderStatusCommand>
 {
     public async Task Handle(SetOrderStatusCommand req, CancellationToken ct)
     {
-        Order order = await queries.GetByIdAsync(req.Id, ct: ct).ConfigureAwait(false)
+        Order order = await reads.GetByIdAsync(req.Id, ct: ct).ConfigureAwait(false)
             ?? throw new OrderNotFoundException(req.Id);
 
         switch (req.Action)
@@ -39,7 +39,7 @@ public class SetOrderStatusHandler(IOrderQueries queries, IUnitOfWork unitOfWork
             default: throw new OrderStatusException(req.Id, req.Action);
         }
 
-        await unitOfWork.SaveChangesAsync().ConfigureAwait(false);
+        await uow.SaveChangesAsync().ConfigureAwait(false);
     }
 
     private static void DesignerOrderRelationCheck(string? orderDesignerId, string? designerId)

@@ -1,13 +1,13 @@
-﻿using CustomCADs.Domain.Roles.Queries;
+﻿using CustomCADs.Domain.Roles.Reads;
 using MediatR;
 
 namespace CustomCADs.Application.UseCases.Roles.Queries.GetAllNames;
 
-public class GetAllNamesHandler(IRoleQueries queries) : IRequestHandler<GetAllRoleNamesQuery, IEnumerable<string>>
+public class GetAllNamesHandler(IRoleReads reads) : IRequestHandler<GetAllRoleNamesQuery, IEnumerable<string>>
 {
     public Task<IEnumerable<string>> Handle(GetAllRoleNamesQuery req, CancellationToken ct)
     {
-        IQueryable<string> queryable = queries.GetAll(asNoTracking: true)
+        IQueryable<string> queryable = reads.GetAll(asNoTracking: true)
             .Select(r => r.Name);
 
         IEnumerable<string> roleNames = [.. queryable ];

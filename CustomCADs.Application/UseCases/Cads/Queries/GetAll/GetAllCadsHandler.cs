@@ -1,17 +1,17 @@
 ﻿using CustomCADs.Application.Common.Helpers;
 using CustomCADs.Application.Models.Cads;
 using CustomCADs.Domain.Cads;
-using CustomCADs.Domain.Cads.Queries;
+using CustomCADs.Domain.Cads.Reads;
 using Mapster;
 using MediatR;
 
 namespace CustomCADs.Application.UseCases.Cads.Queries.GetAll;
 
-public class GetAllCadsHandler(ICadQueries queries) : IRequestHandler<GetAllCadsQuery, CadResult>
+public class GetAllCadsHandler(ICadReads reads) : IRequestHandler<GetAllCadsQuery, CadResult>
 {
     public Task<CadResult> Handle(GetAllCadsQuery req, CancellationToken ct)
     {
-        IQueryable<Cad> queryable = queries.GetAll(asNoTracking: true)
+        IQueryable<Cad> queryable = reads.GetAll(asNoTracking: true)
             .Filter(req.Creator, req.Status)
             .Search(req.Category, req.Name)
             .Sort(req.Sorting);

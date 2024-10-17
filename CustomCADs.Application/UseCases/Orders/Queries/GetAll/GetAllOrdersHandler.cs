@@ -1,17 +1,17 @@
 ﻿using CustomCADs.Application.Common.Helpers;
 using CustomCADs.Application.Models.Orders;
 using CustomCADs.Domain.Orders;
-using CustomCADs.Domain.Orders.Queries;
+using CustomCADs.Domain.Orders.Reads;
 using Mapster;
 using MediatR;
 
 namespace CustomCADs.Application.UseCases.Orders.Queries.GetAll;
 
-public class GetAllOrdersHandler(IOrderQueries queries) : IRequestHandler<GetAllOrdersQuery, OrderResult>
+public class GetAllOrdersHandler(IOrderReads reads) : IRequestHandler<GetAllOrdersQuery, OrderResult>
 {
     public Task<OrderResult> Handle(GetAllOrdersQuery req, CancellationToken ct)
     {
-        IQueryable<Order> queryable = queries.GetAll(asNoTracking: true)
+        IQueryable<Order> queryable = reads.GetAll(asNoTracking: true)
             .Filter(req.Buyer, req.Status)
             .Search(req.Category, req.Name)
             .Sort(req.Sorting);

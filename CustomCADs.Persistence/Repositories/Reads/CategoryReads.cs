@@ -1,10 +1,10 @@
 ﻿using CustomCADs.Domain.Categories;
-using CustomCADs.Domain.Categories.Queries;
+using CustomCADs.Domain.Categories.Reads;
 using Microsoft.EntityFrameworkCore;
 
-namespace CustomCADs.Persistence.Repositories.Categories;
+namespace CustomCADs.Persistence.Repositories.Reads;
 
-public class CategoryQueries(ApplicationContext context) : ICategoryQueries
+public class CategoryReads(ApplicationContext context) : ICategoryReads
 {
     public IQueryable<Category> GetAll(bool asNoTracking = false)
         => context.Categories

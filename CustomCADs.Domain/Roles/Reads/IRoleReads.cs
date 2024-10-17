@@ -1,8 +1,6 @@
-﻿using CustomCADs.Domain.Roles;
+﻿namespace CustomCADs.Domain.Roles.Reads;
 
-namespace CustomCADs.Domain.Roles.Queries;
-
-public interface IRoleQueries
+public interface IRoleReads
 {
     IQueryable<Role> GetAll(bool asNoTracking = false);
     Task<Role?> GetByIdAsync(string id, bool asNoTracking = false, CancellationToken ct = default);

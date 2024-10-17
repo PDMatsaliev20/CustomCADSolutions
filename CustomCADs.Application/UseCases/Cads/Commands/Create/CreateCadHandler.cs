@@ -1,19 +1,19 @@
 ﻿using CustomCADs.Application.Common.Exceptions;
 using CustomCADs.Domain.Cads;
-using CustomCADs.Domain.Categories.Queries;
+using CustomCADs.Domain.Categories.Reads;
 using CustomCADs.Domain.Shared;
 using MediatR;
 
 namespace CustomCADs.Application.UseCases.Cads.Commands.Create;
 
 public class CreateCadHandler(
-    ICategoryQueries queries,
-    ICommands<Cad> commands, 
-    IUnitOfWork unitOfWork) : IRequestHandler<CreateCadCommand, int>
+    ICategoryReads categoryReads,
+    IWrites<Cad> cadWrites, 
+    IUnitOfWork uow) : IRequestHandler<CreateCadCommand, int>
 {
     public async Task<int> Handle(CreateCadCommand req, CancellationToken ct)
     {
-        bool categoryExists = await queries.ExistsByIdAsync(req.Model.CategoryId, ct: ct).ConfigureAwait(false);
+        bool categoryExists = await categoryReads.ExistsByIdAsync(req.Model.CategoryId, ct: ct).ConfigureAwait(false);
         if (!categoryExists)
         {
             throw new CategoryNotFoundException(req.Model.CategoryId);
@@ -29,9 +29,9 @@ public class CreateCadHandler(
             Status = req.Model.Status,
             CreationDate = DateTime.Now,
         };
-        await commands.AddAsync(cad, ct).ConfigureAwait(false);
+        await cadWrites.AddAsync(cad, ct).ConfigureAwait(false);
 
-        await unitOfWork.SaveChangesAsync().ConfigureAwait(false);
+        await uow.SaveChangesAsync().ConfigureAwait(false);
         return cad.Id;
     }
 }

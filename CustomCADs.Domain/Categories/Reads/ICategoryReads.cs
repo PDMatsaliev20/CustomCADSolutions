@@ -1,8 +1,6 @@
-﻿using CustomCADs.Domain.Categories;
+﻿namespace CustomCADs.Domain.Categories.Reads;
 
-namespace CustomCADs.Domain.Categories.Queries;
-
-public interface ICategoryQueries
+public interface ICategoryReads
 {
     IQueryable<Category> GetAll(bool asNoTracking = false);
     Task<Category?> GetByIdAsync(int id, bool asNoTracking = false, CancellationToken ct = default);

@@ -1,16 +1,16 @@
 ﻿using CustomCADs.Application.Common.Exceptions;
 using CustomCADs.Domain.Cads;
-using CustomCADs.Domain.Cads.Queries;
+using CustomCADs.Domain.Cads.Reads;
 using CustomCADs.Domain.Shared;
 using MediatR;
 
 namespace CustomCADs.Application.UseCases.Cads.Commands.Edit;
 
-public class EditCadHandler(ICadQueries queries, IUnitOfWork unitOfWork) : IRequestHandler<EditCadCommand>
+public class EditCadHandler(ICadReads reads, IUnitOfWork uow) : IRequestHandler<EditCadCommand>
 {
     public async Task Handle(EditCadCommand req, CancellationToken ct)
     {
-        Cad cad = await queries.GetByIdAsync(req.Id, ct: ct).ConfigureAwait(false)
+        Cad cad = await reads.GetByIdAsync(req.Id, ct: ct).ConfigureAwait(false)
             ?? throw new CadNotFoundException(req.Id);
 
         cad.Name = req.Model.Name;
@@ -20,6 +20,6 @@ public class EditCadHandler(ICadQueries queries, IUnitOfWork unitOfWork) : IRequ
         cad.CamCoordinates = req.Model.CamCoordinates;
         cad.PanCoordinates = req.Model.PanCoordinates;
 
-        await unitOfWork.SaveChangesAsync().ConfigureAwait(false);
+        await uow.SaveChangesAsync().ConfigureAwait(false);
     }
 }

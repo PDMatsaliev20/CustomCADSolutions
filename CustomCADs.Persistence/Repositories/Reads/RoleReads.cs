@@ -1,10 +1,10 @@
 ﻿using CustomCADs.Domain.Roles;
-using CustomCADs.Domain.Roles.Queries;
+using CustomCADs.Domain.Roles.Reads;
 using Microsoft.EntityFrameworkCore;
 
-namespace CustomCADs.Persistence.Repositories.Roles;
+namespace CustomCADs.Persistence.Repositories.Reads;
 
-public class RoleQueries(ApplicationContext context) : IRoleQueries
+public class RoleReads(ApplicationContext context) : IRoleReads
 {
     public IQueryable<Role> GetAll(bool asNoTracking = false)
         => context.Roles
@@ -15,7 +15,7 @@ public class RoleQueries(ApplicationContext context) : IRoleQueries
             .Query(asNoTracking)
             .FirstOrDefaultAsync(r => r.Id == id, ct)
             .ConfigureAwait(false);
-    
+
     public async Task<Role?> GetByNameAsync(string name, bool asNoTracking = false, CancellationToken ct = default)
         => await context.Roles
             .Query(asNoTracking)
@@ -26,7 +26,7 @@ public class RoleQueries(ApplicationContext context) : IRoleQueries
     => await context.Roles
             .AnyAsync(r => r.Id == id, ct)
             .ConfigureAwait(false);
-    
+
     public async Task<bool> ExistsByNameAsync(string name, CancellationToken ct = default)
     => await context.Roles
             .AnyAsync(r => r.Name == name, ct)

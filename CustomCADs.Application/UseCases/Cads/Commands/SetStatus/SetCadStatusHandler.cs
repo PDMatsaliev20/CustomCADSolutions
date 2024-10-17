@@ -1,17 +1,17 @@
 ﻿using CustomCADs.Application.Common.Exceptions;
 using CustomCADs.Domain.Cads;
 using CustomCADs.Domain.Cads.Enums;
-using CustomCADs.Domain.Cads.Queries;
+using CustomCADs.Domain.Cads.Reads;
 using CustomCADs.Domain.Shared;
 using MediatR;
 
 namespace CustomCADs.Application.UseCases.Cads.Commands.SetStatus;
 
-public class SetCadStatusHandler(ICadQueries queries, IUnitOfWork unitOfWork) : IRequestHandler<SetCadStatusCommand>
+public class SetCadStatusHandler(ICadReads reads, IUnitOfWork uow) : IRequestHandler<SetCadStatusCommand>
 {
     public async Task Handle(SetCadStatusCommand req, CancellationToken ct)
     {
-        Cad cad = await queries.GetByIdAsync(req.Id, ct: ct)
+        Cad cad = await reads.GetByIdAsync(req.Id, ct: ct)
             ?? throw new CadNotFoundException(req.Id);
 
         switch (req.Action)
@@ -27,7 +27,7 @@ public class SetCadStatusHandler(ICadQueries queries, IUnitOfWork unitOfWork) : 
             default: throw new CadStatusException(req.Id, req.Action);
         }
 
-        await unitOfWork.SaveChangesAsync().ConfigureAwait(false);
+        await uow.SaveChangesAsync().ConfigureAwait(false);
     }
 
     private static void ValidateCad(Cad cad)

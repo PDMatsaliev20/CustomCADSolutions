@@ -1,17 +1,17 @@
 ﻿using CustomCADs.Application.Common.Helpers;
 using CustomCADs.Application.Models.Users;
 using CustomCADs.Domain.Users;
-using CustomCADs.Domain.Users.Queries;
+using CustomCADs.Domain.Users.Reads;
 using Mapster;
 using MediatR;
 
 namespace CustomCADs.Application.UseCases.Users.Queries.GetAll;
 
-public class GetAllUsersHandler(IUserQueries queries) : IRequestHandler<GetAllUsersQuery, UserResult>
+public class GetAllUsersHandler(IUserReads reads) : IRequestHandler<GetAllUsersQuery, UserResult>
 {
     public Task<UserResult> Handle(GetAllUsersQuery req, CancellationToken ct)
     {
-        IQueryable<User> queryable = queries.GetAll(asNoTracking: true)
+        IQueryable<User> queryable = reads.GetAll(asNoTracking: true)
             .Filter(req.HasRT)
             .Search(req.Username, req.Email, req.FirstName, req.LastName, req.RtEndDateBefore, req.RtEndDateAfter)
             .Sort(req.Sorting);

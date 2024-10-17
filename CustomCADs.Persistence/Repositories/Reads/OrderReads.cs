@@ -1,10 +1,10 @@
 ﻿using CustomCADs.Domain.Orders;
-using CustomCADs.Domain.Orders.Queries;
+using CustomCADs.Domain.Orders.Reads;
 using Microsoft.EntityFrameworkCore;
 
-namespace CustomCADs.Persistence.Repositories.Orders;
+namespace CustomCADs.Persistence.Repositories.Reads;
 
-public class OrderQueries(ApplicationContext context) : IOrderQueries
+public class OrderReads(ApplicationContext context) : IOrderReads
 {
     public IQueryable<Order> GetAll(bool asNoTracking = false)
         => context.Orders

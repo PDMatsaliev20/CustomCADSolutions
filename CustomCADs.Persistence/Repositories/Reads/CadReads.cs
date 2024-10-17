@@ -1,10 +1,10 @@
 ﻿using CustomCADs.Domain.Cads;
-using CustomCADs.Domain.Cads.Queries;
+using CustomCADs.Domain.Cads.Reads;
 using Microsoft.EntityFrameworkCore;
 
-namespace CustomCADs.Persistence.Repositories.Cads;
+namespace CustomCADs.Persistence.Repositories.Reads;
 
-public class CadQueries(ApplicationContext context) : ICadQueries
+public class CadReads(ApplicationContext context) : ICadReads
 {
     public IQueryable<Cad> GetAll(bool asNoTracking = false)
         => context.Cads

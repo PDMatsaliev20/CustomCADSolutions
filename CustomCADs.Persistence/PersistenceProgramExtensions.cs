@@ -1,21 +1,17 @@
 ﻿using CustomCADs.Domain.Cads;
-using CustomCADs.Domain.Cads.Queries;
+using CustomCADs.Domain.Cads.Reads;
 using CustomCADs.Domain.Categories;
-using CustomCADs.Domain.Categories.Queries;
+using CustomCADs.Domain.Categories.Reads;
 using CustomCADs.Domain.Orders;
-using CustomCADs.Domain.Orders.Queries;
+using CustomCADs.Domain.Orders.Reads;
 using CustomCADs.Domain.Roles;
-using CustomCADs.Domain.Roles.Queries;
+using CustomCADs.Domain.Roles.Reads;
 using CustomCADs.Domain.Shared;
 using CustomCADs.Domain.Users;
-using CustomCADs.Domain.Users.Queries;
+using CustomCADs.Domain.Users.Reads;
 using CustomCADs.Persistence;
 using CustomCADs.Persistence.Repositories;
-using CustomCADs.Persistence.Repositories.Cads;
-using CustomCADs.Persistence.Repositories.Categories;
-using CustomCADs.Persistence.Repositories.Orders;
-using CustomCADs.Persistence.Repositories.Roles;
-using CustomCADs.Persistence.Repositories.Users;
+using CustomCADs.Persistence.Repositories.Reads;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -32,21 +28,17 @@ public static class PersistenceProgramExtensions
         services.AddScoped<IUnitOfWork, UnitOfWork>();
     }
 
-    public static void AddQueries(this IServiceCollection services)
+    public static void AddReads(this IServiceCollection services)
     {
-        services.AddScoped<IOrderQueries, OrderQueries>();
-        services.AddScoped<ICadQueries, CadQueries>();
-        services.AddScoped<ICategoryQueries, CategoryQueries>();
-        services.AddScoped<IUserQueries, UserQueries>();
-        services.AddScoped<IRoleQueries, RoleQueries>();
+        services.AddScoped<IOrderReads, OrderReads>();
+        services.AddScoped<ICadReads, CadReads>();
+        services.AddScoped<ICategoryReads, CategoryReads>();
+        services.AddScoped<IUserReads, UserReads>();
+        services.AddScoped<IRoleReads, RoleReads>();
     }
     
-    public static void AddCommands(this IServiceCollection services)
+    public static void AddWrites(this IServiceCollection services)
     {
-        services.AddScoped<ICommands<Order>, OrderCommands>();
-        services.AddScoped<ICommands<Cad>, CadCommands>();
-        services.AddScoped<ICommands<Category>, CategoryCommands>();
-        services.AddScoped<ICommands<User>, UserCommands>();
-        services.AddScoped<ICommands<Role>, RoleCommands>();
+        services.AddScoped(typeof(IWrites<>), typeof(Writes<>));
     }
 }

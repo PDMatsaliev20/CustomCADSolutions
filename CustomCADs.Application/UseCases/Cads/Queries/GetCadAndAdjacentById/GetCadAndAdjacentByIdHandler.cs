@@ -4,17 +4,17 @@ using CustomCADs.Application.Models.Cads;
 using Mapster;
 using MediatR;
 using CustomCADs.Domain.Cads;
-using CustomCADs.Domain.Cads.Queries;
+using CustomCADs.Domain.Cads.Reads;
 using CustomCADs.Domain.Cads.Enums;
 using CustomCADs.Domain.Shared.Enums;
 
 namespace CustomCADs.Application.UseCases.Cads.Queries.GetCadAndAdjacentById;
 
-public class GetCadAndAdjacentByIdHandler(ICadQueries queries) : IRequestHandler<GetCadAndAdjacentByIdQuery, (int? PrevId, CadModel Current, int? NextId)>
+public class GetCadAndAdjacentByIdHandler(ICadReads reads) : IRequestHandler<GetCadAndAdjacentByIdQuery, (int? PrevId, CadModel Current, int? NextId)>
 {
     public Task<(int? PrevId, CadModel Current, int? NextId)> Handle(GetCadAndAdjacentByIdQuery req, CancellationToken ct)
     {
-        IQueryable<Cad> queryable = queries.GetAll(asNoTracking: true)
+        IQueryable<Cad> queryable = reads.GetAll(asNoTracking: true)
             .Sort(nameof(Sorting.Oldest))
             .Filter(status: nameof(CadStatus.Unchecked));
 

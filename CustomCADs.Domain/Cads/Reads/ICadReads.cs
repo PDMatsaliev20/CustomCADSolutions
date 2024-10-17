@@ -1,8 +1,6 @@
-﻿using CustomCADs.Domain.Cads;
+﻿namespace CustomCADs.Domain.Cads.Reads;
 
-namespace CustomCADs.Domain.Cads.Queries;
-
-public interface ICadQueries
+public interface ICadReads
 {
     IQueryable<Cad> GetAll(bool asNoTracking = false);
     Task<Cad?> GetByIdAsync(int id, bool asNoTracking = false, CancellationToken ct = default);
