@@ -1,4 +1,5 @@
 ﻿using CustomCADs.Domain.Entities;
+using CustomCADs.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using static CustomCADs.Domain.DataConstants.CadConstants;
@@ -77,7 +78,11 @@ static class CadConfigUtils
             .HasMaxLength(DescriptionMaxLength);
         
         builder.Property(c => c.Status)
-            .IsRequired();
+            .IsRequired()
+            .HasConversion(
+                e => e.ToString(),
+                s => Enum.Parse<CadStatus>(s)
+            );
 
         builder.Property(c => c.Price)
             .IsRequired()

@@ -1,4 +1,5 @@
 ﻿using CustomCADs.Domain.Entities;
+using CustomCADs.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using static CustomCADs.Domain.DataConstants.OrderConstants;
@@ -56,7 +57,11 @@ static class OrderConfigUtils
             .IsRequired();
         
         builder.Property(o => o.Status)
-            .IsRequired();
+            .IsRequired()
+            .HasConversion(
+                e => e.ToString(),
+                s => Enum.Parse<OrderStatus>(s)
+            );
         
         builder.Property(o => o.ShouldBeDelivered)
             .IsRequired();
