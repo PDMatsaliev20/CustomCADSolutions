@@ -23,7 +23,7 @@ public class CadsMapper : IRegister
     private static readonly Func<CadModel, CoordinatesDto> mapCamCoordinates = m => new(m.CamCoordinates.X, m.CamCoordinates.Y, m.CamCoordinates.Z);
     private static readonly Func<CadModel, CoordinatesDto> mapPanCoordinates = m => new(m.PanCoordinates.X, m.PanCoordinates.Y, m.PanCoordinates.Z);
     private static readonly Func<CadModel, CategoryDto> mapCategory = m => new(m.CategoryId, m.Category.Name);
-    
+
     public void Register(TypeAdapterConfig config)
     {
         config.NewConfig<CadModel, GalleryDetailsResponse>()
@@ -66,7 +66,7 @@ public class CadsMapper : IRegister
             .Map(r => r.CreationDate, m => mapCreationDate(m))
             .Map(r => r.CreatorName, m => mapCreatorName(m))
             .Map(r => r.Category, m => mapCategory(m));
-        
+
         config.NewConfig<CadModel, UncheckedCadsResponse>()
             .Map(r => r.ImagePath, m => mapImagePath(m))
             .Map(r => r.CreationDate, m => mapCreationDate(m))
